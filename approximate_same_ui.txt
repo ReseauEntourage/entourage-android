@@ -1,0 +1,141 @@
+Groupe basé sur: background_white.xml
+Caractéristiques (base): Shape: rectangle, Solid: @color/white, Radius: 10.0
+Similaires (approx):
+- bg_button_rounded_white.xml (Shape: rectangle, Solid: @color/white, Radius: 8.0)
+- bg_rounded_white_plain.xml (Shape: rectangle, Solid: @color/white, Radius: 5.0)
+- home_rounded_white.xml (Shape: rectangle, Solid: @color/white, Radius: 10.0)
+
+----------------------------------------
+
+Groupe basé sur: bg_beige_round.xml
+Caractéristiques (base): Shape: rectangle, Solid: @color/beige, Radius: 12.0
+Similaires (approx):
+- bg_beige_round_15.xml (Shape: rectangle, Solid: @color/beige, Radius: 15.0)
+- home_rounded_beige.xml (Shape: rectangle, Solid: @color/beige, Radius: 10.0)
+- new_bg_choose_photo_group.xml (Shape: rectangle, Solid: @color/beige, Radius: 14.0)
+- rounded_bcknd_beige_profile_achievement.xml (Shape: rectangle, Solid: @color/beige, Radius: 10.0)
+
+----------------------------------------
+
+Groupe basé sur: bg_button_rounded_orange_stroke_1px.xml
+Caractéristiques (base): Shape: rectangle, Solid: @color/white, Radius: 8.0, Stroke: 1.0 (@color/pre_onboard_orange)
+Similaires (approx):
+- bg_button_rounded_pre_onboard_orange_stroke.xml (Shape: rectangle, Solid: @color/white, Radius: 8.0, Stroke: 2.0 (@color/pre_onboard_orange))
+
+----------------------------------------
+
+Groupe basé sur: bg_button_signin_white_rounded.xml
+Caractéristiques (base): Shape: rectangle, Solid: @color/white, Radius: 16.0
+Similaires (approx):
+- bg_unselected_filter.xml (Shape: rectangle, Solid: @color/white, Radius: 18.0)
+- new_bg_rounded_recommendation.xml (Shape: rectangle, Solid: @color/white, Radius: 20.0)
+
+----------------------------------------
+
+Groupe basé sur: bg_dialog_card.xml
+Caractéristiques (base): Shape: rectangle, Solid: @android:color/white, Radius: 20.0
+Similaires (approx):
+- shape_layout_reactions.xml (Shape: rectangle, Solid: @android:color/white, Radius: 23.0)
+
+----------------------------------------
+
+Groupe basé sur: bg_rounded_dialog.xml
+Caractéristiques (base): Shape: rectangle, Solid: @android:color/white, Radius: 35.0
+Similaires (approx):
+- new_rounded_background_statistics_empty_state.xml (Shape: rectangle, Solid: @android:color/white, Radius: 30.0)
+- new_rounded_button.xml (Shape: rectangle, Solid: @android:color/white, Radius: 35.0)
+
+----------------------------------------
+
+Groupe basé sur: bg_selected_filter.xml
+Caractéristiques (base): Shape: rectangle, Solid: @color/orange, Radius: 18.0
+Similaires (approx):
+- new_bg_selected_filter.xml (Shape: rectangle, Solid: @color/orange, Radius: 23.0)
+
+----------------------------------------
+
+Groupe basé sur: btn_shape_beige.xml
+Caractéristiques (base): Shape: rectangle, Solid: @color/beige, Radius: 20.0
+Similaires (approx):
+- new_bg_rounded_beige_unread_pedago.xml (Shape: rectangle, Solid: @color/beige, Radius: 20.0)
+- new_comment_background_beige.xml (Shape: rectangle, Solid: @color/beige, Radius: 24.0)
+
+----------------------------------------
+
+Groupe basé sur: btn_shape_orange_alert_dialog.xml
+Caractéristiques (base): Shape: rectangle, Solid: @color/orange, Radius: 30.0
+Similaires (approx):
+- new_alert_dialog_button_no.xml (Shape: rectangle, Solid: @color/orange, Radius: 30.0)
+- new_rounded_button_orange.xml (Shape: rectangle, Solid: @color/orange, Radius: 35.0)
+
+----------------------------------------
+
+Groupe basé sur: circle_white_plain.xml
+Caractéristiques (base): Shape: oval, Solid: @color/white
+Similaires (approx):
+- white_round_imagebutton.xml (Shape: oval, Solid: @color/white)
+
+----------------------------------------
+
+Groupe basé sur: new_alert_button_yes_beige.xml
+Caractéristiques (base): Shape: rectangle, Solid: @color/light_orange_inactive_button, Radius: 30.0
+Similaires (approx):
+- new_bg_rounded_inactive_button_light_orange.xml (Shape: rectangle, Solid: @color/light_orange_inactive_button, Radius: 35.0)
+
+----------------------------------------
+
+Groupe basé sur: new_alert_button_yes_transparent.xml
+Caractéristiques (base): Shape: rectangle, Solid: @color/light_orange_opacity_50, Radius: 30.0
+Similaires (approx):
+- new_bg_rounded_button_light_orange.xml (Shape: rectangle, Solid: @color/light_orange_opacity_50, Radius: 35.0)
+
+----------------------------------------
+
+Groupe basé sur: new_alert_dialog_button_yes.xml
+Caractéristiques (base): Shape: rectangle, Solid: @color/light_orange, Radius: 30.0
+Similaires (approx):
+- new_rounded_button_light_orange.xml (Shape: rectangle, Solid: @color/light_orange, Radius: 35.0)
+
+----------------------------------------
+
+Groupe basé sur: new_bg_choose_photo_selected.xml
+Caractéristiques (base): Shape: rectangle, Radius: 14.0, Stroke: 2.0 (@color/pre_onboard_orange)
+Similaires (approx):
+- new_layout_button_round_transp_orange_30.xml (Shape: rectangle, Radius: 15.0, Stroke: 1.0 (@color/pre_onboard_orange))
+
+----------------------------------------
+
+Groupe basé sur: new_bg_rounded_beige.xml
+Caractéristiques (base): Shape: rectangle, Solid: @color/light_beige, Radius: 35.0
+Similaires (approx):
+- shape_create_survey.xml (Shape: rectangle, Solid: @color/light_beige, Radius: 35.0)
+
+----------------------------------------
+
+Groupe basé sur: new_bg_rounded_button_orange_beige_stroke.xml
+Caractéristiques (base): Shape: rectangle, Solid: @color/light_beige, Radius: 35.0, Stroke: 2.0 (@color/pre_onboard_orange)
+Similaires (approx):
+- new_bg_rounded_button_orange_beige_stroke_slim.xml (Shape: rectangle, Solid: @color/light_beige, Radius: 35.0, Stroke: 1.0 (@color/pre_onboard_orange))
+
+----------------------------------------
+
+Groupe basé sur: new_bg_rounded_button_orange_stroke_transparent.xml
+Caractéristiques (base): Shape: rectangle, Radius: 35.0, Stroke: 2.0 (@color/pre_onboard_orange)
+Similaires (approx):
+- new_layout_button_round_transp_orange_60.xml (Shape: rectangle, Radius: 30.0, Stroke: 1.0 (@color/pre_onboard_orange))
+
+----------------------------------------
+
+Groupe basé sur: new_bg_rounded_search_orange_stroke_transparent.xml
+Caractéristiques (base): Shape: rectangle, Radius: 23.0, Stroke: 1.0 (@color/pre_onboard_orange)
+Similaires (approx):
+- new_bg_unselected_filter.xml (Shape: rectangle, Radius: 23.0, Stroke: 1.0 (@color/pre_onboard_orange))
+
+----------------------------------------
+
+Groupe basé sur: pre_onboard_dot_selected.xml
+Caractéristiques (base): Shape: oval, Solid: @color/pre_onboard_orange, Size: 12.0x12.0
+Similaires (approx):
+- start_carousel_dot_selected.xml (Shape: oval, Solid: @color/pre_onboard_orange, Size: 12.0x12.0)
+
+----------------------------------------
