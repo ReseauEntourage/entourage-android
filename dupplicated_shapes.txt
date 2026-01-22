@@ -1,0 +1,62 @@
+Drawable principal: background_white.xml
+Caractéristiques: Shape: rectangle, Solid Color: @color/white, Corners: {'bottomLeftRadius': '10dp', 'bottomRightRadius': '10dp', 'radius': '10dp', 'topLeftRadius': '10dp', 'topRightRadius': '10dp'}
+Dupliqués:
+- home_rounded_white.xml
+
+----------------------------------------
+
+Drawable principal: bg_rounded_dialog.xml
+Caractéristiques: Shape: rectangle, Solid Color: @android:color/white, Corners: {'bottomLeftRadius': '35dp', 'bottomRightRadius': '35dp', 'radius': '35dp', 'topLeftRadius': '35dp', 'topRightRadius': '35dp'}
+Dupliqués:
+- new_rounded_button.xml
+
+----------------------------------------
+
+Drawable principal: btn_shape_beige.xml
+Caractéristiques: Shape: rectangle, Solid Color: @color/beige, Corners: {'bottomLeftRadius': '20dp', 'bottomRightRadius': '20dp', 'radius': '20dp', 'topLeftRadius': '20dp', 'topRightRadius': '20dp'}
+Dupliqués:
+- new_bg_rounded_beige_unread_pedago.xml
+
+----------------------------------------
+
+Drawable principal: btn_shape_orange_alert_dialog.xml
+Caractéristiques: Shape: rectangle, Solid Color: @color/orange, Corners: {'bottomLeftRadius': '30dp', 'bottomRightRadius': '30dp', 'radius': '30dp', 'topLeftRadius': '30dp', 'topRightRadius': '30dp'}
+Dupliqués:
+- new_alert_dialog_button_no.xml
+
+----------------------------------------
+
+Drawable principal: circle_white_plain.xml
+Caractéristiques: Shape: oval, Solid Color: @color/white
+Dupliqués:
+- white_round_imagebutton.xml
+
+----------------------------------------
+
+Drawable principal: home_rounded_beige.xml
+Caractéristiques: Shape: rectangle, Solid Color: @color/beige, Corners: {'bottomLeftRadius': '10dp', 'bottomRightRadius': '10dp', 'radius': '10dp', 'topLeftRadius': '10dp', 'topRightRadius': '10dp'}
+Dupliqués:
+- rounded_bcknd_beige_profile_achievement.xml
+
+----------------------------------------
+
+Drawable principal: new_bg_rounded_beige.xml
+Caractéristiques: Shape: rectangle, Solid Color: @color/light_beige, Corners: {'bottomLeftRadius': '35dp', 'bottomRightRadius': '35dp', 'radius': '35dp', 'topLeftRadius': '35dp', 'topRightRadius': '35dp'}
+Dupliqués:
+- shape_create_survey.xml
+
+----------------------------------------
+
+Drawable principal: new_bg_rounded_search_orange_stroke_transparent.xml
+Caractéristiques: Shape: rectangle, Corners: {'bottomLeftRadius': '23dp', 'bottomRightRadius': '23dp', 'radius': '23dp', 'topLeftRadius': '23dp', 'topRightRadius': '23dp'}, Stroke: {'color': '@color/pre_onboard_orange', 'width': '1dp'}
+Dupliqués:
+- new_bg_unselected_filter.xml
+
+----------------------------------------
+
+Drawable principal: pre_onboard_dot_selected.xml
+Caractéristiques: Shape: oval, Solid Color: @color/pre_onboard_orange, Size: {'height': '12dp', 'width': '12dp'}
+Dupliqués:
+- start_carousel_dot_selected.xml
+
+----------------------------------------
