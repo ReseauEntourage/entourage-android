@@ -158,7 +158,9 @@ class MemberConversation (
     @SerializedName("partner_role_title")
     var partnerRoleTitle: String? = null,
     @SerializedName("roles")
-    var roles: ArrayList<String>? = null
+    var roles: ArrayList<String>? = null,
+    @SerializedName("is_birthday")
+    var isBirthday: Boolean = false
 ){}
 
 //Block user

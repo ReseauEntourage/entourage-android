@@ -197,6 +197,9 @@
         <activity
             android:name=".home.pedago.PedagoListActivity"
             android:exported="false" />
+        <activity
+            android:name=".home.BirthdayActivity"
+            android:exported="false" />
 
         <!-- abstract class declared here to make sure child classes work -->
         <activity

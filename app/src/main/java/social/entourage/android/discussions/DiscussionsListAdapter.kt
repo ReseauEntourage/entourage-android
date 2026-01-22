@@ -105,11 +105,16 @@ class DiscussionsListAdapter(
             }
 
             // === Titre et sous-infos ===
-            binding.name.text = if (conversation.memberCount > 2 && conversation.type != "outing") {
+            var nameToDisplay = if (conversation.memberCount > 2 && conversation.type != "outing") {
                 "${conversation.title} et ${conversation.memberCount} membres"
             } else {
                 conversation.title
             }
+
+            if (conversation.isOneToOne() && conversation.user?.isBirthday == true) {
+                nameToDisplay = "$nameToDisplay 🎂"
+            }
+            binding.name.text = nameToDisplay
 
             if (conversation.type == "outing") {
                 binding.date.text = conversation.subname
