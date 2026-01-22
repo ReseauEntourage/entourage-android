@@ -384,6 +384,11 @@ class DiscussionsMainFragment : Fragment() {
     }
 
     private fun membershipToConversation(m: ConversationMembership): Conversation {
+        val lastMessage = if (m.lastChatMessageText != null || m.lastChatMessageImageUrl != null) {
+            LastMessage(m.lastChatMessageText, null, m.lastChatMessageImageUrl)
+        } else {
+            null
+        }
         return Conversation(
             id = m.joinableId,
             type = when (m.joinableType?.lowercase()) {
@@ -396,7 +401,7 @@ class DiscussionsMainFragment : Fragment() {
             title = (m.name),
             imageUrl = m.imageUrl,
             subname = m.createdDateString(),
-            lastMessage = m.lastChatMessageText?.let { LastMessage(it, null) }, // conversion depuis String
+            lastMessage = lastMessage,
             numberUnreadMessages = m.numberOfUnreadMessages ?: 0,
             memberCount = m.numberOfPeople ?: 0
         )

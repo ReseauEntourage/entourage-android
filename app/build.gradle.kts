@@ -102,7 +102,7 @@ android {
 
     signingConfigs {
         create("googleplay") {
-            val keystorePass= System.getenv("KEYSTORE_PASS") ?: findProperty("entourageKeystorePassword") as String
+            val keystorePass= System.getenv("KEYSTORE_PASS") ?: findProperty("entourageKeystorePassword") as String? ?: ""
             keyAlias = "googleplay"
 
             keyPassword = keystorePass

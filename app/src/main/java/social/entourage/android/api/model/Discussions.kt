@@ -64,6 +64,7 @@ class Conversation(
     }
 
     fun getLastMessage() : String? {
+        if (!lastMessage?.imageUrl.isNullOrEmpty()) return "📷"
         return lastMessage?.text
     }
 
@@ -143,7 +144,8 @@ class LastMessage (
     @SerializedName("text")
     var text:String? = null,
     @SerializedName("date")
-    var date: Date? = null
+    var date: Date? = null,
+    var imageUrl: String? = null
 ){}
 
 class MemberConversation (
@@ -204,7 +206,8 @@ data class ConversationMembership(
     @SerializedName("number_of_people") val numberOfPeople: Int?,
     @SerializedName("number_of_root_chat_messages") val numberOfRootMessages: Int?,
     @SerializedName("number_of_unread_messages") val numberOfUnreadMessages: Int?,
-    @SerializedName("last_chat_message") val lastChatMessageText: String?
+    @SerializedName("last_chat_message") val lastChatMessageText: String?,
+    @SerializedName("last_chat_message_image_url") val lastChatMessageImageUrl: String?
 ){
     fun createdDateString(): String {
         subname?.let { dateString ->
