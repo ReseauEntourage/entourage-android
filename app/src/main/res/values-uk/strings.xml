@@ -1223,7 +1223,7 @@
     <!-- Share Entourage -->
     <string name="entourage_share_intent_title">Поділитися через</string>
     <string name="entourage_share_link">https://www.entourage.social</string>
-    <string name="info_share_poi_sms">Добрий ранок ! Ось адреса %1$s, яка може вас зацікавити.\n%2$s\n%3$s\nДля отримання додаткової інформації про це місце та встановлення зв’язків між сусідами, які підтримують вас, я призначу вам зустріч у мережі Entourage %4 $ с</string>
+    <string name="info_share_poi_sms">Добрий ранок ! Ось адреса %1$s, яка може вас зацікавити.\n%2$s\n%3$s\nДля отримання додаткової інформації про це місце та встановлення зв’язків між сусідами, які підтримують вас, я призначу вам зустріч у мережі Entourage %4$s</string>
     <string name="entourage_share_text_for_entourage">%1$s.\n\nЩиро дякуємо за вашу солідарність!</string>
     <!-- Entourage Mini Card -->
     <!-- My Entourages -->
@@ -2224,7 +2224,7 @@
     <string name="btn_end">Завершити</string>
     <string name="event_CGU_section_positive">В Entourage ми приходимо, щоб:</string>
     <string name="event_CGU_section_negative">Чого ми не можемо прийняти:</string>
-    <string name="event_CGU_5_title">Нав'язлива поведінка</string>
+    <string name="event_CGU_5_title">Нав\'язлива поведінка</string>
     <string name="event_CGU_5">Поважайте кордони кожного. Якщо учасник просить вас припинити жест або слово, послухайте його.</string>
     <string name="event_CGU_6_title">Агресивність</string>
     <string name="event_CGU_6">Будь-яка форма насильства (словесного, фізичного чи морального) заборонена. Сюди входять образи, глузування та погрози.</string>
@@ -2278,16 +2278,16 @@
     <string name="onboarding_action_wish_pedago">Вчитися за допомогою \nпедагогічного контенту</string>
     <string name="onboarding_action_wish_event">Брати участь у \nдружніх заходах</string>
     <string name="onboarding_action_wish_services">Дати або попросити \nдопомоги</string>
-    <string name="onboarding_action_wish_network">Приєднатися до групи \nсусідів і зав'язати зв'язки</string>
+    <string name="onboarding_action_wish_network">Приєднатися до групи \nсусідів і зав\'язати зв\'язки</string>
     <string name="onboarding_action_wish_pedago_contrib">Знайти солідарні структури поблизу</string>
     <string name="onboarding_action_wish_event_contrib">Брати участь у \nдружніх заходах</string>
     <string name="onboarding_action_wish_services_contrib">Попросити \nдопомоги</string>
-    <string name="onboarding_action_wish_network_contrib">Приєднатися до групи \nсусідів і зав'язати зв'язки</string>
+    <string name="onboarding_action_wish_network_contrib">Приєднатися до групи \nсусідів і зав\'язати зв\'язки</string>
     <string name="onboarding_congrats_title">Ваш персоналізований досвід готовий!</string>
     <string name="onboarding_congrats_content">Виходячи з ваших уподобань і доступності, ми підготували добірку заходів, які відповідають вашому профілю. Час діяти!</string>
     <string name="onboarding_congrats_leave">Переглянути заходи</string>
     <string name="onboarding_congrats_temporary_title">Ваш персоналізований досвід (майже) готовий!</string>
-    <string name="onboarding_congrats_temporary_content">Дякуємо, що поділилися своїми бажаннями діяти та своїми інтересами. Ми з нетерпінням чекаємо, щоб незабаром запропонувати вам персоналізовані заходи, які вам підходять. \nЗалишайтеся на зв'язку!</string>
+    <string name="onboarding_congrats_temporary_content">Дякуємо, що поділилися своїми бажаннями діяти та своїми інтересами. Ми з нетерпінням чекаємо, щоб незабаром запропонувати вам персоналізовані заходи, які вам підходять. \nЗалишайтеся на зв\'язку!</string>
     <string name="onboarding_experience_resource_title">Тепер ви готові взяти участь!</string>
     <string name="onboarding_experience_resource_content">Ми пропонуємо вам швидкий виклик, щоб розвіяти упередження щодо людей у ​​скрутному становищі.</string>
     <string name="onboarding_experience_resource_button">Почати вікторину</string>
@@ -2301,7 +2301,7 @@
     <string name="onboarding_ready_action_content">Ми пропонуємо вам почати з представлення у вашій групі солідарних сусідів.</string>
     <string name="onboarding_ready_action_button">Знати, як представитися</string>
     <string name="onboarding_start_action_title">Поїхали! Дайте друге життя своїм речам</string>
-    <string name="onboarding_start_action_content">Ми пропонуємо вам почати з того, щоб дати друге життя предмету, жест, який зміцнює солідарність і створює зв'язки з вашими сусідами.</string>
+    <string name="onboarding_start_action_content">Ми пропонуємо вам почати з того, щоб дати друге життя предмету, жест, який зміцнює солідарність і створює зв\'язки з вашими сусідами.</string>
     <string name="onboarding_start_action_button">Зробити мою першу солідарну дію</string>
     <string name="notif_ask_page_title">Увімкніть сповіщення, щоб нічого не пропустити</string>
     <string name="notif_ask_page_subtitle">Отримуйте допомогу поблизу, будьте в курсі місцевих подій, публікацій ваших сусідів та особистих повідомлень у режимі реального часу.</string>
@@ -2347,7 +2347,7 @@
     <string name="popup_discussion_test_label">Нова функція</string>
     <string name="popup_discussion_test_title">Приєднуйтесь до групи мотивованих місцевих жителів!</string>
     <string name="popup_discussion_test_text">Разом отримуйте поради щодо проведення солідарних акцій, беріть участь у місцевих заходах та допомагайте людям у скрутному становищі. Все це відбуватиметься через спеціальний чат у додатку, де ви зможете обмінюватися думками та мотивувати один одного.</string>
-    <string name="toast_message_participate">Чудово, ми скоро зв'яжемося з вами!</string>
+    <string name="toast_message_participate">Чудово, ми скоро зв\'яжемося з вами!</string>
     <string name="preferences_section_title_others">Його/її вподобання</string>
     <string name="preferences_interest_title_others">Його/її інтереси</string>
     <string name="preferences_action_title_others">Його/її бажання діяти</string>
@@ -2362,7 +2362,7 @@
     <string name="onboarding_title">Готові ділитися Хорошими вібраціями?</string>
     <string name="onboarding_start_button">Я починаю</string>
     <string name="onboarding_end_button">Скасувати</string>
-    <string name="onboarding_intro_raw">З Хорошими вібраціями зустрічайте людей, схожих на вас, легко спілкуйтеся та створюйте зв'язки, які приносять користь!\n\n1. Ви відповідаєте на кілька запитань: щоб краще вас пізнати\n2. Ми з'єднуємо вас з людьми: які вам підходять\n3. У додатку автоматично створюється групова розмова: для обміну та створення зв'язків\n4. Якщо ви хочете, ви обираєте час для зустрічі: По відео або в реальному житті, вирішувати вам!</string>
+    <string name="onboarding_intro_raw">З Хорошими вібраціями зустрічайте людей, схожих на вас, легко спілкуйтеся та створюйте зв\'язки, які приносять користь!\n\n1. Ви відповідаєте на кілька запитань: щоб краще вас пізнати\n2. Ми з\'єднуємо вас з людьми: які вам підходять\n3. У додатку автоматично створюється групова розмова: для обміну та створення зв\'язків\n4. Якщо ви хочете, ви обираєте час для зустрічі: По відео або в реальному житті, вирішувати вам!</string>
     <string name="small_talk_step_title_1">Який формат обговорення вам найбільше підходить?</string>
     <string name="small_talk_step_subtitle_1">Ви можете вибрати спілкування в парі або в невеликій групі (від 3 до 5 осіб), залежно від того, що вам зручніше.</string>
     <string name="small_talk_step1_item1_title">Дует</string>
@@ -2377,7 +2377,7 @@
     <string name="small_talk_step2_item2_title">Люди з усієї Франції</string>
     <string name="small_talk_step2_item2_subtitle">Для обміну з різними профілями, відкриття інших горизонтів</string>
     <string name="small_talk_step_title_3">Яка стать вам найбільше відповідає?</string>
-    <string name="small_talk_step_subtitle_3">Ця інформація допомагає нам персоналізувати ваші зв'язки. Ви можете вибрати, чи хочете ви змішану групу чи ні на наступному кроці.</string>
+    <string name="small_talk_step_subtitle_3">Ця інформація допомагає нам персоналізувати ваші зв\'язки. Ви можете вибрати, чи хочете ви змішану групу чи ні на наступному кроці.</string>
     <string name="small_talk_step3_item1_title">Чоловік</string>
     <string name="small_talk_step3_item2_title">Жінка</string>
     <string name="small_talk_step3_item3_title">Інше</string>
@@ -2401,8 +2401,8 @@
     <string name="small_talk_other_band_title">Ми (поки що) не знайшли групу з вашими критеріями</string>
     <string name="small_talk_other_band_subtitle">Ви можете приєднатися до групи, яка відповідає вашим критеріям, або почекати, поки вам запропонують нову групу.</string>
     <string name="small_talk_other_band_different_location">Ця група не відповідає вашому вибору географічної близькості</string>
-    <string name="small_talk_other_band_different_interests">Ця група об'єднує людей з різними інтересами</string>
-    <string name="small_talk_other_band_different_mixity">Ця група об'єднує людей різної статі</string>
+    <string name="small_talk_other_band_different_interests">Ця група об\'єднує людей з різними інтересами</string>
+    <string name="small_talk_other_band_different_mixity">Ця група об\'єднує людей різної статі</string>
     <string name="small_talk_other_band_duo">Ця група працює в парах</string>
     <string name="small_talk_other_band_group">Ця група складається з 3 або більше осіб</string>
     <string name="small_talk_other_band_with">З %1$s</string>
@@ -2419,7 +2419,7 @@
     <string name="small_talk_group_found_title">Ви на одній хвилі!</string>
     <string name="small_talk_group_found_subtitle">Відкрийте для себе людей у вашій групі</string>
     <string name="home_title_small_talk">Поділитися «Хорошими вібраціями»!</string>
-    <string name="small_talk_subtitle_match">Відкрийте для себе новий спосіб спілкування та створення тривалих зв'язків!</string>
+    <string name="small_talk_subtitle_match">Відкрийте для себе новий спосіб спілкування та створення тривалих зв\'язків!</string>
     <string name="small_talk_button_match">Обговорити</string>
     <string name="small_talk_title_waiting">Скоро нові зустрічі</string>
     <string name="small_talk_subtitle_waiting">Ми повідомимо вам, як тільки знайдемо людей, які на одній хвилі ;)</string>
@@ -2429,10 +2429,10 @@
     <string name="small_talk_what_it_is_3">Можливість розірвати ізоляцію</string>
     <string name="small_talk_what_it_is_not_1">Соціальна підтримка або формальна допомога</string>
     <string name="small_talk_what_it_is_not_2">Одностороння розмова або дебати</string>
-    <string name="small_talk_what_it_is_not_3">Нав'язливе обговорення чутливих тем</string>
+    <string name="small_talk_what_it_is_not_3">Нав\'язливе обговорення чутливих тем</string>
     <string name="small_talk_step_1">Солідарна група – етап 1 – презентація</string>
     <string name="small_talk_guidelines_title">Хороші практики для Хороших вібрацій</string>
-    <string name="small_talk_guidelines_intro">&lt;b&gt;Хороші вібрації&lt;/b&gt; швидко з'єднують вас з однією або кількома людьми, щоб спілкуватися та створювати дружні зв'язки, просто і без тиску.</string>
+    <string name="small_talk_guidelines_intro">&lt;b&gt;Хороші вібрації&lt;/b&gt; швидко з\'єднують вас з однією або кількома людьми, щоб спілкуватися та створювати дружні зв\'язки, просто і без тиску.</string>
     <string name="small_talk_what_it_is_title">Що це таке</string>
     <string name="small_talk_what_it_is_item_1">Дружній та доброзичливий обмін</string>
     <string name="small_talk_what_it_is_item_2">Автентична та дружня зустріч між кількома людьми</string>
@@ -2440,14 +2440,14 @@
     <string name="small_talk_what_it_is_not_title">Чим це не є</string>
     <string name="small_talk_what_it_is_not_item_1">Соціальна підтримка або формальна допомога</string>
     <string name="small_talk_what_it_is_not_item_2">Одностороння розмова або дебати</string>
-    <string name="small_talk_what_it_is_not_item_3">Нав'язливе обговорення чутливих тем</string>
+    <string name="small_talk_what_it_is_not_item_3">Нав\'язливе обговорення чутливих тем</string>
     <string name="small_talk_ethics_title">Етична хартія Entourage</string>
     <string name="small_talk_ethics_1_title">🧡 Доброзичливість</string>
     <string name="small_talk_ethics_1_desc">Ми беремо участь у цьому обміні з позитивним і шанобливим наміром.</string>
     <string name="small_talk_ethics_2_title">🗣️ Згода</string>
     <string name="small_talk_ethics_2_desc">Ми поважаємо межі та бажання нашого співрозмовника.</string>
     <string name="small_talk_ethics_3_title">🔒 Конфіденційність</string>
-    <string name="small_talk_ethics_3_desc">Ми не ділимося особистою інформацією (ім'я, адреса, номер телефону...).</string>
+    <string name="small_talk_ethics_3_desc">Ми не ділимося особистою інформацією (ім\'я, адреса, номер телефону...).</string>
     <string name="small_talk_ethics_4_title">🌍 Відкритість та недискримінація</string>
     <string name="small_talk_ethics_4_desc">Ми вітаємо всіх людей без різниці статі, походження, віри або життєвого шляху.</string>
     <string name="small_talk_btn_close">Закрити</string>
@@ -2459,7 +2459,7 @@
     <string name="message_auto">Автоматичне повідомлення - </string>
     <string name="needs_to_join_group">Ви повинні приєднатися до групи, щоб виконати цю дію.</string>
     <string name="photo_right_title">Чи погоджуєтесь ви на використання вашого зображення на умовах, наведених нижче?</string>
-    <string name="photo_right_body">Відповідно до положень про право на зображення,\nя дозволяю Entourage та його технічним постачальникам робити фотографії, відео або цифрові записи під час заходів асоціації Entourage протягом необмеженого періоду, доки я не відкличу свою згоду.\n\nЗображення можуть бути використані та використані безпосередньо структурою в будь-якій формі та на будь-яких носіях, на необмеженій території, без обмеження тривалості, повністю або уривками, зокрема: преса, книга, цифрові носії, виставка, реклама, публічна проекція, конкурс, веб-сайт, соціальні мережі.\n\nБенефіціар дозволу прямо зобов'язується не здійснювати використання фотографій, яке може порушити приватне життя або репутацію, і не використовувати фотографії, відео або цифрові записи цього документа на будь-якому носії або будь-якому шкідливому використанні.\n\nЯ визнаю, що повністю задоволений своїми правами і не можу вимагати жодної винагороди за використання цього документа, і цей факт прямо приписує юрисдикцію французьким судам.\n\nЯ гарантую, що ні я, ні, у відповідних випадках, особа, яку я представляю, не пов'язані ексклюзивним договором щодо використання мого зображення або мого імені.\n\nДля будь-якого спору, що виникає з тлумачення або виконання цих документів, пряма юрисдикція приписується французьким судам.</string>
+    <string name="photo_right_body">Відповідно до положень про право на зображення,\nя дозволяю Entourage та його технічним постачальникам робити фотографії, відео або цифрові записи під час заходів асоціації Entourage протягом необмеженого періоду, доки я не відкличу свою згоду.\n\nЗображення можуть бути використані та використані безпосередньо структурою в будь-якій формі та на будь-яких носіях, на необмеженій території, без обмеження тривалості, повністю або уривками, зокрема: преса, книга, цифрові носії, виставка, реклама, публічна проекція, конкурс, веб-сайт, соціальні мережі.\n\nБенефіціар дозволу прямо зобов\'язується не здійснювати використання фотографій, яке може порушити приватне життя або репутацію, і не використовувати фотографії, відео або цифрові записи цього документа на будь-якому носії або будь-якому шкідливому використанні.\n\nЯ визнаю, що повністю задоволений своїми правами і не можу вимагати жодної винагороди за використання цього документа, і цей факт прямо приписує юрисдикцію французьким судам.\n\nЯ гарантую, що ні я, ні, у відповідних випадках, особа, яку я представляю, не пов\'язані ексклюзивним договором щодо використання мого зображення або мого імені.\n\nДля будь-якого спору, що виникає з тлумачення або виконання цих документів, пряма юрисдикція приписується французьким судам.</string>
     <string name="photo_right_decline">Я не приймаю</string>
     <string name="photo_right_accept">Я приймаю</string>
     <string name="photo_right_saved">Право на зображення збережено.</string>
@@ -2490,7 +2490,7 @@
     <string name="enhanced_onboarding_asso_subtitle">Додайте свій логотип і короткий опис, щоб члени спільноти знали, хто ви і що ви робите.</string>
     <string name="enhanced_onboarding_asso_btn_upload_logo">Імпортувати логотип</string>
     <string name="enhanced_onboarding_asso_description_label">Опис вашої асоціації</string>
-    <string name="enhanced_onboarding_asso_description_hint">Напр.: Сусідська асоціація, що працює для соціальних зв'язків через заходи, відкриті для всіх.</string>
+    <string name="enhanced_onboarding_asso_description_hint">Напр.: Сусідська асоціація, що працює для соціальних зв\'язків через заходи, відкриті для всіх.</string>
     <string name="enhanced_onboarding_asso_btn_later">Пізніше</string>
     <string name="enhanced_onboarding_asso_btn_finish">Завершити</string>
     <string name="birthday_title">Це твій день народження!</string>

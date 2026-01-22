@@ -1217,7 +1217,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <!-- Share Entourage -->
     <string name="entourage_share_intent_title">Distribuie prin</string>
     <string name="entourage_share_link">https://www.entourage.social</string>
-    <string name="info_share_poi_sms">Buna dimineata ! Iată adresa lui %1$s care v-ar putea interesa.\n%2$s\n%3$s\nPentru mai multe informații despre acest loc și pentru a crea legături între vecini susținători, vă voi acorda o programare în rețeaua Entourage %4 $ s</string>
+    <string name="info_share_poi_sms">Buna dimineata ! Iată adresa lui %1$s care v-ar putea interesa.\n%2$s\n%3$s\nPentru mai multe informații despre acest loc și pentru a crea legături între vecini susținători, vă voi acorda o programare în rețeaua Entourage %4$s</string>
     <string name="entourage_share_text_for_entourage">%1$s.\n\nVă mulțumesc foarte mult pentru solidaritate!</string>
     <!-- Entourage Mini Card -->
     <!-- My Entourages -->

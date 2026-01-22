@@ -2322,10 +2322,10 @@ Jede Form von Diskriminierung, Spott oder böswilligem Urteil ist inakzeptabel. 
     <string name="onboarding_no_event_title">Keine Veranstaltungen in Ihrer Nähe? Erstellen Sie Ihre eigene!</string>
     <string name="onboarding_no_event_content">Derzeit sind keine Veranstaltungen in Ihrer Nähe geplant, aber Sie können eine Zeit des Teilens vorschlagen und Ihre Nachbarn zur Teilnahme einladen.</string>
     <string name="onboarding_no_event_button">Eine Zeit des Teilens vorschlagen</string>
-    <string name="onboarding_ready_action_title">Los geht's! Stellen Sie sich Ihren Nachbarn vor</string>
+    <string name="onboarding_ready_action_title">Los geht\'s! Stellen Sie sich Ihren Nachbarn vor</string>
     <string name="onboarding_ready_action_content">Wir schlagen vor, dass Sie mit einer Vorstellung in Ihrer Gruppe solidarischer Nachbarn beginnen.</string>
     <string name="onboarding_ready_action_button">Wissen, wie ich mich vorstellen kann</string>
-    <string name="onboarding_start_action_title">Los geht's! Geben Sie Ihren Objekten ein zweites Leben</string>
+    <string name="onboarding_start_action_title">Los geht\'s! Geben Sie Ihren Objekten ein zweites Leben</string>
     <string name="onboarding_start_action_content">Wir schlagen vor, dass Sie damit beginnen, einem Objekt ein zweites Leben zu geben, eine Geste, die die Solidarität stärkt und Bindungen zu Ihren Nachbarn schafft.</string>
     <string name="onboarding_start_action_button">Meine erste solidarische Aktion machen</string>
     <string name="popup_discussion_test_btn_confirm">Dem Chat beitreten</string>

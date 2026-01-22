@@ -1220,7 +1220,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <!-- Share Entourage -->
     <string name="entourage_share_intent_title">Compartir via</string>
     <string name="entourage_share_link">https://www.entourage.social</string>
-    <string name="info_share_poi_sms">Buenos dias ! Aquí está la dirección de %1$s que podría interesarle.\n%2$s\n%3$s\nPara obtener más información sobre este lugar y crear vínculos entre vecinos solidarios, le daré una cita en la red Entourage %4 $ s</string>
+    <string name="info_share_poi_sms">Buenos dias ! Aquí está la dirección de %1$s que podría interesarle.\n%2$s\n%3$s\nPara obtener más información sobre este lugar y crear vínculos entre vecinos solidarios, le daré una cita en la red Entourage %4$s</string>
     <string name="entourage_share_text_for_entourage">%1$s.\n\n¡Muchas gracias por tu solidaridad!</string>
     <!-- Entourage Mini Card -->
     <!-- My Entourages -->

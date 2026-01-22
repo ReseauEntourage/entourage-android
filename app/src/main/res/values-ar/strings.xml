@@ -1201,7 +1201,7 @@
     <!-- Share Entourage -->
     <string name="entourage_share_intent_title">شارك عبر</string>
     <string name="entourage_share_link">https://www.entourage.social</string>
-    <string name="info_share_poi_sms">صباح الخير ! هذا هو عنوان %1$s الذي قد يثير اهتمامك.\n%2$s\n%3$s\n لمزيد من المعلومات حول هذا المكان، ولإنشاء روابط بين الجيران الداعمين، سأحدد لك موعدًا على شبكة Entourage %4 $ س</string>
+    <string name="info_share_poi_sms">صباح الخير ! هذا هو عنوان %1$s الذي قد يثير اهتمامك.\n%2$s\n%3$s\n لمزيد من المعلومات حول هذا المكان، ولإنشاء روابط بين الجيران الداعمين، سأحدد لك موعدًا على شبكة Entourage %4$s</string>
     <string name="entourage_share_text_for_entourage">%1$s.\n\nشكرًا جزيلاً لك على تضامنك!</string>
     <!-- Entourage Mini Card -->
     <!-- My Entourages -->

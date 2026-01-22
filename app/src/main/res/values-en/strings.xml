@@ -797,7 +797,7 @@
     <string name="event_validate_button2">Cancel the event</string>
     <string name="entourage_share_intent_title">Share via</string>
     <string name="entourage_share_link">https://www.entourage.social</string>
-    <string name="info_share_poi_sms">Good morning ! Here is the address of %1$s which might interest you.\n%2$s\n%3$s\nFor more information on this place, and to create links between supportive neighbors, I will give you an appointment on the Entourage network %4 $s</string>
+    <string name="info_share_poi_sms">Good morning ! Here is the address of %1$s which might interest you.\n%2$s\n%3$s\nFor more information on this place, and to create links between supportive neighbors, I will give you an appointment on the Entourage network %4$s</string>
     <string name="entourage_share_text_for_entourage">%1$s.\n\nThank you very much for your solidarity!</string>
     <string name="myentourages_no_items_details">Ask to join actions, contact members and you will find your conversations with network members here</string>
     <string name="create_action_wizard_p1_title">LAST QUESTION</string>
@@ -1854,13 +1854,13 @@
     <string name="login_forgot_title">Forgot your code ?</string>
     <string name="login_change_phone_question">Changed your phone number ?</string>
     <string name="google_api_key">AIzaSyBwBr8Zro0P1GJDeI4-VPOF3QpVg91q3uk</string>
-    <string name="add_image_title">You haven't added a profile picture yet</string>
+    <string name="add_image_title">You haven\'t added a profile picture yet</string>
     <string name="btn_end">Finish</string>
     <string name="zero">0</string>
     <string name="event_CGU_section_positive">At Entourage, we come to:</string>
     <string name="event_CGU_section_negative">What we cannot accept:</string>
     <string name="event_CGU_5_title">Insistent behavior</string>
-    <string name="event_CGU_5">Respect everyone's boundaries. If a participant asks you to stop a gesture or words, listen to them.</string>
+    <string name="event_CGU_5">Respect everyone\'s boundaries. If a participant asks you to stop a gesture or words, listen to them.</string>
     <string name="event_CGU_6_title">Aggressiveness</string>
     <string name="event_CGU_6">All forms of violence (verbal, physical or moral) are prohibited. This includes insults, mockery, and threats.</string>
     <string name="event_CGU_7_title">Substance abuse</string>
@@ -1868,7 +1868,7 @@
     <string name="event_CGU_8_title">Intolerant, sexist and discriminatory attitudes
 </string>
     <string name="event_CGU_8">
-Any form of discrimination, mockery or malicious judgment is unacceptable. Respect everyone's particularities.</string>
+Any form of discrimination, mockery or malicious judgment is unacceptable. Respect everyone\'s particularities.</string>
     <string name="action_params_cgu_description" />
     <string name="country_afghanistan_name">Afghanistan</string>
     <string name="country_afghanistan_code">af</string>
@@ -2241,10 +2241,10 @@ Any form of discrimination, mockery or malicious judgment is unacceptable. Respe
     <string name="onboarding_no_event_title">No events near you? Create yours!</string>
     <string name="onboarding_no_event_content">No events are planned near you for the moment, but you can suggest a time of sharing and invite your neighbors to participate.</string>
     <string name="onboarding_no_event_button">Suggest a sharing time</string>
-    <string name="onboarding_ready_action_title">Let's go! Introduce yourself to your neighbors</string>
+    <string name="onboarding_ready_action_title">Let\'s go! Introduce yourself to your neighbors</string>
     <string name="onboarding_ready_action_content">We suggest you start with an introduction in your group of solidarity neighbors.</string>
     <string name="onboarding_ready_action_button">Know how to introduce myself</string>
-    <string name="onboarding_start_action_title">Let's go! Give a second life to your objects</string>
+    <string name="onboarding_start_action_title">Let\'s go! Give a second life to your objects</string>
     <string name="onboarding_start_action_content">We suggest you start by giving a second life to an object, a gesture that strengthens solidarity and creates bonds with your neighbors.</string>
     <string name="onboarding_start_action_button">Make my first solidarity action</string>
     <string name="popup_discussion_test_btn_confirm">Join the chat</string>
@@ -2252,7 +2252,7 @@ Any form of discrimination, mockery or malicious judgment is unacceptable. Respe
     <string name="popup_discussion_test_label">New feature</string>
     <string name="popup_discussion_test_title">Join a group of motivated locals!</string>
     <string name="popup_discussion_test_text">Together, receive advice on how to carry out solidarity actions, participate in local events and help people in precarious situations. All this will be done through a dedicated chat in the application, where you can exchange and motivate each other.</string>
-    <string name="toast_message_participate">Great, we'll get back to you soon!</string>
+    <string name="toast_message_participate">Great, we\'ll get back to you soon!</string>
     <string name="preferences_section_title_others">His/Her preferences</string>
     <string name="preferences_interest_title_others">His/Her interests</string>
     <string name="preferences_action_title_others">His/Her desires to act</string>
@@ -2267,7 +2267,7 @@ Any form of discrimination, mockery or malicious judgment is unacceptable. Respe
     <string name="onboarding_title">Ready to share Good Vibes?</string>
     <string name="onboarding_start_button">I start</string>
     <string name="onboarding_end_button">Cancel</string>
-    <string name="onboarding_intro_raw">With Good Vibes, meet people like you, chat easily and create bonds that feel good!\n\n1. You answer a few questions: to get to know you better\n2. We put you in touch with people: who match you\n3. A group conversation is automatically created in the application: to exchange and bond\n4. If you wish, you choose a time to meet: By video or in real life, it's up to you!</string>
+    <string name="onboarding_intro_raw">With Good Vibes, meet people like you, chat easily and create bonds that feel good!\n\n1. You answer a few questions: to get to know you better\n2. We put you in touch with people: who match you\n3. A group conversation is automatically created in the application: to exchange and bond\n4. If you wish, you choose a time to meet: By video or in real life, it\'s up to you!</string>
     <string name="small_talk_step_title_1">What discussion format suits you best?</string>
     <string name="small_talk_step_subtitle_1">You can choose to chat in pairs or in a small group (3 to 5 people), depending on what makes you most comfortable.</string>
     <string name="small_talk_step1_item1_title">Duo</string>
@@ -2291,7 +2291,7 @@ Any form of discrimination, mockery or malicious judgment is unacceptable. Respe
     <string name="small_talk_step3_item3_subtitle">Your gender does not correspond exclusively to the categories "woman" or "man"</string>
     <string name="small_talk_step_title_4">Who do you feel most comfortable talking to?</string>
     <string name="small_talk_step_subtitle_4">This question only concerns gender: men, women, others. All groups are socially mixed.</string>
-    <string name="small_talk_step4_item1_title">Doesn't matter</string>
+    <string name="small_talk_step4_item1_title">Doesn\'t matter</string>
     <string name="small_talk_step4_item1_subtitle">I am comfortable interacting with everyone, regardless of gender</string>
     <string name="small_talk_step4_item2_title">With people of the same gender</string>
     <string name="small_talk_step4_item2_subtitle">I prefer to interact with people who share the same gender as me</string>
@@ -2303,7 +2303,7 @@ Any form of discrimination, mockery or malicious judgment is unacceptable. Respe
     <string name="small_talk_searching_step_2">Then, we look at who shares your interests...</string>
     <string name="small_talk_searching_step_3">We take into account your preferences to form a group where everyone feels good...</string>
     <string name="small_talk_searching_step_4">And finally, we make sure everything is ready to welcome you!</string>
-    <string name="small_talk_other_band_title">We haven't found a group with your criteria (yet)</string>
+    <string name="small_talk_other_band_title">We haven\'t found a group with your criteria (yet)</string>
     <string name="small_talk_other_band_subtitle">You can choose to join a group close to your criteria or wait for a new group to be proposed to you.</string>
     <string name="small_talk_other_band_different_location">This group does not match your choice of geographical proximity</string>
     <string name="small_talk_other_band_different_interests">This group brings together people with different interests</string>
@@ -2314,7 +2314,7 @@ Any form of discrimination, mockery or malicious judgment is unacceptable. Respe
     <string name="small_talk_other_band_join">Join</string>
     <string name="small_talk_other_band_wait">I prefer to wait</string>
     <string name="small_talk_no_band_title">Still looking for Good Vibes!</string>
-    <string name="small_talk_no_band_subtitle">We haven't found a group that suits you yet, but we're working on it! You'll receive a notification as soon as it's the case. Thank you for your patience!</string>
+    <string name="small_talk_no_band_subtitle">We haven\'t found a group that suits you yet, but we\'re working on it! You\'ll receive a notification as soon as it\'s the case. Thank you for your patience!</string>
     <string name="small_talk_no_band_button_title">Return to home page</string>
     <string name="small_talk_no_band_card_title">In the meantime, here is a great opportunity to chat...</string>
     <string name="small_talk_no_band_card_subtitle">Join a solidarity chat by video every Thursday at 6 p.m. to exchange freely for 15min (or more)!</string>
@@ -2327,7 +2327,7 @@ Any form of discrimination, mockery or malicious judgment is unacceptable. Respe
     <string name="small_talk_subtitle_match">Discover a new way to chat and create lasting bonds!</string>
     <string name="small_talk_button_match">Chat</string>
     <string name="small_talk_title_waiting">New meetings soon</string>
-    <string name="small_talk_subtitle_waiting">We'll let you know as soon as we've found people who are on the same wavelength ;)</string>
+    <string name="small_talk_subtitle_waiting">We\'ll let you know as soon as we\'ve found people who are on the same wavelength ;)</string>
     <string name="small_talk_title_conversation">Chat with your group</string>
     <string name="small_talk_what_it_is_1">A friendly and benevolent exchange</string>
     <string name="small_talk_what_it_is_2">An authentic and friendly meeting between several people</string>
@@ -2359,7 +2359,7 @@ Any form of discrimination, mockery or malicious judgment is unacceptable. Respe
     <string name="small_talk_btn_charte">Find the charter and good practices by clicking &lt;b&gt;here&lt;/b&gt;</string>
     <string name="discussion_option_camera">Camera</string>
     <string name="discussion_option_gallery">Photos</string>
-    <string name="edit_photo_title">You don't have a profile photo yet</string>
+    <string name="edit_photo_title">You don\'t have a profile photo yet</string>
     <string name="edit_photo_subtitle">We always feel more comfortable when we see who we are talking to. Add your photo to facilitate meetings!</string>
     <string name="message_auto">Automatic message - </string>
     <string name="photo_right_title">Do you accept the use of your image according to the terms below?</string>
@@ -2395,7 +2395,7 @@ Any form of discrimination, mockery or malicious judgment is unacceptable. Respe
     <string name="enhanced_onboarding_asso_description_hint">Ex.: Neighborhood association working for social ties through events open to all.</string>
     <string name="enhanced_onboarding_asso_btn_later">Later</string>
     <string name="enhanced_onboarding_asso_btn_finish">Finish</string>
-    <string name="birthday_title">It's your birthday!</string>
+    <string name="birthday_title">It\'s your birthday!</string>
     <string name="birthday_subtitle">The Entourage team wishes you a great day!</string>
     <plurals name="participants_count">
         <item quantity="one">%d participant</item>
