@@ -13,7 +13,7 @@ class BirthdayActivity : AppCompatActivity() {
         binding = ActivityBirthdayBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.iconClose.setOnClickListener {
+        binding.btnHome.setOnClickListener {
             finish()
         }
     }

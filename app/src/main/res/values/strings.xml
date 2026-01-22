@@ -3232,9 +3232,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="enhanced_onboarding_asso_btn_later">Plus tard</string>
     <string name="enhanced_onboarding_asso_btn_finish">Terminer</string>
 
-    <string name="birthday_title">C’est votre anniversaire !</string>
-    <string name="birthday_subtitle">L’équipe Entourage vous souhaite une belle journée !</string>
-
     <string name="birthday_title">Joyeux\nanniversaire !</string>
     <string name="birthday_subtitle">Aujourd’hui, c’est votre jour.\nOn est heureux de vous compter parmi nous. Que cette journée soit pleine de chaleur humaine, d’échanges et de joie ✨</string>
     <string name="birthday_button">Revenir à la page d\'accueil</string>
