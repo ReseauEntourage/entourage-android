@@ -59,6 +59,7 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     private val progressLimit = 96
     private var descriptionRegistered = ""
     private var savedLocation: PlaceDetails? = null
+    private var selectedGender: String? = null
 
     // Mémorisation des prédictions pour l'autocomplete
     private var autocompletePredictions: List<AutocompletePrediction> = listOf()
@@ -106,6 +107,7 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
         setupEditImageButton()
         setupLanguageButton()
+        setupGender()
         setupInterestsButtons()
         setupActionZoneAutocomplete()
 
@@ -187,6 +189,25 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
         binding.language.peciLayout.visibility = View.GONE
+    }
+
+    private fun setupGender() {
+        binding.gender.peciLayout.setOnClickListener {
+            val genderOptions = arrayOf(
+                getString(R.string.onboard_welcome_gender_female),
+                getString(R.string.onboard_welcome_gender_male),
+                getString(R.string.onboard_welcome_gender_other)
+            )
+            val genderKeys = arrayOf("female", "male", "other")
+
+            val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+            builder.setTitle(getString(R.string.onboard_welcome_title_gender))
+            builder.setItems(genderOptions) { _, which ->
+                binding.gender.peciContent.text = genderOptions[which]
+                selectedGender = genderKeys[which]
+            }
+            builder.show()
+        }
     }
 
     private fun setupInterestsButtons() {
@@ -288,6 +309,7 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
             configureTextDirection(isArabic, description.peiContent)
             configureTextDirection(isArabic, birthday.peeiContent)
             configureTextDirection(isArabic, phone.peciContent)
+            configureTextDirection(isArabic, gender.peciContent)
             configureTextDirection(isArabic, email.peeiContent)
             configureTextDirection(isArabic, cityAction)
 
@@ -298,6 +320,16 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
                 description.peiContent.setText(user.about)
             } else {
                 description.peiContent.setText(descriptionRegistered)
+            }
+
+            user.gender?.let {
+                selectedGender = it
+                binding.gender.peciContent.text = when (it) {
+                    "female" -> getString(R.string.onboard_welcome_gender_female)
+                    "male" -> getString(R.string.onboard_welcome_gender_male)
+                    "other" -> getString(R.string.onboard_welcome_gender_other)
+                    else -> ""
+                }
             }
 
             birthday.peeiContent.transformIntoDatePicker(
@@ -417,6 +449,7 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
             editedUser["birthdate"] = birthday
             editedUser["travel_distance"] = travelDistance
+            selectedGender?.let { editedUser["gender"] = it }
             editProfilePresenter.updateUser(editedUser)
         }
     }
