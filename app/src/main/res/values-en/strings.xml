@@ -42,7 +42,7 @@
     <string name="cell_numberOfPeoples">%1$d participants</string>
     <string name="show_more">See more</string>
     <string name="show_more_event">See the event</string>
-    <string name="show_more_actions">Show more\ requests and \n initiatives</string>
+    <string name="show_more_actions">Show more requests and \n initiatives</string>
     <string name="show_more_events">Show more events</string>
     <string name="show_more_actions_ask">See all requests</string>
     <string name="show_more_actions_contrib">See all donations</string>
@@ -62,7 +62,7 @@
     <string name="home_button_change_zone">I change my action zone</string>
     <string name="home_cell_info_demand_empty">It\'s pretty quiet here</string>
     <string name="home_cell_info_demand_empty_button">Search\nfurther</string>
-    <string name="home_help_report_description">To help with the future deployment of Entourage in your region, be our eyes and ears! Share with us what you observe in your environment.\n\nThis questionnaire covers various themes, so answer as many as you can. If the situation evolves, you can fill it in again to keep us informed.\nYour collaboration is invaluable, and we thank you warmly!</string>
+    <string name="home_help_report_description">To help with the future deployment of Entourage in your region, be our eyes and ears! Share with us what you observe in your environment.\nThis questionnaire covers various themes, so answer as many as you can. If the situation evolves, you can fill it in again to keep us informed.\nYour collaboration is invaluable, and we thank you warmly!</string>
     <string name="home_button_help_title_report">The Entourage reporters</string>
     <string name="i_participe">Participate</string>
     <string name="equip_mod">The moderation team of Entourage</string>
@@ -216,10 +216,10 @@
     <string name="future_outgoing_events_number_singular">%d upcoming event</string>
     <string name="search_group_hint">Search for a group</string>
     <string name="group_list_empty_state_title">Oops, there are no other groups around you yet.</string>
-    <string name="group_list_empty_state_subtitle">Don\'t hesitate to create \nnew groups of neighbors!</string>
+    <string name="group_list_empty_state_subtitle">Do't hesitate to create \nnew groups of neighbors!</string>
     <string name="group_list_search_empty_state_title">No results matching your search!</string>
     <string name="group_list_search_empty_state_subtitle">If no group exists on this topic, \ncreate one!</string>
-    <string name="my_group_list_empty_state_title">You haven\'t joined a group yet.</string>
+    <string name="my_group_list_empty_state_title">You have't joined a group yet.</string>
     <string name="my_group_list_empty_state_button">Discover groups</string>
     <string name="admin">Admin</string>
     <string name="to_know">About the group</string>
@@ -272,12 +272,12 @@
     <string name="contributions_meeting_empty">No Entourage meetings yet</string>
     <string name="contributions_message">Sent messages</string>
     <string name="contributions_message_empty">No messages sent yet</string>
-    <string name="contributions_event">Events\n</string>
+    <string name="contributions_event">Eventn</string>
     <string name="contribution_event">Event\n</string>
     <string name="contributions_event_empty">Join us for your first event</string>
     <string name="contributions_group">Groups of \n neighbors</string>
     <string name="contribution_group">Neighbors group\n</string>
-    <string name="contributions_group_empty">Don\'t wait any longer to join a group of neighbors!</string>
+    <string name="contributions_group_empty">Do't wait any longer to join a group of neighbors!</string>
     <string name="all_pedago_content">All educational content</string>
     <string name="pedago_details">Educational content</string>
     <string name="read">Read!</string>
@@ -332,11 +332,11 @@
     <string name="canceled">- Canceled</string>
     <string name="title_btn_discover_event">Discover the events</string>
     <string name="title_button_create_event">Create event</string>
-    <string name="event_list_empty_state_title">You haven\'t joined an event yet</string>
+    <string name="event_list_empty_state_title">You have't joined an event yet</string>
     <string name="event_list_empty_state_subtitle">It\'s your chance to find out what\'s going on near you, or to create a new event!</string>
     <string name="discover_event_list_empty_state_title">No results match your search!</string>
     <string name="discover_event_list_empty_state_subtitle">If there are no events near you, you can expand your search area</string>
-    <string name="event_list_empty_state_no_discover">No events around you. Don\'t hesitate to create one!</string>
+    <string name="event_list_empty_state_no_discover">No events around you. Do't hesitate to create one!</string>
     <string name="need_help">Need help</string>
     <string name="solidarity_places_map">Map of solidarity places</string>
     <string name="solidarity_places_map_sub">Day care centers, luggage storage…</string>
@@ -395,7 +395,7 @@
     <string name="deleted__my_message">You have deleted this message.</string>
     <string name="home_congrat_title_single">Well done ! You have completed %d new action!</string>
     <string name="home_congrat_title_plural">Well done ! You have completed %d new actions!</string>
-    <string name="home_congrat_title_next">Great, there\'s something new on the \ home page!</string>
+    <string name="home_congrat_title_next">Great, there\'s something new on the home page!</string>
     <string name="three_point">…</string>
     <string name="error_get_event">This event no longer exists.</string>
     <string name="error_get_group">This neighbor group no longer exists.</string>
@@ -419,7 +419,7 @@
     <string name="welcome_four_secondary_text">In your opinion, what percentage of homeless people have a cell phone?</string>
     <string name="welcome_main_text">Start the quiz</string>
     <string name="welcome_five_title">10 days already: welcome to the family!</string>
-    <string name="welcome_five_main_text">It\'s amazing how quickly time flies when you\'re in good company.\n\nNow help us grow the Entourage network: bring your own!</string>
+    <string name="welcome_five_main_text">It\'s amazing how quickly time flies when you\'re in good company.\nNow help us grow the Entourage network: bring your own!</string>
     <string name="welcome_five_main_button">Share the app</string>
     <string name="welcome_three_button_title">Discover the events</string>
     <string name="welcome_three_title_with_event">6,000 people made new friends at an Entourage event</string>
@@ -429,7 +429,7 @@
     <string name="welcome_three_text_one_with_demand">Take a look at requests published near you:</string>
     <string name="welcome_three_text_one_with_contrib">A good way to create links between neighbors is to share your interests, your passions or just a coffee to get to know each other.</string>
     <string name="welcome_three_contrib_name">Discuss over a coffee</string>
-    <string name="welcome_three_contrib_name_two">Donation of women\'s clothing</string>
+    <string name="welcome_three_contrib_name_two">Donation of wome's clothing</string>
     <string name="welcome_three_contrib_distance">10m from me</string>
     <string name="welcome_three_contrib_location">Paris (75010)</string>
     <string name="welcome_three_contrib_date">June 21, 2022 at 12 p.m.</string>
@@ -476,7 +476,7 @@
     <string name="entourage_info_request_join_button_event">Participate</string>
     <string name="entourage_info_request_join_button_entourage">Join</string>
     <string name="entourage_info_error_retrieve_entourage">Entourage unavailable</string>
-    <string name="entourage_info_metadata_organised_by">Organized\u0020</string>
+    <string name="entourage_info_metadata_organised_by">Organizeu0020</string>
     <string name="entourage_info_metadata_organiser_format">by %1$s</string>
     <string name="entourage_info_metadata_date_format">Meeting %1$s %2$s</string>
     <string name="entourage_info_metadata_dateStart_hours_format">See you on %1$s %2$s</string>
@@ -500,7 +500,7 @@
     <string name="entourage_cell_button_freezed_success_cancel">Canceled</string>
     <string name="entourage_cell_title_event">Event %1$s</string>
     <string name="promote_entourage_email_title">Please send notification for release %1$s</string>
-    <string name="promote_entourage_email_body">Hello,\nPlease promote the "%1$s" outing through a notification sent to the phones of people who are members of the following neighborhoods:\n\nThank you</string>
+    <string name="promote_entourage_email_body">Hello,\nPlease promote the "%1$s" outing through a notification sent to the phones of people who are members of the following neighborhoods:\nThank you</string>
     <string name="newsfeed_load_more_description">That\'s it for this department!</string>
     <string name="newsfeed_no_more_items">No other entourage near this position</string>
     <string name="map_filter_outing_title">Events</string>
@@ -519,17 +519,17 @@
     <string name="info_action_private">Private action</string>
     <string name="info_event_private">Private event</string>
     <string name="info_pop_message_private">Your participation request is awaiting validation.</string>
-    <string name="info_pop_private_message_action">To participate in this private action, the creator of this action must validate your participation.\n\nOnce your request is accepted, you will be able to access the group conversation.</string>
-    <string name="info_pop_private_message_event">To participate in this private event, the creator of this event must validate your participation.\n\nOnce your request is accepted, you will be able to access the group conversation.</string>
+    <string name="info_pop_private_message_action">To participate in this private action, the creator of this action must validate your participation.\nOnce your request is accepted, you will be able to access the group conversation.</string>
+    <string name="info_pop_private_message_event">To participate in this private event, the creator of this event must validate your participation.\nOnce your request is accepted, you will be able to access the group conversation.</string>
     <string name="info_pop_private_title">Request to participate</string>
     <string name="info_pop_private_bt_ok">Confirm</string>
     <string name="info_pop_private_bt_cancel">Cancel</string>
-    <string name="info_asso_abo">• S\subscribe &amp;gt;</string>
+    <string name="info_asso_abo">• subscribe &amp;gt;</string>
     <string name="info_asso_joined">• Subscriber</string>
     <string name="by_author_search">By %1$s</string>
     <string name="action_leave_voice_message">Record a voice message</string>
     <string name="action_voice_message_button">Start voice recognition</string>
-    <string name="action_voice_message_not_supported">Voice recognition n\ is not supported on your phone.</string>
+    <string name="action_voice_message_not_supported">Voice recognition is not supported on your phone.</string>
     <string name="at_km_from_me">%d km from me</string>
     <string name="at_meter_from_me">%d m from me</string>
     <string name="inf_hundred_meter">less than 100m from me</string>
@@ -587,7 +587,7 @@
     <string name="action_create_cat_choose_category">Select the category that best describes your %s</string>
     <string name="action_create_location_title">Locate your %s</string>
     <string name="action_create_location_subtitle">Your precise location will not be shared, you can put a location other than the area of ​​action of your profile.</string>
-    <string name="action_create_success_title">Your %s\nhas been successfully created!</string>
+    <string name="action_create_success_title">Your %nhas been successfully created!</string>
     <string name="action_create_success_subtitle">Congratulations, you have just created a new %s. To make it more visible, talk about it in your groups!</string>
     <string name="action_create_end_finish_bt">Exit</string>
     <string name="action_error_create_action">Error creating %s</string>
@@ -605,13 +605,13 @@
     <string name="carousel_close_button">@string/close</string>
     <string name="carousel_p1_title">Introduce yourself to network members</string>
     <string name="carousel_p1_about">Good morning ! I have just joined the network and I would like to meet some caring neighbors.</string>
-    <string name="carousel_p1_content">To enter your description, access your profile from the &amp;lt;font color</string>
+    <string name="carousel_p1_content"><![CDATA[To fill in your description, access your profile from the <font color="#ec4e1a">Profile</font> button at the bottom right]]></string>
     <string name="carousel_p2_title">Explore the initiatives around you</string>
-    <string name="carousel_p2_content">Consult the actions created by your neighbors and &amp;lt;font color</string>
+    <string name="carousel_p2_content">Check out actions created by your neighbors and <font color="#ec4e1a">join the ones that interest you on the map</font></string>
     <string name="carousel_p3_title">Dare to meet homeless people</string>
-    <string name="carousel_p3_content">&amp;lt;font color</string>
+    <string name="carousel_p3_content"><font color="#ec4e1a">Discover practical advice</font> from the <font color="#ec4e1a">Simple Comme Bonjour</font> guide in the profile at the bottom right</string>
     <string name="carousel_p4_title">Launch a solidarity action</string>
-    <string name="carousel_p4_content">Call on your neighbors to help surround a homeless person. &amp;lt;font color</string>
+    <string name="carousel_p4_content">Ask your neighbors to help support a homeless person. <font color="#ec4e1a">Create an action with the button:</font></string>
     <string name="group_params_cgu_title">The rules</string>
     <string name="group_params_cgu_description">Group rules, read carefully.</string>
     <string name="neighborhood_CGU_1_title">Attitude</string>
@@ -685,8 +685,8 @@
     <string name="entourage_create_title_hint">Example: %1$s</string>
     <string name="entourage_create_title_char_count_format">%1$d/%2$d</string>
     <string name="entourage_create_description_label">Description</string>
-    <string name="entourage_create_help_text_event">&amp;lt;a href</string>
-    <string name="entourage_create_help_text">&amp;lt;a href</string>
+    <string name="entourage_create_help_text_event"><![CDATA[<a href="%1$s">Which events to broadcast?</a>]]></string>
+    <string name="entourage_create_help_text"><![CDATA[<a href="%1$s">Need ideas for action?</a>]]></string>
     <string name="entourage_create_date_start_label">Start date *</string>
     <string name="entourage_create_date_end_label">End date</string>
     <string name="entourage_create_privacy_public">Audience</string>
@@ -695,8 +695,8 @@
     <string name="entourage_create_privacy_description_private">You validate each person individually before confirming that they can participate.</string>
     <string name="entourage_create_privacy_description_public_action">Your action is public, everyone can participate freely.</string>
     <string name="entourage_create_privacy_description_private_action">Your action is private, you will have the choice to accept or refuse any person requesting to participate.</string>
-    <string name="entourage_create_error">L\'s entourage n\' has not been created!</string>
-    <string name="outing_create_error">L\ event n\ could not be created!</string>
+    <string name="entourage_create_error">'s entourage ' has not been created!</string>
+    <string name="outing_create_error">event could not be created!</string>
     <string name="entourage_create_error_category_empty">Enter a category for your action</string>
     <string name="entourage_create_error_title_empty">Title cannot be empty</string>
     <string name="entourage_create_error_date_empty">Choose a date</string>
@@ -728,21 +728,21 @@
     <string name="entourage_type_demand">Request</string>
     <string name="entourage_type_contribution">Contribution</string>
     <string name="entourage_type_outing">Event</string>
-    <string name="entourage_type_format_bis">%1$s from\u0020</string>
+    <string name="entourage_type_format_bis">%1$s frou0020</string>
     <string name="entourage_info_creation_time">Created %s</string>
     <string name="entourage_info_update_time">active %s</string>
     <string name="entourage_metadata_date_startAt_endAt">from %1$s to %2$s</string>
     <string name="entourage_metadata_time_startAt_endAt">from %1$s to %2$s</string>
     <string name="entourage_location_title">My location</string>
-    <string name="entourage_location_address_not_found">The address n\ was not found</string>
+    <string name="entourage_location_address_not_found">The address was not found</string>
     <string name="entourage_info_text_join_accepted">\u0020joined the group.</string>
     <string name="entourage_join_request_received_nomsg">%1$s would like to join your action.</string>
-    <string name="entourage_join_request_received_message_html">&amp;lt;font color</string>
+    <string name="entourage_join_request_received_message_html"><![CDATA[<font color="#FF9739">%1$s </font>wants to join your group]]></string>
     <string name="entourage_join_request_received_message_short">wants to join your group.</string>
     <string name="entourage_join_request_success">Request accepted</string>
-    <string name="entourage_join_request_error">Error d\ sending request</string>
+    <string name="entourage_join_request_error">Error sending request</string>
     <string name="entourage_join_request_message_sent">Message sent</string>
-    <string name="entourage_join_request_message_error">Error d\ sending message</string>
+    <string name="entourage_join_request_message_error">Error sending message</string>
     <string name="entourage_join_request_ok_title">Your request is sent</string>
     <string name="entourage_join_request_ok_description_entourage">Thank you for your warmth!\nYou can send a message to participants, which will appear in the group chat.</string>
     <string name="entourage_join_request_ok_description_outing">@string/entourage_join_request_ok_description_entourage</string>
@@ -762,16 +762,16 @@
     <string name="entourage_disclaimer_geolocation_details">The precise position of your solidarity action is hidden: it is replaced by an orange area on the map</string>
     <string name="entourage_disclaimer_checkbox">I have read and agree</string>
     <string name="entourage_disclaimer_error_notaccepted">Please accept the terms.</string>
-    <string name="outing_disclaimer_accord_details">I ask for a person\'s consent before sharing their personal information</string>
+    <string name="outing_disclaimer_accord_details">I ask for a perso's consent before sharing their personal information</string>
     <string name="outing_disclaimer_security_details">I ensure that people cannot be identified or located by reading me</string>
     <string name="outing_disclaimer_geolocation_title">Location ?</string>
     <string name="outing_disclaimer_geolocation_details">The exact address of events is shown</string>
-    <string name="outing_message_card_created_author">%1$s created an &amp;lt;font color</string>
-    <string name="status_message_card_details">&amp;lt;font color</string>
+    <string name="outing_message_card_created_author"><![CDATA[%1$s created an <font color="%2$s">outing</font>:]]></string>
+    <string name="status_message_card_details"><![CDATA[<font color="%1$s">%2$s</font> %3$s]]></string>
     <string name="myentourages_all">All posts</string>
     <string name="myentourages_unread">Unread</string>
     <string name="myentourages_no_items_title">You have no messages yet…</string>
-    <string name="myentourages_no_unread_items_details">You n\ have no unread messages</string>
+    <string name="myentourages_no_unread_items_details">You have no unread messages</string>
     <string name="myentourages_tab_group">Group chats</string>
     <string name="myentourages_tab_messages">Private messages</string>
     <string name="myentourages_filter_entourages_title">To show</string>
@@ -783,22 +783,22 @@
     <string name="myentourages_filter_demand">Requests</string>
     <string name="myentourages_filter_contribution">Contributions</string>
     <string name="entourage_close_success_button">My action was successful</string>
-    <string name="entourage_close_failed_button">My n\ action was not successful</string>
+    <string name="entourage_close_failed_button">My action was not successful</string>
     <string name="entourage_close_title_new">I close my\nsolidarity action</string>
     <string name="entourage_close_description_new">By closing the action, the discussion will be closed and the action will no longer appear in the news feed.</string>
     <string name="entourage_close_subtitle_new">How did that happen ?</string>
-    <string name="entourage_close_title_ask_comment">Thank you, your action\n is closed!</string>
+    <string name="entourage_close_title_ask_comment">Thank you, your action is closed!</string>
     <string name="entourage_close_subtitle_ask_comment">Do you want to write a comment about your action?</string>
     <string name="entourage_close_add_comment_send_title">Tell us more,\nhow did your solidarity action go?</string>
     <string name="entourage_close_add_comment_send_button">Send</string>
     <string name="entourage_close_add_comment_send_placeholder">My action went well because...</string>
-    <string name="event_close_title2">I cancel\nmy event</string>
+    <string name="event_close_title2">I cancenmy event</string>
     <string name="event_close_description2">By canceling the event, the discussion will be closed and the event will no longer appear in the news feed.</string>
     <string name="event_validate_button2">Cancel the event</string>
     <string name="entourage_share_intent_title">Share via</string>
     <string name="entourage_share_link">https://www.entourage.social</string>
-    <string name="info_share_poi_sms">Good morning ! Here is the address of %1$s which might interest you.\n%2$s\n%3$s\nFor more information on this place, and to create links between supportive neighbors, I will give you an appointment on the Entourage network %4$s</string>
-    <string name="entourage_share_text_for_entourage">%1$s.\n\nThank you very much for your solidarity!</string>
+    <string name="info_share_poi_sms">Good morning ! Here is the address of %1$s which might interest you.\n%2$n%3$nFor more information on this place, and to create links between supportive neighbors, I will give you an appointment on the Entourage network %4$s</string>
+    <string name="entourage_share_text_for_entourage">%1$s.\nThank you very much for your solidarity!</string>
     <string name="myentourages_no_items_details">Ask to join actions, contact members and you will find your conversations with network members here</string>
     <string name="create_action_wizard_p1_title">LAST QUESTION</string>
     <string name="create_action_wizard_p1_option1">@string/yes</string>
@@ -808,9 +808,9 @@
     <string name="create_action_wizard_p2_option1">Yes, I have his agreement</string>
     <string name="create_action_wizard_p2_option2">No not yet</string>
     <string name="create_action_wizard_p3_title">LAST QUESTION</string>
-    <string name="create_action_wizard_p3_description">Consent is essential to be able to broadcast your solidarity action on the network.\n\nYour action is currently on hold. A moderator will respond very quickly to help you.</string>
+    <string name="create_action_wizard_p3_description">Consent is essential to be able to broadcast your solidarity action on the network.\nYour action is currently on hold. A moderator will respond very quickly to help you.</string>
     <string name="create_action_wizard_p3_option1">@string/next</string>
-    <string name="create_action_wizard_disclaimer">The &amp;lt;a href</string>
+    <string name="create_action_wizard_disclaimer"><![CDATA[The <a href='%1$s'>Entourage Ethics Charter</a> explains why consent is essential.]]></string>
     <string name="action_report_explanation">You will report this solidarity action to our administrators.</string>
     <string name="action_report_reason">Please specify why\nyou are reporting this solidarity action:</string>
     <string name="event_report_explanation">You will report this event to our administrators.</string>
@@ -820,11 +820,11 @@
     <string name="entourage_report_success">✔︎ Entourage reported</string>
     <string name="entourage_user_report_success">✔︎ User reported</string>
     <string name="entourage_report_error_reason_empty">Add a message</string>
-    <string name="entourage_report_error_send_failed">L\message sending failed, please try again</string>
+    <string name="entourage_report_error_send_failed">message sending failed, please try again</string>
     <string name="linkShared">Link sent</string>
-    <string name="linkNotShared">Error while sending link \</string>
+    <string name="linkNotShared">Error while sending link </string>
     <string name="info_photo_profile_title">Add your profile photo and inspire even more confidence</string>
-    <string name="info_photo_profile_description">You don\'t have a profile photo yet. People discovering your solidarity action will be more likely to join it if you add one.</string>
+    <string name="info_photo_profile_description">You do't have a profile photo yet. People discovering your solidarity action will be more likely to join it if you add one.</string>
     <string name="info_photo_profile_ignore">IGNORE</string>
     <string name="info_photo_profile_add">ADD</string>
     <string name="button_event_add_photo">Photo</string>
@@ -832,8 +832,8 @@
     <string name="infoPopCreateContrib">Congratulations!\nYour contribution has been successfully created.</string>
     <string name="infoPopCreateAsk">Congratulations!\nYour request has been successfully created.</string>
     <string name="infoPopCreateEvent">Congratulations!\nYour event has been successfully created.</string>
-    <string name="infoPopCreateContribTitle">Solidarity action\ncreated</string>
-    <string name="infoPopCreateAskTitle">Solidarity action\ncreated</string>
+    <string name="infoPopCreateContribTitle">Solidarity actioncreated</string>
+    <string name="infoPopCreateAskTitle">Solidarity actioncreated</string>
     <string name="infoPopCreateEventTitle">Event created</string>
     <string name="searchEventPlaceholder">Search for an event</string>
     <string name="searchAskPlaceholder">Search for an action</string>
@@ -866,17 +866,17 @@
     <string name="activity_read_poi_title">INFORMATION</string>
     <string name="poi_report_description">Add information about this location</string>
     <string name="poi_report_button">Update</string>
-    <string name="poi_report_email_subject_format">J\ has updated information regarding \'%1$s\' (#%2$s)</string>
+    <string name="poi_report_email_subject_format">has updated information regarding \'%1$' (#%2$s)</string>
     <string name="poi_detail_open_time">Schedules</string>
     <string name="poi_detail_language">Spoken languages</string>
     <string name="poi_detail_soliguide_1">Information on this location is provided by Soliguide, solidarity cartography.</string>
     <string name="poi_detail_soliguide_2">For even more complete information available in several languages</string>
     <string name="poi_detail_soliguide_consult">Consult</string>
-    <string name="map_poi_empty_popup">It looks like it is calm here!&lt;br/&gt;&lt;br/&gt;
-    Move around to find out about support structures: solidarity restaurants, public showers, medical centers open to unhoused people...&lt;br/&gt;&lt;br/&gt;
-    A structure is missing on the map?&lt;br/&gt;
-    &lt;a href=\'%1$s\'&gt;Propose a structure&lt;/a&gt;</string>
-    <string name="map_poi_info_popup">The Solidarity Guide allows you to find out about support structures: solidarity restaurants, public showers, medical centers open to unhoused people...\n\n</string>
+    <string name="map_poi_empty_popup"><![CDATA[It looks like it is calm here!<br/><br/>
+    Move around to find out about support structures: solidarity restaurants, public showers, medical centers open to unhoused people...<br/><br/>
+    A structure is missing on the map?<br/>
+    &lt;a href=\'%1$'&gt;Propose a structure&lt;/a&gt;]]></string>
+    <string name="map_poi_info_popup">The Solidarity Guide allows you to find out about support structures: solidarity restaurants, public showers, medical centers open to unhoused people...\n</string>
     <string name="map_empty_poi_recyclerV">That\'s all for the solidarity places in this radius around you</string>
     <string name="guide_filter_title">Filters</string>
     <string name="guide_filters_activated">Filters enabled</string>
@@ -886,7 +886,7 @@
     <string name="guide_alert_arrow_desc">Alert details</string>
     <string name="guide_alert_info_desc">Information guide</string>
     <string name="guide_alert_info_title">Summer hours</string>
-    <string name="guide_alert_info_text">Our partner &amp;lt;a href</string>
+    <string name="guide_alert_info_text"><![CDATA[Our partner <a href="https://soliguide.fr/">Soliguide.fr</a> lists an up-to-date directory for many cities.]]></string>
     <string name="guide_display_partners">Active associations and services on Entourage</string>
     <string name="guide_filter_donate">Looking for donations</string>
     <string name="guide_filter_volunteer">Looking for volunteers</string>
@@ -908,7 +908,7 @@
     <string name="hub_button_5">Go to FAQ</string>
     <string name="gds_title">Solidarity places</string>
     <string name="no_result">No result</string>
-    <string name="no_result_info">Why not try \ another keyword?</string>
+    <string name="no_result_info">Why not try another keyword?</string>
     <string name="button_reset_filters">Cancel filters</string>
     <string name="searchbox_placeholder_text">Search</string>
     <string name="invite_source_title">Invite your friends</string>
@@ -932,10 +932,10 @@
     <string name="invited_description">Respond now!</string>
     <string name="invited_updated_ok">Updated invitation</string>
     <string name="invited_updated_error">Error updating entourage</string>
-    <string name="login_text_lost_code_ko">This number does not seem to be registered: create an account.\n\nMembers d\'an association using d\'Entourage, contact associations@entourage.social</string>
+    <string name="login_text_lost_code_ko">This number does not seem to be registered: create an account.\nMembers 'an association using 'Entourage, contact associations@entourage.social</string>
     <string name="login_text_invalid_format">The number must be 9 or 10 digits long.</string>
     <string name="login_hint_code">Code</string>
-    <string name="login_error">Authentication problem\nPlease try again</string>
+    <string name="login_error">Authentication problenPlease try again</string>
     <string name="login_error_title">Please try again</string>
     <string name="login_error_invalid_credentials">The phone number and this access code do not match.</string>
     <string name="login_error_invalid_phone_format">Invalid number format.\nIf your number is not from mainland France, include the country code</string>
@@ -946,7 +946,7 @@
     <string name="login_info_pop_action">From your profile, you can personalize your news feed and the recommendations received. Choose in complete confidentiality if you are currently: a supportive neighbor, person in need, association.</string>
     <string name="login_info_pop_action_yes">Personalize</string>
     <string name="login_info_pop_action_no">Later</string>
-    <string name="login_info_pop_action_noMore">Don\'t show me anymore</string>
+    <string name="login_info_pop_action_noMore">Do't show me anymore</string>
     <string name="login_email_description">Now, let\'s finalize the creation of your account!</string>
     <string name="login_place_title">What is your neighborhood?</string>
     <string name="login_place_description">You will be able to respond to requests from people in difficulty and from associations in your neighborhood, and you yourself will be able to offer donations of your time or materials.</string>
@@ -970,7 +970,7 @@
     <string name="login_change_phone_email">Email address (optional)</string>
     <string name="login_change_phone_email_placeholder">Email address</string>
     <string name="login_change_phone_bt_validate">Send</string>
-    <string name="login_change_phone_send_ok">Your request has been sent.\n\n\nEntourage support team will notify you when the phone number change has been completed.</string>
+    <string name="login_change_phone_send_ok">Your request has been sent.\nEntourage support team will notify you when the phone number change has been completed.</string>
     <string name="login_change_phone_bt_return">Back</string>
     <string name="login_change_warning_title">Attention</string>
     <string name="login_change_error_phone">Please check your phone number</string>
@@ -991,13 +991,13 @@
     <string name="action_my_messages">posts</string>
     <string name="action_profile">profile</string>
     <string name="debug_info_clipboard">Information copied to clipboard</string>
-    <string name="events_conviv">events\nfriendly</string>
+    <string name="events_conviv">eventnfriendly</string>
     <string name="events_button">View list →</string>
-    <string name="actions_solidr">actions\nsolidaires</string>
+    <string name="actions_solidr">actionnsolidaires</string>
     <string name="actions_button">View list →</string>
     <string name="title_my_activity">👌 MY ACTIVITY</string>
-    <string name="contribCreated">donations\npublished</string>
-    <string name="askCreated">requests\n published</string>
+    <string name="contribCreated">donationnpublished</string>
+    <string name="askCreated">requestn published</string>
     <string name="menu_info_first_title">👋 TAKE THE FIRST STEP</string>
     <string name="menu_info_first_guide">Our guide to daring to meet</string>
     <string name="menu_info_second_gift">Donate to Entourage</string>
@@ -1013,8 +1013,8 @@
     <string name="myActions">My solidarity actions</string>
     <string name="myAsk">My requests</string>
     <string name="myContrib">My donations</string>
-    <string name="myActionEmptyAsk">Currently you n\ have no requests published on the application ;)</string>
-    <string name="myActionEmptyContrib">Currently you n\ have no donations published on the \ application ;)</string>
+    <string name="myActionEmptyAsk">Currently you have no requests published on the application ;)</string>
+    <string name="myActionEmptyContrib">Currently you have no donations published on the application ;)</string>
     <string name="placeholder_birthday_my_profile">01–03</string>
     <string name="placeholder_email_my_profile">email@gmail.com</string>
     <string name="activity_map_new_entourages">\u0020New entourages</string>
@@ -1029,8 +1029,8 @@
     <string name="error_dialog_disabled">Geolocation must be enabled to use Entourage. Do you want to enable \?</string>
     <string name="map_error_geolocation_disabled_use_entourage">To discover solidarity actions around you, you must activate geolocation</string>
     <string name="map_error_geolocation_disabled_recenter">To refocus around you, you must activate geolocation</string>
-    <string name="map_empty_newsfeed">C\It\'s rather quiet around here!\n\nIt seems like\'there n\'there\'s no activity nearby... for the moment!\n\nYou too can create a solidarity activity: tap + at the bottom right</string>
-    <string name="map_empty_newsfeed_popup">It looks like it\'s quiet here!\n\nMove the map to find network activities.\n\nYou too can create a solidarity activity: press + at the bottom right</string>
+    <string name="map_empty_newsfeed">It\'s rather quiet around here!\nIt seems like\'there 'there\'s no activity nearby... for the moment!\nYou too can create a solidarity activity: tap + at the bottom right</string>
+    <string name="map_empty_newsfeed_popup">It looks like it\'s quiet here!\nMove the map to find network activities.\nYou too can create a solidarity activity: press + at the bottom right</string>
     <string name="newsfeed_no_action">No activity near this position</string>
     <string name="newsfeed_tab_events_no_items">No events nearby.</string>
     <string name="map_filter_title">FILTERS</string>
@@ -1043,7 +1043,7 @@
     <string name="map_no_filter">Filters</string>
     <string name="map_filter_publish_title">Published by …</string>
     <string name="map_filter_all">All</string>
-    <string name="map_filter_partnersOnly">Associations and\ninstitutions only</string>
+    <string name="map_filter_partnersOnly">Associations anninstitutions only</string>
     <plurals name="notification_title_join_request">
         <item quantity="one">New request from %1$s</item>
         <item quantity="other">New requests from %1$s…</item>
@@ -1078,14 +1078,14 @@
     <string name="intro_title_1">The social network, truly social.</string>
     <string name="intro_subtitle_1">Our mission: to mobilize and equip citizens to support the most excluded.</string>
     <string name="intro_title_2">On the Entourage app:</string>
-    <string name="intro_subtitle_2">Meet neighbors who are like you during \ events and discuss solidarity actions.</string>
+    <string name="intro_subtitle_2">Meet neighbors who are like you during events and discuss solidarity actions.</string>
     <string name="intro_title_3">Entourage with you!</string>
-    <string name="intro_subtitle_3">The teams of d\'ambassadors, volunteers and moderators d\'Entourage accompany you and guide you on a daily basis.</string>
+    <string name="intro_subtitle_3">The teams of 'ambassadors, volunteers and moderators 'Entourage accompany you and guide you on a daily basis.</string>
     <string name="pre_onboard_choice_description_title">The social network, truly social.</string>
     <string name="pre_onboard_choice_login">Log in</string>
     <string name="pre_onboard_choice_signup">Sign up</string>
     <string name="onboard_button_pass">Skip</string>
-    <string name="onboard_welcome_sub">First of all d\…\nWhat is your name?</string>
+    <string name="onboard_welcome_sub">First of all …\nWhat is your name?</string>
     <string name="onboard_welcome_title">Welcome !</string>
     <string name="onboard_welcome_info">Only the first letter will be displayed</string>
     <string name="onboard_welcome_placeholder_firstname">Your first name</string>
@@ -1141,7 +1141,7 @@
     <string name="onboard_place_getting_current_location">Waiting for GPS</string>
     <string name="onboard_email_pwd_title">Ok good !</string>
     <string name="onboard_email_pwd_description">Now, let\'s finalize the creation of your account!</string>
-    <string name="onboard_email_pwd_info">Leave us your email to receive information and advice from d\'Entourage!</string>
+    <string name="onboard_email_pwd_info">Leave us your email to receive information and advice from 'Entourage!</string>
     <string name="onboard_email_pwd_info2">Entourage does not share your email address.</string>
     <string name="onboard_email_pwd_placeholder_email">E-mail</string>
     <string name="onboard_photo_title">Thanks, %s!</string>
@@ -1170,7 +1170,7 @@
     <string name="onboard_asso_fill_error">Please complete all fields.\nThank you</string>
     <string name="onboard_asso_activity_title">%s, what is your core business?</string>
     <string name="onboard_asso_activity_description">Select the sector(s) of activity of your structure, this will allow us to offer you the best way to use the application and mobilize the Entourage community.</string>
-    <string name="onboard_asso_activity_error">Please inform at least 1 center d\'interest.\nThank you</string>
+    <string name="onboard_asso_activity_error">Please inform at least 1 center 'interest.\nThank you</string>
     <string name="onboard_asso_activity_choice_1">Help for\npeople</string>
     <string name="onboard_asso_activity_choice_2">Cultural initiatives</string>
     <string name="onboard_asso_activity_choice_3">Service\nPublic</string>
@@ -1183,13 +1183,13 @@
     <string name="onboard_sdf_activity_choice_3">Ask \nquestions</string>
     <string name="onboard_sdf_activity_choice_4">Request\n for help</string>
     <string name="onboard_sdf_activity_choice_5">Orient myself</string>
-    <string name="onboard_sdf_activity_choice_6">Find\nassociations</string>
+    <string name="onboard_sdf_activity_choice_6">Finnassociations</string>
     <string name="onboard_neighbour_activity_title">%s, what do you want to do in your neighborhood?</string>
     <string name="onboard_neighbour_activity_description">Several choices possible.\nWe will make suitable proposals for you.</string>
     <string name="onboard_neighbour_activity_choice_1">Inform me</string>
     <string name="onboard_neighbour_activity_choice_2">Participate in \nevents;</string>
-    <string name="onboard_neighbour_activity_choice_3">Surround an\nindividual person</string>
-    <string name="onboard_neighbour_activity_choice_4">Make donations\nmaterials</string>
+    <string name="onboard_neighbour_activity_choice_3">Surround anindividual person</string>
+    <string name="onboard_neighbour_activity_choice_4">Make donationnmaterials</string>
     <string name="onboard_neighbour_activity_choice_5">Getting involved in associations</string>
     <string name="onboard_place_title2_sdf">Great !</string>
     <string name="onboard_place_description2_sdf">Would you like to add another neighborhood?</string>
@@ -1233,7 +1233,7 @@
     <string name="user_edit_password_label">Password</string>
     <string name="user_edit_password_button">Change</string>
     <string name="user_edit_phone_label">Phone number</string>
-    <string name="user_edit_no_association">You can\'t find your association? Write to associations@entourage.social to ask us to add it!</string>
+    <string name="user_edit_no_association">You ca't find your association? Write to associations@entourage.social to ask us to add it!</string>
     <string name="user_edit_add_association_label">Display on your profile the association you feel close to!</string>
     <string name="user_edit_add_association_button">Display an association</string>
     <string name="user_edit_notifications_label">Notifications</string>
@@ -1404,7 +1404,7 @@
     <string name="params_unblock_user_pop_validate_bt">OK</string>
     <string name="param_empty_blocked_user">You have not blocked any contacts.</string>
     <string name="pop_up_rugby_france_title">Let\'s experience the Rugby World Cup together</string>
-    <string name="pop_up_rugby_france_content">The best encounters don\'t necessarily happen at the stadium! Join the group “Let’s experience sport together\”</string>
+    <string name="pop_up_rugby_france_content">The best encounters do't necessarily happen at the stadium! Join the group “Let’s experience sport together\”</string>
     <string name="home_title">The app that brings neighbors together</string>
     <string name="home_title_action">Give a helping hand</string>
     <string name="home_subtitle_action">Your neighbors need you!</string>
@@ -1430,7 +1430,7 @@
     <string name="home_v2_pedago_item_tag_inspire">Get inspired</string>
     <string name="home_v2_pedago_item_tag_understand">Understand</string>
     <string name="home_title_help">Are you lost?</string>
-    <string name="home_subtitle_help">Don\'t panic, start step by step!</string>
+    <string name="home_subtitle_help">Do't panic, start step by step!</string>
     <string name="home_v2_btn_more_help">View all articles</string>
     <string name="home_v2_help_title_one">How to create a group?</string>
     <string name="home_v2_help_title_two">How to create an event?</string>
@@ -1508,57 +1508,58 @@
     <string name="modify_image">
         <u>Edit my photo</u>
     </string>
-    <string name="more">
+    <string name="more"><![CDATA[
         <u>Learn more</u>
-    </string>
-    <string name="posts_comment_number">
+    ]]></string>
+    <string name="posts_comment_number"><![CDATA[
         <u>%d comments</u>
-    </string>
-    <string name="posts_comment_number_singular">
+    ]]></string>
+    <string name="posts_comment_number_singular"><![CDATA[
         <u>%d comment</u>
-    </string>
-    <string name="show_more_lined">
+    ]]></string>
+    <string name="show_more_lined"><![CDATA[
         <u>Show more</u>
-    </string>
-    <string name="welcome_one_sensib">Find our awareness content <u>
+    ]]></string>
+    <string name="welcome_one_sensib"><![CDATA[Find our awareness content <u>
             <font color="#FF9739">here</font>
         </u>
-    </string>
-    <string name="action_show_charte">
+    ]]></string>
+    <string name="action_show_charte"><![CDATA[
         <u>Ethical Charter</u>
-    </string>
-    <string name="signal_a_problem">
+    ]]></string>
+    <string name="signal_a_problem"><![CDATA[
         <u>Report a problem</u>
-    </string>
-    <string name="login_button_resend_code"><u>Resend code</u></string>
-    <string name="login_change_phone">
+    ]]></string>
+    <string name="login_button_resend_code"><![CDATA[<u>Resend code</u>]]></string>
+    <string name="login_change_phone"><![CDATA[
         <u>My phone number has changed</u>
-    </string>
-    <string name="newsfeed_load_more_button">
+    ]]></string>
+    <string name="newsfeed_load_more_button"><![CDATA[
         <u>Search further.</u>
-    </string>
-    <string name="newsfeed_tab_events_no_items_button">
+    ]]></string>
+    <string name="newsfeed_tab_events_no_items_button"><![CDATA[
         <u>Find more Entourage events here</u>
-    </string>
-    <string name="pre_onboard_choice_about">
+    ]]></string>
+    <string name="pre_onboard_choice_about"><![CDATA[
         <u>Who is the Entourage association?</u>
-    </string>
-    <string name="onboard_sms_help">
-        <u>Need help?\nContact the Entourage team.</u>
-    </string>
-    <string name="outing_message_card_updated_author">%1$s has &lt;b&gt;modified&lt;/b&gt; an &lt;font color=\"%2$s\"&gt;outing&lt;/font&gt;:</string>
-    <string name="create_action_wizard_p1_description">Are you creating this solidarity action <b>for an identified person, other than yourself:</b> a friend in precarious situation, a person you met on the street?</string>
-    <string name="create_action_wizard_p2_description">Have you <b>obtained their consent</b> to broadcast this action for them on Entourage?</string>
-    <string name="menu_info_social">To experience <b>even more solidarity</b> follow Entourage on your networks!</string>
-    <string name="map_filter_entourage_demand_text">
+    ]]></string>
+    <string name="onboard_sms_help"><![CDATA[
+        <u>Need help?
+Contact the Entourage team.</u>
+    ]]></string>
+    <string name="outing_message_card_updated_author"><![CDATA[%1$s has <b>modified</b> an <font color=\"%2$">outing</font>:]]></string>
+    <string name="create_action_wizard_p1_description"><![CDATA[Are you creating this solidarity action <b>for an identified person, other than yourself:</b> a friend in precarious situation, a person you met on the street?]]></string>
+    <string name="create_action_wizard_p2_description"><![CDATA[Have you <b>obtained their consent</b> to broadcast this action for them on Entourage?]]></string>
+    <string name="menu_info_social"><![CDATA[To experience <b>even more solidarity</b> follow Entourage on your networks!]]></string>
+    <string name="map_filter_entourage_demand_text"><![CDATA[
         <b>See requests regarding:</b>
-    </string>
-    <string name="map_filter_entourage_contribution_text">
+    ]]></string>
+    <string name="map_filter_entourage_contribution_text"><![CDATA[
         <b>See contributions regarding:</b>
-    </string>
-    <string name="custom_dialog_action_content_one_contrib">Is your action \"&lt;b&gt;%1$s&lt;/b&gt;\" completed?</string>
+    ]]></string>
+    <string name="custom_dialog_action_content_one_contrib"><![CDATA[Is your action \"<b>%1$s</b>\" completed?]]></string>
     <string name="search_member_hint">Search a member</string>
-    <string name="action_crete_cat_about">Are you looking to offer a %s that does not fit into one of these categories? It seems that \ has no place on the network,but you can always</string>
+    <string name="action_crete_cat_about">Are you looking to offer a %s that does not fit into one of these categories? It seems that has no place on the network,but you can always</string>
     <string name="action_create_cat_about_link"> learn more here.</string>
     <string name="report_modal_title_translate">Translate</string>
     <string name="report_modal_subtitle_translate">We automatically translate messages written by citizens</string>
@@ -1616,7 +1617,7 @@
     <string name="home_v2_no_adress_button">Add my location</string>
     <string name="popup_event_confirm_btn_confirm">I\'m coming</string>
     <string name="popup_event_confirm_btn_cancel">I\'m not coming</string>
-    <string name="popup_event_confirm_title">Don\'t forget: "%s" is happening tomorrow at %s at %s!</string>
+    <string name="popup_event_confirm_title">Do't forget: "%s" is happening tomorrow at %s at %s!</string>
     <string name="popup_event_confirm_content">To facilitate the organization of the event, can you tell us if you will be present tomorrow?</string>
     <string name="onboarding_presentation_title">%s, let\'s get to know each other!</string>
     <string name="onboarding_presentation_content">Before diving into our app, let\'s take a moment to get to know you better. Your interests will help us suggest activities and content that will interest you.</string>
@@ -1681,9 +1682,9 @@
     <string name="posts_vote_number">
         <u>%d votes</u>
     </string>
-    <string name="posts_vote_number_singular">
+    <string name="posts_vote_number_singular"><![CDATA[
         <u>%d vote</u>
-    </string>
+    ]]></string>
     <string name="my_onboarding">Customise my profile</string>
     <string name="actions_tab_mygroup">My listings</string>
     <string name="create_survey">Create a survey</string>
@@ -1800,7 +1801,7 @@
     <!-- Misc -->
     <string name="contact_email">contact@entourage.social</string>
     <string name="error_no_email">No email app found</string>
-    <string name="terms_and_conditions_html">By signing up, you accept our &lt;a href="https://www.entourage.social/conditions-generales-dutilisation"&gt;Terms of Use&lt;/a&gt; and our &lt;a href="https://www.entourage.social/politique-de-confidentialite"&gt;Privacy Policy&lt;/a&gt;.</string>
+    <string name="terms_and_conditions_html"><![CDATA[By signing up, you accept our <a href="https://www.entourage.social/conditions-generales-dutilisation">Terms of Use</a> and our <a href="https://www.entourage.social/politique-de-confidentialite">Privacy Policy</a>.]]></string>
     <string name="onboard_welcome_title_gender">I am</string>
     <string name="onboard_welcome_title_how_did_you_hear">How did you hear about us?</string>
     <string name="onboard_welcome_title_company_name">Your company name</string>
@@ -1849,12 +1850,11 @@
     <string name="onboard_asso_other_placeholder">e.g.: Utopia 56 or Femmes solidaires</string>
     <string name="onboard_asso_pick_first">Select an association first</string>
     <string name="onboard_asso_other_required">Please enter your association name</string>
-    <string name="onboard_sms_wait_title">Haven\'t received your login code?</string>
+    <string name="onboard_sms_wait_title">Have't received your login code?</string>
     <string name="onboard_sms_wait_countdown">You can request a new code in %1$s</string>
     <string name="login_forgot_title">Forgot your code ?</string>
     <string name="login_change_phone_question">Changed your phone number ?</string>
-    <string name="google_api_key">AIzaSyBwBr8Zro0P1GJDeI4-VPOF3QpVg91q3uk</string>
-    <string name="add_image_title">You haven\'t added a profile picture yet</string>
+    <string name="add_image_title">You have't added a profile picture yet</string>
     <string name="btn_end">Finish</string>
     <string name="zero">0</string>
     <string name="event_CGU_section_positive">At Entourage, we come to:</string>
@@ -2267,7 +2267,7 @@ Any form of discrimination, mockery or malicious judgment is unacceptable. Respe
     <string name="onboarding_title">Ready to share Good Vibes?</string>
     <string name="onboarding_start_button">I start</string>
     <string name="onboarding_end_button">Cancel</string>
-    <string name="onboarding_intro_raw">With Good Vibes, meet people like you, chat easily and create bonds that feel good!\n\n1. You answer a few questions: to get to know you better\n2. We put you in touch with people: who match you\n3. A group conversation is automatically created in the application: to exchange and bond\n4. If you wish, you choose a time to meet: By video or in real life, it\'s up to you!</string>
+    <string name="onboarding_intro_raw">With Good Vibes, meet people like you, chat easily and create bonds that feel good!\n1. You answer a few questions: to get to know you better\n2. We put you in touch with people: who match you\n3. A group conversation is automatically created in the application: to exchange and bonn4. If you wish, you choose a time to meet: By video or in real life, it\'s up to you!</string>
     <string name="small_talk_step_title_1">What discussion format suits you best?</string>
     <string name="small_talk_step_subtitle_1">You can choose to chat in pairs or in a small group (3 to 5 people), depending on what makes you most comfortable.</string>
     <string name="small_talk_step1_item1_title">Duo</string>
@@ -2291,7 +2291,7 @@ Any form of discrimination, mockery or malicious judgment is unacceptable. Respe
     <string name="small_talk_step3_item3_subtitle">Your gender does not correspond exclusively to the categories "woman" or "man"</string>
     <string name="small_talk_step_title_4">Who do you feel most comfortable talking to?</string>
     <string name="small_talk_step_subtitle_4">This question only concerns gender: men, women, others. All groups are socially mixed.</string>
-    <string name="small_talk_step4_item1_title">Doesn\'t matter</string>
+    <string name="small_talk_step4_item1_title">Does't matter</string>
     <string name="small_talk_step4_item1_subtitle">I am comfortable interacting with everyone, regardless of gender</string>
     <string name="small_talk_step4_item2_title">With people of the same gender</string>
     <string name="small_talk_step4_item2_subtitle">I prefer to interact with people who share the same gender as me</string>
@@ -2303,7 +2303,7 @@ Any form of discrimination, mockery or malicious judgment is unacceptable. Respe
     <string name="small_talk_searching_step_2">Then, we look at who shares your interests...</string>
     <string name="small_talk_searching_step_3">We take into account your preferences to form a group where everyone feels good...</string>
     <string name="small_talk_searching_step_4">And finally, we make sure everything is ready to welcome you!</string>
-    <string name="small_talk_other_band_title">We haven\'t found a group with your criteria (yet)</string>
+    <string name="small_talk_other_band_title">We have't found a group with your criteria (yet)</string>
     <string name="small_talk_other_band_subtitle">You can choose to join a group close to your criteria or wait for a new group to be proposed to you.</string>
     <string name="small_talk_other_band_different_location">This group does not match your choice of geographical proximity</string>
     <string name="small_talk_other_band_different_interests">This group brings together people with different interests</string>
@@ -2314,7 +2314,7 @@ Any form of discrimination, mockery or malicious judgment is unacceptable. Respe
     <string name="small_talk_other_band_join">Join</string>
     <string name="small_talk_other_band_wait">I prefer to wait</string>
     <string name="small_talk_no_band_title">Still looking for Good Vibes!</string>
-    <string name="small_talk_no_band_subtitle">We haven\'t found a group that suits you yet, but we\'re working on it! You\'ll receive a notification as soon as it\'s the case. Thank you for your patience!</string>
+    <string name="small_talk_no_band_subtitle">We have't found a group that suits you yet, but we\'re working on it! You\'ll receive a notification as soon as it\'s the case. Thank you for your patience!</string>
     <string name="small_talk_no_band_button_title">Return to home page</string>
     <string name="small_talk_no_band_card_title">In the meantime, here is a great opportunity to chat...</string>
     <string name="small_talk_no_band_card_subtitle">Join a solidarity chat by video every Thursday at 6 p.m. to exchange freely for 15min (or more)!</string>
@@ -2337,7 +2337,7 @@ Any form of discrimination, mockery or malicious judgment is unacceptable. Respe
     <string name="small_talk_what_it_is_not_3">An intrusive discussion on sensitive subjects</string>
     <string name="small_talk_step_1">Solidarity band – step 1 – presentation</string>
     <string name="small_talk_guidelines_title">Good practices for Good Vibes</string>
-    <string name="small_talk_guidelines_intro">The &lt;b&gt;Good Vibes&lt;/b&gt; quickly connect you with one or more people to chat and create bonds of friendship, simply and without pressure.</string>
+    <string name="small_talk_guidelines_intro"><![CDATA[The <b>Good Vibes</b> quickly connect you with one or more people to chat and create bonds of friendship, simply and without pressure.]]></string>
     <string name="small_talk_what_it_is_title">What it is</string>
     <string name="small_talk_what_it_is_item_1">A friendly and benevolent exchange</string>
     <string name="small_talk_what_it_is_item_2">An authentic and friendly meeting between several people</string>
@@ -2356,14 +2356,14 @@ Any form of discrimination, mockery or malicious judgment is unacceptable. Respe
     <string name="small_talk_ethics_4_title">🌍 Openness and non-discrimination</string>
     <string name="small_talk_ethics_4_desc">We welcome all people without distinction of gender, origin, belief or life path.</string>
     <string name="small_talk_btn_close">Close</string>
-    <string name="small_talk_btn_charte">Find the charter and good practices by clicking &lt;b&gt;here&lt;/b&gt;</string>
+    <string name="small_talk_btn_charte"><![CDATA[Find the charter and good practices by clicking <b>here</b>]]></string>
     <string name="discussion_option_camera">Camera</string>
     <string name="discussion_option_gallery">Photos</string>
-    <string name="edit_photo_title">You don\'t have a profile photo yet</string>
+    <string name="edit_photo_title">You do't have a profile photo yet</string>
     <string name="edit_photo_subtitle">We always feel more comfortable when we see who we are talking to. Add your photo to facilitate meetings!</string>
     <string name="message_auto">Automatic message - </string>
     <string name="photo_right_title">Do you accept the use of your image according to the terms below?</string>
-    <string name="photo_right_body">In accordance with the provisions relating to the right to the image,\nI authorize Entourage and its technical providers to take photographs, videos or digital recordings during the events of the Entourage association for an unlimited period, until I withdraw my consent.\n\nThe images may be exploited and used directly by the structure in any form and on any media, for an unlimited territory, without limitation of duration, in full or in extracts and in particular: press, book, digital media, exhibition, advertising, public projection, competition, website, social networks.\n\nThe beneficiary of the authorization expressly refrains from proceeding with an exploitation of the photographs likely to infringe on private life or reputation, and from using the photographs, videos or digital recordings of the present, in any medium or any harmful exploitation.\n\nI acknowledge that I am fully satisfied with my rights and that I cannot claim any remuneration for the exploitation of the present, and this fact express attribution of jurisdiction to the French courts.\n\nI guarantee that neither I, nor where applicable the person I represent, is bound by an exclusive contract relating to the use of my image or my name.\n\nFor any dispute arising from the interpretation or execution of these presents, express jurisdiction is attributed to the French courts.</string>
+    <string name="photo_right_body">In accordance with the provisions relating to the right to the image,\nI authorize Entourage and its technical providers to take photographs, videos or digital recordings during the events of the Entourage association for an unlimited period, until I withdraw my consent.\nThe images may be exploited and used directly by the structure in any form and on any media, for an unlimited territory, without limitation of duration, in full or in extracts and in particular: press, book, digital media, exhibition, advertising, public projection, competition, website, social networks.\nThe beneficiary of the authorization expressly refrains from proceeding with an exploitation of the photographs likely to infringe on private life or reputation, and from using the photographs, videos or digital recordings of the present, in any medium or any harmful exploitation.\nI acknowledge that I am fully satisfied with my rights and that I cannot claim any remuneration for the exploitation of the present, and this fact express attribution of jurisdiction to the French courts.\nI guarantee that neither I, nor where applicable the person I represent, is bound by an exclusive contract relating to the use of my image or my name.\nFor any dispute arising from the interpretation or execution of these presents, express jurisdiction is attributed to the French courts.</string>
     <string name="photo_right_decline">I do not accept</string>
     <string name="photo_right_accept">I accept</string>
     <string name="photo_right_saved">Image right saved.</string>

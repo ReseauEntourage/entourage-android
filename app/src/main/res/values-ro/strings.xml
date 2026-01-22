@@ -3,8 +3,8 @@
     <string name="full_app_name">Entourage</string>
     <string name="button_loading">Se încarcă…</string>
     <string name="error_not_yet_implemented">Indisponibil</string>
-    <string name="error_google_play_store_not_installed">Magazinul Google Play n\ nu este instalat</string>
-    <string name="error_application_update">Versiunea d\'Entourage instalat n\' nu mai este acceptată. Pentru a continua să utilizați serviciile noastre și să obțineți cea mai bună experiență posibilă, vă rugăm să actualizați la cea mai recentă versiune făcând clic pe următorul link.</string>
+    <string name="error_google_play_store_not_installed">Magazinul Google Play nu este instalat</string>
+    <string name="error_application_update">Versiunea 'Entourage instalat ' nu mai este acceptată. Pentru a continua să utilizați serviciile noastre și să obțineți cea mai bună experiență posibilă, vă rugăm să actualizați la cea mai recentă versiune făcând clic pe următorul link.</string>
     <string name="button_update_version">A updata</string>
     <string name="title_update_version">ACTUALIZARE DISPONIBILA</string>
     <string name="yes">da</string>
@@ -23,7 +23,7 @@
     <string name="network_error">Verificați-vă conexiunea\net încercați din nou mai târziu</string>
     <string name="technical_error">Avem o mică problemă... \n Va fi rezolvată în curând ;)</string>
     <string name="server_error">Avem o mică problemă... \n Va fi corectată foarte repede ;)</string>
-    <string name="no_browser_error">Nu este instalat niciun browser n\</string>
+    <string name="no_browser_error">Nu este instalat niciun browser </string>
     <string name="empty_description" />
     <string name="action_overlay_close">Închideți meniul Acțiuni</string>
     <string name="plus_image_subtitle">Principalul lucru este întâlnirea!</string>
@@ -31,7 +31,7 @@
     <string name="agir_help_button_help_asso">Cum să mobilizăm vecinii?</string>
     <string name="agir_help_button_help_others">Nu te simți pregătit?</string>
     <string name="agir_title_bonnes_ondes">Alătură-te Valurilor bune</string>
-    <string name="agir_bonnes_ondes_alone">creați un cerc de prieteni d\ Anturaj</string>
+    <string name="agir_bonnes_ondes_alone">creați un cerc de prieteni Anturaj</string>
     <string name="agir_bonnes_ondes_others">susține o persoană izolată într-un grup</string>
 
     //Tooltips
@@ -47,9 +47,9 @@
     <string name="cell_numberOfPeople">%1$d participant</string>
     <string name="cell_numberOfPeoples">%1$d participanți</string>
     <string name="show_more">Vezi mai mult</string>
-    <string name="show_more_event">Vedeți evenimentul \</string>
-    <string name="show_more_actions">Afișați mai multe solicitări \ și inițiative \</string>
-    <string name="show_more_events">Afficher plus\nd’événements</string>
+    <string name="show_more_event">Vedeți evenimentul </string>
+    <string name="show_more_actions">Afișați mai multe solicitări și inițiative </string>
+    <string name="show_more_events">Afficher plund’événements</string>
     <string name="show_more_actions_ask">Vezi toate cererile</string>
     <string name="show_more_actions_contrib">Vezi toate donațiile</string>
     <string name="home_title_headlines">Recomandate</string>
@@ -66,12 +66,12 @@
     <string name="home_help_button_5">Programul LinkedOut</string>
     <string name="home_button_help_title">Ajut Entourage într-un mod diferit</string>
     <string name="home_button_change_zone">Îmi modific aria de acțiune</string>
-    <string name="home_cell_info_demand_empty">C\IE destul de liniște aici</string>
+    <string name="home_cell_info_demand_empty">IE destul de liniște aici</string>
     <string name="home_cell_info_demand_empty_button">Căutați\în continuare</string>
-    <string name="home_help_report_description">Pentru a ajuta la implementarea viitoare a Entourage în regiunea dvs., fiți ochii și urechile noastre! Împărtășiți-ne ceea ce observați în mediul dvs. \n\nAcest chestionar acoperă diferite teme, răspundeți la ele cât de mult puteți. Dacă situația se schimbă, îl puteți completa din nou pentru a ne ține la curent.\n\nColaborarea dvs. este prețioasă, vă mulțumim călduros!</string>
+    <string name="home_help_report_description">Pentru a ajuta la implementarea viitoare a Entourage în regiunea dvs., fiți ochii și urechile noastre! Împărtășiți-ne ceea ce observați în mediul dvs. \nAcest chestionar acoperă diferite teme, răspundeți la ele cât de mult puteți. Dacă situația se schimbă, îl puteți completa din nou pentru a ne ține la curent.\nColaborarea dvs. este prețioasă, vă mulțumim călduros!</string>
     <string name="home_button_help_title_report">Reporterii Anturaj</string>
     <string name="i_participe">Participa</string>
-    <string name="equip_mod">Echipa de moderare a L\ d\'Anturajul</string>
+    <string name="equip_mod">Echipa de moderare a 'Anturajul</string>
     <string name="back_button_hint">înapoi</string>
     <string name="button_clear_hint">A sterge</string>
     <!-- New -->
@@ -142,13 +142,13 @@ Descoperiți inițiativele din cartierul dvs. și construiți legături cu vecin
     <string name="events_description_counter">%s /900</string>
     <string name="apply_modifications">Aplica schimbarile</string>
     <string name="edit_interests">Schimbă-mi interesele</string>
-    <string name="follow">S\abonați-vă</string>
+    <string name="follow">abonați-vă</string>
     <string name="following">Abonat</string>
     <string name="ambassador">Ambasador</string>
     <string name="group_name">Numele grupului</string>
-    <string name="event_name">Numele evenimentului \</string>
+    <string name="event_name">Numele evenimentului </string>
     <string name="group_name_hint">Vecinii Parisului 18</string>
-    <string name="event_name_hint">Dați un nume explicit evenimentului \</string>
+    <string name="event_name_hint">Dați un nume explicit evenimentului </string>
     <string name="write_description">Scrie o descriere</string>
     <string name="write_description_hint">Să întâlnesc vecini din 18</string>
     <string name="add_location">Adăugați un loc</string>
@@ -164,7 +164,7 @@ Descoperiți inițiativele din cartierul dvs. și construiți legături cu vecin
     <string name="choose_categories_group">Selectați categoria (categoriile) care descriu cel mai bine subiectul de discuție al grupului.</string>
     <string name="web_site">Site-ul web</string>
     <string name="address">Abordare</string>
-    <string name="report_user">Raportați utilizatorul l\</string>
+    <string name="report_user">Raportați utilizatorul </string>
     <string name="report_member">Raportează membru</string>
     <string name="report_post">Raportați postarea</string>
     <string name="report_comment">Raportați comentariul</string>
@@ -227,10 +227,10 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="future_outgoing_events_number_singular">%d eveniment așteptat</string>
     <string name="search_group_hint">Căutați un grup</string>
     <string name="group_list_empty_state_title">Hopa, încă nu există alte grupuri în jurul tău.</string>
-    <string name="group_list_empty_state_subtitle">N\Nu ezitați să creați \noi grupuri de vecini!</string>
+    <string name="group_list_empty_state_subtitle">Nu ezitați să creați \noi grupuri de vecini!</string>
     <string name="group_list_search_empty_state_title">La naiba, niciun rezultat nu corespunde căutării tale!</string>
-    <string name="group_list_search_empty_state_subtitle">Dacă nu există niciun grup n\ pe acest subiect, \creați unul!</string>
-    <string name="my_group_list_empty_state_title">Tu n\nu te-ai alăturat încă unui grup.</string>
+    <string name="group_list_search_empty_state_subtitle">Dacă nu există niciun grup pe acest subiect, \creați unul!</string>
+    <string name="my_group_list_empty_state_title">Tu nu te-ai alăturat încă unui grup.</string>
     <string name="my_group_list_empty_state_button">Descoperiți grupurile</string>
     <string name="admin">Admin</string>
     <string name="to_know">A sti</string>
@@ -248,7 +248,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="group_event">Evenimente de grup</string>
     <string name="group_event_empty_state_title">Încă nu au fost planificate evenimente în acest grup</string>
     <string name="group_event_empty_state_subtitle">Faceți clic pe „+” pentru a crea unul</string>
-    <string name="group_posts_empty_state_title">Nu există postări (încă) în acest grup n\</string>
+    <string name="group_posts_empty_state_title">Nu există postări (încă) în acest grup </string>
     <string name="group_posts_empty_state_subtitle">De ce să nu începi discuția cu vecinii tăi?</string>
     <string name="posts">Știri</string>
     <string name="see_members">Vedeți membrii</string>
@@ -256,7 +256,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="edit_group_information">Editați informațiile grupului</string>
     <string name="notification_new_event">Evenimente noi</string>
     <string name="notification_new_messages">Mesaje noi</string>
-    <string name="notification_new_members">L\ sosirea de noi membri</string>
+    <string name="notification_new_members">sosirea de noi membri</string>
     <string name="group_notification_all">Toate activitățile de grup</string>
     <string name="group_share">Distribuiți grupul</string>
     <string name="notify_me">Anunta-ma de</string>
@@ -284,22 +284,22 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="contributions_message">Mesaj trimis</string>
     <string name="contributions_message_empty">Nu au fost trimise încă mesaje</string>
     <string name="contributions_event">Evenimente\n</string>
-    <string name="contribution_event">Evenimentul\n</string>
+    <string name="contribution_event">Evenimentun</string>
     <string name="contributions_event_empty">Participă la primul tău eveniment</string>
     <string name="contributions_group">Grupuri de \n vecini</string>
     <string name="contribution_group">Grup de vecini\n</string>
-    <string name="contributions_group_empty">N\ nu mai așteptați să vă alăturați unui grup de vecini!</string>
+    <string name="contributions_group_empty">nu mai așteptați să vă alăturați unui grup de vecini!</string>
     <string name="zero">0</string>
     <string name="all_pedago_content">Tot conținutul educațional</string>
     <string name="pedago_details">Conținut educațional</string>
     <string name="read">Citit!</string>
     <string name="act">A acționa</string>
-    <string name="inspire">S\'inspire</string>
+    <string name="inspire">'inspire</string>
     <string name="understand">A întelege</string>
     <string name="all">Toate</string>
     <string name="want_to_act">Tocmai încep</string>
     <string name="not_implemented">Neimplementat</string>
-    <string name="pedagogical_content">Tot ce trebuie să știți pentru a muta de la \ la acțiunea \</string>
+    <string name="pedagogical_content">Tot ce trebuie să știți pentru a muta de la la acțiunea </string>
     <string name="picture">Fotografie</string>
     <string name="image_mandatory">Fotografia este obligatorie</string>
     <string name="group_events">Evenimente de grup</string>
@@ -316,12 +316,12 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="october">octombrie</string>
     <string name="november">noiembrie</string>
     <string name="december">decembrie</string>
-    <string name="choose_categories_event">Selectați categoria(ele) care descriu cel mai bine subiectul de discuție al evenimentului \.</string>
+    <string name="choose_categories_event">Selectați categoria(ele) care descriu cel mai bine subiectul de discuție al evenimentului .</string>
     <string name="event_success_title">Evenimentul dvs. \n este online!</string>
     <string name="event_success_subtitle">Felicitări, tocmai ați creat un nou eveniment.\nPentru a-l face mai activ, \nvorbește despre el în grupurile tale!</string>
     <string name="see_event">Vizualizați evenimentul meu</string>
-    <string name="share_event">Distribuiți evenimentul \ în grupurile dvs</string>
-    <string name="share_event_settings">Distribuiți evenimentul \</string>
+    <string name="share_event">Distribuiți evenimentul în grupurile dvs</string>
+    <string name="share_event_settings">Distribuiți evenimentul </string>
     <string name="share_event_label">Puteți partaja evenimentul numai grupurilor din care sunteți membru. Evenimentul dvs. va fi apoi vizibil în grupul(ele) selectat(e) și toți membrii unui grup vor putea participa.</string>
     <string name="dont_share">Nu împărtășiți în niciun grup</string>
     <string name="share_in_groups">Distribuie în unul sau mai multe grupuri</string>
@@ -345,31 +345,31 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="title_btn_discover_event">Descoperiți evenimentele</string>
     <string name="title_button_create_event">Creați un eveniment</string>
     <string name="event_list_empty_state_title">Încă nu te-ai alăturat unui eveniment</string>
-    <string name="event_list_empty_state_subtitle">C\ are ocazia de a afla ce se întâmplă în apropierea dvs. sau de a crea un eveniment nou!</string>
+    <string name="event_list_empty_state_subtitle">are ocazia de a afla ce se întâmplă în apropierea dvs. sau de a crea un eveniment nou!</string>
     <string name="discover_event_list_empty_state_title">La naiba, niciun rezultat nu corespunde căutării tale!</string>
     <string name="discover_event_list_empty_state_subtitle">Dacă nu există evenimente în apropierea dvs., vă puteți extinde zona de căutare</string>
-    <string name="event_list_empty_state_no_discover">Nu există evenimente în jurul tău. N\nu ezitați să creați unul!</string>
-    <string name="need_help">Am nevoie de ajutor d\</string>
+    <string name="event_list_empty_state_no_discover">Nu există evenimente în jurul tău. nu ezitați să creați unul!</string>
+    <string name="need_help">Am nevoie de ajutor </string>
     <string name="solidarity_places_map">Harta locurilor de solidaritate</string>
     <string name="solidarity_places_map_sub">Recepții de zi, depozit de bagaje…</string>
     <string name="moderator_subtitle">Ghidul tău în aplicație</string>
     <string name="create_encounters">Pentru a crea o întâlnire grozavă, nimic nu poate fi mai simplu!</string>
     <string name="participate_to_events">Contorul tău crește cu fiecare participare la un eveniment și cu fiecare nouă contribuție sau cerere făcută.</string>
     <string name="places_numbers">%s locuri</string>
-    <string name="event_posts_empty_state_title">Nu există n\Nu există nicio publicație (încă) despre acest eveniment</string>
-    <string name="event_posts_empty_state_subtitle">Hei! C\ este ocazia de a împărtăși primele știri pentru a începe discuția!</string>
+    <string name="event_posts_empty_state_title">Nu există Nu există nicio publicație (încă) despre acest eveniment</string>
+    <string name="event_posts_empty_state_subtitle">Hei! este ocazia de a împărtăși primele știri pentru a începe discuția!</string>
     <string name="participate">Participa</string>
     <string name="participating">Participa</string>
-    <string name="event_settings">Parametrii evenimentului \</string>
-    <string name="event_notification_all">Toată activitatea l\ a evenimentului l\</string>
+    <string name="event_settings">Parametrii evenimentului </string>
+    <string name="event_notification_all">Toată activitatea a evenimentului </string>
     <string name="notification_new_publications">Publicații noi</string>
-    <string name="notification_new_participants">L\ sosirea de noi participanți</string>
+    <string name="notification_new_participants">sosirea de noi participanți</string>
     <string name="edit_event_information">Editați evenimentul</string>
     <string name="rules_event">Carta etică a evenimentelor</string>
     <string name="report_event">Raportați evenimentul</string>
     <string name="cancel_event">Anulează evenimentul</string>
     <string name="modify_recurrence">Editați recurența</string>
-    <string name="about_event">Despre evenimentul \</string>
+    <string name="about_event">Despre evenimentul </string>
     <string name="categories">Categorii</string>
     <string name="category">Categorie</string>
     <string name="associated_groups">Grupuri asociate:</string>
@@ -380,7 +380,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="created_at">A creat %s</string>
     <string name="updated_at">S-a modificat %s</string>
     <string name="canceled_at">S-a anulat %s</string>
-    <string name="leave_event">Ieșiți din evenimentul \</string>
+    <string name="leave_event">Ieșiți din evenimentul </string>
     <string name="leave_event_dialog_content">Doriți să părăsiți evenimentul \?</string>
     <string name="dot">•</string>
     <string name="event_limited_places_title">Eveniment cu locuri limitate</string>
@@ -398,9 +398,9 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="this_event">Acest eveniment</string>
     <string name="all_events_recurrent">Acest eveniment și toate cele ulterioare</string>
     <string name="date_of_event">Data evenimentului</string>
-    <string name="edit_event">Editați evenimentul \</string>
+    <string name="edit_event">Editați evenimentul </string>
     <string name="event_edit_recurrent_event">Editați un eveniment recurent</string>
-    <string name="error_event_end_time">Ora de încheiere a lui L\ nu poate depăși miezul nopții</string>
+    <string name="error_event_end_time">Ora de încheiere a lui nu poate depăși miezul nopții</string>
     <string name="deleted_publi">Această postare a fost ștearsă.</string>
     <string name="deleted_message">Acest mesaj a fost șters.</string>
     <string name="deleted_comment">Acest comentariu a fost șters.</string>
@@ -410,39 +410,39 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     /** Home popup congratulation */
     <string name="home_congrat_title_single">Bine făcut ! Ați efectuat %d acțiune nouă!</string>
     <string name="home_congrat_title_plural">Bine făcut ! Ați finalizat %d acțiuni noi!</string>
-    <string name="home_congrat_title_next">Grozav, este ceva nou pe \ bun venit!</string>
+    <string name="home_congrat_title_next">Grozav, este ceva nou pe bun venit!</string>
     <string name="three_point">…</string>
     <!-- Home ERROR DEEPLINKS -->
-    <string name="error_get_event">Acest eveniment n\ nu mai există.</string>
-    <string name="error_get_group">Acest grup de vecini n\ nu mai există.</string>
-    <string name="error_get_action">Această acțiune n\ nu mai există.</string>
-    <string name="error_get_discussion">Această discuție n\'nu mai există.</string>
+    <string name="error_get_event">Acest eveniment nu mai există.</string>
+    <string name="error_get_group">Acest grup de vecini nu mai există.</string>
+    <string name="error_get_action">Această acțiune nu mai există.</string>
+    <string name="error_get_discussion">Această discuție 'nu mai există.</string>
     <!-- WELCOME PAGES -->
     <string name="welcome_one_title">Bun venit în rețeaua de socializare \, cu adevărat socială</string>
-    <string name="welcome_one_content">Pentru mulți, strada este un loc de trecere.\nPentru unii, c\ este o viață de zi cu zi.\nDeci, pentru a începe, întâlniți-i pe cei care o trăiesc în fiecare zi.</string>
-    <string name="welcome_two_title">C\IEste timpul să începeți!</string>
-    <string name="welcome_two_text_one_corrected">O rețea socială, c\, este mai bună cu mai multe persoane!\nPrezentați-vă la %s</string>
-    <string name="welcome_two_text_one">O rețea socială, c\, este mai bună cu mai multe persoane!\nPrezentă-te grupului tău %s</string>
+    <string name="welcome_one_content">Pentru mulți, strada este un loc de trecere.\nPentru unii, este o viață de zi cu zi.\nDeci, pentru a începe, întâlniți-i pe cei care o trăiesc în fiecare zi.</string>
+    <string name="welcome_two_title">IEste timpul să începeți!</string>
+    <string name="welcome_two_text_one_corrected">O rețea socială, , este mai bună cu mai multe persoane!\nPrezentați-vă la %s</string>
+    <string name="welcome_two_text_one">O rețea socială, , este mai bună cu mai multe persoane!\nPrezentă-te grupului tău %s</string>
     <string name="welcome_two_text_one_no_group">Prezintă-te grupului tău de vecini</string>
     <string name="welcome_two_text_two">Câteva sfaturi pentru a ne cunoaște:</string>
     <string name="welcome_two_text_pin_one">Spune-ți prenumele, orașul tău</string>
     <string name="welcome_two_text_pin_two">Vorbește despre pasiunile tale</string>
     <string name="welcome_two_text_pin_three">Evidențiați-vă nevoile și dorințele</string>
-    <string name="welcome_two_text_four">Ai nevoie de inspirație pentru d\?</string>
+    <string name="welcome_two_text_four">Ai nevoie de inspirație pentru ?</string>
     <string name="welcome_two_button_title">Salutați vecinii mei</string>
-    <string name="welcome_card_example_card_content">Salutare vecini parizieni. Numele meu m\ este Eric și j\ Aștept cu nerăbdare să vă întâlnim la evenimentele din rețea anturaj.</string>
+    <string name="welcome_card_example_card_content">Salutare vecini parizieni. Numele meu este Eric și Aștept cu nerăbdare să vă întâlnim la evenimentele din rețea anturaj.</string>
     <string name="welcome_four_title">Depinde de tine</string>
-    <string name="welcome_four_main_text">Ce zici de d\, un mic test pentru a deconstrui prejudecățile despre lumea străzii?</string>
+    <string name="welcome_four_main_text">Ce zici de , un mic test pentru a deconstrui prejudecățile despre lumea străzii?</string>
     <string name="welcome_four_secondary_text">În opinia dumneavoastră, ce procent dintre persoanele fără adăpost au un telefon mobil?</string>
     <string name="welcome_main_text">Începe testul</string>
     <string name="welcome_five_title">Deja 10 zile: bun venit în familie!</string>
-    <string name="welcome_five_main_text">C\E nebunesc cât de repede zboară timpul când ești într-o companie bună.\n\nAcum ajută-ne să dezvoltăm rețeaua Entourage: aduce-ți a ta!</string>
-    <string name="welcome_five_main_button">Distribuiți aplicația \</string>
+    <string name="welcome_five_main_text">E nebunesc cât de repede zboară timpul când ești într-o companie bună.\nAcum ajută-ne să dezvoltăm rețeaua Entourage: aduce-ți a ta!</string>
+    <string name="welcome_five_main_button">Distribuiți aplicația </string>
     <string name="welcome_three_button_title">Descoperiți evenimentele</string>
     <string name="welcome_three_title_with_event">6.000 de oameni și-au făcut prieteni noi la un eveniment Entourage</string>
     <string name="welcome_three_title_with_demand">Dă o mână de ajutor vecinilor tăi</string>
-    <string name="welcome_three_title_with_contrib">Nici un ajutor d\ în jurul tău? Creaza-l!</string>
-    <string name="welcome_three_text_one">Găsiți evenimentul \ care vă interesează și veniți să vă bucurați de un moment prietenos.</string>
+    <string name="welcome_three_title_with_contrib">Nici un ajutor în jurul tău? Creaza-l!</string>
+    <string name="welcome_three_text_one">Găsiți evenimentul care vă interesează și veniți să vă bucurați de un moment prietenos.</string>
     <string name="welcome_three_text_one_with_demand">Aruncă o privire la solicitările publicate lângă tine:</string>
     <string name="welcome_three_text_one_with_contrib">O modalitate bună de a crea legături între vecini este să vă împărtășiți interesele, pasiunile sau doar o cafea pentru a vă cunoaște.</string>
     <string name="welcome_three_contrib_name">Discută la o cafea</string>
@@ -453,7 +453,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="welcome_three_main_button_title_event">Descoperiți evenimentele</string>
     <string name="welcome_three_main_button_title_demand">Descoperiți cereri</string>
     <string name="welcome_three_main_button_title_contrib">Creați o contribuție</string>
-    <string name="welcome_five_share_title">„Descoperiți aplicația \ Entourage, adevărata rețea socială”</string>
+    <string name="welcome_five_share_title">„Descoperiți aplicația Entourage, adevărata rețea socială”</string>
     <!--    STRING ABOUT-->
     <string name="about_title">DESPRE</string>
     <string name="about_suggestion">O sugestie? O problemă ?</string>
@@ -463,9 +463,9 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="about_privacy">Politica de confidențialitate</string>
     <string name="about_website">Site-ul Entourage</string>
     <string name="about_email">Contactați Anturaj</string>
-    <string name="about_clearing_entourage_cache">Datele istorice locale d\ au fost șterse</string>
-    <string name="about_rate_app">Evaluați aplicația \</string>
-    <string name="about_share_app">Distribuiți aplicația \</string>
+    <string name="about_clearing_entourage_cache">Datele istorice locale au fost șterse</string>
+    <string name="about_rate_app">Evaluați aplicația </string>
+    <string name="about_share_app">Distribuiți aplicația </string>
     <string name="about_oss_licenses">Licențe open-source</string>
     <string name="about_partner">Patronii și partenerii noștri</string>
     <!--    STRING ACTION-->
@@ -476,7 +476,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="entourage_info_text_join_quited_entourage">a părăsit grupul</string>
     <string name="entourage_info_error_chat_message">Mesajul nu a fost trimis</string>
     <string name="entourage_info_options_stop">A încadra</string>
-    <string name="entourage_info_options_cancel_event">Anulați evenimentul \</string>
+    <string name="entourage_info_options_cancel_event">Anulați evenimentul </string>
     <string name="entourage_info_options_quit">A pleca</string>
     <string name="entourage_info_options_report">pentru a raporta o problemă</string>
     <string name="entourage_info_options_share">Acțiune</string>
@@ -486,7 +486,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="entourage_info_options_cancel_request">Retrage cererea mea</string>
     <string name="entourage_info_options_promote">Promovați lansarea</string>
     <string name="entourage_info_options_reopen_entourage">Redeschide</string>
-    <string name="entourage_info_quit_action_error">d\ nu a reușit să trimită cererea</string>
+    <string name="entourage_info_quit_action_error">nu a reușit să trimită cererea</string>
     <string name="entourage_info_members_count">Membri (%1$d)</string>
     <string name="entourage_info_members_add">Invita un prieten</string>
     <string name="entourage_info_members_add_not_allowed">Nu se poate invita</string>
@@ -502,8 +502,8 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="entourage_info_metadata_dateStart_End_hours_format">Întâlniți de la %1$s %2$s la %3$s %4$s</string>
     <string name="entourage_info_metadata_dateStart_hours_format_new">%1$s %2$s</string>
     <string name="entourage_info_metadata_dateStart_End_hours_format_new">De la %1$s %2$s la %3$s %4$s</string>
-    <string name="loader_title_outing_finish">Se elimină evenimentul \</string>
-    <string name="loader_title_action_finish">Se elimină acțiunea \</string>
+    <string name="loader_title_outing_finish">Se elimină evenimentul </string>
+    <string name="loader_title_action_finish">Se elimină acțiunea </string>
     <!-- Entourage Cell -->
     <string name="entourage_cell_title">%1$s</string>
     <string name="entourage_cell_author">%1$s</string>
@@ -521,9 +521,9 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="entourage_cell_title_event">Evenimentul %1$s</string>
     <!-- Promote Entourage Email -->
     <string name="promote_entourage_email_title">Vă rugăm să trimiteți o notificare pentru lansarea %1$s</string>
-    <string name="promote_entourage_email_body">Bună ziua,\nVă rugăm să promovați ieșirea „%1$s” printr-o notificare trimisă pe telefoanele persoanelor care sunt membri ai următoarelor cartiere:\n\nVă mulțumesc</string>
+    <string name="promote_entourage_email_body">Bună ziua,\nVă rugăm să promovați ieșirea „%1$s” printr-o notificare trimisă pe telefoanele persoanelor care sunt membri ai următoarelor cartiere:\nVă mulțumesc</string>
     <!-- Newsfeed -->
-    <string name="newsfeed_load_more_description">C\ este tot pentru stocurile din acest departament!</string>
+    <string name="newsfeed_load_more_description">este tot pentru stocurile din acest departament!</string>
     <string name="newsfeed_no_more_items">Niciun alt anturaj în apropierea acestei poziții</string>
     <!-- Map Filter -->
     <string name="map_filter_outing_title">Evenimente</string>
@@ -543,17 +543,17 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="info_action_private">Acțiune privată</string>
     <string name="info_event_private">Eveniment privat</string>
     <string name="info_pop_message_private">Solicitarea dvs. de participare așteaptă validarea.</string>
-    <string name="info_pop_private_message_action">Pentru a participa la această acțiune privată, creatorul acestei acțiuni trebuie să vă valideze participarea.\n\nDupă ce solicitarea dvs. este acceptată, veți putea accesa conversația de grup.</string>
-    <string name="info_pop_private_message_event">Pentru a participa la acest eveniment privat, creatorul acestui eveniment trebuie să vă valideze participarea.\n\nDupă ce solicitarea dvs. este acceptată, veți putea accesa conversația de grup.</string>
+    <string name="info_pop_private_message_action">Pentru a participa la această acțiune privată, creatorul acestei acțiuni trebuie să vă valideze participarea.\nDupă ce solicitarea dvs. este acceptată, veți putea accesa conversația de grup.</string>
+    <string name="info_pop_private_message_event">Pentru a participa la acest eveniment privat, creatorul acestui eveniment trebuie să vă valideze participarea.\nDupă ce solicitarea dvs. este acceptată, veți putea accesa conversația de grup.</string>
     <string name="info_pop_private_title">Cerere de participare</string>
     <string name="info_pop_private_bt_ok">A confirma</string>
     <string name="info_pop_private_bt_cancel">Anulare</string>
-    <string name="info_asso_abo">• S\subscribe &gt;</string>
+    <string name="info_asso_abo">• subscribe &gt;</string>
     <string name="info_asso_joined">• Abonat</string>
     <string name="by_author_search">De %1$s</string>
     <string name="action_leave_voice_message">Înregistrați un mesaj vocal</string>
     <string name="action_voice_message_button">Porniți recunoașterea vocii</string>
-    <string name="action_voice_message_not_supported">Recunoașterea vocală n\ nu este acceptată pe telefonul dvs.</string>
+    <string name="action_voice_message_not_supported">Recunoașterea vocală nu este acceptată pe telefonul dvs.</string>
     <string name="at_km_from_me">%d km de mine</string>
     <string name="at_meter_from_me">%d m de la mine</string>
     <string name="inf_hundred_meter">la mai putin de 100 m de mine</string>
@@ -614,7 +614,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="action_create_cat_choose_category">Selectați categoria care descrie cel mai bine %s</string>
     <string name="action_create_location_title">Găsiți %s</string>
     <string name="action_create_location_subtitle">Locația dvs. exactă nu va fi partajată, puteți pune o altă locație decât zona de acțiune a profilului dvs.</string>
-    <string name="action_create_success_title">%s\n a fost creat cu succes!</string>
+    <string name="action_create_success_title">%n a fost creat cu succes!</string>
     <string name="action_create_success_subtitle">Felicitări, tocmai ați creat un %s nou. Pentru a-l face mai vizibil, vorbiți despre el în grupurile voastre!</string>
     <string name="action_create_end_finish_bt">A se termina</string>
     <string name="action_error_create_action">Eroare la crearea %s</string>
@@ -634,13 +634,13 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="carousel_close_button">@string/close</string>
     <string name="carousel_p1_title">Prezentați-vă membrilor rețelei</string>
     <string name="carousel_p1_about">Buna dimineata ! Tocmai m-am alăturat rețelei și aș vrea să cunosc niște vecini grijulii.</string>
-    <string name="carousel_p1_content">Pentru a vă introduce descrierea, accesați profilul dvs. din butonul &lt;font color="#ec4e1a"&gt;profil&lt;/font&gt; din dreapta jos</string>
+    <string name="carousel_p1_content"><![CDATA[Pentru a vă introduce descrierea, accesați profilul dvs. din butonul <font color="#ec4e1a">profil</font> din dreapta jos]]></string>
     <string name="carousel_p2_title">Explorează inițiativele din jurul tău</string>entourages
-    <string name="carousel_p2_content">Consultați acțiunile create de vecini și &lt;font color="#ec4e1a"&gt;alăturați-vă celor care vă interesează de pe hartă&lt;/font&gt;</string>
+    <string name="carousel_p2_content">Consultați acțiunile create de vecini și <font color="#ec4e1a">alăturați-vă celor care vă interesează de pe hartă</font></string>
     <string name="carousel_p3_title">Îndrăznește să cunoști oameni fără adăpost</string>
-    <string name="carousel_p3_content">&lt;font color="#ec4e1a"&gt;Descoperiți sfaturile practice&lt;/font&gt; ale ghidului &lt;font color="#ec4e1a"&gt;Simple Comme Bonjour&lt;/font&gt; din profilul din dreapta jos</string>
+    <string name="carousel_p3_content"><font color="#ec4e1a">Descoperiți sfaturile practice</font> ale ghidului <font color="#ec4e1a">Simple Comme Bonjour</font> din profilul din dreapta jos</string>
     <string name="carousel_p4_title">Lansați o acțiune de solidaritate</string>
-    <string name="carousel_p4_content">Apelați vecinii să vă ajute să înconjoare o persoană fără adăpost. &lt;font color="#ec4e1a"&gt;Creați o acțiune cu butonul:&lt;/font&gt;</string>
+    <string name="carousel_p4_content">Apelați vecinii să vă ajute să înconjoare o persoană fără adăpost. <font color="#ec4e1a">Creați o acțiune cu butonul:</font></string>
     <!--    STRING CGUs-->
     <string name="group_params_cgu_title">Regula</string>
     <string name="group_params_cgu_description">Regulile grupului, citiți cu atenție.</string>
@@ -847,7 +847,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="country_israel_code">il</string>
     <string name="country_italy_name">Italia</string>
     <string name="country_italy_code">it</string>
-    <string name="country_cote_d_ivoire_name">Coasta de Fildeș D\</string>
+    <string name="country_cote_d_ivoire_name">Coasta de Fildeș </string>
     <string name="country_cote_d_ivoire_code">ci</string>
     <string name="country_jamaica_name">Jamaica</string>
     <string name="country_jamaica_code">jm</string>
@@ -1087,8 +1087,8 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="entourage_create_title_hint">Exemplu: %1$s</string>
     <string name="entourage_create_title_char_count_format">%1$d/%2$d</string>
     <string name="entourage_create_description_label">Descriere</string>
-    <string name="entourage_create_help_text_event">&lt;a href=\"%1$s\"&gt;Ce evenimente să difuzați?&lt;/a&gt;</string>
-    <string name="entourage_create_help_text">&lt;a href=\"%1$s\"&gt;Aveți nevoie de idei d\ pentru acțiunea d\?&lt;/a&gt;</string>
+    <string name="entourage_create_help_text_event"><![CDATA[<a href=\"%1$">Ce evenimente să difuzați?</a>]]></string>
+    <string name="entourage_create_help_text"><![CDATA[<a href=\"%1$">Aveți nevoie de idei pentru acțiunea ?</a>]]></string>
     <string name="entourage_create_date_start_label">Data de început *</string>
     <string name="entourage_create_date_end_label">Data de încheiere</string>
     <string name="entourage_create_privacy_public">Public</string>
@@ -1097,8 +1097,8 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="entourage_create_privacy_description_private">Validați fiecare persoană individual înainte de a confirma că poate participa.</string>
     <string name="entourage_create_privacy_description_public_action">Acțiunea ta este publică, toată lumea poate participa liber.</string>
     <string name="entourage_create_privacy_description_private_action">Acțiunea ta este privată, vei avea posibilitatea de a accepta sau refuza orice persoană care solicită participarea.</string>
-    <string name="entourage_create_error">Anturajul lui L\ n\' nu a fost creat!</string>
-    <string name="outing_create_error">Evenimentul L\ n\ nu a putut fi creat!</string>
+    <string name="entourage_create_error">Anturajul lui ' nu a fost creat!</string>
+    <string name="outing_create_error">Evenimentul nu a putut fi creat!</string>
     <string name="entourage_create_error_category_empty">Introduceți o categorie pentru acțiunea dvs</string>
     <string name="entourage_create_error_title_empty">Titlul nu poate fi gol</string>
     <string name="entourage_create_error_date_empty">Alegeți o dată</string>
@@ -1127,9 +1127,9 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="entourage_description_fragment_hint_outing">Exemplu: Nevoia de voluntari pentru colecția națională Restos du Cœur în echipa noastră locală</string>
     <string name="entourage_description_fragment_info_outing">Puteți modifica oricând această descriere și data evenimentului dvs.</string>
     <!-- Edit Entourage -->
-    <string name="entourage_save_error">Anturajul lui L\ n\' nu a fost salvat.</string>
+    <string name="entourage_save_error">Anturajul lui ' nu a fost salvat.</string>
     <string name="entourage_save_ok">Împrejurimile înregistrate.</string>
-    <string name="outing_save_error">Evenimentul L\ n\ nu a putut fi actualizat.</string>
+    <string name="outing_save_error">Evenimentul nu a putut fi actualizat.</string>
     <string name="outing_save_ok">eveniment actualizat</string>
     <!-- Entourage Card -->
     <string name="entourage_type_demand">Cerere</string>
@@ -1142,17 +1142,17 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="entourage_metadata_time_startAt_endAt">de la %1$s la %2$s</string>
     <!-- Entourage Location -->
     <string name="entourage_location_title">POZITIA MEA</string>
-    <string name="entourage_location_address_not_found">Adresa L\ n\ nu a fost găsită</string>
+    <string name="entourage_location_address_not_found">Adresa nu a fost găsită</string>
     <!-- Entourage Notifications -->
     <string name="entourage_info_text_join_accepted">\u0020 sa alăturat grupului.</string>
     <string name="entourage_join_request_received_nomsg">%1$s ar dori să se alăture acțiunii tale.</string>
-    <string name="entourage_join_request_received_message_html">&lt;font color=\"#FF9739\"&gt;%1$s &lt;/font&gt;dorește să se alăture grupului dvs.</string>
+    <string name="entourage_join_request_received_message_html"><![CDATA[<font color=\"#FF9739\">%1$s </font>dorește să se alăture grupului dvs.]]></string>
     <string name="entourage_join_request_received_message_short">vrea să se alăture grupului dvs.</string>
     <!-- Join Request -->
     <string name="entourage_join_request_success">Cerere acceptată</string>
-    <string name="entourage_join_request_error">Eroare d\ la trimiterea cererii</string>
+    <string name="entourage_join_request_error">Eroare la trimiterea cererii</string>
     <string name="entourage_join_request_message_sent">Mesaj trimis</string>
-    <string name="entourage_join_request_message_error">Eroare d\ la trimiterea mesajului</string>
+    <string name="entourage_join_request_message_error">Eroare la trimiterea mesajului</string>
     <string name="entourage_join_request_ok_title">Solicitarea dvs. este trimisă</string>
     <string name="entourage_join_request_ok_description_entourage">Vă mulțumim pentru căldură!\nPuteți trimite un mesaj participanților, care va apărea în chatul de grup.</string>
     <string name="entourage_join_request_ok_description_outing">@string/entourage_join_request_ok_description_entourage</string>
@@ -1164,14 +1164,14 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <!-- Entourage disclaimer -->
     <string name="entourage_disclaimer_title">INAINTE SA INCEPI</string>
     <string name="entourage_disclaimer_text_chart1">Îl respect pe</string>
-    <string name="entourage_disclaimer_text_chart2">d\'Carta Anturaj</string>
+    <string name="entourage_disclaimer_text_chart2">'Carta Anturaj</string>
     <string name="entourage_disclaimer_accord_title">Acord de colectare</string>
     <string name="entourage_disclaimer_accord_details">Dacă vreau să creez o cerere de ajutor pentru altcineva, trebuie mai întâi să obțin consimțământul acestuia.</string>
     <string name="entourage_disclaimer_security_title">Securitate</string>
-    <string name="entourage_disclaimer_security_details">Nu includ date care să permită d\ să identifice sau să localizeze persoanele în cauză</string>
+    <string name="entourage_disclaimer_security_details">Nu includ date care să permită să identifice sau să localizeze persoanele în cauză</string>
     <string name="entourage_disclaimer_geolocation_title">Geolocalizare?</string>
     <string name="entourage_disclaimer_geolocation_details">Poziția exactă a acțiunii tale de solidaritate este ascunsă: este înlocuită cu o zonă portocalie pe hartă</string>
-    <string name="entourage_disclaimer_checkbox">J\ a citit și j\ acceptă</string>
+    <string name="entourage_disclaimer_checkbox">a citit și acceptă</string>
     <string name="entourage_disclaimer_error_notaccepted">Vă rugăm să acceptați termenii.</string>
     <!-- Outing disclaimer -->
     <string name="outing_disclaimer_accord_details">Cer consimțământul unei persoane înainte de a-i împărtăși informațiile personale</string>
@@ -1179,15 +1179,15 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="outing_disclaimer_geolocation_title">Locație ?</string>
     <string name="outing_disclaimer_geolocation_details">Este afișată adresa exactă a evenimentelor</string>
     <!-- Outing as chat message card -->
-    <string name="outing_message_card_created_author">%1$s a creat o &lt;font color=\"%2$s\"&gt;ieșire&lt;/font&gt;:</string>
+    <string name="outing_message_card_created_author"><![CDATA[%1$s a creat o <font color=\"%2$">ieșire</font>:]]></string>
     <!-- Status update as chat message card -->
     <!-- 1 = font color, 2 = author, 3 = message -->
-    <string name="status_message_card_details">&lt;font color=\"%1$s\"&gt;%2$s&lt;/font&gt; %3$s</string>
+    <string name="status_message_card_details"><![CDATA[<font color=\"%1$">%2$s</font> %3$s]]></string>
     <!-- My Entourages -->
     <string name="myentourages_all">Toate postările</string>
     <string name="myentourages_unread">Necitit</string>
-    <string name="myentourages_no_items_title">Încă nu aveți mesaje n\...</string>
-    <string name="myentourages_no_unread_items_details">Dvs. n\ nu aveți mesaje necitite</string>
+    <string name="myentourages_no_items_title">Încă nu aveți mesaje ...</string>
+    <string name="myentourages_no_unread_items_details">Dvs. nu aveți mesaje necitite</string>
     <string name="myentourages_tab_group">Chaturi de grup</string>
     <string name="myentourages_tab_messages">Mesaje private</string>
     <!-- My Entourages Filter -->
@@ -1201,8 +1201,8 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="myentourages_filter_contribution">Contribuții</string>
     <!-- Close Entourage Popup -->
     <string name="entourage_close_success_button">Acțiunea mea a avut succes</string>
-    <string name="entourage_close_failed_button">Acțiunea mea n\ nu a avut succes</string>
-    <string name="entourage_close_title_new">Închid acțiunea mea de solidaritate\</string>
+    <string name="entourage_close_failed_button">Acțiunea mea nu a avut succes</string>
+    <string name="entourage_close_title_new">Închid acțiunea mea de solidaritate</string>
     <string name="entourage_close_description_new">Prin închiderea acțiunii, discuția va fi închisă și acțiunea nu va mai apărea în fluxul de știri.</string>
     <string name="entourage_close_subtitle_new">Cum sa întâmplat asta?</string>
     <string name="entourage_close_title_ask_comment">Vă mulțumim, acțiunea dvs.\n este închisă!</string>
@@ -1217,8 +1217,8 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <!-- Share Entourage -->
     <string name="entourage_share_intent_title">Distribuie prin</string>
     <string name="entourage_share_link">https://www.entourage.social</string>
-    <string name="info_share_poi_sms">Buna dimineata ! Iată adresa lui %1$s care v-ar putea interesa.\n%2$s\n%3$s\nPentru mai multe informații despre acest loc și pentru a crea legături între vecini susținători, vă voi acorda o programare în rețeaua Entourage %4$s</string>
-    <string name="entourage_share_text_for_entourage">%1$s.\n\nVă mulțumesc foarte mult pentru solidaritate!</string>
+    <string name="info_share_poi_sms">Buna dimineata ! Iată adresa lui %1$s care v-ar putea interesa.\n%2$n%3$nPentru mai multe informații despre acest loc și pentru a crea legături între vecini susținători, vă voi acorda o programare în rețeaua Entourage %4$s</string>
+    <string name="entourage_share_text_for_entourage">%1$s.\nVă mulțumesc foarte mult pentru solidaritate!</string>
     <!-- Entourage Mini Card -->
     <!-- My Entourages -->
     <string name="myentourages_no_items_details">Cereți să vă alăturați acțiunilor, contactați membrii și veți găsi aici conversațiile cu membrii rețelei</string>
@@ -1228,25 +1228,25 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="create_action_wizard_p1_option2">Nu, întreb pentru mine</string>
     <string name="create_action_wizard_p1_option3">Nu, pentru o asociație</string>
     <string name="create_action_wizard_p2_title">ULTIMA ÎNTREBARE</string>
-    <string name="create_action_wizard_p2_option1">Da, j\ are acordul său</string>
+    <string name="create_action_wizard_p2_option1">Da, are acordul său</string>
     <string name="create_action_wizard_p2_option2">Nu, nu încă</string>
     <string name="create_action_wizard_p3_title">ULTIMA ÎNTREBARE</string>
-    <string name="create_action_wizard_p3_description">Consimțământul este esențial pentru a putea difuza acțiunea dvs. de solidaritate în rețea.\n\nAcțiunea dvs. este momentan în așteptare. Un moderator va răspunde foarte repede pentru a vă ajuta.</string>
+    <string name="create_action_wizard_p3_description">Consimțământul este esențial pentru a putea difuza acțiunea dvs. de solidaritate în rețea.\nAcțiunea dvs. este momentan în așteptare. Un moderator va răspunde foarte repede pentru a vă ajuta.</string>
     <string name="create_action_wizard_p3_option1">@string/next</string>
-    <string name="create_action_wizard_disclaimer">&lt;a href=\'%1$s\'&gt;Carta de etică a anturajului&lt;/a&gt; explică de ce consimțământul este esențial.</string>
+    <string name="create_action_wizard_disclaimer"><![CDATA[<a href=\'%1$'>Carta de etică a anturajului</a> explică de ce consimțământul este esențial.]]></string>
     <!-- User Report -->
     <string name="action_report_explanation">Veți raporta această acțiune de solidaritate administratorilor noștri.</string>
     <string name="action_report_reason">Vă rugăm să specificați de ce\raportați această acțiune de solidaritate:</string>
     <string name="event_report_explanation">Veți raporta acest eveniment administratorilor noștri.</string>
     <string name="event_report_reason">Vă rugăm să specificați de ce\raportați acest eveniment:</string>
     <string name="action_report_explanation_user">Veți raporta acest utilizator administratorilor noștri.</string>
-    <string name="action_report_reason_user">Vă rugăm să specificați de ce \ raportați acest utilizator:</string>
+    <string name="action_report_reason_user">Vă rugăm să specificați de ce raportați acest utilizator:</string>
     <string name="entourage_report_success">✔︎ Anturaj raportat</string>
     <string name="entourage_user_report_success">✔︎ Utilizator a raportat</string>
     <string name="entourage_report_error_reason_empty">adauga un mesaj</string>
-    <string name="entourage_report_error_send_failed">L\trimiterea mesajului a eșuat, vă rugăm să încercați din nou</string>
+    <string name="entourage_report_error_send_failed">trimiterea mesajului a eșuat, vă rugăm să încercați din nou</string>
     <string name="linkShared">Link trimis</string>
-    <string name="linkNotShared">Eroare la trimiterea linkului \</string>
+    <string name="linkNotShared">Eroare la trimiterea linkului </string>
     <!-- Pop info photo profile -->
     <string name="info_photo_profile_title">Adaugă fotografia ta de profil și inspiră și mai multă încredere</string>
     <string name="info_photo_profile_description">Nu ai încă o fotografie de profil. Oamenii care descoperă acțiunea ta de solidaritate vor avea mai multe șanse să se alăture acesteia dacă adaugi una.</string>
@@ -1275,7 +1275,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="event_organisez_asso">%s eveniment</string>
     <string name="event_organisez_entourage">Eveniment anturaj</string>
     <string name="event_filter_title">Evenimente - Filtre de căutare</string>
-    <string name="event_filter_profile">La adresa \ furnizată în profilul meu</string>
+    <string name="event_filter_profile">La adresa furnizată în profilul meu</string>
     <string name="event_filter_google">La o nouă adresă</string>
     <string name="event_filter_gps">În jurul locației mele actuale</string>
     <string name="event_filter_error_place">Vă rugăm să selectați o adresă</string>
@@ -1298,20 +1298,20 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="activity_read_poi_title">INFORMAȚIE</string>
     <string name="poi_report_description">Adăugați informații despre această locație</string>
     <string name="poi_report_button">A updata</string>
-    <string name="poi_report_email_subject_format">J\ are informații actualizate despre \'%1$s\' (#%2$s)</string>
+    <string name="poi_report_email_subject_format">are informații actualizate despre \'%1$' (#%2$s)</string>
     <string name="poi_detail_open_time">Programe</string>
     <string name="poi_detail_language">Limbi vorbite</string>
     <string name="poi_detail_soliguide_1">Informațiile despre această locație sunt furnizate de Soliguide, cartografie solidară.</string>
     <string name="poi_detail_soliguide_2">Pentru informații și mai complete disponibile în mai multe limbi</string>
     <string name="poi_detail_soliguide_consult">Să consulte</string>
     <!-- Empty Guide Popup -->
-    <string name="map_poi_empty_popup">Se pare că c\ este calm aici!&lt;br/&gt;&lt;br/&gt;
- Mutați harta pentru a găsi structuri de sprijin: restaurante de solidaritate, dușuri publice, centre medicale deschise oamenilor străzii...&lt;br/&gt;&lt;br/&gt;
- O structură este lipsește pe hartă?&lt;br/&gt;
- &lt;a href=\'%1$s\'&gt;Sugerează o structură&lt;/a&gt;
-&lt;br/&gt;&lt;br/&gt;Centrul Municipal de Acțiune Socială din municipiul tău îți poate oferi informații despre toate asociațiile locale și asistența socială aflată la dispoziția locuitorilor.</string>
+    <string name="map_poi_empty_popup"><![CDATA[Se pare că este calm aici!<br/><br/>
+ Mutați harta pentru a găsi structuri de sprijin: restaurante de solidaritate, dușuri publice, centre medicale deschise oamenilor străzii...<br/><br/>
+ O structură este lipsește pe hartă?<br/>
+ <a href=\'%1$'>Sugerează o structură</a>
+<br/><br/>Centrul Municipal de Acțiune Socială din municipiul tău îți poate oferi informații despre toate asociațiile locale și asistența socială aflată la dispoziția locuitorilor.]]></string>
     <!-- Info Popup -->
-    <string name="map_poi_info_popup">Ghidul Solidarității vă permite să aflați despre structurile de sprijin: restaurante de solidaritate, dușuri publice, centre medicale deschise oamenilor străzii...\n\n
+    <string name="map_poi_info_popup">Ghidul Solidarității vă permite să aflați despre structurile de sprijin: restaurante de solidaritate, dușuri publice, centre medicale deschise oamenilor străzii...\n
  În calitate de locuitor din zonă, puteți sugera un loc unui om străzii, dar rețineți că acesta este rolul asistenților sociali de a sprijini fiecare situație.</string>
     <string name="map_empty_poi_recyclerV">Asta e tot pentru locurile de solidaritate din această rază din jurul tău</string>
     <!-- Guide Filter -->
@@ -1324,7 +1324,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="guide_alert_arrow_desc">Detalii de alertă</string>
     <string name="guide_alert_info_desc">Ghid de informare</string>
     <string name="guide_alert_info_title">ORARE DE VARĂ</string>
-    <string name="guide_alert_info_text">Partenerul nostru &lt;a href=https://soliguide.fr/&gt;Soliguide.fr&lt;/a&gt; menține un director actualizat pentru multe orașe.</string>
+    <string name="guide_alert_info_text"><![CDATA[Partenerul nostru <a href=https://soliguide.fr/>Soliguide.fr</a> menține un director actualizat pentru multe orașe.]]></string>
     <string name="guide_display_partners">Asociații și servicii active pe Entourage</string>
     <string name="guide_filter_donate">Caut donatii</string>
     <string name="guide_filter_volunteer">Caut voluntari</string>
@@ -1335,7 +1335,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="hub_button_1">Caută în jurul meu →</string>
     <string name="hub_title_2">Resurse de la caz la caz</string>
     <string name="hub_description_2">Fiecare situație este diferită, dar iată câteva chei pentru a vă găsi drumul: numere de urgență, proceduri recomandate etc.</string>
-    <string name="hub_button_2">Mă orientez spre \</string>
+    <string name="hub_button_2">Mă orientez spre </string>
     <string name="hub_title_3">Pregătiți-vă pentru întâlnire</string>
     <string name="hub_description_3">Vecinii care susțin, Ghidul Simple Comme Bonjour și atelierele noastre de conștientizare vă ajută să înțelegeți situațiile și să depășiți blocajele pentru a crea conexiuni.</string>
     <string name="hub_button_3">Descoperiți ghidul →</string>
@@ -1346,7 +1346,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="hub_button_5">Accesați Întrebări frecvente</string>
     <string name="gds_title">Locuri de solidaritate</string>
     <string name="no_result">Nici un rezultat</string>
-    <string name="no_result_info">De ce nu încercați \ alt cuvânt cheie?</string>
+    <string name="no_result_info">De ce nu încercați alt cuvânt cheie?</string>
     <string name="button_reset_filters">Anulează filtrele</string>
     <string name="searchbox_placeholder_text">A cerceta</string>
     <!-- STRING INVTE -->
@@ -1378,10 +1378,10 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="invited_updated_ok">Invitație actualizată</string>
     <string name="invited_updated_error">Eroare la actualizarea anturajului</string>
     <!-- STRING INVITE -->
-    <string name="login_text_lost_code_ko">Acest număr nu pare să fie înregistrat: creați un cont.\n\nMembri d\'o asociație folosind d\'Entourage, contactați associations@entourage.social</string>
+    <string name="login_text_lost_code_ko">Acest număr nu pare să fie înregistrat: creați un cont.\nMembri 'o asociație folosind 'Entourage, contactați associations@entourage.social</string>
     <string name="login_text_invalid_format">Numărul trebuie să aibă 9 sau 10 cifre.</string>
     <string name="login_hint_code">Codificat</string>
-    <string name="login_error">Problème d\'authentification\nVeuillez réessayer</string>
+    <string name="login_error">Problème 'authentificationVeuillez réessayer</string>
     <string name="login_error_title">Încearcă din nou</string>
     <string name="login_error_invalid_credentials">Numărul de telefon și acest cod de acces nu se potrivesc.</string>
     <string name="login_error_invalid_phone_format">Format de număr nevalid.\nDacă numărul dvs. nu este din Franța continentală, includeți codul țării</string>
@@ -1417,7 +1417,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="login_change_phone_email">E-mail (opțional)</string>
     <string name="login_change_phone_email_placeholder">E-mail</string>
     <string name="login_change_phone_bt_validate">Trimite</string>
-    <string name="login_change_phone_send_ok">Solicitarea dvs. a fost trimisă.\n\n\nAsistența Entourage vă va anunța când schimbarea numărului este finalizată.</string>
+    <string name="login_change_phone_send_ok">Solicitarea dvs. a fost trimisă.\nAsistența Entourage vă va anunța când schimbarea numărului este finalizată.</string>
     <string name="login_change_phone_bt_return">Înapoi</string>
     <string name="login_change_warning_title">Atenţie</string>
     <string name="login_change_error_phone">Vă rugăm să vă verificați numerele de telefon</string>
@@ -1460,8 +1460,8 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="myActions">Acțiunile mele de solidaritate</string>
     <string name="myAsk">Cererile mele</string>
     <string name="myContrib">Donațiile mele</string>
-    <string name="myActionEmptyAsk">În prezent, n\ nu aveți nicio solicitare publicată în aplicație ;)</string>
-    <string name="myActionEmptyContrib">În prezent, n\ nu aveți donații publicate în aplicația \ ;)</string>
+    <string name="myActionEmptyAsk">În prezent, nu aveți nicio solicitare publicată în aplicație ;)</string>
+    <string name="myActionEmptyContrib">În prezent, nu aveți donații publicate în aplicația ;)</string>
     <string name="placeholder_birthday_my_profile">01–03</string>
     <string name="placeholder_email_my_profile">email@gmail.com</string>
     <string name="activity_map_new_entourages">\u0020Anturaje noi</string>
@@ -1476,8 +1476,8 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="error_dialog_disabled">Geolocalizarea trebuie să fie activată pentru a utiliza Entourage. Doriți să activați \?</string>
     <string name="map_error_geolocation_disabled_use_entourage">Pentru a descoperi acțiuni de solidaritate în jurul tău, trebuie să activezi geolocalizarea</string>
     <string name="map_error_geolocation_disabled_recenter">Pentru a te reorienta în jurul tău, trebuie să activezi geolocalizarea</string>
-    <string name="map_empty_newsfeed">C\E destul de liniștit pe aici!\n\nSe pare că \'acolo n\'nu există nicio activitate în apropiere... momentan!\n\n: și tu poți crea o activitate de solidaritate HACKSLASH_PLACEHOLDERn în partea de jos dreapta +</string>
-    <string name="map_empty_newsfeed_popup">Se pare că este liniște aici!\n\nMutați harta pentru a găsi activități în rețea.\n\nPoți crea și tu o activitate de solidaritate: apăsați + în dreapta jos</string>
+    <string name="map_empty_newsfeed">E destul de liniștit pe aici!\nSe pare că \'acolo 'nu există nicio activitate în apropiere... momentan!\n: și tu poți crea o activitate de solidaritate HACKSLASH_PLACEHOLDERn în partea de jos dreapta +</string>
+    <string name="map_empty_newsfeed_popup">Se pare că este liniște aici!\nMutați harta pentru a găsi activități în rețea.\nPoți crea și tu o activitate de solidaritate: apăsați + în dreapta jos</string>
     <string name="newsfeed_no_action">Nicio activitate în apropierea acestei poziții</string>
     <string name="newsfeed_tab_events_no_items">Nu există evenimente în apropiere.</string>
     <!--SRING MAP -->
@@ -1535,16 +1535,16 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="bt_pass">Trece</string>
     <string name="intro_title_1">Rețeaua de socializare, cu adevărat socială.</string>
     <string name="intro_subtitle_1">Misiunea noastră: mobilizarea și echiparea cetățenilor pentru a-i sprijini pe cei mai excluși.</string>
-    <string name="intro_title_2">În aplicația Entourage \:</string>
-    <string name="intro_subtitle_2">Faceți cunoștință cu vecinii care sunt ca dvs. în timpul evenimentelor \ și discutați despre acțiuni de solidaritate.</string>
+    <string name="intro_title_2">În aplicația Entourage :</string>
+    <string name="intro_subtitle_2">Faceți cunoștință cu vecinii care sunt ca dvs. în timpul evenimentelor și discutați despre acțiuni de solidaritate.</string>
     <string name="intro_title_3">Anturaj cu tine!</string>
-    <string name="intro_subtitle_3">Echipele de d\'ambasadori, voluntari și moderatori d\'Entourage vă însoțesc și vă ghidează zilnic.</string>
+    <string name="intro_subtitle_3">Echipele de 'ambasadori, voluntari și moderatori 'Entourage vă însoțesc și vă ghidează zilnic.</string>
     <string name="pre_onboard_choice_description_title">Rețeaua de socializare, cu adevărat socială.</string>
     <string name="pre_onboard_choice_login">am deja un cont</string>
     <string name="pre_onboard_choice_signup">Mă înregistrez</string>
     <!-- ONBOARDING -->
     <string name="onboard_button_pass">Trece</string>
-    <string name="onboard_welcome_sub">În primul rând d\...\nCum te cheamă?</string>
+    <string name="onboard_welcome_sub">În primul rând ...\nCum te cheamă?</string>
     <string name="onboard_welcome_title">Bine ati venit !</string>
     <string name="onboard_welcome_info">Doar prima literă va fi vizibilă</string>
     <string name="onboard_welcome_placeholder_firstname">Prenumele tău</string>
@@ -1583,7 +1583,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="onboard_sms_no_pwd">Vă rugăm să completați parola</string>
     <string name="onboard_type_title">Mă bucur să te cunosc, %s.</string>
     <string name="onboard_type_sub">Cum doriți să personalizați aplicația?</string>
-    <string name="onboard_type_description">Entourage vă pune aceste câteva întrebări pentru a vă urca bun venit și a vă sprijini cât mai bine!\n<i>(Cette information ne sera pas visible par les autres membres du réseau).</i>
+    <string name="onboard_type_description">Entourage vă pune aceste câteva întrebări pentru a vă urca bun venit și a vă sprijini cât mai bine!\n<i>(Această informație nu va fi vizibilă pentru alți membri ai rețelei).</i>
     </string>
     <string name="onboard_type_choice_neighbour">Pentru a ajuta persoanele fără adăpost și pentru a crea conexiuni în cartierul tău.</string>
     <string name="onboard_type_choice_alone">Pentru a cere ajutor și a descoperi locuri de solidaritate.</string>
@@ -1600,7 +1600,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="onboard_place_getting_current_location">Astept GPS</string>
     <string name="onboard_email_pwd_title">OK bine !</string>
     <string name="onboard_email_pwd_description">Acum, să finalizăm crearea contului tău!</string>
-    <string name="onboard_email_pwd_info">Lăsați-ne e-mailul dvs. pentru a primi informații și sfaturi de la d\'Entourage!</string>
+    <string name="onboard_email_pwd_info">Lăsați-ne e-mailul dvs. pentru a primi informații și sfaturi de la 'Entourage!</string>
     <string name="onboard_email_pwd_info2">Entourage nu vă distribuie adresa de e-mail.</string>
     <string name="onboard_email_pwd_placeholder_email">E-mail</string>
     <string name="onboard_photo_title">Mulțumim, %s!</string>
@@ -1631,7 +1631,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="onboard_asso_fill_error">Vă rugăm să completați toate câmpurile.\nVă mulțumim</string>
     <string name="onboard_asso_activity_title">%s, care este afacerea dvs. de bază?</string>
     <string name="onboard_asso_activity_description">Selectați sectorul (sectoarele) de activitate ale structurii dumneavoastră, acest lucru ne va permite să vă oferim cea mai bună modalitate de a utiliza aplicația și de a mobiliza comunitatea Entourage.</string>
-    <string name="onboard_asso_activity_error">Vă rugăm să informați cel puțin un centru d\'interest.\nVă mulțumim</string>
+    <string name="onboard_asso_activity_error">Vă rugăm să informați cel puțin un centru 'interest.\nVă mulțumim</string>
     <string name="onboard_asso_activity_choice_1">Ajutor pentru\n oameni</string>
     <string name="onboard_asso_activity_choice_2">Inițiative culturale</string>
     <string name="onboard_asso_activity_choice_3">Serviciu\n Public</string>
@@ -1639,21 +1639,21 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="onboard_asso_search">Cercetare</string>
     <!-- Onboarding SDF -->
     <string name="onboard_sdf_activity_title">%s, ce cauți?</string>
-    <string name="onboard_sdf_activity_description">Mai multe opțiuni posibile.\nExistă o mie de moduri prin care \ să fii sprijinit și ajutat.</string>
-    <string name="onboard_sdf_activity_choice_1">Fă-mă un cerc de prieteni \</string>
-    <string name="onboard_sdf_activity_choice_2">Participer à des\névénements</string>
-    <string name="onboard_sdf_activity_choice_3">Pune întrebări \</string>
-    <string name="onboard_sdf_activity_choice_4">Solicitați ajutor \</string>
+    <string name="onboard_sdf_activity_description">Mai multe opțiuni posibile.\nExistă o mie de moduri prin care să fii sprijinit și ajutat.</string>
+    <string name="onboard_sdf_activity_choice_1">Fă-mă un cerc de prieteni </string>
+    <string name="onboard_sdf_activity_choice_2">Participer à denévénements</string>
+    <string name="onboard_sdf_activity_choice_3">Pune întrebări </string>
+    <string name="onboard_sdf_activity_choice_4">Solicitați ajutor </string>
     <string name="onboard_sdf_activity_choice_5">Ma orientez</string>
     <string name="onboard_sdf_activity_choice_6">Găsiți\ne asociații</string>
     <!-- Onboarding Neighbour -->
     <string name="onboard_neighbour_activity_title">%s, ce vrei să faci în cartierul tău?</string>
     <string name="onboard_neighbour_activity_description">Mai multe opțiuni posibile.\nVom face propuneri potrivite pentru dvs.</string>
     <string name="onboard_neighbour_activity_choice_1">Informează-mă</string>
-    <string name="onboard_neighbour_activity_choice_2">Participer à des\névénements</string>
+    <string name="onboard_neighbour_activity_choice_2">Participer à denévénements</string>
     <string name="onboard_neighbour_activity_choice_3">Înconjurați o \n persoană</string>
     <string name="onboard_neighbour_activity_choice_4">Faceți donații\nmateriale</string>
-    <string name="onboard_neighbour_activity_choice_5">Implicați-vă în \ în asociație</string>
+    <string name="onboard_neighbour_activity_choice_5">Implicați-vă în în asociație</string>
     <string name="onboard_place_title2_sdf">Grozav !</string>
     <string name="onboard_place_description2_sdf">Doriți să adăugați un alt district?</string>
     <string name="onboard_place_title2">Grozav !</string>
@@ -1741,36 +1741,36 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="user_edit_about_error">Textul dvs. trebuie să aibă mai puțin de 200 de caractere.</string>
     <!-- User Report -->
     <string name="user_report_explanation">Veți raporta acest utilizator administratorilor noștri.</string>
-    <string name="user_report_reason">Vă rugăm să specificați de ce \ raportați această persoană:</string>
+    <string name="user_report_reason">Vă rugăm să specificați de ce raportați această persoană:</string>
     <string name="user_report_reason_hint">Scrie ceva…</string>
     <string name="user_report_success">✔︎ Utilizator a raportat</string>
     <string name="user_report_error_reason_empty">adauga un mesaj</string>
-    <string name="user_report_error_send_failed">L\trimiterea mesajului a eșuat, vă rugăm să încercați din nou</string>
+    <string name="user_report_error_send_failed">trimiterea mesajului a eșuat, vă rugăm să încercați din nou</string>
     <string name="delete_error_send_failed">Ștergerea nu a reușit, încercați din nou</string>
     <string name="delete_success_send">Ștergerea este finalizată</string>
     <string name="user_report_error_forbidden_group">Încă nu faci parte din acest grup</string>
     <!-- Action zone -->
-    <string name="user_action_zone_title">Setați zona de acțiune d\</string>
+    <string name="user_action_zone_title">Setați zona de acțiune </string>
     <string name="user_action_zone_description">Anturajul este util deoarece este local!\nPentru a primi recomandări personalizate în apropiere, indicați locația în jurul căreia doriți să acționați.</string>
     <string name="user_action_zone_description2">Adresa - poate fi aproximativă</string>
     <string name="user_action_zone_disclaimer">Aceste informații sunt strict confidențiale și nu sunt partajate cu nimeni. Îl poți schimba în setările tale.</string>
     <string name="user_action_zone_hint">1 bulevardul Jean Jaurès...</string>
     <string name="user_action_zone_no_address_error">Vă rugăm să adăugați o adresă</string>
     <string name="user_action_zone_send_ok">Adresa inregistrata</string>
-    <string name="user_action_zone_send_failed">Adresa lui L\ n\' nu a fost înregistrată</string>
+    <string name="user_action_zone_send_failed">Adresa lui ' nu a fost înregistrată</string>
     <!-- Edit profile -->
     <string name="profile_edit_zone_title">Unde vrei să acționezi?</string>
     <string name="profile_edit_zone_description">Entourage este o rețea socială!\nDescoperiți inițiativele de solidaritate din cartierul dvs. și construiți legături cu vecinii dvs.</string>
     <string name="profile_action_not_selected">„Modul de acțiune nu este selectat</string>
     <string name="profile_title_action_mode">Modul meu de acțiune</string>
     <string name="profile_activities">Activitate(e): %s</string>
-    <string name="profile_my_zones">Zonele mele d\'actions</string>
+    <string name="profile_my_zones">Zonele mele 'actions</string>
     <string name="profile_my_zones_description">Fiți informați cu privire la inițiativele și nevoile de solidaritate în aceste domenii</string>
-    <string name="profile_button_add2nd_zone">Adăugați o zonă de acțiune d\</string>
+    <string name="profile_button_add2nd_zone">Adăugați o zonă de acțiune </string>
     <string name="profile_asso_activity_title">Care este afacerea dvs. de bază?</string>
     <string name="profile_sdf_activity_title">Ce căutați ?</string>
     <string name="profile_neighbour_activity_title">Ce vrei să faci în cartierul tău?</string>
-    <string name="profile_sdf_activity_description">Mai multe opțiuni posibile.\nExistă o mie de moduri prin care \ să fii sprijinit și ajutat.</string>
+    <string name="profile_sdf_activity_description">Mai multe opțiuni posibile.\nExistă o mie de moduri prin care să fii sprijinit și ajutat.</string>
     <string name="rencontrer_sdf">Faceți un cerc de prieteni</string>
     <string name="event_sdf">Participa la evenimente</string>
     <string name="questions_sdf">A pune intrebari</string>
@@ -1796,7 +1796,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="title_asso_accept_volunteers">Caut voluntari</string>
     <string name="title_asso_contact">a lua legatura</string>
     <string name="buttonFollowOnPartner">Abonat</string>
-    <string name="buttonFollowOffPartner">S\abonați-vă</string>
+    <string name="buttonFollowOffPartner">abonați-vă</string>
     <string name="partnerFollowTitle">Vă dezabonați de la %s?</string>
     <string name="partnerFollowMessage">Nu veți mai primi notificări când %s lansează noi inițiative de solidaritate.</string>
     <string name="partnerFollowButtonValid">dezabonare</string>
@@ -1804,7 +1804,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="webview_menu_browser">Deschis în browser</string>
     <string name="webview_menu_copy">Copiază legătură</string>
     <string name="webview_menu_share">Acțiune</string>
-    <string name="webview_share_text">J\ a descoperit ghidul Simple Comme Bonjour pentru întâlnirea persoanelor fără adăpost. C\ poate fi descoperit aici:\n%1$s</string>
+    <string name="webview_share_text">a descoperit ghidul Simple Comme Bonjour pentru întâlnirea persoanelor fără adăpost. poate fi descoperit aici:\n%1$s</string>
     <string name="webview_copy_ok">Link copiat!</string>
     <string name="custom_dialog_action_title_one_contrib">Unde este contribuția ta?</string>
     <string name="custom_dialog_action_title_one_demand">Unde este cererea ta?</string>
@@ -1820,8 +1820,8 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="discussion_main_title">Discuții</string>
     <string name="discussion_settings_title">Setări chat</string>
     <string name="discussion_settings_signal">Raport</string>
-    <string name="discussion_choose_signal">Raportați această postare echipei Entourage \</string>
-    <string name="discussion_entraide_signal">Raportați această asistență echipei Entourage \</string>
+    <string name="discussion_choose_signal">Raportați această postare echipei Entourage </string>
+    <string name="discussion_entraide_signal">Raportați această asistență echipei Entourage </string>
     <string name="discussion_choose_supress">Ștergeți postarea mea</string>
     <string name="discussion_choose_supress_message">Sterge mesajul</string>
     <string name="discussion_choose_supress_commentary">Șterge comentariul</string>
@@ -1829,8 +1829,8 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="discussion_supress_the_message">Sterge mesajul</string>
     <string name="discussion_supress_the_comment">Șterge comentariul</string>
     <string name="title_param_post">Setări de postare</string>
-    <string name="title_param_message">Parametrii d\' mesaj</string>
-    <string name="title_param_comment">Setări d\' un comentariu</string>
+    <string name="title_param_message">Parametrii ' mesaj</string>
+    <string name="title_param_comment">Setări ' un comentariu</string>
     <string name="discussion_ask_supress">Doriți să ștergeți această postare?</string>
     <string name="discussion_ask_supress_message">Doriți să eliminați acest mesaj din conversație?</string>
     <string name="discussion_ask_supress_comment">Doriți să ștergeți acest comentariu?</string>
@@ -1871,15 +1871,15 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="params_unblock_user_pop_validate_subtitle">Această persoană de contact tocmai a fost deblocată, vă puteți scrie din nou unul altuia.</string>
     <string name="params_unblock_users_pop_validate_subtitle">Aceste contacte tocmai au fost deblocate, vă puteți scrie din nou unul altuia.</string>
     <string name="params_unblock_user_pop_validate_bt">Bine</string>
-    <string name="param_empty_blocked_user">Tu n\ nu ai blocat nicio persoană de contact.</string>
+    <string name="param_empty_blocked_user">Tu nu ai blocat nicio persoană de contact.</string>
     <string name="pop_up_rugby_france_title">Să trăim împreună Cupa Mondială de Rugby</string>
-    <string name="pop_up_rugby_france_content">Cele mai bune întâlniri nu au loc neapărat pe stadion! Alăturați-vă grupului \ „Să trăim împreună sportul\”</string>
+    <string name="pop_up_rugby_france_content">Cele mai bune întâlniri nu au loc neapărat pe stadion! Alăturați-vă grupului „Să trăim împreună sportu”</string>
     <!-- New Home string -->
-    <string name="home_title">Aplicația L\ care recreează legături între vecini</string>
+    <string name="home_title">Aplicația care recreează legături între vecini</string>
     <string name="home_title_action">Da un impuls</string>
     <string name="home_subtitle_action">Vecinii tăi au nevoie de tine!</string>
     <string name="home_btn_more_action">Vezi toate cererile</string>
-    <string name="home_title_action_contrib">Aveți nevoie de o mână de ajutor d\?</string>
+    <string name="home_title_action_contrib">Aveți nevoie de o mână de ajutor ?</string>
     <string name="home_subtitle_action_contrib">Află ce oferă vecinii tăi!</string>
     <string name="home_btn_more_action_contrib">Vedeți toate contribuțiile</string>
     <string name="home_title_event">Participați la un eveniment de solidaritate</string>
@@ -1968,57 +1968,58 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="modify_image">
         <u>Editează fotografia mea</u>
     </string>
-    <string name="more">
+    <string name="more"><![CDATA[
         <u>Află mai multe</u>
-    </string>
-    <string name="posts_comment_number">
+    ]]></string>
+    <string name="posts_comment_number"><![CDATA[
         <u>%d comentarii</u>
-    </string>
-    <string name="posts_comment_number_singular">
+    ]]></string>
+    <string name="posts_comment_number_singular"><![CDATA[
         <u>%d comentariu</u>
-    </string>
-    <string name="show_more_lined">
+    ]]></string>
+    <string name="show_more_lined"><![CDATA[
         <u>Afișează mai mult</u>
-    </string>
-    <string name="welcome_one_sensib">Găsiți conținutul nostru de sensibilizare <u>
+    ]]></string>
+    <string name="welcome_one_sensib"><![CDATA[Găsiți conținutul nostru de sensibilizare <u>
             <font color="#FF9739">aici</font>
         </u>
-    </string>
-    <string name="action_show_charte">
+    ]]></string>
+    <string name="action_show_charte"><![CDATA[
         <u>Cartă etică</u>
-    </string>
-    <string name="signal_a_problem">
+    ]]></string>
+    <string name="signal_a_problem"><![CDATA[
         <u>Raportează o problemă</u>
-    </string>
-    <string name="login_button_resend_code"><u>Cereți din nou codul</u></string>
-    <string name="login_change_phone">
+    ]]></string>
+    <string name="login_button_resend_code"><![CDATA[<u>Cereți din nou codul</u>]]></string>
+    <string name="login_change_phone"><![CDATA[
         <u>Mi-am schimbat numărul de telefon</u>
-    </string>
-    <string name="newsfeed_load_more_button">
+    ]]></string>
+    <string name="newsfeed_load_more_button"><![CDATA[
         <u>Caută mai departe.</u>
-    </string>
-    <string name="newsfeed_tab_events_no_items_button">
+    ]]></string>
+    <string name="newsfeed_tab_events_no_items_button"><![CDATA[
         <u>Găsește mai multe evenimente Entourage aici</u>
-    </string>
-    <string name="pre_onboard_choice_about">
+    ]]></string>
+    <string name="pre_onboard_choice_about"><![CDATA[
         <u>Cine este asociația Entourage?</u>
-    </string>
-    <string name="onboard_sms_help">
-        <u>Ai nevoie de ajutor?\nContactează echipa Entourage.</u>
-    </string>
-    <string name="outing_message_card_updated_author">%1$s a &lt;b&gt;modificat&lt;/b&gt; o &lt;font color=\"%2$s\"&gt;ieșire&lt;/font&gt;:</string>
-    <string name="create_action_wizard_p1_description">Creezi această acțiune solidară <b>pentru o persoană identificată, altă decât tine:</b> un prieten în situație precară, o persoană întâlnită pe stradă?</string>
-    <string name="create_action_wizard_p2_description">Ai <b>obținut consimțământul acesteia</b> pentru a difuza această acțiune pentru ea pe Entourage?</string>
-    <string name="menu_info_social">Pentru a trăi <b>și mai multă solidaritate</b> urmărește Entourage pe rețelele tale!</string>
-    <string name="map_filter_entourage_demand_text">
+    ]]></string>
+    <string name="onboard_sms_help"><![CDATA[
+        <u>Ai nevoie de ajutor?
+Contactează echipa Entourage.</u>
+    ]]></string>
+    <string name="outing_message_card_updated_author"><![CDATA[%1$s a <b>modificat</b> o <font color=\"%2$">ieșire</font>:]]></string>
+    <string name="create_action_wizard_p1_description"><![CDATA[Creezi această acțiune solidară <b>pentru o persoană identificată, altă decât tine:</b> un prieten în situație precară, o persoană întâlnită pe stradă?]]></string>
+    <string name="create_action_wizard_p2_description"><![CDATA[Ai <b>obținut consimțământul acesteia</b> pentru a difuza această acțiune pentru ea pe Entourage?]]></string>
+    <string name="menu_info_social"><![CDATA[Pentru a trăi <b>și mai multă solidaritate</b> urmărește Entourage pe rețelele tale!]]></string>
+    <string name="map_filter_entourage_demand_text"><![CDATA[
         <b>Vezi cererile referitoare la:</b>
-    </string>
-    <string name="map_filter_entourage_contribution_text">
+    ]]></string>
+    <string name="map_filter_entourage_contribution_text"><![CDATA[
         <b>Vezi contribuțiile referitoare la:</b>
-    </string>
-    <string name="custom_dialog_action_content_one_contrib">Acțiunea ta \"&lt;b&gt;%1$s&lt;/b&gt;\" este completă?</string>
+    ]]></string>
+    <string name="custom_dialog_action_content_one_contrib"><![CDATA[Acțiunea ta \"<b>%1$s</b>\" este completă?]]></string>
     <string name="search_member_hint">Caută un membru</string>
-    <string name="action_crete_cat_about">Dorești să oferi un %s care nu se încadrează în niciuna dintre aceste categorii? Se pare că \ nu are loc în rețea, dar întotdeauna poți</string>
+    <string name="action_crete_cat_about">Dorești să oferi un %s care nu se încadrează în niciuna dintre aceste categorii? Se pare că nu are loc în rețea, dar întotdeauna poți</string>
     <string name="action_create_cat_about_link"> afla mai multe aici.</string>
     <string name="report_modal_title_translate">Traduceți</string>
     <string name="report_modal_subtitle_translate">Traducem automat mesajele scrise de cetățeni</string>
@@ -2140,9 +2141,9 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="posts_vote_number">
         <u>%d voturi</u>
     </string>
-    <string name="posts_vote_number_singular">
+    <string name="posts_vote_number_singular"><![CDATA[
         <u>%d vot</u>
-    </string>
+    ]]></string>
     <string name="my_onboarding">Personalizați contul meu</string>
     <string name="actions_tab_mygroup">Anunțurile mele</string>
     <string name="create_survey">Creează un sondaj</string>
@@ -2258,7 +2259,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <!-- Diverse -->
     <string name="contact_email">contact@entourage.social</string>
     <string name="error_no_email">Nicio aplicaţie de e-mail găsită</string>
-    <string name="terms_and_conditions_html">Prin înregistrare, accepți &lt;a href="https://www.entourage.social/conditions-generales-dutilisation"&gt;Termenii de Utilizare&lt;/a&gt; și &lt;a href="https://www.entourage.social/politique-de-confidentialite"&gt;Politica noastră de Confidențialitate&lt;/a&gt;.</string>
+    <string name="terms_and_conditions_html"><![CDATA[Prin înregistrare, accepți <a href="https://www.entourage.social/conditions-generales-dutilisation">Termenii de Utilizare</a> și <a href="https://www.entourage.social/politique-de-confidentialite">Politica noastră de Confidențialitate</a>.]]></string>
     <string name="onboard_welcome_title_gender">Sunt</string>
     <string name="onboard_welcome_title_how_did_you_hear">Cum ne-ai cunoscut?</string>
     <string name="onboard_welcome_title_company_name">Numele companiei tale</string>
@@ -2309,7 +2310,6 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="onboard_asso_other_required">Te rugăm să introduci numele asociaţiei</string>
     <string name="onboard_sms_wait_title">Nu ai primit codul de conectare?</string>
     <string name="onboard_sms_wait_countdown">Poţi solicita un cod nou peste %1$s</string>
-    <string name="google_api_key">AIzaSyBwBr8Zro0P1GJDeI4-VPOF3QpVg91q3uk</string>
     <string name="add_image_title">Încă nu ați adăugat o fotografie de profil</string>
     <string name="btn_end">Finalizați</string>
     <string name="event_CGU_section_positive">La Entourage, venim să:</string>
@@ -2360,7 +2360,7 @@ Orice formă de discriminare, batjocură sau judecată răuvoitoare este inaccep
     <string name="onboarding_title">Gata să împărtășiți Vibrații bune?</string>
     <string name="onboarding_start_button">Încep</string>
     <string name="onboarding_end_button">Anulați</string>
-    <string name="onboarding_intro_raw">Cu Vibrații bune, întâlniți persoane ca dvs., discutați ușor și creați legături care fac bine!\n\n1. Răspundeți la câteva întrebări: pentru a vă cunoaște mai bine\n2. Vă punem în legătură cu persoane: care vi se potrivesc\n3. O conversație de grup este creată automat în aplicație: pentru a face schimburi și a crea legături\n4. Dacă doriți, alegeți un moment pentru a vă întâlni: Prin video sau în viața reală, depinde de dvs.!</string>
+    <string name="onboarding_intro_raw">Cu Vibrații bune, întâlniți persoane ca dvs., discutați ușor și creați legături care fac bine!\n1. Răspundeți la câteva întrebări: pentru a vă cunoaște mai bine\n2. Vă punem în legătură cu persoane: care vi se potrivesn3. O conversație de grup este creată automat în aplicație: pentru a face schimburi și a crea legături\n4. Dacă doriți, alegeți un moment pentru a vă întâlni: Prin video sau în viața reală, depinde de dvs.!</string>
     <string name="small_talk_step_title_1">Ce format de discuție vi se potrivește cel mai bine?</string>
     <string name="small_talk_step_subtitle_1">Puteți alege să discutați în pereche sau într-un grup mic (3 până la 5 persoane), în funcție de ce vă face să vă simțiți cel mai confortabil.</string>
     <string name="small_talk_step1_item1_title">Duo</string>
@@ -2430,7 +2430,7 @@ Orice formă de discriminare, batjocură sau judecată răuvoitoare este inaccep
     <string name="small_talk_what_it_is_not_3">O discuție intruzivă pe subiecte sensibile</string>
     <string name="small_talk_step_1">Grup solidar – etapa 1 – prezentare</string>
     <string name="small_talk_guidelines_title">Bune practici pentru Vibrații bune</string>
-    <string name="small_talk_guidelines_intro">&lt;b&gt;Vibrațiile bune&lt;/b&gt; vă conectează rapid cu una sau mai multe persoane pentru a discuta și a crea legături de prietenie, simplu și fără presiune.</string>
+    <string name="small_talk_guidelines_intro"><![CDATA[<b>Vibrațiile bune</b> vă conectează rapid cu una sau mai multe persoane pentru a discuta și a crea legături de prietenie, simplu și fără presiune.]]></string>
     <string name="small_talk_what_it_is_title">Ce este</string>
     <string name="small_talk_what_it_is_item_1">Un schimb prietenos și binevoitor</string>
     <string name="small_talk_what_it_is_item_2">O întâlnire autentică și prietenoasă între mai multe persoane</string>
@@ -2449,7 +2449,7 @@ Orice formă de discriminare, batjocură sau judecată răuvoitoare este inaccep
     <string name="small_talk_ethics_4_title">🌍 Deschidere și nediscriminare</string>
     <string name="small_talk_ethics_4_desc">Primim toate persoanele fără distincție de gen, origine, credință sau parcurs de viață.</string>
     <string name="small_talk_btn_close">Închideți</string>
-    <string name="small_talk_btn_charte">Găsiți carta și bunele practici făcând clic &lt;b&gt;aici&lt;/b&gt;</string>
+    <string name="small_talk_btn_charte"><![CDATA[Găsiți carta și bunele practici făcând clic <b>aici</b>]]></string>
     <string name="discussion_option_camera">Cameră</string>
     <string name="discussion_option_gallery">Fotografii</string>
     <string name="edit_photo_title">Încă nu aveți o fotografie de profil</string>
@@ -2457,7 +2457,7 @@ Orice formă de discriminare, batjocură sau judecată răuvoitoare este inaccep
     <string name="message_auto">Mesaj automat - </string>
     <string name="needs_to_join_group">Trebuie să vă alăturați grupului pentru a efectua această acțiune.</string>
     <string name="photo_right_title">Acceptați utilizarea imaginii dvs. conform termenilor de mai jos?</string>
-    <string name="photo_right_body">În conformitate cu dispozițiile privind dreptul la imagine,\nautorizez Entourage și furnizorii săi tehnici să realizeze fotografii, videoclipuri sau înregistrări digitale în timpul evenimentelor asociației Entourage pe o perioadă nelimitată, până când îmi retrag consimțământul.\n\nImaginile pot fi exploatate și utilizate direct de structură sub orice formă și pe orice suport, pentru un teritoriu nelimitat, fără limitare de durată, integral sau prin extrase și în special: presă, carte, suporturi digitale, expoziție, publicitate, proiecție publică, concurs, site web, rețele sociale.\n\nBeneficiarul autorizației se interzice în mod expres să procedeze la o exploatare a fotografiilor susceptibilă de a aduce atingere vieții private sau reputației și să utilizeze fotografiile, videoclipurile sau înregistrările digitale ale prezentului, pe orice suport sau orice exploatare dăunătoare.\n\nRecunosc că sunt pe deplin satisfăcut în drepturile mele și nu voi putea pretinde nicio remunerație pentru exploatarea prezentelor, iar acest fapt atribuie expres jurisdicția tribunalelor franceze.\n\nGarantez că nici eu, nici, după caz, persoana pe care o reprezint, nu suntem legați printr-un contract exclusiv privind utilizarea imaginii mele sau a numelui meu.\n\nPentru orice litigiu născut din interpretarea sau executarea prezentelor, se face atribuire expresă de jurisdicție tribunalelor franceze.</string>
+    <string name="photo_right_body">În conformitate cu dispozițiile privind dreptul la imagine,\nautorizez Entourage și furnizorii săi tehnici să realizeze fotografii, videoclipuri sau înregistrări digitale în timpul evenimentelor asociației Entourage pe o perioadă nelimitată, până când îmi retrag consimțământul.\nImaginile pot fi exploatate și utilizate direct de structură sub orice formă și pe orice suport, pentru un teritoriu nelimitat, fără limitare de durată, integral sau prin extrase și în special: presă, carte, suporturi digitale, expoziție, publicitate, proiecție publică, concurs, site web, rețele sociale.\nBeneficiarul autorizației se interzice în mod expres să procedeze la o exploatare a fotografiilor susceptibilă de a aduce atingere vieții private sau reputației și să utilizeze fotografiile, videoclipurile sau înregistrările digitale ale prezentului, pe orice suport sau orice exploatare dăunătoare.\nRecunosc că sunt pe deplin satisfăcut în drepturile mele și nu voi putea pretinde nicio remunerație pentru exploatarea prezentelor, iar acest fapt atribuie expres jurisdicția tribunalelor franceze.\nGarantez că nici eu, nici, după caz, persoana pe care o reprezint, nu suntem legați printr-un contract exclusiv privind utilizarea imaginii mele sau a numelui meu.\nPentru orice litigiu născut din interpretarea sau executarea prezentelor, se face atribuire expresă de jurisdicție tribunalelor franceze.</string>
     <string name="photo_right_decline">Nu accept</string>
     <string name="photo_right_accept">Accept</string>
     <string name="photo_right_saved">Drept la imagine salvat.</string>
