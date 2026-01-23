@@ -63,8 +63,11 @@ class Conversation(
         } ?: return  "-"
     }
 
-    fun getLastMessage() : String? {
-        if (!lastMessage?.imageUrl.isNullOrEmpty()) return "📷"
+    fun getLastMessage(context: android.content.Context): String? {
+        if (!lastMessage?.imageUrl.isNullOrEmpty()) {
+            // Use the context passed in to fetch the string
+            return "📷 " + context.getString(R.string.button_event_add_photo)
+        }
         return lastMessage?.text
     }
 

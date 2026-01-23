@@ -132,7 +132,7 @@ class DiscussionsListAdapter(
             }
 
             // === Dernier message ===
-            binding.detail.text = conversation.getLastMessage()
+            binding.detail.text = conversation.getLastMessage(context = binding.root.context)
 
             // === État "lu/non lu" ===
             if (conversation.hasUnread()) {
