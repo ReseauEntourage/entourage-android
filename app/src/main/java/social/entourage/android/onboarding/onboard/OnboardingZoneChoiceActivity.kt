@@ -1,11 +1,13 @@
 package social.entourage.android.onboarding.onboard
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
@@ -51,6 +53,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
     private var suppressAutocomplete = false
     private var queryGen = 0
     private var lastPostalCode: String? = null
+    private var currentAverageCount: Float = 0f
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -165,7 +168,9 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                updateAverageCount()
+            }
         })
     }
 
@@ -308,6 +313,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
         currentLatLng = position
         lastDisplayAddress = title ?: lastDisplayAddress
         zoomToCircle(position, radiusMeters)
+        updateAverageCount()
     }
 
     private fun updateCircleRadius() {
@@ -330,6 +336,42 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
         val sw = LatLng(lat - latOffset, lng - lngOffset)
         val ne = LatLng(lat + latOffset, lng + lngOffset)
         return LatLngBounds(sw, ne)
+    }
+
+    private fun updateAverageCount() {
+        val latLng = currentLatLng ?: return
+
+        OnboardingAPI.getInstance().getEventsWeekAverage(latLng.latitude, latLng.longitude, radiusKm) { isOk, average ->
+            if (isOk && average != null) {
+                if (average <= 0f) {
+                    binding.layoutEventCount.visibility = View.GONE
+                    currentAverageCount = 0f
+                } else {
+                    binding.layoutEventCount.visibility = View.VISIBLE
+                    animateCount(currentAverageCount, average)
+                    currentAverageCount = average
+                }
+            } else {
+                binding.layoutEventCount.visibility = View.GONE
+            }
+        }
+    }
+
+    private fun animateCount(start: Float, end: Float) {
+        val animator = ValueAnimator.ofFloat(start, end)
+        animator.duration = 1000 // 1 second
+        animator.addUpdateListener { animation ->
+            val value = animation.animatedValue as Float
+            val intValue = kotlin.math.round(value).toInt()
+
+            val text = if (intValue > 1)
+                getString(R.string.onboarding_zone_events_count_plural, intValue)
+            else
+                getString(R.string.onboarding_zone_events_count_singular, intValue)
+
+            binding.tvEventCount.text = text
+        }
+        animator.start()
     }
 
     private fun buildPrimaryAddress(): User.Address? {
