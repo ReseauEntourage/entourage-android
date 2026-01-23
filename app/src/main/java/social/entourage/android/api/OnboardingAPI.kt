@@ -37,6 +37,9 @@ class OnboardingAPI {
     private val loginService: LoginRequest
         get() = EntourageApplication.get().apiModule.loginRequest
 
+    private val eventsService: EventsRequest
+        get() = EntourageApplication.get().apiModule.eventsRequest
+
     /**********************
      * Create user
      */
@@ -98,6 +101,30 @@ class OnboardingAPI {
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                listener(false, null)
+            }
+        })
+    }
+
+    fun getEventsWeekAverage(
+        latitude: Double,
+        longitude: Double,
+        travelDistance: Int,
+        listener: (isOK: Boolean, average: Float?) -> Unit
+    ) {
+        eventsService.getEventsWeekAverage(latitude, longitude, travelDistance).enqueue(object : Callback<EventWeekAverageResponse> {
+            override fun onResponse(
+                call: Call<EventWeekAverageResponse>,
+                response: Response<EventWeekAverageResponse>
+            ) {
+                if (response.isSuccessful) {
+                    listener(true, response.body()?.average)
+                } else {
+                    listener(false, null)
+                }
+            }
+
+            override fun onFailure(call: Call<EventWeekAverageResponse>, t: Throwable) {
                 listener(false, null)
             }
         })
