@@ -28,11 +28,13 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.gson.Gson
 import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.ReactionType
 import social.entourage.android.api.model.formatEventStartTime
+import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.api.request.userConfig
 import social.entourage.android.base.BaseSecuredActivity
@@ -46,6 +48,7 @@ import social.entourage.android.home.UnreadMessages
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.notifications.NotificationActionManager
+import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.profile.MyProfileFullActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
@@ -85,7 +88,6 @@ class MainActivity : BaseSecuredActivity() {
             presenter.updateUser()
         }
         handleUniversalLinkFromMain(this.intent)
-
         updateActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
             if (result.resultCode != Activity.RESULT_OK) {
                 Timber.tag("Update")
@@ -166,8 +168,8 @@ class MainActivity : BaseSecuredActivity() {
 
         if (this.intent != null) {
             useIntentForRedictection(this.intent)
-            this.intent = null
-        }
+                this.intent = null
+            }
         if (shouldLaunchEventPopUp != 0) {
             ifEventLastDay(shouldLaunchEventPopUp)
             shouldLaunchEventPopUp = 0
@@ -322,41 +324,42 @@ class MainActivity : BaseSecuredActivity() {
             goContrib()
             return
         }
-
-        if (goDiscoverGroup) {
+        else if(goDiscoverGroup){
             this.setGoDiscoverGroupFromDeepL(goDiscoverGroup)
             goGroup()
             return
         }
-        if (goDiscoverEvent) {
+        else if(goDiscoverEvent){
             goEvent()
             return
         }
-        if (goDemand) {
+        else if(goDemand){
             goDemand()
             return
         }
-        if (fromWelcomeActivity) {
+        else if (fromWelcomeActivity) {
             goGroup()
             return
         }
-        if (fromWelcomeActivityThreeEvent) {
+        else if (fromWelcomeActivityThreeEvent) {
             goEvent()
             return
         }
-        if (fromWelcomeActivityThreeDemand) {
+        else if (fromWelcomeActivityThreeDemand) {
             goDemand()
             return
         }
-        if (fromWelcomeActivityThreeContrib) {
+        else if (fromWelcomeActivityThreeContrib) {
             goContrib()
             val newIntent = Intent(this, CreateActionActivity::class.java)
             newIntent.putExtra(Const.IS_ACTION_DEMAND, false)
             startActivity(newIntent)
             return
         }
-        this.intent = intent
-        handleUniversalLinkFromMain(intent)
+        else {
+            this.intent = intent
+            handleUniversalLinkFromMain(intent)
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -375,35 +378,24 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     private fun checkIntentAction(action: String, extras: Bundle?) {
-        extras?.let { bundle ->
-            val author = bundle.getString("sender") ?: "unknown"
-            val msgObject = bundle.getString("object")
-            val rawContent = bundle.getString("content")
-            if (rawContent != null) {
-                //val pushNotificationContent = Gson().fromJson(rawContent, PushNotificationContent::class.java)
-                val pushNotificationMessage = PushNotificationMessage(
-                    author = author,
-                    msgObject = msgObject,
-                    content = rawContent, // Chaîne JSON
-                    pushNotificationId = 0, // Si tu as besoin d'un ID, change cette valeur
-                    pushNotificationTag = null // Même chose pour le tag
-                )
-                pushNotificationMessage.content?.extra?.let { extra ->
-                    extra.instance?.let { instance ->
-                        NotificationActionManager.presentAction(
-                            this,
-                            supportFragmentManager,
-                            instance,
-                            extra.instanceId ?: 0,
-                            extra.postId,
-                            popup = extra.popup,
-                            tracking = extra.tracking
-                        )
-                    }
+        extras?.getString(PushNotificationManager.KEY_CONTENT)?.let { rawContent ->
+            Gson().fromJson(
+                rawContent,
+                PushNotificationContent::class.java
+            )?.extra?.let { extra ->
+                extra.instance?.let { instance ->
+                    NotificationActionManager.presentAction(
+                        this,
+                        supportFragmentManager,
+                        instance,
+                        extra.instanceId ?: 0,
+                        extra.postId,
+                        popup = extra.popup,
+                        tracking = extra.tracking
+                    )
                 }
-            } else {
             }
-        } ?: Timber.d("wtf notif :extras null")
+        }?: Timber.d("wtf notif :extras null")
         intent = null
     }
 
@@ -502,9 +494,13 @@ class MainActivity : BaseSecuredActivity() {
         }
         if (notificationsEnabled) {
             FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-                presenter.updateApplicationInfo(token)
+                sendRegistrationToServer(token)
             }
         }
+    }
+
+    fun sendRegistrationToServer(token: String) {
+        presenter.updateApplicationInfo(token)
     }
 
     // ----------------------------------

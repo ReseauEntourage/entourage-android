@@ -64,7 +64,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_weight="0.3"
                 android:background="@drawable/new_bg_rounded_inactive_button_light_orange"
-                android:text="@string/new_next"
+                android:text="@string/next"
                 android:textAllCaps="false" />
 
         </LinearLayout>

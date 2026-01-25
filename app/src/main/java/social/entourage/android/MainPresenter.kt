@@ -54,7 +54,7 @@ class MainPresenter(private val activity: MainActivity) {
     private var deviceID: String?
         get() = EntourageApplication.get().sharedPreferences
             .getString(EntourageApplication.KEY_REGISTRATION_ID, null)
-        private set(pushNotificationToken) {
+        set(pushNotificationToken) {
             EntourageApplication.get().sharedPreferences.edit {
                 putString(EntourageApplication.KEY_REGISTRATION_ID, pushNotificationToken)
             }
@@ -149,9 +149,6 @@ class MainPresenter(private val activity: MainActivity) {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (!response.isSuccessful) {
                     Timber.e("updating application info error")
-                }
-                else{
-
                 }
             }
 

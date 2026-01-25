@@ -16,7 +16,7 @@
     <string name="send">Wysłać</string>
     <string name="register">Ratować</string>
     <string name="ignore">Ignorować</string>
-    <string name="next">Kontynuować</string>
+    <string name="continue_string">Kontynuować</string>
     <string name="close">Zamknąć</string>
     <string name="edit">Modyfikować</string>
     <string name="activate">Włączać</string>
@@ -186,7 +186,7 @@ Odkrywaj inicjatywy w swojej okolicy i buduj kontakty z sąsiadami.</string>
     <string name="report_comment">Zgłoś komentarz</string>
     <string name="report_eventt">Zgłoś wydarzenie</string>
     <string name="why_reporting">Podaj nam powód swojego zgłoszenia</string>
-    <string name="new_next">Następny</string>
+    <string name="next">Następny</string>
     <string name="back">Z powrotem</string>
     <string name="cancel_event_continue">Kontynuować</string>
     <string name="previous">Poprzedni</string>
@@ -1519,7 +1519,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
 
     <string name="create_action_wizard_p3_title">OSTATNIE PYTANIE</string>
     <string name="create_action_wizard_p3_description">Zgoda jest niezbędna, aby móc transmitować Twoją akcję solidarnościową w sieci.\n\nTwoja akcja jest obecnie wstrzymana. Moderator odpowie bardzo szybko i pomoże.</string>
-    <string name="create_action_wizard_p3_option1">@string/next</string>
 
     <string name="create_action_wizard_disclaimer">&lt;a href=\'%1$s\'&gt;Karta etyki Entourage&lt;/a&gt; wyjaśnia, dlaczego zgoda jest niezbędna.</string>
 
@@ -2182,7 +2181,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="cult_sport_asso">Inicjatywy kulturalne i sportowe</string>
     <string name="serv_pub_asso">Służba publiczna</string>
     <string name="autre_asso">Inni</string>
-    <string name="next_">Następny</string>
 
     <string name="title_association">Stowarzyszenie</string>
     <string name="title_asso_donation">Przyjmuj darowizny</string>

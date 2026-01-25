@@ -15,7 +15,7 @@
     <string name="send">يرسل</string>
     <string name="register">يحفظ</string>
     <string name="ignore">يتجاهل</string>
-    <string name="next">يكمل</string>
+    <string name="continue_string">يكمل</string>
     <string name="close">اغلاق</string>
     <string name="edit">للتعديل</string>
     <string name="activate">يُمكَِن</string>
@@ -174,7 +174,7 @@
     <string name="report_comment">الإبلاغ عن التعليق</string>
     <string name="report_eventt">الإبلاغ عن الحدث</string>
     <string name="why_reporting">أخبرنا عن سبب بلاغك</string>
-    <string name="new_next">التالي</string>
+    <string name="next">التالي</string>
     <string name="back">خلف</string>
     <string name="cancel_event_continue">يكمل</string>
     <string name="previous">سابق</string>
@@ -1501,7 +1501,6 @@
 
     <string name="create_action_wizard_p3_title">السؤال الأخير</string>
     <string name="create_action_wizard_p3_description">الموافقة ضرورية لتتمكن من بث تحركك التضامني على الشبكة.\n\nإجراءك معلق حاليًا. سوف يستجيب المشرف بسرعة كبيرة لمساعدتك.</string>
-    <string name="create_action_wizard_p3_option1">@string/next</string>
 
     <string name="create_action_wizard_disclaimer">يوضح &lt;a href=\'%1$s\'&gt;ميثاق أخلاقيات Entourage&lt;/a&gt; أهمية الموافقة.</string>
 
@@ -2168,7 +2167,6 @@
     <string name="cult_sport_asso">المبادرات الثقافية والرياضية</string>
     <string name="serv_pub_asso">خدمة عامة</string>
     <string name="autre_asso">آحرون</string>
-    <string name="next_">التالي</string>
 
     <string name="title_association">منظمة</string>
     <string name="title_asso_donation">قبول التبرعات</string>

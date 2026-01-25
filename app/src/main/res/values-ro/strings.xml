@@ -16,7 +16,7 @@
     <string name="send">Trimite</string>
     <string name="register">Salvați</string>
     <string name="ignore">Ignora</string>
-    <string name="next">Continua</string>
+    <string name="continue_string">Continua</string>
     <string name="close">Închide</string>
     <string name="edit">A modifica</string>
     <string name="activate">Permite</string>
@@ -186,7 +186,7 @@ Descoperiți inițiativele din cartierul dvs. și construiți legături cu vecin
     <string name="report_comment">Raportați comentariul</string>
     <string name="report_eventt">Raportați evenimentul</string>
     <string name="why_reporting">Spune-ne motivul raportului tău</string>
-    <string name="new_next">Ca urmare a</string>
+    <string name="next">Ca urmare a</string>
     <string name="back">Înapoi</string>
     <string name="cancel_event_continue">Continua</string>
     <string name="previous">Anterior</string>
@@ -1521,7 +1521,6 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
 
     <string name="create_action_wizard_p3_title">ULTIMA ÎNTREBARE</string>
     <string name="create_action_wizard_p3_description">Consimțământul este esențial pentru a putea difuza acțiunea dvs. de solidaritate în rețea.\n\nAcțiunea dvs. este momentan în așteptare. Un moderator va răspunde foarte repede pentru a vă ajuta.</string>
-    <string name="create_action_wizard_p3_option1">@string/next</string>
 
     <string name="create_action_wizard_disclaimer">&lt;a href=\'%1$s\'&gt;Carta de etică a anturajului&lt;/a&gt; explică de ce consimțământul este esențial.</string>
 
@@ -2179,7 +2178,6 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="cult_sport_asso">Inițiative culturale și sportive</string>
     <string name="serv_pub_asso">Serviciu public</string>
     <string name="autre_asso">Alții</string>
-    <string name="next_">Ca urmare a</string>
 
     <string name="title_association">Asociere</string>
     <string name="title_asso_donation">Acceptați donații</string>

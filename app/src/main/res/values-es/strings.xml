@@ -16,7 +16,7 @@
     <string name="send">enviar a</string>
     <string name="register">Ahorrar</string>
     <string name="ignore">Ignorar</string>
-    <string name="next">seguir</string>
+    <string name="continue_string">seguir</string>
     <string name="close">Cerca</string>
     <string name="edit">Editar</string>
     <string name="activate">Permitir</string>
@@ -186,7 +186,7 @@ Descubra iniciativas en su vecindario y establezca conexiones con sus vecinos.</
     <string name="report_comment">Reportar comentario</string>
     <string name="report_eventt">Reportar el evento</string>
     <string name="why_reporting">Cuéntanos el motivo de tu denuncia</string>
-    <string name="new_next">Próximo</string>
+    <string name="next">Próximo</string>
     <string name="back">Atrás</string>
     <string name="cancel_event_continue">seguir</string>
     <string name="previous">Anterior</string>
@@ -1522,7 +1522,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
 
     <string name="create_action_wizard_p3_title">ÚLTIMA PREGUNTA</string>
     <string name="create_action_wizard_p3_description">El consentimiento es imprescindible para poder difundir tu acción solidaria en la red.\n\nTu acción está actualmente en suspenso. Un moderador responderá muy rápidamente para ayudarte.</string>
-    <string name="create_action_wizard_p3_option1">@string/next</string>
 
     <string name="create_action_wizard_disclaimer">La &lt;a href=\'%1$s\'&gt;Carta de Ética de Entourage&lt;/a&gt; explica por qué el consentimiento es esencial.</string>
 
@@ -2171,7 +2170,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="cult_sport_asso">Iniciativas culturales y deportivas</string>
     <string name="serv_pub_asso">Servicio publico</string>
     <string name="autre_asso">Otros</string>
-    <string name="next_">Próximo</string>
 
     <string name="title_association">Asociación</string>
     <string name="title_asso_donation">Aceptar donaciones</string>

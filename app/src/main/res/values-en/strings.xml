@@ -15,7 +15,7 @@
     <string name="send">Send</string>
     <string name="register">Save</string>
     <string name="ignore">Ignore</string>
-    <string name="next">Continue</string>
+    <string name="continue_string">Continue</string>
     <string name="close">Close</string>
     <string name="edit">Edit</string>
     <string name="activate">Activate</string>
@@ -161,7 +161,7 @@
     <string name="report_comment">Report comment</string>
     <string name="report_eventt">Report the event</string>
     <string name="why_reporting">Tell us the reason for your report</string>
-    <string name="new_next">Continue</string>
+    <string name="next">Continue</string>
     <string name="back">Back</string>
     <string name="cancel_event_continue">Continue</string>
     <string name="previous">Previous</string>
@@ -810,7 +810,6 @@
     <string name="create_action_wizard_p2_option2">No not yet</string>
     <string name="create_action_wizard_p3_title">LAST QUESTION</string>
     <string name="create_action_wizard_p3_description">Consent is essential to be able to broadcast your solidarity action on the network.\n\nYour action is currently on hold. A moderator will respond very quickly to help you.</string>
-    <string name="create_action_wizard_p3_option1">@string/next</string>
     <string name="create_action_wizard_disclaimer">The &amp;lt;a href</string>
     <string name="action_report_explanation">You will report this solidarity action to our administrators.</string>
     <string name="action_report_reason">Please specify why\nyou are reporting this solidarity action:</string>
@@ -1318,7 +1317,7 @@
     <string name="cult_sport_asso">Cultural and sporting initiatives</string>
     <string name="serv_pub_asso">Public service</string>
     <string name="autre_asso">Others</string>
-    <string name="next_">Continue</string>
+
     <string name="title_association">Association</string>
     <string name="title_asso_donation">Accept donations</string>
     <string name="title_asso_volunteer">Looking for volunteers</string>

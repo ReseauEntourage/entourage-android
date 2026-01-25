@@ -67,10 +67,13 @@ class PushNotificationMessage(var author: String, var msgObject: String?, conten
     }
 
     companion object {
+        object PushNotificationIds {
+            const val FCM = 101
+            const val CHAT = 2
+            const val JOIN = 3
+        }
         private const val serialVersionUID = 929859042482137137L
         const val HASH_SEPARATOR = ';'
-        private const val CHAT_MESSAGE_NOTIFICATION_ID = 2
-        private const val JOIN_REQUEST_NOTIFICATION_ID = 3
     }
 
     // ----------------------------------

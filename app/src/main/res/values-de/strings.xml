@@ -16,7 +16,7 @@
     <string name="send">Schicken</string>
     <string name="register">Speichern</string>
     <string name="ignore">Ignorieren</string>
-    <string name="next">Weitermachen</string>
+    <string name="continue_string">Weitermachen</string>
     <string name="close">Schließen</string>
     <string name="edit">Ändern</string>
     <string name="activate">Aktivieren</string>
@@ -184,7 +184,7 @@ Entdecken Sie Initiativen in Ihrer Nachbarschaft und bauen Sie Kontakte zu Ihren
     <string name="report_comment">Kommentar melden</string>
     <string name="report_eventt">Melden Sie das Ereignis</string>
     <string name="why_reporting">Nennen Sie uns den Grund Ihrer Meldung</string>
-    <string name="new_next">Nachfolgend</string>
+    <string name="next">Nachfolgend</string>
     <string name="back">Zurück</string>
     <string name="cancel_event_continue">Weitermachen</string>
     <string name="previous">Vorherige</string>
@@ -1522,7 +1522,6 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
 
     <string name="create_action_wizard_p3_title">LETZTE FRAGE</string>
     <string name="create_action_wizard_p3_description">Die Zustimmung ist unerlässlich, um Ihre Solidaritätsaktion im Netzwerk übertragen zu können.\n\nIhre Aktion ist derzeit auf Eis gelegt. Ein Moderator wird Ihnen sehr schnell helfen.</string>
-    <string name="create_action_wizard_p3_option1">@string/next</string>
 
     <string name="create_action_wizard_disclaimer">Die &lt;a href=\'%1$s\'&gt;Entourage Ethics Charter&lt;/a&gt; erklärt, warum die Einwilligung unerlässlich ist.</string>
 
@@ -2171,7 +2170,6 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="cult_sport_asso">Kulturelle und sportliche Initiativen</string>
     <string name="serv_pub_asso">Öffentlicher Dienst</string>
     <string name="autre_asso">Andere</string>
-    <string name="next_">Nachfolgend</string>
 
     <string name="title_association">Verband</string>
     <string name="title_asso_donation">Nehmen Sie Spenden an</string>

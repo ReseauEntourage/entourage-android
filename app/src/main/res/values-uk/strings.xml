@@ -16,7 +16,7 @@
     <string name="send">Надіслати</string>
     <string name="register">зберегти</string>
     <string name="ignore">Ігнорувати</string>
-    <string name="next">Продовжити</string>
+    <string name="continue_string">Продовжити</string>
     <string name="close">Закрити</string>
     <string name="edit">Щоб змінити</string>
     <string name="activate">Увімкнути</string>
@@ -186,7 +186,7 @@
     <string name="report_comment">Повідомити про коментар</string>
     <string name="report_eventt">Повідомити про подію</string>
     <string name="why_reporting">Повідомте нам причину вашого повідомлення</string>
-    <string name="new_next">Слідую</string>
+    <string name="next">Слідую</string>
     <string name="back">Назад</string>
     <string name="cancel_event_continue">Продовжити</string>
     <string name="previous">Попередній</string>
@@ -1524,7 +1524,6 @@
 
     <string name="create_action_wizard_p3_title">ОСТАННЄ ПИТАННЯ</string>
     <string name="create_action_wizard_p3_description">Щоб транслювати свою акцію солідарності в мережі, необхідна згода.\n\nНаразі вашу дію призупинено. Модератор дуже швидко відповість, щоб допомогти вам.</string>
-    <string name="create_action_wizard_p3_option1">@string/next</string>
 
     <string name="create_action_wizard_disclaimer">У &lt;a href=\'%1$s\'&gt;Хартії етики Entourage&lt;/a&gt; пояснюється, чому згода є важливою.</string>
 
@@ -2185,7 +2184,6 @@
     <string name="cult_sport_asso">Культурні та спортивні ініціативи</string>
     <string name="serv_pub_asso">Державна служба</string>
     <string name="autre_asso">інші</string>
-    <string name="next_">Слідую</string>
 
     <string name="title_association">Асоціація</string>
     <string name="title_asso_donation">Приймайте пожертви</string>

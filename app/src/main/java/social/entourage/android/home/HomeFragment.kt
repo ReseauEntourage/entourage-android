@@ -26,7 +26,6 @@ import com.google.gson.Gson
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
-import social.entourage.android.MainPresenter
 import social.entourage.android.R
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.api.model.Action
@@ -76,7 +75,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     private lateinit var homeHelpAdapter: HomeHelpAdapter
     private var homePedagoAdapter: HomePedagoAdapter? = null
     private var homeInitialPedagoAdapter: HomeInitialPedagoAdapter? = null
-    private lateinit var mainPresenter: MainPresenter
+    //private lateinit var  mainPresenter: MainPresenter
     private var pagegroup = 0
     private var pageEvent = 0
     private var nbOfItemForHozrizontalList = 10
@@ -131,7 +130,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         hasRunEntryGating = false
         binding = FragmentHomeBinding.inflate(layoutInflater)
         disapearAllAtBeginning()
-        mainPresenter = MainPresenter(requireActivity() as MainActivity)
+        //mainPresenter = MainPresenter(requireActivity() as MainActivity)
         binding.progressBar.visibility = View.VISIBLE
         homePresenter = ViewModelProvider(requireActivity()).get(HomePresenter::class.java)
         actionsPresenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
@@ -446,7 +445,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             sendToken()
         } else {
             deleteToken()
-            mainPresenter.updateApplicationInfo("")
         }
     }
 
@@ -464,7 +462,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             }
         } else {
             AnalyticsEvents.logEvent(AnalyticsEvents.has_user_disabled_notif)
-            mainPresenter.updateApplicationInfo("")
+            (requireActivity() as? MainActivity)?.sendRegistrationToServer("")
         }
     }
 
@@ -485,12 +483,16 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
 
     private fun sendToken() {
         FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-            mainPresenter.updateApplicationInfo(token)
+            (activity as? MainActivity)?.sendRegistrationToServer(token)
         }
     }
 
-    private fun deleteToken() {
-        mainPresenter.deleteApplicationInfo { }
+    private fun deleteToken(){
+        (requireActivity() as? MainActivity)?.deleteApplicationInfo {
+            //TODO WHY WHY WHY
+            (requireActivity() as? MainActivity)?.sendRegistrationToServer("")
+
+        }
     }
 
     private fun updateUnreadCount(unreadMessages: UnreadMessages?) {
@@ -1042,7 +1044,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
                                 getString(R.string.custom_dialog_action_content_two_demande),
                                 getString(R.string.custom_dialog_action_two_button_contrib),
                                 onYes = {
-                                    (activity as MainActivity).goContrib()
+                                    (requireActivity() as? MainActivity)?.goContrib()
                                     AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeDemand__Day10)
                                 }
                             )
@@ -1080,7 +1082,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
                                 getString(R.string.custom_dialog_action_content_two_contrib),
                                 getString(R.string.custom_dialog_action_two_button_demand),
                                 onYes = {
-                                    (activity as MainActivity).goDemand()
+                                    (requireActivity() as? MainActivity)?.goDemand()
                                     AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeContrib__Day10)
                                 }
                             )

@@ -524,23 +524,28 @@ class MyProfileFullActivity : BaseSecuredActivity() {
                 getString(R.string.app_name),
                 BuildConfig.VERSION_FULL_NAME
             )
-        binding.appVersion.setOnLongClickListener {
+        binding.appVersion.setOnLongClickListener { 
+            // Copier le FIID dans le presse-papiers
             val clipboard =
-                getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                it.context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
             val clip = android.content.ClipData.newPlainText(
                 "FIId", EntourageApplication.get().sharedPreferences.getString(
                     EntourageApplication.KEY_REGISTRATION_ID,
                     null
                 )
             )
-            clipboard.setPrimaryClip(clip)
-
-            val snackbar = EntSnackbar.make(
-                binding.root,
-                R.string.copied_text,
-                Snackbar.LENGTH_SHORT
-            )
-            snackbar.show()
+            try {
+                clipboard.setPrimaryClip(clip)
+                // Afficher un message de confirmation
+                val snackbar = EntSnackbar.make(
+                    binding.root,
+                    R.string.copied_text,
+                    Snackbar.LENGTH_SHORT
+                )
+                snackbar.show()
+            } catch (e: Exception) {
+                Timber.d(clip.toString())
+            }
             true
         }
         if (!BuildConfig.DEBUG) {

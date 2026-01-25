@@ -91,7 +91,7 @@ class CreateGroupFragment : Fragment() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 binding.next.text =
-                    getString(if (position == NB_TABS - 1) R.string.create else R.string.new_next)
+                    getString(if (position == NB_TABS - 1) R.string.create else R.string.next)
             }
         })
     }

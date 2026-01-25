@@ -24,6 +24,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.createBitmap
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -68,7 +69,7 @@ class GuideMapFragment :
     private var isFullMapShown = true
     var map: GoogleMap? = null
 
-
+    var isMapReady = MutableLiveData<Boolean>()
     private var originalMapLayoutHeight = 0
 
     private val requestPermissionLauncher =
@@ -284,6 +285,7 @@ class GuideMapFragment :
             poisAdapter.removeAll()
             poisAdapter.addItems(poisToAdd)
         }
+        isMapReady = MutableLiveData(true)
     }
 
     private fun createClusterIcon(poiCount: Int): BitmapDescriptor {
@@ -461,6 +463,7 @@ class GuideMapFragment :
                 }
             }
         }
+        isMapReady.value = true
     }
 
     override fun showPoiDetails(poi: Poi, isTxtSearch:Boolean) {
