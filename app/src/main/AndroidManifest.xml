@@ -354,13 +354,13 @@
             android:name=".small_talks.SmallTalkGroupFoundActivity"
             android:windowSoftInputMode="adjustPan"
             />
-         <service
-             android:name=".notifications.EntourageFirebaseMessagingService"
-             android:exported="false">
-             <intent-filter>
-                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
-             </intent-filter>
-         </service>
+        <service
+            android:name=".notifications.EntourageFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
          <provider
              android:name="androidx.core.content.FileProvider"
@@ -371,7 +371,6 @@
                  android:name="android.support.FILE_PROVIDER_PATHS"
                  android:resource="@xml/provider_paths" />
          </provider>
-
 
          <meta-data
              android:name="com.google.firebase.messaging.default_notification_icon"

@@ -1,5 +1,6 @@
-package social.entourage.android
+package social.entourage.android.afterLogin
 
+import android.Manifest
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
@@ -8,34 +9,36 @@ import androidx.test.espresso.matcher.ViewMatchers.isSelected
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import androidx.test.rule.GrantPermissionRule
 import org.hamcrest.Matchers.allOf
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import social.entourage.android.onboarding.login.LoginActivity
-
+import org.junit.rules.RuleChain
+import org.junit.runner.RunWith
+import social.entourage.android.MainActivity
+import social.entourage.android.R
 
 @LargeTest
-//TODO @RunWith(AndroidJUnit4::class)
+@RunWith(AndroidJUnit4::class)
 class MyEntouragesTest : EntourageTestAfterLogin() {
 
+    //private val context = InstrumentationRegistry.getInstrumentation().targetContext
+
+    private var activityRule = ActivityScenarioRule(MainActivity::class.java)
+
     @get:Rule
-    var activityRule = ActivityScenarioRule(LoginActivity::class.java)
+    val ruleChain: RuleChain = RuleChain
+        .outerRule(GrantPermissionRule.grant(Manifest.permission.POST_NOTIFICATIONS))
+        .around(activityRule)
 
     @Before
     fun setUp() {
         activityRule.scenario.onActivity { activity ->
             super.setUp(activity)
         }
-        //Thread.sleep(4000)
-    }
-
-    @After
-    override fun tearDown() {
-        //keep it just for the annotation
-        super.tearDown()
     }
 
     override fun closeAutofill() {
@@ -47,8 +50,7 @@ class MyEntouragesTest : EntourageTestAfterLogin() {
 
     @Test
     fun retrieveEntourages() {
-        forceLogIn()
-
+        checkNoOnboarding()
         //Try to retrieve feeds
         val bottomBarMessagesButton = onView(allOf(withId(R.id.navigation_donations), isDisplayed()))
         bottomBarMessagesButton.perform(click())
@@ -58,10 +60,10 @@ class MyEntouragesTest : EntourageTestAfterLogin() {
             .check(ViewAssertions.matches(isDisplayed()))
     }
 
-    @Test
+    //TODO @Test
     fun retrieveFeedsFailureNoInternetConnection() {
-        forceLogIn()
-        //Disable wifi and data
+        checkNoOnboarding()
+        //Disable wifi and data before launching the activity
         enableWifiAndData(false)
 
         //Try to retrieve feeds

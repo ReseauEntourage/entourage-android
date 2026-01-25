@@ -1,17 +1,18 @@
-package social.entourage.android.small_talks
+package social.entourage.android.afterLogin
 
+import android.app.Application
 import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.fail
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import social.entourage.android.api.model.UserSmallTalkRequest
+import social.entourage.android.small_talks.SmallTalkViewModel
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
@@ -26,7 +27,7 @@ class SmallTalkViewModelTest {
 
     @Before
     fun setup() {
-        val context = ApplicationProvider.getApplicationContext<android.app.Application>()
+        val context = ApplicationProvider.getApplicationContext<Application>()
         viewModel = SmallTalkViewModel(context)
     }
 
@@ -45,10 +46,10 @@ class SmallTalkViewModelTest {
         viewModel.matchRequest(dummyId)
 
         if (!latch.await(30, TimeUnit.SECONDS)) {
-            fail("LiveData did not receive value within timeout")
+            Assert.fail("LiveData did not receive value within timeout")
         }
 
-        assertNotNull(observedValue)
+        Assert.assertNotNull(observedValue)
     }
 
     @Test
@@ -66,10 +67,10 @@ class SmallTalkViewModelTest {
         viewModel.deleteRequest()// Wait for the LiveData to emit, with a timeout
 
         if (!latch.await(30, TimeUnit.SECONDS)) {
-            fail("LiveData did not receive value within timeout")
+            Assert.fail("LiveData did not receive value within timeout")
         }
 
-        assertNotNull(observedValue)
+        Assert.assertNotNull(observedValue)
     }
 
     @Test
@@ -86,9 +87,9 @@ class SmallTalkViewModelTest {
         viewModel.listUserRequests()
 
         if (!latch.await(30, TimeUnit.SECONDS)) {
-            fail("LiveData did not receive value within timeout")
+            Assert.fail("LiveData did not receive value within timeout")
         }
 
-        assertNotNull(observedValue)
+        Assert.assertNotNull(observedValue)
     }
 }

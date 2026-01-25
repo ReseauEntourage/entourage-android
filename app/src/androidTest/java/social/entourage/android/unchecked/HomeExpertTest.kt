@@ -1,4 +1,4 @@
-package social.entourage.android
+package social.entourage.android.unchecked
 
 import android.content.Context
 import android.view.WindowManager
@@ -7,12 +7,13 @@ import androidx.test.espresso.Root
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.platform.app.InstrumentationRegistry
 import org.hamcrest.Description
 import org.hamcrest.Matchers
 import org.hamcrest.TypeSafeMatcher
 import org.junit.Before
 import org.junit.Rule
+import social.entourage.android.EntourageApplication
+import social.entourage.android.R
 import social.entourage.android.onboarding.login.LoginActivity
 import java.io.IOException
 

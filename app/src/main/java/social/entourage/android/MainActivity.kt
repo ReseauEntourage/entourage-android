@@ -50,6 +50,7 @@ import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.notifications.NotificationActionManager
 import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.profile.MyProfileFullActivity
+import social.entourage.android.tools.TestHelper
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.utils.Const
@@ -168,8 +169,11 @@ class MainActivity : BaseSecuredActivity() {
 
         if (this.intent != null) {
             useIntentForRedictection(this.intent)
+            if(!TestHelper.isRunningInTestHarness()) {
+                //TODO WHY WHY WHY WHY WHY ? It does make the tests do a timeout !
                 this.intent = null
             }
+        }
         if (shouldLaunchEventPopUp != 0) {
             ifEventLastDay(shouldLaunchEventPopUp)
             shouldLaunchEventPopUp = 0

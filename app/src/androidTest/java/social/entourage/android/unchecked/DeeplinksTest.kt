@@ -1,4 +1,4 @@
-package social.entourage.android
+package social.entourage.android.unchecked
 
 import android.content.Intent
 import android.net.Uri
@@ -12,6 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiObject
@@ -22,15 +23,19 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import social.entourage.android.BuildConfig
+import social.entourage.android.EntourageApplication
+import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.deeplinks.DeepLinksManager
 import social.entourage.android.onboarding.login.LoginActivity
 
-//TODO @RunWith(AndroidJUnit4::class)
+//@RunWith(AndroidJUnit4::class)
+@LargeTest
+@RunWith(AndroidJUnit4::class)
 open class DeepLinkingTest {
 
-    @Rule
-    @JvmField
+    @get:Rule
     val activityTestRule = ActivityScenarioRule(LoginActivity::class.java)
 
     private lateinit var device: UiDevice
@@ -62,7 +67,7 @@ open class DeepLinkingTest {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
         try {
             activityTestRule.scenario.onActivity { activity ->
-                EntourageApplication[activity].authenticationController.logOutUser()
+                EntourageApplication.Companion[activity].authenticationController.logOutUser()
             }
         } catch (e: RuntimeException) {
             e.printStackTrace()
@@ -95,22 +100,18 @@ open class DeepLinkingTest {
     }
 }
 
-@RunWith(AndroidJUnit4::class)
 class DeepLinkingTestCreateAction : DeepLinkingTest() {
-
+    //TODO should we keep this?
     private val link = DeepLinksManager.DeepLinksView.CREATE_ACTION.view
-    //TODO
-    @Test
+    //@Test
     fun connectedCreateActionDeeplink() {
         connectedCreateActionDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://" + link)
     }
-    //TODO
-    @Test
+    //@Test
     fun connectedCreateActionDeeplinkHTTP() {
         connectedCreateActionDeeplink("http://${BuildConfig.DEEP_LINKS_URL}/deeplink/${link}")
     }
-    //TODO
-    @Test
+    //@Test
     fun connectedCreateActionDeeplinkHTTPS() {
         connectedCreateActionDeeplink("https://${BuildConfig.DEEP_LINKS_URL}/deeplink/${link}")
     }
@@ -118,24 +119,24 @@ class DeepLinkingTestCreateAction : DeepLinkingTest() {
     private fun connectedCreateActionDeeplink(uri: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         startIntent(intent)
-        //TODO onView(withId(R.id.fragment_plus_overlay)).check(matches(isDisplayed()))
+        //onView(withId(R.id.fragment_plus_overlay)).check(matches(isDisplayed()))
     }
 }
 
-//TODO @RunWith(AndroidJUnit4::class)
+@RunWith(AndroidJUnit4::class)
 class DeepLinkingTestBadge : DeepLinkingTest() {
 
-    //TODO @Test
+    @Test
     fun connectedBadgeDeeplink() {
         connectedBadgeDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://badge")
     }
 
-    //TODO @Test
+    @Test
     fun connectedBadgeDeeplinkHTTP() {
         connectedBadgeDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/badge")
     }
 
-    //TODO @Test
+    @Test
     fun connectedBadgeDeeplinkHTTPS() {
         connectedBadgeDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/badge")
     }

@@ -246,7 +246,6 @@ dependencies {
     implementation(libs.glide)
     implementation(libs.shortcut.badger)
     implementation(libs.keyboard.visibility.event)
-    implementation(libs.espresso.core)
     kapt(libs.glide.compiler)
 
     //entourageImplementation facebookDependencies.values()
@@ -255,7 +254,7 @@ dependencies {
     compileOnly(libs.javax.annotation)
 
     // Instrumentation tests
-
+    androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.androidx.test.runner)
