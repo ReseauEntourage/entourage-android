@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_choice_zone"
     android:focusable="true"
     android:focusableInTouchMode="true"
@@ -149,7 +149,7 @@
             android:layout_marginEnd="22dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/map_card">
@@ -157,18 +157,21 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/new_calendar"
+                android:src="@drawable/ic_calendar_zone_onboarding"
                 android:contentDescription="@null"
+                android:layout_marginBottom="5dp"
                 android:layout_marginEnd="8dp"/>
 
             <TextView
                 android:id="@+id/tv_event_count"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/nunitosans_bold"
-                android:textColor="@color/orange"
-                android:textSize="14sp"
-                android:text="3 évènements potentiels par semaine, dans ce périmètre."/>
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:fontFamily="@font/nunitosans_regular"
+                tools:text="27 événements potentiels dans ce périmètre"
+                />
+
         </LinearLayout>
 
         <LinearLayout

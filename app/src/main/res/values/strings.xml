@@ -3153,8 +3153,13 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboarding_zone_radius_label">Dans un rayon de</string>
     <string name="onboarding_zone_home_pin">Domicile</string>
     <string name="km_suffix">%1$d km</string>
-    <string name="onboarding_zone_events_count_plural">%d évènements potentiels par semaine, dans ce périmètre.</string>
-    <string name="onboarding_zone_events_count_singular">%d évènement potentiel par semaine, dans ce périmètre.</string>
+    <string name="onboarding_zone_events_count_plural">
+    <![CDATA[<font color="#FC8D24"><b>%1$d évènements potentiels par semaine</b></font>, dans ce périmètre.]]>
+</string>
+
+    <string name="onboarding_zone_events_count_singular">
+    <![CDATA[<font color="#FC8D24"><b>%1$d évènement potentiel par semaine</b></font>, dans ce périmètre.]]>
+</string>
 
     <string name="onboard_retry_link">Recevoir un nouveau code par SMS</string>
     <string name="onboard_help_title">Besoin d’aide ?</string>

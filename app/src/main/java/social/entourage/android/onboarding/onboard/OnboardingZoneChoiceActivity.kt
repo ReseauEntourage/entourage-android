@@ -14,6 +14,7 @@ import android.widget.AutoCompleteTextView
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.HtmlCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -359,17 +360,16 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun animateCount(start: Float, end: Float) {
         val animator = ValueAnimator.ofFloat(start, end)
-        animator.duration = 1000 // 1 second
+        animator.duration = 1000
         animator.addUpdateListener { animation ->
             val value = animation.animatedValue as Float
             val intValue = kotlin.math.round(value).toInt()
-
-            val text = if (intValue > 1)
+            val rawString = if (intValue > 1) {
                 getString(R.string.onboarding_zone_events_count_plural, intValue)
-            else
+            } else {
                 getString(R.string.onboarding_zone_events_count_singular, intValue)
-
-            binding.tvEventCount.text = text
+            }
+            binding.tvEventCount.text = HtmlCompat.fromHtml(rawString, HtmlCompat.FROM_HTML_MODE_COMPACT)
         }
         animator.start()
     }
