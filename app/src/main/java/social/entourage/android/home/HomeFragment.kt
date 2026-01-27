@@ -134,7 +134,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     private lateinit var helpHeaderAdapter: HomeSectionHeaderAdapter
     private lateinit var homeHelpAdapter: HomeHelpAdapter
 
-
     // Gère uniquement le cycle de vie du fragment pour ne pas lancer plusieurs popups en même temps
     private var hasRunEntryGating = false
 
@@ -164,7 +163,9 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         totalchecksum = 0
         hasRunEntryGating = false
         binding = FragmentHomeBinding.inflate(layoutInflater)
-        // disapearAllAtBeginning() -> Managed by adapters visibility now
+
+        // CORRECTION: On laisse le header visible pour qu'il prenne sa place tout de suite
+        binding.homeHeader.visibility = View.VISIBLE
 
         mainPresenter = MainPresenter(requireActivity() as MainActivity)
         binding.progressBar.visibility = View.VISIBLE
@@ -186,7 +187,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         setRecyclerViewScrollListener()
         checkNotificationStatus()
         increaseCounter()
-        adjustChevronForRTL()
         updatePaddingTopForEdgeToEdge(binding.homeHeader)
 
         binding.chatbotButton.setOnClickListener {
@@ -289,11 +289,11 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
 
         mapHeaderAdapter = HomeSectionHeaderAdapter()
         mapSingleViewAdapter = HomeSingleLayoutAdapter(R.layout.home_map_card) { view ->
-             view.findViewById<View>(R.id.home_button_map).setOnClickListener {
+            view.findViewById<View>(R.id.home_button_map).setOnClickListener {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Map)
                 val intent = Intent(requireContext(), GDSMainActivity::class.java)
                 startActivityForResult(intent, 0)
-             }
+            }
         }
 
         // 7. Pedago
@@ -328,7 +328,13 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     }
 
     private fun setupRecyclerView() {
+        // CORRECTION : Config pour stabiliser le ConcatAdapter
+        val config = ConcatAdapter.Config.Builder()
+            .setIsolateViewTypes(true)
+            .build()
+
         concatAdapter = ConcatAdapter(
+            config,
             initialPedagoHeaderAdapter,
             initialPedagoWrapperAdapter,
             smallTalkHeaderAdapter,
@@ -352,13 +358,16 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             homeHelpAdapter
         )
 
-        binding.rvHome.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvHome.adapter = concatAdapter
+        binding.rvHome.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = concatAdapter
+            // CORRECTION: Désactiver l'animator évite le "blink" à l'insertion des items
+            itemAnimator = null
+            // CORRECTION: On laisse VISIBLE mais vide au lieu de GONE pour garder la structure
+            visibility = View.VISIBLE
+        }
 
-        // Initial visibility setup
-        binding.rvHome.visibility = View.GONE
-
-        // Hide map initially
+        // On masque la map via l'adapter plutôt que la vue entière pour garder le layout stable
         mapHeaderAdapter.update(getString(R.string.home_title_map), getString(R.string.home_subtitle_map), true)
     }
 
@@ -368,8 +377,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         updateAvatar()
         userPresenter.user.observe(viewLifecycleOwner, userObserver)
 
-        // Gestion manuelle de l'enhanced onboarding si lancé depuis MainActivity
-        // (La logique principale est maintenant dans runHomeEntryGatingIfNeeded)
         if (MainActivity.shouldLaunchOnboarding) {
             MainActivity.shouldLaunchOnboarding = false
         }
@@ -381,9 +388,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         resetFilter()
         callToInitHome()
         actionsPresenter.getUnreadCount()
-
-        // SUPPRESSION DE LA REDIRECTION PROFIL ICI (Géré par MainActivity pour éviter le conflit)
-
         testNotifDemandePage()
         sendUserDiscussionStatus()
         loadSmallTalkItems()
@@ -403,20 +407,16 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         items.addAll(matchedItems)
         val hasUnmatchedRequest = currentRequests.any { it.smalltalkId == null }
         when {
-            matchedItems.size >= 3 -> {
-            }
-
+            matchedItems.size >= 3 -> {}
             hasUnmatchedRequest -> {
                 items.add(HomeSmallTalkItem.Waiting)
             }
-
             else -> {
                 items.add(HomeSmallTalkItem.MatchPossible)
             }
         }
         homeSmallTalkAdapter.submitList(items)
 
-        // Update headers visibility
         val hasItems = items.isNotEmpty()
         smallTalkHeaderAdapter.update(getString(R.string.home_title_small_talk), null, hasItems)
         smallTalkWrapperAdapter.setVisible(hasItems)
@@ -434,71 +434,39 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         }
     }
 
-    private fun adjustChevronForRTL() {
-        val isRTL = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
-        if (isRTL) {
-            binding.chevron1.scaleX = -1f
-            binding.chevron2.scaleX = -1f
-            binding.chevron3.scaleX = -1f
-            binding.chevron4.scaleX = -1f
-        } else {
-            binding.chevron1.scaleX = 1f
-            binding.chevron2.scaleX = 1f
-            binding.chevron3.scaleX = 1f
-            binding.chevron4.scaleX = 1f
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         userPresenter.user.removeObserver(userObserver)
     }
 
-    /**
-     * Logique de Gating simplifiée et persistante via SharedPreferences.
-     * Chaque popup ne s'affiche qu'une seule fois dans la vie de l'app (cookies dédiés).
-     */
     private fun runHomeEntryGatingIfNeeded() {
-        // 1. Vérifications de base (Fragment attaché, déjà exécuté lors de cette instance de vue)
         if (!isAdded) return
         if (hasRunEntryGating) return
 
         val currentUser = user ?: return
         val prefs = EntourageApplication.get().sharedPreferences
 
-        // -------------------------------------------------------------------------------------
-        // STEP 1 : Gating ZONE / GOAL
-        // -------------------------------------------------------------------------------------
         val isZonePopupAlreadyShown = prefs.getBoolean(PREF_GATING_ZONE_SHOWN, false)
-
         if (!isZonePopupAlreadyShown) {
-            // Si jamais montré, on vérifie si l'utilisateur en a besoin
             val missingGoal = isUserMissingRole(currentUser)
             val missingZone = isUserMissingZone(currentUser)
 
             if (missingGoal || missingZone) {
-                // On marque immédiatement comme montré pour ne plus jamais redemander
                 prefs.edit { putBoolean(PREF_GATING_ZONE_SHOWN, true) }
-                hasRunEntryGating = true // Stop le flux pour cette vue
+                hasRunEntryGating = true
                 presentCriticalOnboarding(currentUser, missingGoal, missingZone)
                 return
             }
         }
 
-        // -------------------------------------------------------------------------------------
-        // STEP 2 : Gating NOTIFICATIONS
-        // -------------------------------------------------------------------------------------
         val isNotifPopupAlreadyShown = prefs.getBoolean(PREF_GATING_NOTIF_SHOWN, false)
         val areNotificationsEnabled =
             NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
 
-        // Mise à jour technique du token si activé
         updateTokenForNotificationState(areNotificationsEnabled)
 
         if (!isNotifPopupAlreadyShown) {
-            // Si jamais montré ET que les notifications système sont désactivées
             if (!areNotificationsEnabled) {
-                // On marque immédiatement comme montré pour ne plus jamais redemander
                 prefs.edit { putBoolean(PREF_GATING_NOTIF_SHOWN, true) }
                 hasRunEntryGating = true
                 presentNotificationDemand()
@@ -506,22 +474,17 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             }
         }
 
-        // -------------------------------------------------------------------------------------
-        // STEP 3 : Gating ENHANCED ONBOARDING
-        // -------------------------------------------------------------------------------------
         val isEnhancedPopupAlreadyShown =
             prefs.getBoolean(PREF_GATING_ENHANCED_ONBOARDING_SHOWN, false)
         val hasCompletedEnhanced = prefs.getBoolean(PREF_ENHANCED_ONBOARDING_COMPLETED, false)
 
         if (!isEnhancedPopupAlreadyShown && !hasCompletedEnhanced) {
-            // On marque immédiatement comme montré pour ne plus jamais redemander
             prefs.edit { putBoolean(PREF_GATING_ENHANCED_ONBOARDING_SHOWN, true) }
             hasRunEntryGating = true
             presentEnhancedOnboardingIntro()
             return
         }
 
-        // Fin de la chaîne
         hasRunEntryGating = true
     }
 
@@ -562,7 +525,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         val a2 = user.addressSecondary
         val ok1 = isAddressValid(a1)
         val ok2 = isAddressValid(a2)
-        // Timber.wtf("wtf zone a1=${Gson().toJson(a1)} a2=${Gson().toJson(a2)} ok1=$ok1 ok2=$ok2")
         return !(ok1 || ok2)
     }
 
@@ -646,12 +608,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         CommunicationHandler.resetValues()
     }
 
-    private fun setMarginTop(view: View, marginTop: Int) {
-        val layoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
-        layoutParams.topMargin = marginTop
-        view.layoutParams = layoutParams
-    }
-
     private fun callToInitHome() {
         if (isAdded) {
             EntourageApplication.get().me()?.id?.let { meId ->
@@ -679,10 +635,21 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
 
     private fun doTotalchecksumToDisplayHomeFirstTime() {
         totalchecksum++
-        if (totalchecksum == 4) {
-            binding.rvHome.visibility = View.VISIBLE
-            binding.homeHeader.visibility = View.VISIBLE
-            binding.progressBar.visibility = View.GONE
+        // CORRECTION: On fait un fade out sur la progress bar plutôt que de changer la visibilité du RV
+        // Ça évite le saut de contenu
+        if (totalchecksum >= 4) {
+            if (binding.progressBar.visibility == View.VISIBLE) {
+                binding.progressBar.animate()
+                    .alpha(0f)
+                    .setDuration(200)
+                    .withEndAction {
+                        binding.progressBar.visibility = View.GONE
+                    }
+                    .start()
+            }
+            if (binding.homeHeader.alpha < 1f) {
+                binding.homeHeader.animate().alpha(1f).duration = 200
+            }
         }
     }
 
@@ -715,8 +682,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         doTotalchecksumToDisplayHomeFirstTime()
 
         this.homeGroupAdapter.resetData(allGroup)
-
-        // Groups section is kept hidden as per requirements/existing logic
         groupHeaderAdapter.update(getString(R.string.home_title_group), getString(R.string.home_subtitle_group), false)
         groupWrapperAdapter.setVisible(false)
         groupButtonAdapter.update(getString(R.string.home_btn_more_group), false)
@@ -741,11 +706,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         checkSumEventAction()
         this.homeEventAdapter.resetData(allEvent)
 
-        val hasEvents = !isEventsEmpty // Or allEvent.isNotEmpty()? Original code checked size > 0 then set visible.
-        // Actually original code checked allEvent.size > 0.
-        // But then calculated isEventsEmpty based on offline events.
-        // BUT visibility was based on allEvent.size > 0.
-
         val showEvents = allEvent.isNotEmpty()
         eventHeaderAdapter.update(getString(R.string.home_title_event), getString(R.string.home_subtitle_event), showEvents)
         eventWrapperAdapter.setVisible(showEvents)
@@ -764,7 +724,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         this.homeActionAdapter.resetData(allAction)
 
         val showActions = !isActionEmpty
-
         var title = getString(R.string.home_title_action)
         var subtitle = getString(R.string.home_subtitle_action)
         var btnText = getString(R.string.home_btn_more_action)
@@ -774,14 +733,14 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         }
 
         if (isContribution) {
-             title = getString(R.string.home_title_action_contrib)
-             subtitle = getString(R.string.home_subtitle_action_contrib)
-             btnText = getString(R.string.home_btn_more_action_contrib)
-             clickListener = {
+            title = getString(R.string.home_title_action_contrib)
+            subtitle = getString(R.string.home_subtitle_action_contrib)
+            btnText = getString(R.string.home_btn_more_action_contrib)
+            clickListener = {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Contrib_All)
                 val mainActivity = (requireActivity() as? MainActivity)
                 mainActivity?.goContrib()
-             }
+            }
         }
 
         actionHeaderAdapter.update(title, subtitle, showActions)
@@ -852,7 +811,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         isContribution = summary.preference.equals("contribution")
         isContribProfile = isContribution
 
-        // Update Action Adapter type
         homeActionAdapter.setContrib(isContribution)
 
         if (isContribution) {
@@ -954,13 +912,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
                 if (isAnimating) {
                     return
                 }
-
-                // We need to keep track of state to know "oldScrollY" logic roughly,
-                // or just threshold based.
-                // The original code compared scrollY and oldScrollY.
-                // Here we just have dy.
-                // If scrollY > 50 and we are scrolling down (dy > 0), hide.
-                // If scrollY <= 50, show.
 
                 if (scrollY == 0) {
                     isAnimating = false
@@ -1125,8 +1076,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     companion object {
         var isContribProfile = false
         var signablePermission = false
-
-        // NOUVEAUX COOKIES POUR LE GATING PERSISTANT
         private const val PREF_GATING_ZONE_SHOWN = "PREF_GATING_ZONE_SHOWN"
         private const val PREF_GATING_NOTIF_SHOWN = "PREF_GATING_NOTIF_SHOWN"
         private const val PREF_GATING_ENHANCED_ONBOARDING_SHOWN =

@@ -12,7 +12,7 @@ class HomeHorizontalWrapperAdapter(
     private val recycledViewPool: RecyclerView.RecycledViewPool
 ) : RecyclerView.Adapter<HomeHorizontalWrapperAdapter.WrapperViewHolder>() {
 
-    var isVisible: Boolean = false
+    private var isVisible: Boolean = false
 
     fun setVisible(visible: Boolean) {
         if (this.isVisible != visible) {
