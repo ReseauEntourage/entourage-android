@@ -20,8 +20,8 @@ fun String.runCommand(currentWorkingDir: File = file("./")): String {
 
 android {
 // Java versions
-    val sourceCompatibilityVersion = JavaVersion.VERSION_11
-    val targetCompatibilityVersion = JavaVersion.VERSION_11
+    val sourceCompatibilityVersion = JavaVersion.VERSION_17
+    val targetCompatibilityVersion = JavaVersion.VERSION_17
 
     // App versions
     val versionMajor = 13
@@ -41,7 +41,7 @@ android {
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 
