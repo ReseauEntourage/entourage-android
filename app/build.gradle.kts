@@ -71,7 +71,9 @@ android {
     androidResources{
         localeFilters.addAll(listOf("en", "fr", "de", "pl", "es","uk", "ro", "ar"))
     }
-
+    base {
+        archivesName.set("$appBundleName-$versionNameProd")
+    }
     defaultConfig {
         manifestPlaceholders += mapOf(
             "deepLinksHostName" to deepLinksURLProd,
@@ -90,7 +92,6 @@ android {
 
         buildConfigField("String", "VERSION_FULL_NAME", "\"" + versionNameProd + "\"")
         buildConfigField("String", "VERSION_DISPLAY_BRANCH_NAME", "\"" + versionBranchName + "\"")
-        setProperty("archivesBaseName", "$appBundleName-$versionNameProd")
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -109,12 +110,10 @@ android {
             storeFile = file("../keystore/googleplay-keystore.jks")
             storePassword = keystorePass
         }
-
         getByName("debug") {
             storeFile = file("../keystore/debug.keystore")
         }
     }
-
     flavorDimensions += listOf("app", "env")
 
     productFlavors {
@@ -273,20 +272,13 @@ dependencies {
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.inline)
     testImplementation(libs.mockito.kotlin)
-
-
     implementation(libs.flexbox)
-    // Kotlin
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
     implementation(libs.sectioned.recyclerview)
-
     implementation(libs.lottie)
-
-    //photoview to click and zoom
     implementation(libs.photoview)
-    implementation(libs.transition) // Remplacez 'x.x.x' par la dernière version disponible.
-
+    implementation(libs.transition)
     implementation(libs.play.app.update.ktx)
     implementation(libs.play.asset.delivery)
     implementation(libs.play.asset.delivery.ktx)
@@ -296,12 +288,10 @@ dependencies {
     implementation(libs.play.review.ktx)
     implementation(libs.speed.dial)
     implementation(libs.firebase.database)
-
     implementation(libs.bundles.ktor)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.play.services.auth.api.phone)
     //UNCOMMENT FOR VIDEO CALL FEATURE
     //implementation("com.dafruits:webrtc:123.0.0")
-
     implementation(libs.bundles.oss)
 }
