@@ -23,6 +23,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
+import social.entourage.android.MainPresenter
 import social.entourage.android.R
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.api.model.Action
