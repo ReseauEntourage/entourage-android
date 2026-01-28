@@ -1106,7 +1106,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         var signablePermission = false
         private const val PREF_GATING_ZONE_SHOWN = "PREF_GATING_ZONE_SHOWN"
         private const val PREF_GATING_NOTIF_SHOWN = "PREF_GATING_NOTIF_SHOWN"
-        private const val PREF_GATING_ENHANCED_ONBOARDING_SHOWN =
+        const val PREF_GATING_ENHANCED_ONBOARDING_SHOWN =
             "PREF_GATING_ENHANCED_ONBOARDING_SHOWN"
 
         const val PREF_ENHANCED_ONBOARDING_COMPLETED = "PREF_ENHANCED_ONBOARDING_COMPLETED"

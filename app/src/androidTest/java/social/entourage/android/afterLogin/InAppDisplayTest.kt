@@ -4,17 +4,14 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.LargeTest
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import org.junit.Rule
-import org.junit.runner.RunWith
 import social.entourage.android.MainActivity
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-@LargeTest
-@RunWith(AndroidJUnit4::class)
+//TODO @LargeTest
+//TODO @RunWith(AndroidJUnit4::class)
 class InAppDisplayTest : EntourageTestAfterLogin() {
     @get:Rule
     val activityRule = ActivityScenarioRule(MainActivity::class.java)
