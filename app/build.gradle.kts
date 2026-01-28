@@ -93,7 +93,6 @@ android {
 
         buildConfigField("String", "VERSION_FULL_NAME", "\"" + versionNameProd + "\"")
         buildConfigField("String", "VERSION_DISPLAY_BRANCH_NAME", "\"" + versionBranchName + "\"")
-        multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
@@ -208,7 +207,6 @@ dependencies {
     implementation(libs.androidx.coordinatorlayout)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.fragment.ktx)
-    implementation(libs.androidx.multidex)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.preference.ktx)
     implementation(libs.androidx.compose.ui.text.android)
