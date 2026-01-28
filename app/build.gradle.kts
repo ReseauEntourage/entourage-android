@@ -74,6 +74,7 @@ android {
     base {
         archivesName.set("$appBundleName-$versionNameProd")
     }
+
     defaultConfig {
         manifestPlaceholders += mapOf(
             "deepLinksHostName" to deepLinksURLProd,
