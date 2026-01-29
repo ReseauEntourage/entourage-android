@@ -43,7 +43,9 @@ class EnhancedOnboarding : BaseActivity() {
         viewModel.user = EntourageApplication.me(this)
 
         val userGoal = viewModel.user?.goal
-        if (userGoal != null && userGoal.equals(User.USER_GOAL_ASSO, ignoreCase = true)) {
+        val isAssoRole = viewModel.user?.partner != null && (viewModel.user?.roles?.contains("Association") == true || viewModel.user?.roles?.contains("Équipe Entourage") == true)
+
+        if ((userGoal != null && userGoal.equals(User.USER_GOAL_ASSO, ignoreCase = true)) || isAssoRole) {
             isAssociationFromSummary = true
             EntourageApplication.get().sharedPreferences.edit()
                 .putBoolean(PREF_IS_ASSOCIATION_FROM_SUMMARY, true)
