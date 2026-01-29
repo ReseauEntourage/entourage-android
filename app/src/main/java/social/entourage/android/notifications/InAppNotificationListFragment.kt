@@ -153,6 +153,8 @@ class InAppNotificationListFragment : Fragment() {
                     val instanceId = notif.instanceId ?: 0
                     val stage = notif.context
                     val notifContext = notif.context
+                    val tracking = notif.tracking
+                    val popup = notif.popup
                     val postId:Int? = notif.postId
                     if (notif.completedAt == null) {
                         itemSelected = position
@@ -161,8 +163,9 @@ class InAppNotificationListFragment : Fragment() {
                     else {
                         itemSelected = -1
                     }
-                    if(instance != null) {
-                        NotificationActionManager.presentAction(requireContext(),parentFragmentManager,instance,instanceId,postId,stage, notifContext = notifContext )
+                    if(instance != null || tracking == "birthday") {
+                        val instanceName = instance ?: "none"
+                        NotificationActionManager.presentAction(requireContext(),parentFragmentManager,instanceName,instanceId,postId,stage, popup, notifContext, tracking )
                     } else{
                         NotificationActionManager.presentWelcomeAction(requireContext(), stage)
                     }

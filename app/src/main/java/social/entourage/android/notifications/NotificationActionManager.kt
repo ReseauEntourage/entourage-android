@@ -32,6 +32,14 @@ object NotificationActionManager {
 
     /**/
     fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int = 0, postId:Int?, stage:String? = "", popup:String? = "" , notifContext:String? = "", tracking:String? = ""){
+        if (tracking == "birthday") {
+            MainActivity.shouldLaunchBirthday = true
+            if (context !is MainActivity) {
+                (context as? Activity)?.finish()
+            }
+            return
+        }
+
         if(popup.equals("outing_on_day_before")){
             if(context is MainActivity){
                 (context as MainActivity).ifEventLastDay(id)

@@ -228,6 +228,13 @@ class MainActivity : BaseSecuredActivity() {
             shouldLaunchProfile = false
             showProfile()
         }
+
+        // 7. Lancement de la vue anniversaire
+        if (shouldLaunchBirthday) {
+            shouldLaunchBirthday = false
+            goHome()
+            startActivity(Intent(this, social.entourage.android.home.BirthdayActivity::class.java))
+        }
     }
 
     private fun checkForAppUpdate() {
@@ -387,11 +394,12 @@ class MainActivity : BaseSecuredActivity() {
                 rawContent,
                 PushNotificationContent::class.java
             )?.extra?.let { extra ->
-                extra.instance?.let { instance ->
+                val instance = extra.instance ?: if (extra.tracking == "birthday") "none" else null
+                instance?.let {
                     NotificationActionManager.presentAction(
                         this,
                         supportFragmentManager,
-                        instance,
+                        it,
                         extra.instanceId ?: 0,
                         extra.postId,
                         popup = extra.popup,
@@ -701,6 +709,7 @@ class MainActivity : BaseSecuredActivity() {
         var shouldLaunchActionCreation: Boolean = false
         var shouldLaunchQuizz: Boolean = false
         var shouldLaunchWelcomeGroup: Boolean = false
+        var shouldLaunchBirthday: Boolean = false
 
         // NOUVEAU FLAG : Pour distinguer création de demande vs liste simple
         var shouldLaunchDemandCreation: Boolean = false

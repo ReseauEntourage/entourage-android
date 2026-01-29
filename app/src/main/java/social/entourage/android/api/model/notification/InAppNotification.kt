@@ -24,6 +24,10 @@ class InAppNotification (
     val context: String? = null,
     @SerializedName("url")
     val url: String? = null,
+    @SerializedName("tracking")
+    val tracking: String? = null,
+    @SerializedName("popup")
+    val popup: String? = null,
     @SerializedName("instance")
     val instanceType: String? = null,
     @SerializedName("title")
