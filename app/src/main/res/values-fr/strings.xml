@@ -68,7 +68,7 @@
     <string name="home_help_button_1">Faire un don financier à\nEntourage</string>
     <string name="home_help_button_2">Devenir reporter pour\nEntourage</string>
     <string name="home_help_button_3">Parler d’Entourage</string>
-    <string name="home_help_button_4">Devenir Ambassadeur</string>
+    <string name="home_help_button_4">Devenir Animateur Entourage</string>
     <string name="home_help_button_5">Programme LinkedOut</string>
     <string name="home_button_help_title">J’aide Entourage autrement</string>
     <string name="home_button_change_zone">Je modifie ma zone d’action</string>
@@ -156,7 +156,7 @@ Découvrez les initiatives de votre quartier et tissez des liens avec vos voisin
     <string name="edit_interests">Modifier mes centres d’interêt</string>
     <string name="follow">S\'abonner</string>
     <string name="following">Abonné</string>
-    <string name="ambassador">Ambassadeur</string>
+    <string name="ambassador">Animateur Entourage</string>
 
     <string name="group_name">Nom du groupe</string>
     <string name="event_name">Nom de l\'événement</string>
@@ -1813,7 +1813,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="menu_info_first_guide">Notre guide pour oser la rencontre</string>
     <string name="menu_info_second_gift">Faire un don à Entourage</string>
     <string name="menu_info_second_help">Aider à la réinsertion</string>
-    <string name="menu_info_second_ambassador">Devenir Ambassadeur bénévole</string>
+    <string name="menu_info_second_ambassador">Devenir Animateur Entourage bénévole</string>
     <string name="menu_info_second_good">Créer des liens avec les Bonnes Ondes</string>
     <string name="menu_info_second_title">❤️  S’ENGAGER</string>
     <string name="menu_info_third_info">Comment en parler aux personnes isolées ?</string>
@@ -2060,8 +2060,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="partner_remove_ok">Badge enlevé</string>
 
     <string name="member_type_organization">Maraudeur</string>
-    <string name="role_ambassador">Ambassadeur</string>
-    <string name="role_admin">Ambassadeur</string>
+    <string name="role_ambassador">Animateur Entourage</string>
+    <string name="role_admin">Animateur Entourage</string>
 
     <string name="user_profile_display_title">PROFIL</string>
     <string name="user_button_confirm_changes">Confirmer</string>
