@@ -121,9 +121,7 @@ class EntourageUser : TimestampedObject(), Serializable {
                 } else if (role == "Équipe Entourage") {
                     displayRole = "Équipe"
                 } else if (role == "Association") {
-                    if (partner != null && partner?.name?.contains("Association", ignoreCase = true) == true) {
-                        displayRole = ""
-                    }
+                   displayRole = "Association"
                 }
 
                 if (displayRole.isNotEmpty()) {
@@ -138,11 +136,16 @@ class EntourageUser : TimestampedObject(), Serializable {
                 break //TODO: why do we get only the first role ?
             }
             partner?.name?.let { partnerName->
+                var finalPartnerName = partnerName
+                if (roleStr.contains("Association", ignoreCase = true) && partnerName.startsWith("Association", ignoreCase = true)) {
+                    finalPartnerName = partnerName.replaceFirst("Association", "", true).trim()
+                }
+
                 if (roleStr.isNotEmpty()) {
-                    roleStr = "$roleStr • $partnerName"
+                    roleStr = "$roleStr • $finalPartnerName"
                 }
                 else {
-                    roleStr = partnerName
+                    roleStr = finalPartnerName
                 }
             }
             return roleStr
