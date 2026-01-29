@@ -71,7 +71,7 @@
     <string name="home_help_button_1">Przekaż darowiznę finansową na rzecz \nEntourage</string>
     <string name="home_help_button_2">Devenir reporter pour\nEntourage</string>
     <string name="home_help_button_3">Porozmawiaj o Entourage</string>
-    <string name="home_help_button_4">Zostań Ambasadorem</string>
+    <string name="home_help_button_4">Zostań Animateur Entourage</string>
     <string name="home_help_button_5">programu LinkedOut</string>
     <string name="home_button_help_title">Pomagam Entourage w inny sposób</string>
     <string name="home_button_change_zone">Modyfikuję swój obszar działania</string>
@@ -159,7 +159,7 @@ Odkrywaj inicjatywy w swojej okolicy i buduj kontakty z sąsiadami.</string>
     <string name="edit_interests">Zmień moje zainteresowania</string>
     <string name="follow">S\subskrybuj</string>
     <string name="following">Abonent</string>
-    <string name="ambassador">Ambasador</string>
+    <string name="ambassador">Animateur Entourage</string>
 
     <string name="group_name">Nazwa grupy</string>
     <string name="event_name">Nazwa wydarzenia \</string>
@@ -1782,7 +1782,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="menu_info_first_guide">Nasz przewodnik po odważeniu się na spotkanie</string>
     <string name="menu_info_second_gift">Przekaż darowiznę na rzecz Entourage</string>
     <string name="menu_info_second_help">Pomoc w reintegracji</string>
-    <string name="menu_info_second_ambassador">Zostań Ambasadorem Wolontariatu</string>
+    <string name="menu_info_second_ambassador">Zostań Animateur Entourage Wolontariatu</string>
     <string name="menu_info_second_good">Twórz połączenia z Good Waves</string>
     <string name="menu_info_second_title">❤️ ZAANGAŻUJ SIĘ</string>
     <string name="menu_info_third_info">Jak rozmawiać o tym z izolowanymi ludźmi?</string>
@@ -2043,8 +2043,8 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="partner_remove_ok">Odznaka usunięta</string>
 
     <string name="member_type_organization">Maruder</string>
-    <string name="role_ambassador">Ambasador</string>
-    <string name="role_admin">Ambasador</string>
+    <string name="role_ambassador">Animateur Entourage</string>
+    <string name="role_admin">Animateur Entourage</string>
 
     <string name="user_profile_display_title">PROFIL</string>
     <string name="user_button_confirm_changes">Potwierdzać</string>

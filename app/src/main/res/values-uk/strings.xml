@@ -71,7 +71,7 @@
     <string name="home_help_button_1">Зробіть фінансову пожертву \nEntourage</string>
     <string name="home_help_button_2">Devenir reporter pour\nEntourage</string>
     <string name="home_help_button_3">Розмова про Entourage</string>
-    <string name="home_help_button_4">Стань амбасадором</string>
+    <string name="home_help_button_4">Стань Animateur Entourage</string>
     <string name="home_help_button_5">Програма LinkedOut</string>
     <string name="home_button_help_title">Я допомагаю Entourage іншим способом</string>
     <string name="home_button_change_zone">Я зміню свою сферу діяльності</string>
@@ -159,7 +159,7 @@
     <string name="edit_interests">Змінити мої інтереси</string>
     <string name="follow">S\підписатися</string>
     <string name="following">Абонент</string>
-    <string name="ambassador">посол</string>
+    <string name="ambassador">Animateur Entourage</string>
 
     <string name="group_name">Назва групи</string>
     <string name="event_name">Назва події \</string>
@@ -1787,7 +1787,7 @@
     <string name="menu_info_first_guide">Наш посібник, як наважитися на зустріч</string>
     <string name="menu_info_second_gift">Пожертвуйте Entourage</string>
     <string name="menu_info_second_help">Допомога з реінтеграцією</string>
-    <string name="menu_info_second_ambassador">Стань волонтерським амбасадором</string>
+    <string name="menu_info_second_ambassador">Стань волонтерським Animateur Entourage</string>
     <string name="menu_info_second_good">Створюйте посилання з Good Waves</string>
     <string name="menu_info_second_title">❤️ ПРИЄДНУЙТЕСЯ</string>
     <string name="menu_info_third_info">Як поговорити про це з ізольованими людьми?</string>
@@ -2046,8 +2046,8 @@
     <string name="partner_remove_ok">Бейдж видалено</string>
 
     <string name="member_type_organization">Мародер</string>
-    <string name="role_ambassador">посол</string>
-    <string name="role_admin">посол</string>
+    <string name="role_ambassador">Animateur Entourage</string>
+    <string name="role_admin">Animateur Entourage</string>
 
     <string name="user_profile_display_title">ПРОФІЛЬ</string>
     <string name="user_button_confirm_changes">Підтвердити</string>
