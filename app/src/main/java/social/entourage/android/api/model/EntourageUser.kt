@@ -115,11 +115,28 @@ class EntourageUser : TimestampedObject(), Serializable {
             }
 
             for (role in roles) {
-                if(roleStr.isNotEmpty()) {
-                    roleStr = "$roleStr • $role"
+                var displayRole = role
+                if (role == "Ambassadeur" || role.equals("ambassador", ignoreCase = true)) {
+                    displayRole = "Animateur Entourage"
+                } else if (role == "Équipe Entourage") {
+                    if (partner != null) {
+                        displayRole = ""
+                    } else {
+                        displayRole = "Équipe"
+                    }
+                } else if (role == "Association") {
+                    if (partner != null) {
+                        displayRole = ""
+                    }
                 }
-                else {
-                    roleStr = role
+
+                if (displayRole.isNotEmpty()) {
+                    if(roleStr.isNotEmpty()) {
+                        roleStr = "$roleStr • $displayRole"
+                    }
+                    else {
+                        roleStr = displayRole
+                    }
                 }
 
                 break //TODO: why do we get only the first role ?
