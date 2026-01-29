@@ -203,7 +203,7 @@ class PostAdapter(
 
         // Charger l’avatar
         var displayName = post.user?.displayName ?: "Nom inconnu"
-        if (post.user?.isBirthday == true) {
+        if (post.user?.birthdayToday == true) {
             displayName = "$displayName 🎂"
         }
         surveyHolder.binding.name.text = displayName
@@ -860,7 +860,7 @@ class PostAdapter(
             binding.layoutReactions.visibility = View.GONE
         }
         var displayNamePost = post.user?.displayName
-        if (post.user?.isBirthday == true) {
+        if (post.user?.birthdayToday == true) {
             displayNamePost = "$displayNamePost 🎂"
         }
         binding.name.text = displayNamePost
