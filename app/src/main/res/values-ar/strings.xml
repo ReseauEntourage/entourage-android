@@ -67,7 +67,7 @@
     <string name="home_help_description">إليك كيفية المشاركة في مشروع Entourage، إذا لم تكن هناك أحداث أو أنشطة في منطقتك:</string>
     <string name="home_help_button_1">قم بالتبرع المالي إلى \nEntourage</string>
     <string name="home_help_button_3">الحديث عن حاشية</string>
-    <string name="home_help_button_4">كن Animateur Entourage</string>
+    <string name="home_help_button_4">كن سفيرا</string>
     <string name="home_help_button_5">برنامج لينكد اوت</string>
     <string name="home_button_help_title">أنا أساعد Entourage بطريقة مختلفة</string>
     <string name="home_button_change_zone">أقوم بتعديل مجال عملي</string>
@@ -152,7 +152,7 @@
     <string name="edit_interests">تغيير اهتماماتي</string>
     <string name="follow">S\الاشتراك</string>
     <string name="following">المشترك</string>
-    <string name="ambassador">Animateur Entourage</string>
+    <string name="ambassador">سفير</string>
 
     <string name="group_name">اسم المجموعة</string>
     <string name="event_name">اسم الحدث \</string>
@@ -1764,7 +1764,7 @@
     <string name="menu_info_first_guide">دليلنا للجرأة للقاء</string>
     <string name="menu_info_second_gift">تبرع للحاشية</string>
     <string name="menu_info_second_help">المساعدة في إعادة الإدماج</string>
-    <string name="menu_info_second_ambassador">كن Animateur Entourage متطوعًا</string>
+    <string name="menu_info_second_ambassador">كن سفيرًا متطوعًا</string>
     <string name="menu_info_second_good">إنشاء روابط مع Good Waves</string>
     <string name="menu_info_second_title">❤️ شارك</string>
     <string name="menu_info_third_info">كيف تتحدث مع الأشخاص المعزولين عن ذلك؟</string>
@@ -2029,8 +2029,8 @@
     <string name="partner_remove_ok">تمت إزالة الشارة</string>
 
     <string name="member_type_organization">اللص</string>
-    <string name="role_ambassador">Animateur Entourage</string>
-    <string name="role_admin">Animateur Entourage</string>
+    <string name="role_ambassador">سفير</string>
+    <string name="role_admin">سفير</string>
 
     <string name="user_profile_display_title">حساب تعريفي</string>
     <string name="user_button_confirm_changes">أكد</string>

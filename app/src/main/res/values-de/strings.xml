@@ -69,7 +69,7 @@
     <string name="home_help_button_1">Machen Sie eine finanzielle Spende an \nEntourage</string>
     <string name="home_help_button_2">Devenir reporter pour\nEntourage</string>
     <string name="home_help_button_3">Sprechen Sie über Entourage</string>
-    <string name="home_help_button_4">Werden Sie Animateur Entourage</string>
+    <string name="home_help_button_4">Werden Sie Botschafter</string>
     <string name="home_help_button_5">LinkedOut-Programm</string>
     <string name="home_button_help_title">Ich helfe Entourage auf eine andere Art und Weise</string>
     <string name="home_button_change_zone">Ich ändere meinen Wirkungsbereich</string>
@@ -157,7 +157,7 @@ Entdecken Sie Initiativen in Ihrer Nachbarschaft und bauen Sie Kontakte zu Ihren
     <string name="edit_interests">Ändere meine Interessen</string>
     <string name="follow">S\abonnieren</string>
     <string name="following">Teilnehmer</string>
-    <string name="ambassador">Animateur Entourage</string>
+    <string name="ambassador">Botschafter</string>
 
     <string name="group_name">Name der Gruppe</string>
     <string name="event_name">Ereignisname</string>
@@ -1785,7 +1785,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="menu_info_first_guide">Unser Leitfaden für den Mut, sich zu treffen</string>
     <string name="menu_info_second_gift">Spenden Sie an Entourage</string>
     <string name="menu_info_second_help">Hilfe bei der Wiedereingliederung</string>
-    <string name="menu_info_second_ambassador">Werden Sie ehrenamtlicher Animateur Entourage</string>
+    <string name="menu_info_second_ambassador">Werden Sie ehrenamtlicher Botschafter</string>
     <string name="menu_info_second_good">Erstellen Sie Links mit Good Waves</string>
     <string name="menu_info_second_title">❤️ Beteiligen Sie sich</string>
     <string name="menu_info_third_info">Wie kann man mit isolierten Menschen darüber sprechen?</string>
@@ -2032,8 +2032,8 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="partner_remove_ok">Abzeichen entfernt</string>
 
     <string name="member_type_organization">Rumtreiber</string>
-    <string name="role_ambassador">Animateur Entourage</string>
-    <string name="role_admin">Animateur Entourage</string>
+    <string name="role_ambassador">Botschafter</string>
+    <string name="role_admin">Botschafter</string>
 
     <string name="user_profile_display_title">PROFIL</string>
     <string name="user_button_confirm_changes">Bestätigen</string>

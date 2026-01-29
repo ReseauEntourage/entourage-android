@@ -71,7 +71,7 @@
     <string name="home_help_button_1">Fă o donație financiară către \nEntourage</string>
     <string name="home_help_button_2">Devenir reporter pour\nEntourage</string>
     <string name="home_help_button_3">Vorbiți despre Entourage</string>
-    <string name="home_help_button_4">Deveniți Animateur Entourage</string>
+    <string name="home_help_button_4">Deveniți ambasador</string>
     <string name="home_help_button_5">Programul LinkedOut</string>
     <string name="home_button_help_title">Ajut Entourage într-un mod diferit</string>
     <string name="home_button_change_zone">Îmi modific aria de acțiune</string>
@@ -159,7 +159,7 @@ Descoperiți inițiativele din cartierul dvs. și construiți legături cu vecin
     <string name="edit_interests">Schimbă-mi interesele</string>
     <string name="follow">S\abonați-vă</string>
     <string name="following">Abonat</string>
-    <string name="ambassador">Animateur Entourage</string>
+    <string name="ambassador">Ambasador</string>
 
     <string name="group_name">Numele grupului</string>
     <string name="event_name">Numele evenimentului \</string>
@@ -1784,7 +1784,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="menu_info_first_guide">Ghidul nostru pentru a îndrăzni să ne întâlnim</string>
     <string name="menu_info_second_gift">Donează către Entourage</string>
     <string name="menu_info_second_help">Ajutor la reintegrare</string>
-    <string name="menu_info_second_ambassador">Deveniți un Animateur Entourage voluntar</string>
+    <string name="menu_info_second_ambassador">Deveniți un ambasador voluntar</string>
     <string name="menu_info_second_good">Creați legături cu Good Waves</string>
     <string name="menu_info_second_title">❤️ IMPLICAȚI-VĂ</string>
     <string name="menu_info_third_info">Cum să vorbești cu oameni izolați despre asta?</string>
@@ -2040,8 +2040,8 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="partner_remove_ok">Insigna eliminată</string>
 
     <string name="member_type_organization">Jefuitor</string>
-    <string name="role_ambassador">Animateur Entourage</string>
-    <string name="role_admin">Animateur Entourage</string>
+    <string name="role_ambassador">Ambasador</string>
+    <string name="role_admin">Ambasador</string>
 
     <string name="user_profile_display_title">PROFIL</string>
     <string name="user_button_confirm_changes">A confirma</string>
