@@ -112,13 +112,9 @@ class EntourageUser : TimestampedObject(), Serializable {
                 if (role == "Ambassadeur" || role.equals("ambassador", ignoreCase = true)) {
                     displayRole = "Animateur Entourage"
                 } else if (role == "Équipe Entourage") {
-                    if (partner != null) {
-                        displayRole = ""
-                    } else {
-                        displayRole = "Équipe"
-                    }
+                    displayRole = "Équipe"
                 } else if (role == "Association") {
-                    if (partner != null) {
+                    if (partner != null && partner?.name?.contains("Association", ignoreCase = true) == true) {
                         displayRole = ""
                     }
                 }
