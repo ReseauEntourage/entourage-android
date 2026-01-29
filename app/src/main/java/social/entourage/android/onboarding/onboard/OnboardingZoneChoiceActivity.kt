@@ -343,17 +343,21 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
         val latLng = currentLatLng ?: return
 
         OnboardingAPI.getInstance().getEventsWeekAverage(latLng.latitude, latLng.longitude, radiusKm) { isOk, average ->
-            if (isOk && average != null) {
-                if (average <= 0f) {
+            // Changement ici : on s'assure d'être sur le thread UI pour modifier la visibilité
+            runOnUiThread {
+                if (isOk && average != null) {
+                    if (average <= 0f) {
+                        binding.layoutEventCount.visibility = View.GONE
+                        currentAverageCount = 0f
+                    } else {
+                        binding.layoutEventCount.visibility = View.VISIBLE
+                        animateCount(currentAverageCount, average)
+                        currentAverageCount = average
+                    }
+                } else {
                     binding.layoutEventCount.visibility = View.GONE
                     currentAverageCount = 0f
-                } else {
-                    binding.layoutEventCount.visibility = View.VISIBLE
-                    animateCount(currentAverageCount, average)
-                    currentAverageCount = average
                 }
-            } else {
-                binding.layoutEventCount.visibility = View.GONE
             }
         }
     }
