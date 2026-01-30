@@ -1288,7 +1288,7 @@
     <string name="user_action_zone_disclaimer">This information is strictly confidential and is not shared with anyone. You can change it in your settings.</string>
     <string name="user_action_zone_hint">1 avenue Jean Jaurès…</string>
     <string name="user_action_zone_no_address_error">Please add an address</string>
-    <string name="user_action_zone_send_ok">Address registered</string>
+    <string name="user_action_zone_send_ok">Profil updated</string>
     <string name="user_action_zone_send_failed">The address has not been registered</string>
     <string name="profile_edit_zone_title">Where do you want to act?</string>
     <string name="profile_edit_zone_description">Entourage is a social network!\nDiscover the solidarity initiatives in your neighborhood and build links with your neighbors</string>

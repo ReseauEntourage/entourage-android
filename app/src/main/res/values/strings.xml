@@ -2380,7 +2380,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="user_action_zone_disclaimer">Cette information est strictement confidentielle et n’est partagée à personne. Vous pouvez la modifier dans vos réglages.</string>
     <string name="user_action_zone_hint">1 avenue Jean Jaurès…</string>
     <string name="user_action_zone_no_address_error">Veuillez ajouter une adresse</string>
-    <string name="user_action_zone_send_ok">Adresse enregistrée</string>
+    <string name="user_action_zone_send_ok">Votre profil a été mis à jour</string>
     <string name="user_action_zone_send_failed">L\'adresse n\'a pas été enregistrée</string>
 
     <!-- Edit profile -->
