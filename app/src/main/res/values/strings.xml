@@ -3133,7 +3133,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_welcome_placeholder_birthdate">JJ/MM/AAAA</string>
     <string name="onboard_welcome_gender_female">Femme</string>
     <string name="onboard_welcome_gender_male">Homme</string>
-    <string name="onboard_welcome_gender_other">Autre</string>
+    <string name="onboard_welcome_gender_other">Non renseigné</string>
     <string name="onboard_welcome_placeholder_firstname_new">Ex. : Marie</string>
     <string name="onboard_welcome_placeholder_lastname_new">Ex. : Dupont</string>
     <string name="onboard_welcome_placeholder_phone_new">06 XX XX XX XX</string>

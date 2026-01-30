@@ -1816,7 +1816,7 @@
     <string name="onboard_welcome_placeholder_birthdate">DD/MM/YYYY</string>
     <string name="onboard_welcome_gender_female">Female</string>
     <string name="onboard_welcome_gender_male">Male</string>
-    <string name="onboard_welcome_gender_other">Other</string>
+    <string name="onboard_welcome_gender_other">Not specified</string>
     <string name="onboard_welcome_placeholder_firstname_new">e.g.: Mary</string>
     <string name="onboard_welcome_placeholder_lastname_new">e.g.: Doe</string>
     <string name="onboard_welcome_placeholder_phone_new">06 XX XX XX XX</string>
