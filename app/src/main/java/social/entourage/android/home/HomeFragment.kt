@@ -756,7 +756,16 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
 
         this.homeInitialPedagoAdapter.resetData(allPedago)
 
-        val show = allPedago.isNotEmpty()
+        var show = allPedago.isNotEmpty()
+        val me = EntourageApplication.me(activity)
+        if (show && me != null) {
+            val involvements = me.involvements
+            val hasResourcesWish = involvements.any { it.equals("resources", ignoreCase = true) }
+            if (!hasResourcesWish) {
+                show = false
+            }
+        }
+
         initialPedagoHeaderAdapter.update(getString(R.string.home_title_sensibilisation), getString(R.string.home_subtitle_sensibilisation), show)
         initialPedagoWrapperAdapter.setVisible(show)
     }
