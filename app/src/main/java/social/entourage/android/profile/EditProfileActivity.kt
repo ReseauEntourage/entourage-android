@@ -64,17 +64,12 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     private var selectedGender: String? = null
 
     // ----------------------------------------------------------------------
-    // CORRECTION DATE : On force le format dd/MM/yyyy pour inclure l'année
+    // CONFIGURATION DATE
     // ----------------------------------------------------------------------
     private val dateFormatString = "dd/MM/yyyy"
-
-    // Format attendu par l'API (yyyy-MM-dd)
     private val apiDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE)
-
-    // Format affiché à l'utilisateur (dd/MM/yyyy)
     private val uiDateFormat = SimpleDateFormat(dateFormatString, Locale.FRANCE)
 
-    // Mémorisation des prédictions pour l'autocomplete
     private var autocompletePredictions: List<AutocompletePrediction> = listOf()
     private var autocompleteAdapter: ArrayAdapter<String>? = null
 
@@ -120,7 +115,7 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
         setupActionZoneAutocomplete()
 
         setBackButton()
-        setAddressFromCurrentUser() // Récupérer l'adresse utilisateur enregistrée
+        setAddressFromCurrentUser()
         setupValidateButton()
     }
 
@@ -200,12 +195,13 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
     private fun setupGender() {
         binding.gender.peciLayout.setOnClickListener {
+            // CORRECTION ICI : Label "Non renseigné" et Clé "secret"
             val genderOptions = arrayOf(
                 getString(R.string.onboard_welcome_gender_female),
                 getString(R.string.onboard_welcome_gender_male),
-                getString(R.string.onboard_welcome_gender_other)
+                "Non renseigné"
             )
-            val genderKeys = arrayOf("female", "male", "other")
+            val genderKeys = arrayOf("female", "male", "secret")
 
             val builder = androidx.appcompat.app.AlertDialog.Builder(this)
             builder.setTitle(getString(R.string.onboard_welcome_title_gender))
@@ -313,18 +309,16 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
                 binding.gender.peciContent.text = when (it) {
                     "female" -> getString(R.string.onboard_welcome_gender_female)
                     "male" -> getString(R.string.onboard_welcome_gender_male)
-                    "other" -> getString(R.string.onboard_welcome_gender_other)
+                    "secret" -> "Non renseigné" // CORRECTION ICI
                     else -> ""
                 }
             }
 
-            // CORRECTION DATE: Utilisation de "dateFormatString" explicite (dd/MM/yyyy)
             birthday.peeiContent.transformIntoDatePicker(
                 this@EditProfileActivity,
                 dateFormatString
             )
 
-            // Affichage de la date existante en convertissant yyyy-MM-dd -> dd/MM/yyyy
             user.birthday?.let { apiDateStr ->
                 try {
                     val date = apiDateFormat.parse(apiDateStr)
@@ -332,7 +326,6 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
                         birthday.peeiContent.setText(uiDateFormat.format(date))
                     }
                 } catch (e: Exception) {
-                    // Si échec, on affiche brut (ne devrait pas arriver si l'API est propre)
                     birthday.peeiContent.setText(apiDateStr)
                 }
             }
@@ -438,7 +431,6 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
             val email = binding.email.peeiContent.text.toString().trimEnd()
             val travelDistance = binding.seekBarLayout.seekbar.progress
 
-            // Paramètres utilisateur
             val userParams: ArrayMap<String, Any> = ArrayMap()
             userParams["first_name"] = firstname
             userParams["last_name"] = lastname
@@ -447,16 +439,11 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
             userParams["travel_distance"] = travelDistance
             selectedGender?.let { userParams["gender"] = it }
 
-            // GESTION DATE
             val birthdayUI = binding.birthday.peeiContent.text.toString().trim()
             if (birthdayUI.isNotEmpty()) {
                 try {
-                    // On parse avec le format UI qui inclut l'année (dd/MM/yyyy)
                     val date = uiDateFormat.parse(birthdayUI)
-
                     if (date != null) {
-                        // On formate pour l'API (yyyy-MM-dd)
-                        // Comme on a forcé dd/MM/yyyy dans l'UI, 'date' contient la bonne année.
                         userParams["birthdate"] = apiDateFormat.format(date)
                     }
                 } catch (e: Exception) {
@@ -464,7 +451,6 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
                 }
             }
 
-            // Wrapper "user" obligatoire
             val finalWrapper: ArrayMap<String, Any> = ArrayMap()
             finalWrapper["user"] = userParams
 
