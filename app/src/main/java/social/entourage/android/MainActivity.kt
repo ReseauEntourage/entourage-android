@@ -324,15 +324,18 @@ class MainActivity : BaseSecuredActivity() {
 
 
         if (goContrib) {
+            intent.removeExtra("goContrib")
             goContrib()
             return
         }
         else if(goDiscoverGroup){
+            intent.removeExtra("goDiscoverGroup")
             this.setGoDiscoverGroupFromDeepL(goDiscoverGroup)
             goGroup()
             return
         }
         else if(goDiscoverEvent){
+            intent.removeExtra("goDiscoverEvent")
             goEvent()
             return
         }
