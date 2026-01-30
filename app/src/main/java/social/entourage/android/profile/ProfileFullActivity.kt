@@ -97,10 +97,10 @@ class MyProfileFullActivity : BaseSecuredActivity() {
 
     override fun onResume() {
         super.onResume()
+        userPresenter.getUser(id)
         if (user == null) {
             binding.progressBar.visibility = View.VISIBLE
             Timber.e("user is null in resume Profile Screen")
-            userPresenter.getUser(id)
         }
         EnhancedOnboarding.isFromSettingsWishes = false
         EnhancedOnboarding.isFromSettingsDisponibility = false
@@ -174,12 +174,8 @@ class MyProfileFullActivity : BaseSecuredActivity() {
     private fun updateUser(user: User) {
         notifSubTitle = ""
         notifBlocked = ""
-        val forceInit = this.user?.id != user.id
         this.user = user
-        if (forceInit) {
-            Timber.e("user reinit")
-            initUserInfo()
-        }
+        initUserInfo()
     }
 
     private fun setPartnerClickListener() {
@@ -807,10 +803,10 @@ class ProfileFullActivity : BaseSecuredActivity() {
 
     override fun onResume() {
         super.onResume()
+        userPresenter.getUser(id)
         if (user == null) {
             binding.progressBar.visibility = View.VISIBLE
             Timber.e("user is null in resume Profile Screen")
-            userPresenter.getUser(id)
         }
         EnhancedOnboarding.isFromSettingsWishes = false
         EnhancedOnboarding.isFromSettingsDisponibility = false
@@ -884,12 +880,8 @@ class ProfileFullActivity : BaseSecuredActivity() {
     private fun updateUser(user: User) {
         notifSubTitle = ""
         notifBlocked = ""
-        val forceInit = this.user?.id != user.id
         this.user = user
-        if (forceInit) {
-            Timber.e("user reinit")
-            initUserInfo()
-        }
+        initUserInfo()
     }
 
     private fun setScrollEffects(isMe: Boolean) {
