@@ -215,6 +215,7 @@ class EnhancedOnboarding : BaseActivity() {
                 }
                 "event" -> {
                     MainActivity.shouldLaunchEvent = true
+                    intent.putExtra("goDiscoverEvent", true)
                 }
                 "contribution" -> {
                     intent.putExtra("goContrib", true)

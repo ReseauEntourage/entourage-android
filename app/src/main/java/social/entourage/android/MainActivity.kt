@@ -183,10 +183,9 @@ class MainActivity : BaseSecuredActivity() {
         // On remet les flags à false immédiatement pour éviter les boucles
 
         // 1. Redirection vers l'onglet Événements
-        if (shouldLaunchEvent) {
-            shouldLaunchEvent = false
-            goEvent()
-        }
+        // La redirection se fait désormais via l'intent (goDiscoverEvent) pour éviter les boucles
+        // lors du changement d'onglet manuel. Le flag shouldLaunchEvent est conservé uniquement
+        // pour que le Fragment Events sache qu'il doit afficher la bulle d'info.
 
         // 2. Lancement Création de Demande (Both actions ou No event)
         // Utilise la variable distincte pour éviter de lancer la liste
