@@ -197,59 +197,26 @@ class EnhancedOnboarding : BaseActivity() {
                 putBoolean("PREF_ENHANCED_ONBOARDING_COMPLETED", true)
             }
 
-            // 1. Réinitialisation préventive de TOUS les flags de MainActivity
-            // Cela évite les conflits si plusieurs flags étaient restés true
-            MainActivity.shouldLaunchEvent = false
-            MainActivity.shouldLaunchWelcomeGroup = false
-            MainActivity.shouldLaunchQuizz = false
-            MainActivity.shouldLaunchActionCreation = false
-            MainActivity.shouldLaunchDemandCreation = false // On reset le nouveau flag
-            MainActivity.shouldLaunchProfile = false
+            val navigation: OnboardingNavigation = if (isFromSettingsinterest || isFromSettingsDisponibility || isFromSettingsWishes || isFromSettingsActionCategorie || MainActivity.isFromProfile) {
+                isFromSettingsinterest = false
+                isFromSettingsDisponibility = false
+                isFromSettingsWishes = false
+                isFromSettingsActionCategorie = false
+                OnboardingNavigation.Profile
+            } else {
+                when (viewModel.selectedCategory) {
+                    "neighborhoods" -> OnboardingNavigation.WelcomeGroup
+                    "event" -> OnboardingNavigation.Events
+                    "contribution" -> OnboardingNavigation.Donations
+                    "both_actions" -> OnboardingNavigation.CreateActionDemand
+                    "resources" -> OnboardingNavigation.Quiz
+                    "no_event" -> OnboardingNavigation.CreateActionDemand
+                    else -> OnboardingNavigation.Home
+                }
+            }
 
             val intent = Intent(this, MainActivity::class.java)
-
-            // Mapping des actions en fonction de la catégorie choisie
-            when (viewModel.selectedCategory) {
-                "neighborhoods" -> {
-                    MainActivity.shouldLaunchWelcomeGroup = true
-                }
-                "event" -> {
-                    MainActivity.shouldLaunchEvent = true
-                    intent.putExtra("goDiscoverEvent", true)
-                }
-                "contribution" -> {
-                    intent.putExtra("goContrib", true)
-                }
-                "both_actions" -> {
-                    // C'est ICI qu'on déclenche la CREATION de demande
-                    MainActivity.shouldLaunchDemandCreation = true
-                }
-                "resources" -> {
-                    MainActivity.shouldLaunchQuizz = true
-                }
-                "no_event" -> {
-                    // Idem, on lance la création de demande par défaut
-                    MainActivity.shouldLaunchDemandCreation = true
-                }
-                else -> {
-                    // Cas par défaut (Home)
-                }
-            }
-
-            // Gestion du retour des Settings (prioritaire)
-            if (isFromSettingsinterest || isFromSettingsDisponibility || isFromSettingsWishes || isFromSettingsActionCategorie || MainActivity.isFromProfile) {
-                isFromSettingsinterest = false
-
-                // On annule les redirections "découverte" pour juste revenir au profil
-                MainActivity.shouldLaunchEvent = false
-                MainActivity.shouldLaunchWelcomeGroup = false
-                MainActivity.shouldLaunchActionCreation = false
-                MainActivity.shouldLaunchDemandCreation = false
-                MainActivity.shouldLaunchQuizz = false
-                intent.removeExtra("goContrib")
-
-                MainActivity.shouldLaunchProfile = true
-            }
+            intent.putExtra("extra_onboarding_navigation", navigation)
 
             // Nettoyage de la stack pour repartir proprement sur MainActivity
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

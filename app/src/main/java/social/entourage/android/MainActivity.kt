@@ -56,6 +56,7 @@ import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
+import social.entourage.android.enhanced_onboarding.OnboardingNavigation
 import social.entourage.android.welcome.WelcomeTwoActivity
 import timber.log.Timber
 
@@ -179,54 +180,6 @@ class MainActivity : BaseSecuredActivity() {
             shouldLaunchEventPopUp = 0
         }
 
-        // --- GESTION CENTRALISÉE DES REDIRECTIONS ---
-        // On remet les flags à false immédiatement pour éviter les boucles
-
-        // 1. Redirection vers l'onglet Événements
-        // La redirection se fait désormais via l'intent (goDiscoverEvent) pour éviter les boucles
-        // lors du changement d'onglet manuel. Le flag shouldLaunchEvent est conservé uniquement
-        // pour que le Fragment Events sache qu'il doit afficher la bulle d'info.
-
-        // 2. Lancement Création de Demande (Both actions ou No event)
-        // Utilise la variable distincte pour éviter de lancer la liste
-        if (shouldLaunchDemandCreation) {
-            shouldLaunchDemandCreation = false
-            val intent = Intent(this, CreateActionActivity::class.java)
-            intent.putExtra(Const.IS_ACTION_DEMAND, true)
-            this.startActivity(intent)
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-        }
-
-        // 3. Ancienne variable de fallback (si jamais utilisée ailleurs)
-        if (shouldLaunchActionCreation) {
-            shouldLaunchActionCreation = false
-            val intent = Intent(this, CreateActionActivity::class.java)
-            intent.putExtra(Const.IS_ACTION_DEMAND, false)
-            this.startActivity(intent)
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-        }
-
-        // 4. Lancement du Quizz (Ressources)
-        if (shouldLaunchQuizz) {
-            shouldLaunchQuizz = false
-            val urlString = "https://kahoot.it/challenge/45371e80-fe50-4be5-afec-b37e3d50ede2_1733228323615"
-            WebViewFragment.newInstance(urlString, 0, true)
-                .show(supportFragmentManager, WebViewFragment.TAG)
-        }
-
-        // 5. Lancement Welcome Group
-        if (shouldLaunchWelcomeGroup) {
-            shouldLaunchWelcomeGroup = false
-            val intent = Intent(this, WelcomeTwoActivity::class.java)
-            this.startActivity(intent)
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-        }
-
-        // 6. Retour au profil (Settings)
-        if (shouldLaunchProfile) {
-            shouldLaunchProfile = false
-            showProfile()
-        }
     }
 
     private fun checkForAppUpdate() {
@@ -299,7 +252,48 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
 
+    private fun handleOnboardingNavigation(navigation: OnboardingNavigation) {
+        when (navigation) {
+            is OnboardingNavigation.WelcomeGroup -> {
+                val intent = Intent(this, WelcomeTwoActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
+            is OnboardingNavigation.Events -> {
+                shouldLaunchEvent = true
+                goEvent()
+            }
+            is OnboardingNavigation.Donations -> {
+                goContrib()
+            }
+            is OnboardingNavigation.CreateActionDemand -> {
+                val intent = Intent(this, CreateActionActivity::class.java)
+                intent.putExtra(Const.IS_ACTION_DEMAND, true)
+                startActivity(intent)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
+            is OnboardingNavigation.Quiz -> {
+                val urlString = "https://kahoot.it/challenge/45371e80-fe50-4be5-afec-b37e3d50ede2_1733228323615"
+                WebViewFragment.newInstance(urlString, 0, true)
+                    .show(supportFragmentManager, WebViewFragment.TAG)
+            }
+            is OnboardingNavigation.Profile -> {
+                showProfile()
+            }
+            is OnboardingNavigation.Home -> {
+                // Stay on home
+            }
+        }
+    }
+
     fun useIntentForRedictection(intent: Intent) {
+        val onboardingNav = intent.getParcelableExtra<OnboardingNavigation>("extra_onboarding_navigation")
+        if (onboardingNav != null) {
+            intent.removeExtra("extra_onboarding_navigation")
+            handleOnboardingNavigation(onboardingNav)
+            return
+        }
+
         intent.action?.let { action ->
             checkIntentAction(action, intent.extras)
         }
@@ -697,14 +691,7 @@ class MainActivity : BaseSecuredActivity() {
         var orientations: MutableList<userConfig>? = null
         var shouldLaunchEventPopUp: Int = 0
         var shouldLaunchOnboarding: Boolean = false
-        var shouldLaunchProfile: Boolean = false
         var isFromProfile: Boolean = false
         var shouldLaunchEvent: Boolean = false
-        var shouldLaunchActionCreation: Boolean = false
-        var shouldLaunchQuizz: Boolean = false
-        var shouldLaunchWelcomeGroup: Boolean = false
-
-        // NOUVEAU FLAG : Pour distinguer création de demande vs liste simple
-        var shouldLaunchDemandCreation: Boolean = false
     }
 }
