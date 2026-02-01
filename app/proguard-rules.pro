@@ -15,3 +15,8 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+# Places SDK 5.1.1
+-keepclassmembers class com.google.android.libraries.places.internal.** {
+    <init>();
+}

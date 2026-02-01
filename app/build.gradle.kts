@@ -82,7 +82,7 @@ android {
         )
         applicationId = "social.entourage.android"
 
-        minSdk = 23 /*November 2015: Android 6.0, MarshMallow*/
+        minSdk = 24
         targetSdk = 36
 
         // Making either of these two values dynamic in the defaultConfig will

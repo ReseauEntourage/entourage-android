@@ -222,7 +222,7 @@ class ActionLocationFilterActivity : AppCompatActivity() {
 
     //Google Place
     private fun onPlaceSearch() {
-        val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
+        val fields = listOf(Place.Field.ID, Place.Field.DISPLAY_NAME, Place.Field.LOCATION, Place.Field.FORMATTED_ADDRESS)
         val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
             .build(this)
         resultLauncher.launch(intent)
@@ -234,19 +234,19 @@ class ActionLocationFilterActivity : AppCompatActivity() {
         when (result.resultCode) {
             Activity.RESULT_OK -> {
                 val place = data?.let { Autocomplete.getPlaceFromIntent(it) }
-                if (place == null || place.address == null) return@registerForActivityResult
-                var addressStr : String = place.address
+                val formattedAddress = place?.formattedAddress ?: return@registerForActivityResult
+                var addressStr = formattedAddress
                 val lastCommaIndex = addressStr.lastIndexOf(',')
                 if (lastCommaIndex > 0) {
                     addressStr = addressStr.substring(0, lastCommaIndex)
                 }
 
-                val address = Address(place.latLng!!.latitude, place.latLng!!.longitude, addressStr)
+                val address = Address(place.location!!.latitude, place.location!!.longitude, addressStr)
                 currentFilters?.modifyAddress(address)
                 currentFilters?.modifiyShortname(addressStr)
                 binding.placeName.text = addressStr
 
-                getCityNameFromPlace(place.latLng!!)
+                getCityNameFromPlace(place.location!!)
             }
             AutocompleteActivity.RESULT_ERROR -> {
                 clearFilterFromPlace()
