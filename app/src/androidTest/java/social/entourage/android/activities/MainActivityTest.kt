@@ -1,4 +1,4 @@
-package social.entourage.android
+package social.entourage.android.activities
 
 import android.Manifest
 import androidx.test.espresso.Espresso.onView
@@ -12,6 +12,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import social.entourage.android.MainActivity
+import social.entourage.android.R
 import social.entourage.android.afterLogin.EntourageTestAfterLogin
 
 @RunWith(AndroidJUnit4::class)
@@ -40,4 +42,6 @@ class MainActivityTest : EntourageTestAfterLogin() {
         checkNoOnboarding()
         onView(withText(R.string.home_title)).check(matches(isDisplayed()))
     }
+
+
 }
