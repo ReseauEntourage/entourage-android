@@ -17,10 +17,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class WelcomeOneActivityTest {
+class WelcomeFiveActivityTest {
 
     @get:Rule
-    val activityRule = ActivityScenarioRule(WelcomeOneActivity::class.java)
+    val activityRule = ActivityScenarioRule(WelcomeFiveActivity::class.java)
 
     @Before
     fun setUp() {
@@ -35,11 +35,6 @@ class WelcomeOneActivityTest {
 
     @Test
     fun test_display() {
-        onView(withId(social.entourage.android.R.id.title_welcome_one)).check(matches(isDisplayed()))
-    }
-    @Test
-    fun test_close_button() {
-        onView(withId(social.entourage.android.R.id.close_button)).perform(click())
-        intended(hasComponent(social.entourage.android.MainActivity::class.java.name))
+        onView(withId(social.entourage.android.R.id.main_button)).check(matches(isDisplayed()))
     }
 }

@@ -1,4 +1,4 @@
-package social.entourage.android.welcome
+package social.entourage.android.survey
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -17,10 +17,10 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class WelcomeOneActivityTest {
+class CreateSurveyActivityTest {
 
     @get:Rule
-    val activityRule = ActivityScenarioRule(WelcomeOneActivity::class.java)
+    val activityRule = ActivityScenarioRule(CreateSurveyActivity::class.java)
 
     @Before
     fun setUp() {
@@ -32,14 +32,8 @@ class WelcomeOneActivityTest {
         Intents.release()
     }
 
-
     @Test
-    fun test_display() {
-        onView(withId(social.entourage.android.R.id.title_welcome_one)).check(matches(isDisplayed()))
-    }
-    @Test
-    fun test_close_button() {
-        onView(withId(social.entourage.android.R.id.close_button)).perform(click())
-        intended(hasComponent(social.entourage.android.MainActivity::class.java.name))
+    fun test_activity_launches() {
+        // Activity is launched by the Rule
     }
 }
