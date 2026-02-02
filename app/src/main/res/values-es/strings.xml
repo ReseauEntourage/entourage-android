@@ -2717,4 +2717,5 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="onboard_sms_wait_title">¿No has recibido tu código de acceso?</string>
     <string name="onboard_sms_wait_countdown">Podrás solicitar un nuevo código en %1$s</string>
 
+    <string name="guide_help_orientation_button">Ayuda y orientación</string>
 </resources>

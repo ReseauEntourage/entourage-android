@@ -2758,4 +2758,5 @@
     <string name="onboard_sms_wait_title">ألم تستلم رمز تسجيل الدخول بعد؟</string>
     <string name="onboard_sms_wait_countdown">يمكنك طلب رمز جديد خلال %1$s</string>
 
+    <string name="guide_help_orientation_button">المساعدة والتوجيه</string>
 </resources>
