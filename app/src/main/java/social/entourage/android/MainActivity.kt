@@ -606,7 +606,12 @@ class MainActivity : BaseSecuredActivity() {
                 }
             }
             // LA navigation est faite ici par NavigationUI, toi tu ne navigues pas ailleurs.
-            NavigationUI.onNavDestinationSelected(item, navController)
+            val handled = NavigationUI.onNavDestinationSelected(item, navController)
+            if (!handled && item.itemId == R.id.navigation_home) {
+                goHome()
+                return@setOnItemSelectedListener true
+            }
+            handled
         }
     }
 
