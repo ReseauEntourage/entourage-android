@@ -1,4 +1,4 @@
-package social.entourage.android.welcome
+package social.entourage.android.beforeLogin.welcome
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -15,6 +15,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import social.entourage.android.R
+import social.entourage.android.welcome.WelcomeFourActivity
 
 @RunWith(AndroidJUnit4::class)
 class WelcomeFourActivityTest {
@@ -35,6 +37,6 @@ class WelcomeFourActivityTest {
 
     @Test
     fun test_display() {
-        onView(withId(social.entourage.android.R.id.main_button)).check(matches(isDisplayed()))
+        onView(withId(R.id.main_button)).check(matches(isDisplayed()))
     }
 }

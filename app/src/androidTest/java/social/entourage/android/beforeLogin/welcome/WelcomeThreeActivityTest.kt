@@ -1,4 +1,4 @@
-package social.entourage.android.welcome
+package social.entourage.android.beforeLogin.welcome
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -15,12 +15,14 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import social.entourage.android.R
+import social.entourage.android.welcome.WelcomeThreeActivity
 
 @RunWith(AndroidJUnit4::class)
-class WelcomeTwoActivityTest {
+class WelcomeThreeActivityTest {
 
     @get:Rule
-    val activityRule = ActivityScenarioRule(WelcomeTwoActivity::class.java)
+    val activityRule = ActivityScenarioRule(WelcomeThreeActivity::class.java)
 
     @Before
     fun setUp() {
@@ -35,10 +37,6 @@ class WelcomeTwoActivityTest {
 
     @Test
     fun test_display() {
-        onView(withId(social.entourage.android.R.id.button_say_hello)).check(matches(isDisplayed()))
-    }
-    @Test
-    fun test_close_button() {
-        onView(withId(social.entourage.android.R.id.btn_close)).perform(click())
+        onView(withId(R.id.main_button)).check(matches(isDisplayed()))
     }
 }
