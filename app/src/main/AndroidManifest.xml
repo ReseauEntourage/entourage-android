@@ -108,9 +108,6 @@
         <activity
             android:name=".welcome.WelcomeFourActivity"
             android:exported="false" />
-        <activity
-            android:name=".welcome.WelcomeTestActivity"
-            android:exported="false" />
         <activity android:name=".members.MembersActivity"
             android:exported="false" />
         <activity android:name=".survey.CreateSurveyActivity"
