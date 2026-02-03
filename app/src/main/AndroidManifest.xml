@@ -146,9 +146,6 @@
             android:name=".actions.create.CreateActionActivity"
             android:exported="false" />
         <activity
-            android:name=".actions.list.me.MyActionsListActivity"
-            android:exported="false" />
-        <activity
             android:name=".actions.detail.ActionDetailActivity"
             android:exported="false" />
         <activity

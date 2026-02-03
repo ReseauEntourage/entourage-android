@@ -609,8 +609,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
 
     <string name="action_date_list">%s</string>
 
-    <string name="action_bt_my_actions">Mis anuncios</string>
-
     <string name="action_contrib_empty_state_title">Ninguna contribución coincide con tu búsqueda.</string>
     <string name="action_contrib_empty_state_desc">Puedes ampliar tu campo de búsqueda o crear una contribución.</string>
 
@@ -623,8 +621,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
 
     <string name="action_menu_create_demand">Crear una solicitud</string>
     <string name="action_menu_create_contrib">Crear una contribución</string>
-
-    <string name="action_my_actions">Mis anuncios</string>
 
     <string name="action_my_empty_title">No has publicado ningún anuncio</string>
     <string name="action_my_empty_subtitle">Puede crear una contribución o solicitud haciendo clic en “+” en la página “Ayuda mutua”.</string>

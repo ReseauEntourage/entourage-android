@@ -606,7 +606,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="actions_tab_demands">Upraszanie</string>
 
     <string name="action_date_list">%s</string>
-    <string name="action_bt_my_actions">Moje reklamy</string>
 
     <string name="action_contrib_empty_state_title">Brak wpisów pasujących do Twojego wyszukiwania</string>
     <string name="action_contrib_empty_state_desc">Możesz poszerzyć swoje pole wyszukiwania lub dodać wpis</string>
@@ -620,8 +619,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
 
     <string name="action_menu_create_demand">Utwórz prośbę</string>
     <string name="action_menu_create_contrib">Utwórz wkład</string>
-
-    <string name="action_my_actions">Moje reklamy</string>
 
     <string name="action_my_empty_title">Nie opublikowałeś żadnych ogłoszeń</string>
     <string name="action_my_empty_subtitle">Możesz utworzyć wkład lub prośbę, klikając „+” na stronie „Wzajemna pomoc”.</string>

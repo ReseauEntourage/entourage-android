@@ -593,8 +593,6 @@
     <string name="actions_tab_contribs">مساهمات</string>
     <string name="actions_tab_demands">طلب مساعدة</string>
 
-    <string name="action_bt_my_actions">إعلاناتي</string>
-
     <string name="action_contrib_empty_state_title">لا توجد مساهمات تطابق بحثك</string>
     <string name="action_contrib_empty_state_desc">يمكنك توسيع مجال البحث الخاص بك أو إنشاء مساهمة</string>
 
@@ -607,8 +605,6 @@
 
     <string name="action_menu_create_demand">إنشاء طلب</string>
     <string name="action_menu_create_contrib">إنشاء مساهمة</string>
-
-    <string name="action_my_actions">إعلاناتي</string>
 
     <string name="action_my_empty_title">لم تقم بنشر أي إعلانات</string>
     <string name="action_my_empty_subtitle">يمكنك إنشاء مساهمة أو طلب بالضغط على "+" في صفحة "المساعدة المتبادلة".</string>
