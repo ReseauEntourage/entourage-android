@@ -152,113 +152,12 @@
                         android:orientation="vertical"
                         app:layout_constraintGuide_percent="0.05" />
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/ui_layout_location_bt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="8dp"
-                        android:background="@drawable/new_bg_selected_filter"
-                        android:paddingHorizontal="4dp"
-                        android:paddingVertical="6dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/guidelineRight"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="@id/guidelineLeft"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:id="@+id/ui_title_location_bt"
-                            style="@style/selected_filter"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:ellipsize="middle"
-                            android:maxLength="25"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:text="Location" />
-
-                        <ImageView
-                            android:id="@+id/imageView26"
-                            android:layout_width="20dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="4dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/ui_title_location_bt"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/new_location"
-                            app:tint="@color/white" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
                     <androidx.constraintlayout.widget.Guideline
                         android:id="@+id/guidelineRight"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         app:layout_constraintGuide_percent="0.65" />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/ui_layout_category_bt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:background="@drawable/new_bg_selected_filter"
-                        android:paddingHorizontal="4dp"
-                        android:paddingVertical="6dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/ui_layout_location_bt"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.08"
-                        app:layout_constraintStart_toEndOf="@+id/ui_layout_location_bt"
-                        app:layout_constraintTop_toTopOf="@+id/ui_layout_location_bt"
-                        android:visibility="gone">
-
-                        <TextView
-                            android:id="@+id/ui_title_category_bt"
-                            style="@style/selected_filter"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="4dp"
-                            android:ellipsize="middle"
-                            android:maxLength="45"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/ui_nb_category_bt"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:text="Catégorie" />
-
-                        <ImageView
-                            android:id="@+id/imageViewcategory_bt"
-                            android:layout_width="20dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="4dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/ui_title_category_bt"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/new_ic_tag"
-                            app:tint="@color/white" />
-
-                        <TextView
-                            android:id="@+id/ui_nb_category_bt"
-                            style="@style/selected_filter"
-                            android:layout_width="17dp"
-                            android:layout_height="17dp"
-                            android:layout_marginEnd="8dp"
-                            android:background="@drawable/bg_partner_logo"
-                            android:ellipsize="none"
-                            android:gravity="center_horizontal|center_vertical"
-                            android:maxLength="1"
-                            android:textAlignment="center"
-                            android:textColor="@color/accent"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:text="1" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <EditText
                         android:id="@+id/searchEditText"

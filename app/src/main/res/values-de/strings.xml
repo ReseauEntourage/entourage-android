@@ -614,10 +614,6 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="action_demand_empty_state_title">Keine Anfragen entsprechen Ihrer Suche</string>
     <string name="action_demand_empty_state_desc">Sie können Ihr Suchfeld erweitern oder eine Anfrage erstellen</string>
 
-    <string name="action_bt_cat_filters">Kategorien</string>
-    <string name="action_cat_filters_title">Nach Kategorien filtern</string>
-    <string name="action_location_filter_title">Nach Standort filtern</string>
-
     <string name="action_menu_create_demand">Erstellen Sie eine Anfrage</string>
     <string name="action_menu_create_contrib">Erstellen Sie einen Beitrag</string>
 

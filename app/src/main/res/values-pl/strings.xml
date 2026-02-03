@@ -613,10 +613,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="action_demand_empty_state_title">Żadne żądania nie pasują do Twojego wyszukiwania</string>
     <string name="action_demand_empty_state_desc">Możesz rozszerzyć pole wyszukiwania lub utworzyć zapytanie</string>
 
-    <string name="action_bt_cat_filters">Kategorie</string>
-    <string name="action_cat_filters_title">Filtruj według kategorii</string>
-    <string name="action_location_filter_title">Filtruj według lokalizacji</string>
-
     <string name="action_menu_create_demand">Utwórz prośbę</string>
     <string name="action_menu_create_contrib">Utwórz wkład</string>
 

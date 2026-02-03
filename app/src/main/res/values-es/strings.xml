@@ -615,10 +615,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="action_demand_empty_state_title">Ninguna solicitud coincide con su búsqueda</string>
     <string name="action_demand_empty_state_desc">Puede ampliar su campo de búsqueda o crear una solicitud</string>
 
-    <string name="action_bt_cat_filters">Categorías</string>
-    <string name="action_cat_filters_title">Filtrar por categorías</string>
-    <string name="action_location_filter_title">Filtrar por ubicación</string>
-
     <string name="action_menu_create_demand">Crear una solicitud</string>
     <string name="action_menu_create_contrib">Crear una contribución</string>
 

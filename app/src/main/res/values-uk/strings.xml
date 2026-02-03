@@ -618,10 +618,6 @@
     <string name="action_demand_empty_state_title">Немає запитів, що відповідають вашому пошуку</string>
     <string name="action_demand_empty_state_desc">Ви можете розширити поле пошуку або створити запит</string>
 
-    <string name="action_bt_cat_filters">Категорії</string>
-    <string name="action_cat_filters_title">Фільтрувати за категоріями</string>
-    <string name="action_location_filter_title">Фільтрувати за розташуванням</string>
-
     <string name="action_menu_create_demand">Створіть запит</string>
     <string name="action_menu_create_contrib">Створіть внесок</string>
     <string name="action_my_empty_title">Ви не публікували жодної реклами</string>
