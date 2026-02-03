@@ -177,7 +177,7 @@
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
-            android:name=".tools.image_viewer.ImageDialogActivity"
+            android:name=".tools.image_viewer.ImageViewerActivity"
             android:exported="false" />
         <activity
             android:name=".events.create.CreateEventActivity"

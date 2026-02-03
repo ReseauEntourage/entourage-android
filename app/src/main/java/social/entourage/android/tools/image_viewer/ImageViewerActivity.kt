@@ -3,36 +3,32 @@ package social.entourage.android.tools.image_viewer
 import android.content.Context
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.view.View
 import android.view.WindowManager
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Post
 import social.entourage.android.base.BaseActivity
-import social.entourage.android.comment.CommentsListAdapter
-import social.entourage.android.databinding.ImageDialogFragmentBinding
+import social.entourage.android.databinding.FragmentImageViewerBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.groups.GroupPresenter
+import social.entourage.android.tools.utils.Const
 import timber.log.Timber
 
-class ImageDialogActivity:BaseActivity() {
+class ImageViewerActivity:BaseActivity() {
 
-    private lateinit var binding:ImageDialogFragmentBinding
+    private lateinit var binding:FragmentImageViewerBinding
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ImageDialogFragmentBinding.inflate(layoutInflater)
-        val postId = intent.getIntExtra("postId", 0)
-        val eventId = intent.getIntExtra("eventId", 0)
-        val groupId = intent.getIntExtra("groupId", 0)
+        binding = FragmentImageViewerBinding.inflate(layoutInflater)
+        val postId = intent.getIntExtra(Const.POST_ID, 0)
+        val eventId = intent.getIntExtra(Const.EVENT_ID, 0)
+        val groupId = intent.getIntExtra(Const.GROUP_ID, 0)
         eventPresenter.getCurrentParentPost.observe(this, ::handleParentPost)
         groupPresenter.getCurrentParentPost.observe(this, ::handleParentPost)
 
@@ -51,7 +47,6 @@ class ImageDialogActivity:BaseActivity() {
             finish()
         }
     }
-
 
     fun setView(imageUrl:String){
         val displayMetrics = DisplayMetrics()
