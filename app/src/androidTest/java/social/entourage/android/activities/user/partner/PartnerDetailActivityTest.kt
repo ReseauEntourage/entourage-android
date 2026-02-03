@@ -42,7 +42,7 @@ class PartnerDetailActivityTest : EntourageTestAfterLogin() {
     }
 
     @Test
-    fun test_activity_launches() {
+    fun testPartnerDeta() {
         Espresso.onView(ViewMatchers.withId(R.id.asso_profile_image_association))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         Espresso.onView(ViewMatchers.withId(R.id.asso_profile_name))

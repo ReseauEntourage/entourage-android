@@ -129,9 +129,6 @@
         <activity android:name=".discussions.WebViewActivityForTest">
         </activity>
         <activity
-            android:name=".user.languechoose.ActivityChooseLanguage"
-            android:exported="false" />
-        <activity
             android:name=".discussions.DetailConversationActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
