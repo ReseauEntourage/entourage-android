@@ -13,6 +13,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.rule.GrantPermissionRule
 import org.hamcrest.Matchers.allOf
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -38,7 +39,14 @@ class MyEntouragesTest : EntourageTestAfterLogin() {
     fun setUp() {
         activityRule.scenario.onActivity { activity ->
             super.setUp(activity)
+            forceOnboarding(true)
         }
+    }
+
+    @After
+    override fun tearDown() {
+        super.tearDown()
+        forceOnboarding(false)
     }
 
     override fun closeAutofill() {
@@ -52,7 +60,11 @@ class MyEntouragesTest : EntourageTestAfterLogin() {
     fun retrieveEntourages() {
         checkNoOnboarding()
         //Try to retrieve feeds
-        val bottomBarMessagesButton = onView(allOf(withId(R.id.navigation_donations), isDisplayed()))
+        val bottomBarMessagesButton = onView(allOf(
+            withId(R.id.navigation_donations),
+            isDisplayed()
+            )
+        )
         bottomBarMessagesButton.perform(click())
         val myEntouragesTab = onView(allOf(withText(R.string.actions_tab_mygroup), isDisplayed()))
         myEntouragesTab.perform(click())

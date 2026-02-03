@@ -1,5 +1,6 @@
 package social.entourage.android
 
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -7,7 +8,6 @@ import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
-import androidx.multidex.MultiDexApplication
 import com.google.firebase.analytics.FirebaseAnalytics
 import social.entourage.android.api.ApiModule
 import social.entourage.android.api.model.TimestampedObject
@@ -28,7 +28,7 @@ import timber.log.Timber
 /**
  * Application setup for Analytics, JodaTime and Dagger
  */
-class EntourageApplication : MultiDexApplication() {
+class EntourageApplication : Application() {
     private val activities: ArrayList<BaseActivity> = ArrayList()
     //lateinit var sharedPreferences: SharedPreferences
     private lateinit var librariesSupport: LibrariesSupport

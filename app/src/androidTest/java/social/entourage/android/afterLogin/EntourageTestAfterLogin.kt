@@ -1,6 +1,7 @@
 package social.entourage.android.afterLogin
 
 import android.content.Context
+import androidx.core.content.edit
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.intent.Intents
@@ -13,6 +14,9 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageTestWithAPI
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
+import social.entourage.android.home.HomeFragment.Companion.PREF_ENHANCED_ONBOARDING_COMPLETED
+import social.entourage.android.home.HomeFragment.Companion.PREF_GATING_ENHANCED_ONBOARDING_SHOWN
+import timber.log.Timber
 
 open class EntourageTestAfterLogin : EntourageTestWithAPI() {
     private val login: String = BuildConfig.TEST_ACCOUNT_LOGIN
@@ -51,12 +55,20 @@ open class EntourageTestAfterLogin : EntourageTestWithAPI() {
         super.tearDown()
     }
 
+    protected fun forceOnboarding(done: Boolean = true) {
+        EntourageApplication.get().sharedPreferences.edit(commit = true) {
+            putBoolean(PREF_GATING_ENHANCED_ONBOARDING_SHOWN, done)
+            putBoolean(PREF_ENHANCED_ONBOARDING_COMPLETED, done)
+        }
+    }
+
     protected fun checkNoOnboarding() {
         try {
             onView(allOf(withText(R.string.onboarding_presentation_btn_negative),isDisplayed()))
                 .perform(click())
         } catch (e: Exception) {
             //No onboarding
+            Timber.e(e)
         }
     }
 }
