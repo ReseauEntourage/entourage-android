@@ -9,7 +9,6 @@ import android.view.autofill.AutofillManager
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.IdlingResource
 import androidx.test.platform.app.InstrumentationRegistry
-import com.jakewharton.espresso.OkHttp3IdlingResource
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
@@ -31,7 +30,7 @@ open class EntourageTestWithAPI {
         }
 
         val client = EntourageApplication[activity].apiModule.okHttpClient
-        resource = OkHttp3IdlingResource.create("OkHttp", client)
+        resource = OkHttpIdlingResource.create("OkHttp", client)
         IdlingRegistry.getInstance().register(resource)
 
         enableWifiAndData(true)
