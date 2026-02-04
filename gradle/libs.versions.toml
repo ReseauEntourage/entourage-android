@@ -38,7 +38,6 @@ androidx-test-rules = "1.7.0"
 androidx-test-core = "1.7.0"
 androidx-uiautomator = "2.3.0"
 espresso-intents = "3.7.0"
-okhttp3-idling-resource = "1.0.0"
 androidx-arch-core-testing = "2.2.0"
 junit = "4.13.2"
 mockito-core = "5.21.0"
@@ -115,7 +114,6 @@ androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-
 androidx-test-core-ktx = { module = "androidx.test:core-ktx", version.ref = "androidx-test-core" }
 androidx-uiautomator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "androidx-uiautomator" }
 espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "espresso-intents" }
-okhttp3-idling-resource = { module = "com.jakewharton.espresso:okhttp3-idling-resource", version.ref = "okhttp3-idling-resource" }
 androidx-arch-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "androidx-arch-core-testing" }
 junit = { module = "junit:junit", version.ref = "junit" }
 test-core = { module = "androidx.test:core", version.ref = "androidx-test-core" }
