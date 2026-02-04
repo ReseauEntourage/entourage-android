@@ -3,11 +3,16 @@ package social.entourage.android
 import android.content.Context
 import android.os.Build
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import android.view.autofill.AutofillManager
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.IdlingResource
 import androidx.test.platform.app.InstrumentationRegistry
 import com.jakewharton.espresso.OkHttp3IdlingResource
+import org.hamcrest.Description
+import org.hamcrest.Matcher
+import org.hamcrest.TypeSafeMatcher
 
 open class EntourageTestWithAPI {
     private var afM: AutofillManager? = null
@@ -71,6 +76,24 @@ open class EntourageTestWithAPI {
         } catch (e: Exception) {
             Timber.d(e)
         }*/
+    }
+
+    protected fun childAtPosition(
+        parentMatcher: Matcher<View>, position: Int
+    ): Matcher<View> {
+
+        return object : TypeSafeMatcher<View>() {
+            override fun describeTo(description: Description) {
+                description.appendText("Child at position $position in parent ")
+                parentMatcher.describeTo(description)
+            }
+
+            public override fun matchesSafely(view: View): Boolean {
+                val parent = view.parent
+                return parent is ViewGroup && parentMatcher.matches(parent)
+                        && view == parent.getChildAt(position)
+            }
+        }
     }
 
     companion object {
