@@ -119,7 +119,7 @@ class MyEntouragesTest : EntourageTestAfterLogin() {
         nextButton3.perform(click())
 
         val newActionCategory = onView(
-            allOf(withId(R.id.ui_title_cat_demand), withText("Temps de partage"),isDisplayed()))
+            allOf(withId(R.id.ui_title_cat_demand),isDisplayed()))
         newActionCategory.check(matches(withText("Service")))
 
     }
