@@ -9,13 +9,48 @@ import android.view.autofill.AutofillManager
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.IdlingResource
 import androidx.test.platform.app.InstrumentationRegistry
-import org.hamcrest.Description
+import androidx.test.uiautomator.UiDevice
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
+import org.junit.Rule
+import org.junit.rules.TestWatcher
+import timber.log.Timber
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 open class EntourageTestWithAPI {
     private var afM: AutofillManager? = null
     protected var resource: IdlingResource? = null
+    private val shouldTakeSnapshot = false
+
+    @get:Rule
+    val screenshotWatcher = object : TestWatcher() {
+        override fun failed(e: Throwable?, description: org.junit.runner.Description?) {
+            if(shouldTakeSnapshot) {
+                takeSnapshot(description?.className ?: "Unknown")
+            }
+        }
+    }
+
+    private fun takeSnapshot(className: String) {
+        val sdf = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
+        val timestamp = sdf.format(Date())
+        val fileName = "${timestamp}_${className}.png"
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        val storageDir = instrumentation.targetContext.filesDir
+        val file = File(storageDir, fileName)
+        try {
+            if (UiDevice.getInstance(instrumentation).takeScreenshot(file)) {
+                Timber.d("EntourageTest", "Screenshot taken: ${file.absolutePath}")
+            } else {
+                Timber.e("EntourageTest", "Failed to take screenshot")
+            }
+        } catch (e: Exception) {
+            Timber.e("EntourageTest", "Error taking screenshot", e)
+        }
+    }
 
     open fun setUp(activity: Context) {
         afM = activity.getSystemService(AutofillManager::class.java)
@@ -82,7 +117,7 @@ open class EntourageTestWithAPI {
     ): Matcher<View> {
 
         return object : TypeSafeMatcher<View>() {
-            override fun describeTo(description: Description) {
+            override fun describeTo(description: org.hamcrest.Description) {
                 description.appendText("Child at position $position in parent ")
                 parentMatcher.describeTo(description)
             }
