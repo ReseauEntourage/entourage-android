@@ -36,7 +36,7 @@ androidx-test-runner = "1.7.0"
 androidx-test-rules = "1.7.0"
 androidx-test-core = "1.7.0"
 androidx-uiautomator = "2.3.0"
-espresso-intents = "3.7.0"
+espresso = "3.7.0"
 okhttp3-idling-resource = "1.0.0"
 androidx-arch-core-testing = "2.2.0"
 junit = "4.13.2"
@@ -145,9 +145,9 @@ androidx-test-core-ktx = { module = "androidx.test:core-ktx", version.ref = "and
 androidx-uiautomator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "androidx-uiautomator" }
 androidx-arch-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "androidx-arch-core-testing" }
 #espresso
-espresso-core = { module = "androidx.test.espresso:espresso-core", version = "3.7.0" }
-espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "espresso-intents" }
-androidx-espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "espresso-contrib" }
+espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
+espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "espresso" }
+androidx-espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "espresso" }
 
 [bundles]
 ktor = ["ktor-client-core", "ktor-client-okhttp", "ktor-client-content-negotiation", "ktor-serialization-kotlinx-json", "ktor-client-android", "ktor-client-serialization"]
@@ -160,7 +160,10 @@ androidx-test = [
     "androidx-uiautomator",
     "androidx-arch-core-testing"
 ]
-espresso-test = ["espresso-core","espresso-intents","androidx-espresso-contrib"]
+espresso-test = [
+    "espresso-core",
+    "espresso-intents"
+]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-application" }
