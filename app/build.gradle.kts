@@ -253,6 +253,9 @@ dependencies {
 
     // Instrumentation tests
     androidTestImplementation(libs.bundles.androidx.test)
+    androidTestImplementation(libs.androidx.espresso.contrib) {
+        exclude(group = "com.google.protobuf", module = "protobuf-lite")
+    }
     androidTestImplementation(libs.okhttp3.idling.resource)
     androidTestImplementation(libs.bundles.espresso.test)
 
