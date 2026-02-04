@@ -7,11 +7,43 @@ import android.view.autofill.AutofillManager
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.IdlingResource
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.UiDevice
 import com.jakewharton.espresso.OkHttp3IdlingResource
+import org.junit.Rule
+import org.junit.rules.TestWatcher
+import org.junit.runner.Description
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 open class EntourageTestWithAPI {
     private var afM: AutofillManager? = null
     protected var resource: IdlingResource? = null
+
+    @get:Rule
+    val screenshotWatcher = object : TestWatcher() {
+        override fun failed(e: Throwable?, description: Description?) {
+            takeSnapshot(description?.className ?: "Unknown")
+        }
+    }
+
+    private fun takeSnapshot(className: String) {
+        val sdf = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
+        val timestamp = sdf.format(Date())
+        val fileName = "${timestamp}_${className}.png"
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        val storageDir = instrumentation.targetContext.filesDir
+        val file = File(storageDir, fileName)
+        try {
+            if (UiDevice.getInstance(instrumentation).takeScreenshot(file)) {
+                Log.d("EntourageTest", "Screenshot taken: ${file.absolutePath}")
+            } else {
+                Log.e("EntourageTest", "Failed to take screenshot")
+            }
+        } catch (e: Exception) {
+            Log.e("EntourageTest", "Error taking screenshot", e)
+        }
+    }
 
     open fun setUp(activity: Context) {
         afM = activity.getSystemService(AutofillManager::class.java)
