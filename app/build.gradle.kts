@@ -252,17 +252,9 @@ dependencies {
     compileOnly(libs.javax.annotation)
 
     // Instrumentation tests
-    androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(libs.androidx.test.runner)
-    androidTestImplementation(libs.androidx.test.rules)
-    androidTestImplementation(libs.androidx.test.core.ktx)
-
-    androidTestImplementation(libs.androidx.uiautomator)
-    androidTestImplementation(libs.espresso.intents)
+    androidTestImplementation(libs.bundles.androidx.test)
     androidTestImplementation(libs.okhttp3.idling.resource)
-    androidTestImplementation(libs.androidx.arch.core.testing)
+    androidTestImplementation(libs.bundles.espresso.test)
 
     // Unit tests
     testImplementation(libs.junit)
@@ -271,6 +263,7 @@ dependencies {
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.inline)
     testImplementation(libs.mockito.kotlin)
+
     implementation(libs.flexbox)
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
