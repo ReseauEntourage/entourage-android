@@ -256,13 +256,14 @@ dependencies {
     // Instrumentation tests
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.rules)
     androidTestImplementation(libs.androidx.test.core.ktx)
 
     androidTestImplementation(libs.androidx.uiautomator)
     androidTestImplementation(libs.espresso.intents)
+    androidTestImplementation(libs.androidx.espresso.contrib)
+    androidTestImplementation(libs.espresso.idling.resource)
     androidTestImplementation(libs.okhttp3.idling.resource)
     androidTestImplementation(libs.androidx.arch.core.testing)
 
