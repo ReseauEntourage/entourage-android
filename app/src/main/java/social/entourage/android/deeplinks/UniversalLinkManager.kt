@@ -131,7 +131,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                     }
                     (context as Activity).startActivity(intent)
                 }
-                pathSegments.contains("good-waves") -> {
+                pathSegments.contains("smalltalk") -> {
                     val intent = Intent(context, social.entourage.android.small_talks.SmallTalkIntroActivity::class.java)
                     context.startActivity(intent)
                 }
