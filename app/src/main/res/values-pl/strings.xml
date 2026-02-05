@@ -2727,4 +2727,5 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="onboard_sms_wait_title">Nie otrzymałeś(-aś) kodu logowania?</string>
     <string name="onboard_sms_wait_countdown">Nowy kod będziesz mógł/mogła zamówić za %1$s</string>
 
+    <string name="guide_help_orientation_button">Pomoc i orientacja</string>
 </resources>

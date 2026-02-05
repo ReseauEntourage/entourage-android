@@ -2720,5 +2720,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="enhanced_onboarding_asso_btn_later">Plus tard</string>
     <string name="enhanced_onboarding_asso_btn_finish">Terminer</string>
 
+    <string name="guide_help_orientation_button">Aide &amp; orientation</string>
 </resources>
 

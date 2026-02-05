@@ -2636,4 +2636,5 @@
     <string name="onboard_sms_wait_title">Ви ще не отримали код для входу?</string>
     <string name="onboard_sms_wait_countdown">Ви зможете запросити новий код через %1$s</string>
 
+    <string name="guide_help_orientation_button">Допомога та орієнтація</string>
 </resources>

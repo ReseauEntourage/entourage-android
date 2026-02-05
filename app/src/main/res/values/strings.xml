@@ -3233,4 +3233,5 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="birthday_subtitle">Aujourd’hui, c’est votre jour.\nOn est heureux de vous compter parmi nous. Que cette journée soit pleine de chaleur humaine, d’échanges et de joie ✨</string>
     <string name="birthday_button">Revenir à la page d\'accueil</string>
 
+    <string name="guide_help_orientation_button">Aide &amp; orientation</string>
 </resources>

@@ -37,6 +37,7 @@ import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
+import social.entourage.android.BuildConfig
 import social.entourage.android.Constants
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -53,6 +54,7 @@ import social.entourage.android.guide.poi.PoiRenderer
 import social.entourage.android.guide.poi.PoisAdapter
 import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.guide.poi.ReadPoiFragment.Companion.newInstance
+import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.tools.EntLinkMovementMethod
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Utils
@@ -226,11 +228,6 @@ class GuideMapFragment :
     }
 
     fun onBackPressed(): Boolean {
-        if (binding.fragmentMapLongclick.parent.isVisible) {
-            binding.fragmentMapLongclick.parent.visibility = View.GONE
-            //fabProposePOI.setVisibility(View.VISIBLE);
-            return true
-        }
         return false
     }
 
@@ -397,13 +394,6 @@ class GuideMapFragment :
         }
     }
 
-    private fun proposePOI() {
-        // Close the overlays
-        onBackPressed()
-        // Open the link to propose a POI
-        (activity as? GDSMainActivity)?.showWebViewForLinkId(Constants.PROPOSE_POI_ID )
-    }
-
     private fun clearOldPois() {
         //TODO UNCOMMENT FOR PROD
         //presenter.clear()-
@@ -435,16 +425,6 @@ class GuideMapFragment :
             )
         )
 
-        googleMap.setOnMapLongClickListener { latLng: LatLng ->
-            //only show when map is in full screen and not visible
-            if (!isFullMapShown || binding.fragmentMapLongclick.parent.isVisible) {
-                return@setOnMapLongClickListener
-            }
-            if (activity != null) {
-                AnalyticsEvents.logEvent(eventLongClick)
-                showLongClickOnMapOptions(latLng)
-            }
-        }
         initializeMapZoom()
         map?.setOnMarkerClickListener(this)
 
@@ -556,14 +536,6 @@ class GuideMapFragment :
         get() = binding.fragmentGuideInfoPopup.isVisible
 
     // ----------------------------------
-    // FAB HANDLING
-    // ----------------------------------
-    private fun onPOIProposeClicked() {
-        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PLUS_STRUCTURE)
-        proposePOI()
-    }
-
-    // ----------------------------------
     // POI List
     // ----------------------------------
     private fun initializePOIList() {
@@ -622,10 +594,15 @@ class GuideMapFragment :
         if (context == null) return
         binding.fragmentGuideDisplayToggle.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
         binding.fragmentGuideDisplayToggle.setOnClickListener {onDisplayToggle()}
-        binding.fragmentMapLongclick.guideLongclickButtonPoiPropose.setOnClickListener {proposePOI()}
-        binding.buttonPoiPropose.setOnClickListener {
-            onPOIProposeClicked()
+        binding.buttonGuideHelp.setOnClickListener {
+            onGuideHelpClicked()
         }
+    }
+
+    private fun onGuideHelpClicked() {
+        // Launch PedagoDetailActivity
+        PedagoDetailActivity.hashId = BuildConfig.PEDAGO_GUIDE_ID
+        activity?.startActivity(Intent(activity, PedagoDetailActivity::class.java))
     }
 
     private fun initializeFilterButton() {
@@ -650,46 +627,6 @@ class GuideMapFragment :
         // ----------------------------------
         const val TAG = "social.entourage.android.fragment_guide"
         const val MAX_ZOOM_VALUE = 14.0F
-    }
-
-    // ----------------------------------
-    // Long clicks on map handler
-    // ----------------------------------
-    private fun showLongClickOnMapOptions(latLng: LatLng) {
-        //get the click point
-        map?.let {
-            binding.fragmentMapLongclick.mapLongclickButtons.let { buttons ->
-                buttons.measure(
-                    RelativeLayout.LayoutParams.WRAP_CONTENT,
-                    RelativeLayout.LayoutParams.WRAP_CONTENT
-                )
-                val bW = buttons.measuredWidth
-                val bH = buttons.measuredHeight
-                val lp = buttons.layoutParams as RelativeLayout.LayoutParams
-                val clickPoint = it.projection.toScreenLocation(latLng)
-                //adjust the buttons holder layout
-                val display =
-                    (requireContext().getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
-                val screenSize = Point()
-                display.getSize(screenSize)
-
-                var marginLeft = clickPoint.x - bW / 2
-                if (marginLeft + bW > screenSize.x) {
-                    marginLeft -= bW / 2
-                }
-                if (marginLeft < 0) {
-                    marginLeft = 0
-                }
-                var marginTop = clickPoint.y - bH / 2
-                if (marginTop < 0) {
-                    marginTop = clickPoint.y
-                }
-                lp.setMargins(marginLeft, marginTop, 0, 0)
-                buttons.layoutParams = lp
-            }
-            //show the view
-            binding.fragmentMapLongclick.parent.visibility = View.VISIBLE
-        }
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {

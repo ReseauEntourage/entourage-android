@@ -2711,4 +2711,5 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="onboard_sms_wait_title">Du hast deinen Anmeldecode nicht erhalten?</string>
     <string name="onboard_sms_wait_countdown">Du kannst in %1$s einen neuen Code anfordern</string>
 
+    <string name="guide_help_orientation_button">Hilfe &amp; Orientierung</string>
 </resources>

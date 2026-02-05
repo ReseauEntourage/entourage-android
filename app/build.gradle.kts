@@ -125,6 +125,7 @@ android {
             buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "15")
             buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "37")
             buildConfigField("int", "PEDAGO_ACTION_SECTION_ID", "34")
+            buildConfigField("String", "PEDAGO_GUIDE_ID", "\"eOB7jU8NNODY\"")
         }
         create("staging") {
             manifestPlaceholders += mapOf(
@@ -139,6 +140,7 @@ android {
             buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "32")
             buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "33")
             buildConfigField("int", "PEDAGO_ACTION_SECTION_ID", "33")
+            buildConfigField("String", "PEDAGO_GUIDE_ID", "\"eyck8DuIn3cI\"")
 
         }
          create("entourage") {
