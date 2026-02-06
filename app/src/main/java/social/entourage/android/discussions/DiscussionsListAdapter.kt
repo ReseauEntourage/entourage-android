@@ -117,10 +117,13 @@ class DiscussionsListAdapter(
             binding.name.text = nameToDisplay
 
             if (conversation.type == "outing") {
-                binding.date.text = conversation.subname
-                binding.date.visibility = View.VISIBLE
-            } else {
                 binding.date.visibility = View.GONE
+                binding.dateEvent.visibility = View.VISIBLE
+                binding.dateEvent.text = conversation.subname
+            } else {
+                binding.date.visibility = View.VISIBLE
+                binding.dateEvent.visibility = View.GONE
+                binding.date.text = conversation.dateFormattedString(binding.root.context)
             }
 
             // === Rôles ===

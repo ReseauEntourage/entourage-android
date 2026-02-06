@@ -210,7 +210,8 @@ data class ConversationMembership(
     @SerializedName("number_of_root_chat_messages") val numberOfRootMessages: Int?,
     @SerializedName("number_of_unread_messages") val numberOfUnreadMessages: Int?,
     @SerializedName("last_chat_message") val lastChatMessageText: String?,
-    @SerializedName("last_chat_message_image_url") val lastChatMessageImageUrl: String?
+    @SerializedName("last_chat_message_image_url") val lastChatMessageImageUrl: String?,
+    @SerializedName("last_chat_message_datetime") val lastChatMessageDate: String?
 ){
     fun createdDateString(): String {
         subname?.let { dateString ->
@@ -218,7 +219,7 @@ data class ConversationMembership(
                 val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.US)
                 val parsedDate = inputFormat.parse(dateString)
 
-                val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val outputFormat = SimpleDateFormat("d MMMM yyyy", Locale.getDefault())
                 parsedDate?.let { outputFormat.format(it) } ?: ""
             } catch (e: Exception) {
                 ""
