@@ -92,7 +92,7 @@ class AllEventAdapter(var userId: Int?, var context: Context) :
             holder.binding.participants.text = event.membersCount.toString()
 
             if (event.author?.communityRoles != null) {
-                if (event.author?.communityRoles?.contains("Équipe Entourage") == true || event.author?.communityRoles?.contains("Ambassadeur") == true) {
+                if (event.author?.communityRoles?.contains("Équipe Entourage") == true || event.author?.communityRoles?.contains("Animateur") == true) {
                     holder.binding.ivEntourageLogo.visibility = View.VISIBLE
                 } else {
                     holder.binding.ivEntourageLogo.visibility = View.GONE

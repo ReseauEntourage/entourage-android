@@ -582,7 +582,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                     }
                 }
                 if(member.id.toInt() == event?.author?.userID){
-                    if(member.communityRoles?.contains("Équipe Entourage") == true || member.communityRoles?.contains("Ambassadeur") == true){
+                    if(member.communityRoles?.contains("Équipe Entourage") == true || member.communityRoles?.contains("Animateur") == true){
                         binding.tvAssociation.text = getString(R.string.event_organisez_entourage)
                         binding.tvAssociation.visibility = View.VISIBLE
                     }

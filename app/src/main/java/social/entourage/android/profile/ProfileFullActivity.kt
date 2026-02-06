@@ -470,7 +470,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
 
             user.roles?.let { roles ->
                 binding.tagUser.visibility =
-                    if (roles.contains("Ambassadeur") || roles.contains("Équipe Entourage") || roles.contains(
+                    if (roles.contains("Animateur") || roles.contains("Équipe Entourage") || roles.contains(
                             "Association"
                         )
                     ) {
@@ -484,7 +484,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
                     } else {
                         View.GONE
                     }
-                if (roles.contains("Ambassadeur")) {
+                if (roles.contains("Animateur")) {
                     binding.tvTagHomeV2EventItem.text = getString(R.string.ambassador)
                     binding.ivAssoBadge.visibility = View.GONE
                 } else if (roles.contains("Équipe Entourage")) {
@@ -1163,7 +1163,7 @@ class ProfileFullActivity : BaseSecuredActivity() {
 
             user.roles?.let { roles ->
                 binding.tagUser.visibility =
-                    if (roles.contains("Ambassadeur") || roles.contains("Équipe Entourage") || roles.contains(
+                    if (roles.contains("Animateur") || roles.contains("Équipe Entourage") || roles.contains(
                             "Association"
                         )
                     ) {
@@ -1177,7 +1177,7 @@ class ProfileFullActivity : BaseSecuredActivity() {
                     } else {
                         View.GONE
                     }
-                if (roles.contains("Ambassadeur")) {
+                if (roles.contains("Animateur")) {
                     binding.tvTagHomeV2EventItem.text = getString(R.string.ambassador)
                     binding.ivAssoBadge.visibility = View.GONE
                 } else if (roles.contains("Équipe Entourage")) {
