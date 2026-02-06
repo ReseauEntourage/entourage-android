@@ -142,7 +142,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         val intent = Intent(context, social.entourage.android.events.create.CreateEventActivity::class.java)
                         (context as? MainActivity)?.startActivityForResult(intent, 0)
                     } else if (pathSegments.contains("webinar")) {
-                        //Do nothing for now
+                        presenter.getEventSensibilisation()
                     } else if (pathSegments.size > 3) {
                         val outingId = pathSegments[2]
                         EventFeedFragment.shouldAddToAgenda = true
