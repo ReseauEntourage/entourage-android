@@ -11,6 +11,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.TranslationBottomFragmentLayoutBinding
 import social.entourage.android.profile.settings.ProfilFullViewModel
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class TranslationBottomFragment: BottomSheetDialogFragment() {
 
@@ -31,6 +32,7 @@ class TranslationBottomFragment: BottomSheetDialogFragment() {
 
     override fun onResume() {
         super.onResume()
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__TranslationBottomFragment)
         setFullScreenBehavior()
     }
 
@@ -49,6 +51,7 @@ class TranslationBottomFragment: BottomSheetDialogFragment() {
         val isTranslatedByDefault = sharedPrefs.getBoolean("translatedByDefault", true)
         binding.switchTranslation.isChecked = isTranslatedByDefault
         binding.validate.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__TranslationBottomFragment__validate)
             val editor = sharedPrefs.edit()
             editor.putBoolean("translatedByDefault", binding.switchTranslation.isChecked)
             editor.apply()
@@ -56,6 +59,7 @@ class TranslationBottomFragment: BottomSheetDialogFragment() {
             dismiss()
         }
         binding.iconCross.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__TranslationBottomFragment__iconCross)
             dismiss()
         }
     }

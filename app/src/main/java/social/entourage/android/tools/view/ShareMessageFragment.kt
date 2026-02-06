@@ -14,6 +14,7 @@ import social.entourage.android.api.model.SharingEntourage
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.databinding.FragmentShareMessageBinding
 import social.entourage.android.entourage.ShareEntourageAdapter
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class ShareMessageFragment : BaseDialogFragment() {
     private var _binding: FragmentShareMessageBinding? = null
@@ -44,10 +45,12 @@ class ShareMessageFragment : BaseDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__ShareMessageFragment)
 
         binding.uiButtonValidateShareEntourage?.visibility = View.GONE
 
         binding.inviteContactsNavigationLayout.binding.titleCloseButton.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ShareMessageFragment__titleCloseButton)
             dismiss()
         }
 

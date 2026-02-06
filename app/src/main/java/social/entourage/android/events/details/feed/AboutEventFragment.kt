@@ -75,6 +75,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__AboutEventFragment)
         event = args.group
         setView()
         handleMembersButton()
@@ -294,6 +295,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
 
     private fun handleMembersButton() {
         binding.members.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__AboutEventFragment__members)
             event?.id?.let {
                 val action =
                     actionEventAboutToEventMembers(
@@ -330,6 +332,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
 
     private fun openLink() {
         binding.location.root.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__AboutEventFragment__root)
             if (event?.online != true) {
                 openMap()
             } else {
@@ -345,6 +348,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
 
     private fun handleBackButton() {
         binding.header.headerIconBack.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__AboutEventFragment__headerIconBack)
             findNavController().popBackStack()
         }
     }
@@ -352,6 +356,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
     private fun handleJoinButton() {
         if (event?.admin == false)
             binding.join.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__AboutEventFragment__join)
                 if (event?.member == true) {
                     CustomAlertDialog.showWithCancelFirst(
                         requireContext(),
@@ -374,6 +379,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
 
     private fun handleAddToCalendarButton() {
         binding.calendar.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__AboutEventFragment__calendar)
             event?.let { event -> Utils.showAddToCalendarPopUp(requireContext(), event) }
         }
     }

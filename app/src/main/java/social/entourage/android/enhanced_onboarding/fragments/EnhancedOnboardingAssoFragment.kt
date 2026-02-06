@@ -63,6 +63,7 @@ class EnhancedOnboardingAssoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__EnhancedOnboardingAssoFragment)
 
         viewModel.shouldDismissBtnBack.postValue(true)
         setupKeyboardHandling()

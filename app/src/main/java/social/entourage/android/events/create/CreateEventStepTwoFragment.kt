@@ -27,6 +27,7 @@ class CreateEventStepTwoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__CreateEventStepTwoFragment)
         initializeDateEditText()
         setView()
         handleNextButtonState()

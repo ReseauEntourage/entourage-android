@@ -87,6 +87,7 @@ class OnboardingPhase2Fragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__OnboardingPhase2Fragment)
         callback?.updateButtonNext(false)
         setupViews()
         setupOtp()
@@ -199,6 +200,7 @@ class OnboardingPhase2Fragment : Fragment() {
             binding.uiOnboardBtHelp.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         // Lien "Renvoyer le code"
         binding.tvRetryLink.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__OnboardingPhase2Fragment__tvRetryLink)
             if (binding.tvRetryLink.isEnabled) {
                 callback?.requestNewCode()
                 activateTimer()
@@ -207,6 +209,7 @@ class OnboardingPhase2Fragment : Fragment() {
 
         // Bouton d'aide → email
         binding.uiOnboardBtHelp.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__OnboardingPhase2Fragment__uiOnboardBtHelp)
             val intent = Intent(Intent.ACTION_SENDTO).apply { data = Uri.parse("mailto:") }
             intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.contact_email)))
             try {
@@ -246,7 +249,9 @@ class OnboardingPhase2Fragment : Fragment() {
         binding.uiOnboardCodeTvPhone.text = formatted
 
         // Modifier le numéro → retour étape précédente
-        binding.uiOnboardCodeTvPhoneMod.setOnClickListener { callback?.goPreviousManually() }
+        binding.uiOnboardCodeTvPhoneMod.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__OnboardingPhase2Fragment__uiOnboardCodeTvPhoneMod)
+            callback?.goPreviousManually() }
 
         // CGU cliquables
         val text = getString(R.string.terms_and_conditions_html)

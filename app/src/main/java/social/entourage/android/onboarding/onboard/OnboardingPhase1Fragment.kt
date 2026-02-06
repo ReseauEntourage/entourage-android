@@ -127,6 +127,7 @@ class OnboardingPhase1Fragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__OnboardingPhase1Fragment)
         setupViews()
         AnalyticsEvents.logEvent(AnalyticsEvents.Onboard_name)
         // Charge les métadonnées et la liste d'entreprises

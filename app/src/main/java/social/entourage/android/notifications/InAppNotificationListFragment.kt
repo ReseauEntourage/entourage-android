@@ -41,6 +41,7 @@ class InAppNotificationListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__InAppNotificationListFragment)
 
         val countNotif = arguments?.getInt(Const.NOTIF_COUNT)
         hasToShowDot = (countNotif ?: 0) > 0
@@ -137,6 +138,7 @@ class InAppNotificationListFragment : Fragment() {
 
     private fun handleBackButton() {
         binding.iconBack.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__InAppNotificationListFragment__iconBack)
             requireActivity().finish()
         }
     }

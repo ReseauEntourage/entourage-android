@@ -134,8 +134,10 @@ open class EditPhotoFragment : BaseDialogFragment(), PhotoEditInterface {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__EditPhotoFragment)
         setupViews()
-        analyticsEventView?.let { AnalyticsEvents.logEvent(it)}
+        analyticsEventView?.let { AnalyticsEvents.logEvent(it)
+        }
 
     }
 
@@ -198,12 +200,14 @@ open class EditPhotoFragment : BaseDialogFragment(), PhotoEditInterface {
     }
 
     open fun showChoosePhotoActivity() {
-        analyticsEventActionGallery?.let {AnalyticsEvents.logEvent(it)}
+        analyticsEventActionGallery?.let {AnalyticsEvents.logEvent(it)
+        }
         getContent.launch("image/jpeg")
     }
 
     open fun showTakePhotoActivity() {
-        analyticsEventActionPhoto?.let{AnalyticsEvents.logEvent(it)}
+        analyticsEventActionPhoto?.let{AnalyticsEvents.logEvent(it)
+        }
 
         // Ensure that there's a camera activity to handle the intent
         try {

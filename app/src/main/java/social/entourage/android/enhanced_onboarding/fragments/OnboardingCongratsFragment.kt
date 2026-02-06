@@ -40,6 +40,7 @@ class OnboardingCongratsFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__OnboardingCongratsFragment)
         AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_end_view)
         binding.lottieAnimation.setAnimation(R.raw.congrats_animation)
         binding.lottieAnimation.playAnimation()

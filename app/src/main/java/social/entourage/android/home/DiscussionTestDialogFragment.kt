@@ -26,6 +26,7 @@ class DiscussionTestDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__DiscussionTestDialogFragment)
         AnalyticsEvents.logEvent(AnalyticsEvents.discussion_plural_view)
 
         binding.closeButton.setOnClickListener {

@@ -38,11 +38,17 @@ class GuideFilterFragment : BaseDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__GuideFilterFragment)
         initializeFiltersList()
-        binding.entourageTitleView.binding.titleCloseButton.setOnClickListener {  dismiss() }
-        binding.bottomActionButton.setOnClickListener { onValidateClicked() }
+        binding.entourageTitleView.binding.titleCloseButton.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__GuideFilterFragment__titleCloseButton)
+            dismiss() }
+        binding.bottomActionButton.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__GuideFilterFragment__bottomActionButton)
+            onValidateClicked() }
 
         binding.uiBtCancel.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__GuideFilterFragment__uiBtCancel)
             setAllFiltersOn()
             initializeFiltersList()
         }

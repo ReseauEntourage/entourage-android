@@ -28,6 +28,7 @@ class CreateActionStepCategoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__CreateActionStepCategoryFragment)
         viewModel.resetValues()
         if (viewModel.sectionsList.value == null) {
             viewModel.initSectionList()

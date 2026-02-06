@@ -30,10 +30,12 @@ class CreateEventStepThreeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__CreateEventStepThreeFragment)
         setViewMultiSelect()
         handleNextButtonState()
         adjustTextViewsForRTL(binding.layout.root)
         binding.layout.location.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateEventStepThreeFragment__location)
             findNavController().navigate(R.id.action_create_event_fragment_to_edit_action_zone_fragment)
         }
         setView()

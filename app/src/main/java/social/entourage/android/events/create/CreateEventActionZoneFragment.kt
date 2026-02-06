@@ -5,6 +5,7 @@ import androidx.navigation.fragment.findNavController
 import social.entourage.android.R
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.user.edit.place.UserActionPlaceFragment
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class CreateEventActionZoneFragment : UserActionPlaceFragment() {
     // To be changed
@@ -15,9 +16,11 @@ class CreateEventActionZoneFragment : UserActionPlaceFragment() {
         binding.uiOnboardPhoneTvInfo2.visibility = View.INVISIBLE
         binding.editPlaceTitleLayout.visibility = View.VISIBLE
         binding.editPlaceTitleLayout.binding.titleActionButton.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateEventActionZoneFragment__titleActionButton)
             validate()
         }
         binding.editPlaceTitleLayout.binding.titleCloseButton.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateEventActionZoneFragment__titleCloseButton)
             dismiss()
             findNavController().popBackStack()
         }

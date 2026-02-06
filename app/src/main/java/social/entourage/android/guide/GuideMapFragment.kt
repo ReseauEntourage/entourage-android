@@ -213,6 +213,7 @@ class GuideMapFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__GuideMapFragment)
         initializeMap()
         initializeAlertBanner()
         initializePopups()
@@ -329,7 +330,8 @@ class GuideMapFragment :
     }
 
     private fun onDisplayToggle() {
-        AnalyticsEvents.logEvent(if (!isFullMapShown) AnalyticsEvents.ACTION_GUIDE_SHOWMAP else AnalyticsEvents.ACTION_GUIDE_SHOWLIST)
+        AnalyticsEvents.logEvent(if (!isFullMapShown)
+        AnalyticsEvents.ACTION_GUIDE_SHOWMAP else AnalyticsEvents.ACTION_GUIDE_SHOWLIST)
         togglePOIList()
     }
 
@@ -469,8 +471,12 @@ class GuideMapFragment :
     private fun initializeAlertBanner() {
         isAlertTextVisible = false
         binding.fragmentGuideAlertDescription.setHtmlString(getString(R.string.guide_alert_info_text), EntLinkMovementMethod)
-        binding.fragmentGuideAlertArrow.setOnClickListener {onClickAlertArrow()}
-        binding.fragmentGuideAlert.setOnClickListener {onClickAlertArrow()}
+        binding.fragmentGuideAlertArrow.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__GuideMapFragment__fragmentGuideAlertArrow)
+            onClickAlertArrow()}
+        binding.fragmentGuideAlert.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__GuideMapFragment__fragmentGuideAlert)
+            onClickAlertArrow()}
     }
 
     private fun onClickAlertArrow() {
@@ -489,9 +495,15 @@ class GuideMapFragment :
     // EMPTY LIST POPUP
     // ----------------------------------
     private fun initializePopups() {
-        binding.fragmentGuideEmptyListPopup.setOnClickListener {onEmptyListPopupClose()}
-        binding.fragmentGuideInfoPopupClose.setOnClickListener {onInfoPopupClose()}
-        binding.fragmentGuideInfoPopup.setOnClickListener {onInfoPopupClose()}
+        binding.fragmentGuideEmptyListPopup.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__GuideMapFragment__fragmentGuideEmptyListPopup)
+            onEmptyListPopupClose()}
+        binding.fragmentGuideInfoPopupClose.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__GuideMapFragment__fragmentGuideInfoPopupClose)
+            onInfoPopupClose()}
+        binding.fragmentGuideInfoPopup.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__GuideMapFragment__fragmentGuideInfoPopup)
+            onInfoPopupClose()}
         val proposePOIUrl = (activity as? GDSMainActivity)?.getLink(Constants.PROPOSE_POI_ID) ?: ""
         hideInfoPopup()
         binding.fragmentGuideEmptyListPopupText.movementMethod = EntLinkMovementMethod
@@ -593,8 +605,11 @@ class GuideMapFragment :
         // Guide starts in full map mode, adjust the text accordingly
         if (context == null) return
         binding.fragmentGuideDisplayToggle.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_list_white_24dp))
-        binding.fragmentGuideDisplayToggle.setOnClickListener {onDisplayToggle()}
+        binding.fragmentGuideDisplayToggle.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__GuideMapFragment__fragmentGuideDisplayToggle)
+            onDisplayToggle()}
         binding.buttonGuideHelp.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__GuideMapFragment__buttonGuideHelp)
             onGuideHelpClicked()
         }
     }
@@ -607,7 +622,9 @@ class GuideMapFragment :
 
     private fun initializeFilterButton() {
         binding.fragmentGuideFilterButton.let {
-            it.setOnClickListener {onShowFilter()}
+            it.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__GuideMapFragment__it)
+            onShowFilter()}
             it.setText(if (instance.hasFilteredCategories()) R.string.guide_filters_activated else R.string.guide_no_filter)
         }
     }

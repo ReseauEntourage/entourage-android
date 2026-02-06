@@ -60,6 +60,7 @@ class CreateEventFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__CreateEventFragment)
         initializeViewPager()
         handleBackButton()
         eventPresenter.newEventCreated.observe(viewLifecycleOwner, ::handleCreateEventResponse)
@@ -94,6 +95,7 @@ class CreateEventFragment : Fragment() {
 
     private fun setNextClickListener() {
         binding.next.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateEventFragment__next)
             CommunicationHandler.clickNext.value = true
         }
         CommunicationHandler.isCondition.observe(
@@ -193,6 +195,7 @@ class CreateEventFragment : Fragment() {
 
     private fun handleBackButton() {
         binding.header.iconBack.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateEventFragment__iconBack)
             if (canExitEventCreation)
                 requireActivity().finish()
             else {
@@ -287,6 +290,7 @@ class CreateEventFragment : Fragment() {
 
     private fun setPreviousClickListener() {
         binding.previous.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateEventFragment__previous)
             CommunicationHandler.resetValues()
             viewPager.previousPage(true)
             if (viewPager.currentItem == 0) {

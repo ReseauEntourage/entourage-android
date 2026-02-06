@@ -91,6 +91,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__ReportModalFragment)
         initializeInterests()
         readArgs()
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
@@ -340,10 +341,12 @@ class ReportModalFragment : BottomSheetDialogFragment() {
             binding.tvChooseSignal.text = getString(R.string.discussion_entraide_signal)
         }
         binding.layoutChooseSignal.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ReportModalFragment__layoutChooseSignal)
             setAfterChoose()
             setView()
         }
         binding.layoutChooseTranslate.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ReportModalFragment__layoutChooseTranslate)
             reportedId?.let { id ->
                 dismissCallback?.translateView(id)
                 callback?.onTranslatePost(id)
@@ -450,7 +453,9 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         binding.divider.visibility = View.VISIBLE
         binding.recyclerView.visibility = View.VISIBLE
         binding.next.visibility = View.VISIBLE
-        binding.next.setOnClickListener { if (selectedSignalsIdList.isNotEmpty()) setupViewStep2() }
+        binding.next.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ReportModalFragment__next)
+            if (selectedSignalsIdList.isNotEmpty()) setupViewStep2() }
         binding.message.visibility = View.GONE
         binding.back.visibility = View.GONE
         binding.send.visibility = View.GONE
@@ -461,9 +466,12 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         binding.message.visibility = View.VISIBLE
         binding.back.visibility = View.VISIBLE
         binding.send.visibility = View.VISIBLE
-        binding.back.setOnClickListener { setupViewStep1() }
+        binding.back.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ReportModalFragment__back)
+            setupViewStep1() }
 
         binding.send.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ReportModalFragment__send)
             reportedId?.let { id ->
                 when (reportType) {
                     ReportTypes.REPORT_USER.code -> userPresenter.sendReport(
@@ -536,6 +544,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
 
     private fun handleCloseButton() {
         binding.header.hbsIconCross.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ReportModalFragment__hbsIconCross)
             onClose(); dismiss()
         }
     }

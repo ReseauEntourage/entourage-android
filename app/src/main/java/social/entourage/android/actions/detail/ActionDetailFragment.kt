@@ -94,6 +94,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__ActionDetailFragment)
 
         initializeViews()
         setupButtons()
@@ -133,6 +134,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         updateTranslationText()
 
         binding.tvButtonTranslate.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ActionDetailFragment__tvButtonTranslate)
             isTranslated = !isTranslated
             updateTranslationText()
             // Ajoute ici la logique pour actualiser le contenu selon la traduction
@@ -184,6 +186,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     }
     private fun handleReportPost(id: Int, isDemand:Boolean) {
         binding.titleSignal.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ActionDetailFragment__titleSignal)
             val _type = if (isDemand) ReportTypes.REPORT_DEMAND else ReportTypes.REPORT_CONTRIB
             handleReport(id, _type)
         }
@@ -245,12 +248,14 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
     private fun setupButtons() {
         binding.uiLayoutCharte.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ActionDetailFragment__uiLayoutCharte)
             val intent = Intent(context, GroupRulesActivity::class.java)
             intent.putExtra(Const.RULES_TYPE, Const.RULES_ACTION)
             startActivityForResult(intent, 0)
         }
 
         binding.layoutUser.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ActionDetailFragment__layoutUser)
             startActivityForResult(Intent(context, ProfileFullActivity::class.java).putExtra(
                 Const.USER_ID,
                 action?.author?.userID
@@ -258,6 +263,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         }
 
         binding.uiBtModify.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ActionDetailFragment__uiBtModify)
             val intent = Intent(context, CreateActionActivity::class.java)
             intent.putExtra(Const.ACTION_OBJ,action)
             if (isDemand) {
@@ -271,6 +277,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         }
 
         binding.uiBtDelete.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ActionDetailFragment__uiBtDelete)
             val _title = getString(R.string.action_cancel_pop_title, if (isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib))
             val _subtitle = getString(R.string.action_cancel_pop_subtitle, if (isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib))
             CustomAlertDialog.showButtonClickedWithCrossClose(requireContext(),_title,_subtitle, getString(R.string.action_cancel_pop_bt_yes), getString(R.string.action_cancel_pop_bt_no), showCross = false,
@@ -294,6 +301,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         }
 
         binding.uiBtBackEmpty.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ActionDetailFragment__uiBtBackEmpty)
             requireActivity().finish()
 
         }

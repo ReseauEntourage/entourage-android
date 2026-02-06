@@ -46,6 +46,7 @@ class MyEventsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__MyEventsListFragment)
         binding.btnDiscoverEvent.visibility = View.GONE
         eventsPresenter = ViewModelProvider(requireActivity()).get(EventsPresenter::class.java)
         myId = EntourageApplication.me(activity)?.id

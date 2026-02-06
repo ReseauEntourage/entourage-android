@@ -20,6 +20,7 @@ import social.entourage.android.report.ReportTypes
 import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
 
@@ -61,6 +62,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
     /* ───────────────────────────── onViewCreated ───────────────────────────── */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__SettingsDiscussionModalFragment)
 
         /* ---------- Observers et appels réseau selon le mode ---------- */
         if (isSmallTalk) {                                     // <── COMPANION VARIABLE
@@ -134,6 +136,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
 
     private fun handleCloseButton() {
         binding.header.hbsIconCross.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__SettingsDiscussionModalFragment__hbsIconCross)
             dismiss()
             isSeveralPersonneInConversation = false
         }
@@ -143,6 +146,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
 
         /* ▶️ Profil (1-1) ou liste des membres (groupe) */
         binding.profile.profileSettingsItemLayout.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__SettingsDiscussionModalFragment__profileSettingsItemLayout)
             if (isOneToOne) {
                 startActivity(
                     Intent(requireContext(), ProfileFullActivity::class.java)
@@ -163,6 +167,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
 
         /* ▶️ Signalement (DISCUSSONS UNIQUEMENT) */
         binding.layoutReport.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__SettingsDiscussionModalFragment__layoutReport)
             if (!isSmallTalk) {
                 conversationId?.let { convId ->
                     val meId = EntourageApplication.get().me()?.id
@@ -181,6 +186,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
 
         /* ▶️ Quitter la conversation */
         binding.quit.profileSettingsItemLayout.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__SettingsDiscussionModalFragment__profileSettingsItemLayout)
             CustomAlertDialog.showWithCancelFirst(
                 requireContext(),
                 getString(R.string.leave_conversation),
@@ -198,6 +204,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
 
         /* ▶️ Bloquer l’utilisateur (discussions privées uniquement) */
         binding.layoutBlock.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__SettingsDiscussionModalFragment__layoutBlock)
             if (isSmallTalk || isOneToOne.not()) return@setOnClickListener
             val desc = getString(
                 R.string.params_block_user_conv_pop_message,

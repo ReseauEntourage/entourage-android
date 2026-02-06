@@ -59,6 +59,7 @@ class GDSSearchFragment : BaseDialogFragment(), PoiListFragment {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__GDSSearchFragment)
 
         binding.uiProgress?.visibility = View.GONE
         binding.uiBtSearchClose?.visibility = View.INVISIBLE

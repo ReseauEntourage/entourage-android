@@ -6,6 +6,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.appcompat.app.AlertDialog
 import social.entourage.android.R
 import social.entourage.android.databinding.DialogEventConfirmationBinding
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class EventConfirmationDialogFragment : DialogFragment() {
 
@@ -29,15 +30,18 @@ class EventConfirmationDialogFragment : DialogFragment() {
         binding.tvDescEventConfirm.text = description
 
         binding.validateBtn.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__EventConfirmationEventFragment__validateBtn)
             listener?.onConfirmParticipation()
             dismiss()
         }
         binding.cancelButton.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__EventConfirmationEventFragment__cancelButton)
             listener?.onDeclineParticipation()
             dismiss()
         }
 
         binding.closeButton.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__EventConfirmationEventFragment__closeButton)
             dismiss()
         }
 

@@ -14,6 +14,7 @@ import social.entourage.android.databinding.NewFragmentCreateEventSuccessBinding
 import social.entourage.android.RefreshController
 import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class CreateEventSuccessFragment : Fragment() {
 
@@ -32,11 +33,13 @@ class CreateEventSuccessFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__CreateEventSuccessFragment)
         handleSeeEventButton()
     }
 
     private fun handleSeeEventButton() {
         binding.seeEvent.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateEventSuccessFragment__seeEvent)
             startActivityForResult(
                 Intent(requireContext(), EventFeedActivity::class.java).putExtra(
                     Const.EVENT_ID,

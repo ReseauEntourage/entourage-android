@@ -20,6 +20,7 @@ import social.entourage.android.databinding.NewFragmentPedagoContentDetailsBindi
 import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.home.HomePresenter
 import java.lang.ref.WeakReference
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class PedagoContentDetailsFragment : Fragment() {
 
@@ -43,6 +44,7 @@ class PedagoContentDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__PedagoContentDetailsFragment)
         handleBackButton()
         isFromNotifs = PedagoDetailActivity.getIsFromNotif()
         htmlContent = PedagoDetailActivity.getHtmlContent()
@@ -62,6 +64,7 @@ class PedagoContentDetailsFragment : Fragment() {
 
     private fun handleBackButton() {
         binding.header.headerIconBack.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__PedagoContentDetailsFragment__headerIconBack)
             if(isFromNotifs) {
                 activity?.onBackPressed()
             }

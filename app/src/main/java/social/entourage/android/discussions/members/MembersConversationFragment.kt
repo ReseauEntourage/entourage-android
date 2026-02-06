@@ -28,6 +28,7 @@ import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import timber.log.Timber
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class MembersConversationFragment : BaseDialogFragment() {
 
@@ -61,6 +62,7 @@ class MembersConversationFragment : BaseDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__MembersConversationFragment)
         initUI()
         setupAdapters()
         setupObservers()
@@ -131,7 +133,9 @@ class MembersConversationFragment : BaseDialogFragment() {
     }
 
     private fun setupListeners() {
-        binding.header.headerIconBack.setOnClickListener { dismiss() }
+        binding.header.headerIconBack.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__MembersConversationFragment__headerIconBack)
+            dismiss() }
 
         binding.searchBar.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
