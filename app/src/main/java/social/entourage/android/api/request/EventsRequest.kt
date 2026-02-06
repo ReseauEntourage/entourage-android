@@ -112,6 +112,9 @@ interface EventsRequest {
     @GET("outings/smalltalk")
     fun getEventSmallTalk(): Call<EventWrapper>
 
+    @GET("outings/sensibilisation")
+    fun getEventSensibilisation(): Call<EventWrapper>
+
     @POST("outings/{event_id}/users")
     fun participate(
         @Path("event_id") eventId: Int
