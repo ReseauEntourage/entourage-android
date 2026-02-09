@@ -42,6 +42,7 @@ import social.entourage.android.databinding.ActivityMainBinding
 import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.guide.GDSMainActivity
+import social.entourage.android.home.BirthdayActivity
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.EventConfirmationDialogFragment
 import social.entourage.android.home.UnreadMessages
@@ -315,7 +316,15 @@ class MainActivity : BaseSecuredActivity() {
         val goDemand = intent.getBooleanExtra("goDemand", false)
         val goDiscoverGroup = intent.getBooleanExtra("goDiscoverGroup", false)
         val goDiscoverEvent = intent.getBooleanExtra("goDiscoverEvent", false)
+        val goBirthday = intent.getBooleanExtra("goBirthday", false)
 
+
+        if (goBirthday) {
+            intent.removeExtra("goBirthday")
+            goHome()
+            startActivity(Intent(this, BirthdayActivity::class.java))
+            return
+        }
 
         if (goContrib) {
             intent.removeExtra("goContrib")
@@ -390,6 +399,7 @@ class MainActivity : BaseSecuredActivity() {
                         instance,
                         extra.instanceId ?: 0,
                         extra.postId,
+                        stage = extra.stage,
                         popup = extra.popup,
                         tracking = extra.tracking
                     )

@@ -24,6 +24,7 @@ import social.entourage.android.welcome.WelcomeFourActivity
 import social.entourage.android.welcome.WelcomeOneActivity
 import social.entourage.android.welcome.WelcomeThreeActivity
 import social.entourage.android.welcome.WelcomeTwoActivity
+import social.entourage.android.home.BirthdayActivity
 
 /**
  * Created by Me on 26/09/2022.
@@ -32,6 +33,19 @@ object NotificationActionManager {
 
     /**/
     fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int = 0, postId:Int?, stage:String? = "", popup:String? = "" , notifContext:String? = "", tracking:String? = ""){
+        if (stage == "birthday") {
+            if (context is MainActivity) {
+                (context as MainActivity).goHome()
+                context.startActivity(Intent(context, BirthdayActivity::class.java))
+            } else {
+                val intent = Intent(context, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                intent.putExtra("goBirthday", true)
+                context.startActivity(intent)
+            }
+            return
+        }
+
         if(popup.equals("outing_on_day_before")){
             if(context is MainActivity){
                 (context as MainActivity).ifEventLastDay(id)
