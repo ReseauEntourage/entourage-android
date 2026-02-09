@@ -33,18 +33,6 @@ object NotificationActionManager {
 
     /**/
     fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int = 0, postId:Int?, stage:String? = "", popup:String? = "" , notifContext:String? = "", tracking:String? = ""){
-        if (stage == "birthday") {
-            if (context is MainActivity) {
-                (context as MainActivity).goHome()
-                context.startActivity(Intent(context, BirthdayActivity::class.java))
-            } else {
-                val intent = Intent(context, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                intent.putExtra("goBirthday", true)
-                context.startActivity(intent)
-            }
-            return
-        }
 
         if(popup.equals("outing_on_day_before")){
             if(context is MainActivity){
@@ -179,6 +167,18 @@ object NotificationActionManager {
             if(stage.equals("j11")){
                 val intent = Intent(context, WelcomeFiveActivity::class.java)
                 context.startActivity(intent)
+            }
+            if (stage == "birthday") {
+                if (context is MainActivity) {
+                    (context as MainActivity).goHome()
+                    context.startActivity(Intent(context, BirthdayActivity::class.java))
+                } else {
+                    val intent = Intent(context, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    intent.putExtra("goBirthday", true)
+                    context.startActivity(intent)
+                }
+                return
             }
         }
 
