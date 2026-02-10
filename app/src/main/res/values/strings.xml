@@ -3045,8 +3045,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="small_talk_group_found_subtitle">Découvrez les personnes de votre groupe</string>
 
     <!-- Accueil -->
-    <string name="home_title_small_talk">Rejoindre une discussion solidaire</string>
-    <string name="small_talk_subtitle_match">On vous met en relation avec un petit groupe de personnes qui partagent vos centres d’intérêt, partout en France.</string>
+    <string name="home_title_small_talk">Partager des « Bonnes Ondes » !</string>
+    <string name="small_talk_subtitle_match">Découvrez un nouveau moyen de discuter et de créer des liens qui durent dans le temps !</string>
     <string name="small_talk_button_match">Discuter</string>
     <string name="small_talk_title_waiting">Bientôt de nouvelles rencontres</string>
     <string name="small_talk_subtitle_waiting">On vous prévient dès qu\'on a trouvé des gens qui sont sur la même longueur d\'onde ;)</string>
