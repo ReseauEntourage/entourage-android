@@ -221,7 +221,7 @@ class DetailConversationActivity : CommentActivity() {
             // On passe TOUS les arguments nécessaires (comme dans EventFeedFragment)
             ActionSheetFragment.newEvent(
                 eventId = eventId,
-                conversationId = id,
+                conversationId = if (isSmallTalkMode) smallTalkId.toIntOrNull() ?: 0 else id,
                 canManageParticipants = false, // À adapter selon ta logique métier
                 eventTitle = event?.title ?: "",
                 participantsCount = event?.membersCount ?: 0,
@@ -236,7 +236,7 @@ class DetailConversationActivity : CommentActivity() {
                         ?.firstOrNull { it?.id != EntourageApplication.get().me()?.id }
                         ?.id ?: 0
                     ActionSheetFragment.newDiscussion(
-                        conversationId = id,
+                        conversationId = if (isSmallTalkMode) smallTalkId.toIntOrNull() ?: 0 else id,
                         isOneToOne = true,
                         userId = otherUserId,
                         username = detailConversation?.title,
@@ -245,7 +245,7 @@ class DetailConversationActivity : CommentActivity() {
                 }
                 SheetMode.DISCUSSION_GROUP -> {
                     ActionSheetFragment.newDiscussion(
-                        conversationId = id,
+                        conversationId = if (isSmallTalkMode) smallTalkId.toIntOrNull() ?: 0 else id,
                         isOneToOne = false,
                         userId = 0,
                         username = null,
