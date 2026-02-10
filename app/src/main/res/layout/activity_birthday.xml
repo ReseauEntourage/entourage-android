@@ -21,18 +21,18 @@
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintWidth_percent="0.77" />
 
-    <ImageView
-        android:id="@+id/iv_illustration"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_illustration"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="32dp"
-        android:padding="20dp"
-        android:src="@drawable/ic_cake_birthday"
+        app:lottie_rawRes="@raw/birthday_animation"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
         app:layout_constraintBottom_toBottomOf="@+id/bg_circle_illustration"
         app:layout_constraintEnd_toEndOf="@+id/bg_circle_illustration"
         app:layout_constraintStart_toStartOf="@+id/bg_circle_illustration"
-        app:layout_constraintTop_toTopOf="@+id/bg_circle_illustration"
-       />
+        app:layout_constraintTop_toTopOf="@+id/bg_circle_illustration" />
 
     <TextView
         android:id="@+id/tv_title"
