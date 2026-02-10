@@ -485,7 +485,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                             getString(R.string.leave_conversation_dialog_content),
                             getString(R.string.exit)
                         ) {
-                            smallTalkViewModel.leaveSmallTalk(conversationId.toString())
+                            smallTalkViewModel.leaveSmallTalk(DetailConversationActivity.smallTalkId)
                             dismiss()
                         }
                     } else {
