@@ -2759,4 +2759,6 @@
     <string name="onboard_sms_wait_countdown">يمكنك طلب رمز جديد خلال %1$s</string>
 
     <string name="guide_help_orientation_button">المساعدة والتوجيه</string>
+    <string name="home_title_small_talk">انضم إلى نقاش تضامني</string>
+    <string name="small_talk_subtitle_match">نصلك بمجموعة صغيرة من الأشخاص الذين يشاركونك اهتماماتك، في كل مكان في فرنسا.</string>
 </resources>
