@@ -29,21 +29,26 @@ open class EntourageTestWithAPI {
     val screenshotWatcher = object : TestWatcher() {
         override fun failed(e: Throwable?, description: org.junit.runner.Description?) {
             if(shouldTakeSnapshot) {
-                takeSnapshot(description?.className ?: "Unknown")
+                myTakeSnapshot(description?.className ?: "Unknown")
             }
         }
     }
 
-    private fun takeSnapshot(className: String) {
+    protected fun myTakeSnapshot(className: String = "entourage") {
         val sdf = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
         val timestamp = sdf.format(Date())
         val fileName = "${timestamp}_${className}.png"
-        val instrumentation = InstrumentationRegistry.getInstrumentation()
-        val storageDir = instrumentation.targetContext.filesDir
-        val file = File(storageDir, fileName)
+        val storageDir = File("/sdcard/Download/entourage_snapshots")
+
         try {
+            if (!storageDir.exists()) {
+                storageDir.mkdirs()
+            }
+            val file = File(storageDir, fileName)
+            val instrumentation = InstrumentationRegistry.getInstrumentation()
+
             if (UiDevice.getInstance(instrumentation).takeScreenshot(file)) {
-                Timber.d("EntourageTest", "Screenshot taken: ${file.absolutePath}")
+                Timber.i("EntourageTest", "Snapshot: adb pull ${file.absolutePath}")
             } else {
                 Timber.e("EntourageTest", "Failed to take screenshot")
             }
