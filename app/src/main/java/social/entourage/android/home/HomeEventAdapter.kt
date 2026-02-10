@@ -22,6 +22,7 @@ import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.Utils
 import java.text.SimpleDateFormat
 
 class HomeEventAdapter(
@@ -162,13 +163,7 @@ class HomeEventAdapter(
         }
 
         event.metadata?.startsAt?.let {
-            val locale = LanguageManager.getLocaleFromPreferences(context)
-            holder.binding.tvDateHomeV2EventItem.text = SimpleDateFormat(
-                holder.itemView.context.getString(R.string.post_date),
-                locale
-            ).format(
-                it
-            )
+            holder.binding.tvDateHomeV2EventItem.text = Utils.formatEventDateShort(it, context)
         }
         event.interests.let {
             if (it.isNotEmpty()) {
