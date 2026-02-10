@@ -34,6 +34,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.VibrationUtil
+import social.entourage.android.tools.utils.Utils
 import timber.log.Timber
 import kotlin.math.abs
 
@@ -415,7 +416,7 @@ class DiscussionsMainFragment : Fragment() {
             },
             title = (m.name),
             imageUrl = m.imageUrl,
-            subname = m.createdDateString(),
+            subname = m.getParsedDate()?.let { Utils.formatEventDateShort(it, requireContext()) } ?: "",
             lastMessage = lastMessage,
             numberUnreadMessages = m.numberOfUnreadMessages ?: 0,
             memberCount = m.numberOfPeople ?: 0

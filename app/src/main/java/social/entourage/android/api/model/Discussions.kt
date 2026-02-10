@@ -213,6 +213,18 @@ data class ConversationMembership(
     @SerializedName("last_chat_message_image_url") val lastChatMessageImageUrl: String?,
     @SerializedName("last_chat_message_datetime") val lastChatMessageDate: String?
 ){
+    fun getParsedDate(): Date? {
+        subname?.let { dateString ->
+            return try {
+                val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.US)
+                inputFormat.parse(dateString)
+            } catch (e: Exception) {
+                null
+            }
+        }
+        return null
+    }
+
     fun createdDateString(): String {
         subname?.let { dateString ->
             return try {

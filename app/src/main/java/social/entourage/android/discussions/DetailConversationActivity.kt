@@ -729,7 +729,7 @@ class DetailConversationActivity : CommentActivity() {
             }
             binding.header.headerSubtitle.visibility = View.VISIBLE
             binding.header.headerTitle.text = event.title
-            binding.header.headerSubtitle.text = formatDate(event.metadata?.startsAt.toString())
+            binding.header.headerSubtitle.text = event.metadata?.startsAt?.let { Utils.formatEventDateLong(it, this) } ?: ""
             binding.emptyState.visibility = View.GONE
         }
     }
@@ -851,12 +851,12 @@ class DetailConversationActivity : CommentActivity() {
     fun sortAndExtractDays(allEvents: MutableList<Post>?, context: android.content.Context): MutableList<Post>? {
         if (allEvents == null) return null
         val sorted = allEvents.sortedBy { it.createdTime } // ordre croissant
-        val grouped = sorted.groupBy { it.getFormatedStr() }
+        val grouped = sorted.groupBy { it.createdTime?.let { d -> Utils.formatEventDateLong(d, context) } ?: "" }
         val out = mutableListOf<Post>()
         grouped.forEach { (dateStr, posts) ->
             val sep = Post().apply {
                 isDatePostOnly = true
-                datePostText = dateStr.replaceFirstChar { it.uppercaseChar() }
+                datePostText = dateStr
             }
             out += sep
             out += posts
@@ -970,41 +970,7 @@ class DetailConversationActivity : CommentActivity() {
     }
 
     // ===== Dates / infos =====
-    fun formatDate(inputDate: String): String {
-        val fmt = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.US)
-        val date = fmt.parse(inputDate) ?: return ""
-        val cal = Calendar.getInstance().apply { time = date }
-        val day = cal.get(Calendar.DAY_OF_MONTH)
-        val dow = cal.get(Calendar.DAY_OF_WEEK)
-        val mon = cal.get(Calendar.MONTH)
-        val year = cal.get(Calendar.YEAR)
-        val dayName = when (dow) {
-            Calendar.MONDAY -> getString(R.string.enhanced_onboarding_time_disponibility_day_monday)
-            Calendar.TUESDAY -> getString(R.string.enhanced_onboarding_time_disponibility_day_tuesday)
-            Calendar.WEDNESDAY -> getString(R.string.enhanced_onboarding_time_disponibility_day_wednesday)
-            Calendar.THURSDAY -> getString(R.string.enhanced_onboarding_time_disponibility_day_thursday)
-            Calendar.FRIDAY -> getString(R.string.enhanced_onboarding_time_disponibility_day_friday)
-            Calendar.SATURDAY -> getString(R.string.enhanced_onboarding_time_disponibility_day_saturday)
-            Calendar.SUNDAY -> getString(R.string.enhanced_onboarding_time_disponibility_day_sunday)
-            else -> ""
-        }
-        val monName = when (mon) {
-            Calendar.JANUARY -> getString(R.string.january)
-            Calendar.FEBRUARY -> getString(R.string.february)
-            Calendar.MARCH -> getString(R.string.march)
-            Calendar.APRIL -> getString(R.string.april)
-            Calendar.MAY -> getString(R.string.may)
-            Calendar.JUNE -> getString(R.string.june)
-            Calendar.JULY -> getString(R.string.july)
-            Calendar.AUGUST -> getString(R.string.august)
-            Calendar.SEPTEMBER -> getString(R.string.september)
-            Calendar.OCTOBER -> getString(R.string.october)
-            Calendar.NOVEMBER -> getString(R.string.november)
-            Calendar.DECEMBER -> getString(R.string.december)
-            else -> ""
-        }
-        return "$dayName $day $monName $year"
-    }
+
 
     private fun checkAndShowPopWarning() {
         if (hasToShowFirstMessage && !isClassicDiscussion()) {

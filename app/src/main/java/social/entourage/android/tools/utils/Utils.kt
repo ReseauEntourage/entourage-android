@@ -372,4 +372,29 @@ object Utils {
             else -> ""
         }
     }
+    fun formatEventDateShort(date: Date, context: Context): String {
+        val locale = LanguageManager.getLocaleFromPreferences(context)
+        val cal = Calendar.getInstance()
+        cal.time = date
+        val now = Calendar.getInstance()
+        val pattern = if (cal.get(Calendar.YEAR) == now.get(Calendar.YEAR)) {
+            "EEE d MMM"
+        } else {
+            "EEE d MMM yyyy"
+        }
+        return SimpleDateFormat(pattern, locale).format(date).replaceFirstChar { if (it.isLowerCase()) it.titlecase(locale) else it.toString() }
+    }
+
+    fun formatEventDateLong(date: Date, context: Context): String {
+        val locale = LanguageManager.getLocaleFromPreferences(context)
+        val cal = Calendar.getInstance()
+        cal.time = date
+        val now = Calendar.getInstance()
+        val pattern = if (cal.get(Calendar.YEAR) == now.get(Calendar.YEAR)) {
+            "EEEE d MMMM"
+        } else {
+            "EEEE d MMMM yyyy"
+        }
+        return SimpleDateFormat(pattern, locale).format(date).replaceFirstChar { if (it.isLowerCase()) it.titlecase(locale) else it.toString() }
+    }
 }

@@ -16,6 +16,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.Utils
 import java.text.SimpleDateFormat
 
 class GroupEventsAdapter(
@@ -40,12 +41,7 @@ class GroupEventsAdapter(
         holder.binding.name.text = eventsList[position].title
         holder.binding.address.text = eventsList[position].metadata?.placeName
         eventsList[position].metadata?.startsAt?.let {
-            holder.binding.date.text = SimpleDateFormat(
-                holder.itemView.context.getString(R.string.event_date),
-                locale
-            ).format(
-                it
-            )
+            holder.binding.date.text = Utils.formatEventDateShort(it, context)
         }
         eventsList[position].metadata?.landscapeUrl?.let {
             Glide.with(holder.itemView.context)
