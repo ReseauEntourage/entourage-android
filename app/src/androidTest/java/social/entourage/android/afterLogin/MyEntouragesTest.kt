@@ -63,7 +63,7 @@ class MyEntouragesTest : EntourageTestAfterLogin() {
 
     @Test
     fun retrieveEntourages() {
-        checkNoOnboarding()
+        checkNoPopUpOnHome()
         //Try to retrieve feeds
         val bottomBarMessagesButton = onView(allOf(
             withId(R.id.navigation_donations),
