@@ -2718,4 +2718,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="onboard_sms_wait_countdown">Podrás solicitar un nuevo código en %1$s</string>
 
     <string name="guide_help_orientation_button">Ayuda y orientación</string>
+    <string name="home_title_small_talk">Unirse a una discusión solidaria</string>
+    <string name="small_talk_subtitle_match">Te ponemos en contacto con un pequeño grupo de personas que comparten tus intereses, en toda Francia.</string>
 </resources>

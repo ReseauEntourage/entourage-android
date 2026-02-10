@@ -2721,4 +2721,6 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="onboard_sms_wait_countdown">Du kannst in %1$s einen neuen Code anfordern</string>
 
     <string name="guide_help_orientation_button">Hilfe &amp; Orientierung</string>
+    <string name="home_title_small_talk">Einer solidarischen Diskussion beitreten</string>
+    <string name="small_talk_subtitle_match">Wir verbinden dich mit einer kleinen Gruppe von Menschen, die deine Interessen teilen, überall in Frankreich.</string>
 </resources>

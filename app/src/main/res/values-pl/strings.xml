@@ -2735,4 +2735,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="onboard_sms_wait_countdown">Nowy kod będziesz mógł/mogła zamówić za %1$s</string>
 
     <string name="guide_help_orientation_button">Pomoc i orientacja</string>
+    <string name="home_title_small_talk">Dołącz do dyskusji solidarnościowej</string>
+    <string name="small_talk_subtitle_match">Łączymy Cię z małą grupą osób, które dzielą Twoje zainteresowania, w całej Francji.</string>
 </resources>
