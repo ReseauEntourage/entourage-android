@@ -21,6 +21,7 @@ class OnboardingPhotoFragment : EditPhotoFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__OnboardingPhotoFragment)
         callback?.updateButtonNext(false)
     }
 

@@ -14,6 +14,7 @@ import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.RefreshController
 import social.entourage.android.databinding.FragmentCreateActionSuccessBinding
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class CreateActionSuccessFragment : Fragment() {
 
@@ -24,6 +25,7 @@ class CreateActionSuccessFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__CreateActionSuccessFragment)
         handleFinishButton()
 
         binding.title.text = getString(R.string.action_create_success_title,
@@ -44,6 +46,7 @@ class CreateActionSuccessFragment : Fragment() {
 
     private fun handleFinishButton() {
         binding.post.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateActionSuccessFragment__post)
             RefreshController.shouldRefreshFragment = true
             val intent = Intent(context, MainActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)

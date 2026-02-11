@@ -44,6 +44,7 @@ class CreateActionCGUFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__CreateActionCGUFragment)
         setNextClickListener()
         initializeGroups()
         handleBackButton()
@@ -76,6 +77,7 @@ class CreateActionCGUFragment : Fragment() {
     private fun setNextClickListener() {
 
         binding.accept.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateActionCGUFragment__accept)
             val action = CreateActionCGUFragmentDirections.actionCreateActionCguFragmentToCreateActionFragment(isDemand)
             action.isActionDemand = isDemand
             action.actionObj = actionEdited
@@ -85,6 +87,7 @@ class CreateActionCGUFragment : Fragment() {
 
     private fun handleBackButton() {
         binding.iconBack.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateActionCGUFragment__iconBack)
             requireActivity().finish()
         }
     }

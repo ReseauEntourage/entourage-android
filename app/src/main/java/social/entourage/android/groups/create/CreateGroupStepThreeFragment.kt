@@ -36,6 +36,7 @@ class CreateGroupStepThreeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__CreateGroupStepThreeFragment)
         viewModel.resetValues()
         handleChoosePhoto()
         setWelcomeMessage()
@@ -89,6 +90,7 @@ class CreateGroupStepThreeFragment : Fragment() {
             choosePhotoModalFragment.show(parentFragmentManager, ChooseGalleryPhotoModalFragment.TAG)
         }
         binding.layout.egs3AddPhoto.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateGroupStepThreeFragment__egs3AddPhoto)
             choosePhotoModalFragment.show(parentFragmentManager, ChooseGalleryPhotoModalFragment.TAG)
         }
     }

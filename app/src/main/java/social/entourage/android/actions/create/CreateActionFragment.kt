@@ -75,6 +75,7 @@ class CreateActionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__CreateActionFragment)
 
         if (viewModel.actionEdited != null) {
             binding.uiHeaderTitle.text = if (isDemand) getString(R.string.action_edit_demand_title) else getString(R.string.action_edit_contrib_title)
@@ -87,6 +88,7 @@ class CreateActionFragment : Fragment() {
         initializeViewPager(currentItemPager)
 
         binding.iconBack.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateActionFragment__iconBack)
             onBackButton()
         }
 
@@ -213,6 +215,7 @@ class CreateActionFragment : Fragment() {
 
     private fun setPreviousClickListener() {
         binding.previous.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateActionFragment__previous)
             viewModel.resetValues()
             viewPager?.previousPage(true)
             if (viewPager?.currentItem == 0) {
@@ -274,6 +277,7 @@ class CreateActionFragment : Fragment() {
 
     private fun handleValidate() {
         binding.next.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateActionFragment__next)
             val isSharingTimeSelected = viewModel.sectionsList.value?.firstOrNull()?.isSelected == true
             if (viewPager?.currentItem == NB_TABS - 2 && !isSharingTimeSelected && hasADefaultGroup) {
                 viewModel.isCondition.postValue(true)

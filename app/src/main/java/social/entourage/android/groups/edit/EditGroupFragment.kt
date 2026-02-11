@@ -51,6 +51,7 @@ class EditGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__EditGroupFragment)
         groupPresenter.getGroup(args.groupID)
         groupPresenter.getGroup.observe(viewLifecycleOwner, ::handleResponseGetGroup)
         groupPresenter.isGroupUpdated.observe(viewLifecycleOwner, ::handleResponseUpdateGroup)
@@ -142,10 +143,12 @@ class EditGroupFragment : Fragment() {
             stepThree.egs3GroupPhotoTitle.sectionMandatory.visibility = View.GONE
             stepThree.groupPhotoLabel.visibility = View.GONE
             stepThree.egs3AddPhoto.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__EditGroupFragment__egs3AddPhoto)
                 ChooseGalleryPhotoModalFragment.newInstance(ImagesType.GROUPS)
                     .show(parentFragmentManager, ChooseGalleryPhotoModalFragment.TAG)
             }
             header.iconBack.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__EditGroupFragment__iconBack)
                 back()
             }
         }
@@ -262,6 +265,7 @@ class EditGroupFragment : Fragment() {
 
     private fun handleSaveButton() {
         binding.validate.button.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__EditGroupFragment__button)
             if (checkName() && checkInterestsList()) {
                 val editedGroup: MutableMap<String, Any> = mutableMapOf()
                 val group: ArrayMap<String, Any> = ArrayMap()

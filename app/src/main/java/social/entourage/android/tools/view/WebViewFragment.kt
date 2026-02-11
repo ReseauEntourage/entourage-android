@@ -41,6 +41,7 @@ import social.entourage.android.R
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.databinding.FragmentWebviewBinding
 import java.util.Locale
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class WebViewFragment : BaseDialogFragment() {
     // ----------------------------------
@@ -68,17 +69,32 @@ class WebViewFragment : BaseDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__WebViewFragment)
         requestedUrl = arguments?.getString(REQUESTED_URL) ?: return dismiss()
         shareMessageRes = arguments?.getInt(SHARE_MESSAGE, 0) ?: 0
         hasToSendRead = arguments?.getBoolean(SENDGETREAD, false) ?: false
         showAnimation()
-        binding.webviewBackButton.setOnClickListener {onBackClicked()}
-        binding.webviewMoreButton.setOnClickListener {toggleMenu()}
-        binding.webviewBackground.setOnClickListener {dismiss()}
-        binding.webviewMenuBrowser.setOnClickListener {onMenuBrowserClicked()}
-        binding.webviewMenuCopy.setOnClickListener {onMenuCopyClicked()}
-        binding.webviewMenuShare.setOnClickListener {onMenuShareClicked()}
-        binding.webviewNavigationBarMenuBackground.setOnClickListener {toggleMenu()}
+        binding.webviewBackButton.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__WebViewFragment__webviewBackButton)
+            onBackClicked()}
+        binding.webviewMoreButton.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__WebViewFragment__webviewMoreButton)
+            toggleMenu()}
+        binding.webviewBackground.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__WebViewFragment__webviewBackground)
+            dismiss()}
+        binding.webviewMenuBrowser.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__WebViewFragment__webviewMenuBrowser)
+            onMenuBrowserClicked()}
+        binding.webviewMenuCopy.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__WebViewFragment__webviewMenuCopy)
+            onMenuCopyClicked()}
+        binding.webviewMenuShare.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__WebViewFragment__webviewMenuShare)
+            onMenuShareClicked()}
+        binding.webviewNavigationBarMenuBackground.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__WebViewFragment__webviewNavigationBarMenuBackground)
+            toggleMenu()}
 
         if (hasToSendRead) {
             setWebUrlRead()

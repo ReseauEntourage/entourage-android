@@ -24,6 +24,7 @@ import social.entourage.android.api.request.PartnerWrapper
 import social.entourage.android.api.request.PartnersResponse
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.databinding.FragmentUserEditPartnerBinding
+import social.entourage.android.tools.log.AnalyticsEvents
 
 /**
  *
@@ -52,9 +53,14 @@ class UserEditPartnerFragment  : BaseDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__UserEditPartnerFragment)
         configureView()
-        binding.userEditPartnerTitleLayout.binding.titleCloseButton.setOnClickListener {onCloseButtonClicked()}
-        binding.userEditPartnerTitleLayout.binding.titleActionButton.setOnClickListener {onSaveButtonClicked()}
+        binding.userEditPartnerTitleLayout.binding.titleCloseButton.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__UserEditPartnerFragment__titleCloseButton)
+            onCloseButtonClicked()}
+        binding.userEditPartnerTitleLayout.binding.titleActionButton.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__UserEditPartnerFragment__titleActionButton)
+            onSaveButtonClicked()}
     }
 
     private fun configureView() {

@@ -39,6 +39,7 @@ class CreateEventStepOneFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__CreateEventStepOneFragment)
         CommunicationHandler.resetValues()
         setView()
         initializeDescriptionCounter()
@@ -71,9 +72,11 @@ class CreateEventStepOneFragment : Fragment() {
     private fun handleChoosePhoto() {
         val choosePhotoModalFragment = ChooseGalleryPhotoModalFragment.newInstance(ImagesType.EVENTS)
         binding.layout.addPhotoLayout.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateEventStepOneFragment__addPhotoLayout)
             choosePhotoModalFragment.show(parentFragmentManager, ChooseGalleryPhotoModalFragment.TAG)
         }
         binding.layout.addPhoto.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateEventStepOneFragment__addPhoto)
             choosePhotoModalFragment.show(parentFragmentManager, ChooseGalleryPhotoModalFragment.TAG)
         }
     }

@@ -15,6 +15,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.Partner
 import social.entourage.android.databinding.FragmentAssociationProfileBinding
 import social.entourage.android.tools.utils.CustomAlertDialog
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class AssociationProfileFragment : Fragment() {
 
@@ -35,6 +36,7 @@ class AssociationProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__AssociationProfileFragment)
         setBackButton()
         isFromNotifs = args.isFromNotif
         associationPresenter.getPartnerInfos(args.partnerId)
@@ -133,6 +135,7 @@ class AssociationProfileFragment : Fragment() {
 
     private fun setBackButton() {
         binding.assoProfileIconBack.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__AssociationProfileFragment__assoProfileIconBack)
             if(isFromNotifs) {
                 activity?.onBackPressed()
                 return@setOnClickListener
@@ -144,6 +147,7 @@ class AssociationProfileFragment : Fragment() {
 
     private fun handleFollowButton() {
         binding.assoProfileSubscribe.button.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__AssociationProfileFragment__button)
             partner?.let {
                 if (it.isFollowing) CustomAlertDialog.showWithCancelFirst(
                     requireContext(),

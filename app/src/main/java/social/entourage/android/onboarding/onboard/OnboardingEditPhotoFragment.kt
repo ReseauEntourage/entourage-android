@@ -22,6 +22,7 @@ import social.entourage.android.user.edit.photo.PhotoEditInterface
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class OnboardingEditPhotoFragment : DialogFragment() {
 
@@ -48,6 +49,7 @@ class OnboardingEditPhotoFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__OnboardingEditPhotoFragment)
         setupViews()
     }
 
@@ -114,14 +116,17 @@ class OnboardingEditPhotoFragment : DialogFragment() {
         })
 
         binding.uiEditPhotoCancel.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__OnboardingEditPhotoFragment__uiEditPhotoCancel)
             dismiss()
         }
 
         binding.uiPhotoEditBtRotate.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__OnboardingEditPhotoFragment__uiPhotoEditBtRotate)
             rotateImage()
         }
 
         binding.uiEditPhotoValidate.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__OnboardingEditPhotoFragment__uiEditPhotoValidate)
             binding.uiEditPhotoValidate.isEnabled = false
             binding.uiPhotoEditProgressBar.visibility = View.VISIBLE
             try {

@@ -78,8 +78,12 @@ class EditPasswordFragment()  : BaseDialogFragment() {
         binding.userConfirmPassword.typeface = Typeface.DEFAULT
         binding.userConfirmPassword.transformationMethod = PasswordTransformationMethod()
         binding.userOldPassword.requestFocus()
-        binding.iconBack.setOnClickListener { onCloseButton() }
-        binding.buttonValidate.setOnClickListener { onSaveButton() }
+        binding.iconBack.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__EditPasswordFragment__iconBack)
+            onCloseButton() }
+        binding.buttonValidate.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__EditPasswordFragment__buttonValidate)
+            onSaveButton() }
     }
 
     private fun validatePassword(): Boolean {

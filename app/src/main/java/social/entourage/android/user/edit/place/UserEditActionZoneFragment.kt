@@ -53,9 +53,11 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
 
         binding.editPlaceTitleLayout.visibility = View.VISIBLE
         binding.editPlaceTitleLayout.binding.titleActionButton.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__UserEditActionZoneFragment__titleActionButton)
             sendNetwork()
         }
         binding.editPlaceTitleLayout.binding.titleCloseButton.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__UserEditActionZoneFragment__titleCloseButton)
             dismiss()
             if (isAdded && view != null) {
                 findNavController().popBackStack()

@@ -46,27 +46,37 @@ class ReadPoiFragment : BaseDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__ReadPoiFragment)
         poi = arguments?.getSerializable(BUNDLE_KEY_POI) as Poi
         filtersSelectedFromMap = arguments?.getString(BUNDLE_KEY_SEARCH,"")
 
         //Actually WS return id and not uuid for entourage poi
         presenter.getPoiDetail(poi.uuid)
 
-        binding.poiReadToolbar.binding.titleCloseButton.setOnClickListener {dismiss()}
-        binding.poiReportButton.setOnClickListener {onReportButtonClicked()}
-        binding.poiReadToolbar.binding.uiButtonShare.setOnClickListener { onShareClicked() }
+        binding.poiReadToolbar.binding.titleCloseButton.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ReadPoiFragment__titleCloseButton)
+            dismiss()}
+        binding.poiReportButton.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ReadPoiFragment__poiReportButton)
+            onReportButtonClicked()}
+        binding.poiReadToolbar.binding.uiButtonShare.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ReadPoiFragment__uiButtonShare)
+            onShareClicked() }
         binding.poiReadToolbar.binding.uiButtonShare.visibility = View.VISIBLE
         binding.uiLayoutHelp.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ReadPoiFragment__uiLayoutHelp)
             binding.uiLayoutFullHelpInfo.visibility = View.VISIBLE
         }
         binding.uiLayoutFullHelpInfo.visibility = View.GONE
         setupRVHelp()
 
         binding.uiBtShareClose.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ReadPoiFragment__uiBtShareClose)
             binding.uiLayoutShare.visibility = View.GONE
         }
 
         binding.uiBtShareInside.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ReadPoiFragment__uiBtShareInside)
             binding.uiLayoutShare.visibility = View.GONE
 
             ShareMessageFragment.newInstanceForPoi(poi.uuid)
@@ -74,11 +84,13 @@ class ReadPoiFragment : BaseDialogFragment() {
         }
 
         binding.uiBtShareOutside.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ReadPoiFragment__uiBtShareOutside)
             binding.uiLayoutShare.visibility = View.GONE
             shareOnly()
         }
 
         binding.uiButtonShowSoliguide.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ReadPoiFragment__uiButtonShowSoliguide)
             //TODO: link inside or outside app ?
             poi.soliguideUrl?.let {
                 val stringTag = String.format(AnalyticsEvents.SOLIGUIDE_CLICK,poi.soliguideId,poi.uuid,filtersSelectedFromMap)
@@ -97,6 +109,7 @@ class ReadPoiFragment : BaseDialogFragment() {
         binding.guideFilterList.adapter = filterAdapter
 
         binding.uiLayoutFullHelpInfo.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ReadPoiFragment__uiLayoutFullHelpInfo)
             binding.uiLayoutFullHelpInfo.visibility = View.GONE
         }
 

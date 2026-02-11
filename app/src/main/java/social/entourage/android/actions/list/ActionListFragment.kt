@@ -17,6 +17,7 @@ import social.entourage.android.databinding.FragmentActionListBinding
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.tools.utils.CustomAlertDialog
 import timber.log.Timber
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class ActionListFragment : Fragment() {
 
@@ -49,6 +50,7 @@ class ActionListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__ActionListFragment)
         actionsPresenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
         myId = EntourageApplication.me(activity)?.id
         initializeAdapter()
