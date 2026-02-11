@@ -429,13 +429,6 @@ object PushNotificationManager {
             return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
         }
         if(pushNotificationMessage.content?.extra?.stage == "birthday"){
-            val intent = Intent(context, BirthdayActivity::class.java) // Assure-toi d'avoir importé BirthdayActivity
-            intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-
-            return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
-        }
-        if(pushNotificationMessage.content?.extra?.stage == "birthday"){
             val intent = Intent(context, MainActivity::class.java)
             intent.putExtra("goBirthday", true)
             intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
