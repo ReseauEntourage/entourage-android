@@ -47,10 +47,8 @@ import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.EventConfirmationDialogFragment
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.language.LanguageManager
-import social.entourage.android.notifications.NotificationRouter
-import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.main_filter.MainFilterActivity
-import social.entourage.android.notifications.NotificationActionManager
+import social.entourage.android.notifications.NotificationRouter
 import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.profile.MyProfileFullActivity
 import social.entourage.android.tools.TestHelper
@@ -386,6 +384,8 @@ class MainActivity : BaseSecuredActivity() {
                 NotificationManagerCompat.from(this).areNotificationsEnabled()
             )
         }
+    }
+
     private fun checkIntentAction(action: String, extras: Bundle?) {
         if (extras == null) return
         var contentJson = extras.getString("notification_content")
