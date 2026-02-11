@@ -309,12 +309,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 )
             }
             event?.metadata?.startsAt?.let {
-                binding.dateStartsAt.content.text = SimpleDateFormat(
-                    context?.getString(R.string.feed_event_date),
-                    locale
-                ).format(
-                    it
-                )
+                binding.dateStartsAt.content.text = Utils.formatEventDateLong(it, requireContext())
             }
             event?.metadata?.startsAt?.let {
                 binding.time.content.text = SimpleDateFormat(
