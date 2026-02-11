@@ -27,168 +27,36 @@ import social.entourage.android.welcome.WelcomeTwoActivity
 import social.entourage.android.home.BirthdayActivity
 
 /**
- * Created by Me on 26/09/2022.
+ * Delegating wrapper for NotificationRouter.
+ * Maintained for backward compatibility with In-App Notifications.
  */
 object NotificationActionManager {
 
-    /**/
-    fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int = 0, postId:Int?, stage:String? = "", popup:String? = "" , notifContext:String? = "", tracking:String? = ""){
-
-        if(popup.equals("outing_on_day_before")){
-            if(context is MainActivity){
-                (context as MainActivity).ifEventLastDay(id)
-                return
-            }
-            else{
-                MainActivity.shouldLaunchEventPopUp = id
-                (context as Activity).finish()
-                return
-            }
-        }
-        if(notifContext.equals("outing_on_day_before")){
-            if(context is MainActivity){
-                (context as MainActivity).ifEventLastDay(id)
-                return
-
-            }else{
-                MainActivity.shouldLaunchEventPopUp = id
-                (context as Activity).finish()
-                return
-            }
-        }
-
-        if(!stage.isNullOrEmpty()){
-
-            if(stage.equals("h1")){
-                val intent = Intent(context, WelcomeOneActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j2")){
-                val intent = Intent(context, WelcomeTwoActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j5")){
-                val intent = Intent(context, WelcomeThreeActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j8")){
-                val intent = Intent(context, WelcomeFourActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j11")){
-                val intent = Intent(context, WelcomeFiveActivity::class.java)
-                context.startActivity(intent)
-            }
-        }
-
-
-        Log.wtf("wtf", "instance from NotificationActionManager: $instance")
-        Log.wtf("wtf", "tracking: from NotificationActionManager$tracking")
-        Log.wtf("wtf", "id: from NotificationActionManager$id")
-
-        // Cas spécifiques : si c'est un outing ET que le tracking correspond à une conversation
-        val validTracking = listOf(
-            "public_chat_message_on_create",
-            "post_on_create_to_outing",
-            "post_on_create",
-            "comment_on_create_to_outing",
-            "comment_on_create",
-            "chat_message_on_mention",
-            "reaction_on_create",
-            "survey_response_on_create"
+    fun presentAction(context: Context, supportFragmentManager: FragmentManager, instance: String, id: Int = 0, postId: Int? = null, stage: String? = "", popup: String? = "", notifContext: String? = "", tracking: String? = "") {
+        val args = NotificationRouter.NotificationArguments(
+            instance = instance,
+            id = id,
+            postId = postId,
+            stage = stage,
+            popup = popup,
+            notifContext = notifContext,
+            tracking = tracking
         )
-
-        if ((instance == "outings" || instance == "outing") && (notifContext in validTracking || tracking in validTracking)) {
-            Log.wtf("wtf", "➡️ Redirection discussion/outing via notifContext = $notifContext")
-            context.startActivity(
-                Intent(context, DetailConversationActivity::class.java).apply {
-                    putExtras(
-                        bundleOf(
-                            Const.ID to id,
-                            Const.SHOULD_OPEN_KEYBOARD to false,
-                            Const.IS_CONVERSATION_1TO1 to true,
-                            Const.IS_MEMBER to true,
-                            Const.IS_CONVERSATION to true,
-                            Const.HAS_TO_SHOW_MESSAGE to true
-                        )
-                    )
-                }
-            )
-            return
-        }
-
-        when(getInstanceTypeFromName(instance)) {
-            InstanceType.POIS -> showPoi(supportFragmentManager,id)
-            InstanceType.USERS -> showUser(context,supportFragmentManager,id)
-            InstanceType.NEIGHBORHOODS -> showNeighborhood(context,supportFragmentManager,id)
-            InstanceType.RESOURCES -> showResource(context,supportFragmentManager,id)
-            InstanceType.OUTINGS -> showOuting(context,supportFragmentManager,id)
-            InstanceType.OUTINGS_MESSAGE -> showConversation(context,supportFragmentManager,id)
-            InstanceType.CONTRIBUTIONS -> showContribution(context,supportFragmentManager,id)
-            InstanceType.SOLICITATIONS -> showSolicitation(context,supportFragmentManager,id)
-            InstanceType.CONVERSATIONS -> showConversation(context,supportFragmentManager,id)
-            InstanceType.SMALLTALK -> showSmallTalk(context,supportFragmentManager,id)
-            InstanceType.AlMOSTMATCH -> showAlmostMatch(context,supportFragmentManager,id)
-            InstanceType.PARTNERS -> showPartner(context,id)
-            InstanceType.NONE -> return
-
-            else -> {
-                if(getInstanceTypeFromName(instance) == InstanceType.OUTING_POSTS){
-                    if (postId != null) {
-                        showEventPost(context,supportFragmentManager,id,postId)
-                    }
-                } else if(getInstanceTypeFromName(instance) == InstanceType.NEIGHBORHOODS_POSTS){
-                    if (postId != null) {
-                        showGroupPost(context,supportFragmentManager,id,postId)
-                    }
-                }
-            }
-        }
+        NotificationRouter.navigate(context, supportFragmentManager, args)
     }
 
-    fun presentWelcomeAction(context: Context, stage:String? = ""){
-        if(!stage.isNullOrEmpty()){
-            if(stage.equals("h1")){
-                val intent = Intent(context, WelcomeOneActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j2")){
-                val intent = Intent(context, WelcomeTwoActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j5")){
-                val intent = Intent(context, WelcomeThreeActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j8")){
-                val intent = Intent(context, WelcomeFourActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j11")){
-                val intent = Intent(context, WelcomeFiveActivity::class.java)
-                context.startActivity(intent)
-            }
-            if (stage == "birthday") {
-                if (context is MainActivity) {
-                    (context as MainActivity).goHome()
-                    context.startActivity(Intent(context, BirthdayActivity::class.java))
-                } else {
-                    val intent = Intent(context, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
-                    intent.putExtra("goBirthday", true)
-                    context.startActivity(intent)
-                }
-                return
-            }
-        }
-
+    fun presentWelcomeAction(context: Context, stage: String? = "") {
+        val args = NotificationRouter.NotificationArguments(
+            stage = stage
+        )
+        // Pass null fragmentManager, assuming no fragment-based navigation for welcome actions
+        NotificationRouter.navigate(context, null, args)
     }
 
+    fun setPlaceHolder(instance: String?): Int {
+        if (instance == null) return R.drawable.ic_new_placeholder_notif
 
-    fun setPlaceHolder(instance:String?):Int {
-        if (instance == null ) return R.drawable.ic_new_placeholder_notif
-
-        when(getInstanceTypeFromName(instance)) {
+        when (getInstanceTypeFromName(instance)) {
             InstanceType.POIS -> return R.drawable.ic_new_placeholder_notif
             InstanceType.USERS -> return R.drawable.placeholder_user
             InstanceType.NEIGHBORHOODS -> return R.drawable.placeholder_user
@@ -199,132 +67,13 @@ object NotificationActionManager {
             InstanceType.SOLICITATIONS -> return R.drawable.ic_new_placeholder_notif
             InstanceType.CONVERSATIONS -> return R.drawable.placeholder_user
             InstanceType.PARTNERS -> return R.drawable.ic_new_placeholder_notif
-            InstanceType.NONE -> R.drawable.ic_new_placeholder_notif
+            InstanceType.NONE -> return R.drawable.ic_new_placeholder_notif
             InstanceType.NEIGHBORHOODS_POSTS -> return R.drawable.placeholder_user
             InstanceType.OUTING_POSTS -> return R.drawable.placeholder_user
             InstanceType.SMALLTALK -> return R.drawable.placeholder_user
             InstanceType.AlMOSTMATCH -> return R.drawable.placeholder_user
         }
         return R.drawable.ic_new_placeholder_notif
-    }
-            /*InstanceType.NEIGHBORHOODS_POST -> showEventPost(context,supportFragmentManager, postId)
-            InstanceType.OUTINGS_POST -> showGroupPost(context,supportFragmentManager, postId)*/
-
-    private fun showContribution(context:Context,supportFragmentManager: FragmentManager, id: Int) {
-        context.startActivity(
-            Intent(context, ActionDetailActivity::class.java)
-                .putExtra(Const.ACTION_ID, id)
-                .putExtra(Const.IS_ACTION_DEMAND,false)
-        )
-    }
-    private fun showSolicitation(context:Context,supportFragmentManager: FragmentManager, id: Int) {
-        context.startActivity(
-            Intent(context, ActionDetailActivity::class.java)
-                .putExtra(Const.ACTION_ID, id)
-                .putExtra(Const.IS_ACTION_DEMAND,true)
-        )
-    }
-    private fun showConversation(context:Context,supportFragmentManager: FragmentManager, id: Int) {
-        DetailConversationActivity.isSmallTalkMode = false
-        context.startActivity(
-            Intent(context, DetailConversationActivity::class.java)
-                .putExtras(
-                    bundleOf(
-                        Const.ID to id,
-                        Const.SHOULD_OPEN_KEYBOARD to false,
-                        Const.IS_CONVERSATION_1TO1 to true,
-                        Const.IS_MEMBER to true,
-                        Const.IS_CONVERSATION to true
-                    )
-                )
-        )
-    }
-    private fun showSmallTalk(context:Context,supportFragmentManager: FragmentManager, id: Int) {
-        DetailConversationActivity.isSmallTalkMode = true
-        DetailConversationActivity.smallTalkId = id.toString()
-        context.startActivity(
-            Intent(context, DetailConversationActivity::class.java)
-                .putExtras(
-                    bundleOf(
-                        Const.ID to id,
-                        Const.SHOULD_OPEN_KEYBOARD to false,
-                        Const.IS_CONVERSATION_1TO1 to true,
-                        Const.IS_MEMBER to true,
-                        Const.IS_CONVERSATION to true
-                    )
-                )
-        )
-    }
-    private fun showAlmostMatch(context:Context,supportFragmentManager: FragmentManager, id: Int) {
-        context.startActivity(
-            Intent(context, SmallTalkListOtherBands::class.java)
-        )
-    }
-
-    private fun showUser(context:Context,supportFragmentManager: FragmentManager, id: Int) {
-        val params = HomeActionParams()
-        params.id = id
-        Navigation.navigate(context,supportFragmentManager,
-            HomeType.USER,
-            ActionSummary.SHOW, params)
-    }
-
-    private fun showPartner(context:Context, id: Int) {
-        context.startActivity(
-            Intent(context, PartnerDetailActivity::class.java)
-                .putExtra(Const.PARTNER_ID, id)
-                .putExtra(Const.IS_FROM_NOTIF,true)
-        )
-    }
-
-    private fun showPoi(fragmentManager: FragmentManager, id: Int) {
-        val poi = Poi()
-        poi.uuid = "$id"
-        ReadPoiFragment.newInstance(poi, "")
-            .show(fragmentManager, ReadPoiFragment.TAG)
-    }
-
-    private fun showOuting(context:Context,supportFragmentManager: FragmentManager, id: Int) {
-        val params = HomeActionParams()
-        params.id = id
-        Navigation.navigate(context,supportFragmentManager,
-            HomeType.OUTING,
-            ActionSummary.SHOW, params)
-    }
-
-    private fun showNeighborhood(context:Context,supportFragmentManager: FragmentManager, id: Int) {
-        val params = HomeActionParams()
-        params.id = id
-        Navigation.navigate(context,supportFragmentManager,
-            HomeType.NEIGHBORHOOD,
-            ActionSummary.SHOW, params)
-    }
-
-    private fun showResource(context:Context,supportFragmentManager: FragmentManager, id: Int) {
-        val params = HomeActionParams()
-        params.id = id
-        Navigation.navigate(context,supportFragmentManager,
-            HomeType.RESOURCE,
-            ActionSummary.SHOW, params)
-    }
-
-    private fun showEventPost(context:Context,supportFragmentManager: FragmentManager, instanceId: Int , postID:Int) {
-        val params = HomeActionParams()
-        params.id = instanceId
-        params.postId = postID
-        Navigation.navigate(context,supportFragmentManager,
-            HomeType.OUTING_POST,
-            ActionSummary.SHOW, params)
-    }
-
-    private fun showGroupPost(context:Context,supportFragmentManager: FragmentManager, instanceId: Int , postID:Int) {
-
-        val params = HomeActionParams()
-        params.id = instanceId
-        params.postId = postID
-        Navigation.navigate(context,supportFragmentManager,
-            HomeType.NEIGHBORHOOD_POST,
-            ActionSummary.SHOW, params)
     }
 
     enum class InstanceType {
@@ -345,9 +94,9 @@ object NotificationActionManager {
         NONE
     }
 
-    fun getInstanceTypeFromName(instanceName:String) : InstanceType {
+    fun getInstanceTypeFromName(instanceName: String): InstanceType {
         return when (instanceName) {
-            "pois","poi" -> InstanceType.POIS
+            "pois", "poi" -> InstanceType.POIS
             "users", "user" -> InstanceType.USERS
             "neighborhoods", "neighborhood" -> InstanceType.NEIGHBORHOODS
             "neighborhood_post" -> InstanceType.NEIGHBORHOODS_POSTS

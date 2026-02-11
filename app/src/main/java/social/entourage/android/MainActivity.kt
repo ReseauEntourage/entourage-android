@@ -47,6 +47,8 @@ import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.EventConfirmationDialogFragment
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.language.LanguageManager
+import social.entourage.android.notifications.NotificationRouter
+import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.notifications.NotificationActionManager
 import social.entourage.android.notifications.PushNotificationManager
@@ -384,28 +386,32 @@ class MainActivity : BaseSecuredActivity() {
                 NotificationManagerCompat.from(this).areNotificationsEnabled()
             )
         }
-    }
-
     private fun checkIntentAction(action: String, extras: Bundle?) {
-        extras?.getString(PushNotificationManager.KEY_CONTENT)?.let { rawContent ->
-            Gson().fromJson(
-                rawContent,
-                PushNotificationContent::class.java
-            )?.extra?.let { extra ->
-                extra.instance?.let { instance ->
-                    NotificationActionManager.presentAction(
-                        this,
-                        supportFragmentManager,
-                        instance,
-                        extra.instanceId ?: 0,
-                        extra.postId,
-                        stage = extra.stage,
-                        popup = extra.popup,
-                        tracking = extra.tracking
+        if (extras == null) return
+        var contentJson = extras.getString("notification_content")
+        if (contentJson == null) {
+            contentJson = extras.getString(PushNotificationManager.KEY_CONTENT)
+        }
+        if (contentJson != null) {
+            try {
+                val content = Gson().fromJson(contentJson, PushNotificationContent::class.java)
+                if (content != null) {
+                    val extra = content.extra
+                    val args = NotificationRouter.NotificationArguments(
+                        instance = extra?.instance,
+                        id = extra?.instanceId ?: extra?.joinableId?.toInt() ?: 0,
+                        postId = extra?.postId,
+                        stage = extra?.stage,
+                        popup = extra?.popup,
+                        tracking = extra?.tracking,
+                        contentJson = contentJson
                     )
+                    NotificationRouter.navigate(this, supportFragmentManager, args)
                 }
+            } catch (e: Exception) {
+                Timber.e(e)
             }
-        }?: Timber.d("wtf notif :extras null")
+        }
         intent = null
     }
 
