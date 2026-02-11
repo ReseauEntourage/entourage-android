@@ -427,6 +427,12 @@ object PushNotificationManager {
             intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
             return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
         }
+        if(pushNotificationMessage.content?.extra?.stage == "birthday"){
+            val intent = Intent(context, MainActivity::class.java)
+            intent.putExtra("goBirthday", true)
+            intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
+            return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
+        }
 
         val instance = pushNotificationMessage.content?.extra?.instance
         val tracking = pushNotificationMessage.content?.extra?.tracking
