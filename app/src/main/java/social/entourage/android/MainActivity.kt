@@ -389,10 +389,19 @@ class MainActivity : BaseSecuredActivity() {
 
     private fun checkIntentAction(action: String, extras: Bundle?) {
         extras?.getString(PushNotificationManager.KEY_CONTENT)?.let { rawContent ->
-            Gson().fromJson(
+            val pushContent = Gson().fromJson(
                 rawContent,
-                PushNotificationContent::class.java
-            )?.extra?.let { extra ->
+                social.entourage.android.api.model.notification.PushNotificationContent::class.java
+            )
+
+            pushContent?.extra?.let { extra ->
+                // 1. GESTION SPÉCIALE ANNIVERSAIRE (ou tout autre "stage" sans instance)
+                if (extra.stage == "birthday") {
+                    NotificationActionManager.presentWelcomeAction(this, extra.stage)
+                    return // On arrête là, pas besoin de chercher une instance
+                }
+
+                // 2. GESTION CLASSIQUE (avec instance)
                 extra.instance?.let { instance ->
                     NotificationActionManager.presentAction(
                         this,
@@ -406,7 +415,7 @@ class MainActivity : BaseSecuredActivity() {
                     )
                 }
             }
-        }?: Timber.d("wtf notif :extras null")
+        } ?: Timber.d("wtf notif :extras null")
         intent = null
     }
 
