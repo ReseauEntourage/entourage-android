@@ -191,7 +191,7 @@ object Utils {
 
     fun checkUrlWithHttps(url: String): String {
         return if ((url.startsWith(Const.HTTP)).not() && (url.startsWith(Const.HTTPS)).not())
-            Const.HTTP + url
+            Const.HTTPS + url
         else url
     }
 
