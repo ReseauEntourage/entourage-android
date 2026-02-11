@@ -60,7 +60,6 @@ class OnboardingPhase3Fragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__OnboardingPhase3Fragment)
 
         //binding.tvTitle.text = getString(R.string.onboard_profile_title)
 

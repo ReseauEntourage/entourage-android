@@ -16,7 +16,6 @@ import social.entourage.android.events.create.CreateEventActivity
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
-import social.entourage.android.tools.log.AnalyticsEvents
 
 class GroupEventsListFragment : Fragment() {
     private var _binding: NewFragmentGroupEventsListBinding? = null
@@ -38,7 +37,6 @@ class GroupEventsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__GroupEventsListFragment)
         setView()
         eventsAdapter =
             GroupEventsListAdapter(requireContext(), sections, null)
@@ -58,7 +56,6 @@ class GroupEventsListFragment : Fragment() {
 
     private fun setBackButton() {
         binding.header.iconBack.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__GroupEventsListFragment__iconBack)
             findNavController().popBackStack()
         }
     }
@@ -78,7 +75,6 @@ class GroupEventsListFragment : Fragment() {
     private fun createEvent() {
         binding.createEvent.isVisible = args.groupMember
         binding.createEvent.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__GroupEventsListFragment__createEvent)
             val intent = Intent(context, CreateEventActivity::class.java)
             intent.putExtra(Const.GROUP_ID, args.groupID)
             startActivityForResult(intent,0)

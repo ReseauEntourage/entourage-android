@@ -15,7 +15,6 @@ import social.entourage.android.databinding.FragmentActionCreateStepFourLayoutBi
 import social.entourage.android.databinding.FragmentCreateActionStepCategoryBinding
 import social.entourage.android.groups.GroupPresenter
 import timber.log.Timber
-import social.entourage.android.tools.log.AnalyticsEvents
 
 class CreateActionStepFourFragment : Fragment() {
 
@@ -28,7 +27,6 @@ class CreateActionStepFourFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__CreateActionStepFourFragment)
         groupPresenter = ViewModelProvider(requireActivity()).get(GroupPresenter::class.java)
         groupPresenter.getGroup.observe(viewLifecycleOwner, { group ->
             handleResponseGetGroups(group)
@@ -56,7 +54,6 @@ class CreateActionStepFourFragment : Fragment() {
         val quicksandBold = ResourcesCompat.getFont(requireContext(), R.font.quicksand_bold)
         val nunitoSansRegular = ResourcesCompat.getFont(requireContext(), R.font.nunitosans_regular)
         binding.btnYes.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateActionStepFourFragment__btnYes)
             wantToShareInGroup = true
             binding.yesImg.setImageResource(R.drawable.radio_button_image_action_creation_full)
             binding.noImg.setImageResource(R.drawable.radio_button_image_action_creation_empty)
@@ -66,7 +63,6 @@ class CreateActionStepFourFragment : Fragment() {
             viewModel.isButtonClickable.postValue(true)
         }
         binding.btnNo.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateActionStepFourFragment__btnNo)
             wantToShareInGroup = false
             binding.yesImg.setImageResource(R.drawable.radio_button_image_action_creation_empty)
             binding.noImg.setImageResource(R.drawable.radio_button_image_action_creation_full)

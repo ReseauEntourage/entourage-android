@@ -50,7 +50,6 @@ class MyGroupsListFragment : Fragment() , UpdateGroupInter{
 
     private fun setDiscoverButton(){
         binding.discover.button.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__MyGroupsListFragment__button)
             groupPresenter.onDiscoverButtonChanged()
         }
     }

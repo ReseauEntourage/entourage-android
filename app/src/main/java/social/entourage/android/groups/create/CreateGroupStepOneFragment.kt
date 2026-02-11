@@ -35,7 +35,6 @@ class CreateGroupStepOneFragment : Fragment(), UserEditActionZoneFragment.Fragme
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__CreateGroupStepOneFragment)
         viewModel.resetValues()
         handleNextButtonState()
         initializeDescriptionCounter()
@@ -125,7 +124,6 @@ class CreateGroupStepOneFragment : Fragment(), UserEditActionZoneFragment.Fragme
 
     private fun handleChooseLocationGroup() {
         binding.layout.groupLocation.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateGroupStepOneFragment__groupLocation)
             val action =
                 CreateGroupFragmentDirections.actionCreateGroupFragmentToEditActionZoneFragment(true)
             findNavController().navigate(action)

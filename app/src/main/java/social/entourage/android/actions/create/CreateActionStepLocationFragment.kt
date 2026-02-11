@@ -33,7 +33,6 @@ class CreateActionStepLocationFragment : Fragment(), UserEditActionZoneFragment.
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__CreateActionStepLocationFragment)
         viewModel.resetValues()
         handleChooseLocationGroup()
 
@@ -99,7 +98,6 @@ class CreateActionStepLocationFragment : Fragment(), UserEditActionZoneFragment.
 
     private fun handleChooseLocationGroup() {
         binding.groupLocation.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateActionStepLocationFragment__groupLocation)
             val action =
                 CreateActionFragmentDirections.actionCreateActionFragmentToEditActionPlaceFragment(false)
             findNavController().navigate(action)

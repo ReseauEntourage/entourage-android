@@ -19,7 +19,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import social.entourage.android.databinding.ImageDialogFragmentBinding
 import java.net.URL
-import social.entourage.android.tools.log.AnalyticsEvents
 
 
 class ImageDialogFragment(private var imageUrl:String) : DialogFragment(){

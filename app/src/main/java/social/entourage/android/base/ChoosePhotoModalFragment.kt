@@ -82,7 +82,6 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__ChoosePhotoModalFragment)
         handleDeleteImage()
         handleTakePictureButton()
         handleImportPictureButton()
@@ -142,7 +141,6 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
 
     private fun handleImportPictureButton() {
         binding.importPicture.root.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ChoosePhotoModalFragment__root)
             pickPhoto()
             this.pickingPhoto = true
             this.takingPhoto = false
@@ -151,7 +149,6 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
 
     private fun handleTakePictureButton() {
         binding.takePicture.root.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ChoosePhotoModalFragment__root)
             takePhoto()
             this.takingPhoto = true
             this.pickingPhoto = false
@@ -218,7 +215,6 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
 
     private fun handleDeleteImage() {
         binding.deletePicture.root.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ChoosePhotoModalFragment__root)
             binding.cropView.visibility = View.GONE
             binding.image.visibility = View.VISIBLE
             binding.addPhoto.visibility = View.VISIBLE
@@ -246,7 +242,6 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
 
     private fun handleCloseButton() {
         binding.header.hbsIconCross.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ChoosePhotoModalFragment__hbsIconCross)
             dismiss()
         }
     }

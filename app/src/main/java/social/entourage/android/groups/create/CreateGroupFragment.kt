@@ -45,7 +45,6 @@ class CreateGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__CreateGroupFragment)
         initializeViewPager()
         handleBackButton()
         handleValidate()
@@ -82,7 +81,6 @@ class CreateGroupFragment : Fragment() {
 
     private fun setNextClickListener() {
         binding.next.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateGroupFragment__next)
             viewModel.clickNext.value = true
         }
         viewModel.isCondition.observe(
@@ -118,7 +116,6 @@ class CreateGroupFragment : Fragment() {
 
     private fun setPreviousClickListener() {
         binding.previous.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateGroupFragment__previous)
             viewModel.resetValues()
             viewPager.previousPage(true)
             if (viewPager.currentItem == 0) {
@@ -180,7 +177,6 @@ class CreateGroupFragment : Fragment() {
     private fun handleValidate() {
         if (binding.viewPager.currentItem == NB_TABS - 1)
             binding.next.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateGroupFragment__next)
                 findNavController().navigate(R.id.action_create_group_fragment_to_create_group_success_fragment)
             }
     }

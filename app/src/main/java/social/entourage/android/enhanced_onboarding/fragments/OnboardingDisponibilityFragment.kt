@@ -33,7 +33,6 @@ class OnboardingDisponibilityFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__OnboardingDisponibilityFragment)
         setupChipGroups()
         binding.buttonConfigureLater.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_disponibility_configure_later_clic)

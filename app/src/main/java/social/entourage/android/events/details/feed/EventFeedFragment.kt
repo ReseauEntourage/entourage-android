@@ -112,7 +112,6 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__EventFeedFragment)
         eventId = args.eventID
         myId = EntourageApplication.me(activity)?.id
         eventPresenter.getEvent.observe(viewLifecycleOwner, ::handleResponseGetEvent)
@@ -265,7 +264,6 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     private fun openGoogleMaps() {
         if (event?.online != true) {
             binding.location.root.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__EventFeedFragment__root)
                 val geoUri =
                     String.format(getString(R.string.geoUri), event?.metadata?.displayAddress)
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
@@ -399,14 +397,12 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun handleBackButton() {
         binding.iconBack.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__EventFeedFragment__iconBack)
             requireActivity().finish()
         }
     }
 
     private fun handlePartnerClick() {
         binding.tvAssociation.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__EventFeedFragment__tvAssociation)
             // On récupère l'ID du partenaire depuis l'auteur de l'événement
             event?.author?.partner?.id?.let { partnerId ->
                 val intent = Intent(requireContext(), AssociationProfileActivity::class.java).apply {
@@ -430,7 +426,6 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun openLink() {
         binding.location.root.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__EventFeedFragment__root)
             if (event?.online != true) {
                 openMap()
             } else {
@@ -475,7 +470,6 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         if (!isAdded) return
 
         binding.iconSettings.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__EventFeedFragment__iconSettings)
             // droits : organisateur / animateur (selon tes règles existantes)
             val canManageParticipants = HomeFragment.signablePermission && event?.signable == true
 
@@ -639,7 +633,6 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun handleParticipateButton() {
         binding.buttonJoin.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__EventFeedFragment__buttonJoin)
             requestInAppReview(requireContext())
             val meUser = EntourageApplication.me(activity)
             if(meUser?.roles?.contains("Ambassadeur") == true){
@@ -670,7 +663,6 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun handleMembersButton() {
         binding.members.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__EventFeedFragment__members)
             Timber.wtf("signable : $signable")
             val intent = Intent(context, MembersActivity::class.java).apply {
                 // Passage des arguments nécessaires

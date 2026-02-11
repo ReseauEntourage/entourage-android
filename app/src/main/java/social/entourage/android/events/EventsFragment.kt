@@ -157,13 +157,11 @@ class EventsFragment : Fragment() {
 
         // Gérer le clic sur l'overlay pour le retirer
         overlayView.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__EventsFragment__overlayView)
             rootLayout.removeView(overlayView)
         }
 
         // Gérer le clic sur le bubbleView si nécessaire
         bubbleView.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__EventsFragment__bubbleView)
             // Action lorsque le bubbleView est cliqué
             rootLayout.removeView(overlayView)
         }
@@ -242,7 +240,6 @@ class EventsFragment : Fragment() {
 
     private fun handleFilterButton() {
        binding.uiLayoutFilter.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__EventsFragment__uiLayoutFilter)
            DiscoverEventsListFragment.isFirstResumeWithFilters = true
            MainFilterActivity.mod = MainFilterMode.EVENT
            val intent = Intent(activity, MainFilterActivity::class.java)

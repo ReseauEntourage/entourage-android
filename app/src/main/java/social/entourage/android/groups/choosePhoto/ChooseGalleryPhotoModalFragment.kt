@@ -48,7 +48,6 @@ class ChooseGalleryPhotoModalFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__ChooseGalleryPhotoModalFragment)
         getImageType()
         handleCloseButton()
         initializeInterests()
@@ -95,7 +94,6 @@ class ChooseGalleryPhotoModalFragment : BottomSheetDialogFragment() {
             AnalyticsEvents.ACTION_NEW_GROUP_STEP3_PIC_GALLERY_CLOSE
         )
         binding.header.hbsIconCross.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ChooseGalleryPhotoModalFragment__hbsIconCross)
             dismiss()
         }
     }

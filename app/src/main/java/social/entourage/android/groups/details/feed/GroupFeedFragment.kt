@@ -125,7 +125,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__GroupFeedFragment)
         groupId = args.groupID
         myId = EntourageApplication.me(activity)?.id
 
@@ -153,7 +152,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
 
         // Added: prévenir le double-clic éventuel sur l'icône (si nécessaire)
         binding.createPost.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__GroupFeedFragment__createPost)
             val currentTime = System.currentTimeMillis()
             if (currentTime - lastClickPlus < 300) return@setOnClickListener
             lastClickPlus = currentTime
@@ -278,7 +276,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
 
     private fun handleGroupEventsButton() {
         binding.seeMoreEvents.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__GroupFeedFragment__seeMoreEvents)
             // Added: prévention double-clic
             val currentTime = System.currentTimeMillis()
             if (currentTime - lastClickEvents < 300) return@setOnClickListener
@@ -642,7 +639,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
 
     private fun handleBackButton() {
         binding.iconBack.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__GroupFeedFragment__iconBack)
             // Added: prévention double-clic
             val currentTime = System.currentTimeMillis()
             if (currentTime - lastClickBack < 300) return@setOnClickListener

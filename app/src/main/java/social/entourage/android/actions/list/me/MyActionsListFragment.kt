@@ -15,7 +15,6 @@ import social.entourage.android.actions.detail.ActionDetailActivity
 import social.entourage.android.api.model.Action
 import social.entourage.android.databinding.NewFragmentActionsMyListBinding
 import social.entourage.android.tools.utils.Const
-import social.entourage.android.tools.log.AnalyticsEvents
 
 class MyActionsListFragment : Fragment() {
     companion object {
@@ -54,7 +53,6 @@ class MyActionsListFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__MyActionsListFragment)
 
         actionAdapter = MyActionsListAdapter(allActions, object : OnItemClick {
             override fun onItemClick(action: Action) {

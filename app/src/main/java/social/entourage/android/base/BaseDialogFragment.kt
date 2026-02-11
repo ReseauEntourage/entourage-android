@@ -9,7 +9,6 @@ import androidx.fragment.app.DialogFragment
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.deeplinks.DeepLinksManager
-import social.entourage.android.tools.log.AnalyticsEvents
 
 /**
  * Base DialogFragment with no title and full screen
@@ -27,7 +26,6 @@ open class BaseDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__BaseDialogFragment)
         (activity as? MainActivity)?.let {DeepLinksManager.handleCurrentDeepLink(it) }
     }
 

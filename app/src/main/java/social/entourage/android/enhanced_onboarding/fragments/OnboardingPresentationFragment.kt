@@ -32,7 +32,6 @@ class OnboardingPresentationFragment: Fragment() {
 
     override fun onResume() {
         super.onResume()
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__OnboardingPresentationFragment)
         viewModel.toggleBtnBack(false)
     }
 

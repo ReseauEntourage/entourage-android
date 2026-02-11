@@ -4,7 +4,6 @@ import android.util.Log
 import android.view.View
 import social.entourage.android.R
 import social.entourage.android.user.edit.place.UserActionPlaceFragment
-import social.entourage.android.tools.log.AnalyticsEvents
 
 class OnboardingAddPlaceFragment : UserActionPlaceFragment() {
 
@@ -17,7 +16,6 @@ class OnboardingAddPlaceFragment : UserActionPlaceFragment() {
 
         binding.editPlaceTitleLayout.visibility = View.VISIBLE
         binding.editPlaceTitleLayout.binding.titleActionButton.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__OnboardingAddPlaceFragment__titleActionButton)
             validate()
             dismiss()
         }

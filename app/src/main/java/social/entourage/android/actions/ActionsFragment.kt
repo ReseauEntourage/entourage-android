@@ -101,7 +101,6 @@ class ActionsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__ActionsFragment)
 
         // Ajout du TextWatcher ici pour garantir que _binding est initialisé
         binding.searchEditText.addTextChangedListener(object : TextWatcher {
@@ -254,7 +253,6 @@ class ActionsFragment : Fragment() {
 
     private fun initializeViews() {
         binding.uiLayoutFilter.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ActionsFragment__uiLayoutFilter)
             MainFilterActivity.mod = MainFilterMode.ACTION
             MainFilterActivity.hasToReloadAction = true
             val intent = Intent(activity, MainFilterActivity::class.java)

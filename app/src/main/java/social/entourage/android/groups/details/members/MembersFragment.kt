@@ -64,7 +64,6 @@ open class MembersFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__MembersFragment)
         getArgs()
         iAmOrganiser = ActionSheetFragment.isSignable && HomeFragment.signablePermission
         getMembers()
@@ -157,9 +156,7 @@ open class MembersFragment : Fragment() {
     }
 
     private fun handleCloseButton() {
-        binding.iconBack.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__MembersFragment__iconBack)
-            findNavController().popBackStack() }
+        binding.iconBack.setOnClickListener { findNavController().popBackStack() }
     }
 
     private fun initializeMembers() {

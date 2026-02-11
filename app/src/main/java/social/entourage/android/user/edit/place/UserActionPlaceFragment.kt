@@ -31,7 +31,6 @@ import social.entourage.android.databinding.FragmentSelectPlaceBinding
 import timber.log.Timber
 import java.io.IOException
 import java.util.Locale
-import social.entourage.android.tools.log.AnalyticsEvents
 
 open class UserActionPlaceFragment : BaseDialogFragment() {
     private var _binding: FragmentSelectPlaceBinding? = null
@@ -90,7 +89,6 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__UserActionPlaceFragment)
         setupViews()
     }
 
@@ -133,13 +131,11 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
 
     open fun setupViews() {
         binding.uiOnboardBtLocation.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__UserActionPlaceFragment__uiOnboardBtLocation)
             onCurrentLocationClicked()
             binding.uiOnboardBtLocation.visibility = View.GONE
         }
 
         binding.uiOnboardPlaceTvLocation.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__UserActionPlaceFragment__uiOnboardPlaceTvLocation)
             onSearchCalled()
             mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
             binding.uiOnboardBtLocation.visibility = View.VISIBLE

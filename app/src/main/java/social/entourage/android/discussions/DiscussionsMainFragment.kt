@@ -69,7 +69,6 @@ class DiscussionsMainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__DiscussionsMainFragment)
 
         binding.progressBar.visibility = View.VISIBLE
         initializeSearchBar()
@@ -121,19 +120,15 @@ class DiscussionsMainFragment : Fragment() {
         setFilterInactive(binding.filterSmalltalks)
 
         binding.filterAll.buttonStart.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__DiscussionsMainFragment__buttonStart)
             changeFilterMode(FilterMode.ALL, binding.filterAll)
         }
         binding.filterDiscussions.buttonStart.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__DiscussionsMainFragment__buttonStart)
             changeFilterMode(FilterMode.PRIVATE, binding.filterDiscussions)
         }
         binding.filterEvents.buttonStart.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__DiscussionsMainFragment__buttonStart)
             changeFilterMode(FilterMode.OUTINGS, binding.filterEvents)
         }
         binding.filterSmalltalks.buttonStart.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__DiscussionsMainFragment__buttonStart)
             changeFilterMode(FilterMode.SMALLTALKS, binding.filterSmalltalks)
         }
 
@@ -327,7 +322,6 @@ class DiscussionsMainFragment : Fragment() {
             binding.layoutAskNotif.visibility = View.VISIBLE
             setStyledText()
             binding.layoutAskNotif.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__DiscussionsMainFragment__layoutAskNotif)
                 binding.layoutAskNotif.visibility = View.GONE
                 NotificationDemandActivity.comeFromSettings = true
                 startActivity(Intent(requireContext(), NotificationDemandActivity::class.java))

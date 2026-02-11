@@ -62,7 +62,6 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__SettingsModalFragment)
         getEventInformation()
         setView()
         updateView()
@@ -88,9 +87,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     private fun setView() {
         with(binding) {
             header.title = getString(R.string.event_settings)
-            header.hbsIconCross.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__SettingsModalFragment__hbsIconCross)
-            dismiss() }
+            header.hbsIconCross.setOnClickListener { dismiss() }
 
             notificationNewMessages.root.visibility = View.GONE
 
@@ -163,14 +160,12 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private fun handleCloseButton() {
         binding.header.hbsIconCross.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__SettingsModalFragment__hbsIconCross)
             dismiss()
         }
     }
 
     private fun handleRulesButton() {
         binding.rules.profileSettingsItemLayout.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__SettingsModalFragment__profileSettingsItemLayout)
             val intent = Intent(context, GroupRulesActivity::class.java)
             intent.putExtra(Const.RULES_TYPE, Const.RULES_EVENT)
             startActivityForResult(intent, 0)
@@ -179,7 +174,6 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private fun handleEditEvent() {
         binding.edit.root.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__SettingsModalFragment__root)
             val intent = Intent(context, CreateEventActivity::class.java)
             intent.putExtra(Const.EVENT_UI, event)
             startActivityForResult(intent, 0)
@@ -189,7 +183,6 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private fun handleEditRecurrenceEvent() {
         binding.editRecurrence.root.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__SettingsModalFragment__root)
             val intent = Intent(context, social.entourage.android.events.EditRecurrenceActivity::class.java).apply {
                 putExtras(
                     bundleOf(
@@ -265,7 +258,6 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private fun handleCancelEvent() {
         binding.cancel.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__SettingsModalFragment__cancel)
             if (event?.recurrence == null) {
                 CustomAlertDialog.show(
                     requireContext(),
@@ -283,7 +275,6 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private fun handleLeaveEvent() {
         binding.leave.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__SettingsModalFragment__leave)
             CustomAlertDialog.showWithCancelFirst(
                 requireContext(),
                 getString(R.string.leave_event),
@@ -331,9 +322,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         }
 
         btnYes.text = getString(R.string.cancel_event)
-        btnYes.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__SettingsModalFragment__btnYes)
-            dialog.dismiss() }
+        btnYes.setOnClickListener { dialog.dismiss() }
 
         custom.findViewById<ImageButton>(R.id.btn_cross).apply {
             visibility = View.VISIBLE

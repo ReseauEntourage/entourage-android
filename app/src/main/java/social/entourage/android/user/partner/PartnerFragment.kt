@@ -23,7 +23,6 @@ import social.entourage.android.api.model.PartnerResponse
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.deeplinks.DeepLinksManager
 import timber.log.Timber
-import social.entourage.android.tools.log.AnalyticsEvents
 
 class PartnerFragment : BaseDialogFragment() {
 
@@ -50,7 +49,6 @@ class PartnerFragment : BaseDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__PartnerFragment)
 
         if (partner == null) {
             if (partnerId == null) {
@@ -113,9 +111,7 @@ class PartnerFragment : BaseDialogFragment() {
 
     fun configureViews() {
         binding.userTitleLayout.binding.titleText.text = requireActivity().resources.getString(R.string.title_association)
-        binding.userTitleLayout.binding.titleCloseButton.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__PartnerFragment__titleCloseButton)
-            dismiss()}
+        binding.userTitleLayout.binding.titleCloseButton.setOnClickListener {dismiss()}
 
         partner?.let { partner ->
             binding.uiAssoTvTitle.text = partner.name
@@ -183,32 +179,27 @@ class PartnerFragment : BaseDialogFragment() {
         }
 
         binding.uiButtonAssoAddress.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__PartnerFragment__uiButtonAssoAddress)
             partner?.address?.let {  address ->
                 openLink("geo:0,0?q=$address", Intent.ACTION_VIEW)
             }
         }
         binding.uiButtonAssoMail.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__PartnerFragment__uiButtonAssoMail)
             partner?.email?.let { email ->
                 openLink("mailto:$email", Intent.ACTION_SENDTO)
             }
         }
         binding.uiButtonAssoPhone.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__PartnerFragment__uiButtonAssoPhone)
             partner?.phone?.let { phone ->
                 openLink("tel:$phone", Intent.ACTION_DIAL)
             }
         }
         binding.uiButtonAssoWeb.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__PartnerFragment__uiButtonAssoWeb)
             partner?.websiteUrl?.let { url ->
                 openLink(url, Intent.ACTION_VIEW)
             }
         }
 
         binding.uiButtonFollow.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__PartnerFragment__uiButtonFollow)
             partner?.let {
                 if (it.isFollowing) {
                     showPopInfoUnfollow()

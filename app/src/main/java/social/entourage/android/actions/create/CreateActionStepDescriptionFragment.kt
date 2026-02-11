@@ -36,7 +36,6 @@ class CreateActionStepDescriptionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__CreateActionStepDescriptionFragment)
         viewModel.resetValues()
         handleNextButtonState()
         handleChoosePhoto()
@@ -145,11 +144,9 @@ class CreateActionStepDescriptionFragment : Fragment() {
             getResult()
             binding.uiLayoutAddPhoto.visibility = View.VISIBLE
             binding.addPhotoLayout.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateActionStepDescriptionFragment__addPhotoLayout)
                 choosePhoto()
             }
             binding.uiLayoutAddPhoto.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__CreateActionStepDescriptionFragment__uiLayoutAddPhoto)
                 choosePhoto()
             }
 

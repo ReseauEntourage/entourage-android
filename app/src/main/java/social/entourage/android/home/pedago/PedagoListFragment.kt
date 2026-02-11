@@ -40,7 +40,6 @@ class PedagoListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__PedagoListFragment)
         AnalyticsEvents.logEvent(AnalyticsEvents.Pedago_View)
         pedagoAdapter = PedagoListAdapter(requireContext(), sections, object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
@@ -146,7 +145,6 @@ class PedagoListFragment : Fragment() {
 
     private fun handleBackButton() {
         binding.header.headerIconBack.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__PedagoListFragment__headerIconBack)
             requireActivity().onBackPressed()
         }
     }

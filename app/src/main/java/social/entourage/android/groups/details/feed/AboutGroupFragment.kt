@@ -51,7 +51,6 @@ class AboutGroupFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__AboutGroupFragment)
         group = args.group
         setView()
         handleSettingsButton()
@@ -127,7 +126,6 @@ class AboutGroupFragment : Fragment() {
 
     private fun handleSettingsButton() {
         binding.header.headerIconSettings.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__AboutGroupFragment__headerIconSettings)
             group?.let { group ->
                 GroupDetailsFragment.newInstance(group)
                     .show(parentFragmentManager, GroupDetailsFragment.TAG)
@@ -172,14 +170,12 @@ class AboutGroupFragment : Fragment() {
 
     private fun handleBackButton() {
         binding.header.headerIconBack.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__AboutGroupFragment__headerIconBack)
             findNavController().popBackStack()
         }
     }
 
     private fun handleJoinButton() {
         binding.join.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__AboutGroupFragment__join)
             if (group?.member == true) {
                 CustomAlertDialog.showWithCancelFirst(
                     requireContext(),
@@ -201,7 +197,6 @@ class AboutGroupFragment : Fragment() {
 
     private fun handleMembersButton() {
         binding.members.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__AboutGroupFragment__members)
             group?.id?.let { id ->
                 val action = AboutGroupFragmentDirections.actionGroupAboutToGroupMembers(
                     id, MembersType.GROUP

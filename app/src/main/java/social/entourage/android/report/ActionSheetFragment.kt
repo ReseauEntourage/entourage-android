@@ -31,7 +31,6 @@ import social.entourage.android.report.ReportTypes
 import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
-import social.entourage.android.tools.log.AnalyticsEvents
 
 enum class SheetMode { GROUP, EVENT, DISCUSSION_ONE_TO_ONE, DISCUSSION_GROUP, MESSAGE_ACTIONS }
 
@@ -126,7 +125,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__ActionSheetFragment)
         configureUI()
         setupClicks()
     }
@@ -134,9 +132,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
     private fun configureUI() {
         binding.header.title = getString(R.string.discussion_settings_title)
         binding.header.iconBack?.isVisible = false
-        binding.header.hbsIconCross.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ActionSheetFragment__hbsIconCross)
-            dismiss() }
+        binding.header.hbsIconCross.setOnClickListener { dismiss() }
 
         // Masquer l’item “edit” par défaut
         binding.edit.profileSettingsItemLayout.isVisible = false
@@ -301,7 +297,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
     private fun setupClicks() {
         // Ouvrir “Profil / Membres / Copier le texte” selon le mode
         binding.profile.profileSettingsItemLayout.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ActionSheetFragment__profileSettingsItemLayout)
             when (mode) {
                 SheetMode.DISCUSSION_ONE_TO_ONE -> {
                     startActivity(
@@ -355,7 +350,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
         // Règles
         binding.rules.profileSettingsItemLayout.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ActionSheetFragment__profileSettingsItemLayout)
             startActivity(
                 Intent(requireContext(), GroupRulesActivity::class.java)
                     .putExtra(Const.RULES_TYPE, Const.RULES_EVENT)
@@ -365,7 +359,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
         // Editer l’événement
         binding.edit.profileSettingsItemLayout.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ActionSheetFragment__profileSettingsItemLayout)
             eventObj?.let { ev ->
                 startActivity(
                     Intent(requireContext(), CreateEventActivity::class.java)
@@ -383,7 +376,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
         // Voir les photos (si on a une conversation liée)
         binding.photos.profileSettingsItemLayout.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ActionSheetFragment__profileSettingsItemLayout)
             if (mode == SheetMode.EVENT && conversationId > 0) {
                 startActivity(
                     Intent(requireContext(), ImageListActivity::class.java)
@@ -395,7 +387,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
         // Signaler
         binding.layoutReport.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ActionSheetFragment__layoutReport)
             when (mode) {
                 SheetMode.GROUP -> {
                     ReportModalFragment.newInstance(
@@ -498,7 +489,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
         // Quitter / Supprimer / Supprimer mon message
         binding.quit.profileSettingsItemLayout.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ActionSheetFragment__profileSettingsItemLayout)
             when (mode) {
                 SheetMode.DISCUSSION_GROUP -> {
                     if (isSmallTalk) {
@@ -583,7 +573,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
         // Bloquer (1to1)
         binding.layoutBlock.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__ActionSheetFragment__layoutBlock)
             if (mode == SheetMode.DISCUSSION_ONE_TO_ONE) {
                 val desc =
                     getString(R.string.params_block_user_conv_pop_message, username)

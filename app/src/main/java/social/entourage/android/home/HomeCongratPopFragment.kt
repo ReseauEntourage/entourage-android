@@ -20,7 +20,6 @@ import social.entourage.android.R
 import social.entourage.android.databinding.FragmentHomeCongratPopBinding
 import social.entourage.android.api.model.HomeAction
 import social.entourage.android.tools.utils.px
-import social.entourage.android.tools.log.AnalyticsEvents
 
 class HomeCongratPopFragment : DialogFragment() {
     private val ARGS_Actions = "Actions"
@@ -49,7 +48,6 @@ class HomeCongratPopFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        AnalyticsEvents.logEvent(AnalyticsEvents.View__HomeCongratPopFragment)
 
         populateViews()
     }
@@ -113,7 +111,6 @@ class HomeCongratPopFragment : DialogFragment() {
             }
 
             binding.uiPopClose.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__HomeCongratPopFragment__uiPopClose)
                 dismiss()
             }
 

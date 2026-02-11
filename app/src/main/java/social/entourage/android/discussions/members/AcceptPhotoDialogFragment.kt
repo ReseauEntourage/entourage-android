@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import social.entourage.android.databinding.DialogAcceptPhotoBinding
-import social.entourage.android.tools.log.AnalyticsEvents
 
 class AcceptPhotoDialogFragment : DialogFragment() {
 
@@ -51,12 +50,10 @@ class AcceptPhotoDialogFragment : DialogFragment() {
         binding.title.setText(social.entourage.android.R.string.photo_right_title)
         binding.body.setText(social.entourage.android.R.string.photo_right_body)
         binding.btnDecline.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__AcceptPhotoDialogFragment__btnDecline)
             (parentFragment as? Listener ?: activity as? Listener)?.onDeclinePhotoForUser(userId)
             dismiss()
         }
         binding.btnAccept.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__AcceptPhotoDialogFragment__btnAccept)
             (parentFragment as? Listener ?: activity as? Listener)?.onAcceptPhotoForUser(userId)
             dismiss()
         }

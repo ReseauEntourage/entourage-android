@@ -111,7 +111,6 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
             false
         )
         binding.uiLayoutFilter.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__GroupsFragment__uiLayoutFilter)
             isFirstResumeWithFilters = true
             MainFilterActivity.mod = MainFilterMode.GROUP
             val intent = Intent(activity, MainFilterActivity::class.java)
