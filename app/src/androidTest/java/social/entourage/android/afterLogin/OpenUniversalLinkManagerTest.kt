@@ -1,20 +1,19 @@
-package social.entourage.android
+package social.entourage.android.afterLogin
 
 import android.Manifest
+import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.rule.GrantPermissionRule
 import org.junit.Before
 import org.junit.Rule
-import org.junit.runner.RunWith
-import social.entourage.android.afterLogin.EntourageTestAfterLogin
+import social.entourage.android.EntourageApplication
 
 @LargeTest
-@RunWith(AndroidJUnit4::class)
+//@RunWith(AndroidJUnit4::class)
 abstract class OpenUniversalLinkManagerTest : EntourageTestAfterLogin() {
 
-    val context = ApplicationProvider.getApplicationContext<EntourageApplication>()
+    val context: Context = ApplicationProvider.getApplicationContext<EntourageApplication>()
 
     // This rule will grant the POST_NOTIFICATIONS permission before each test in this class
     @get:Rule
