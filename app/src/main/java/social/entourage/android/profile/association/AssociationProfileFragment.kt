@@ -93,7 +93,7 @@ class AssociationProfileFragment : Fragment() {
                 assoProfileNeeds.visibility = View.VISIBLE
                 assoProfileVolunteers.assoNeedsContent.text = it
             }
-            partner?.largeLogoUrl.let {
+            partner?.largeLogoUrl?.let {
                 Glide.with(requireActivity())
                     .load(Uri.parse(it))
                     .circleCrop()
