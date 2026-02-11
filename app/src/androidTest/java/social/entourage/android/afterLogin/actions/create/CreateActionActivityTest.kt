@@ -1,4 +1,4 @@
-package social.entourage.android.activities.actions.create
+package social.entourage.android.afterLogin.actions.create
 
 import android.Manifest
 import android.content.Intent
