@@ -27,6 +27,7 @@ import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.discussions.DetailConversationActivity
+import social.entourage.android.home.BirthdayActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.welcome.WelcomeFiveActivity
@@ -428,6 +429,13 @@ object PushNotificationManager {
             return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
         }
         if(pushNotificationMessage.content?.extra?.stage == "birthday"){
+            val intent = Intent(context, BirthdayActivity::class.java) // Assure-toi d'avoir importé BirthdayActivity
+            intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+
+            return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
+        }
+        if(pushNotificationMessage.content?.extra?.stage == "birthday"){
             val intent = Intent(context, MainActivity::class.java)
             intent.putExtra("goBirthday", true)
             intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
@@ -470,6 +478,8 @@ object PushNotificationManager {
                 PendingIntent.FLAG_IMMUTABLE
             )
         }
+
+
 
         val messageIntent = Intent(context, MainActivity::class.java)
         when (messageType) {
