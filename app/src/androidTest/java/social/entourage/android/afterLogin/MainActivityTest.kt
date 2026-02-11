@@ -10,6 +10,7 @@ import androidx.test.rule.GrantPermissionRule
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.RuleChain
 import org.junit.runner.RunWith
 import social.entourage.android.MainActivity
 import social.entourage.android.R
@@ -17,16 +18,16 @@ import social.entourage.android.R
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest : EntourageTestAfterLogin() {
 
-    @get:Rule
-    var activityRule = ActivityScenarioRule(MainActivity::class.java)
-
-    //This rule will grant the POST_NOTIFICATIONS permission before each test in this class
-    @get:Rule
-    var permissionRule: GrantPermissionRule = GrantPermissionRule.grant(
-        //Manifest.permission.ACCESS_COARSE_LOCATION,
-        //Manifest.permission.ACCESS_FINE_LOCATION,
+    private val permissionRule = GrantPermissionRule.grant(
         Manifest.permission.POST_NOTIFICATIONS
     )
+
+    private val activityRule = ActivityScenarioRule(MainActivity::class.java)
+
+    @get:Rule
+    val chain: RuleChain = RuleChain
+        .outerRule(permissionRule) // Exécuté en premier
+        .around(activityRule)      // Exécuté ensuite
 
     @Before
     fun setUp() {
@@ -42,6 +43,4 @@ class MainActivityTest : EntourageTestAfterLogin() {
         Espresso.onView(ViewMatchers.withText(R.string.home_title))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
-
-
 }
