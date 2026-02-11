@@ -291,3 +291,25 @@ dependencies {
     //implementation("com.dafruits:webrtc:123.0.0")
     implementation(libs.bundles.oss)
 }
+
+tasks.register<Exec>("clearSnapshots") {
+    group = "verification"
+    description = "Vider les snapshots sur le device"
+    commandLine("adb", "shell", "rm", "-rf", "/sdcard/Download/entourage_snapshots/*")
+    isIgnoreExitValue = true
+}
+
+tasks.register<Exec>("pullSnapshots") {
+    group = "verification"
+    description = "Transférer les snapshots du device vers le répertoire local et vider le device"
+    
+    val localDir = File(project.layout.buildDirectory.asFile.get(), "reports/snapshots")
+    doFirst {
+        if (!localDir.exists()) localDir.mkdirs()
+    }
+
+    commandLine("adb", "pull", "/sdcard/Download/entourage_snapshots/.", localDir.absolutePath)
+    
+    isIgnoreExitValue = true
+    finalizedBy("clearSnapshots")
+}
