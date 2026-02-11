@@ -46,6 +46,7 @@ import social.entourage.android.tools.setHyperlinkClickable
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
+import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.underlineWithDistanceUnder
 import java.text.SimpleDateFormat
 

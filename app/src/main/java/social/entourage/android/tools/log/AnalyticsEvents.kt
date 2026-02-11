@@ -823,42 +823,11 @@ object AnalyticsEvents {
     const val CLIC__SMALLTALK__VISIO_ICON = "smalltalk_click_visio_icon_chat_screen"
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // New Analytics Events
     const val Action__GroupsFragment__uiLayoutFilter = "Action__GroupsFragment__uiLayoutFilter"
     const val View__CreateGroupFragment = "View__CreateGroupFragment"
     const val Action__CreateGroupFragment__next = "Action__CreateGroupFragment__next"
     const val Action__CreateGroupFragment__previous = "Action__CreateGroupFragment__previous"
-    const val Action__CreateGroupFragment__next = "Action__CreateGroupFragment__next"
     const val View__CreateGroupStepTwoFragment = "View__CreateGroupStepTwoFragment"
     const val View__CreateGroupSuccessFragment = "View__CreateGroupSuccessFragment"
     const val View__CreateGroupStepThreeFragment = "View__CreateGroupStepThreeFragment"
@@ -877,6 +846,8 @@ object AnalyticsEvents {
     const val Action__AboutGroupFragment__members = "Action__AboutGroupFragment__members"
     const val View__GroupFeedFragment = "View__GroupFeedFragment"
     const val Action__GroupFeedFragment__seeMoreEvents = "Action__GroupFeedFragment__seeMoreEvents"
+    const val Action__GroupFeedFragment__iconBack = "Action__GroupFeedFragment__iconBack"
+    const val Action__GroupFeedFragment__createPost = "Action__GroupFeedFragment__createPost"
     const val View__MembersFragment = "View__MembersFragment"
     const val Action__MembersFragment__iconBack = "Action__MembersFragment__iconBack"
     const val View__EditGroupFragment = "View__EditGroupFragment"
@@ -945,6 +916,7 @@ object AnalyticsEvents {
     const val Action__ReadPoiFragment__titleCloseButton = "Action__ReadPoiFragment__titleCloseButton"
     const val Action__ReadPoiFragment__poiReportButton = "Action__ReadPoiFragment__poiReportButton"
     const val Action__ReadPoiFragment__uiButtonShare = "Action__ReadPoiFragment__uiButtonShare"
+    const val Action__ReadPoiFragment__uiButtonShowSoliguide = "Action__ReadPoiFragment__uiButtonShowSoliguide"
     const val Action__ReadPoiFragment__uiLayoutHelp = "Action__ReadPoiFragment__uiLayoutHelp"
     const val Action__ReadPoiFragment__uiBtShareClose = "Action__ReadPoiFragment__uiBtShareClose"
     const val Action__ReadPoiFragment__uiBtShareInside = "Action__ReadPoiFragment__uiBtShareInside"
@@ -973,21 +945,18 @@ object AnalyticsEvents {
     const val Action__CreateEventFragment__previous = "Action__CreateEventFragment__previous"
     const val View__SettingsModalFragment = "View__SettingsModalFragment"
     const val Action__SettingsModalFragment__hbsIconCross = "Action__SettingsModalFragment__hbsIconCross"
-    const val Action__SettingsModalFragment__hbsIconCross = "Action__SettingsModalFragment__hbsIconCross"
     const val Action__SettingsModalFragment__profileSettingsItemLayout = "Action__SettingsModalFragment__profileSettingsItemLayout"
-    const val Action__SettingsModalFragment__root = "Action__SettingsModalFragment__root"
     const val Action__SettingsModalFragment__root = "Action__SettingsModalFragment__root"
     const val Action__SettingsModalFragment__cancel = "Action__SettingsModalFragment__cancel"
     const val Action__SettingsModalFragment__leave = "Action__SettingsModalFragment__leave"
     const val Action__SettingsModalFragment__btnYes = "Action__SettingsModalFragment__btnYes"
     const val View__EventFeedFragment = "View__EventFeedFragment"
-    const val Action__EventFeedFragment__root = "Action__EventFeedFragment__root"
     const val Action__EventFeedFragment__iconBack = "Action__EventFeedFragment__iconBack"
     const val Action__EventFeedFragment__tvAssociation = "Action__EventFeedFragment__tvAssociation"
-    const val Action__EventFeedFragment__root = "Action__EventFeedFragment__root"
     const val Action__EventFeedFragment__iconSettings = "Action__EventFeedFragment__iconSettings"
     const val Action__EventFeedFragment__buttonJoin = "Action__EventFeedFragment__buttonJoin"
     const val Action__EventFeedFragment__members = "Action__EventFeedFragment__members"
+    const val Action__EventFeedFragment__root = "Action__EventFeedFragment__root"
     const val View__AboutEventFragment = "View__AboutEventFragment"
     const val Action__AboutEventFragment__members = "Action__AboutEventFragment__members"
     const val Action__AboutEventFragment__root = "Action__AboutEventFragment__root"
@@ -1001,15 +970,11 @@ object AnalyticsEvents {
     const val Action__MyEventsListFragment__btnDiscoverEvent = "Action__MyEventsListFragment__btnDiscoverEvent"
     const val View__DiscussionsMainFragment = "View__DiscussionsMainFragment"
     const val Action__DiscussionsMainFragment__buttonStart = "Action__DiscussionsMainFragment__buttonStart"
-    const val Action__DiscussionsMainFragment__buttonStart = "Action__DiscussionsMainFragment__buttonStart"
-    const val Action__DiscussionsMainFragment__buttonStart = "Action__DiscussionsMainFragment__buttonStart"
-    const val Action__DiscussionsMainFragment__buttonStart = "Action__DiscussionsMainFragment__buttonStart"
     const val Action__DiscussionsMainFragment__layoutAskNotif = "Action__DiscussionsMainFragment__layoutAskNotif"
     const val View__SettingsDiscussionModalFragment = "View__SettingsDiscussionModalFragment"
     const val Action__SettingsDiscussionModalFragment__hbsIconCross = "Action__SettingsDiscussionModalFragment__hbsIconCross"
     const val Action__SettingsDiscussionModalFragment__profileSettingsItemLayout = "Action__SettingsDiscussionModalFragment__profileSettingsItemLayout"
     const val Action__SettingsDiscussionModalFragment__layoutReport = "Action__SettingsDiscussionModalFragment__layoutReport"
-    const val Action__SettingsDiscussionModalFragment__profileSettingsItemLayout = "Action__SettingsDiscussionModalFragment__profileSettingsItemLayout"
     const val Action__SettingsDiscussionModalFragment__layoutBlock = "Action__SettingsDiscussionModalFragment__layoutBlock"
     const val View__MembersConversationFragment = "View__MembersConversationFragment"
     const val Action__MembersConversationFragment__headerIconBack = "Action__MembersConversationFragment__headerIconBack"
@@ -1026,16 +991,9 @@ object AnalyticsEvents {
     const val View__ActionSheetFragment = "View__ActionSheetFragment"
     const val Action__ActionSheetFragment__hbsIconCross = "Action__ActionSheetFragment__hbsIconCross"
     const val Action__ActionSheetFragment__profileSettingsItemLayout = "Action__ActionSheetFragment__profileSettingsItemLayout"
-    const val Action__ActionSheetFragment__profileSettingsItemLayout = "Action__ActionSheetFragment__profileSettingsItemLayout"
-    const val Action__ActionSheetFragment__profileSettingsItemLayout = "Action__ActionSheetFragment__profileSettingsItemLayout"
-    const val Action__ActionSheetFragment__profileSettingsItemLayout = "Action__ActionSheetFragment__profileSettingsItemLayout"
     const val Action__ActionSheetFragment__layoutReport = "Action__ActionSheetFragment__layoutReport"
-    const val Action__ActionSheetFragment__profileSettingsItemLayout = "Action__ActionSheetFragment__profileSettingsItemLayout"
     const val Action__ActionSheetFragment__layoutBlock = "Action__ActionSheetFragment__layoutBlock"
     const val View__ChoosePhotoModalFragment = "View__ChoosePhotoModalFragment"
-    const val Action__ChoosePhotoModalFragment__root = "Action__ChoosePhotoModalFragment__root"
-    const val Action__ChoosePhotoModalFragment__root = "Action__ChoosePhotoModalFragment__root"
-    const val Action__ChoosePhotoModalFragment__root = "Action__ChoosePhotoModalFragment__root"
     const val Action__ChoosePhotoModalFragment__hbsIconCross = "Action__ChoosePhotoModalFragment__hbsIconCross"
     const val View__BaseDialogFragment = "View__BaseDialogFragment"
     const val View__AssociationProfileFragment = "View__AssociationProfileFragment"
@@ -1102,6 +1060,7 @@ object AnalyticsEvents {
     const val Action__OnboardingEditPhotoFragment__uiEditPhotoCancel = "Action__OnboardingEditPhotoFragment__uiEditPhotoCancel"
     const val Action__OnboardingEditPhotoFragment__uiPhotoEditBtRotate = "Action__OnboardingEditPhotoFragment__uiPhotoEditBtRotate"
     const val Action__OnboardingEditPhotoFragment__uiEditPhotoValidate = "Action__OnboardingEditPhotoFragment__uiEditPhotoValidate"
+    const val Action__ChoosePhotoModalFragment__root = "Action__ChoosePhotoModalFragment__root"
 
     val TAG: String? = AnalyticsEvents::class.java.simpleName
 
