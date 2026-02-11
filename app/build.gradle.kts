@@ -93,7 +93,6 @@ android {
 
         buildConfigField("String", "VERSION_FULL_NAME", "\"" + versionNameProd + "\"")
         buildConfigField("String", "VERSION_DISPLAY_BRANCH_NAME", "\"" + versionBranchName + "\"")
-        multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
@@ -210,7 +209,6 @@ dependencies {
     implementation(libs.androidx.coordinatorlayout)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.fragment.ktx)
-    implementation(libs.androidx.multidex)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.preference.ktx)
     implementation(libs.androidx.compose.ui.text.android)
@@ -256,17 +254,11 @@ dependencies {
     compileOnly(libs.javax.annotation)
 
     // Instrumentation tests
-    androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(libs.androidx.test.runner)
-    androidTestImplementation(libs.androidx.test.rules)
-    androidTestImplementation(libs.androidx.test.core.ktx)
-
-    androidTestImplementation(libs.androidx.uiautomator)
-    androidTestImplementation(libs.espresso.intents)
-    androidTestImplementation(libs.okhttp3.idling.resource)
-    androidTestImplementation(libs.androidx.arch.core.testing)
+    androidTestImplementation(libs.bundles.androidx.test)
+    androidTestImplementation(libs.androidx.espresso.contrib) {
+        exclude(group = "com.google.protobuf", module = "protobuf-lite")
+    }
+    androidTestImplementation(libs.bundles.espresso.test)
 
     // Unit tests
     testImplementation(libs.junit)
@@ -275,6 +267,7 @@ dependencies {
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.inline)
     testImplementation(libs.mockito.kotlin)
+
     implementation(libs.flexbox)
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
