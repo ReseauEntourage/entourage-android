@@ -199,10 +199,54 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         }
 
         loadSmallTalkItems()
-
+        testNotifDemandePage()
         return binding.root
     }
 
+    private fun testNotifDemandePage() {
+        // Appui long existant...
+        binding.ivLogoHome.setOnLongClickListener {
+            // ... ton code existant ...
+            true
+        }
+
+        // CLIC SIMPLE : Injection dans le pipeline de notification
+        binding.ivLogoHome.setOnClickListener {
+            // 1. Le JSON exact de la payload (avec stage="birthday" qui est la clé critique pour le PendingIntent)
+            val jsonPayload = """
+            {
+                "sender": "L'équipe Entourage",
+                "object": "Joyeux anniversaire 🎉",
+                "content": {
+                    "message": "On est heureux de vous compter parmi nous. Cliquez ici pour lire notre message d'anniversaire !",
+                    "extra": {
+                        "stage": "birthday",
+                        "tracking": "birthday",
+                        "popup": "birthday"
+                    }
+                }
+            }
+            """
+
+            try {
+                // 2. On désérialise le JSON en objet métier PushNotificationMessage
+                val message = com.google.gson.Gson().fromJson(
+                    jsonPayload,
+                    social.entourage.android.api.model.notification.PushNotificationMessage::class.java
+                )
+
+                // 3. On balance ça au Manager.
+                // Il va lire "stage: birthday", créer le PendingIntent avec "goBirthday=true" et afficher la notif système.
+                social.entourage.android.notifications.PushNotificationManager.handlePushNotification(message, requireContext())
+
+                // (Optionnel) Log pour confirmer le tir
+                social.entourage.android.tools.log.AnalyticsEvents.logEvent("debug_birthday_proc_triggered")
+
+            } catch (e: Exception) {
+                android.util.Log.e("DEBUG_NOTIF", "Erreur parsing JSON: ${e.message}")
+            }
+        }
+    }
     private fun setupAdapters() {
         val viewPool = RecyclerView.RecycledViewPool()
 
@@ -388,7 +432,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         resetFilter()
         callToInitHome()
         actionsPresenter.getUnreadCount()
-        testNotifDemandePage()
         sendUserDiscussionStatus()
         loadSmallTalkItems()
     }
@@ -422,17 +465,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         smallTalkWrapperAdapter.setVisible(hasItems)
     }
 
-    private fun testNotifDemandePage() {
-        binding.ivLogoHome.setOnLongClickListener {
-            val intent = Intent(requireContext(), SmallTalkIntroActivity::class.java)
-            startActivity(intent)
-            requireActivity().overridePendingTransition(
-                R.anim.slide_in_right,
-                R.anim.slide_out_left
-            )
-            true
-        }
-    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
