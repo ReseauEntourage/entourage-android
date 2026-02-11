@@ -373,6 +373,7 @@ class MainActivity : BaseSecuredActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        this.intent = intent
         useIntentForRedictection(intent)
     }
 

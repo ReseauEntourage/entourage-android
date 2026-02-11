@@ -285,7 +285,6 @@ object PushNotificationManager {
             putExtra("notification_content", Gson().toJson(pushNotificationMessage))
         }
 
-
         val dismissedIntent = Intent(context, NotificationActionReceiver::class.java).apply {
             action = NotificationActionReceiver.ACTION_DISMISSED
             putExtra("notification_content", Gson().toJson(pushNotificationMessage)) // ou n'importe quelle autre information que vous voulez passer
@@ -430,9 +429,15 @@ object PushNotificationManager {
         }
         if(pushNotificationMessage.content?.extra?.stage == "birthday"){
             val intent = Intent(context, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             intent.putExtra("goBirthday", true)
             intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
-            return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
+            return PendingIntent.getActivity(
+                context,
+                pushNotificationMessage.pushNotificationId,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT // <--- C'EST CA QUI MANQUAIT
+            )
         }
 
         val instance = pushNotificationMessage.content?.extra?.instance

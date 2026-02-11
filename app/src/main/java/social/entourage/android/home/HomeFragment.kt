@@ -904,7 +904,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     private fun updateUser(user: User) {
         this.user = user
         updateAvatar()
-        //checkBirthday()
+
     }
 
     private fun checkBirthday() {
