@@ -1,4 +1,4 @@
-package social.entourage.android.discussions.imageviewier
+package social.entourage.android.tools.image_viewer
 
 import android.graphics.Rect
 import android.view.LayoutInflater

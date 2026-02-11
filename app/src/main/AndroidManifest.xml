@@ -133,7 +133,7 @@
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
-            android:name=".discussions.imageviewier.ImageListActivity"
+            android:name=".tools.image_viewer.ImageListActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
