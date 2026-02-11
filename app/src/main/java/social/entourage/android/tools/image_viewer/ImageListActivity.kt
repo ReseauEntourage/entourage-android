@@ -1,4 +1,4 @@
-package social.entourage.android.discussions.imageviewier
+package social.entourage.android.tools.image_viewer
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,9 +15,10 @@ import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.ConversationImage
-import social.entourage.android.api.model.ConversationImagesWrapper
 import social.entourage.android.api.model.ConversationImageSingleWrapper
+import social.entourage.android.api.model.ConversationImagesWrapper
 import social.entourage.android.comment.ImageZoomActivity
+import social.entourage.android.tools.utils.Const
 
 class ImageListActivity : AppCompatActivity(), ImageGridAdapter.OnImageClickListener {
 
@@ -45,7 +46,7 @@ class ImageListActivity : AppCompatActivity(), ImageGridAdapter.OnImageClickList
         emptyView = findViewById(R.id.empty_view)
         backBtn = findViewById(R.id.header_icon_back)
 
-        conversationId = intent.getIntExtra("conversation_id", -1)
+        conversationId = intent.getIntExtra(Const.CONVERSATION_ID, -1)
 
         val span = 3
         val layoutManager = GridLayoutManager(this, span)

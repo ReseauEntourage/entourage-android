@@ -108,9 +108,6 @@
         <activity
             android:name=".welcome.WelcomeFourActivity"
             android:exported="false" />
-        <activity
-            android:name=".welcome.WelcomeTestActivity"
-            android:exported="false" />
         <activity android:name=".members.MembersActivity"
             android:exported="false" />
         <activity android:name=".survey.CreateSurveyActivity"
@@ -129,30 +126,16 @@
         <activity
             android:name=".home.pedago.PedagoDetailActivity"
             android:exported="false" />
-        <activity android:name=".discussions.WebViewActivityForTest">
-        </activity>
-        <activity
-            android:name=".user.languechoose.ActivityChooseLanguage"
-            android:exported="false" />
         <activity
             android:name=".discussions.DetailConversationActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
-            android:name=".discussions.imageviewier.ImageListActivity"
+            android:name=".tools.image_viewer.ImageListActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
-            android:name=".actions.ActionLocationFilterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".actions.ActionCategoriesFiltersActivity"
-            android:exported="false" />
-        <activity
             android:name=".actions.create.CreateActionActivity"
-            android:exported="false" />
-        <activity
-            android:name=".actions.list.me.MyActionsListActivity"
             android:exported="false" />
         <activity
             android:name=".actions.detail.ActionDetailActivity"
@@ -183,7 +166,7 @@
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
-            android:name=".tools.image_viewer.ImageDialogActivity"
+            android:name=".tools.image_viewer.ImageViewerActivity"
             android:exported="false" />
         <activity
             android:name=".events.create.CreateEventActivity"
