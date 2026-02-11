@@ -240,7 +240,9 @@ class DetailConversationActivity : CommentActivity() {
                         isOneToOne = true,
                         userId = otherUserId,
                         username = detailConversation?.title,
-                        blocked = detailConversation?.hasBlocker() == true && detailConversation?.imBlocker() == true
+                        blocked = detailConversation?.hasBlocker() == true && detailConversation?.imBlocker() == true,
+                        isSmallTalk = isSmallTalkMode,
+                        smallTalkId = smallTalkId
                     )
                 }
                 SheetMode.DISCUSSION_GROUP -> {
@@ -249,7 +251,9 @@ class DetailConversationActivity : CommentActivity() {
                         isOneToOne = false,
                         userId = 0,
                         username = null,
-                        blocked = false
+                        blocked = false,
+                        isSmallTalk = isSmallTalkMode,
+                        smallTalkId = smallTalkId
                     )
                 }
                 SheetMode.GROUP -> {
