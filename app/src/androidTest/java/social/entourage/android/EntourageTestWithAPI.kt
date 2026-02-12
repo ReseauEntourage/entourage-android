@@ -48,12 +48,12 @@ open class EntourageTestWithAPI {
             val instrumentation = InstrumentationRegistry.getInstrumentation()
 
             if (UiDevice.getInstance(instrumentation).takeScreenshot(file)) {
-                Timber.i("EntourageTest", "Snapshot: adb pull ${file.absolutePath}")
+                Timber.tag("EntourageTest").i("Snapshot: adb pull ${file.absolutePath}")
             } else {
-                Timber.e("EntourageTest", "Failed to take screenshot")
+                Timber.tag("EntourageTest").e("Failed to take screenshot")
             }
         } catch (e: Exception) {
-            Timber.e("EntourageTest", "Error taking screenshot", e)
+            Timber.tag("EntourageTest").e(e, "Error taking screenshot")
         }
     }
 
