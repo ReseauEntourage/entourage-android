@@ -377,11 +377,7 @@ object Utils {
         val cal = Calendar.getInstance()
         cal.time = date
         val now = Calendar.getInstance()
-        val pattern = if (cal.get(Calendar.YEAR) == now.get(Calendar.YEAR)) {
-            "EEE d MMM"
-        } else {
-            "EEE d MMM yyyy"
-        }
+        val pattern = "EEE d MMM"
         return SimpleDateFormat(pattern, locale).format(date).replaceFirstChar { if (it.isLowerCase()) it.titlecase(locale) else it.toString() }
     }
 
@@ -390,11 +386,7 @@ object Utils {
         val cal = Calendar.getInstance()
         cal.time = date
         val now = Calendar.getInstance()
-        val pattern = if (cal.get(Calendar.YEAR) == now.get(Calendar.YEAR)) {
-            "EEEE d MMMM"
-        } else {
-            "EEEE d MMMM yyyy"
-        }
+        val pattern = "EEEE d MMMM"
         return SimpleDateFormat(pattern, locale).format(date).replaceFirstChar { if (it.isLowerCase()) it.titlecase(locale) else it.toString() }
     }
 }
