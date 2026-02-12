@@ -98,15 +98,15 @@ abstract class DeepLinkingTest {
 class DeepLinkingTestCreateAction : DeepLinkingTest() {
     //TODO should we keep this?
     private val link = DeepLinksManager.DeepLinksView.CREATE_ACTION.view
-    ////TODO @Test
+    //TODO @Test
     fun connectedCreateActionDeeplink() {
         connectedCreateActionDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://" + link)
     }
-    ////TODO @Test
+    //TODO @Test
     fun connectedCreateActionDeeplinkHTTP() {
         connectedCreateActionDeeplink("http://${BuildConfig.DEEP_LINKS_URL}/deeplink/${link}")
     }
-    ////TODO @Test
+    //TODO @Test
     fun connectedCreateActionDeeplinkHTTPS() {
         connectedCreateActionDeeplink("https://${BuildConfig.DEEP_LINKS_URL}/deeplink/${link}")
     }
@@ -120,17 +120,17 @@ class DeepLinkingTestCreateAction : DeepLinkingTest() {
 
 class DeepLinkingTestBadge : DeepLinkingTest() {
 
-    //TODO //TODO @Test
+    //TODO  @Test
     fun connectedBadgeDeeplink() {
         connectedBadgeDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://badge")
     }
 
-    //TODO //TODO @Test
+    //TODO  @Test
     fun connectedBadgeDeeplinkHTTP() {
         connectedBadgeDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/badge")
     }
 
-    //TODO //TODO @Test
+    //TODO  @Test
     fun connectedBadgeDeeplinkHTTPS() {
         connectedBadgeDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/badge")
     }
@@ -144,17 +144,17 @@ class DeepLinkingTestBadge : DeepLinkingTest() {
 
 class DeepLinkingTestWebview : DeepLinkingTest() {
 
-    //TODO //TODO @Test
+    //TODO  @Test
     fun connectedWebviewDeeplink() {
         connectedWebviewDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://webview?url=http://www.google.com")
     }
 
-    //TODO //TODO @Test
+    //TODO  @Test
     fun connectedWebviewDeeplinkHTTP() {
         connectedWebviewDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/webview?url=http://www.google.com")
     }
 
-    //TODO //TODO @Test
+    //TODO  @Test
     fun connectedWebviewDeeplinkHTTPS() {
         connectedWebviewDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/webview?url=http://www.google.com")
     }
@@ -171,17 +171,17 @@ class DeepLinkingTestWebview : DeepLinkingTest() {
 }
 
 class DeepLinkingTestPhoneSettings : DeepLinkingTest() {
-    //TODO //TODO @Test
+    //TODO  @Test
     fun connectedPhoneSettingsDeeplink() {
         connectedPhoneSettingsDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://phone-settings")
     }
 
-    //TODO //TODO @Test
+    //TODO  @Test
     fun connectedPhoneSettingsDeeplinkHTTP() {
         connectedPhoneSettingsDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/phone-settings")
     }
 
-    //TODO //TODO @Test
+    //TODO  @Test
     fun connectedPhoneSettingsDeeplinkHTTPS() {
         connectedPhoneSettingsDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/phone-settings")
     }
@@ -195,17 +195,17 @@ class DeepLinkingTestPhoneSettings : DeepLinkingTest() {
 
 class DeepLinkingTestFilters : DeepLinkingTest() {
 
-    //TODO //TODO @Test
+    //TODO  @Test
     fun connectedFeedFilterDeeplink() {
         connectedFeedFilterDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://feed/filters")
     }
 
-    //TODO //TODO @Test
+    //TODO  @Test
     fun connectedFeedFilterDeeplinkHTTP() {
         connectedFeedFilterDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/feed/filters")
     }
 
-    //TODO //TODO @Test
+    //TODO  @Test
     fun connectedFeedFilterDeeplinkHTTPS() {
         connectedFeedFilterDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/feed/filters")
     }
@@ -219,17 +219,17 @@ class DeepLinkingTestFilters : DeepLinkingTest() {
 
 class DeepLinkingTestEvents : DeepLinkingTest() {
 
-    //TODO //TODO //TODO @Test
+    //TODO  //TODO @Test
     fun connectedEventsDeeplink() {
         connectedEventsDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://events")
     }
 
-    //TODO //TODO //TODO @Test
+    //TODO  //TODO @Test
     fun connectedEventsDeeplinkHTTP() {
         connectedEventsDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/events")
     }
 
-    //TODO //TODO //TODO @Test
+    //TODO  //TODO @Test
     fun connectedEventsDeeplinkHTTPS() {
         connectedEventsDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/events")
     }
@@ -242,17 +242,17 @@ class DeepLinkingTestEvents : DeepLinkingTest() {
 }
 
 class DeepLinkingTestFeed : DeepLinkingTest() {
-    //TODO //TODO //TODO @Test
+    //TODO  //TODO @Test
     fun connectedFeedDeeplink() {
         connectedFeedDeeplink(BuildConfig.DEEP_LINKS_SCHEME + "://feed")
     }
 
-    //TODO //TODO //TODO @Test
+    //TODO  //TODO @Test
     fun connectedFeedDeeplinkHTTP() {
         connectedFeedDeeplink("http://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/feed")
     }
 
-    //TODO //TODO //TODO @Test
+    //TODO  //TODO @Test
     fun connectedFeedDeeplinkHTTPS() {
         connectedFeedDeeplink("https://" + BuildConfig.DEEP_LINKS_URL + "/deeplink/feed")
     }
@@ -273,47 +273,47 @@ class DeepLinkingTestEntourage : DeepLinkingTest() {
     private val dmID = if (BuildConfig.FLAVOR_env == "prod") "51946" else "2013"
 
     //TODO
-    /*//TODO //TODO @Test
+    /*//TODO  @Test
     fun connectedEntouragesIdDeeplinkHTTP() {
         connectedEntourageDeeplinkHTTP("entourages", entourageID)
     }*/
     //TODO
-    /*//TODO //TODO @Test
+    /*//TODO  @Test
     fun connectedEntouragesHashDeeplinkHTTP() {
         connectedEntourageDeeplinkHTTP("entourages", entourageHash)
     }*/
     //TODO
-    /*//TODO //TODO @Test
+    /*//TODO  @Test
     fun connectedEntourageIdDeeplinkHTTP() {
         connectedEntourageDeeplinkHTTP("entourage", entourageID)
     }*/
     //TODO
-    /*//TODO //TODO @Test
+    /*//TODO  @Test
     fun connectedEntourageHashDeeplinkHTTP() {
         connectedEntourageDeeplinkHTTP("entourage", entourageHash)
     }*/
     //TODO
-    /*//TODO //TODO @Test
+    /*//TODO  @Test
     fun connectedEntouragesIdHTTP() {
         connectedEntourageHTTP("entourages", entourageID)
     }*/
     //TODO
-    /*//TODO //TODO @Test
+    /*//TODO  @Test
     fun connectedEntouragesHashHTTP() {
         connectedEntourageHTTP("entourages", entourageHash)
     }*/
     //TODO
-    /*//TODO //TODO @Test
+    /*//TODO  @Test
     fun connectedEntourageIdHTTP() {
         connectedEntourageHTTP("entourage", entourageID)
     }*/
     //TODO
-    /*//TODO //TODO @Test
+    /*//TODO  @Test
     fun connectedEntourageHashHTTP() {
         connectedEntourageHTTP("entourage", entourageHash)
     }*/
     //TODO
-    /*//TODO //TODO @Test
+    /*//TODO  @Test
     fun connectedEntouragesIdHTTPS() {
         connectedEntourageHTTPS("entourages", entourageID)
     }*/
