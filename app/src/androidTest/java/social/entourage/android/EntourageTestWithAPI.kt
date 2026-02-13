@@ -58,6 +58,10 @@ open class EntourageTestWithAPI {
     }
 
     open fun setUp(activity: Context) {
+        if (BuildConfig.FLAVOR == "entourageProd") {
+            throw IllegalStateException("API tests should not be run on the production flavor!")
+        }
+
         afM = activity.getSystemService(AutofillManager::class.java)
         afM?.disableAutofillServices()
         if (SHOULD_DISABLE_GOOGLE_PWD_MGR && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // Autofill settings are relevant
