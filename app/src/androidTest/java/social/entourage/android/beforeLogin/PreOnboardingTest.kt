@@ -19,9 +19,8 @@ import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActi
 @RunWith(AndroidJUnit4::class)
 class PreOnboardingTest : EntourageTestBeforeLogin() {
 
-    @Rule
-    @JvmField
-    var activityRule = ActivityScenarioRule(PreOnboardingStartActivity::class.java)
+    @get:Rule
+    val activityRule = ActivityScenarioRule(PreOnboardingStartActivity::class.java)
 
     private val nextButton = Espresso.onView(
         Matchers.allOf(

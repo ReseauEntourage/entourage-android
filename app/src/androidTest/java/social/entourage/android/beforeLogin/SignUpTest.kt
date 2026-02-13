@@ -202,7 +202,6 @@ class SignUpTest : EntourageTestBeforeLogin() {
             ViewActions.closeSoftKeyboard()
         )
         clickNextButton()
-
         //Check that dialog shows given message
         Espresso.onView(ViewMatchers.withText(R.string.login_already_registered_go_back))
             .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))

@@ -21,8 +21,7 @@ import java.io.IOException
 //TODO @RunWith(AndroidJUnit4::class)
 class HomeExpertTest {
 
-    @Rule
-    @JvmField
+    @get:Rule
     var activityRule = ActivityScenarioRule(LoginActivity::class.java)
 
     private lateinit var context: Context

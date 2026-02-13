@@ -608,23 +608,14 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
 
     <string name="action_date_list">D%s</string>
 
-
-    <string name="action_bt_my_actions">Meine Anzeigen</string>
-
     <string name="action_contrib_empty_state_title">Zu Ihrer Suche passen keine Beiträge</string>
     <string name="action_contrib_empty_state_desc">Sie können Ihr Suchfeld erweitern oder einen Beitrag erstellen</string>
 
     <string name="action_demand_empty_state_title">Keine Anfragen entsprechen Ihrer Suche</string>
     <string name="action_demand_empty_state_desc">Sie können Ihr Suchfeld erweitern oder eine Anfrage erstellen</string>
 
-    <string name="action_bt_cat_filters">Kategorien</string>
-    <string name="action_cat_filters_title">Nach Kategorien filtern</string>
-    <string name="action_location_filter_title">Nach Standort filtern</string>
-
     <string name="action_menu_create_demand">Erstellen Sie eine Anfrage</string>
     <string name="action_menu_create_contrib">Erstellen Sie einen Beitrag</string>
-
-    <string name="action_my_actions">Meine Anzeigen</string>
 
     <string name="action_my_empty_title">Sie haben keine Anzeigen veröffentlicht</string>
     <string name="action_my_empty_subtitle">Sie können einen Beitrag oder eine Anfrage erstellen, indem Sie auf der Seite Gegenseitige Hilfe“ auf das + klicken.</string>

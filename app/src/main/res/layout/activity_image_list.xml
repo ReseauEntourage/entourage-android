@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="40dp"
-    tools:context=".discussions.imageviewier.ImageListActivity">
+    tools:context=".tools.image_viewer.ImageListActivity">
 
     <ImageView
         android:id="@+id/header_icon_back"

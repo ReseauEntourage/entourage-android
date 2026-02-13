@@ -607,22 +607,14 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
 
     <string name="action_date_list">%s</string>
 
-    <string name="action_bt_my_actions">Reclamele mele</string>
-
     <string name="action_contrib_empty_state_title">Nicio contribuție nu corespunde căutării tale</string>
     <string name="action_contrib_empty_state_desc">Puteți extinde câmpul de căutare sau puteți crea o contribuție</string>
 
     <string name="action_demand_empty_state_title">Nicio cerere nu corespunde căutării dvs</string>
     <string name="action_demand_empty_state_desc">Puteți extinde câmpul de căutare sau puteți crea o solicitare</string>
 
-    <string name="action_bt_cat_filters">Categorii</string>
-    <string name="action_cat_filters_title">Filtrați după categorii</string>
-    <string name="action_location_filter_title">Filtrați după locație</string>
-
     <string name="action_menu_create_demand">Creați o cerere</string>
     <string name="action_menu_create_contrib">Creați o contribuție</string>
-
-    <string name="action_my_actions">Reclamele mele</string>
 
     <string name="action_my_empty_title">Nu ați publicat niciun reclam</string>
     <string name="action_my_empty_subtitle">Puteți crea o contribuție sau o solicitare făcând clic pe „+” de pe pagina „Ajutor reciproc”.</string>

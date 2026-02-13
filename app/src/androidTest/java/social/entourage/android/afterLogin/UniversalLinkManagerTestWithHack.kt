@@ -12,7 +12,6 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import social.entourage.android.OpenUniversalLinkManagerTest
 import social.entourage.android.R
 import social.entourage.android.tools.TestHelper
 
@@ -82,7 +81,6 @@ class UniversalLinkManagerTestWithHack : OpenUniversalLinkManagerTest() {
         }
 
         context.startActivity(intent)
-        Thread.sleep(500)
 
         Espresso.onView(
             Matchers.allOf(
@@ -109,7 +107,6 @@ class UniversalLinkManagerTestWithHack : OpenUniversalLinkManagerTest() {
 
     @Test
     fun testDemandListLink() {
-        Thread.sleep(500)
         val uri = Uri.parse(Companion.EntourageLink.SOLICITATIONS_LIST.link)
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
