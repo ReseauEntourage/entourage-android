@@ -199,7 +199,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         }
 
         loadSmallTalkItems()
-        testNotifDemandePage()
         return binding.root
     }
 
@@ -247,6 +246,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             }
         }
     }
+    
     private fun setupAdapters() {
         val viewPool = RecyclerView.RecycledViewPool()
 
