@@ -42,10 +42,9 @@ import social.entourage.android.tools.utils.trimEnd
 import social.entourage.android.user.AvatarUploadPresenter
 import social.entourage.android.user.AvatarUploadRepository
 import social.entourage.android.user.AvatarUploadView
-import social.entourage.android.user.languechoose.ActivityChooseLanguage
 import timber.log.Timber
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
@@ -109,7 +108,6 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
         initializeDescriptionCounter()
 
         setupEditImageButton()
-        setupLanguageButton()
         setupGender()
         setupInterestsButtons()
         setupActionZoneAutocomplete()
@@ -182,15 +180,6 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
         binding.editImage.setOnClickListener {
             startActivity(Intent(this, EditPhotoActivity::class.java))
         }
-    }
-
-    private fun setupLanguageButton() {
-        binding.language.peciLayout.setOnClickListener {
-            val intent = Intent(this, ActivityChooseLanguage::class.java)
-            startActivity(intent)
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-        }
-        binding.language.peciLayout.visibility = View.GONE
     }
 
     private fun setupGender() {

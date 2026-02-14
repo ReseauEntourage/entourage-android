@@ -1,6 +1,7 @@
 package social.entourage.android.afterLogin
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationManagerCompat
 import androidx.test.ext.junit.rules.ActivityScenarioRule
@@ -37,16 +38,20 @@ class PushNotificationTest : EntourageTestAfterLogin() {
 
     private val entourageID = if (BuildConfig.FLAVOR_env == "prod") "46569" else "2300"
 
+    private fun checkNotifEnabled(activity: Context) {
+        if (!NotificationManagerCompat.from(activity).areNotificationsEnabled()) {
+            Assert.fail(
+                "Notifications not allowed for this app"
+            )
+        }
+        NotificationManagerCompat.from(activity).cancelAll()
+    }
+
     @Before
     fun setUp() {
         activityRule.scenario.onActivity { activity ->
             super.setUp(activity)
-            if (!NotificationManagerCompat.from(activity).areNotificationsEnabled()) {
-                Assert.fail(
-                    "Notifications not allowed for this app"
-                )
-            }
-            NotificationManagerCompat.from(activity).cancelAll()
+            checkNotifEnabled(activity)
         }
     }
 
