@@ -219,14 +219,23 @@ class DetailConversationActivity : CommentActivity() {
             }
 
             // On passe TOUS les arguments nécessaires (comme dans EventFeedFragment)
-            ActionSheetFragment.newEvent(
-                eventId = eventId,
-                conversationId = if (isSmallTalkMode) smallTalkId.toIntOrNull() ?: 0 else id,
-                canManageParticipants = false, // À adapter selon ta logique métier
-                eventTitle = event?.title ?: "",
-                participantsCount = event?.membersCount ?: 0,
-                eventAddress = event?.metadata?.displayAddress ?: ""
-            ).show(supportFragmentManager, "ActionSheetFragment")
+            val sheet = event?.let { ev ->
+                ActionSheetFragment.newEvent(
+                    event = ev,
+                    conversationId = if (isSmallTalkMode) smallTalkId.toIntOrNull() ?: 0 else id,
+                    canManageParticipants = false // À adapter selon ta logique métier
+                )
+            } ?: run {
+                ActionSheetFragment.newEvent(
+                    eventId = eventId,
+                    conversationId = if (isSmallTalkMode) smallTalkId.toIntOrNull() ?: 0 else id,
+                    canManageParticipants = false, // À adapter selon ta logique métier
+                    eventTitle = event?.title ?: "",
+                    participantsCount = event?.membersCount ?: 0,
+                    eventAddress = event?.metadata?.displayAddress ?: ""
+                )
+            }
+            sheet.show(supportFragmentManager, "ActionSheetFragment")
 
         } else {
             // Pour les autres modes (GROUP, DISCUSSION_ONE_TO_ONE, DISCUSSION_GROUP)
