@@ -704,13 +704,13 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     }
 
     private fun setObservations() {
-        homePresenter.summary.observe(viewLifecycleOwner, ::updateContributionsView)
-        homePresenter.getAllEvents.observe(viewLifecycleOwner, ::handleEvent)
-        homePresenter.getAllActions.observe(viewLifecycleOwner, ::handleAction)
-        homePresenter.pedagogicalContent.observe(viewLifecycleOwner, ::handlePedago)
-        homePresenter.pedagogicalInitialContent.observe(viewLifecycleOwner, ::handleInitialPedago)
-        homePresenter.notifsCount.observe(viewLifecycleOwner, ::updateNotifsCount)
-        actionsPresenter.unreadMessages.observe(viewLifecycleOwner, ::updateUnreadCount)
+        homePresenter.summary.observe(viewLifecycleOwner) { updateContributionsView(it) }
+        homePresenter.getAllEvents.observe(viewLifecycleOwner) { handleEvent(it) }
+        homePresenter.getAllActions.observe(viewLifecycleOwner) { handleAction(it) }
+        homePresenter.pedagogicalContent.observe(viewLifecycleOwner) { handlePedago(it) }
+        homePresenter.pedagogicalInitialContent.observe(viewLifecycleOwner) { handleInitialPedago(it) }
+        homePresenter.notifsCount.observe(viewLifecycleOwner) { updateNotifsCount(it) }
+        actionsPresenter.unreadMessages.observe(viewLifecycleOwner) { updateUnreadCount(it) }
     }
 
     fun handleGroup(allGroup: MutableList<Group>?) {
