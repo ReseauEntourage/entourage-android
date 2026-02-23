@@ -129,6 +129,7 @@ class MainActivity : BaseSecuredActivity() {
         val uri = intent.data
         if (uri != null) {
             universalLinkManager.handleUniversalLink(uri)
+            intent.data = null
         }
     }
 
@@ -581,6 +582,7 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     fun goConv() {
+        if (navController.currentDestination?.id == R.id.navigation_messages) return
         navController.navigate(R.id.navigation_messages)
     }
 
