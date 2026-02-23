@@ -41,6 +41,10 @@ class HomeInitialPedagoAdapter(private var onItemClickListener: OnItemClick): Re
         return pedagos.size
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return R.layout.home_v2_initial_pedago_item_layout
+    }
+
     override fun onBindViewHolder(holder: PedagoViewHolder, position: Int) {
         val pedago = pedagos[position]
         holder.binding.root.setOnClickListener {
