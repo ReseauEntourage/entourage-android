@@ -61,6 +61,11 @@ class HomeEventAdapter(
     override fun getItemCount(): Int {
         return events.size
     }
+
+    override fun getItemViewType(position: Int): Int {
+        return 20
+    }
+
     fun getEventIds(): Set<Int> {
         return events.mapNotNull { it.id }.toSet()
     }

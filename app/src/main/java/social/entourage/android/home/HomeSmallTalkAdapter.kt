@@ -31,9 +31,9 @@ class HomeSmallTalkAdapter(
 ) : ListAdapter<HomeSmallTalkItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     companion object {
-        private const val TYPE_MATCH = 0
-        private const val TYPE_WAITING = 1
-        private const val TYPE_CONVERSATION = 2
+        private const val TYPE_MATCH = 40
+        private const val TYPE_WAITING = 41
+        private const val TYPE_CONVERSATION = 42
     }
 
     override fun getItemViewType(position: Int): Int {

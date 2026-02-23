@@ -42,6 +42,10 @@ class HomeGroupAdapter: RecyclerView.Adapter<HomeGroupAdapter.GroupViewHolder>()
         return groups.size
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return 30
+    }
+
     override fun onBindViewHolder(holder: GroupViewHolder, position: Int) {
         val group = groups[position]
         holder.binding.layout.setOnClickListener {view ->
