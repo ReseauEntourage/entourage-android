@@ -90,6 +90,30 @@
                 android:text="@string/every_two_week" />
         </RadioGroup>
 
+        <LinearLayout
+            android:id="@+id/layout_reserved_female"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toBottomOf="@+id/recurrence">
+
+            <TextView
+                style="@style/left_courant_black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/event_reserved_female_question" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch_reserved_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:thumbTint="@color/orange"
+                app:trackTint="@color/light_orange_opacity_50" />
+        </LinearLayout>
+
         <include
             android:id="@+id/error"
             layout="@layout/new_error"

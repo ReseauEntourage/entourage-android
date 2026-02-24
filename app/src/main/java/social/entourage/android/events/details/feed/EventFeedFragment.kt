@@ -280,6 +280,11 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         with(binding) {
             eventName.text = event?.title
             eventNameToolbar.text = event?.title
+            if (event?.reserved_female == true) {
+                tvReservedFemale.visibility = View.VISIBLE
+            } else {
+                tvReservedFemale.visibility = View.GONE
+            }
             eventDescription.enableCopyOnLongClick(requireContext())
             if(event != null && event?.membersCount!! > 1){
                 eventMembersNumberLocation.text = String.format(
