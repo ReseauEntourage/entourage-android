@@ -289,8 +289,11 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         }
 
         // remove if not part of event
-        if (EventFeedActivity.isFromMyEvent == false && mode == SheetMode.EVENT) {
-            binding.quit.profileSettingsItemLayout.isVisible = false
+        if (mode == SheetMode.EVENT) {
+            val isMember = eventObj?.member ?: EventFeedActivity.isFromMyEvent
+            if (!isMember) {
+                binding.quit.profileSettingsItemLayout.isVisible = false
+            }
         }
     }
 

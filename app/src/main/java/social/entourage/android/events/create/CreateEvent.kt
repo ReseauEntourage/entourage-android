@@ -94,6 +94,9 @@ data class CreateEvent(
 
     var displayAddress: String? = null,
 
+    @SerializedName("reserved_female")
+    var reserved_female: Boolean? = null,
+
     ) {
     fun title(value: String) = apply {
         title = value
@@ -140,7 +143,7 @@ data class CreateEvent(
     }
 
     override fun toString(): String {
-        return "CreateEvent(metadata=$metadata, description=$description, title=$title, eventUrl=$eventUrl, online=$online, latitude=$latitude, longitude=$longitude, otherInterest=$otherInterest, interests=$interests, entourageImageId=$entourageImageId, neighborhoodIds=$neighborhoodIds, recurrence=$recurrence)"
+        return "CreateEvent(metadata=$metadata, description=$description, title=$title, eventUrl=$eventUrl, online=$online, latitude=$latitude, longitude=$longitude, otherInterest=$otherInterest, interests=$interests, entourageImageId=$entourageImageId, neighborhoodIds=$neighborhoodIds, recurrence=$recurrence, reserved_female=$reserved_female)"
     }
 
 }
