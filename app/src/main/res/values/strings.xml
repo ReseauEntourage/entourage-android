@@ -427,6 +427,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_places">Nombre de places</string>
     <string name="event_reserved_female_question">Cet événement est-il réservé aux femmes ?</string>
     <string name="event_reserved_female_banner">Cet événement est réservé aux femmes</string>
+    <string name="event_reserved_female_info">L\'événement sera uniquement visible par les utilisatrices de l\'application.</string>
     <string name="event_canceled">Evénement annulé</string>
     <string name="member_since">Membre Entourage depuis</string>
     <string name="profile_date_format">MM/yyyy</string>

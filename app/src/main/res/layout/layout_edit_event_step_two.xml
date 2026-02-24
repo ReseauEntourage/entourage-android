@@ -114,6 +114,33 @@
                 app:trackTint="@color/light_orange_opacity_50" />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/layout_reserved_female_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:background="@drawable/bg_info_bubble_beige"
+            android:padding="15dp"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/layout_reserved_female">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_info_orange_outlined" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="@string/event_reserved_female_info" />
+        </LinearLayout>
+
         <include
             android:id="@+id/error"
             layout="@layout/new_error"

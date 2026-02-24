@@ -92,6 +92,7 @@ class CreateEventStepTwoFragment : Fragment() {
     private fun setReservedFemale() {
         binding.layout.switchReservedFemale.setOnCheckedChangeListener { _, isChecked ->
             CommunicationHandler.event.reserved_female = isChecked
+            binding.root.findViewById<View>(R.id.layout_reserved_female_info)?.visibility = if (isChecked) View.VISIBLE else View.GONE
         }
     }
 
@@ -204,6 +205,7 @@ class CreateEventStepTwoFragment : Fragment() {
                 })
                 binding.layout.switchReservedFemale.isChecked = this.reserved_female ?: false
                 CommunicationHandler.event.reserved_female = this.reserved_female ?: false
+                binding.root.findViewById<View>(R.id.layout_reserved_female_info)?.visibility = if (this.reserved_female == true) View.VISIBLE else View.GONE
             }
         }
     }
