@@ -143,6 +143,8 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         (context as? MainActivity)?.startActivityForResult(intent, 0)
                     } else if (pathSegments.contains("webinar")) {
                         presenter.getEventSensibilisation()
+                    } else if (pathSegments.contains("welcome")) {
+                        presenter.getEventWelcome()
                     } else if (pathSegments.size > 3) {
                         val outingId = pathSegments[2]
                         EventFeedFragment.shouldAddToAgenda = true
