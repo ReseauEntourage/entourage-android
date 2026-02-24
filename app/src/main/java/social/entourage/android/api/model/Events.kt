@@ -143,6 +143,9 @@ data class Events(
 
     @SerializedName("neighborhoods")
     var neighborhoods: MutableList<GroupEvent>? = mutableListOf(),
+
+    @SerializedName("reserved_female")
+    var reserved_female: Boolean? = null,
 ) : Serializable
 
 fun Events.toEventUi(context: Context): EventModel {
@@ -167,7 +170,8 @@ fun Events.toEventUi(context: Context): EventModel {
         this.location,
         this.distance,
         this.status,
-        this.metadata?.previousAt
+        this.metadata?.previousAt,
+        this.reserved_female
     )
 }
 
