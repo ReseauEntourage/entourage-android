@@ -13,9 +13,22 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:src="@drawable/ic_home_search_small_talk"
-        app:layout_constraintTop_toTopOf="@+id/tv_home_small_talk_subtitle_match"
-        app:layout_constraintBottom_toBottomOf="@+id/button_start"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_home_small_talk_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/home_title_small_talk"
+        android:fontFamily="@font/quicksand_bold"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_home_small_talk_icon_match"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        />
 
     <TextView
         android:id="@+id/tv_home_small_talk_subtitle_match"
@@ -25,30 +38,30 @@
         android:fontFamily="@font/nunitosans_regular"
         android:textSize="14sp"
         android:textColor="@color/grey_dark"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/iv_home_small_talk_icon_match"
+        app:layout_constraintTop_toBottomOf="@+id/tv_home_small_talk_title"
+        app:layout_constraintStart_toEndOf="@+id/iv_home_small_talk_icon_match"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="4dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"/>
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button_start"
-        style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
-        android:layout_height="47dp"
-        android:layout_weight="1"
-        android:background="@drawable/shape_button_v9_positive"
-        android:elevation="0dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/orange"
+        app:cornerRadius="32dp"
         android:fontFamily="@font/quicksand_bold"
-        android:paddingVertical="5dp"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="24dp"
         android:text="@string/small_talk_button_match"
         android:textAllCaps="false"
+        app:icon="@drawable/ic_bottom_navigation_active_messages"
+        app:iconTint="@color/white"
         app:layout_constraintTop_toBottomOf="@+id/tv_home_small_talk_subtitle_match"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:textColor="@android:color/white"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="16dp"
         android:textSize="14sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
