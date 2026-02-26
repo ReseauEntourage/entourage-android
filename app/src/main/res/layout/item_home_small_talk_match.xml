@@ -56,8 +56,6 @@
         android:paddingHorizontal="24dp"
         android:text="@string/small_talk_button_match"
         android:textAllCaps="false"
-        app:icon="@drawable/ic_bottom_navigation_active_messages"
-        app:iconTint="@color/white"
         app:layout_constraintTop_toBottomOf="@+id/tv_home_small_talk_subtitle_match"
         app:layout_constraintEnd_toEndOf="parent"
         android:textColor="@android:color/white"
