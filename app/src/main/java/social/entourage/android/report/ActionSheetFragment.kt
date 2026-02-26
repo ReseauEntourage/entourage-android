@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.EntourageApplication
+import social.entourage.android.RefreshController
 import social.entourage.android.R
 import social.entourage.android.api.model.Events
 import social.entourage.android.databinding.NewFragmentSettingsDiscussionModalBinding
@@ -127,6 +128,24 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         configureUI()
         setupClicks()
+        setupObservers()
+    }
+
+    private fun setupObservers() {
+        discussionPresenter.hasUserLeftConversation.observe(viewLifecycleOwner) { hasLeft ->
+            if (hasLeft) {
+                RefreshController.shouldRefreshFragment = true
+                dismiss()
+                activity?.finish()
+            }
+        }
+        smallTalkViewModel.shouldLeave.observe(viewLifecycleOwner) { hasLeft ->
+            if (hasLeft) {
+                RefreshController.shouldRefreshFragment = true
+                dismiss()
+                activity?.finish()
+            }
+        }
     }
 
     private fun configureUI() {
@@ -502,7 +521,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                             getString(R.string.exit)
                         ) {
                             smallTalkViewModel.leaveSmallTalk(smallTalkId.toString())
-                            dismiss()
                         }
                     } else {
                         CustomAlertDialog.showWithCancelFirst(
@@ -512,7 +530,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                             getString(R.string.exit)
                         ) {
                             discussionPresenter.leaveConverstion(conversationId)
-                            dismiss()
                         }
                     }
                 }
