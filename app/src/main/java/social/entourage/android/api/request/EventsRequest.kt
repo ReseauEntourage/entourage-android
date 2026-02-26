@@ -115,7 +115,7 @@ interface EventsRequest {
     @GET("outings/sensibilisation")
     fun getEventSensibilisation(): Call<EventWrapper>
 
-    @GET("outings//first_steps")
+    @GET("outings/first_steps")
     fun getEventWelcome(): Call<EventWrapper>
 
     @POST("outings/{event_id}/users")
