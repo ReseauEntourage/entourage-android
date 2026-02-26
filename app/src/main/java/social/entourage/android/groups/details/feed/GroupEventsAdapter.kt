@@ -41,7 +41,7 @@ class GroupEventsAdapter(
         holder.binding.name.text = eventsList[position].title
         holder.binding.address.text = eventsList[position].metadata?.placeName
         eventsList[position].metadata?.startsAt?.let {
-            holder.binding.date.text = Utils.formatEventDateShort(it, context)
+            holder.binding.date.text = Utils.formatEventDateWithTime(it, context)
         }
         eventsList[position].metadata?.landscapeUrl?.let {
             Glide.with(holder.itemView.context)

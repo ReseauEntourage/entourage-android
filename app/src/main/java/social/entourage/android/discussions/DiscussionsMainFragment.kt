@@ -416,7 +416,7 @@ class DiscussionsMainFragment : Fragment() {
             },
             title = (m.name),
             imageUrl = m.imageUrl,
-            subname = m.getParsedDate()?.let { Utils.formatEventDateShort(it, requireContext()) } ?: "",
+            subname = m.getParsedDate()?.let { Utils.formatEventDateWithTime(it, requireContext()) } ?: "",
             lastMessage = lastMessage,
             numberUnreadMessages = m.numberOfUnreadMessages ?: 0,
             memberCount = m.numberOfPeople ?: 0
