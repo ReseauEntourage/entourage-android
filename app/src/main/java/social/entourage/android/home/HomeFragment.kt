@@ -385,11 +385,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             config,
             initialPedagoHeaderAdapter,
             initialPedagoWrapperAdapter,
-            smallTalkHeaderAdapter,
-            smallTalkWrapperAdapter,
-            homeToolsAdapter,
-            pedagoHeaderAdapter,
-            homePedagoAdapter,
             actionHeaderAdapter,
             homeActionAdapter,
             actionButtonAdapter,
@@ -400,6 +395,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             groupWrapperAdapter,
             groupButtonAdapter,
             horsZoneAdapter,
+            smallTalkHeaderAdapter,
+            smallTalkWrapperAdapter,
+            homeToolsAdapter,
+            homePedagoAdapter,
             helpHeaderAdapter,
             homeHelpAdapter
         )
@@ -834,7 +833,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         homePresenter.getSummary()
 
         val show = allPedago.isNotEmpty()
-        pedagoHeaderAdapter.update(getString(R.string.home_title_pedago), getString(R.string.home_subtitle_pedago), show)
     }
 
     private fun updateContributionsView(summary: Summary) {
