@@ -168,7 +168,7 @@ class HomeEventAdapter(
         }
 
         event.metadata?.startsAt?.let {
-            holder.binding.tvDateHomeV2EventItem.text = Utils.formatEventDateShort(it, context)
+            holder.binding.tvDateHomeV2EventItem.text = Utils.formatEventDateWithTime(it, context)
         }
         event.interests.let {
             if (it.isNotEmpty()) {

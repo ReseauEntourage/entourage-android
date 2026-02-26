@@ -381,6 +381,30 @@ object Utils {
         return SimpleDateFormat(pattern, locale).format(date).replaceFirstChar { if (it.isLowerCase()) it.titlecase(locale) else it.toString() }
     }
 
+    fun formatEventDateWithTime(date: Date, context: Context): String {
+        val locale = LanguageManager.getLocaleFromPreferences(context)
+        val cal = Calendar.getInstance()
+        cal.time = date
+        val now = Calendar.getInstance()
+
+        val timeStr = SimpleDateFormat("HH:mm", locale).format(date)
+
+        if (cal.get(Calendar.YEAR) == now.get(Calendar.YEAR) &&
+            cal.get(Calendar.DAY_OF_YEAR) == now.get(Calendar.DAY_OF_YEAR)) {
+            return "${context.getString(R.string.date_today)}, $timeStr"
+        }
+
+        val tomorrow = Calendar.getInstance()
+        tomorrow.add(Calendar.DAY_OF_YEAR, 1)
+        if (cal.get(Calendar.YEAR) == tomorrow.get(Calendar.YEAR) &&
+            cal.get(Calendar.DAY_OF_YEAR) == tomorrow.get(Calendar.DAY_OF_YEAR)) {
+            return "${context.getString(R.string.date_tomorrow)}, $timeStr"
+        }
+
+        val pattern = "EEE d MMM, HH:mm"
+        return SimpleDateFormat(pattern, locale).format(date).replaceFirstChar { if (it.isLowerCase()) it.titlecase(locale) else it.toString() }
+    }
+
     fun formatEventDateLong(date: Date, context: Context): String {
         val locale = LanguageManager.getLocaleFromPreferences(context)
         val cal = Calendar.getInstance()

@@ -82,7 +82,7 @@ class AllEventAdapter(var userId: Int?, var context: Context) :
             }
             holder.binding.eventName.text = event.title
             event.metadata?.startsAt?.let {
-                holder.binding.date.text = Utils.formatEventDateShort(it, context)
+                holder.binding.date.text = Utils.formatEventDateWithTime(it, context)
             }
             holder.binding.location.text = event.metadata?.displayAddress
             holder.binding.participants.text = event.membersCount.toString()
