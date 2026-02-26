@@ -3237,4 +3237,10 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="birthday_button">Revenir à la page d\'accueil</string>
 
     <string name="guide_help_orientation_button">Aide &amp; orientation</string>
+
+    <!-- Home Tools -->
+    <string name="home_title_tools">Tes outils solidaires</string>
+    <string name="home_tools_map">Carte des lieux solidaires</string>
+    <string name="home_tools_pedago">Contenus pour apprendre et agir</string>
+    <string name="home_tools_charter">Charte éthique Entourage</string>
 </resources>

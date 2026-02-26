@@ -121,14 +121,14 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     private lateinit var groupButtonAdapter: HomeSectionButtonAdapter
 
     // Map & Hors Zone
-    private lateinit var mapHeaderAdapter: HomeSectionHeaderAdapter
-    private lateinit var mapSingleViewAdapter: HomeSingleLayoutAdapter
     private lateinit var horsZoneAdapter: HomeSingleLayoutAdapter
+
+    // Tools
+    private lateinit var homeToolsAdapter: HomeToolsAdapter
 
     // Pedago
     private lateinit var pedagoHeaderAdapter: HomeSectionHeaderAdapter
     private lateinit var homePedagoAdapter: HomePedagoAdapter
-    private lateinit var pedagoButtonAdapter: HomeSectionButtonAdapter
 
     // Help
     private lateinit var helpHeaderAdapter: HomeSectionHeaderAdapter
@@ -331,16 +331,29 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         }
         horsZoneAdapter.setVisible(false)
 
-        mapHeaderAdapter = HomeSectionHeaderAdapter()
-        mapSingleViewAdapter = HomeSingleLayoutAdapter(R.layout.home_map_card) { view ->
-            view.findViewById<View>(R.id.home_button_map).setOnClickListener {
+        // 7. Tools
+        homeToolsAdapter = HomeToolsAdapter(requireContext(),
+            onMapClick = {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Map)
                 val intent = Intent(requireContext(), GDSMainActivity::class.java)
                 startActivityForResult(intent, 0)
+            },
+            onPedagoClick = {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Pedago)
+                val intent = Intent(requireActivity(), PedagoListActivity::class.java)
+                requireContext().startActivity(intent)
+                requireActivity().overridePendingTransition(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+                )
+            },
+            onCharterClick = {
+                val chartIntent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse(getString(R.string.disclaimer_link_public)))
+                requireContext().startActivity(chartIntent)
             }
-        }
+        )
 
-        // 7. Pedago
+        // 8. Pedago
         pedagoHeaderAdapter = HomeSectionHeaderAdapter()
         homePedagoAdapter = HomePedagoAdapter(object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
@@ -356,15 +369,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
                 }
             }
         })
-        pedagoButtonAdapter = HomeSectionButtonAdapter {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Pedago)
-            val intent = Intent(requireActivity(), PedagoListActivity::class.java)
-            requireContext().startActivity(intent)
-            requireActivity().overridePendingTransition(
-                R.anim.slide_in_right,
-                R.anim.slide_out_left
-            )
-        }
 
         // 8. Help
         helpHeaderAdapter = HomeSectionHeaderAdapter()
@@ -383,6 +387,9 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             initialPedagoWrapperAdapter,
             smallTalkHeaderAdapter,
             smallTalkWrapperAdapter,
+            homeToolsAdapter,
+            pedagoHeaderAdapter,
+            homePedagoAdapter,
             actionHeaderAdapter,
             homeActionAdapter,
             actionButtonAdapter,
@@ -393,11 +400,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             groupWrapperAdapter,
             groupButtonAdapter,
             horsZoneAdapter,
-            mapHeaderAdapter,
-            mapSingleViewAdapter,
-            pedagoHeaderAdapter,
-            homePedagoAdapter,
-            pedagoButtonAdapter,
             helpHeaderAdapter,
             homeHelpAdapter
         )
@@ -411,8 +413,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             visibility = View.VISIBLE
         }
 
-        // On masque la map via l'adapter plutôt que la vue entière pour garder le layout stable
-        mapHeaderAdapter.update(getString(R.string.home_title_map), getString(R.string.home_subtitle_map), true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -809,7 +809,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
 
         val pedagos: MutableList<Pedago> = mutableListOf()
         for (pedago in allPedago) {
-            if (pedagos.size > 1) {
+            if (pedagos.size > 2) {
                 break
             }
             if (pedago.watched == false) {
@@ -835,7 +835,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
 
         val show = allPedago.isNotEmpty()
         pedagoHeaderAdapter.update(getString(R.string.home_title_pedago), getString(R.string.home_subtitle_pedago), show)
-        pedagoButtonAdapter.update(getString(R.string.home_btn_more_pedago), show)
     }
 
     private fun updateContributionsView(summary: Summary) {
