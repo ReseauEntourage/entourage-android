@@ -108,6 +108,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     // Actions
     private lateinit var actionHeaderAdapter: HomeSectionHeaderAdapter
     private lateinit var homeActionAdapter: HomeActionAdapter
+    private lateinit var actionWrapperAdapter: HomeHorizontalWrapperAdapter // NOUVEAU
     private lateinit var actionButtonAdapter: HomeSectionButtonAdapter
 
     // Events
@@ -247,7 +248,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             }
         }
     }
-    
+
     private fun setupAdapters() {
         val viewPool = RecyclerView.RecycledViewPool()
 
@@ -295,6 +296,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         // 3. Actions
         actionHeaderAdapter = HomeSectionHeaderAdapter()
         homeActionAdapter = HomeActionAdapter(false)
+        actionWrapperAdapter = HomeHorizontalWrapperAdapter(homeActionAdapter, viewPool) // NOUVEAU
         actionButtonAdapter = HomeSectionButtonAdapter {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Demand_All)
             (requireActivity() as? MainActivity)?.goDemand()
@@ -356,6 +358,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
         // 8. Pedago
         pedagoHeaderAdapter = HomeSectionHeaderAdapter()
+
         homePedagoAdapter = HomePedagoAdapter(object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
                 if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
@@ -379,7 +382,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     }
 
     private fun setupRecyclerView() {
-        // CORRECTION : Config pour stabiliser le ConcatAdapter
         val config = ConcatAdapter.Config.Builder()
             .setIsolateViewTypes(true)
             .build()
@@ -389,7 +391,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             initialPedagoHeaderAdapter,
             initialPedagoWrapperAdapter,
             actionHeaderAdapter,
-            homeActionAdapter,
+            actionWrapperAdapter, // MODIFIÉ : On utilise le Wrapper au lieu de l'adapter direct
             actionButtonAdapter,
             eventHeaderAdapter,
             eventWrapperAdapter,
@@ -402,15 +404,13 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             smallTalkHeaderAdapter,
             smallTalkWrapperAdapter,
             homeToolsAdapter,
-            homePedagoAdapter
+            homePedagoAdapter // RESTAURÉ : l'adapter tel quel sans le header (comme ton original)
         )
 
         binding.rvHome.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = concatAdapter
-            // CORRECTION: Désactiver l'animator évite le "blink" à l'insertion des items
             itemAnimator = null
-            // CORRECTION: On laisse VISIBLE mais vide au lieu de GONE pour garder la structure
             visibility = View.VISIBLE
         }
 
@@ -795,6 +795,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         }
 
         actionHeaderAdapter.update(title, subtitle, showActions)
+        actionWrapperAdapter.setVisible(showActions) // NOUVEAU : On gère la visibilité du wrapper
         actionButtonAdapter.update(btnText, showActions, clickListener)
     }
 
@@ -1037,7 +1038,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                                 getString(R.string.custom_dialog_action_content_two_demande),
                                 getString(R.string.custom_dialog_action_two_button_contrib),
                                 onYes = {
-                                    (requireActivity() as? MainActivity)?.goContrib()
+                                    (requireActivity() as? MainActivity)?.goDemand()
                                     AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeDemand__Day10)
                                 }
                             )
