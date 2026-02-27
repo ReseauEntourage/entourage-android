@@ -312,20 +312,21 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 )
             }
             event?.metadata?.startsAt?.let {
-                binding.dateStartsAt.content.text = SimpleDateFormat(
-                    context?.getString(R.string.feed_event_date),
-                    locale
-                ).format(
-                    it
+                binding.dateStartsAt.content.text = Utils.formatEventDateForDisplay(
+                    it,
+                    requireContext()
                 )
             }
-            event?.metadata?.startsAt?.let {
-                binding.time.content.text = SimpleDateFormat(
-                    context?.getString(R.string.feed_event_time),
-                    locale
-                ).format(
-                    it
-                )
+            event?.metadata?.startsAt?.let { startsAt ->
+                val endsAt = event?.metadata?.endsAt
+                val timeFormat = SimpleDateFormat(context?.getString(R.string.feed_event_time), locale)
+                val startTime = timeFormat.format(startsAt)
+                binding.time.content.text = if (endsAt != null) {
+                    val endTime = timeFormat.format(endsAt)
+                    "$startTime - $endTime"
+                } else {
+                    startTime
+                }
             }
             initializeMembersPhotos()
             initializeInterests()
