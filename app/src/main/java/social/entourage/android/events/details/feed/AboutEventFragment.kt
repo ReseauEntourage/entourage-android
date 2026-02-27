@@ -140,7 +140,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                 binding.dateStartsAt.content.text =
                     String.format(
                         getString(R.string.date_recurrence_event),
-                        Utils.formatEventDateLong(it, requireContext()), recurrence
+                        Utils.formatEventDateForDisplay(it, requireContext()), recurrence
                     )
             }
             event?.metadata?.let {
