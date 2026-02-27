@@ -145,6 +145,7 @@
         android:scrollbars="vertical"
         android:background="@drawable/home_scrollview_shape"
         android:clipToPadding="false"
+        android:layoutAnimation="@anim/layout_animation_fall_down"
         />
 
     <FrameLayout
