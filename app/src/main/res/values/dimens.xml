@@ -90,10 +90,6 @@
     <dimen name="horizontal_offset">22dp</dimen>
     <dimen name="horizontal_offset_home">15dp</dimen>
 
-
-
-
-
-
+    <dimen name="home_action_card_width">280dp</dimen>
 
 </resources>
