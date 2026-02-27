@@ -67,7 +67,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     private lateinit var binding: FragmentHomeBinding
     private lateinit var homePresenter: HomePresenter
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
-    private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
+    private val discussionsPresenter: DiscussionsPresenter by lazy { ViewModelProvider(requireActivity()).get(DiscussionsPresenter::class.java) }
     private lateinit var mainPresenter: MainPresenter
     private var pageEvent = 0
     private var nbOfItemForHozrizontalList = 10
