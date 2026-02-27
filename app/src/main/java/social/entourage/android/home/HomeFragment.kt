@@ -38,6 +38,7 @@ import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.databinding.FragmentHomeBinding
 import social.entourage.android.discussions.DetailConversationActivity
+import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.events.create.CommunicationHandler
 import social.entourage.android.guide.GDSMainActivity
@@ -61,11 +62,12 @@ import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
 import timber.log.Timber
 
-class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocationUpdate {
+class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var homePresenter: HomePresenter
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
+    private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
     private lateinit var mainPresenter: MainPresenter
     private var pageEvent = 0
     private var nbOfItemForHozrizontalList = 10
@@ -130,9 +132,8 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     private lateinit var pedagoHeaderAdapter: HomeSectionHeaderAdapter
     private lateinit var homePedagoAdapter: HomePedagoAdapter
 
-    // Help
-    private lateinit var helpHeaderAdapter: HomeSectionHeaderAdapter
-    private lateinit var homeHelpAdapter: HomeHelpAdapter
+    // Moderator
+    private lateinit var homeModeratorAdapter: HomeModeratorAdapter
 
     // Gère uniquement le cycle de vie du fragment pour ne pas lancer plusieurs popups en même temps
     private var hasRunEntryGating = false
@@ -370,9 +371,11 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             }
         })
 
-        // 8. Help
-        helpHeaderAdapter = HomeSectionHeaderAdapter()
-        homeHelpAdapter = HomeHelpAdapter(this)
+        // 9. Moderator
+        homeModeratorAdapter = HomeModeratorAdapter { moderatorId ->
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Moderator)
+            discussionsPresenter.createOrGetConversation(moderatorId.toString())
+        }
     }
 
     private fun setupRecyclerView() {
@@ -391,6 +394,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             eventHeaderAdapter,
             eventWrapperAdapter,
             eventButtonAdapter,
+            homeModeratorAdapter,
             groupHeaderAdapter,
             groupWrapperAdapter,
             groupButtonAdapter,
@@ -398,9 +402,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             smallTalkHeaderAdapter,
             smallTalkWrapperAdapter,
             homeToolsAdapter,
-            homePedagoAdapter,
-            helpHeaderAdapter,
-            homeHelpAdapter
+            homePedagoAdapter
         )
 
         binding.rvHome.apply {
@@ -710,6 +712,20 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         homePresenter.pedagogicalInitialContent.observe(viewLifecycleOwner) { handleInitialPedago(it) }
         homePresenter.notifsCount.observe(viewLifecycleOwner) { updateNotifsCount(it) }
         actionsPresenter.unreadMessages.observe(viewLifecycleOwner) { updateUnreadCount(it) }
+        discussionsPresenter.newConversation.observe(viewLifecycleOwner) { conversation ->
+            conversation?.let {
+                startActivity(
+                    Intent(requireContext(), DetailConversationActivity::class.java)
+                        .putExtra(Const.ID, it.id)
+                        .putExtra(Const.POST_ID, it.id)
+                        .putExtra(Const.POST_AUTHOR_ID, it.user?.id)
+                        .putExtra(Const.IS_CONVERSATION_1TO1, true)
+                        .putExtra(Const.IS_MEMBER, true)
+                        .putExtra(Const.IS_CONVERSATION, true)
+                        .putExtra(Const.HAS_TO_SHOW_MESSAGE, it.hasToShowFirstMessage())
+                )
+            }
+        }
     }
 
     fun handleGroup(allGroup: MutableList<Group>?) {
@@ -845,7 +861,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         EnhancedOnboarding.isAssociationFromSummary = isAssociationFromSummary
         EnhancedOnboarding.preference = summary.preference ?: ""
         onActionUnclosed(summary)
-        handleHelps(summary)
+        handleModerator(summary)
         if (summary.signablePermission != null) {
             HomeFragment.signablePermission = summary.signablePermission!!
         }
@@ -876,19 +892,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         }
     }
 
-    private fun handleHelps(summary: Summary) {
+    private fun handleModerator(summary: Summary) {
         if (isAdded) {
             doTotalchecksumToDisplayHomeFirstTime()
-            val formattedString = requireContext().getString(
-                R.string.home_help_title_three,
-                summary.moderator?.displayName
-            )
-            val help3 = Help(formattedString, R.drawable.first_help_item_illu)
-            val helps: MutableList<Help> = mutableListOf()
-            helps.add(help3)
-            homeHelpAdapter.resetData(helps, summary)
-
-            helpHeaderAdapter.update(getString(R.string.home_title_help), getString(R.string.home_subtitle_help), true)
+            homeModeratorAdapter.updateSummary(summary)
         }
     }
 
@@ -1009,41 +1016,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         animator.start()
     }
 
-    override fun onItemClick(position: Int, moderatorId: Int) {
-        if (position == 2) {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_CreateGroup)
-            val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
-            intent.putExtra(Const.ID, pedagoItemForCreateGroup?.id)
-            PedagoDetailActivity.setPedagoId(pedagoItemForCreateGroup?.id!!)
-            PedagoDetailActivity.setHtmlContent(pedagoItemForCreateGroup?.html!!)
-            requireActivity().startActivity(intent)
-            requireActivity().overridePendingTransition(
-                R.anim.slide_in_right,
-                R.anim.slide_out_left
-            )
-        }
-        if (position == 1) {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_CreateEvent)
-            val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
-            intent.putExtra(Const.ID, pedagoItemForCreateEvent?.id)
-            PedagoDetailActivity.setPedagoId(pedagoItemForCreateEvent?.id!!)
-            PedagoDetailActivity.setHtmlContent(pedagoItemForCreateEvent?.html!!)
-            requireActivity().startActivity(intent)
-            requireActivity().overridePendingTransition(
-                R.anim.slide_in_right,
-                R.anim.slide_out_left
-            )
-        }
-        if (position == 0) {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Moderator)
-            startActivity(
-                Intent(context, ProfileFullActivity::class.java).putExtra(
-                    Const.USER_ID,
-                    moderatorId
-                )
-            )
-        }
-    }
 
     private fun onActionUnclosed(summary: Summary) {
         summary.unclosedAction?.let { unclosedAction ->
