@@ -2563,7 +2563,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_moderator_message">Je fais parti·e de l\'équipe Entourage et je suis là pour t\'accompagner. N\'hésite pas si tu as des questions ! 🤗</string>
 
 
-    <string name="home_v2_pedago_item_length_title">"%d min de lecture</string>
+    <string name="home_v2_pedago_item_length_title">"%d min</string>
 
     <string name="home_v2_hz_item_title">"Tiens, ça semble un peu calme par ici…</string>
     <string name="home_v2_hz_item_subtitle">"Et si vous mettiez un peu de solidarité dans votre ville ? Entourage vous donne les clés pour vous lancer !</string>
@@ -3244,6 +3244,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <!-- Home Tools -->
     <string name="home_title_tools">Tes outils solidaires</string>
     <string name="home_tools_map">Carte des lieux solidaires</string>
-    <string name="home_tools_pedago">Contenus pour apprendre et agir</string>
+    <string name="home_tools_pedago">Ressources utiles</string>
     <string name="home_tools_charter">Charte éthique Entourage</string>
 </resources>

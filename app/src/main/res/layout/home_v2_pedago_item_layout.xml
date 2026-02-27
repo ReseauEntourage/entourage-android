@@ -40,19 +40,27 @@
         android:paddingEnd="6dp"
         />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv_lenght_pedago_item"
+    <ImageView
+        android:id="@+id/iv_time_icon"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
         app:layout_constraintStart_toEndOf="@+id/tv_tag_pedago_item"
         app:layout_constraintTop_toTopOf="@+id/tv_tag_pedago_item"
         app:layout_constraintBottom_toBottomOf="@+id/tv_tag_pedago_item"
         android:layout_marginStart="8dp"
+        android:src="@drawable/new_time_grey" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_lenght_pedago_item"
+        app:layout_constraintStart_toEndOf="@+id/iv_time_icon"
+        app:layout_constraintTop_toTopOf="@+id/iv_time_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_time_icon"
+        android:layout_marginStart="4dp"
         android:textColor="@color/grey"
         android:textSize="@dimen/entourage_font_very_small"
         android:fontFamily="@font/nunitosans_regular"
-        android:drawableStart="@drawable/new_time_grey"
-        android:drawablePadding="4dp"
         tools:text="cette video dure 6 min"/>
 
     <TextView
