@@ -1,48 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="65dp"
-    android:id="@+id/home_v2_pedago_item_main_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/home_v2_action_item_shape"
-    android:layout_marginTop="@dimen/entourage_little_margin_top"
+    android:id="@+id/home_v2_pedago_item_main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/entourage_marginstart"
-    android:layout_marginEnd="@dimen/entourage_margin_end">
+    android:layout_marginTop="@dimen/entourage_little_margin_top"
+    android:layout_marginEnd="@dimen/entourage_margin_end"
+    android:background="@drawable/home_v2_action_item_shape"
+    android:minHeight="65dp">
+
     <ImageView
+        android:id="@+id/iv_home_v2_help_item"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:id="@+id/iv_home_v2_help_item"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="@dimen/entourage_little_margin_start"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="@dimen/entourage_little_margin_start"
-        tools:src="@drawable/first_help_item_illu"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/first_help_item_illu" />
 
-        />
-    <TextView
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_home_v2_help_item"
-        app:layout_constraintStart_toEndOf="@+id/iv_home_v2_help_item"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/iv_arrow_right_home_v2_help_item"
         android:layout_marginStart="13dp"
-        android:textSize="@dimen/entourage_font_small"
-        android:fontFamily="@font/quicksand_bold"
-        android:textColor="@color/black"
-        tools:text="Comment créer un événement"/>
-    
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_arrow_right_home_v2_help_item"
+        app:layout_constraintStart_toEndOf="@+id/iv_home_v2_help_item"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_home_v2_help_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_bold"
+            android:textColor="@color/black"
+            android:textSize="@dimen/entourage_font_small"
+            tools:text="Comment créer un événement" />
+
+        <TextView
+            android:id="@+id/tv_home_v2_help_item_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/nunitosans_regular"
+            android:textColor="@color/black"
+            android:textSize="@dimen/entourage_font_small_12"
+            android:visibility="gone"
+            tools:text="Je fais parti·e de l'équipe Entourage et je suis là pour t'accompagner. N'hésite pas si tu as des questions ! 🤗"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+
     <ImageView
+        android:id="@+id/iv_arrow_right_home_v2_help_item"
         android:layout_width="10dp"
         android:layout_height="16dp"
-        android:id="@+id/iv_arrow_right_home_v2_help_item"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="25dp"
+        android:src="@drawable/arrow_right_orange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="25dp"
-        android:src="@drawable/arrow_right_orange"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

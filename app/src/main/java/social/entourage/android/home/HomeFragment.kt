@@ -38,6 +38,7 @@ import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.databinding.FragmentHomeBinding
 import social.entourage.android.discussions.DetailConversationActivity
+import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.events.create.CommunicationHandler
 import social.entourage.android.guide.GDSMainActivity
@@ -66,6 +67,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     private lateinit var binding: FragmentHomeBinding
     private lateinit var homePresenter: HomePresenter
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
+    private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
     private lateinit var mainPresenter: MainPresenter
     private var pageEvent = 0
     private var nbOfItemForHozrizontalList = 10
@@ -174,6 +176,8 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
 
         setupAdapters()
         setupRecyclerView()
+
+        discussionsPresenter.newConversation.observe(viewLifecycleOwner, ::handleGetConversation)
 
         AnalyticsEvents.logEvent(AnalyticsEvents.View__Home)
         if (EnhancedOnboarding.shouldNotDisplayCampain == true) {
@@ -391,6 +395,8 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             eventHeaderAdapter,
             eventWrapperAdapter,
             eventButtonAdapter,
+            helpHeaderAdapter,
+            homeHelpAdapter,
             groupHeaderAdapter,
             groupWrapperAdapter,
             groupButtonAdapter,
@@ -398,9 +404,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             smallTalkHeaderAdapter,
             smallTalkWrapperAdapter,
             homeToolsAdapter,
-            homePedagoAdapter,
-            helpHeaderAdapter,
-            homeHelpAdapter
+            homePedagoAdapter
         )
 
         binding.rvHome.apply {
@@ -881,9 +885,9 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             doTotalchecksumToDisplayHomeFirstTime()
             val formattedString = requireContext().getString(
                 R.string.home_help_title_three,
-                summary.moderator?.displayName
+                summary.moderator?.firstName
             )
-            val help3 = Help(formattedString, R.drawable.first_help_item_illu)
+            val help3 = Help(formattedString, R.drawable.first_help_item_illu, getString(R.string.home_help_message_three))
             val helps: MutableList<Help> = mutableListOf()
             helps.add(help3)
             homeHelpAdapter.resetData(helps, summary)
@@ -1036,11 +1040,27 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         }
         if (position == 0) {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Moderator)
+            discussionsPresenter.createOrGetConversation(moderatorId.toString())
+        }
+    }
+
+    private fun handleGetConversation(conversation: social.entourage.android.api.model.Conversation?) {
+        conversation?.let {
+            social.entourage.android.discussions.DetailConversationActivity.isSmallTalkMode = false
             startActivity(
-                Intent(context, ProfileFullActivity::class.java).putExtra(
-                    Const.USER_ID,
-                    moderatorId
-                )
+                Intent(requireContext(), social.entourage.android.discussions.DetailConversationActivity::class.java)
+                    .putExtras(
+                        androidx.core.os.bundleOf(
+                            Const.ID to conversation.id,
+                            Const.POST_AUTHOR_ID to conversation.user?.id,
+                            Const.SHOULD_OPEN_KEYBOARD to false,
+                            Const.NAME to conversation.title,
+                            Const.IS_CONVERSATION_1TO1 to true,
+                            Const.IS_MEMBER to true,
+                            Const.IS_CONVERSATION to true,
+                            Const.HAS_TO_SHOW_MESSAGE to conversation.hasToShowFirstMessage()
+                        )
+                    )
             )
         }
     }

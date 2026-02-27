@@ -50,8 +50,6 @@ class HomeHelpAdapter(val callback: OnHomeHelpItemClickListener): RecyclerView.A
             callback.onItemClick(position, summary!!.moderator?.id!!)
         }
 
-
-
         if(help.ressourceId != 0){
             val context = holder.binding.root.context
             holder.binding.ivHomeV2HelpItem.setImageDrawable(AppCompatResources.getDrawable(context,help.ressourceId))
@@ -66,6 +64,15 @@ class HomeHelpAdapter(val callback: OnHomeHelpItemClickListener): RecyclerView.A
                 holder.binding.homeV2PedagoItemMainLayout.background = AppCompatResources.getDrawable(context,R.drawable.home_version_two_large_button_gradient_shape)
                 holder.binding.tvHomeV2HelpItem.setTextColor(context.getColor(R.color.white))
                 holder.binding.ivArrowRightHomeV2HelpItem.setColorFilter(context.getColor(R.color.white))
+
+                if (!help.description.isNullOrEmpty()) {
+                    holder.binding.tvHomeV2HelpItemSubtitle.text = help.description
+                    holder.binding.tvHomeV2HelpItemSubtitle.setTextColor(context.getColor(R.color.white))
+                    holder.binding.tvHomeV2HelpItemSubtitle.visibility = View.VISIBLE
+                } else {
+                    holder.binding.tvHomeV2HelpItemSubtitle.visibility = View.GONE
+                }
+
                 summary?.moderator?.imageURL?.let { imageUrl->
                     Glide.with(context)
                         .load(Uri.parse(imageUrl))
@@ -79,6 +86,8 @@ class HomeHelpAdapter(val callback: OnHomeHelpItemClickListener): RecyclerView.A
                         .transform(CenterCrop(), GranularRoundedCorners(45F, 45F, 0F, 0F))
                         .into(holder.binding.ivHomeV2HelpItem)
                 }
+            } else {
+                 holder.binding.tvHomeV2HelpItemSubtitle.visibility = View.GONE
             }
         }
     }
