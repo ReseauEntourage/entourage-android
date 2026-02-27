@@ -74,6 +74,7 @@ class HomeInitialPedagoAdapter(private var onItemClickListener: OnItemClick): Re
             holder.binding.tvLenghtPedagoItem.text = formattedString
             if(it == null ){
                 holder.binding.tvLenghtPedagoItem.visibility = View.GONE
+
             }else{
                 holder.binding.tvLenghtPedagoItem.visibility = View.VISIBLE
             }

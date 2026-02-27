@@ -69,8 +69,10 @@ class HomePedagoAdapter(private var onItemClickListener: OnItemClick): RecyclerV
            holder.binding.tvLenghtPedagoItem.text = formattedString
             if(it == null ){
                 holder.binding.tvLenghtPedagoItem.visibility = View.GONE
+                holder.binding.ivTimeIcon.visibility = View.GONE
             }else{
                 holder.binding.tvLenghtPedagoItem.visibility = View.VISIBLE
+                holder.binding.ivTimeIcon.visibility = View.VISIBLE
             }
         }
         holder.binding.tvTagPedagoItem.setPedagoCategory(pedago.category)

@@ -42,8 +42,8 @@
 
     <ImageView
         android:id="@+id/iv_time_icon"
-        android:layout_width="14dp"
-        android:layout_height="14dp"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
         app:layout_constraintStart_toEndOf="@+id/tv_tag_pedago_item"
         app:layout_constraintTop_toTopOf="@+id/tv_tag_pedago_item"
         app:layout_constraintBottom_toBottomOf="@+id/tv_tag_pedago_item"
