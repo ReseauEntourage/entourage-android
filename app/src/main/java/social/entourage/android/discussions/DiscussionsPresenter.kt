@@ -403,30 +403,30 @@ class DiscussionsPresenter : ViewModel() {
                     isLoadingImages.postValue(false)
                 }
             })
-        // NOTE : Fonction imbriquée gardée à l'identique (même comportement qu'avant)
-        fun fetchConversationLargeImage(conversationId: Int, chatMessageId: Int) {
-            if (isLoadingLargeImage.value == true) return
-            isLoadingLargeImage.postValue(true)
-            EntourageApplication.get().apiModule.discussionsRequest
-                .getConversationImage(conversationId, chatMessageId)
-                .enqueue(object : Callback<social.entourage.android.api.model.ConversationImageSingleWrapper> {
-                    override fun onResponse(
-                        call: Call<social.entourage.android.api.model.ConversationImageSingleWrapper>,
-                        response: Response<social.entourage.android.api.model.ConversationImageSingleWrapper>
-                    ) {
-                        largeImage.postValue(response.body()?.image)
-                        isLoadingLargeImage.postValue(false)
-                    }
+    }
 
-                    override fun onFailure(
-                        call: Call<social.entourage.android.api.model.ConversationImageSingleWrapper>,
-                        t: Throwable
-                    ) {
-                        largeImage.postValue(null)
-                        isLoadingLargeImage.postValue(false)
-                    }
-                })
-        }
+    fun fetchConversationLargeImage(conversationId: Int, chatMessageId: Int) {
+        if (isLoadingLargeImage.value == true) return
+        isLoadingLargeImage.postValue(true)
+        EntourageApplication.get().apiModule.discussionsRequest
+            .getConversationImage(conversationId, chatMessageId)
+            .enqueue(object : Callback<social.entourage.android.api.model.ConversationImageSingleWrapper> {
+                override fun onResponse(
+                    call: Call<social.entourage.android.api.model.ConversationImageSingleWrapper>,
+                    response: Response<social.entourage.android.api.model.ConversationImageSingleWrapper>
+                ) {
+                    largeImage.postValue(response.body()?.image)
+                    isLoadingLargeImage.postValue(false)
+                }
+
+                override fun onFailure(
+                    call: Call<social.entourage.android.api.model.ConversationImageSingleWrapper>,
+                    t: Throwable
+                ) {
+                    largeImage.postValue(null)
+                    isLoadingLargeImage.postValue(false)
+                }
+            })
     }
 
     fun loadInitialComments(convId: Int) {
