@@ -353,10 +353,21 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 )
             },
             onCharterClick = {
-                val intent = Intent(context, GroupRulesActivity::class.java).apply {
-                    putExtra(Const.RULES_TYPE, Const.RULES_EVENT)
+                // Sélection de l'URL selon l'environnement (DEBUG = preprod / RELEASE = prod)
+                val urlString = if (BuildConfig.DEBUG) {
+                    "https://preprod.entourage.social/app/resources/87203debda8b"
+                } else {
+                    "https://www.entourage.social/app/resources/eMU_InNSSJbE"
                 }
-                (context as Activity).startActivity(intent)
+
+                try {
+                    val uri = android.net.Uri.parse(urlString)
+                    val intent = Intent(Intent.ACTION_VIEW, uri)
+
+                    startActivity(intent)
+                } catch (e: Exception) {
+
+                }
             }
         )
 
