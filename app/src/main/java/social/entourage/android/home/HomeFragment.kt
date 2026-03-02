@@ -1,6 +1,7 @@
 package social.entourage.android.home
 
 import android.animation.ValueAnimator
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -41,6 +42,7 @@ import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.events.create.CommunicationHandler
+import social.entourage.android.groups.details.rules.GroupRulesActivity
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.chatbot.ChatBotBottomSheet
 import social.entourage.android.home.pedago.OnItemClick
@@ -351,8 +353,10 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 )
             },
             onCharterClick = {
-                val chartIntent = Intent(Intent.ACTION_VIEW, android.net.Uri.parse(getString(R.string.disclaimer_link_public)))
-                requireContext().startActivity(chartIntent)
+                val intent = Intent(context, GroupRulesActivity::class.java).apply {
+                    putExtra(Const.RULES_TYPE, Const.RULES_EVENT)
+                }
+                (context as Activity).startActivity(intent)
             }
         )
 
@@ -401,7 +405,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             groupWrapperAdapter,
             groupButtonAdapter,
             horsZoneAdapter,
-            smallTalkHeaderAdapter,
             smallTalkWrapperAdapter,
             homeToolsAdapter,
             homePedagoAdapter // RESTAURÉ : l'adapter tel quel sans le header (comme ton original)
