@@ -45,7 +45,6 @@ class EventModel(
     val distance: Double? = null,
     val status: Status? = null,
     val previousAt: Date? = null,
-    var reserved_female: Boolean? = null,
 
     ) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -60,7 +59,6 @@ class EventModel(
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
     ) {
-        reserved_female = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -74,7 +72,6 @@ class EventModel(
         parcel.writeList(members)
         parcel.writeByte(if (member) 1 else 0)
         parcel.writeByte(if (admin) 1 else 0)
-        parcel.writeValue(reserved_female)
     }
 
     override fun describeContents(): Int {
