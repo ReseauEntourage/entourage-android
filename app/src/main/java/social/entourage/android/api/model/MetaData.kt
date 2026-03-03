@@ -39,6 +39,7 @@ data class EventMetadata(
     @field:SerializedName("portrait_url")
     val portraitUrl: String? = null,
 
+
     @field:SerializedName("landscape_url")
     val landscapeUrl: String? = null,
 

@@ -34,7 +34,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_moderator"
             app:layout_constraintTop_toTopOf="@id/iv_moderator"
-            tools:text="Marion, ton contact privilégié" />
+            tools:text="Marion, votre contact dédié" />
 
         <TextView
             android:id="@+id/tv_message"
