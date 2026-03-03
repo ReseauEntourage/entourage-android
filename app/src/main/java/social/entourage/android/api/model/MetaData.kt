@@ -41,7 +41,10 @@ data class EventMetadata(
 
 
     @field:SerializedName("landscape_url")
-    val landscapeUrl: String? = null
+    val landscapeUrl: String? = null,
+
+    @field:SerializedName("reserved_female")
+    val reserved_female: Boolean? = null,
 ) : Serializable
 
 data class ActionMetadata(

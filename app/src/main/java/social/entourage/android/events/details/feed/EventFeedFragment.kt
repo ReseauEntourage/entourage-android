@@ -280,7 +280,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         with(binding) {
             eventName.text = event?.title
             eventNameToolbar.text = event?.title
-            if (event?.reserved_female == true) {
+            if (event?.metadata?.reserved_female == true) {
                 tvReservedFemale.visibility = View.VISIBLE
             } else {
                 tvReservedFemale.visibility = View.GONE
