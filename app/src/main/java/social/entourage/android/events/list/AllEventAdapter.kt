@@ -97,7 +97,7 @@ class AllEventAdapter(var userId: Int?, var context: Context) :
                 holder.binding.ivEntourageLogo.visibility = View.GONE
             }
 
-            if (event.reserved_female == true) {
+            if (event.metadata?.reserved_female == true) {
                 holder.binding.ivWomanLogo.visibility = View.VISIBLE
             } else {
                 holder.binding.ivWomanLogo.visibility = View.GONE
