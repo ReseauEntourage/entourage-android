@@ -172,7 +172,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         binding.homeHeader.visibility = View.VISIBLE
 
         mainPresenter = MainPresenter(requireActivity() as MainActivity)
-        binding.progressBar.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
         homePresenter = ViewModelProvider(requireActivity()).get(HomePresenter::class.java)
         actionsPresenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
 
