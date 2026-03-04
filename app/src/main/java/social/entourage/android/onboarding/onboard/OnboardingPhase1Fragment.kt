@@ -321,7 +321,7 @@ class OnboardingPhase1Fragment : Fragment() {
         val fixed = listOf(
             LabeledOption("female", tr(R.string.onboard_welcome_gender_female)),
             LabeledOption("male", tr(R.string.onboard_welcome_gender_male)),
-            LabeledOption("other", tr(R.string.onboard_welcome_gender_other))
+            LabeledOption("secret", tr(R.string.onboard_welcome_gender_other))
         )
         val labels = fixed.map { it.label }
 

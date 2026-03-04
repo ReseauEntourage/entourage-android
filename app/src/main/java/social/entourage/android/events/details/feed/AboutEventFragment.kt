@@ -137,16 +137,10 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                 }
             )
             event?.metadata?.startsAt?.let {
-                var locale = LanguageManager.getLocaleFromPreferences(requireContext())
                 binding.dateStartsAt.content.text =
                     String.format(
                         getString(R.string.date_recurrence_event),
-                        SimpleDateFormat(
-                            context?.getString(R.string.feed_event_date),
-                            locale
-                        ).format(
-                            it
-                        ), recurrence
+                        Utils.formatEventDateForDisplay(it, requireContext()), recurrence
                     )
             }
             event?.metadata?.let {
@@ -175,24 +169,14 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                 var locale = LanguageManager.getLocaleFromPreferences(requireContext())
                 updatedDate.text = String.format(
                     getString(R.string.updated_at), event?.updatedAt?.let {
-                        SimpleDateFormat(
-                            context?.getString(R.string.feed_event_date),
-                            locale
-                        ).format(
-                            it
-                        )
+                        Utils.formatEventDateLong(it, requireContext())
                     }
                 )
             } else {
                 var locale = LanguageManager.getLocaleFromPreferences(requireContext())
                 updatedDate.text = String.format(
                     getString(R.string.created_at), event?.createdAt?.let {
-                        SimpleDateFormat(
-                            context?.getString(R.string.feed_event_date),
-                            locale
-                        ).format(
-                            it
-                        )
+                        Utils.formatEventDateLong(it, requireContext())
                     }
                 )
             }
@@ -234,7 +218,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
         if (allMembers != null) {
             for(member in allMembers){
                 if(member.id.toInt() == event?.author?.userID){
-                    if(member.communityRoles?.contains("Équipe Entourage") == true || member.communityRoles?.contains("Ambassadeur") == true){
+                    if(member.communityRoles?.contains("Équipe Entourage") == true || member.communityRoles?.contains("Animateur Entourage") == true){
                         binding.tvAssociation.text = getString(R.string.event_organisez_entourage)
                         binding.tvAssociation.visibility = View.VISIBLE
                     }
@@ -248,12 +232,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
             var locale = LanguageManager.getLocaleFromPreferences(requireContext())
             updatedDate.text = String.format(
                 getString(R.string.canceled_at), event?.previousAt?.let {
-                    SimpleDateFormat(
-                        context?.getString(R.string.feed_event_date),
-                        locale
-                    ).format(
-                        it
-                    )
+                    Utils.formatEventDateLong(it, requireContext())
                 }
             )
             eventName.setTextColor(getColor(requireContext(), R.color.grey))

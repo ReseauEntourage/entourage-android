@@ -133,7 +133,6 @@ class ActionsFragment : Fragment() {
         createAction()
         initializeViews()
         initializeTab()
-        initializeFilters()
         setPage()
         handleSearchButton()
         presenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
@@ -295,32 +294,6 @@ class ActionsFragment : Fragment() {
                     (requireActivity() as MainActivity).showBottomBar()
                 }
             }
-        }
-    }
-
-    private fun initializeFilters() {
-        binding.uiLayoutLocationBt.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Help_action_location)
-            val intent = Intent(context, ActionLocationFilterActivity::class.java)
-            intent.putExtra(LOCATION_FILTERS, currentLocationFilters)
-            activityResultLauncher?.launch(intent)
-        }
-
-        binding.uiLayoutCategoryBt.setOnClickListener {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Help_action_filters)
-            val intent = Intent(context, ActionCategoriesFiltersActivity::class.java)
-            intent.putExtra(CATEGORIES_FILTERS, currentCategoriesFilters)
-            activityResultLauncher?.launch(intent)
-        }
-
-        binding.uiTitleLocationBt.text = currentLocationFilters.getFilterButtonString(requireContext())
-        binding.uiTitleCategoryBt.text = getString(R.string.action_bt_cat_filters)
-
-        if (currentCategoriesFilters.getNumberOfSectionsSelected() > 0) {
-            binding.uiNbCategoryBt.text = "${currentCategoriesFilters.getNumberOfSectionsSelected()}"
-            binding.uiNbCategoryBt.visibility = View.VISIBLE
-        } else {
-            binding.uiNbCategoryBt.visibility = View.GONE
         }
     }
 

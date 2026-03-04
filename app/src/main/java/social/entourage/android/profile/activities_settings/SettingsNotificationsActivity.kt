@@ -2,6 +2,7 @@ package social.entourage.android.profile.activities_settings
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
@@ -56,11 +57,15 @@ class SettingsNotificationsActivity : AppCompatActivity() {
     }
 
     private fun redirectToNotificationSettings() {
-        val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
-            putExtra(Settings.EXTRA_APP_PACKAGE, this@SettingsNotificationsActivity.packageName)
+        val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                putExtra(Settings.EXTRA_APP_PACKAGE, this@SettingsNotificationsActivity.packageName)
+            }
+            startActivity(intent)
+            finish() // A la place de dismiss()
+        } else {
+            TODO("VERSION.SDK_INT < O")
         }
-        startActivity(intent)
-        finish() // A la place de dismiss()
     }
 
     private fun resetAllSwitches() {

@@ -9,10 +9,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import social.entourage.android.R
-import social.entourage.android.api.model.Category
 import social.entourage.android.api.model.Pedago
 import social.entourage.android.databinding.HomeV2PedagoItemLayoutBinding
 import social.entourage.android.home.pedago.OnItemClick
+import social.entourage.android.home.pedago.setPedagoCategory
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class HomePedagoAdapter(private var onItemClickListener: OnItemClick): RecyclerView.Adapter<HomePedagoAdapter.PedagoViewHolder>() {
@@ -69,20 +69,13 @@ class HomePedagoAdapter(private var onItemClickListener: OnItemClick): RecyclerV
            holder.binding.tvLenghtPedagoItem.text = formattedString
             if(it == null ){
                 holder.binding.tvLenghtPedagoItem.visibility = View.GONE
+                holder.binding.ivTimeIcon.visibility = View.GONE
             }else{
                 holder.binding.tvLenghtPedagoItem.visibility = View.VISIBLE
+                holder.binding.ivTimeIcon.visibility = View.VISIBLE
             }
         }
-        pedago.category.let {
-            val context = holder.binding.root.context
-            when(it){
-                Category.ALL -> holder.binding.tvTagPedagoItem.text = context.getString(R.string.home_v2_pedago_item_tag_all)
-                Category.ACT -> holder.binding.tvTagPedagoItem.text = context.getString(R.string.home_v2_pedago_item_tag_act)
-                Category.INSPIRE -> holder.binding.tvTagPedagoItem.text = context.getString(R.string.home_v2_pedago_item_tag_inspire)
-                Category.UNDERSTAND -> holder.binding.tvTagPedagoItem.text = context.getString(R.string.home_v2_pedago_item_tag_understand)
-                null -> holder.binding.tvTagPedagoItem.text = ""
-            }
-        }
+        holder.binding.tvTagPedagoItem.setPedagoCategory(pedago.category)
     }
 
     class PedagoViewHolder(val binding: HomeV2PedagoItemLayoutBinding) : RecyclerView.ViewHolder(binding.root)

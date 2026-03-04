@@ -48,7 +48,15 @@ class EntourageUser : TimestampedObject(), Serializable {
     var roles: List<String>? = null
         private set
 
+    @SerializedName("birthday")
+    var birthday: Boolean = false
 
+    @SerializedName("birthday_today")
+    var birthdayToday: Boolean = false
+
+
+    @SerializedName("birthdate")
+    var birthdate: String? = null
 
     var isDisplayedAsMember = false
 
@@ -107,21 +115,37 @@ class EntourageUser : TimestampedObject(), Serializable {
             }
 
             for (role in roles) {
-                if(roleStr.isNotEmpty()) {
-                    roleStr = "$roleStr • $role"
+                var displayRole = role
+                if (role == "Ambassadeur" || role.equals("ambassador", ignoreCase = true)) {
+                    displayRole = "Animateur Entourage"
+                } else if (role == "Équipe Entourage") {
+                    displayRole = "Équipe"
+                } else if (role == "Association") {
+                   displayRole = "Association"
                 }
-                else {
-                    roleStr = role
+
+                if (displayRole.isNotEmpty()) {
+                    if(roleStr.isNotEmpty()) {
+                        roleStr = "$roleStr • $displayRole"
+                    }
+                    else {
+                        roleStr = displayRole
+                    }
                 }
 
                 break //TODO: why do we get only the first role ?
             }
             partner?.name?.let { partnerName->
+                var finalPartnerName = partnerName
+                if (roleStr.contains("Association", ignoreCase = true) && partnerName.startsWith("Association", ignoreCase = true)) {
+                    finalPartnerName = partnerName.replaceFirst("Association", "", true).trim()
+                }
+
                 if (roleStr.isNotEmpty()) {
-                    roleStr = "$roleStr • $partnerName"
+                    roleStr = "$roleStr • $finalPartnerName"
                 }
                 else {
-                    roleStr = partnerName
+                    roleStr = finalPartnerName
                 }
             }
             return roleStr

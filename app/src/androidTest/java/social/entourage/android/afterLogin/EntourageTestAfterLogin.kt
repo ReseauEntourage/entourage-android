@@ -1,0 +1,95 @@
+package social.entourage.android.afterLogin
+
+import android.content.Context
+import androidx.core.content.edit
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
+import org.hamcrest.Matchers.allOf
+import org.junit.After
+import social.entourage.android.BuildConfig
+import social.entourage.android.EntourageApplication
+import social.entourage.android.EntourageTestWithAPI
+import social.entourage.android.R
+import social.entourage.android.api.OnboardingAPI
+import social.entourage.android.home.HomeFragment.Companion.PREF_ENHANCED_ONBOARDING_COMPLETED
+import social.entourage.android.home.HomeFragment.Companion.PREF_GATING_ENHANCED_ONBOARDING_SHOWN
+import timber.log.Timber
+
+open class EntourageTestAfterLogin : EntourageTestWithAPI() {
+    private val login: String = BuildConfig.TEST_ACCOUNT_LOGIN
+    private val password: String = BuildConfig.TEST_ACCOUNT_PWD
+
+
+    protected fun checkUserIsLoggedIn() {
+        if (!EntourageApplication.get().authenticationController.isAuthenticated) {
+            login(login, password)
+        }
+    }
+
+    private fun login(phoneNumber: String? = null, codePwd: String? = null) {
+        val phoneNumber = phoneNumber ?: BuildConfig.TEST_ACCOUNT_LOGIN
+        val codePwd = codePwd ?: BuildConfig.TEST_ACCOUNT_PWD
+        OnboardingAPI.getInstance().syncLogin(phoneNumber, codePwd) { isOK, _, _ ->
+            if (!isOK) {
+                throw Exception("Login should not fail")
+            }
+        }
+    }
+
+    open fun closeAutofill() {
+    }
+
+    override fun setUp(activity: Context) {
+        super.setUp(activity)
+        Intents.init()
+        checkUserIsLoggedIn()
+    }
+
+
+    @After
+    override fun tearDown() {
+        Intents.release()
+        super.tearDown()
+    }
+
+    protected fun forceOnboarding(done: Boolean = true) {
+        EntourageApplication.get().sharedPreferences.edit(commit = true) {
+            putBoolean(PREF_GATING_ENHANCED_ONBOARDING_SHOWN, done)
+            putBoolean(PREF_ENHANCED_ONBOARDING_COMPLETED, done)
+        }
+    }
+
+    protected fun checkNoPopUpOnHome() {
+        checkNoOnboarding()
+        checkNoActionPopUp(R.string.custom_dialog_action_title_one_contrib)
+        checkNoActionPopUp(R.string.custom_dialog_action_title_one_demand)
+    }
+
+    protected fun checkNoActionPopUp(id: Int) {
+        try {
+            onView(allOf(withText(id),isDisplayed()))
+            onView(allOf(withText(R.string.no),isDisplayed()))
+                .perform(click())
+            onView(allOf(withId(R.id.btn_cross),isDisplayed()))
+                .perform(click())
+
+        } catch (e: Exception) {
+            //No onboarding
+            Timber.d(e)
+        }
+    }
+
+    protected fun checkNoOnboarding() {
+        try {
+            onView(allOf(withText(R.string.onboarding_presentation_btn_negative),isDisplayed()))
+                .perform(click())
+        } catch (e: Exception) {
+            //No onboarding
+            Timber.d(e)
+        }
+    }
+}

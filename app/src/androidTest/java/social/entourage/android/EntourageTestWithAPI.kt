@@ -1,20 +1,63 @@
 package social.entourage.android
 
+import android.content.Context
 import android.os.Build
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import android.view.autofill.AutofillManager
-import androidx.appcompat.app.AppCompatActivity
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.IdlingResource
 import androidx.test.platform.app.InstrumentationRegistry
-import com.jakewharton.espresso.OkHttp3IdlingResource
+import androidx.test.uiautomator.UiDevice
+import org.hamcrest.Matcher
+import org.hamcrest.TypeSafeMatcher
+import org.junit.Rule
+import org.junit.rules.TestWatcher
+import timber.log.Timber
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 open class EntourageTestWithAPI {
     private var afM: AutofillManager? = null
-    private var resource: IdlingResource? = null
+    protected var resource: IdlingResource? = null
+    private val shouldTakeSnapshot = false
 
-    open fun setUp(activity: AppCompatActivity ) {
-        val client = EntourageApplication[activity].apiModule.okHttpClient
+    @get:Rule
+    val screenshotWatcher = object : TestWatcher() {
+        override fun failed(e: Throwable?, description: org.junit.runner.Description?) {
+            if(shouldTakeSnapshot) {
+                myTakeSnapshot(description?.className ?: "Unknown")
+            }
+        }
+    }
+
+    protected fun myTakeSnapshot(className: String = "entourage") {
+        val sdf = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault())
+        val timestamp = sdf.format(Date())
+        val fileName = "${timestamp}_${className}.png"
+        val storageDir = File("/sdcard/Download/entourage_snapshots")
+
+        try {
+            if (!storageDir.exists()) {
+                storageDir.mkdirs()
+            }
+            val file = File(storageDir, fileName)
+            val instrumentation = InstrumentationRegistry.getInstrumentation()
+
+            if (UiDevice.getInstance(instrumentation).takeScreenshot(file)) {
+                Timber.tag("EntourageTest").i("Snapshot: adb pull ${file.absolutePath}")
+            } else {
+                Timber.tag("EntourageTest").e("Failed to take screenshot")
+            }
+        } catch (e: Exception) {
+            Timber.tag("EntourageTest").e(e, "Error taking screenshot")
+        }
+    }
+
+    open fun setUp(activity: Context) {
         afM = activity.getSystemService(AutofillManager::class.java)
         afM?.disableAutofillServices()
         if (SHOULD_DISABLE_GOOGLE_PWD_MGR && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // Autofill settings are relevant
@@ -25,8 +68,11 @@ open class EntourageTestWithAPI {
                 Log.e("TestSetup", "Failed to disable autofill_service via UiAutomation", e)
             }
         }
-        resource = OkHttp3IdlingResource.create("OkHttp", client)
+
+        val client = EntourageApplication[activity].apiModule.okHttpClient
+        resource = OkHttpIdlingResource.create("OkHttp", client)
         IdlingRegistry.getInstance().register(resource)
+
         enableWifiAndData(true)
     }
 
@@ -52,7 +98,7 @@ open class EntourageTestWithAPI {
             executeShellCommand("svc data $parameter")
         }
     }
-    protected fun closeAutofill(activity: AppCompatActivity?) {
+    protected fun closeAutofill(activity: Context?) {
         if (afM == null) {
             afM = activity?.getSystemService(AutofillManager::class.java)
         }
@@ -69,6 +115,24 @@ open class EntourageTestWithAPI {
         } catch (e: Exception) {
             Timber.d(e)
         }*/
+    }
+
+    protected fun childAtPosition(
+        parentMatcher: Matcher<View>, position: Int
+    ): Matcher<View> {
+
+        return object : TypeSafeMatcher<View>() {
+            override fun describeTo(description: org.hamcrest.Description) {
+                description.appendText("Child at position $position in parent ")
+                parentMatcher.describeTo(description)
+            }
+
+            public override fun matchesSafely(view: View): Boolean {
+                val parent = view.parent
+                return parent is ViewGroup && parentMatcher.matches(parent)
+                        && view == parent.getChildAt(position)
+            }
+        }
     }
 
     companion object {

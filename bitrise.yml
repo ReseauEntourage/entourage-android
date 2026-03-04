@@ -22,11 +22,50 @@ app:
 meta:
   bitrise.io:
     stack: ubuntu-noble-24.04-bitrise-2025-android
-    machine_type_id: elite
+    machine_type_id: g2.linux.2medium
 trigger_map:
 - push_branch: develop
   workflow: dev_entourage
+- pull_request_source_branch: "*"
+  workflow: pr_check
 workflows:
+  pr_check:
+    before_run:
+    - prepare_workflow
+    envs:
+    - GRADLE_TASK: compileEntourageStagingReleaseSources
+      opts:
+        is_expand: false
+    steps:
+    - gradle-runner:
+        inputs:
+        - gradle_task: "$GRADLE_TASK"
+        - gradle_options: "--stacktrace"
+    - slack:
+        inputs:
+        - webhook_url: ''
+        - from_username: Bitrise
+        - from_username_on_error: Bitrise
+        - pretext: "Entourage PR Check Result"
+        - pretext_on_error: "Entourage PR Check Failed"
+        - message: 'New Entourage Pull Request has passed'
+        - message_on_error: 'Oups, build has failed for Entourage android... @here '
+        - icon_url: ''
+        - icon_url_on_error: ''
+        - fields: |
+            App|${BITRISE_APP_TITLE}
+            Branch|${BITRISE_GIT_BRANCH}
+            Workflow|${BITRISE_TRIGGERED_WORKFLOW_ID}
+            PR|${BITRISE_PULL_REQUEST_URL}
+            Jira|<${JIRA_BASE_URL}browse/${JIRA_ISSUE_KEYS}|${JIRA_ISSUE_KEYS}>
+        - api_token: "$SLACK__BOT_API_TOKEN"
+        - channel: "#androiddev"
+    - post-jira-comment-with-build-details:
+        inputs:
+          - base_url: "$JIRA_BASE_URL"
+          - api_token: "$JIRA_API_TOKEN"
+          - user_name: "$JIRA_USER_EMAIL"
+          - issue_keys: "$JIRA_ISSUE_KEYS"
   dev_entourage:
     before_run:
     - prepare_workflow

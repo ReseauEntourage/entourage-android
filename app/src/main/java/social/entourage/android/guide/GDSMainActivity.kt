@@ -8,6 +8,7 @@ import social.entourage.android.databinding.ActivityGDSMainBinding
 import timber.log.Timber
 
 class GDSMainActivity : BaseSecuredActivity() {
+    lateinit var  guideFg: GuideMapFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -15,7 +16,7 @@ class GDSMainActivity : BaseSecuredActivity() {
         setContentView(binding.root)
 
         binding.uiBtBack.setOnClickListener { onBackPressed() }
-        val guideFg = GuideMapFragment()
+        guideFg = GuideMapFragment()
 
         val fragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.ui_container, guideFg, GuideMapFragment.TAG)

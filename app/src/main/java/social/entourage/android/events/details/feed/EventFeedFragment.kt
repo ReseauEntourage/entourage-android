@@ -57,6 +57,8 @@ import social.entourage.android.groups.details.members.MembersType
 import social.entourage.android.home.HomeFragment
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.members.MembersActivity
+import social.entourage.android.profile.association.AssociationProfileActivity
+import social.entourage.android.profile.association.AssociationProfileFragment
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.survey.ResponseSurveyActivity
 import social.entourage.android.survey.SurveyPresenter
@@ -75,7 +77,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import kotlin.math.abs
 import kotlin.math.sign
-
+import social.entourage.android.user.partner.PartnerFragment
 
 class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     SurveyInteractionListener, OnMapReadyCallback {
@@ -125,6 +127,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         handleBackButton()
         handleAboutButton()
         handleParticipateButton()
+        handlePartnerClick()
         onFragmentResult()
         openLink()
         AnalyticsEvents.logEvent(AnalyticsEvents.Event_detail_main)
@@ -135,6 +138,8 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         super.onStart()
         binding.mapView.onStart()
     }
+
+
 
     fun reduceButtonSizeImage(){
         // Pour le bouton de partage
@@ -275,6 +280,11 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         with(binding) {
             eventName.text = event?.title
             eventNameToolbar.text = event?.title
+            if (event?.metadata?.reserved_female == true) {
+                tvReservedFemale.visibility = View.VISIBLE
+            } else {
+                tvReservedFemale.visibility = View.GONE
+            }
             eventDescription.enableCopyOnLongClick(requireContext())
             if(event != null && event?.membersCount!! > 1){
                 eventMembersNumberLocation.text = String.format(
@@ -302,20 +312,21 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 )
             }
             event?.metadata?.startsAt?.let {
-                binding.dateStartsAt.content.text = SimpleDateFormat(
-                    context?.getString(R.string.feed_event_date),
-                    locale
-                ).format(
-                    it
+                binding.dateStartsAt.content.text = Utils.formatEventDateForDisplay(
+                    it,
+                    requireContext()
                 )
             }
-            event?.metadata?.startsAt?.let {
-                binding.time.content.text = SimpleDateFormat(
-                    context?.getString(R.string.feed_event_time),
-                    locale
-                ).format(
-                    it
-                )
+            event?.metadata?.startsAt?.let { startsAt ->
+                val endsAt = event?.metadata?.endsAt
+                val timeFormat = SimpleDateFormat(context?.getString(R.string.feed_event_time), locale)
+                val startTime = timeFormat.format(startsAt)
+                binding.time.content.text = if (endsAt != null) {
+                    val endTime = timeFormat.format(endsAt)
+                    "$startTime - $endTime"
+                } else {
+                    startTime
+                }
             }
             initializeMembersPhotos()
             initializeInterests()
@@ -396,6 +407,20 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         }
     }
 
+    private fun handlePartnerClick() {
+        binding.tvAssociation.setOnClickListener {
+            // On récupère l'ID du partenaire depuis l'auteur de l'événement
+            event?.author?.partner?.id?.let { partnerId ->
+                val intent = Intent(requireContext(), AssociationProfileActivity::class.java).apply {
+                    // On passe l'ID en extra (conversion Long vers Int car le presenter l'attend)
+                    putExtra(Const.PARTNER_ID, partnerId.toInt())
+                }
+                startActivity(intent)
+                // Animation optionnelle pour correspondre au style de l'app
+                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
+        }
+    }
 
     @SuppressLint("StringFormatInvalid")
     private fun openMap() {
@@ -563,7 +588,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                     }
                 }
                 if(member.id.toInt() == event?.author?.userID){
-                    if(member.communityRoles?.contains("Équipe Entourage") == true || member.communityRoles?.contains("Ambassadeur") == true){
+                    if(member.communityRoles?.contains("Équipe Entourage") == true || member.communityRoles?.contains("Animateur Entourage") == true){
                         binding.tvAssociation.text = getString(R.string.event_organisez_entourage)
                         binding.tvAssociation.visibility = View.VISIBLE
                     }

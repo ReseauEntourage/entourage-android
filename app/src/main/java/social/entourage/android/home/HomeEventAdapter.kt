@@ -22,6 +22,7 @@ import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.Utils
 import java.text.SimpleDateFormat
 
 class HomeEventAdapter(
@@ -60,6 +61,12 @@ class HomeEventAdapter(
     override fun getItemCount(): Int {
         return events.size
     }
+
+    override fun getItemViewType(position: Int): Int {
+        return 20
+        return R.layout.home_v2_event_item_layout
+    }
+
     fun getEventIds(): Set<Int> {
         return events.mapNotNull { it.id }.toSet()
     }
@@ -130,8 +137,12 @@ class HomeEventAdapter(
                 ), 0
             )
         }
-        if (event.author?.communityRoles != null) {
-            if (event.author?.communityRoles?.contains("Équipe Entourage") == true || event.author?.communityRoles?.contains("Ambassadeur") == true) {
+        if (event.metadata?.reserved_female == true) {
+            holder.binding.ivEntourageLogo.setImageResource(R.drawable.ic_entoutou_logo_woman)
+            holder.binding.ivEntourageLogo.visibility = View.VISIBLE
+        } else if (event.author?.communityRoles != null) {
+            if (event.author?.communityRoles?.contains("Équipe Entourage") == true || event.author?.communityRoles?.contains("Animateur Entourage") == true) {
+                holder.binding.ivEntourageLogo.setImageResource(R.drawable.ic_entourage_little)
                 holder.binding.ivEntourageLogo.visibility = View.VISIBLE
             } else {
                 holder.binding.ivEntourageLogo.visibility = View.GONE
@@ -162,13 +173,7 @@ class HomeEventAdapter(
         }
 
         event.metadata?.startsAt?.let {
-            val locale = LanguageManager.getLocaleFromPreferences(context)
-            holder.binding.tvDateHomeV2EventItem.text = SimpleDateFormat(
-                holder.itemView.context.getString(R.string.post_date),
-                locale
-            ).format(
-                it
-            )
+            holder.binding.tvDateHomeV2EventItem.text = Utils.formatEventDateWithTime(it, context)
         }
         event.interests.let {
             if (it.isNotEmpty()) {

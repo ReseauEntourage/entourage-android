@@ -9,36 +9,46 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import social.entourage.android.R
 import social.entourage.android.actions.detail.ActionDetailActivity
 import social.entourage.android.api.model.Action
-import social.entourage.android.api.model.ActionSection
 import social.entourage.android.api.model.ActionUtils
 import social.entourage.android.databinding.HomeV2ActionItemLayoutBinding
 import social.entourage.android.tools.displayDistance
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 
-class HomeActionAdapter(private var isContrib:Boolean): RecyclerView.Adapter<HomeActionAdapter.ActionViewHolder>() {
-    var actions:MutableList<Action> = mutableListOf()
+class HomeActionAdapter(private var isContrib: Boolean) :
+    RecyclerView.Adapter<HomeActionAdapter.ActionViewHolder>() {
+    var actions: MutableList<Action> = mutableListOf()
 
-    fun getIsContrib():Boolean{
+    fun getIsContrib(): Boolean {
         return isContrib
     }
-    fun resetData(actions:MutableList<Action>){
+
+    fun setContrib(isContrib: Boolean) {
+        this.isContrib = isContrib
+        notifyDataSetChanged()
+    }
+
+    fun resetData(actions: MutableList<Action>) {
         this.actions.clear()
         this.actions.addAll(actions)
         notifyDataSetChanged()
-
     }
-    fun clearList(){
+
+    fun clearList() {
         this.actions.clear()
         notifyDataSetChanged()
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActionViewHolder {
-        val binding = HomeV2ActionItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = HomeV2ActionItemLayoutBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return ActionViewHolder(binding)
     }
 
@@ -71,6 +81,12 @@ class HomeActionAdapter(private var isContrib:Boolean): RecyclerView.Adapter<Hom
             holder.binding.tvActionItemDistance.gravity = Gravity.END
             holder.binding.tvActionItemDistance.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
             holder.binding.tvActionItemDistance.textDirection = View.TEXT_DIRECTION_RTL
+
+            holder.binding.tvActionItemDescription.layoutDirection = View.LAYOUT_DIRECTION_RTL
+            holder.binding.tvActionItemDescription.gravity = Gravity.END
+            holder.binding.tvActionItemDescription.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            holder.binding.tvActionItemDescription.textDirection = View.TEXT_DIRECTION_RTL
+
         } else {
             holder.binding.tvActionItemTitle.layoutDirection = View.LAYOUT_DIRECTION_LTR
             holder.binding.tvActionItemTitle.gravity = Gravity.START
@@ -86,62 +102,82 @@ class HomeActionAdapter(private var isContrib:Boolean): RecyclerView.Adapter<Hom
             holder.binding.tvActionItemDistance.gravity = Gravity.START
             holder.binding.tvActionItemDistance.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
             holder.binding.tvActionItemDistance.textDirection = View.TEXT_DIRECTION_LTR
+
+            holder.binding.tvActionItemDescription.layoutDirection = View.LAYOUT_DIRECTION_LTR
+            holder.binding.tvActionItemDescription.gravity = Gravity.START
+            holder.binding.tvActionItemDescription.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
+            holder.binding.tvActionItemDescription.textDirection = View.TEXT_DIRECTION_LTR
         }
 
         holder.binding.layout.setOnClickListener { view ->
-            if(isContrib){
+            if (isContrib) {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Contrib_Detail)
                 (view.context as? Activity)?.startActivityForResult(
                     Intent(view.context, ActionDetailActivity::class.java)
                         .putExtra(Const.ACTION_ID, action.id)
-                        .putExtra(Const.ACTION_TITLE,action.title)
-                        .putExtra(Const.IS_ACTION_DEMAND,false)
+                        .putExtra(Const.ACTION_TITLE, action.title)
+                        .putExtra(Const.IS_ACTION_DEMAND, false)
                         .putExtra(Const.IS_ACTION_MINE, action.isMine()),
                     0
                 )
-            }else{
+            } else {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Demand_Detail)
                 (view.context as? Activity)?.startActivityForResult(
                     Intent(view.context, ActionDetailActivity::class.java)
                         .putExtra(Const.ACTION_ID, action.id)
-                        .putExtra(Const.ACTION_TITLE,action.title)
-                        .putExtra(Const.IS_ACTION_DEMAND,true)
+                        .putExtra(Const.ACTION_TITLE, action.title)
+                        .putExtra(Const.IS_ACTION_DEMAND, true)
                         .putExtra(Const.IS_ACTION_MINE, action.isMine()),
                     0
                 )
             }
         }
+
+        // Avatar
         action.author?.avatarURLAsString?.let {
             Glide.with(holder.binding.root.context)
                 .load(Uri.parse(it))
-                .placeholder(R.drawable.placeholder_action)
-                .transform(CenterCrop(), GranularRoundedCorners(15F, 0F, 0F, 15F))
-                .error(R.drawable.placeholder_action)
+                .placeholder(R.drawable.placeholder_user)
+                .transform(CircleCrop())
+                .error(R.drawable.placeholder_user)
                 .into(holder.binding.ivActionItem)
         } ?: run {
             Glide.with(holder.binding.root.context)
-                .load(R.drawable.placeholder_action)
-                .placeholder(R.drawable.placeholder_action)
-                .transform(CenterCrop(), GranularRoundedCorners(15F, 0F, 0F, 15F))
+                .load(R.drawable.placeholder_user)
+                .transform(CircleCrop())
                 .into(holder.binding.ivActionItem)
         }
-        action.title.let {
+
+        // Name
+        action.author?.userName?.let {
+            holder.binding.tvActionItemAuthor.text = it
+        }
+
+        // Category
+        action.sectionName?.let {
+            val context = holder.binding.root.context
+            holder.binding.tvActionItemSubtitle.text = ActionUtils.showTagTranslated(context, it)
+        }
+
+        // Title
+        action.title?.let {
             holder.binding.tvActionItemTitle.text = it
         }
-        action.sectionName.let {
-            val context = holder.binding.root.context
-            val itemDrawable = ActionSection.getIconFromId(it)
-            holder.binding.ivActionItemEquipment.setImageDrawable(context.getDrawable(itemDrawable))
-            if(it != null ){
-                holder.binding.tvActionItemSubtitle.text = ActionUtils.showTagTranslated(context ,it)
-            }
+
+        // Description
+        action.description?.let {
+            val capitalizedDescription = it.replaceFirstChar { char -> char.uppercase() }
+            holder.binding.tvActionItemDescription.text = capitalizedDescription
         }
-        action.distance.let {
+
+        // Distance
+        action.distance?.let {
             val context = holder.binding.root.context
             holder.binding.tvActionItemDistance.text = action.displayDistance(context)
         }
     }
 
-    class ActionViewHolder(val binding: HomeV2ActionItemLayoutBinding) : RecyclerView.ViewHolder(binding.root)
+    class ActionViewHolder(val binding: HomeV2ActionItemLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
 }

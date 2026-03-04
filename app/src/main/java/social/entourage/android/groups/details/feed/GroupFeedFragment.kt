@@ -63,7 +63,7 @@ import social.entourage.android.report.ReportTypes
 import social.entourage.android.survey.CreateSurveyActivity
 import social.entourage.android.survey.ResponseSurveyActivity
 import social.entourage.android.survey.SurveyPresenter
-import social.entourage.android.tools.image_viewer.ImageDialogActivity
+import social.entourage.android.tools.image_viewer.ImageViewerActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
@@ -495,9 +495,9 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
 
     private fun openImageFragment(imageUrl: String, postId: Int) {
         if (!isAdded) return
-        val intent = Intent(requireContext(), ImageDialogActivity::class.java)
-        intent.putExtra("postId", postId)
-        intent.putExtra("groupId", this.group?.id)
+        val intent = Intent(requireContext(), ImageViewerActivity::class.java)
+        intent.putExtra(Const.POST_ID, postId)
+        intent.putExtra(Const.GROUP_ID, this.group?.id)
         startActivity(intent)
         requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
