@@ -33,6 +33,7 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
     private var shareTitle = ""
 
     private var isActionMine = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         actionsPresenter = ViewModelProvider(this).get(ActionsPresenter::class.java)
@@ -101,7 +102,6 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
         return "https://" + deepLinksHostName + "/app/" + actionPath + action.uuid_v2
     }
 
-
     private fun setSettingsIcon(title:String?) {
         binding.header.headerIconSettings.isVisible = true
         binding.header.headerIconSettings.setImageResource(R.drawable.share_icon)
@@ -111,7 +111,6 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
         binding.header.headerTitle.ellipsize = TextUtils.TruncateAt.END
         binding.header.title = title
     }
-
 
     private fun handleShareButton(){
 
@@ -131,8 +130,6 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
             startActivity(Intent.createChooser(shareIntent, getString(R.string.share_url_by)))
         }
     }
-
-
 
     override fun hideIconReport() {
         binding.header.headerIconSettings.isVisible = false

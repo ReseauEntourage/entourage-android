@@ -26,6 +26,7 @@
                 style="@style/Ent.TextInputLayout.Outlined.Dropdown"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:hint="@string/onboard_welcome_title_gender"
                 app:endIconMode="dropdown_menu">
 
@@ -144,7 +145,9 @@
                     android:id="@+id/ui_onboard_phone_ccp_code"
                     android:layout_width="56dp"
                     android:layout_height="match_parent"
+                    android:background="@drawable/bg_ccp_border"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginTop="5dp"
                     app:ccp_alternative_layout="false"
                     app:ccp_defaultNameCode="FR"
                     app:ccp_hideNameCode="true"

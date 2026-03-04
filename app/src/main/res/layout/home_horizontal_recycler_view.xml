@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/horizontal_recycler_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:clipToPadding="false"
+    android:layout_marginTop="20dp"
+    android:paddingStart="@dimen/entourage_marginstart"
+    android:layoutAnimation="@anim/layout_animation_slide_from_right" />

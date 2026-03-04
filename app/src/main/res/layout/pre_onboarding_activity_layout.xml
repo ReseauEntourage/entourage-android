@@ -55,7 +55,7 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/new_bg_rounded_button_orange_fill"
         android:drawablePadding="10dp"
-        android:text="@string/new_next"
+        android:text="@string/next"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

@@ -38,6 +38,9 @@ class User : Serializable {
     @SerializedName("involvements")
     var involvements: ArrayList<String> = ArrayList()
 
+    @SerializedName("orientations")
+    var orientations: ArrayList<String> = ArrayList()
+
     @SerializedName("concerns")
     var concerns: ArrayList<String> = ArrayList()
 
@@ -82,6 +85,9 @@ class User : Serializable {
 
     @SerializedName("created_at")
     var createdAt: Date? = null
+
+    @SerializedName("is_birthday")
+    var isBirthday: Boolean = false
 
     // ----------------------------------
     // ATTRIBUTES (Not Serialized)

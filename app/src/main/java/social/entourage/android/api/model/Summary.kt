@@ -32,8 +32,12 @@ class Summary : Serializable {
     @SerializedName("outing_participations_count")
     var outingParticipationsCount: Int? = null
 
+
     @SerializedName("signable_permission")
     var signablePermission : Boolean? = null
+
+    @SerializedName("association")
+    var association : Boolean? = null
 
     @SerializedName("neighborhood_participations_count")
     var neighborhoodParticipationsCount: Int? = null
@@ -49,6 +53,7 @@ class Summary : Serializable {
 
     @SerializedName("unclosed_action")
     var unclosedAction: SummaryAction? = null
+
 
     @SerializedName("preference")
     var preference: String? = null

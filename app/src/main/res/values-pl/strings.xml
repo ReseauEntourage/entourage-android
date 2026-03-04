@@ -16,7 +16,7 @@
     <string name="send">Wysłać</string>
     <string name="register">Ratować</string>
     <string name="ignore">Ignorować</string>
-    <string name="next">Kontynuować</string>
+    <string name="continue_string">Kontynuować</string>
     <string name="close">Zamknąć</string>
     <string name="edit">Modyfikować</string>
     <string name="activate">Włączać</string>
@@ -71,7 +71,7 @@
     <string name="home_help_button_1">Przekaż darowiznę finansową na rzecz \nEntourage</string>
     <string name="home_help_button_2">Devenir reporter pour\nEntourage</string>
     <string name="home_help_button_3">Porozmawiaj o Entourage</string>
-    <string name="home_help_button_4">Zostań Ambasadorem</string>
+    <string name="home_help_button_4">Zostań Animateur Entourage</string>
     <string name="home_help_button_5">programu LinkedOut</string>
     <string name="home_button_help_title">Pomagam Entourage w inny sposób</string>
     <string name="home_button_change_zone">Modyfikuję swój obszar działania</string>
@@ -159,7 +159,7 @@ Odkrywaj inicjatywy w swojej okolicy i buduj kontakty z sąsiadami.</string>
     <string name="edit_interests">Zmień moje zainteresowania</string>
     <string name="follow">S\subskrybuj</string>
     <string name="following">Abonent</string>
-    <string name="ambassador">Ambasador</string>
+    <string name="ambassador">Animateur Entourage</string>
 
     <string name="group_name">Nazwa grupy</string>
     <string name="event_name">Nazwa wydarzenia \</string>
@@ -186,7 +186,7 @@ Odkrywaj inicjatywy w swojej okolicy i buduj kontakty z sąsiadami.</string>
     <string name="report_comment">Zgłoś komentarz</string>
     <string name="report_eventt">Zgłoś wydarzenie</string>
     <string name="why_reporting">Podaj nam powód swojego zgłoszenia</string>
-    <string name="new_next">Następny</string>
+    <string name="next">Następny</string>
     <string name="back">Z powrotem</string>
     <string name="cancel_event_continue">Kontynuować</string>
     <string name="previous">Poprzedni</string>
@@ -606,7 +606,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="actions_tab_demands">Upraszanie</string>
 
     <string name="action_date_list">%s</string>
-    <string name="action_bt_my_actions">Moje reklamy</string>
 
     <string name="action_contrib_empty_state_title">Brak wpisów pasujących do Twojego wyszukiwania</string>
     <string name="action_contrib_empty_state_desc">Możesz poszerzyć swoje pole wyszukiwania lub dodać wpis</string>
@@ -614,14 +613,8 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="action_demand_empty_state_title">Żadne żądania nie pasują do Twojego wyszukiwania</string>
     <string name="action_demand_empty_state_desc">Możesz rozszerzyć pole wyszukiwania lub utworzyć zapytanie</string>
 
-    <string name="action_bt_cat_filters">Kategorie</string>
-    <string name="action_cat_filters_title">Filtruj według kategorii</string>
-    <string name="action_location_filter_title">Filtruj według lokalizacji</string>
-
     <string name="action_menu_create_demand">Utwórz prośbę</string>
     <string name="action_menu_create_contrib">Utwórz wkład</string>
-
-    <string name="action_my_actions">Moje reklamy</string>
 
     <string name="action_my_empty_title">Nie opublikowałeś żadnych ogłoszeń</string>
     <string name="action_my_empty_subtitle">Możesz utworzyć wkład lub prośbę, klikając „+” na stronie „Wzajemna pomoc”.</string>
@@ -1519,7 +1512,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
 
     <string name="create_action_wizard_p3_title">OSTATNIE PYTANIE</string>
     <string name="create_action_wizard_p3_description">Zgoda jest niezbędna, aby móc transmitować Twoją akcję solidarnościową w sieci.\n\nTwoja akcja jest obecnie wstrzymana. Moderator odpowie bardzo szybko i pomoże.</string>
-    <string name="create_action_wizard_p3_option1">@string/next</string>
 
     <string name="create_action_wizard_disclaimer">&lt;a href=\'%1$s\'&gt;Karta etyki Entourage&lt;/a&gt; wyjaśnia, dlaczego zgoda jest niezbędna.</string>
 
@@ -1783,7 +1775,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="menu_info_first_guide">Nasz przewodnik po odważeniu się na spotkanie</string>
     <string name="menu_info_second_gift">Przekaż darowiznę na rzecz Entourage</string>
     <string name="menu_info_second_help">Pomoc w reintegracji</string>
-    <string name="menu_info_second_ambassador">Zostań Ambasadorem Wolontariatu</string>
+    <string name="menu_info_second_ambassador">Zostań Animateur Entourage Wolontariatu</string>
     <string name="menu_info_second_good">Twórz połączenia z Good Waves</string>
     <string name="menu_info_second_title">❤️ ZAANGAŻUJ SIĘ</string>
     <string name="menu_info_third_info">Jak rozmawiać o tym z izolowanymi ludźmi?</string>
@@ -2044,8 +2036,8 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="partner_remove_ok">Odznaka usunięta</string>
 
     <string name="member_type_organization">Maruder</string>
-    <string name="role_ambassador">Ambasador</string>
-    <string name="role_admin">Ambasador</string>
+    <string name="role_ambassador">Animateur Entourage</string>
+    <string name="role_admin">Animateur Entourage</string>
 
     <string name="user_profile_display_title">PROFIL</string>
     <string name="user_button_confirm_changes">Potwierdzać</string>
@@ -2182,7 +2174,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="cult_sport_asso">Inicjatywy kulturalne i sportowe</string>
     <string name="serv_pub_asso">Służba publiczna</string>
     <string name="autre_asso">Inni</string>
-    <string name="next_">Następny</string>
 
     <string name="title_association">Stowarzyszenie</string>
     <string name="title_asso_donation">Przyjmuj darowizny</string>
@@ -2736,4 +2727,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="onboard_sms_wait_title">Nie otrzymałeś(-aś) kodu logowania?</string>
     <string name="onboard_sms_wait_countdown">Nowy kod będziesz mógł/mogła zamówić za %1$s</string>
 
+    <string name="guide_help_orientation_button">Pomoc i orientacja</string>
+    <string name="home_title_small_talk">Dołącz do wspierającej dyskusji</string>
+    <string name="small_talk_subtitle_match">Łączymy Cię z małą grupą osób o podobnych zainteresowaniach, w całej Francji.</string>
 </resources>

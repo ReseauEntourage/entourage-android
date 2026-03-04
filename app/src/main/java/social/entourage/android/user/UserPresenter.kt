@@ -29,7 +29,10 @@ class UserPresenter {
                     response: Response<UserResponse>
                 ) {
                     if (response.isSuccessful) {
-                        response.body()?.user?.let { user.value = it }
+                        response.body()?.user?.let {
+                            user.value = it
+
+                        }
                         isGetUserSuccess.value = true
                     } else {
                         isGetUserSuccess.value = false

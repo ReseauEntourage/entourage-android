@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/new_profile_header_orange"
     android:fitsSystemWindows="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,211 +19,217 @@
             android:id="@+id/icon_back"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:padding="10dp"
-            android:src="@drawable/new_back_white"
+            app:tint="@color/black"
+            android:src="@drawable/ic_arrow_left_black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/new_back_white" />
-
+            app:layout_constraintTop_toTopOf="parent"/>
         <TextView
             android:id="@+id/ui_header_title"
-            style="@style/h1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="24dp"
             android:maxLines="2"
             android:text="@string/login_change_phone_title"
+            android:textColor="@color/black"
+            android:fontFamily="@font/quicksand_bold"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/icon_back"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/change_phone_mainLayout"
+    <ScrollView
+        android:id="@+id/ui_scroll"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginHorizontal="7dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/new_bg_rounded_beige"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:fillViewport="true"
+        android:overScrollMode="never"
         app:layout_constraintBottom_toTopOf="@+id/ui_changeCode_bt_validate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout">
 
-        <TextView
-            android:id="@+id/textView45"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="32dp"
-            android:fontFamily="@font/nunitosans_bold"
-            android:text="@string/login_change_phone_old_phone"
-            android:textColor="@color/onboard_black_36"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/ui_changeCode_et_old_phone"
-            style="@style/input"
-            android:backgroundTint="@color/light_orange_opacity_50"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            android:autofillHints="phoneNumber"
-            android:ems="10"
-            android:hint="@string/login_change_phone_old_phone_placeholder"
-            android:inputType="phone"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textColor="@color/pre_onboard_black"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textView45"
-            app:layout_constraintTop_toBottomOf="@+id/textView45" />
-
-        <TextView
-            android:id="@+id/textView46"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/nunitosans_bold"
-            android:text="@string/login_change_phone_new_phone"
-            android:textColor="@color/onboard_black_36"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/ui_changeCode_et_old_phone"
-            app:layout_constraintTop_toBottomOf="@+id/ui_changeCode_et_old_phone" />
-
-        <EditText
-            android:id="@+id/ui_changeCode_et_new_phone"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="24dp"
-            android:autofillHints="phoneNumber"
-            style="@style/input"
-            android:backgroundTint="@color/light_orange_opacity_50"
-            android:ems="10"
-            android:hint="@string/login_change_phone_new_phone_placeholder"
-            android:inputType="phone"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textColor="@color/pre_onboard_black"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textView46"
-            app:layout_constraintTop_toBottomOf="@+id/textView46" />
-
-        <TextView
-            android:id="@+id/textView47"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/nunitosans_bold"
-            android:text="@string/login_change_phone_email"
-            android:textColor="@color/onboard_black_36"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/ui_changeCode_et_new_phone"
-            app:layout_constraintTop_toBottomOf="@+id/ui_changeCode_et_new_phone" />
-
-        <EditText
-            android:id="@+id/ui_changeCode_et_email"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="24dp"
-            android:autofillHints="emailAddress"
-            style="@style/input"
-            android:backgroundTint="@color/light_orange_opacity_50"
-            android:ems="10"
-            android:hint="@string/login_change_phone_email_placeholder"
-            android:inputType="textEmailAddress"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:textColor="@color/pre_onboard_black"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textView47"
-            app:layout_constraintTop_toBottomOf="@+id/textView47" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/ui_layout_change_phone_ok"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:id="@+id/change_phone_mainLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginEnd="7dp"
+            android:layout_marginTop="0dp"
             android:layout_marginBottom="16dp"
-            android:background="@color/white"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:background="@drawable/new_bg_rounded_beige"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="18dp"
+            android:paddingBottom="18dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/ui_label_old_phone"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="64dp"
+                android:text="@string/login_change_phone_old_phone"
+                android:textColor="@color/pre_onboard_black"
+                android:textSize="13sp"
+                android:fontFamily="@font/nunitosans_bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ui_input_old_phone"
+                style="@style/Ent.TextInputLayout.Outlined"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/login_change_phone_old_phone_placeholder"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/ui_label_old_phone">
 
-                <TextView
-                    android:id="@+id/textView48"
-                    android:layout_width="0dp"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ui_changeCode_et_old_phone"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginBottom="48dp"
-                    android:text="@string/login_change_phone_send_ok"
-                    android:textAlignment="textStart"
-                    android:textColor="@color/onboard_black_36"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/ui_changeCode_bt_return"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:autofillHints="phoneNumber"
+                    android:inputType="phone"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <Button
-                    android:id="@+id/ui_changeCode_bt_return"
-                    style="@style/Widget.AppCompat.Button.Borderless"
-                    android:layout_width="250dp"
-                    android:layout_height="50dp"
-                    android:layout_marginStart="60dp"
-                    android:layout_marginEnd="60dp"
-                    android:layout_marginBottom="30dp"
-                    android:background="@drawable/bg_button_rounded_pre_onboard_orange_stroke"
-                    android:text="@string/login_change_phone_bt_return"
-                    android:textColor="@color/accent"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/ui_label_new_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/login_change_phone_new_phone"
+                android:textColor="@color/pre_onboard_black"
+                android:textSize="13sp"
+                android:fontFamily="@font/nunitosans_bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ui_input_old_phone"
+                android:visibility="gone"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ui_input_new_phone"
+                style="@style/Ent.TextInputLayout.Outlined"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/login_change_phone_new_phone_placeholder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ui_label_new_phone">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ui_changeCode_et_new_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="phoneNumber"
+                    android:inputType="phone"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/ui_label_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/login_change_phone_email"
+                android:textColor="@color/pre_onboard_black"
+                android:textSize="13sp"
+                android:fontFamily="@font/nunitosans_bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ui_input_new_phone"
+                android:visibility="gone"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ui_input_email"
+                style="@style/Ent.TextInputLayout.Outlined"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/login_change_phone_email_placeholder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ui_label_email">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ui_changeCode_et_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="emailAddress"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/ui_layout_change_phone_ok"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:visibility="gone"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/light_grey"
+                app:cardBackgroundColor="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ui_input_email">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:paddingTop="18dp"
+                    android:paddingBottom="18dp">
+
+                    <TextView
+                        android:id="@+id/textView48"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/login_change_phone_send_ok"
+                        android:textColor="@color/onboard_black_36"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/nunitosans_regular" />
+
+                    <Button
+                        android:id="@+id/ui_changeCode_bt_return"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:background="@drawable/bg_button_rounded_pre_onboard_orange_stroke"
+                        android:paddingStart="24dp"
+                        android:paddingEnd="24dp"
+                        android:text="@string/login_change_phone_bt_return"
+                        android:textAllCaps="false"
+                        android:textColor="@color/accent"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/nunitosans_bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
     <Button
         android:id="@+id/ui_changeCode_bt_validate"
-        style="@style/h2_white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="18dp"
         android:background="@drawable/new_bg_rounded_button_orange_fill"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:paddingStart="34dp"
+        android:paddingEnd="34dp"
         android:text="@string/login_change_phone_bt_validate"
         android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:fontFamily="@font/nunitosans_bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -253,4 +258,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

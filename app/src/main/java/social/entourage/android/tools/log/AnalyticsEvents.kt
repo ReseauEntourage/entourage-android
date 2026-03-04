@@ -483,21 +483,7 @@ object AnalyticsEvents {
     const val Action_Tabbar_events = "Action__Tab__Event"
 
 //Home:
-    const val Home_view_home = "View__Home"
-    const val Home_action_notif = "Action__Home__Notif"
-    const val Home_action_profile = "Action__Tab__Profil"
-    const val Home_action_pedago = "Action__Home__Pedago"
-    const val Home_action_meetcount = "Action__Home__MeetCounter"
-    const val Home_action_groupcount = "Action__Home__GroupCounter"
-    const val Home_action_eventcount = "Action__Home__EventCounter"
-    const val Home_action_moderator = "Action__Home__Moderator"
-    const val Home_action_map = "Action__Home__Map"
     const val Home_view_notif = "View__Notif"
-
-//Profile
-    const val Profile_view_profile = "View__Profile"
-    const val Profile_action_modify = "Clic__Profile__Modify"
-    const val Profile_view_param = "View__Profile__Param"
 
 //Help
     const val Help_view_contrib = "View__Aid"
@@ -529,12 +515,9 @@ object AnalyticsEvents {
 //Messages
     const val Message_view = "View__Discussion__List"
     const val Message_view_detail = "View__Discussion__Detail"
-    const val Message_action_param = "Action__Discussion__Param"
 
 //Events
-    const val Event_view_discover = "View__Event__List"
     const val Event_view_my = "View__Event__MyEvents"
-    const val Event_action_filter = "Action__Event__LocationFilter"
     const val Event_action_create = "Action__Event__New"
 
 //Event Create
@@ -548,9 +531,6 @@ object AnalyticsEvents {
 //Event detail
     const val Event_detail_main = "View__EventFeed__Show"
     const val Event_detail_full = "View__EventFeed__About"
-    const val Event_detail_action_participate = "Action__EventFeed__Participate"
-    const val Event_detail_action_param = "Action__EventFeed__Param"
-    const val Event_detail_action_post = "Action__EventFeed__NewPost"
 
 //PreOnboarding
     const val PreOnboard_car1 = "View__Start__Carrousel1"
@@ -623,7 +603,6 @@ object AnalyticsEvents {
 
     const val NotificationClicked__CanceledEvent = "NotificationClicked__CanceledEvent"
 
-    const val NotificationClicked__OutingMessage = "NotificationClicked__OutingMessage"
 
     const val NotificationReceived__OfferHelp__WDay1 = "NotificationReceived__OfferHelp__WDay1"
 
@@ -693,11 +672,8 @@ object AnalyticsEvents {
     const val   Clic_Post_List_Reactions = "Clic_Post_List_Reactions"
     const val   Clic_ListReactions_Contact = "Clic_ListReactions_Contact"
 
-    const val   view_miss_location_popup = "view_miss_location_popup"
-    const val   clic_miss_location_add = "clic_miss_location_add"
 
     const val   Clic_Group_Create_Poll = "Clic_Group_Create_Poll"
-    const val   Clic_Event_Create_Poll = "Clic_Event_Create_Poll"
     const val   Clic_Group_Validate_Poll = "Clic_Group_Validate_Poll"
     const val   Clic_Event_Validate_Poll = "Clic_Event_Validate_Poll"
     const val   Clic_Group_Poll_See_Votes = "Clic_Group_Poll_See_Votes"
@@ -770,8 +746,6 @@ object AnalyticsEvents {
     //TODO DELETE USER HAVE NOTIF AND BIENCOMMUN
     const val user_have_notif_and_token = "user_have_notif_and_token"
     const val user_have_notif_and_no_token = "user_have_notif_and_no_token"
-    const val popup_biencommun = "popup_biencommun"
-    const val popup_biencommun_vote = "popup_biencommun_vote"
     const val add_to_calendar_yes_clicked = "add_to_calendar_yes_clicked"
 
 //    AnalyticsEvents.logEvent(AnalyticsEvents.Message_action_param)
@@ -821,36 +795,6 @@ object AnalyticsEvents {
 
     // SmallTalk - Visio
     const val CLIC__SMALLTALK__VISIO_ICON = "smalltalk_click_visio_icon_chat_screen"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     val TAG: String? = AnalyticsEvents::class.java.simpleName
 

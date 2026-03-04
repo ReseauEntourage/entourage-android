@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottom_navigation_bar"
     app:startDestination="@id/navigation_home">
 
@@ -8,6 +9,10 @@
     <include app:graph="@navigation/navigation_events" />
     <include app:graph="@navigation/navigation_groups" />
     <include app:graph="@navigation/navigation_home" />
-    <include app:graph="@navigation/navigation_messages" />
+    <fragment
+        android:id="@+id/navigation_messages"
+        android:name="social.entourage.android.discussions.DiscussionsMainFragment"
+        android:label="DiscussionsMainFragment"
+        tools:layout="@layout/fragment_messages" />
 
 </navigation>

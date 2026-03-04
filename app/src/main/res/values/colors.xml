@@ -153,6 +153,7 @@
     <!-- Partner Logo -->
     <color name="partner_logo_background">@color/background</color>
     <color name="partner_logo_transparent">#00000000</color>
+    <color name="purple_event_banner">#9330D5</color>
     <color name="toolbar">@color/primary</color>
     <color name="warm_grey">#999999</color>
     <color name="greyish_brown">#4a4a4a</color>
@@ -165,4 +166,12 @@
     <color name="grey_dark">#3d3d3d</color>
 
     <color name="bottom_bar_bg_color">@color/white</color>
+
+    <!-- Pedago categories -->
+    <color name="pedago_bg_act">@color/green_light</color>
+    <color name="pedago_text_act">@color/green</color>
+    <color name="pedago_bg_inspire">#FFF9E1</color>
+    <color name="pedago_text_inspire">#D9A300</color>
+    <color name="pedago_bg_understand">#E3F2FD</color>
+    <color name="pedago_text_understand">#0063BE</color>
 </resources>

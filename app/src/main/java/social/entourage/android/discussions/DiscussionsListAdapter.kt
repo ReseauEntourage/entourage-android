@@ -105,17 +105,25 @@ class DiscussionsListAdapter(
             }
 
             // === Titre et sous-infos ===
-            binding.name.text = if (conversation.memberCount > 2 && conversation.type != "outing") {
+            var nameToDisplay = if (conversation.memberCount > 2 && conversation.type != "outing") {
                 "${conversation.title} et ${conversation.memberCount} membres"
             } else {
                 conversation.title
             }
 
+            if (conversation.isOneToOne() && conversation.user?.isBirthday == true) {
+                nameToDisplay = "$nameToDisplay 🎂"
+            }
+            binding.name.text = nameToDisplay
+
             if (conversation.type == "outing") {
-                binding.date.text = conversation.subname
-                binding.date.visibility = View.VISIBLE
-            } else {
                 binding.date.visibility = View.GONE
+                binding.dateEvent.visibility = View.VISIBLE
+                binding.dateEvent.text = conversation.subname
+            } else {
+                binding.date.visibility = View.VISIBLE
+                binding.dateEvent.visibility = View.GONE
+                binding.date.text = conversation.dateFormattedString(binding.root.context)
             }
 
             // === Rôles ===
@@ -127,7 +135,7 @@ class DiscussionsListAdapter(
             }
 
             // === Dernier message ===
-            binding.detail.text = conversation.getLastMessage()
+            binding.detail.text = conversation.getLastMessage(context = binding.root.context)
 
             // === État "lu/non lu" ===
             if (conversation.hasUnread()) {
