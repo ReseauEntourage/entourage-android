@@ -16,7 +16,7 @@
     <string name="send">enviar a</string>
     <string name="register">Ahorrar</string>
     <string name="ignore">Ignorar</string>
-    <string name="next">seguir</string>
+    <string name="continue_string">seguir</string>
     <string name="close">Cerca</string>
     <string name="edit">Editar</string>
     <string name="activate">Permitir</string>
@@ -71,7 +71,7 @@
     <string name="home_help_button_1">Haga una donación financiera a\nEntourage</string>
     <string name="home_help_button_2">Devenir reporter pour\nEntourage</string>
     <string name="home_help_button_3">Hablar de séquito</string>
-    <string name="home_help_button_4">Conviértete en embajador</string>
+    <string name="home_help_button_4">Conviértete en Animateur Entourage</string>
     <string name="home_help_button_5">Programa LinkedOut</string>
     <string name="home_button_help_title">Ayudo a Entourage de una manera diferente</string>
     <string name="home_button_change_zone">Modifico mi área de acción</string>
@@ -159,7 +159,7 @@ Descubra iniciativas en su vecindario y establezca conexiones con sus vecinos.</
     <string name="edit_interests">cambiar mis intereses</string>
     <string name="follow">S\subscribirse</string>
     <string name="following">Abonado</string>
-    <string name="ambassador">Embajador</string>
+    <string name="ambassador">Animateur Entourage</string>
 
     <string name="group_name">Nombre del grupo</string>
     <string name="event_name">Nombre del evento \</string>
@@ -186,7 +186,7 @@ Descubra iniciativas en su vecindario y establezca conexiones con sus vecinos.</
     <string name="report_comment">Reportar comentario</string>
     <string name="report_eventt">Reportar el evento</string>
     <string name="why_reporting">Cuéntanos el motivo de tu denuncia</string>
-    <string name="new_next">Próximo</string>
+    <string name="next">Próximo</string>
     <string name="back">Atrás</string>
     <string name="cancel_event_continue">seguir</string>
     <string name="previous">Anterior</string>
@@ -609,22 +609,14 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
 
     <string name="action_date_list">%s</string>
 
-    <string name="action_bt_my_actions">Mis anuncios</string>
-
     <string name="action_contrib_empty_state_title">Ninguna contribución coincide con tu búsqueda.</string>
     <string name="action_contrib_empty_state_desc">Puedes ampliar tu campo de búsqueda o crear una contribución.</string>
 
     <string name="action_demand_empty_state_title">Ninguna solicitud coincide con su búsqueda</string>
     <string name="action_demand_empty_state_desc">Puede ampliar su campo de búsqueda o crear una solicitud</string>
 
-    <string name="action_bt_cat_filters">Categorías</string>
-    <string name="action_cat_filters_title">Filtrar por categorías</string>
-    <string name="action_location_filter_title">Filtrar por ubicación</string>
-
     <string name="action_menu_create_demand">Crear una solicitud</string>
     <string name="action_menu_create_contrib">Crear una contribución</string>
-
-    <string name="action_my_actions">Mis anuncios</string>
 
     <string name="action_my_empty_title">No has publicado ningún anuncio</string>
     <string name="action_my_empty_subtitle">Puede crear una contribución o solicitud haciendo clic en “+” en la página “Ayuda mutua”.</string>
@@ -1522,7 +1514,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
 
     <string name="create_action_wizard_p3_title">ÚLTIMA PREGUNTA</string>
     <string name="create_action_wizard_p3_description">El consentimiento es imprescindible para poder difundir tu acción solidaria en la red.\n\nTu acción está actualmente en suspenso. Un moderador responderá muy rápidamente para ayudarte.</string>
-    <string name="create_action_wizard_p3_option1">@string/next</string>
 
     <string name="create_action_wizard_disclaimer">La &lt;a href=\'%1$s\'&gt;Carta de Ética de Entourage&lt;/a&gt; explica por qué el consentimiento es esencial.</string>
 
@@ -1786,7 +1777,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="menu_info_first_guide">Nuestra guía para atreverse a encontrarse</string>
     <string name="menu_info_second_gift">Donar a Entourage</string>
     <string name="menu_info_second_help">Ayuda con la reintegración</string>
-    <string name="menu_info_second_ambassador">Conviértete en Embajador Voluntario</string>
+    <string name="menu_info_second_ambassador">Conviértete en Animateur Entourage Voluntario</string>
     <string name="menu_info_second_good">Crea vínculos con Buenas Ondas</string>
     <string name="menu_info_second_title">❤️ PARTICIPA</string>
     <string name="menu_info_third_info">¿Cómo hablar de esto con personas aisladas?</string>
@@ -2033,8 +2024,8 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="partner_remove_ok">Insignia eliminada</string>
 
     <string name="member_type_organization">Merodeador</string>
-    <string name="role_ambassador">Embajador</string>
-    <string name="role_admin">Embajador</string>
+    <string name="role_ambassador">Animateur Entourage</string>
+    <string name="role_admin">Animateur Entourage</string>
 
     <string name="user_profile_display_title">PERFIL</string>
     <string name="user_button_confirm_changes">Confirmar</string>
@@ -2171,7 +2162,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="cult_sport_asso">Iniciativas culturales y deportivas</string>
     <string name="serv_pub_asso">Servicio publico</string>
     <string name="autre_asso">Otros</string>
-    <string name="next_">Próximo</string>
 
     <string name="title_association">Asociación</string>
     <string name="title_asso_donation">Aceptar donaciones</string>
@@ -2719,4 +2709,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="onboard_sms_wait_title">¿No has recibido tu código de acceso?</string>
     <string name="onboard_sms_wait_countdown">Podrás solicitar un nuevo código en %1$s</string>
 
+    <string name="guide_help_orientation_button">Ayuda y orientación</string>
+    <string name="home_title_small_talk">Únete a una discusión solidaria</string>
+    <string name="small_talk_subtitle_match">Te conectamos con un pequeño grupo de personas que comparten tus intereses, en cualquier parte de Francia.</string>
 </resources>

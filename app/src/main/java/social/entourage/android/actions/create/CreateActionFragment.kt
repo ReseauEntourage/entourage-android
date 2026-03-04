@@ -167,7 +167,7 @@ class CreateActionFragment : Fragment() {
         }else if(currentPos == NB_TABS - 1){
             getString(R.string.create)
         }else{
-            getString(R.string.new_next)
+            getString(R.string.next)
         }
 
         binding.next.text = btnTitle
@@ -190,7 +190,7 @@ class CreateActionFragment : Fragment() {
                         if (viewModel.actionEdited != null) {
                             R.string.edit
                         } else R.string.create
-                    } else R.string.new_next)
+                    } else R.string.next)
             }
         })
     }

@@ -58,7 +58,8 @@ class EventModel(
         mutableListOf<GroupMember>().apply { parcel.readList(this, GroupMember::class.java.classLoader)},
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
-    )
+    ) {
+    }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(id)

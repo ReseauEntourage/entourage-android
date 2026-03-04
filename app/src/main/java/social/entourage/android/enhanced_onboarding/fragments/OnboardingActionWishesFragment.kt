@@ -8,11 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.R
+import social.entourage.android.api.model.User
 import social.entourage.android.databinding.FragmentOnboardingActionWishesLayoutBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.enhanced_onboarding.InterestForAdapter
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
-import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestsAdapter
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class OnboardingActionWishesFragment : Fragment() {
@@ -50,8 +50,13 @@ class OnboardingActionWishesFragment : Fragment() {
             }
         }
 
-        binding.tvTitle.text = getString(R.string.onboarding_action_wish_title)
-        binding.tvDescription.text = getString(R.string.onboarding_action_wish_content)
+        if (isAssociationMode()) {
+            binding.tvTitle.text = getString(R.string.enhanced_onboarding_asso_wishes_title)
+            binding.tvDescription.text = getString(R.string.enhanced_onboarding_asso_wishes_description)
+        } else {
+            binding.tvTitle.text = getString(R.string.onboarding_action_wish_title)
+            binding.tvDescription.text = getString(R.string.onboarding_action_wish_content)
+        }
     }
 
     override fun onResume() {
@@ -68,6 +73,12 @@ class OnboardingActionWishesFragment : Fragment() {
         loadAndSendActionWishes()
     }
 
+    private fun isAssociationMode(): Boolean {
+        if (EnhancedOnboarding.isAssociationFromSummary == true) return true
+        val goal = viewModel.user?.goal
+        return goal != null && goal.equals(User.USER_GOAL_ASSO, ignoreCase = true)
+    }
+
     private fun setupRecyclerView() {
         adapter = OnboardingInterestsAdapter(
             isFromInterest = false,
@@ -82,86 +93,109 @@ class OnboardingActionWishesFragment : Fragment() {
     }
 
     private fun loadAndSendActionWishes() {
-        val user = viewModel.user
+        val user = viewModel.user ?: run {
+            viewModel.setActionsWishes(emptyList())
+            return
+        }
 
-        val actionWishes = if (EnhancedOnboarding.preference == "contribution") {
-            listOf(
-                user?.involvements?.contains("outings")?.let {
-                    InterestForAdapter(
-                        icon = getIconForActionWish("outings"),
-                        title = getString(R.string.onboarding_action_wish_event_contrib),
-                        isSelected = it,
-                        id = "outings",
-                        subtitle = ""
-                    )
-                },
-                user?.involvements?.contains("both_actions")?.let {
-                    InterestForAdapter(
-                        icon = getIconForActionWish("actions"),
-                        title = getString(R.string.onboarding_action_wish_services_contrib),
-                        isSelected = it,
-                        id = "both_actions",
-                        subtitle = ""
-                    )
-                },
-                user?.involvements?.contains("neighborhoods")?.let {
-                    InterestForAdapter(
-                        icon = getIconForActionWish("neighborhoods"),
-                        title = getString(R.string.onboarding_action_wish_network_contrib),
-                        isSelected = it,
-                        id = "neighborhoods",
-                        subtitle = ""
-                    )
-                },
-                user?.involvements?.contains("resources")?.let {
-                    InterestForAdapter(
-                        icon = R.drawable.ic_onboarding_interest_name_rencontre_nomade,
-                        title = getString(R.string.onboarding_action_wish_pedago_contrib),
-                        isSelected = it,
-                        id = "pois",
-                        subtitle = ""
-                    )
-                }
-            ).filterNotNull()
-        } else {
-            listOf(
-                user?.involvements?.contains("resources")?.let {
+        // On récupère les listes existantes pour éviter les null check répétitifs
+        val userOrientations = user.orientations ?: emptyList()
+        val userInvolvements = user.involvements ?: emptyList()
+
+        val actionWishes = if (isAssociationMode()) {
+            // --- MODE ASSOCIATION ---
+            // On vérifie la présence des clés dans 'userOrientations'
+            buildList {
+                add(
                     InterestForAdapter(
                         icon = getIconForActionWish("resources"),
-                        title = getString(R.string.onboarding_action_wish_pedago),
-                        isSelected = it,
-                        id = "resources",
+                        title = getString(R.string.enhanced_onboarding_asso_wish_outings), // Relayer événements
+                        isSelected = userOrientations.contains("share"),
+                        id = "share",
                         subtitle = ""
                     )
-                },
-                user?.involvements?.contains("outings")?.let {
+                )
+
+                add(
                     InterestForAdapter(
                         icon = getIconForActionWish("outings"),
-                        title = getString(R.string.onboarding_action_wish_event),
-                        isSelected = it,
-                        id = "outings",
+                        title = getString(R.string.enhanced_onboarding_asso_wish_neighborhoods), // Orienter bénéficiaires
+                        isSelected = userOrientations.contains("guide"),
+                        id = "guide",
                         subtitle = ""
                     )
-                },
-                user?.involvements?.contains("both_actions")?.let {
+                )
+
+                add(
                     InterestForAdapter(
                         icon = getIconForActionWish("actions"),
-                        title = getString(R.string.onboarding_action_wish_services),
-                        isSelected = it,
-                        id = "both_actions",
+                        title = getString(R.string.enhanced_onboarding_asso_wish_both_actions), // Coup de pouce
+                        // Le JSON indique l'ID "help", on vérifie donc "help".
+                        // On garde "both_actions" en fallback au cas où l'API renverrait l'ancien format.
+                        isSelected = userOrientations.contains("help") || userOrientations.contains("both_actions"),
+                        id = "help",
                         subtitle = ""
                     )
-                },
-                user?.involvements?.contains("neighborhoods")?.let {
-                    InterestForAdapter(
+                )
+            }
+        } else {
+            // --- MODE PARTICULIER ---
+            // On vérifie la présence des clés dans 'userInvolvements'
+            buildList {
+                if (EnhancedOnboarding.preference == "contribution") {
+                    // Ordre spécifique : Contribution
+                    add(InterestForAdapter(
+                        icon = getIconForActionWish("outings"),
+                        title = getString(R.string.onboarding_action_wish_event_contrib),
+                        isSelected = userInvolvements.contains("outings"),
+                        id = "outings", subtitle = ""
+                    ))
+                    add(InterestForAdapter(
+                        icon = getIconForActionWish("actions"),
+                        title = getString(R.string.onboarding_action_wish_services_contrib),
+                        isSelected = userInvolvements.contains("both_actions"),
+                        id = "both_actions", subtitle = ""
+                    ))
+                    add(InterestForAdapter(
+                        icon = getIconForActionWish("neighborhoods"),
+                        title = getString(R.string.onboarding_action_wish_network_contrib),
+                        isSelected = userInvolvements.contains("neighborhoods"),
+                        id = "neighborhoods", subtitle = ""
+                    ))
+                    add(InterestForAdapter(
+                        icon = R.drawable.ic_onboarding_interest_name_rencontre_nomade,
+                        title = getString(R.string.onboarding_action_wish_pedago_contrib),
+                        isSelected = userInvolvements.contains("resources"),
+                        id = "resources", subtitle = ""
+                    ))
+                } else {
+                    // Ordre spécifique : Standard
+                    add(InterestForAdapter(
+                        icon = getIconForActionWish("resources"),
+                        title = getString(R.string.onboarding_action_wish_pedago),
+                        isSelected = userInvolvements.contains("resources"),
+                        id = "resources", subtitle = ""
+                    ))
+                    add(InterestForAdapter(
+                        icon = getIconForActionWish("outings"),
+                        title = getString(R.string.onboarding_action_wish_event),
+                        isSelected = userInvolvements.contains("outings"),
+                        id = "outings", subtitle = ""
+                    ))
+                    add(InterestForAdapter(
+                        icon = getIconForActionWish("actions"),
+                        title = getString(R.string.onboarding_action_wish_services),
+                        isSelected = userInvolvements.contains("both_actions"),
+                        id = "both_actions", subtitle = ""
+                    ))
+                    add(InterestForAdapter(
                         icon = getIconForActionWish("neighborhoods"),
                         title = getString(R.string.onboarding_action_wish_network),
-                        isSelected = it,
-                        id = "neighborhoods",
-                        subtitle = ""
-                    )
+                        isSelected = userInvolvements.contains("neighborhoods"),
+                        id = "neighborhoods", subtitle = ""
+                    ))
                 }
-            ).filterNotNull()
+            }
         }
 
         viewModel.setActionsWishes(actionWishes)

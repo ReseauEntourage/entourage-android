@@ -69,7 +69,7 @@ class PreOnboardingLanguage:BaseActivity(), OnLanguageClicked {
     private fun updateTexts() {
         binding.titleName.text = getString(R.string.select_language)
         //Modify button width
-        binding.validate.text = getString(R.string.new_next)
+        binding.validate.text = getString(R.string.next)
     }
 
     private fun handleNextButton(){

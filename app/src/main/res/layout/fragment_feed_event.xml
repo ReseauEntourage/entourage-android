@@ -178,6 +178,21 @@
                                 android:layout_height="wrap_content"
                                 tools:text="Dansons ensemble" />
 
+                            <TextView
+                                android:id="@+id/tv_reserved_female"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:background="@drawable/bg_purple_rounded"
+                                android:paddingHorizontal="12dp"
+                                android:paddingVertical="6dp"
+                                android:text="@string/event_reserved_female_banner"
+                                android:textColor="@color/white"
+                                android:textSize="14sp"
+                                android:fontFamily="@font/quicksand_bold"
+                                android:visibility="gone"
+                                tools:visibility="visible"/>
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

@@ -202,7 +202,11 @@ class PostAdapter(
         }
 
         // Charger l’avatar
-        surveyHolder.binding.name.text = post.user?.displayName ?: "Nom inconnu"
+        var displayName = post.user?.displayName ?: "Nom inconnu"
+        if (post.user?.birthdayToday == true) {
+            displayName = "$displayName 🎂"
+        }
+        surveyHolder.binding.name.text = displayName
         Glide.with(context)
             .load(post.user?.avatarURLAsString ?: R.drawable.placeholder_user)
             .placeholder(R.drawable.placeholder_user)
@@ -855,7 +859,11 @@ class PostAdapter(
             showUserDetail(binding.name.context, post.user?.userId)
             binding.layoutReactions.visibility = View.GONE
         }
-        binding.name.text = post.user?.displayName
+        var displayNamePost = post.user?.displayName
+        if (post.user?.birthdayToday == true) {
+            displayNamePost = "$displayNamePost 🎂"
+        }
+        binding.name.text = displayNamePost
         binding.image.setOnClickListener {
             showUserDetail(binding.image.context, post.user?.userId)
             binding.layoutReactions.visibility = View.GONE

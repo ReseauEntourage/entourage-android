@@ -11,20 +11,33 @@ import retrofit2.converter.gson.GsonConverterFactory
 import social.entourage.android.BuildConfig
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.BaseEntourage.BaseEntourageJsonAdapter
-import social.entourage.android.api.model.SmallTalk
 import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.api.model.feed.NewsfeedItem.NewsfeedItemJsonAdapter
-import social.entourage.android.api.request.*
+import social.entourage.android.api.request.ActionsRequest
+import social.entourage.android.api.request.AppLinksRequest
+import social.entourage.android.api.request.ApplicationInfoRequest
+import social.entourage.android.api.request.AssociationsRequest
+import social.entourage.android.api.request.DiscussionsRequest
+import social.entourage.android.api.request.EntourageRequest
+import social.entourage.android.api.request.EventsRequest
+import social.entourage.android.api.request.GroupRequest
+import social.entourage.android.api.request.HomeRequest
+import social.entourage.android.api.request.LoginRequest
+import social.entourage.android.api.request.MetaDataRequest
+import social.entourage.android.api.request.PartnerRequest
+import social.entourage.android.api.request.PoiRequest
+import social.entourage.android.api.request.SharingRequest
+import social.entourage.android.api.request.SmallTalkRequest
+import social.entourage.android.api.request.SurveyRequest
+import social.entourage.android.api.request.UserRequest
 import social.entourage.android.authentication.AuthenticationInterceptor
 import social.entourage.android.tools.utils.Const
 import java.util.concurrent.TimeUnit
 
-/**
- * Module related to Application
- * Providing API related dependencies
- */
 class ApiModule {
     val okHttpClient: OkHttpClient
+    val retrofit: Retrofit
+
     val applicationInfoRequest: ApplicationInfoRequest
     val loginRequest: LoginRequest
     val poiRequest: PoiRequest
@@ -37,30 +50,35 @@ class ApiModule {
     val homeRequest: HomeRequest
     val smallTalkRequest: SmallTalkRequest
     val eventsRequest: EventsRequest
-    val actionsRequest : ActionsRequest
-    val surveyRequest : SurveyRequest
-    val discussionsRequest : DiscussionsRequest
-    val appLinksRequest : AppLinksRequest
+    val actionsRequest: ActionsRequest
+    val surveyRequest: SurveyRequest
+    val discussionsRequest: DiscussionsRequest
+    val appLinksRequest: AppLinksRequest
+
+    val associationsRequest: AssociationsRequest
 
     init {
         okHttpClient = providesOkHttpClient()
-        val restAdapter = providesRestAdapter(okHttpClient)
-        applicationInfoRequest = providesApplicationInfoRequest(restAdapter)
-        loginRequest = providesLoginRequest(restAdapter)
-        poiRequest = providesPoiRequest(restAdapter)
-        userRequest = providesUserRequest(restAdapter)
-        entourageRequest = providesEntourageRequest(restAdapter)
-        partnerRequest = providesPartnerRequest(restAdapter)
-        sharingRequest = providesSharingRequest(restAdapter)
-        metaDataRequest = providesMetaDataRequest(restAdapter)
-        groupRequest = providesGroupRequest(restAdapter)
-        homeRequest = providesSummaryRequest(restAdapter)
-        smallTalkRequest = providesSmallTalkRequest(restAdapter)
-        eventsRequest = providesEventsRequest(restAdapter)
-        actionsRequest = providesActionsRequest(restAdapter)
-        surveyRequest = providesSurveyRequest(restAdapter)
-        discussionsRequest = providesDiscussionsRequest(restAdapter)
-        appLinksRequest = providesAppLinksRequest(restAdapter)
+        retrofit = providesRestAdapter(okHttpClient)
+
+        applicationInfoRequest = providesApplicationInfoRequest(retrofit)
+        loginRequest = providesLoginRequest(retrofit)
+        poiRequest = providesPoiRequest(retrofit)
+        userRequest = providesUserRequest(retrofit)
+        entourageRequest = providesEntourageRequest(retrofit)
+        partnerRequest = providesPartnerRequest(retrofit)
+        sharingRequest = providesSharingRequest(retrofit)
+        metaDataRequest = providesMetaDataRequest(retrofit)
+        groupRequest = providesGroupRequest(retrofit)
+        homeRequest = providesSummaryRequest(retrofit)
+        smallTalkRequest = providesSmallTalkRequest(retrofit)
+        eventsRequest = providesEventsRequest(retrofit)
+        actionsRequest = providesActionsRequest(retrofit)
+        surveyRequest = providesSurveyRequest(retrofit)
+        discussionsRequest = providesDiscussionsRequest(retrofit)
+        appLinksRequest = providesAppLinksRequest(retrofit)
+
+        associationsRequest = providesAssociationsRequest(retrofit)
     }
 
     fun providesOkHttpClient(): OkHttpClient {
@@ -105,6 +123,7 @@ class ApiModule {
             .registerTypeAdapter(NewsfeedItem::class.java, NewsfeedItemJsonAdapter())
             .registerTypeAdapter(BaseEntourage::class.java, BaseEntourageJsonAdapter())
             .create()
+
         return Retrofit.Builder()
             .baseUrl(BuildConfig.ENTOURAGE_URL)
             .client(client)
@@ -151,6 +170,7 @@ class ApiModule {
     fun providesSummaryRequest(restAdapter: Retrofit): HomeRequest {
         return restAdapter.create(HomeRequest::class.java)
     }
+
     fun providesSmallTalkRequest(restAdapter: Retrofit): SmallTalkRequest {
         return restAdapter.create(SmallTalkRequest::class.java)
     }
@@ -158,17 +178,24 @@ class ApiModule {
     fun providesEventsRequest(restAdapter: Retrofit): EventsRequest {
         return restAdapter.create(EventsRequest::class.java)
     }
+
     fun providesActionsRequest(restAdapter: Retrofit): ActionsRequest {
         return restAdapter.create(ActionsRequest::class.java)
     }
+
     fun providesSurveyRequest(restAdapter: Retrofit): SurveyRequest {
         return restAdapter.create(SurveyRequest::class.java)
     }
+
     fun providesDiscussionsRequest(restAdapter: Retrofit): DiscussionsRequest {
         return restAdapter.create(DiscussionsRequest::class.java)
     }
+
     fun providesAppLinksRequest(restAdapter: Retrofit): AppLinksRequest {
         return restAdapter.create(AppLinksRequest::class.java)
     }
 
+    fun providesAssociationsRequest(restAdapter: Retrofit): AssociationsRequest {
+        return restAdapter.create(AssociationsRequest::class.java)
+    }
 }

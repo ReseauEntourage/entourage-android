@@ -109,7 +109,7 @@ class CreateEventFragment : Fragment() {
                             if (CommunicationHandler.eventEdited != null) {
                                 R.string.edit
                             } else R.string.create
-                        } else R.string.new_next
+                        } else R.string.next
                     )
             }
         })
@@ -212,7 +212,7 @@ class CreateEventFragment : Fragment() {
         // Check if the current layout direction is RTL
         val isRTL = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
 
-        val originalDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.new_profile_header_orange)
+        val originalDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.header_profile_orange)
 
         if (isRTL && originalDrawable != null) {
             // Create a mirrored version of the drawable

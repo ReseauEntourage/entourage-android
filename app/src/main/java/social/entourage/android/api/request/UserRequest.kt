@@ -58,7 +58,7 @@ interface UserRequest {
     fun deleteSecondaryAddressLocation(): Call<ResponseBody>
 
     //Onboarding Asso
-    @POST("partners/join_request")
+    @POST("partners/join")
     fun updateAssoInfos(@Body asso: ArrayMap<String, Any>): Call<ResponseBody>
 
     //Get Asso detail

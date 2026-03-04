@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="end"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/entourage_little_margin_top"
+    android:paddingEnd="@dimen/entourage_margin_end"
+    android:paddingBottom="@dimen/entourage_little_margin_top">
+
+    <TextView
+        android:id="@+id/btn_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/entourage_little_margin_end"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="@string/home_btn_more_event"
+        android:textColor="@color/light_orange"
+        android:textSize="@dimen/entourage_font_small" />
+
+    <ImageView
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@drawable/arrow_light_orange" />
+</LinearLayout>
