@@ -31,9 +31,6 @@ class HomeSmallTalkAdapter(
 ) : ListAdapter<HomeSmallTalkItem, RecyclerView.ViewHolder>(DiffCallback()) {
 
     companion object {
-        private const val TYPE_MATCH = 40
-        private const val TYPE_WAITING = 41
-        private const val TYPE_CONVERSATION = 42
         private val TYPE_MATCH = R.layout.item_home_small_talk_match
         private val TYPE_WAITING = R.layout.item_home_small_talk_waiting
         private val TYPE_CONVERSATION = R.layout.item_home_small_talk_conversation
