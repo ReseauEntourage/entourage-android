@@ -63,6 +63,7 @@ class HomeEventAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
+        return 20
         return R.layout.home_v2_event_item_layout
     }
 

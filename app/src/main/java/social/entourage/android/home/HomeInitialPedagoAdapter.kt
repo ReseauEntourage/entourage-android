@@ -42,6 +42,7 @@ class HomeInitialPedagoAdapter(private var onItemClickListener: OnItemClick): Re
     }
 
     override fun getItemViewType(position: Int): Int {
+        return 10
         return R.layout.home_v2_initial_pedago_item_layout
     }
 
