@@ -425,6 +425,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="add">Ajouter</string>
     <string name="add_oui">Oui</string>
     <string name="event_places">Nombre de places</string>
+    <string name="event_reserved_female_question">Cet événement est-il réservé aux femmes ?</string>
+    <string name="event_reserved_female_banner">Cet événement est réservé aux femmes</string>
     <string name="event_canceled">Evénement annulé</string>
     <string name="member_since">Membre Entourage depuis</string>
     <string name="profile_date_format">MM/yyyy</string>
@@ -2556,9 +2558,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_v2_help_title_one">Comment créer un groupe ?</string>
     <string name="home_v2_help_title_two">Comment créer un événement ?</string>
     <string name="home_help_title_three">Une question ?\nContactez %s</string>
+    <string name="home_moderator_title">%s, votre contact dédié</string>
+    <string name="home_moderator_message">Je fais parti·e de l\'équipe Entourage et je suis là pour vous accompagner. N\'hésitez pas si vous avez des questions ! 🤗</string>
 
 
-    <string name="home_v2_pedago_item_length_title">"%d min de lecture</string>
+    <string name="home_v2_pedago_item_length_title">"%d min</string>
 
     <string name="home_v2_hz_item_title">"Tiens, ça semble un peu calme par ici…</string>
     <string name="home_v2_hz_item_subtitle">"Et si vous mettiez un peu de solidarité dans votre ville ? Entourage vous donne les clés pour vous lancer !</string>
@@ -2571,6 +2575,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="other">Autre</string>
     <string name="date_today">Aujourd\'hui</string>
     <string name="date_today_lower">aujourd\'hui</string>
+    <string name="date_tomorrow">Demain</string>
     <string name="date_format">%1$d %2$s %3$d</string>
     <string name="date_format_short">%1$d %2$s</string>
 
@@ -3234,4 +3239,10 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="birthday_button">Revenir à la page d\'accueil</string>
 
     <string name="guide_help_orientation_button">Aide &amp; orientation</string>
+
+    <!-- Home Tools -->
+    <string name="home_title_tools">Tes outils solidaires</string>
+    <string name="home_tools_map">Carte des lieux solidaires</string>
+    <string name="home_tools_pedago">Ressources utiles</string>
+    <string name="home_tools_charter">Charte éthique Entourage</string>
 </resources>

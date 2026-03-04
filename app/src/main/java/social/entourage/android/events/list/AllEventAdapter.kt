@@ -82,19 +82,27 @@ class AllEventAdapter(var userId: Int?, var context: Context) :
             }
             holder.binding.eventName.text = event.title
             event.metadata?.startsAt?.let {
-                holder.binding.date.text = Utils.formatEventDateShort(it, context)
+                holder.binding.date.text = Utils.formatEventDateWithTime(it, context)
             }
             holder.binding.location.text = event.metadata?.displayAddress
             holder.binding.participants.text = event.membersCount.toString()
 
-            if (event.author?.communityRoles != null) {
-                if (event.author?.communityRoles?.contains("Équipe Entourage") == true || event.author.communityRoles?.contains("Animateur Entourage") == true) {
-                    holder.binding.ivEntourageLogo.visibility = View.VISIBLE
+            val isReservedFemale = event.metadata?.reserved_female == true
+
+            if (isReservedFemale) {
+                holder.binding.ivWomanLogo.visibility = View.VISIBLE
+                holder.binding.ivEntourageLogo.visibility = View.GONE
+            } else {
+                holder.binding.ivWomanLogo.visibility = View.GONE
+                if (event.author?.communityRoles != null) {
+                    if (event.author?.communityRoles?.contains("Équipe Entourage") == true || event.author.communityRoles?.contains("Animateur Entourage") == true) {
+                        holder.binding.ivEntourageLogo.visibility = View.VISIBLE
+                    } else {
+                        holder.binding.ivEntourageLogo.visibility = View.GONE
+                    }
                 } else {
                     holder.binding.ivEntourageLogo.visibility = View.GONE
                 }
-            } else {
-                holder.binding.ivEntourageLogo.visibility = View.GONE
             }
 
             if (event.member) {

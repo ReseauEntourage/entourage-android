@@ -2338,7 +2338,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_v2_help_title_two">Comment créer un événement ?</string>
     <string name="home_help_title_three">Une question ?\nContactez %s</string>
 
-    <string name="home_v2_pedago_item_length_title">"%d min de lecture</string>
+    <string name="home_v2_pedago_item_length_title">"%d min</string>
 
     <string name="home_v2_hz_item_title">"Tiens, ça semble un peu calme par ici…</string>
     <string name="home_v2_hz_item_subtitle">"Et si vous mettiez un peu de solidarité dans votre ville ? Entourage vous donne les clés pour vous lancer !</string>
@@ -2351,6 +2351,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="other">Autre</string>
     <string name="date_today">Aujourd\'hui</string>
     <string name="date_today_lower">aujourd\'hui</string>
+    <string name="date_tomorrow">Demain</string>
     <string name="date_format">%1$d %2$s %3$d</string>
     <string name="date_format_short">%1$d %2$s</string>
 

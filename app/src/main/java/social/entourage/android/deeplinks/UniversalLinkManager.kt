@@ -136,31 +136,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                     context.startActivity(intent)
                 }
                 pathSegments.contains("outings") -> {
-                    if (pathSegments.contains("papotages")) {
-                        presenter.getEventSmallTalk()
-                    } else if (pathSegments.contains("new")) {
-                        val intent = Intent(context, social.entourage.android.events.create.CreateEventActivity::class.java)
-                        (context as? MainActivity)?.startActivityForResult(intent, 0)
-                    } else if (pathSegments.contains("webinar")) {
-                        presenter.getEventSensibilisation()
-                    } else if (pathSegments.size > 3) {
-                        val outingId = pathSegments[2]
-                        EventFeedFragment.shouldAddToAgenda = true
-                        presenter.getEvent(outingId)
-                    }
-                    else if (pathSegments.size > 2) {
-                        val outingId = pathSegments[2]
-                        presenter.getEvent(outingId)
-
-                    } else {
-                        val intent = Intent(context, MainActivity::class.java)
-                            .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                        //intent.putExtra("fromWelcomeActivityThreeEvent", true)
-                        intent.putExtra("goDiscoverEvent", true)
-                        context.startActivity(intent)
-                        (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-
-                    }
+                    handleOutings(pathSegments)
                 }
                 pathSegments.contains("neighborhoods") || pathSegments.contains("groups") -> {
                     if (pathSegments.size > 2) {
@@ -254,6 +230,33 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                     }
                 }
             }
+        }
+    }
+
+    private fun handleOutings(pathSegments: List<String>) {
+        if (pathSegments.contains("papotages")) {
+            presenter.getEventSmallTalk()
+        } else if (pathSegments.contains("new")) {
+            val intent = Intent(context, social.entourage.android.events.create.CreateEventActivity::class.java)
+            (context as? MainActivity)?.startActivityForResult(intent, 0)
+        } else if (pathSegments.contains("webinar")) {
+            presenter.getEventSensibilisation()
+        } else if (pathSegments.contains("welcome")) {
+            presenter.getEventWelcome()
+        } else if (pathSegments.size > 3) {
+            val outingId = pathSegments[2]
+            EventFeedFragment.shouldAddToAgenda = true
+            presenter.getEvent(outingId)
+        } else if (pathSegments.size > 2) {
+            val outingId = pathSegments[2]
+            presenter.getEvent(outingId)
+        } else {
+            val intent = Intent(context, MainActivity::class.java)
+                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+            //intent.putExtra("fromWelcomeActivityThreeEvent", true)
+            intent.putExtra("goDiscoverEvent", true)
+            context.startActivity(intent)
+            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
 

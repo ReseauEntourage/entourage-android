@@ -44,6 +44,7 @@ class HomeGroupAdapter: RecyclerView.Adapter<HomeGroupAdapter.GroupViewHolder>()
 
     override fun getItemViewType(position: Int): Int {
         return 30
+        return R.layout.home_v2_group_item_layout
     }
 
     override fun onBindViewHolder(holder: GroupViewHolder, position: Int) {

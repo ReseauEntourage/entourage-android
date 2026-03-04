@@ -5,4 +5,6 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:clipToPadding="false"
-    android:paddingStart="@dimen/entourage_marginstart" />
+    android:layout_marginTop="20dp"
+    android:paddingStart="@dimen/entourage_marginstart"
+    android:layoutAnimation="@anim/layout_animation_slide_from_right" />
