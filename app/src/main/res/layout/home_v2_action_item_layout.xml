@@ -5,7 +5,7 @@
     android:id="@+id/layout"
     android:layout_width="@dimen/home_action_card_width"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/entourage_marginstart"
+    android:layout_marginStart="@dimen/entourage_little_margin_five"
     android:layout_marginTop="@dimen/entourage_little_margin_top"
     android:background="@drawable/home_v2_action_item_shape"
     android:padding="16dp">
