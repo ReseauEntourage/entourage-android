@@ -283,17 +283,17 @@ class MainFilterActivity : BaseActivity() {
     }
 
     private fun fetchPlaceDetails(placeId: String) {
-        val placeFields = listOf(Place.Field.ID, Place.Field.DISPLAY_NAME, Place.Field.LOCATION, Place.Field.FORMATTED_ADDRESS)
+        val placeFields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
         val request = FetchPlaceRequest.builder(placeId, placeFields).build()
 
         placesClient.fetchPlace(request).addOnSuccessListener { response ->
             val place = response.place
-            selectedLocation = place.displayName ?: ""
+            selectedLocation = place.name ?: ""
             binding.autoCompleteCityName.setText(selectedLocation)
             val autoCompleteTextView = binding.autoCompleteCityName as AutoCompleteTextView
             autoCompleteTextView.setSelection(autoCompleteTextView.text.length) // Placer le curseur à la fin
             autoCompleteTextView.dismissDropDown()
-            savedLocation = PlaceDetails(place.displayName!!, place.location!!.latitude, place.location!!.longitude)
+            savedLocation = PlaceDetails(place.name!!, place.latLng!!.latitude, place.latLng!!.longitude)
         }.addOnFailureListener { exception ->
             Log.e("PlaceAutocomplete", "Error: ${exception.message}", exception)
         }

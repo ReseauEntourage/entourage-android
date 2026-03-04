@@ -389,16 +389,16 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     }
 
     private fun fetchPlaceDetails(placeId: String) {
-        val placeFields = listOf(Place.Field.ID, Place.Field.DISPLAY_NAME, Place.Field.LOCATION, Place.Field.FORMATTED_ADDRESS)
+        val placeFields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
         val request = FetchPlaceRequest.builder(placeId, placeFields).build()
 
         placesClient.fetchPlace(request).addOnSuccessListener { response ->
             val place = response.place
-            binding.cityAction.setText(place.displayName ?: "", false)
+            binding.cityAction.setText(place.name ?: "", false)
 
-            savedLocation = place.location?.let {
+            savedLocation = place.latLng?.let {
                 PlaceDetails(
-                    place.displayName ?: "",
+                    place.name ?: "",
                     it.latitude,
                     it.longitude
                 )

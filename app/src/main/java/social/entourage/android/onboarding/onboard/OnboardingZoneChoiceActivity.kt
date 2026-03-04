@@ -257,9 +257,9 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun fetchPlaceDetails(placeId: String) {
         val fields = listOf(
             Place.Field.ID,
-            Place.Field.DISPLAY_NAME,
-            Place.Field.LOCATION,
-            Place.Field.FORMATTED_ADDRESS,
+            Place.Field.NAME,
+            Place.Field.LAT_LNG,
+            Place.Field.ADDRESS,
             Place.Field.ADDRESS_COMPONENTS
         )
         val request = FetchPlaceRequest.builder(placeId, fields).build()
@@ -267,8 +267,8 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
         placesClient.fetchPlace(request)
             .addOnSuccessListener { rsp ->
                 val place = rsp.place
-                val latLng = place.location ?: return@addOnSuccessListener
-                val label = place.displayName ?: place.formattedAddress ?: ""
+                val latLng = place.latLng ?: return@addOnSuccessListener
+                val label = place.name ?: place.address ?: ""
                 lastPlaceId = place.id
                 lastDisplayAddress = label
 
