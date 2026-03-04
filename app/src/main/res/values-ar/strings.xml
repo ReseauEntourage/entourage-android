@@ -15,7 +15,7 @@
     <string name="send">يرسل</string>
     <string name="register">يحفظ</string>
     <string name="ignore">يتجاهل</string>
-    <string name="next">يكمل</string>
+    <string name="continue_string">يكمل</string>
     <string name="close">اغلاق</string>
     <string name="edit">للتعديل</string>
     <string name="activate">يُمكَِن</string>
@@ -67,7 +67,7 @@
     <string name="home_help_description">إليك كيفية المشاركة في مشروع Entourage، إذا لم تكن هناك أحداث أو أنشطة في منطقتك:</string>
     <string name="home_help_button_1">قم بالتبرع المالي إلى \nEntourage</string>
     <string name="home_help_button_3">الحديث عن حاشية</string>
-    <string name="home_help_button_4">كن سفيرا</string>
+    <string name="home_help_button_4">كن Animateur Entourage</string>
     <string name="home_help_button_5">برنامج لينكد اوت</string>
     <string name="home_button_help_title">أنا أساعد Entourage بطريقة مختلفة</string>
     <string name="home_button_change_zone">أقوم بتعديل مجال عملي</string>
@@ -152,7 +152,7 @@
     <string name="edit_interests">تغيير اهتماماتي</string>
     <string name="follow">S\الاشتراك</string>
     <string name="following">المشترك</string>
-    <string name="ambassador">سفير</string>
+    <string name="ambassador">Animateur Entourage</string>
 
     <string name="group_name">اسم المجموعة</string>
     <string name="event_name">اسم الحدث \</string>
@@ -174,7 +174,7 @@
     <string name="report_comment">الإبلاغ عن التعليق</string>
     <string name="report_eventt">الإبلاغ عن الحدث</string>
     <string name="why_reporting">أخبرنا عن سبب بلاغك</string>
-    <string name="new_next">التالي</string>
+    <string name="next">التالي</string>
     <string name="back">خلف</string>
     <string name="cancel_event_continue">يكمل</string>
     <string name="previous">سابق</string>
@@ -593,22 +593,14 @@
     <string name="actions_tab_contribs">مساهمات</string>
     <string name="actions_tab_demands">طلب مساعدة</string>
 
-    <string name="action_bt_my_actions">إعلاناتي</string>
-
     <string name="action_contrib_empty_state_title">لا توجد مساهمات تطابق بحثك</string>
     <string name="action_contrib_empty_state_desc">يمكنك توسيع مجال البحث الخاص بك أو إنشاء مساهمة</string>
 
     <string name="action_demand_empty_state_title">لا توجد طلبات تطابق بحثك</string>
     <string name="action_demand_empty_state_desc">يمكنك توسيع حقل البحث الخاص بك أو إنشاء طلب</string>
 
-    <string name="action_bt_cat_filters">فئات</string>
-    <string name="action_cat_filters_title">تصفية حسب الفئات</string>
-    <string name="action_location_filter_title">التصفية حسب الموقع</string>
-
     <string name="action_menu_create_demand">إنشاء طلب</string>
     <string name="action_menu_create_contrib">إنشاء مساهمة</string>
-
-    <string name="action_my_actions">إعلاناتي</string>
 
     <string name="action_my_empty_title">لم تقم بنشر أي إعلانات</string>
     <string name="action_my_empty_subtitle">يمكنك إنشاء مساهمة أو طلب بالضغط على "+" في صفحة "المساعدة المتبادلة".</string>
@@ -1501,7 +1493,6 @@
 
     <string name="create_action_wizard_p3_title">السؤال الأخير</string>
     <string name="create_action_wizard_p3_description">الموافقة ضرورية لتتمكن من بث تحركك التضامني على الشبكة.\n\nإجراءك معلق حاليًا. سوف يستجيب المشرف بسرعة كبيرة لمساعدتك.</string>
-    <string name="create_action_wizard_p3_option1">@string/next</string>
 
     <string name="create_action_wizard_disclaimer">يوضح &lt;a href=\'%1$s\'&gt;ميثاق أخلاقيات Entourage&lt;/a&gt; أهمية الموافقة.</string>
 
@@ -1765,7 +1756,7 @@
     <string name="menu_info_first_guide">دليلنا للجرأة للقاء</string>
     <string name="menu_info_second_gift">تبرع للحاشية</string>
     <string name="menu_info_second_help">المساعدة في إعادة الإدماج</string>
-    <string name="menu_info_second_ambassador">كن سفيرًا متطوعًا</string>
+    <string name="menu_info_second_ambassador">كن Animateur Entourage متطوعًا</string>
     <string name="menu_info_second_good">إنشاء روابط مع Good Waves</string>
     <string name="menu_info_second_title">❤️ شارك</string>
     <string name="menu_info_third_info">كيف تتحدث مع الأشخاص المعزولين عن ذلك؟</string>
@@ -2030,8 +2021,8 @@
     <string name="partner_remove_ok">تمت إزالة الشارة</string>
 
     <string name="member_type_organization">اللص</string>
-    <string name="role_ambassador">سفير</string>
-    <string name="role_admin">سفير</string>
+    <string name="role_ambassador">Animateur Entourage</string>
+    <string name="role_admin">Animateur Entourage</string>
 
     <string name="user_profile_display_title">حساب تعريفي</string>
     <string name="user_button_confirm_changes">أكد</string>
@@ -2168,7 +2159,6 @@
     <string name="cult_sport_asso">المبادرات الثقافية والرياضية</string>
     <string name="serv_pub_asso">خدمة عامة</string>
     <string name="autre_asso">آحرون</string>
-    <string name="next_">التالي</string>
 
     <string name="title_association">منظمة</string>
     <string name="title_asso_donation">قبول التبرعات</string>
@@ -2760,4 +2750,7 @@
     <string name="onboard_sms_wait_title">ألم تستلم رمز تسجيل الدخول بعد؟</string>
     <string name="onboard_sms_wait_countdown">يمكنك طلب رمز جديد خلال %1$s</string>
 
+    <string name="guide_help_orientation_button">المساعدة والتوجيه</string>
+    <string name="home_title_small_talk">انضم إلى مناقشة تضامنية</string>
+    <string name="small_talk_subtitle_match">نوصلك بمجموعة صغيرة من الأشخاص الذين يشاركونك اهتماماتك، في أي مكان في فرنسا.</string>
 </resources>

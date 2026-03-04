@@ -15,7 +15,7 @@
     <string name="send">Envoyer</string>
     <string name="register">Enregistrer</string>
     <string name="ignore">Ignorer</string>
-    <string name="next">Continuer</string>
+    <string name="continue_string">Continuer</string>
     <string name="close">Fermer</string>
     <string name="edit">Modifier</string>
     <string name="activate">Activer</string>
@@ -68,7 +68,7 @@
     <string name="home_help_button_1">Faire un don financier à\nEntourage</string>
     <string name="home_help_button_2">Devenir reporter pour\nEntourage</string>
     <string name="home_help_button_3">Parler d’Entourage</string>
-    <string name="home_help_button_4">Devenir Ambassadeur</string>
+    <string name="home_help_button_4">Devenir Animateur Entourage</string>
     <string name="home_help_button_5">Programme LinkedOut</string>
     <string name="home_button_help_title">J’aide Entourage autrement</string>
     <string name="home_button_change_zone">Je modifie ma zone d’action</string>
@@ -156,7 +156,7 @@ Découvrez les initiatives de votre quartier et tissez des liens avec vos voisin
     <string name="edit_interests">Modifier mes centres d’interêt</string>
     <string name="follow">S\'abonner</string>
     <string name="following">Abonné</string>
-    <string name="ambassador">Ambassadeur</string>
+    <string name="ambassador">Animateur Entourage</string>
 
     <string name="group_name">Nom du groupe</string>
     <string name="event_name">Nom de l\'événement</string>
@@ -183,7 +183,7 @@ Découvrez les initiatives de votre quartier et tissez des liens avec vos voisin
     <string name="report_comment">Signaler le message</string>
     <string name="report_eventt">Signaler l’événement</string>
     <string name="why_reporting">Dites-nous la raison de votre signalement</string>
-    <string name="new_next">Suivant</string>
+    <string name="next">Suivant</string>
     <string name="back">Retour</string>
     <string name="cancel_event_continue">Continuer</string>
     <string name="previous">Précedent</string>
@@ -617,23 +617,14 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="action_date_list">%s</string>
 
-    <string name="action_bt_my_actions">Mes annonces</string>
-
     <string name="action_contrib_empty_state_title">Aucune contribution ne correspond à votre recherche</string>
     <string name="action_contrib_empty_state_desc">Vous pouvez élargir votre champ de recherche ou créer une contribution</string>
 
     <string name="action_demand_empty_state_title">Aucune demande ne correspond à votre recherche</string>
     <string name="action_demand_empty_state_desc">Vous pouvez élargir votre champ de recherche ou créer une demande</string>
 
-    <string name="action_bt_cat_filters">Catégories</string>
-    <string name="action_cat_filters_title">Filtrer par catégories</string>
-    <string name="action_location_filter_title">Filtrer par localisation</string>
-
     <string name="action_menu_create_demand">Créer une demande</string>
     <string name="action_menu_create_contrib">Créer une contribution</string>
-
-    <string name="action_my_actions">Mes annonces</string>
-
     <string name="action_my_empty_title">Vous n’avez publié aucune annonce</string>
     <string name="action_my_empty_subtitle">Vous pouvez créer une contribution ou une demande en cliquant sur le « + » de la page « Entraide »</string>
 
@@ -1550,7 +1541,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="create_action_wizard_p3_title">DERNIÈRE QUESTION</string>
     <string name="create_action_wizard_p3_description">Le consentement est indispensable pour pouvoir diffuser votre action solidaire sur le réseau.\n\nVotre action est actuellement en suspens. Un modérateur va vous répondre très rapidement pour vous aider.</string>
-    <string name="create_action_wizard_p3_option1">@string/next</string>
 
     <string name="create_action_wizard_disclaimer">La &lt;a href=\'%1$s\'>Charte éthique d’Entourage&lt;/a> vous explique pourquoi le consentement est indispensable.</string>
 
@@ -1814,7 +1804,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="menu_info_first_guide">Notre guide pour oser la rencontre</string>
     <string name="menu_info_second_gift">Faire un don à Entourage</string>
     <string name="menu_info_second_help">Aider à la réinsertion</string>
-    <string name="menu_info_second_ambassador">Devenir Ambassadeur bénévole</string>
+    <string name="menu_info_second_ambassador">Devenir Animateur Entourage bénévole</string>
     <string name="menu_info_second_good">Créer des liens avec les Bonnes Ondes</string>
     <string name="menu_info_second_title">❤️  S’ENGAGER</string>
     <string name="menu_info_third_info">Comment en parler aux personnes isolées ?</string>
@@ -2061,8 +2051,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="partner_remove_ok">Badge enlevé</string>
 
     <string name="member_type_organization">Maraudeur</string>
-    <string name="role_ambassador">Ambassadeur</string>
-    <string name="role_admin">Ambassadeur</string>
+    <string name="role_ambassador">Animateur Entourage</string>
+    <string name="role_admin">Animateur Entourage</string>
 
     <string name="user_profile_display_title">PROFIL</string>
     <string name="user_button_confirm_changes">Confirmer</string>
@@ -2163,7 +2153,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="user_action_zone_disclaimer">Cette information est strictement confidentielle et n’est partagée à personne. Vous pouvez la modifier dans vos réglages.</string>
     <string name="user_action_zone_hint">1 avenue Jean Jaurès…</string>
     <string name="user_action_zone_no_address_error">Veuillez ajouter une adresse</string>
-    <string name="user_action_zone_send_ok">Adresse enregistrée</string>
+    <string name="user_action_zone_send_ok">Votre profil a été mis à jour</string>
     <string name="user_action_zone_send_failed">L\'adresse n\'a pas été enregistrée</string>
 
     <!-- Edit profile -->
@@ -2199,7 +2189,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="cult_sport_asso">Initiatives culturelles et sportives</string>
     <string name="serv_pub_asso">Service Public</string>
     <string name="autre_asso">Autres</string>
-    <string name="next_">Suivant</string>
 
     <string name="title_association">Association</string>
     <string name="title_asso_donation">Accepte les dons</string>
@@ -2349,7 +2338,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_v2_help_title_two">Comment créer un événement ?</string>
     <string name="home_help_title_three">Une question ?\nContactez %s</string>
 
-    <string name="home_v2_pedago_item_length_title">"%d min de lecture</string>
+    <string name="home_v2_pedago_item_length_title">"%d min</string>
 
     <string name="home_v2_hz_item_title">"Tiens, ça semble un peu calme par ici…</string>
     <string name="home_v2_hz_item_subtitle">"Et si vous mettiez un peu de solidarité dans votre ville ? Entourage vous donne les clés pour vous lancer !</string>
@@ -2362,6 +2351,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="other">Autre</string>
     <string name="date_today">Aujourd\'hui</string>
     <string name="date_today_lower">aujourd\'hui</string>
+    <string name="date_tomorrow">Demain</string>
     <string name="date_format">%1$d %2$s %3$d</string>
     <string name="date_format_short">%1$d %2$s</string>
 
@@ -2424,7 +2414,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="action_show_charte"><u>Charte éthique</u></string>
     <string name="signal_a_problem"><u>Signaler un problème</u></string>
     <string name="login_button_resend_code"><u>Redemander un code</u></string>
-    <string name="login_change_phone"><u>J’ai changé de numéro de téléphone</u></string>
+    <string name="login_change_phone"><u>Changer mon numéro</u></string>
     <string name="newsfeed_load_more_button"><u>Rechercher plus loin.</u></string>
     <string name="newsfeed_tab_events_no_items_button"><u>Retrouvez plus d\'événements d\'Entourage ici</u></string>
     <string name="pre_onboard_choice_about"><u>Qui est l’association Entourage ?</u></string>
@@ -2714,6 +2704,23 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="contact_email">contact@entourage.social</string>
     <string name="error_no_email">Aucune application e-mail trouvée</string>
     <string name="terms_and_conditions_html"><![CDATA[En vous inscrivant, vous acceptez nos <a href="https://www.entourage.social/conditions-generales-dutilisation">Conditions Générales d’Utilisation</a> et notre <a href="https://www.entourage.social/politique-de-confidentialite">Politique de confidentialité</a>.]]></string>
+    <string name="login_forgot_title">Vous avez oublié votre code ? </string>
+    <string name="login_change_phone_question">Vous avez changé de numéro de téléphone ?</string>
 
+    <string name="enhanced_onboarding_asso_wishes_title">Comment souhaitez-vous agir au sein de la communauté d\’Entourage</string>
+    <string name="enhanced_onboarding_asso_wishes_description">(Eh oui, Vous avez le droit de choisir plusieurs options !)</string>
+
+    <string name="enhanced_onboarding_asso_wish_outings">Relayer vos événements de convivialité sur l\’application</string>
+    <string name="enhanced_onboarding_asso_wish_neighborhoods">Orienter vos bénéficiaires aux événements de convivialité</string>
+    <string name="enhanced_onboarding_asso_wish_both_actions">Donner ou solliciter un coup de pouce</string>
+    <string name="enhanced_onboarding_asso_title">Présentez votre association à la communauté</string>
+    <string name="enhanced_onboarding_asso_subtitle">Ajoutez votre logo et une courte description pour que les membres de la communauté sachent qui vous êtes et ce que vous faites.</string>
+    <string name="enhanced_onboarding_asso_btn_upload_logo">Importer un logo</string>
+    <string name="enhanced_onboarding_asso_description_label">Description de votre association</string>
+    <string name="enhanced_onboarding_asso_description_hint">Ex. : Association de quartier œuvrant pour le lien social via des événements ouverts à tous.</string>
+    <string name="enhanced_onboarding_asso_btn_later">Plus tard</string>
+    <string name="enhanced_onboarding_asso_btn_finish">Terminer</string>
+
+    <string name="guide_help_orientation_button">Aide &amp; orientation</string>
 </resources>
 

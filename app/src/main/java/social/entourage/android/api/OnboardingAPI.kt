@@ -1,7 +1,6 @@
 package social.entourage.android.api
 
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.collection.ArrayMap
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -16,12 +15,18 @@ import social.entourage.android.api.model.PartnerCreateBody
 import social.entourage.android.api.model.PartnerCreateWrapper
 import social.entourage.android.api.model.PartnerResponse
 import social.entourage.android.api.model.User
-import social.entourage.android.api.request.*
+import social.entourage.android.api.request.EventWeekAverageResponse
+import social.entourage.android.api.request.EventsRequest
+import social.entourage.android.api.request.LoginRequest
+import social.entourage.android.api.request.LoginResponse
+import social.entourage.android.api.request.LoginWrapper
+import social.entourage.android.api.request.PartnersResponse
+import social.entourage.android.api.request.UserRequest
+import social.entourage.android.api.request.UserResponse
 import social.entourage.android.authentication.AuthenticationController
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
-import kotlin.collections.set
 
 /**
  * Created by Jr on 11/05/2020.
@@ -37,23 +42,49 @@ class OnboardingAPI {
     private val loginService: LoginRequest
         get() = EntourageApplication.get().apiModule.loginRequest
 
+    private val eventsService: EventsRequest
+        get() = EntourageApplication.get().apiModule.eventsRequest
+
     /**********************
      * Create user
      */
     fun createUser(
         tempUser: User,
         hasConsent: Boolean,
+        discoverySource: String?,
+        companyId: String?,
+        eventId: String?,
         listener: (isOK: Boolean, error: String?) -> Unit
     ) {
         val user: MutableMap<String, Any> = ArrayMap()
-        user["phone"] = tempUser.phone ?: ""
-        user["first_name"] = tempUser.firstName ?: ""
-        user["last_name"] = tempUser.lastName ?: ""
-        user["email"] = tempUser.email ?: ""
+
+        val phone = tempUser.phone?.trim().orEmpty()
+        val firstName = tempUser.firstName?.trim().orEmpty()
+        val lastName = tempUser.lastName?.trim().orEmpty()
+
+        user["phone"] = phone
+        user["first_name"] = firstName
+        user["last_name"] = lastName
+
+        val email = tempUser.email?.trim()
+        if (!email.isNullOrEmpty()) user["email"] = email
+
         user["newsletter_subscription"] = hasConsent
 
-        tempUser.gender?.let { user["gender"] = it }
-        tempUser.birthday?.let { user["birthdate"] = it } // ✅ birthdate (clé API)
+        val gender = tempUser.gender?.trim()
+        if (!gender.isNullOrEmpty()) user["gender"] = gender
+
+        val birthdate = tempUser.birthday?.trim()
+        if (!birthdate.isNullOrEmpty()) user["birthdate"] = birthdate
+
+        val ds = discoverySource?.trim()
+        if (!ds.isNullOrEmpty()) user["discovery_source"] = ds
+
+        val cid = companyId?.trim()
+        if (!cid.isNullOrEmpty()) user["sf_entreprise_id"] = cid
+
+        val eid = eventId?.trim()
+        if (!eid.isNullOrEmpty()) user["sf_campaign_id"] = eid
 
         val request = ArrayMap<String, Any>()
         request["user"] = user
@@ -80,6 +111,31 @@ class OnboardingAPI {
         })
     }
 
+    fun getEventsWeekAverage(
+        latitude: Double,
+        longitude: Double,
+        travelDistance: Int,
+        listener: (isOK: Boolean, average: Float?) -> Unit
+    ) {
+        eventsService.getEventsWeekAverage(latitude, longitude, travelDistance).enqueue(object : Callback<EventWeekAverageResponse> {
+            override fun onResponse(
+                call: Call<EventWeekAverageResponse>,
+                response: Response<EventWeekAverageResponse>
+            ) {
+                if (response.isSuccessful) {
+                    listener(true, response.body()?.average)
+                } else {
+                    listener(false, null)
+                }
+            }
+
+            override fun onFailure(call: Call<EventWeekAverageResponse>, t: Throwable) {
+                listener(false, null)
+            }
+        })
+    }
+
+
     /**********************
      * Login
      */
@@ -90,30 +146,40 @@ class OnboardingAPI {
     ) {
         loginService.login(LoginWrapper(phoneNumber, smsCode))
             .enqueue(object : Callback<LoginResponse> {
-                override fun onResponse(
-                    call: Call<LoginResponse>,
-                    response: Response<LoginResponse>
-                ) {
+                override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                     if (response.isSuccessful) {
                         response.body()?.user?.let {
                             authenticationController.saveUser(it)
-                            authenticationController.saveUserPhoneAndCode(
-                                phoneNumber,
-                                smsCode
-                            )
+                            authenticationController.saveUserPhoneAndCode(phoneNumber, smsCode)
                         }
 
-                        listener(true, response.body(), null)
+                        listener(true,response.body(),null)
                     } else {
                         val errorString = response.errorBody()?.string()
-                        listener(false, null, errorString)
+                        listener(false,null,errorString)
                     }
                 }
 
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    listener(false, null, null)
+                    listener(false,null,null)
                 }
             })
+    }
+
+    fun syncLogin(phoneNumber: String, smsCode: String, listener: (isOK: Boolean, loginResponse: LoginResponse?, error: String?) -> Unit) {
+        val response = loginService.login(LoginWrapper(phoneNumber, smsCode))
+            .execute()
+        if (response.isSuccessful) {
+            response.body()?.user?.let {
+                authenticationController.saveUser(it)
+                authenticationController.saveUserPhoneAndCode(phoneNumber, smsCode)
+            }
+
+            listener(true,response.body(),null)
+        } else {
+            val errorString = response.errorBody()?.string()
+            listener(false,null,errorString)
+        }
     }
 
     /**********************

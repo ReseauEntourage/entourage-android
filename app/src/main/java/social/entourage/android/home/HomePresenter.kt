@@ -8,14 +8,12 @@ import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.Events
-import social.entourage.android.api.model.Group
 import social.entourage.android.api.request.*
 import social.entourage.android.api.model.notification.InAppNotification
 import social.entourage.android.api.model.notification.InAppNotificationPermission
 import social.entourage.android.api.model.Pedago
 import social.entourage.android.api.model.Summary
 import social.entourage.android.events.list.EVENTS_PER_PAGE
-import social.entourage.android.groups.list.groupPerPage
 
 class HomePresenter: ViewModel() {
     var getSummarySuccess = MutableLiveData<Boolean>()
@@ -32,13 +30,11 @@ class HomePresenter: ViewModel() {
     var notificationsInApp = MutableLiveData<MutableList<InAppNotification>?>()
     var notificationInApp = MutableLiveData<InAppNotification?>()
 
-    //var getAllMyGroups = MutableLiveData<MutableList<Group>>()
     var getAllEvents = MutableLiveData<MutableList<Events>>()
     var getAllActions = MutableLiveData<MutableList<Action>>()
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
-    var isLastPageGroup: Boolean = false
     var isLastPageEvent: Boolean = false
     var isLastPageAction: Boolean = false
 
@@ -60,24 +56,6 @@ class HomePresenter: ViewModel() {
                 }
             })
     }
-
-//    fun getMyGroups(page: Int, per: Int, userId: Int) {
-//        EntourageApplication.get().apiModule.groupRequest.getMyGroups(userId, page, per)
-//            .enqueue(object : Callback<GroupsListWrapper> {
-//                override fun onResponse(
-//                    call: Call<GroupsListWrapper>,
-//                    response: Response<GroupsListWrapper>
-//                ) {
-//                    response.body()?.let { allGroupsWrapper ->
-//                        if (allGroupsWrapper.allGroups.size < groupPerPage) isLastPageGroup = true
-//                        getAllMyGroups.value = allGroupsWrapper.allGroups
-//                    }
-//                }
-//
-//                override fun onFailure(call: Call<GroupsListWrapper>, t: Throwable) {
-//                }
-//            })
-//    }
 
     fun getAllEvents(page: Int, per: Int,distance:Int?,latitude:Double?,longitude:Double?,period:String) {
         EntourageApplication.get().apiModule.eventsRequest.getAllEvents(page, per,distance,latitude,longitude,period)

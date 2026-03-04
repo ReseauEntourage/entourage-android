@@ -44,6 +44,7 @@
         tools:node="remove" />
 
     <queries>
+        <package android:name="com.google.android.gms" />
         <intent>
             <action android:name="android.support.customtabs.action.CustomTabsService" />
         </intent>
@@ -107,9 +108,6 @@
         <activity
             android:name=".welcome.WelcomeFourActivity"
             android:exported="false" />
-        <activity
-            android:name=".welcome.WelcomeTestActivity"
-            android:exported="false" />
         <activity android:name=".members.MembersActivity"
             android:exported="false" />
         <activity android:name=".survey.CreateSurveyActivity"
@@ -121,32 +119,23 @@
         <activity android:name=".comment.ImageZoomActivity"
             />
         <activity
-            android:name=".home.pedago.PedagoDetailActivity"
-            android:exported="false" />
-        <activity android:name=".discussions.WebViewActivityForTest">
-        </activity>
+            android:name=".profile.association.AssociationProfileActivity"
+            android:exported="false"
+            />
+
         <activity
-            android:name=".user.languechoose.ActivityChooseLanguage"
+            android:name=".home.pedago.PedagoDetailActivity"
             android:exported="false" />
         <activity
             android:name=".discussions.DetailConversationActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
-            android:name=".discussions.imageviewier.ImageListActivity"
+            android:name=".tools.image_viewer.ImageListActivity"
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
-            android:name=".actions.ActionLocationFilterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".actions.ActionCategoriesFiltersActivity"
-            android:exported="false" />
-        <activity
             android:name=".actions.create.CreateActionActivity"
-            android:exported="false" />
-        <activity
-            android:name=".actions.list.me.MyActionsListActivity"
             android:exported="false" />
         <activity
             android:name=".actions.detail.ActionDetailActivity"
@@ -177,7 +166,7 @@
             android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
-            android:name=".tools.image_viewer.ImageDialogActivity"
+            android:name=".tools.image_viewer.ImageViewerActivity"
             android:exported="false" />
         <activity
             android:name=".events.create.CreateEventActivity"
@@ -191,6 +180,9 @@
             android:exported="false" />
         <activity
             android:name=".home.pedago.PedagoListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".home.BirthdayActivity"
             android:exported="false" />
 
         <!-- abstract class declared here to make sure child classes work -->
@@ -262,7 +254,7 @@
          <activity
              android:name=".MainActivity"
              android:exported="true"
-             android:launchMode="singleInstance"
+             android:launchMode="singleTask"
              android:screenOrientation="portrait">
              <intent-filter>
                  <action android:name="android.intent.action.MAIN" />
@@ -309,6 +301,7 @@
          <activity
              android:name=".onboarding.login.LoginActivity"
              android:screenOrientation="portrait"
+             android:theme="@style/AppMaterial"
              android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".profile.ProfileFullActivity"
@@ -344,13 +337,13 @@
             android:name=".small_talks.SmallTalkGroupFoundActivity"
             android:windowSoftInputMode="adjustPan"
             />
-         <service
-             android:name=".notifications.EntourageFirebaseMessagingService"
-             android:exported="false">
-             <intent-filter>
-                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
-             </intent-filter>
-         </service>
+        <service
+            android:name=".notifications.EntourageFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
          <provider
              android:name="androidx.core.content.FileProvider"
@@ -361,7 +354,6 @@
                  android:name="android.support.FILE_PROVIDER_PATHS"
                  android:resource="@xml/provider_paths" />
          </provider>
-
 
          <meta-data
              android:name="com.google.firebase.messaging.default_notification_icon"

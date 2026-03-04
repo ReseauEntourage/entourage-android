@@ -45,6 +45,11 @@ class GroupEventsListAdapter(
 
     var context: Context
 
+    private val eventDateFormatter: SimpleDateFormat by lazy {
+        val locale = LanguageManager.getLocaleFromPreferences(context)
+        SimpleDateFormat(context.getString(R.string.event_date_time), locale)
+    }
+
     override fun onCreateSectionViewHolder(
         sectionViewGroup: ViewGroup,
         viewType: Int
@@ -99,13 +104,7 @@ class GroupEventsListAdapter(
         }
         childViewHolder.binding.eventName.text = child.title
         child.metadata?.startsAt?.let {
-            var locale = LanguageManager.getLocaleFromPreferences(context)
-            childViewHolder.binding.date.text = SimpleDateFormat(
-                childViewHolder.itemView.context.getString(R.string.event_date_time),
-                locale
-            ).format(
-                it
-            )
+            childViewHolder.binding.date.text = eventDateFormatter.format(it)
         }
         childViewHolder.binding.location.text = child.metadata?.displayAddress
         childViewHolder.binding.participants.text = child.membersCount.toString()

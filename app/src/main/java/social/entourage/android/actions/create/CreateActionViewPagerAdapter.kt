@@ -18,7 +18,7 @@ class CreateActionViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: 
         return when (position) {
             0 -> CreateActionStepCategoryFragment()
             1 -> CreateActionStepDescriptionFragment()
-            2 -> CreateActionStepThreeFragment()
+            2 -> CreateActionStepLocationFragment()
             else -> CreateActionStepFourFragment()
         }
     }

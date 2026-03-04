@@ -5,9 +5,13 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Html
 import android.text.method.LinkMovementMethod
+import android.view.Gravity
+import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.content.edit
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageApplication.Companion.KEY_ONBOARDING_SHOW_POP_FIRSTLOGIN
 import social.entourage.android.MainActivity
@@ -27,12 +31,12 @@ import java.util.Locale
 
 class LoginActivity : BaseActivity() {
 
-    lateinit var authenticationController: AuthenticationController
-    lateinit var binding:ActivityLoginBinding
+    private lateinit var authenticationController: AuthenticationController
+    private lateinit var binding: ActivityLoginBinding
 
     private var countDownTimer: CountDownTimer? = null
     private var timeOut = TIME_BEFORE_CALL
-    var isLoading = false
+    private var isLoading = false
 
     private lateinit var alertDialog: CustomProgressDialog
 
@@ -44,7 +48,7 @@ class LoginActivity : BaseActivity() {
         setupViews()
         setContentView(binding.root)
 
-        updatePaddingTopForEdgeToEdge(binding.layout)
+        //binding.layoutHeader?.let { updatePaddingTopForEdgeToEdge(it) }
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_LOGIN_LOGIN)
     }
 
@@ -55,52 +59,63 @@ class LoginActivity : BaseActivity() {
 
     private fun setEditTextAlignmentBasedOnLocale() {
         val locale = Locale.getDefault()
-
-        // Définir l'alignement pour chaque EditText concerné
         setEditTextGravity(binding.uiLoginPhoneEtPhone, locale)
         setEditTextGravity(binding.uiLoginEtCode, locale)
     }
 
-    private fun setEditTextGravity(editText: EditText, locale: Locale) {
+    private fun setEditTextGravity(view: View, locale: Locale) {
+        val editText = extractEditText(view) ?: return
         if (locale.language == "ar") {
-            editText.gravity = android.view.Gravity.CENTER_VERTICAL or android.view.Gravity.END
-            editText.textAlignment = android.view.View.TEXT_ALIGNMENT_VIEW_END
+            editText.gravity = Gravity.CENTER_VERTICAL or Gravity.END
+            editText.textAlignment = View.TEXT_ALIGNMENT_VIEW_END
         } else {
-            editText.gravity = android.view.Gravity.CENTER_VERTICAL or android.view.Gravity.START
-            editText.textAlignment = android.view.View.TEXT_ALIGNMENT_VIEW_START
+            editText.gravity = Gravity.CENTER_VERTICAL or Gravity.START
+            editText.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
         }
     }
 
-    fun setupViews() {
-        setEditTextAlignmentBasedOnLocale()
-        binding.onboardLoginMainlayout.setOnTouchListener { view, _ ->
-            view.hideKeyboard()
-            view.performClick()
-            true
+    private fun extractEditText(view: View): EditText? {
+        return when (view) {
+            is TextInputEditText -> view
+            is TextInputLayout -> view.editText
+            is EditText -> view
+            else -> null
         }
+    }
 
-       binding.iconBack.setOnClickListener {
+    private fun getInputText(view: View): String {
+        return extractEditText(view)?.text?.toString().orEmpty()
+    }
+
+    private fun isInputNotEmpty(view: View): Boolean {
+        return getInputText(view).isNotEmpty()
+    }
+
+    private fun setupViews() {
+        setEditTextAlignmentBasedOnLocale()
+
+        binding.iconBack?.setOnClickListener {
             goBack()
         }
 
         binding.uiLoginButtonResendCode.setOnClickListener {
-            if(binding.uiLoginPhoneEtPhone.text.toString().isNotEmpty()) {
+            if (isInputNotEmpty(binding.uiLoginPhoneEtPhone)) {
                 CustomAlertDialog.showWithCancelFirst(
                     this,
                     getString(R.string.login_button_resend_code),
                     String.format(
                         getString(R.string.login_button_resend_code_text),
-                        binding.uiLoginPhoneEtPhone.text.toString()
+                        getInputText(binding.uiLoginPhoneEtPhone)
                     ),
                     getString(R.string.login_button_resend_code_action)
                 ) {
                     checkAndResendCode()
                 }
             } else {
-                val message =
-                    String.format(getString(R.string.error_login_phone_length),
-                        MINIMUM_PHONE_CHARACTERS
-                    )
+                val message = String.format(
+                    getString(R.string.error_login_phone_length),
+                    MINIMUM_PHONE_CHARACTERS
+                )
                 showError(R.string.attention_pop_title, message, R.string.close)
             }
         }
@@ -114,43 +129,25 @@ class LoginActivity : BaseActivity() {
             startActivity(intent)
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
-        val text = getString(R.string.terms_and_conditions_html)
-        binding.tvConditionGenerales.text = Html.fromHtml(text)
-        binding.tvConditionGenerales.movementMethod = LinkMovementMethod.getInstance()
+
     }
-
-    /*fun changeLocale(activity: Activity, locale: Locale) {
-        val resources = activity.resources
-        val configuration = resources.configuration
-        configuration.setLocale(locale)
-        resources.updateConfiguration(configuration, resources.displayMetrics)
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            activity.applicationContext.createConfigurationContext(configuration)
-        }
-    }*/
-
-    /********************************
-     * Methods
-     ********************************/
 
     private fun activateTimer() {
         cancelTimer()
         timeOut = TIME_BEFORE_CALL
-        countDownTimer = object : CountDownTimer(600000, 1000L) {
+        countDownTimer = object : CountDownTimer(600000, 1000) {
             override fun onFinish() {
                 cancelTimer()
             }
 
-            override fun onTick(p0: Long) {
-                timeOut -= 1
+            override fun onTick(millisUntilFinished: Long) {
+                timeOut = (millisUntilFinished / 1000).toInt()
             }
         }
-
         countDownTimer?.start()
     }
 
-    fun cancelTimer() {
+    private fun cancelTimer() {
         countDownTimer?.cancel()
         countDownTimer = null
     }
@@ -173,7 +170,6 @@ class LoginActivity : BaseActivity() {
         }
         startActivity(intent)
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-
     }
 
     @Deprecated("Deprecated in Java")
@@ -182,30 +178,25 @@ class LoginActivity : BaseActivity() {
         goBack()
     }
 
-    /********************************
-     * Methods Valide inputs
-     ********************************/
-
-    private fun validateInputsAndLogin():Boolean {
+    private fun validateInputsAndLogin(): Boolean {
         val countryCode = binding.uiLoginPhoneCcpCode.selectedCountryCodeWithPlus
-        val phoneNumber = binding.uiLoginPhoneEtPhone.text.toString()
-        val codePwd = binding.uiLoginEtCode.text.toString()
+        val phoneNumber = getInputText(binding.uiLoginPhoneEtPhone)
+        val codePwd = getInputText(binding.uiLoginEtCode)
 
         var isValidate = true
         var message = ""
 
         if (phoneNumber.length < MINIMUM_PHONE_CHARACTERS) {
             isValidate = false
-            message =
-                String.format(getString(R.string.error_login_phone_length),
-                    MINIMUM_PHONE_CHARACTERS
-                )
+            message = String.format(
+                getString(R.string.error_login_phone_length),
+                MINIMUM_PHONE_CHARACTERS
+            )
         }
 
         if (isValidate && codePwd.length != 6) {
             isValidate = false
             message = getString(R.string.error_login_code_lenght)
-
         }
 
         if (!isValidate) {
@@ -223,6 +214,7 @@ class LoginActivity : BaseActivity() {
             )
             return false
         }
+
         if (!isLoading) {
             isLoading = true
             login(phoneWithCode, codePwd)
@@ -232,13 +224,13 @@ class LoginActivity : BaseActivity() {
 
     private fun checkAndResendCode() {
         val countryCode = binding.uiLoginPhoneCcpCode.selectedCountryCodeWithPlus
-        val phoneNumber = binding.uiLoginPhoneEtPhone.text.toString()
+        val phoneNumber = getInputText(binding.uiLoginPhoneEtPhone)
 
         if (phoneNumber.length <= MINIMUM_PHONE_CHARACTERS) {
-            val message =
-                String.format(getString(R.string.error_login_phone_length),
-                    MINIMUM_PHONE_CHARACTERS
-                )
+            val message = String.format(
+                getString(R.string.error_login_phone_length),
+                MINIMUM_PHONE_CHARACTERS
+            )
             showError(R.string.attention_pop_title, message, R.string.close)
             return
         }
@@ -260,12 +252,7 @@ class LoginActivity : BaseActivity() {
         }
     }
 
-    /********************************
-     * Network
-     ********************************/
-
-    fun login(phone: String, codePwd: String) {
-
+    private fun login(phone: String, codePwd: String) {
         alertDialog.show(R.string.onboard_waiting_dialog)
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SUBMIT)
         OnboardingAPI.getInstance().login(phone, codePwd) { isOK, loginResponse, error ->
@@ -277,7 +264,6 @@ class LoginActivity : BaseActivity() {
                 }
                 authenticationController.saveUserPhoneAndCode(phone, codePwd)
 
-                //set the tutorial as done
                 val sharedPreferences = EntourageApplication.get().sharedPreferences
                 (sharedPreferences.getStringSet(
                     EntourageApplication.KEY_TUTORIAL_DONE,
@@ -336,10 +322,6 @@ class LoginActivity : BaseActivity() {
             }
         }
     }
-
-    /********************************
-     * Helpers
-     ********************************/
 
     private fun showError(titleId: Int, message: String, buttonTextId: Int) {
         CustomAlertDialog.showOnlyOneButton(

@@ -63,7 +63,11 @@ class Conversation(
         } ?: return  "-"
     }
 
-    fun getLastMessage() : String? {
+    fun getLastMessage(context: android.content.Context): String? {
+        if (!lastMessage?.imageUrl.isNullOrEmpty()) {
+            // Use the context passed in to fetch the string
+            return "📷 " + context.getString(R.string.button_event_add_photo)
+        }
         return lastMessage?.text
     }
 
@@ -143,7 +147,8 @@ class LastMessage (
     @SerializedName("text")
     var text:String? = null,
     @SerializedName("date")
-    var date: Date? = null
+    var date: Date? = null,
+    var imageUrl: String? = null
 ){}
 
 class MemberConversation (
@@ -158,7 +163,9 @@ class MemberConversation (
     @SerializedName("partner_role_title")
     var partnerRoleTitle: String? = null,
     @SerializedName("roles")
-    var roles: ArrayList<String>? = null
+    var roles: ArrayList<String>? = null,
+    @SerializedName("is_birthday")
+    var isBirthday: Boolean = false
 ){}
 
 //Block user
@@ -202,15 +209,29 @@ data class ConversationMembership(
     @SerializedName("number_of_people") val numberOfPeople: Int?,
     @SerializedName("number_of_root_chat_messages") val numberOfRootMessages: Int?,
     @SerializedName("number_of_unread_messages") val numberOfUnreadMessages: Int?,
-    @SerializedName("last_chat_message") val lastChatMessageText: String?
+    @SerializedName("last_chat_message") val lastChatMessageText: String?,
+    @SerializedName("last_chat_message_image_url") val lastChatMessageImageUrl: String?,
+    @SerializedName("last_chat_message_datetime") val lastChatMessageDate: String?
 ){
+    fun getParsedDate(): Date? {
+        subname?.let { dateString ->
+            return try {
+                val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.US)
+                inputFormat.parse(dateString)
+            } catch (e: Exception) {
+                null
+            }
+        }
+        return null
+    }
+
     fun createdDateString(): String {
         subname?.let { dateString ->
             return try {
                 val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.US)
                 val parsedDate = inputFormat.parse(dateString)
 
-                val outputFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val outputFormat = SimpleDateFormat("d MMMM yyyy", Locale.getDefault())
                 parsedDate?.let { outputFormat.format(it) } ?: ""
             } catch (e: Exception) {
                 ""

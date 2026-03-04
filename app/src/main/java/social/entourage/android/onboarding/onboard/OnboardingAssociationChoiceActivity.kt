@@ -1,6 +1,5 @@
 package social.entourage.android.onboarding.onboard
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +8,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import social.entourage.android.R
 import social.entourage.android.databinding.ActivityOnboardingAssociationChoiceBinding
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
@@ -17,44 +18,83 @@ import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 class OnboardingAssociationChoiceActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityOnboardingAssociationChoiceBinding
+    private val viewModel: AssociationViewModel by viewModels()
 
-    // Liste mockée (avec "Autre" en premier)
-    private val associations = listOf(
-        "Autre",
-        "Croix-Rouge",
-        "Emmaüs",
-        "Fondation des femmes",
-        "La Cravate Solidaire",
-        "Secours Populaire",
-        "Utopia 56"
-    )
-    private val firstItemAutre: String get() = associations.first()
+    private var associations: List<String> = listOf("Autre")
+    private val firstItemAutre: String get() = associations.firstOrNull() ?: "Autre"
+
+    private var initialAddress: String? = null
+    private var initialLat: Double? = null
+    private var initialLng: Double? = null
+    private var initialPostalCode: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityOnboardingAssociationChoiceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initialAddress = intent.getStringExtra(EXTRA_ADDRESS)
+        initialLat = intent.getDoubleExtra(EXTRA_LAT, Double.NaN).takeIf { !it.isNaN() }
+        initialLng = intent.getDoubleExtra(EXTRA_LNG, Double.NaN).takeIf { !it.isNaN() }
+        initialPostalCode = intent.getStringExtra(EXTRA_POSTAL_CODE)
+
         updatePaddingTopForEdgeToEdge(binding.rootScroll)
 
         setupTexts()
         setupDropdown()
         setupButtons()
+        bindViewModel()
+
+        viewModel.loadAssociations()
     }
 
-    // ----- UI text (si besoin d'i18n plus tard) -----
     private fun setupTexts() {
         binding.tvTitle.text = getString(R.string.onboard_asso_title)
         binding.tvSubtitle.text = getString(R.string.onboard_asso_subtitle)
         binding.dropdownAssoc.hint = getString(R.string.onboard_asso_dropdown_hint)
 
-        // bulle orange cachée par défaut
         binding.infoPanel.visibility = View.GONE
         binding.inputOtherAssoc.error = null
         binding.inputOtherAssoc.editText?.setText("")
     }
 
-    // ----- Dropdown -----
+    private fun bindViewModel() {
+        viewModel.loading.observe(this, Observer { isLoading ->
+            val enabled = !isLoading
+            binding.buttonPrevious.isEnabled = enabled
+            binding.buttonNext.isEnabled = enabled
+            binding.dropdownAssoc.isEnabled = enabled
+            binding.inputOtherAssoc.isEnabled = enabled
+        })
+
+        viewModel.associationNames.observe(this, Observer { names ->
+            associations = if (names.isNullOrEmpty()) listOf("Autre") else names
+            val actv = binding.dropdownAssoc.editText as AutoCompleteTextView
+            val adapter = ArrayAdapter(
+                this,
+                android.R.layout.simple_dropdown_item_1line,
+                associations
+            )
+            actv.setAdapter(adapter)
+        })
+
+        viewModel.errorMessageRes.observe(this, Observer { event ->
+            val resId = event.getContentIfNotHandled() ?: return@Observer
+            Toast.makeText(this, getString(resId), Toast.LENGTH_SHORT).show()
+        })
+
+        viewModel.errorMessageText.observe(this, Observer { event ->
+            val msg = event.getContentIfNotHandled() ?: return@Observer
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+        })
+
+        viewModel.success.observe(this, Observer { event ->
+            event.getContentIfNotHandled() ?: return@Observer
+            startActivity(Intent(this, OnboardingEndActivity::class.java))
+            finish()
+        })
+    }
+
     private fun setupDropdown() {
         val actv = binding.dropdownAssoc.editText as AutoCompleteTextView
 
@@ -71,12 +111,10 @@ class OnboardingAssociationChoiceActivity : AppCompatActivity() {
             onAssocPicked(value)
         }
 
-        // afficher la liste dès le focus
         actv.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) (v as? AutoCompleteTextView)?.showDropDown()
         }
 
-        // clic dans la bulle => focus sur l’edittext
         binding.infoPanel.setOnClickListener {
             binding.inputOtherAssoc.editText?.requestFocus()
             showKeyboard(binding.inputOtherAssoc.editText)
@@ -96,44 +134,49 @@ class OnboardingAssociationChoiceActivity : AppCompatActivity() {
         }
     }
 
-    // ----- Boutons -----
     private fun setupButtons() {
         binding.buttonPrevious.setOnClickListener { finish() }
 
         binding.buttonNext.setOnClickListener {
-            val assocName = getChosenAssociationOrError() ?: return@setOnClickListener
-            val data = Intent().putExtra(EXTRA_ASSOC_NAME, assocName)
-            setResult(Activity.RESULT_OK, data)
-            finish()
-        }
-    }
+            val picked = (binding.dropdownAssoc.editText as? AutoCompleteTextView)
+                ?.text?.toString()?.trim().orEmpty()
 
-    // ----- Validation -----
-    private fun getChosenAssociationOrError(): String? {
-        val picked = (binding.dropdownAssoc.editText as? AutoCompleteTextView)
-            ?.text?.toString()?.trim().orEmpty()
-
-        if (picked.isEmpty()) {
-            Toast.makeText(this, R.string.onboard_asso_pick_first, Toast.LENGTH_SHORT).show()
-            return null
-        }
-
-        return if (picked.equals(firstItemAutre, ignoreCase = true)) {
-            val custom = binding.inputOtherAssoc.editText?.text?.toString()?.trim().orEmpty()
-            if (custom.isEmpty()) {
-                binding.inputOtherAssoc.error = getString(R.string.onboard_asso_other_required)
-                binding.inputOtherAssoc.requestFocus()
-                null
-            } else {
-                binding.inputOtherAssoc.error = null
-                custom
+            if (picked.isEmpty()) {
+                Toast.makeText(this, R.string.onboard_asso_pick_first, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
             }
-        } else {
-            picked
+
+            val isOther = picked.equals(firstItemAutre, ignoreCase = true)
+
+            if (isOther) {
+                val custom = binding.inputOtherAssoc.editText?.text?.toString()?.trim().orEmpty()
+                if (custom.isEmpty()) {
+                    binding.inputOtherAssoc.error = getString(R.string.onboard_asso_other_required)
+                    binding.inputOtherAssoc.requestFocus()
+                    return@setOnClickListener
+                }
+                binding.inputOtherAssoc.error = null
+                viewModel.createAssociation(
+                    name = custom,
+                    address = initialAddress,
+                    latitude = initialLat,
+                    longitude = initialLng,
+                    postalCode = initialPostalCode
+                )
+            } else {
+                val partner = viewModel.findPartnerByName(picked)
+                if (partner == null) {
+                    Toast.makeText(this, R.string.onboard_asso_pick_first, Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                viewModel.joinAssociation(
+                    partner = partner,
+                    postalCodeFallback = initialPostalCode
+                )
+            }
         }
     }
 
-    // ----- Keyboard helpers -----
     private fun showKeyboard(target: View?) {
         target ?: return
         target.post {
@@ -149,8 +192,24 @@ class OnboardingAssociationChoiceActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EXTRA_ASSOC_NAME = "extra_assoc_name"
-        fun newIntent(context: Context): Intent =
-            Intent(context, OnboardingAssociationChoiceActivity::class.java)
+        private const val EXTRA_ADDRESS = "extra_address"
+        private const val EXTRA_LAT = "extra_lat"
+        private const val EXTRA_LNG = "extra_lng"
+        private const val EXTRA_POSTAL_CODE = "extra_postal_code"
+
+        fun newIntent(
+            context: Context,
+            address: String?,
+            lat: Double?,
+            lng: Double?,
+            postalCode: String?
+        ): Intent {
+            val i = Intent(context, OnboardingAssociationChoiceActivity::class.java)
+            if (!address.isNullOrBlank()) i.putExtra(EXTRA_ADDRESS, address)
+            if (lat != null) i.putExtra(EXTRA_LAT, lat)
+            if (lng != null) i.putExtra(EXTRA_LNG, lng)
+            if (!postalCode.isNullOrBlank()) i.putExtra(EXTRA_POSTAL_CODE, postalCode)
+            return i
+        }
     }
 }

@@ -27,6 +27,7 @@ import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.discussions.DetailConversationActivity
+import social.entourage.android.home.BirthdayActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.welcome.WelcomeFiveActivity
@@ -50,7 +51,7 @@ object PushNotificationManager {
     private const val PREFERENCE_LAST_NOTIFICATION_ID = "PREFERENCE_LAST_NOTIFICATION_ID"
     private const val KEY_SENDER = "sender"
     private const val KEY_OBJECT = "object"
-    private const val KEY_CONTENT = "content"
+    const val KEY_CONTENT = "content"
 
     // ----------------------------------
     // ATTRIBUTES
@@ -284,7 +285,6 @@ object PushNotificationManager {
             putExtra("notification_content", Gson().toJson(pushNotificationMessage))
         }
 
-
         val dismissedIntent = Intent(context, NotificationActionReceiver::class.java).apply {
             action = NotificationActionReceiver.ACTION_DISMISSED
             putExtra("notification_content", Gson().toJson(pushNotificationMessage)) // ou n'importe quelle autre information que vous voulez passer
@@ -351,7 +351,7 @@ object PushNotificationManager {
         val notification = builder.build()
         notification.defaults = NotificationCompat.DEFAULT_LIGHTS
         notification.flags = NotificationCompat.FLAG_AUTO_CANCEL or NotificationCompat.FLAG_SHOW_LIGHTS
-        NotificationManagerCompat.from(context).notify(0, notification)
+        NotificationManagerCompat.from(context).notify(PushNotificationMessage.Companion.PushNotificationIds.FCM, notification)
     }
 
     /**
@@ -427,6 +427,18 @@ object PushNotificationManager {
             intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
             return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
         }
+        if(pushNotificationMessage.content?.extra?.stage == "birthday"){
+            val intent = Intent(context, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+            intent.putExtra("goBirthday", true)
+            intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
+            return PendingIntent.getActivity(
+                context,
+                pushNotificationMessage.pushNotificationId,
+                intent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT // <--- C'EST CA QUI MANQUAIT
+            )
+        }
 
         val instance = pushNotificationMessage.content?.extra?.instance
         val tracking = pushNotificationMessage.content?.extra?.tracking
@@ -465,6 +477,8 @@ object PushNotificationManager {
             )
         }
 
+
+
         val messageIntent = Intent(context, MainActivity::class.java)
         when (messageType) {
             PushNotificationContent.TYPE_NEW_JOIN_REQUEST ->                 // because of the grouping, we need an intent that is specific for each entourage
@@ -500,8 +514,6 @@ object PushNotificationManager {
         pushNotificationMessage.pushNotificationTag = pushNotificationMessage.content?.notificationTag ?: ""
         return pushNotificationMessage
     }
-
-
 
     /**
      * Returns a unique notification id for the pushNotificationMessage.<br></br>

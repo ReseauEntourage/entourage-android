@@ -56,6 +56,14 @@
                         android:text='@string/modify_image' />
 
                     <include
+                        android:id="@+id/gender"
+                        layout="@layout/profile_edit_clickable_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:icon='@{@drawable/new_description}'
+                        app:title='@{@string/onboard_welcome_title_gender}' />
+
+                    <include
                         android:id="@+id/firstname"
                         layout="@layout/profile_edit_editable_item"
                         android:layout_width="match_parent"
@@ -97,14 +105,6 @@
                         android:layout_height="wrap_content"
                         app:icon='@{@drawable/new_phone}'
                         app:title='@{@string/phone}' />
-
-                    <include
-                        android:id="@+id/language"
-                        layout="@layout/profile_edit_clickable_item"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:icon='@{@drawable/planete}'
-                        app:title='@{@string/language}' />
 
                     <include
                         android:id="@+id/email"

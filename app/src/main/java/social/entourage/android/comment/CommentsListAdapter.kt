@@ -475,7 +475,11 @@ class CommentsListAdapter(
                 bindingDetail.photoPost.visibility = View.GONE
             }
 
-            bindingDetail.authorNamePost.text = comment.user?.displayName ?: "-"
+            var displayName = comment.user?.displayName ?: "-"
+            /*if (comment.user?.isBirthday == true) {
+                displayName = "$displayName 🎂"
+            }*/
+            bindingDetail.authorNamePost.text = displayName
 
             comment.user?.avatarURLAsString?.let { avatarURL ->
                 Glide.with(bindingDetail.imagePost.context)
@@ -699,7 +703,11 @@ class CommentsListAdapter(
             isMe: Boolean
         ) {
             comment.user?.let { user ->
-                binding.authorName.text = if (isMe) "" else user.displayName
+                var displayName = if (isMe) "" else user.displayName
+                /*if (!isMe && user.isBirthday) {
+                    displayName = "$displayName 🎂"
+                }*/
+                binding.authorName.text = displayName
                 user.avatarURLAsString?.let { url ->
                     Glide.with(binding.root.context)
                         .load(url)
@@ -733,7 +741,11 @@ class CommentsListAdapter(
             isMe: Boolean
         ) {
             comment.user?.let { user ->
-                binding.authorName.text = if (isMe) "" else user.displayName
+                var displayName = if (isMe) "" else user.displayName
+                /*if (!isMe && user.isBirthday) {
+                    displayName = "$displayName 🎂"
+                }*/
+                binding.authorName.text = displayName
                 user.avatarURLAsString?.let { url ->
                     Glide.with(binding.root.context)
                         .load(url)

@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import social.entourage.android.R
+import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Action
 import social.entourage.android.tools.utils.Const
 
@@ -18,6 +19,11 @@ class CreateActionActivity : AppCompatActivity() {
             putBoolean(Const.IS_ACTION_DEMAND, isDemand)
             putSerializable(Const.ACTION_OBJ, action)
         }
+
+        if(MetaDataRepository.metaData.value?.sections?.isEmpty() ?: true){
+            MetaDataRepository.getMetaData()
+        }
+
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.create_group_nav_host_fragment) as NavHostFragment
         navHostFragment.navController.setGraph(

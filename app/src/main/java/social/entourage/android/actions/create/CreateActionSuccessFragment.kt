@@ -13,12 +13,12 @@ import com.google.android.play.core.review.ReviewManagerFactory
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.RefreshController
-import social.entourage.android.databinding.NewFragmentCreateActionSuccessBinding
+import social.entourage.android.databinding.FragmentCreateActionSuccessBinding
 
 class CreateActionSuccessFragment : Fragment() {
 
-    private var _binding: NewFragmentCreateActionSuccessBinding? = null
-    val binding: NewFragmentCreateActionSuccessBinding get() = _binding!!
+    private var _binding: FragmentCreateActionSuccessBinding? = null
+    val binding: FragmentCreateActionSuccessBinding get() = _binding!!
 
     private val args: CreateActionSuccessFragmentArgs by navArgs()
 
@@ -38,7 +38,7 @@ class CreateActionSuccessFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentCreateActionSuccessBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateActionSuccessBinding.inflate(inflater, container, false)
         return binding.root
     }
 

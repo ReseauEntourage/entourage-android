@@ -10,7 +10,8 @@ class FeedItemAuthor (
     @field:SerializedName("id") var userID: Int,
     @field:SerializedName("display_name") var userName: String?,
     @field:SerializedName("community_roles") var communityRoles: ArrayList<String>?,
-    @field:SerializedName("partner") var partner: Partner?) : Serializable {
+    @field:SerializedName("partner") var partner: Partner?,
+    @field:SerializedName("is_birthday") var isBirthday: Boolean = false) : Serializable {
 
     fun isSame(author: FeedItemAuthor?): Boolean {
         if (author == null) return false
