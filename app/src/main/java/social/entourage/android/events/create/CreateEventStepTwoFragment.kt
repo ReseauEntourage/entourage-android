@@ -204,7 +204,6 @@ class CreateEventStepTwoFragment : Fragment() {
                 })
                 binding.layout.switchReservedFemale.isChecked = this.metadata?.reserved_female ?: false
                 CommunicationHandler.event.metadata?.reserved_female = this.metadata?.reserved_female ?: false
-                binding.root.findViewById<View>(R.id.layout_reserved_female_info)?.visibility = if (this.metadata?.reserved_female == true) View.VISIBLE else View.GONE
             }
         }
     }
