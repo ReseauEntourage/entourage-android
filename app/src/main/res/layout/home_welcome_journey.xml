@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:layout_marginBottom="16dp"
+    android:layout_marginStart="@dimen/entourage_marginstart"
+    android:layout_marginEnd="@dimen/entourage_margin_end">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="Votre parcours de bienvenue"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/tv_step_counter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_step_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="0/3"
+        android:textColor="@color/orange"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_title" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="8dp"
+        android:layout_marginTop="12dp"
+        android:max="3"
+        android:progress="0"
+        android:progressDrawable="@drawable/bg_progress_bar_welcome"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    <TextView
+        android:id="@+id/tv_microcopy"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/quicksand_regular"
+        android:text="Commençons 💛"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/progress_bar" />
+
+    <!-- Step 1: Video -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/card_step_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_welcome_step_active"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_microcopy">
+
+        <ImageView
+            android:id="@+id/iv_icon_step_1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_play_circle_orange"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_title_step_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/quicksand_bold"
+            android:text="Commencer par la vidéo de bienvenue"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_badge_step_1"
+            app:layout_constraintStart_toEndOf="@+id/iv_icon_step_1"
+            app:layout_constraintTop_toTopOf="@+id/iv_icon_step_1" />
+
+        <TextView
+            android:id="@+id/tv_badge_step_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_badge_todo"
+            android:fontFamily="@font/quicksand_medium"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:text="À faire"
+            android:textColor="@color/orange"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_title_step_1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_title_step_1" />
+
+        <TextView
+            android:id="@+id/tv_desc_step_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/quicksand_regular"
+            android:text="Découvrez l'esprit d'Entourage et voyez comment agir concrètement contre l'isolement."
+            android:textColor="@color/grey"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_title_step_1"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_step_1" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Step 2: Webinar -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/card_step_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_welcome_step_future"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/card_step_1">
+
+        <ImageView
+            android:id="@+id/iv_icon_step_2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_laptop_grey"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_title_step_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/quicksand_bold"
+            android:text="S'inscrire au webinaire de prise en main"
+            android:textColor="@color/grey"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_badge_step_2"
+            app:layout_constraintStart_toEndOf="@+id/iv_icon_step_2"
+            app:layout_constraintTop_toTopOf="@+id/iv_icon_step_2" />
+
+        <TextView
+            android:id="@+id/tv_badge_step_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_badge_future"
+            android:fontFamily="@font/quicksand_medium"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:text="À faire"
+            android:textColor="@color/grey"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_title_step_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_title_step_2" />
+
+        <TextView
+            android:id="@+id/tv_desc_step_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/quicksand_regular"
+            android:text="Découvrez l'application en 45 min avec notre équipe et posez toutes vos questions."
+            android:textColor="@color/grey"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_title_step_2"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_step_2" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_step_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="S'inscrire"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:backgroundTint="@color/orange"
+            app:cornerRadius="24dp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_desc_step_2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Step 3: Papotages -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/card_step_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_welcome_step_future"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/card_step_2">
+
+        <ImageView
+            android:id="@+id/iv_icon_step_3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_bubble_grey"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_title_step_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/quicksand_bold"
+            android:text="Rejoindre une session de papotages"
+            android:textColor="@color/grey"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_badge_step_3"
+            app:layout_constraintStart_toEndOf="@+id/iv_icon_step_3"
+            app:layout_constraintTop_toTopOf="@+id/iv_icon_step_3" />
+
+        <TextView
+            android:id="@+id/tv_badge_step_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_badge_future"
+            android:fontFamily="@font/quicksand_medium"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:text="À faire"
+            android:textColor="@color/grey"
+            android:textSize="12sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_title_step_3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_title_step_3" />
+
+        <TextView
+            android:id="@+id/tv_desc_step_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/quicksand_regular"
+            android:text="Chaque mardi à 18h, un moment convivial en visio pour discuter de tout et de rien avec d'autres membres."
+            android:textColor="@color/grey"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tv_title_step_3"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_step_3" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_step_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Rejoindre"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:backgroundTint="@color/orange"
+            app:cornerRadius="24dp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_desc_step_3" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Success Message Container -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_success"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_welcome_success"
+        android:padding="16dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/tv_microcopy">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_bold"
+            android:gravity="center"
+            android:text="Intégration complète ! Tu fais maintenant partie de la communauté !"
+            android:textColor="@color/green"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

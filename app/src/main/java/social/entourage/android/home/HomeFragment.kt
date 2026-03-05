@@ -26,6 +26,10 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.MainPresenter
 import social.entourage.android.R
+import android.net.Uri
+import android.widget.PopupWindow
+import com.google.android.material.bottomsheet.BottomSheetDialog
+
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSectionFilters
@@ -94,8 +98,14 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private var isRequestLoaded = false
     private var currentRequests: List<UserSmallTalkRequest> = emptyList()
 
+
     // Adapters
     private lateinit var concatAdapter: ConcatAdapter
+
+    // Welcome Journey
+    private lateinit var welcomeJourneyAdapter: HomeWelcomeJourneyAdapter
+    private var currentCompletedSteps = 0
+
 
     // Sensibilisation (Initial Pedago)
     private lateinit var initialPedagoHeaderAdapter: HomeSectionHeaderAdapter
@@ -157,6 +167,83 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 requireActivity().finish()
             }
         }
+    }
+
+
+    private fun updateWelcomeJourneyStep(stepIndex: Int) {
+        welcomeJourneyAdapter.updateStepState(stepIndex, true)
+        currentCompletedSteps++
+
+        if (currentCompletedSteps >= 3) {
+            welcomeJourneyAdapter.setFullyCompleted(true)
+            showCelebrationTooltip()
+        }
+    }
+
+    private fun showCelebrationTooltip() {
+        if (!isAdded) return
+        val inflater = LayoutInflater.from(requireContext())
+        val view = inflater.inflate(R.layout.layout_celebration_tooltip, null)
+        val popupWindow = PopupWindow(
+            view,
+            android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+            android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+            true
+        )
+
+        binding.rvHome.postDelayed({
+             if (isAdded) {
+                popupWindow.showAtLocation(binding.rvHome, android.view.Gravity.TOP or android.view.Gravity.CENTER_HORIZONTAL, 0, 300)
+             }
+        }, 500)
+
+        binding.rvHome.postDelayed({
+            if (isAdded && popupWindow.isShowing) {
+                popupWindow.dismiss()
+            }
+        }, 4000)
+    }
+
+    private fun handleWelcomeJourneyClick(stepIndex: Int) {
+        when (stepIndex) {
+            1 -> showVideoModal()
+            2 -> {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.entourage.social/app/outings/webinar"))
+                startActivity(intent)
+                updateWelcomeJourneyStep(2)
+            }
+            3 -> {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.entourage.social/app/outings/papotages"))
+                startActivity(intent)
+                updateWelcomeJourneyStep(3)
+            }
+        }
+    }
+
+    private fun showVideoModal() {
+        if (!isAdded) return
+        val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme)
+        val view = layoutInflater.inflate(R.layout.dialog_welcome_video, null)
+        bottomSheetDialog.setContentView(view)
+
+        val btnContinue = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_continue)
+        val layoutVideo = view.findViewById<androidx.constraintlayout.widget.ConstraintLayout>(R.id.layout_video_placeholder)
+        val ivClose = view.findViewById<android.widget.ImageView>(R.id.iv_close)
+
+        ivClose?.setOnClickListener {
+            bottomSheetDialog.dismiss()
+        }
+
+        layoutVideo?.setOnClickListener {
+            btnContinue?.isEnabled = true
+        }
+
+        btnContinue?.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            updateWelcomeJourneyStep(1)
+        }
+
+        bottomSheetDialog.show()
     }
 
     override fun onCreateView(
@@ -251,8 +338,15 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         }
     }
 
+
     private fun setupAdapters() {
         val viewPool = RecyclerView.RecycledViewPool()
+
+        // 0. Welcome Journey
+        welcomeJourneyAdapter = HomeWelcomeJourneyAdapter(requireContext()) { stepIndex ->
+            handleWelcomeJourneyClick(stepIndex)
+        }
+
 
         // 1. Initial Pedago
         initialPedagoHeaderAdapter = HomeSectionHeaderAdapter()
@@ -401,9 +495,12 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             .setIsolateViewTypes(true)
             .build()
 
+
         concatAdapter = ConcatAdapter(
             config,
+            welcomeJourneyAdapter,
             initialPedagoHeaderAdapter,
+
             initialPedagoWrapperAdapter,
             actionHeaderAdapter,
             actionWrapperAdapter, // MODIFIÉ : On utilise le Wrapper au lieu de l'adapter direct
