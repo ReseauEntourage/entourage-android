@@ -133,9 +133,10 @@
             android:id="@+id/iv_icon_step_2"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_laptop_grey"
+            android:src="@drawable/new_group_persons"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/orange" />
 
         <TextView
             android:id="@+id/tv_title_step_2"
@@ -209,9 +210,10 @@
             android:id="@+id/iv_icon_step_3"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_bubble_grey"
+            android:src="@drawable/bottom_navigation_messages"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/orange" />
 
         <TextView
             android:id="@+id/tv_title_step_3"
