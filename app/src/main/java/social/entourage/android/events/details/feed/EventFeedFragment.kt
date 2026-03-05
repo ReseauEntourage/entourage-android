@@ -142,35 +142,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
 
     fun reduceButtonSizeImage(){
-        // Pour le bouton de partage
-        binding.bigBtnShare.post {
-            try {
-                val shareDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.share_icon)
-                shareDrawable?.let {
-                    val sizeInPx = TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, 14f, resources.displayMetrics
-                    ).toInt()
-                    it.setBounds(0, 0, sizeInPx, sizeInPx)
-                    binding.bigBtnShare.setCompoundDrawablesRelative(null, null, it, null)
-                }
-            } catch (e: IllegalStateException) {
-                Timber.e(e, "Error setting share icon")
-            }
-        }
-        binding.btnAddCalendar.post {
-            try {
-                ContextCompat.getDrawable(requireContext(), R.drawable.new_calendar)?.let {
-                    val sizeInPx = TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, 14f, resources.displayMetrics
-                    ).toInt()
-                    it.setBounds(0, 0, sizeInPx, sizeInPx)
-                    binding.btnAddCalendar.setCompoundDrawablesRelative(null, null, it, null)
-                }
-            } catch (e: IllegalStateException) {
-                Timber.e(e, "Error setting calendar icon")
-            }
-        }
-
+        // Les anciens boutons ont été supprimés (bigBtnShare, btnAddCalendar)
     }
 
     override fun onPause() {
@@ -224,10 +196,10 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         }
         if(event?.member == true) {
            binding.participateView.visibility = View.VISIBLE
-           binding.btnAddCalendar.visibility = View.VISIBLE
+           binding.discussionBox.visibility = View.VISIBLE
         }else{
             binding.participateView.visibility = View.GONE
-            binding.btnAddCalendar.visibility = View.GONE
+            binding.discussionBox.visibility = View.GONE
         }
         val latLng = LatLng(latitude, longitude)
         // Mise à jour de la carte
@@ -394,7 +366,11 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             }
         }
         if(event?.member == true){
-            binding.buttonJoin.text = getString(R.string.see_conversation_event)
+            if (iAmOrganiser) {
+                binding.buttonJoin.text = getString(R.string.event_cancel_button)
+            } else {
+                binding.buttonJoin.text = getString(R.string.event_leave_button)
+            }
         }else{
             binding.buttonJoin.text = getString(R.string.share_and_join_event)
         }
@@ -525,7 +501,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     }
 
     private fun handleAboutButton() {
-        binding.btnAddCalendar.setOnClickListener {
+        binding.dateStartsAt.root.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.add_to_calendar_yes_clicked)
             shouldAddToAgenda = false
             val startMillis: Long = Calendar.getInstance().run {
@@ -552,7 +528,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             requireContext().startActivity(intent)
         }
 
-        binding.bigBtnShare.setOnClickListener {
+        binding.iconShare.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SHARED)
             val shareTitle = getString(R.string.share_title_event)
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
@@ -560,6 +536,10 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + event?.title + ": " + "\n" + createShareUrl())
             }
             startActivity(Intent.createChooser(shareIntent, getString(R.string.entourage_share_intent_title)))
+        }
+
+        binding.btnDiscussion.setOnClickListener {
+            goDiscussion()
         }
     }
 
@@ -639,12 +619,32 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun handleParticipateButton() {
         binding.buttonJoin.setOnClickListener {
+            if (event?.member == true) {
+                if (iAmOrganiser) {
+                    CustomAlertDialog.showWithCancelFirst(
+                        requireContext(),
+                        getString(R.string.delete_event_title),
+                        getString(R.string.delete_event_confirmation),
+                        getString(R.string.delete)
+                    ) {
+                        eventPresenter.cancelEvent(eventId)
+                    }
+                } else {
+                    CustomAlertDialog.showWithCancelFirst(
+                        requireContext(),
+                        getString(R.string.leave_event),
+                        getString(R.string.leave_event_dialog_content),
+                        getString(R.string.exit)
+                    ) {
+                        eventPresenter.leaveEvent(eventId)
+                    }
+                }
+                return@setOnClickListener
+            }
+
             requestInAppReview(requireContext())
             val meUser = EntourageApplication.me(activity)
             if(meUser?.roles?.contains("Ambassadeur") == true){
-                if(event?.member==true){
-                    goDiscussion()
-                }
                 CustomAlertDialog.showAmbassadorWithTwoButton(requireContext(),
                     onNo = {
                         if (event?.member==false){
@@ -659,8 +659,6 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 if (event?.member==false){
                     eventPresenter.participate(eventId)
                     binding.participateView.visibility = View.VISIBLE
-                }else{
-                    goDiscussion()
                 }
             }
         }

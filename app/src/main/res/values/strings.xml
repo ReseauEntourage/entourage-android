@@ -1803,6 +1803,10 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_location_title">Localisez votre événement</string>
     <string name="event_location_detail">L’adresse sera ajoutée à la description détaillée de votre événement.</string>
     <string name="event_btn_share_title">Partager</string>
+    <string name="event_discussion_title">Vous pouvez poser vos questions et échanger avec l\'organisateur et les participants de l\'événement</string>
+    <string name="event_discussion_button">Discussion de l\'événement</string>
+    <string name="event_cancel_button">Annuler l\'événement</string>
+    <string name="event_leave_button">Quitter l\'événement</string>
 
     <!-- STRING GET INVOLVED -->
     <string name="get_involved_title">Suivre Entourage</string>
