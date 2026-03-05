@@ -31,7 +31,6 @@ class CreateEventStepTwoFragment : Fragment() {
         setView()
         handleNextButtonState()
         setRecurrence()
-        setReservedFemale()
         adjustTextViewsForRTL(binding.layout.root)
         if (CommunicationHandler.eventEdited == null) {
             AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_2)
@@ -86,12 +85,6 @@ class CreateEventStepTwoFragment : Fragment() {
                 R.id.every_two_week -> CommunicationHandler.event.recurrence =
                     Recurrence.EVERY_TWO_WEEKS.value
             }
-        }
-    }
-
-    private fun setReservedFemale() {
-        binding.layout.switchReservedFemale.setOnCheckedChangeListener { _, isChecked ->
-            CommunicationHandler.event.metadata?.reserved_female = isChecked
         }
     }
 
@@ -202,8 +195,6 @@ class CreateEventStepTwoFragment : Fragment() {
                         it1
                     )
                 })
-                binding.layout.switchReservedFemale.isChecked = this.metadata?.reserved_female ?: false
-                CommunicationHandler.event.metadata?.reserved_female = this.metadata?.reserved_female ?: false
             }
         }
     }
