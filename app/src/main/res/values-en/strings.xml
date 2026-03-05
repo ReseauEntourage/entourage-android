@@ -851,6 +851,10 @@
     <string name="event_location_title">Locate your event</string>
     <string name="event_location_detail">The address will be added to the detailed description of your event.</string>
     <string name="event_btn_share_title">Share</string>
+    <string name="event_discussion_title">You can ask questions and discuss with the organizer and participants</string>
+    <string name="event_discussion_button">Event discussion</string>
+    <string name="event_cancel_button">Cancel event</string>
+    <string name="event_leave_button">Leave event</string>
     <string name="get_involved_title">Follow Entourage</string>
     <string name="get_involved_rate_us">Rate us in the Play Store</string>
     <string name="get_involved_facebook">Like our Facebook page</string>
