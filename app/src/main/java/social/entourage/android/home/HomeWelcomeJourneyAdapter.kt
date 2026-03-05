@@ -113,21 +113,26 @@ class HomeWelcomeJourneyAdapter(
             }
 
             // --- STEP 1 LOGIC ---
+            cardStep1.alpha = 1.0f // Toujours opaque
             if (step1Completed) {
                 cardStep1.setBackgroundResource(R.drawable.bg_welcome_step_completed)
                 tvBadgeStep1.text = "Terminé"
                 tvBadgeStep1.setTextColor(ContextCompat.getColor(context, R.color.green))
                 tvBadgeStep1.setBackgroundResource(R.drawable.bg_badge_completed)
+                cardStep1.setOnClickListener(null)
+                cardStep1.isClickable = false
             } else {
                 cardStep1.setBackgroundResource(R.drawable.bg_welcome_step_active)
                 tvBadgeStep1.text = "À faire"
                 tvBadgeStep1.setTextColor(ContextCompat.getColor(context, R.color.orange))
                 tvBadgeStep1.setBackgroundResource(R.drawable.bg_badge_todo)
+                cardStep1.setOnClickListener { onStepClick(1) }
+                cardStep1.isClickable = true
             }
-            cardStep1.setOnClickListener { onStepClick(1) }
 
             // --- STEP 2 LOGIC ---
             if (step2Completed) {
+                cardStep2.alpha = 1.0f
                 cardStep2.setBackgroundResource(R.drawable.bg_welcome_step_completed)
                 tvTitleStep2.setTextColor(ContextCompat.getColor(context, R.color.black))
                 tvBadgeStep2.visibility = View.VISIBLE
@@ -136,7 +141,9 @@ class HomeWelcomeJourneyAdapter(
                 tvBadgeStep2.setBackgroundResource(R.drawable.bg_badge_completed)
                 btnStep2.visibility = View.GONE
                 cardStep2.setOnClickListener(null)
+                cardStep2.isClickable = false
             } else if (step1Completed) { // Step 2 is active
+                cardStep2.alpha = 1.0f // Devient opaque car débloqué
                 cardStep2.setBackgroundResource(R.drawable.bg_welcome_step_active)
                 tvTitleStep2.setTextColor(ContextCompat.getColor(context, R.color.black))
                 tvBadgeStep2.visibility = View.VISIBLE
@@ -146,16 +153,20 @@ class HomeWelcomeJourneyAdapter(
                 btnStep2.visibility = View.VISIBLE
                 btnStep2.setOnClickListener { onStepClick(2) }
                 cardStep2.setOnClickListener { onStepClick(2) }
-            } else { // Step 2 is future
+                cardStep2.isClickable = true
+            } else { // Step 2 is future (Bloqué)
+                cardStep2.alpha = 0.5f // LÉGÈREMENT TRANSPARENT
                 cardStep2.setBackgroundResource(R.drawable.bg_welcome_step_future)
                 tvTitleStep2.setTextColor(ContextCompat.getColor(context, R.color.grey))
                 tvBadgeStep2.visibility = View.GONE
                 btnStep2.visibility = View.GONE
                 cardStep2.setOnClickListener(null)
+                cardStep2.isClickable = false // NON CLIQUABLE
             }
 
             // --- STEP 3 LOGIC ---
             if (step3Completed) {
+                cardStep3.alpha = 1.0f
                 cardStep3.setBackgroundResource(R.drawable.bg_welcome_step_completed)
                 tvTitleStep3.setTextColor(ContextCompat.getColor(context, R.color.black))
                 tvBadgeStep3.visibility = View.VISIBLE
@@ -164,7 +175,9 @@ class HomeWelcomeJourneyAdapter(
                 tvBadgeStep3.setBackgroundResource(R.drawable.bg_badge_completed)
                 btnStep3.visibility = View.GONE
                 cardStep3.setOnClickListener(null)
+                cardStep3.isClickable = false
             } else if (step2Completed) { // Step 3 is active
+                cardStep3.alpha = 1.0f // Devient opaque car débloqué
                 cardStep3.setBackgroundResource(R.drawable.bg_welcome_step_active)
                 tvTitleStep3.setTextColor(ContextCompat.getColor(context, R.color.black))
                 tvBadgeStep3.visibility = View.VISIBLE
@@ -174,12 +187,15 @@ class HomeWelcomeJourneyAdapter(
                 btnStep3.visibility = View.VISIBLE
                 btnStep3.setOnClickListener { onStepClick(3) }
                 cardStep3.setOnClickListener { onStepClick(3) }
-            } else { // Step 3 is future
+                cardStep3.isClickable = true
+            } else { // Step 3 is future (Bloqué)
+                cardStep3.alpha = 0.5f // LÉGÈREMENT TRANSPARENT
                 cardStep3.setBackgroundResource(R.drawable.bg_welcome_step_future)
                 tvTitleStep3.setTextColor(ContextCompat.getColor(context, R.color.grey))
                 tvBadgeStep3.visibility = View.GONE
                 btnStep3.visibility = View.GONE
                 cardStep3.setOnClickListener(null)
+                cardStep3.isClickable = false // NON CLIQUABLE
             }
         }
     }

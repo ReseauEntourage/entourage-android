@@ -205,15 +205,28 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     }
 
     private fun handleWelcomeJourneyClick(stepIndex: Int) {
+        // Sécurité : on empêche de cliquer sur une étape si la précédente n'est pas terminée
+        if (stepIndex > currentCompletedSteps + 1) return
+
         when (stepIndex) {
             1 -> showVideoModal()
             2 -> {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.entourage.social/app/outings/webinar"))
+                val urlString = if (BuildConfig.DEBUG) {
+                    "https://preprod.entourage.social/app/outings/webinar"
+                } else {
+                    "https://www.entourage.social/app/outings/webinar"
+                }
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlString))
                 startActivity(intent)
                 updateWelcomeJourneyStep(2)
             }
             3 -> {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.entourage.social/app/outings/papotages"))
+                val urlString = if (BuildConfig.DEBUG) {
+                    "https://preprod.entourage.social/app/outings/papotages"
+                } else {
+                    "https://www.entourage.social/app/outings/papotages"
+                }
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlString))
                 startActivity(intent)
                 updateWelcomeJourneyStep(3)
             }
