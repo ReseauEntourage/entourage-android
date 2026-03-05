@@ -117,6 +117,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         eventPresenter.getEvent.observe(viewLifecycleOwner, ::handleResponseGetEvent)
         eventPresenter.isEventReported.observe(requireActivity(), ::handleDeletedResponse)
         eventPresenter.hasUserLeftEvent.observe(requireActivity(),::handleLeaveResponse)
+        eventPresenter.eventCanceled.observe(requireActivity(),::handleCanceledResponse)
         eventPresenter.isUserParticipating.observe(viewLifecycleOwner, ::handleParticipateResponse)
         surveyPresenter.isSurveyVoted.observe(requireActivity(), ::handleSurveyPostResponse)
         eventPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetMembers)
@@ -192,25 +193,27 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         val longitude = event?.location?.longitude ?: 0.0
         if(latitude == 0.0 && longitude == 0.0){
             binding.mapView.visibility = View.GONE
-            return
+        } else {
+            binding.mapView.visibility = View.VISIBLE
+            val latLng = LatLng(latitude, longitude)
+            // Mise à jour de la carte
+            mMap?.apply {
+                clear() // Optionnel, pour effacer les anciens marqueurs
+                addMarker(MarkerOptions().position(latLng))
+                val cameraPosition = CameraPosition.Builder()
+                    .target(latLng)
+                    .zoom(ZOOM)
+                    .build()
+                animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+            }
         }
+
         if(event?.member == true) {
            binding.participateView.visibility = View.VISIBLE
            binding.discussionBox.visibility = View.VISIBLE
         }else{
             binding.participateView.visibility = View.GONE
             binding.discussionBox.visibility = View.GONE
-        }
-        val latLng = LatLng(latitude, longitude)
-        // Mise à jour de la carte
-        mMap?.apply {
-            clear() // Optionnel, pour effacer les anciens marqueurs
-            addMarker(MarkerOptions().position(latLng))
-            val cameraPosition = CameraPosition.Builder()
-                .target(latLng)
-                .zoom(ZOOM)
-                .build()
-            animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
         }
     }
 
@@ -379,6 +382,12 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun handleBackButton() {
         binding.iconBack.setOnClickListener {
+            requireActivity().finish()
+        }
+    }
+
+    private fun handleCanceledResponse(isCanceled: Boolean) {
+        if (isCanceled) {
             requireActivity().finish()
         }
     }
@@ -701,10 +710,8 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     }
 
     private fun handleLeaveResponse(isParticipating: Boolean) {
-        event?.let {event ->
-            event.member = !event.member
-            //handleCreatePostButton()
-            eventPresenter.getEvent(eventId.toString())
+        if (isParticipating) {
+            requireActivity().finish()
         }
     }
 
