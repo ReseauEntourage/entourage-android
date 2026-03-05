@@ -11,7 +11,7 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:padding="8dp"
-        android:src="@drawable/ic_close"
+        android:src="@drawable/icon_cross"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/grey" />
@@ -66,7 +66,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:fontFamily="@font/quicksand_regular"
+        android:fontFamily="@font/nunitosans_regular"
         android:text="Dans cette vidéo, vous allez découvrir comment nous créons du lien social et luttons contre l'isolement. Rejoignez une communauté bienveillante où chaque action compte.\n\nPrenez 2 minutes pour découvrir l'esprit Entourage."
         android:textColor="@color/black"
         android:textSize="14sp"
