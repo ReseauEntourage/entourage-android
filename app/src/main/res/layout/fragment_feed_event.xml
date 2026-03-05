@@ -76,7 +76,8 @@
                     android:padding="10dp"
                     android:src="@drawable/share_icon"
                     app:layout_constraintEnd_toStartOf="@id/icon_settings"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/orange" />
 
                 <ImageView
                     android:id="@+id/icon_settings"
