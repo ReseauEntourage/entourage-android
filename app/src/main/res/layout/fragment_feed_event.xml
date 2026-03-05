@@ -347,8 +347,7 @@
                                     android:id="@+id/discussion_icon"
                                     android:layout_width="44dp"
                                     android:layout_height="44dp"
-                                    android:src="@drawable/new_message"
-                                    app:tint="@color/orange"
+                                    android:src="@drawable/new_top_icn_discussion"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintBottom_toTopOf="@id/btn_discussion" />
