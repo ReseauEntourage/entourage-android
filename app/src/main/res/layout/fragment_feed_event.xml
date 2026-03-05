@@ -65,6 +65,20 @@
                     tools:text="Dansons ensemble" />
 
                 <ImageView
+                    android:id="@+id/icon_share"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/circle_white_plain"
+                    android:elevation="1dp"
+                    android:outlineAmbientShadowColor="@color/light_orange_opacity_35"
+                    android:outlineSpotShadowColor="@color/light_orange_opacity_35"
+                    android:padding="10dp"
+                    android:src="@drawable/share_icon"
+                    app:layout_constraintEnd_toStartOf="@id/icon_settings"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
                     android:id="@+id/icon_settings"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -318,61 +332,57 @@
                                 android:visibility="gone"
                                 app:icon="@{@drawable/new_group_persons}" />
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/discussion_box"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-                                <androidx.constraintlayout.widget.ConstraintLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="0dp"
-                                        android:id="@+id/big_btn_share"
-                                        android:gravity="center"
-                                        android:paddingTop="8dp"
-                                        android:paddingBottom="8dp"
-                                        android:paddingStart="16dp"
-                                        android:paddingEnd="16dp"
-                                        android:layout_marginTop="20dp"
-                                        android:fontFamily="@font/quicksand_bold"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent"
-                                        android:text="@string/event_btn_share_title"
-                                        android:textSize="15sp"
-                                        android:textColor="@color/black"
-                                        android:background="@drawable/shape_button_v9_negative"
-                                        android:drawablePadding="10dp"
-                                        app:drawableTint="@color/black"
-                                        app:drawableEndCompat="@drawable/share_icon" />
-                                </androidx.constraintlayout.widget.ConstraintLayout>
+                                android:layout_marginTop="20dp"
+                                android:background="@drawable/bg_info_bubble_beige"
+                                android:padding="16dp"
+                                android:visibility="gone"
+                                tools:visibility="visible">
 
-                                <androidx.constraintlayout.widget.ConstraintLayout
-                                    android:layout_width="match_parent"
+                                <ImageView
+                                    android:id="@+id/discussion_icon"
+                                    android:layout_width="44dp"
+                                    android:layout_height="44dp"
+                                    android:src="@drawable/new_message"
+                                    app:tint="@color/orange"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toTopOf="@id/btn_discussion" />
+
+                                <TextView
+                                    android:id="@+id/discussion_text"
+                                    style="@style/left_courant_black"
+                                    android:layout_width="0dp"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginStart="10dp">
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="0dp"
-                                        android:id="@+id/btn_add_calendar"
-                                        android:gravity="center"
-                                        android:paddingTop="8dp"
-                                        android:paddingBottom="8dp"
-                                        android:paddingStart="16dp"
-                                        android:paddingEnd="16dp"
-                                        android:layout_marginTop="20dp"
-                                        android:fontFamily="@font/quicksand_bold"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent"
-                                        android:textSize="15sp"
-                                        android:text="@string/add_to_agenda"
-                                        android:textColor="@color/black"
-                                        android:background="@drawable/shape_button_v9_negative"
-                                        android:drawablePadding="10dp"
-                                        app:drawableTint="@color/black"
-                                        app:drawableEndCompat="@drawable/new_calendar" />
-                                </androidx.constraintlayout.widget.ConstraintLayout>
-                            </LinearLayout>
+                                    android:layout_marginStart="16dp"
+                                    android:text="@string/event_discussion_title"
+                                    app:layout_constraintStart_toEndOf="@id/discussion_icon"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toTopOf="@id/btn_discussion" />
+
+                                <Button
+                                    android:id="@+id/btn_discussion"
+                                    style="?android:attr/borderlessButtonStyle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="16dp"
+                                    android:background="@drawable/new_rounded_button_orange"
+                                    android:fontFamily="@font/quicksand_bold"
+                                    android:paddingHorizontal="24dp"
+                                    android:text="@string/event_discussion_button"
+                                    android:textAllCaps="false"
+                                    android:textColor="@color/white"
+                                    android:textSize="14sp"
+                                    android:minHeight="40dp"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toBottomOf="@id/discussion_text" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <TextView
                                 android:id="@+id/event_description"
