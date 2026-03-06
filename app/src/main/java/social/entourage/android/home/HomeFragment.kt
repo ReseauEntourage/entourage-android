@@ -511,12 +511,12 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
         concatAdapter = ConcatAdapter(
             config,
-            welcomeJourneyAdapter,
+          //  welcomeJourneyAdapter,
             initialPedagoHeaderAdapter,
 
             initialPedagoWrapperAdapter,
             actionHeaderAdapter,
-            actionWrapperAdapter, // MODIFIÉ : On utilise le Wrapper au lieu de l'adapter direct
+            actionWrapperAdapter,
             actionButtonAdapter,
             eventHeaderAdapter,
             eventWrapperAdapter,
@@ -528,7 +528,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             horsZoneAdapter,
             smallTalkWrapperAdapter,
             homeToolsAdapter,
-            homePedagoAdapter // RESTAURÉ : l'adapter tel quel sans le header (comme ton original)
+            homePedagoAdapter
         )
 
         binding.rvHome.apply {
