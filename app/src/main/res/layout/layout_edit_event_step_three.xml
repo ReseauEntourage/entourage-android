@@ -157,6 +157,30 @@
                 android:text="@string/no" />
         </RadioGroup>
 
+        <LinearLayout
+            android:id="@+id/layout_reserved_female"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toBottomOf="@+id/event_limited_place">
+
+            <TextView
+                style="@style/left_courant_black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/event_reserved_female_question" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch_reserved_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:thumbTint="@color/orange"
+                app:trackTint="@color/light_orange_opacity_50" />
+        </LinearLayout>
+
         <include
             android:id="@+id/event_limited_place_count_title"
             layout="@layout/layout_create_section_title_item"
@@ -164,7 +188,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@id/event_limited_place"
+            app:layout_constraintTop_toBottomOf="@id/layout_reserved_female"
             app:mandatory="@{@string/mandatory}"
             app:title="@{@string/event_available_places}" />
 
