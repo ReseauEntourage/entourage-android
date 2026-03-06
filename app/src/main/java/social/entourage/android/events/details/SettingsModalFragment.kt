@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.collection.ArrayMap
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.RadioButton
@@ -291,14 +292,16 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun cancelEventWithRecurrence() {
-//        event?.id?.let { id ->
-//            val editedEvent = hashMapOf<String, Any>(
-//                "status" to Status.CLOSED.value,
-//                "recurrency" to Recurrence.NO_RECURRENCE.value
-//            )
-//            val body = hashMapOf<String, Any>("outing" to editedEvent)
-//            eventPresenter.updateEvent(id, body)
-//        }
+        event?.id?.let { id ->
+            val editedEvent = ArrayMap<String, Any>().apply {
+                put("status", Status.CLOSED.value)
+                put("recurrency", Recurrence.NO_RECURRENCE.value)
+            }
+            val body = ArrayMap<String, Any>().apply {
+                put("outing", editedEvent)
+            }
+            eventPresenter.updateEventSiblings(id, body)
+        }
     }
 
     private fun showAlertDialogCancelEventWithRecurrence() {
@@ -322,7 +325,6 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         }
 
         btnYes.text = getString(R.string.cancel_event)
-        btnYes.setOnClickListener { dialog.dismiss() }
 
         custom.findViewById<ImageButton>(R.id.btn_cross).apply {
             visibility = View.VISIBLE

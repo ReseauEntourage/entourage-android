@@ -206,6 +206,22 @@ class EventsPresenter : ViewModel() {
         })
     }
 
+    fun updateEventSiblings(eventId: Int, eventEdited: ArrayMap<String, Any>) {
+        EntourageApplication.get().apiModule.eventsRequest.updateEventSiblings(eventId, eventEdited)
+            .enqueue(object : Callback<EventWrapper> {
+                override fun onResponse(
+                    call: Call<EventWrapper>,
+                    response: Response<EventWrapper>
+                ) {
+                    isEventUpdated.value = response.isSuccessful && response.body()?.event != null
+                }
+
+                override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
+                    isEventUpdated.value = false
+                }
+            })
+    }
+
     fun hasChangedFilter() {
         hasChangedFilter.postValue(false)
     }
