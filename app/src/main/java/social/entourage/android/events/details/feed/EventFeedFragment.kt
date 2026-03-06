@@ -12,6 +12,12 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.collection.ArrayMap
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.RadioButton
+import android.widget.RadioGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
@@ -42,6 +48,7 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Post
+import social.entourage.android.events.create.Recurrence
 import social.entourage.android.api.model.Status
 import social.entourage.android.api.model.Survey
 import social.entourage.android.api.model.Tags
@@ -624,17 +631,75 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         }
     }
 
+    private fun cancelEventWithoutRecurrence() {
+        eventPresenter.cancelEvent(eventId)
+    }
+
+    private fun cancelEventWithRecurrence() {
+        val editedEvent = ArrayMap<String, Any>().apply {
+            put("status", Status.CLOSED.value)
+            put("recurrency", Recurrence.NO_RECURRENCE.value)
+        }
+        val body = ArrayMap<String, Any>().apply {
+            put("outing", editedEvent)
+        }
+        eventPresenter.updateEventSiblings(eventId, body)
+    }
+
+    private fun showAlertDialogCancelEventWithRecurrence() {
+        val custom = LayoutInflater.from(requireContext())
+            .inflate(R.layout.layout_custom_alert_dialog_cancel_event, null)
+        val dialog = AlertDialog.Builder(requireContext()).setView(custom).create()
+
+        val btnYes = custom.findViewById<Button>(R.id.yes)
+        val radioGroup = custom.findViewById<RadioGroup>(R.id.recurrence)
+        val cancelOneEvent = custom.findViewById<RadioButton>(R.id.one_event)
+        val cancelAllEvents = custom.findViewById<RadioButton>(R.id.all_events_recurrent)
+
+        btnYes.isEnabled = false
+        btnYes.background = requireContext().getDrawable(R.drawable.btn_shape_light_orange)
+
+        radioGroup.setOnCheckedChangeListener { group, _ ->
+            btnYes.isEnabled = group.checkedRadioButtonId != -1
+            if (btnYes.isEnabled) {
+                btnYes.background = requireContext().getDrawable(R.drawable.btn_shape_orange_alert_dialog)
+            }
+        }
+
+        btnYes.text = getString(R.string.cancel_event)
+
+        custom.findViewById<ImageButton>(R.id.btn_cross).apply {
+            visibility = View.VISIBLE
+            setOnClickListener { dialog.dismiss() }
+        }
+
+        custom.findViewById<TextView>(R.id.title).text = getString(R.string.event_cancel_recurrent_event)
+
+        custom.findViewById<Button>(R.id.yes).setOnClickListener {
+            if (cancelOneEvent.isChecked) cancelEventWithoutRecurrence()
+            if (cancelAllEvents.isChecked) cancelEventWithRecurrence()
+            dialog.dismiss()
+        }
+
+        dialog.window?.setBackgroundDrawable(android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT))
+        dialog.show()
+    }
+
     private fun handleParticipateButton() {
         binding.buttonJoin.setOnClickListener {
             if (event?.member == true) {
                 if (iAmOrganiser) {
-                    CustomAlertDialog.showWithCancelFirst(
-                        requireContext(),
-                        getString(R.string.delete_event_title),
-                        getString(R.string.delete_event_confirmation),
-                        getString(R.string.delete)
-                    ) {
-                        eventPresenter.cancelEvent(eventId)
+                    if (event?.recurrence == null || event?.recurrence == Recurrence.NO_RECURRENCE.value) {
+                        CustomAlertDialog.showWithCancelFirst(
+                            requireContext(),
+                            getString(R.string.delete_event_title),
+                            getString(R.string.delete_event_confirmation),
+                            getString(R.string.delete)
+                        ) {
+                            cancelEventWithoutRecurrence()
+                        }
+                    } else {
+                        showAlertDialogCancelEventWithRecurrence()
                     }
                 } else {
                     CustomAlertDialog.showWithCancelFirst(
