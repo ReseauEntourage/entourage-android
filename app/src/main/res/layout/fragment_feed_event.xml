@@ -243,30 +243,6 @@
                                             app:layout_constraintBottom_toBottomOf="parent"
                                             app:layout_constraintStart_toStartOf="parent"
                                             tools:text="132 membres. Paris 13." />
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content">
-                                        <TextView
-                                            android:id="@+id/participate_view"
-                                            android:layout_width="150dp"
-                                            android:layout_height="wrap_content"
-                                            android:paddingStart="16dp"
-                                            android:paddingEnd="16dp"
-                                            android:paddingTop="8dp"
-                                            android:paddingBottom="8dp"
-                                            android:fontFamily="@font/quicksand_bold"
-                                            android:text="@string/participating"
-                                            android:textColor="@color/green"
-                                            android:background="@drawable/bg_green_light_radius_32"
-                                            android:drawablePadding="8dp"
-                                            app:drawableEndCompat="@drawable/new_check"
-                                            app:drawableTint="@color/green"
-                                            android:visibility="gone"
-                                            tools:visibility="visible"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintTop_toTopOf="parent"
-                                            app:layout_constraintBottom_toBottomOf="parent" />
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                                 </LinearLayout>
                             </LinearLayout>

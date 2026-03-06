@@ -209,10 +209,8 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         }
 
         if(event?.member == true) {
-           binding.participateView.visibility = View.VISIBLE
            binding.discussionBox.visibility = View.VISIBLE
         }else{
-            binding.participateView.visibility = View.GONE
             binding.discussionBox.visibility = View.GONE
         }
     }
@@ -667,7 +665,6 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             }else{
                 if (event?.member==false){
                     eventPresenter.participate(eventId)
-                    binding.participateView.visibility = View.VISIBLE
                 }
             }
         }
