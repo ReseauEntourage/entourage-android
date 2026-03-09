@@ -233,17 +233,16 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_vertical"
-                                        android:layout_marginEnd="5dp"
                                         android:layout_marginBottom="8dp"
                                         android:text="..." />
 
                                     <TextView
                                         android:id="@+id/event_members_number_location"
                                         style="@style/left_courant_black"
-                                        android:layout_width="0dp"
+                                        android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:gravity="end|center_vertical"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginStart="4dp"
                                         tools:text="132 membres. Paris 13." />
 
                                 </LinearLayout>
