@@ -311,8 +311,8 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                 CustomAlertDialog.showWithCancelFirst(
                     requireContext(),
                     title, message, btn,
-                    { /* cancel */ },
-                    {
+                    onNo = { /* cancel */ },
+                    onYes = {
                         AnalyticsEvents.logEvent(logEventTitleClick)
                         deleteMessage()
                         dismissCallback?.reloadView()
@@ -326,8 +326,8 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                     getString(R.string.discussion_supress_the_post),
                     getString(R.string.discussion_ask_supress),
                     getString(R.string.discussion_button_supress),
-                    { /* cancel */ },
-                    {
+                    onNo = { /* cancel */ },
+                    onYes = {
                         AnalyticsEvents.logEvent(logEventTitleClick)
                         deleteMessage()
                         dismissCallback?.reloadView()

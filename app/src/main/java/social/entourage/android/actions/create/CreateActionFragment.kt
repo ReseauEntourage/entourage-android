@@ -261,7 +261,8 @@ class CreateActionFragment : Fragment() {
                 requireContext(),
                 getString(R.string.back_create_action_title),
                 getString(R.string.back_create_action_content,if (isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib)),
-                getString(R.string.exit), {}
+                getString(R.string.exit),
+                onNo = {}
             ) {
                 requireActivity().finish()
             }
