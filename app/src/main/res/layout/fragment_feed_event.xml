@@ -7,7 +7,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Layout principal -->
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinator_layout"
             android:layout_width="match_parent"
@@ -212,20 +211,23 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal">
+
                                 <LinearLayout
                                     android:id="@+id/members"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="5dp"
-                                    android:gravity="center"
+                                    android:gravity="center_vertical"
                                     android:orientation="horizontal">
+
                                     <androidx.recyclerview.widget.RecyclerView
                                         android:id="@+id/recycler_view"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
+                                        android:layout_gravity="center_vertical"
                                         android:layout_marginEnd="5dp"
                                         android:focusable="true" />
+
                                     <TextView
                                         style="@style/h1_black"
                                         android:layout_width="wrap_content"
@@ -234,15 +236,15 @@
                                         android:layout_marginEnd="5dp"
                                         android:layout_marginBottom="8dp"
                                         android:text="..." />
-                                        <TextView
-                                            android:id="@+id/event_members_number_location"
-                                            style="@style/left_courant_black"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            app:layout_constraintTop_toTopOf="parent"
-                                            app:layout_constraintBottom_toBottomOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            tools:text="132 membres. Paris 13." />
+
+                                    <TextView
+                                        android:id="@+id/event_members_number_location"
+                                        style="@style/left_courant_black"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:gravity="end|center_vertical"
+                                        tools:text="132 membres. Paris 13." />
 
                                 </LinearLayout>
                             </LinearLayout>
@@ -412,7 +414,6 @@ purus dui, aliquet cursus tellus a, dictum hen." />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <!-- Bouton sticky au-dessus du layout principal -->
         <Button
             android:id="@+id/button_join"
             style="?android:attr/borderlessButtonStyle"
