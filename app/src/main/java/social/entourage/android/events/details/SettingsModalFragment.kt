@@ -258,17 +258,14 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private fun handleCancelEvent() {
         binding.cancel.setOnClickListener {
-            if (event?.recurrence == null) {
-                CustomAlertDialog.show(
-                    requireContext(),
-                    getString(R.string.cancel_event),
-                    getString(R.string.event_cancel_subtitle_pop),
-                    getString(R.string.cancel_event_continue)
-                ) {
-                    cancelEventWithoutRecurrence()
-                }
-            } else {
-                showAlertDialogCancelEventWithRecurrence()
+            CustomAlertDialog.showWithCancelFirst(
+                requireContext(),
+                getString(R.string.delete_event_title),
+                getString(R.string.delete_event_confirmation),
+                getString(R.string.cancel_event),
+                getString(R.string.back)
+            ) {
+                cancelEventWithoutRecurrence()
             }
         }
     }
@@ -288,57 +285,6 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private fun cancelEventWithoutRecurrence() {
         event?.id?.let { id -> eventPresenter.cancelEvent(id) }
-    }
-
-    private fun cancelEventWithRecurrence() {
-//        event?.id?.let { id ->
-//            val editedEvent = hashMapOf<String, Any>(
-//                "status" to Status.CLOSED.value,
-//                "recurrency" to Recurrence.NO_RECURRENCE.value
-//            )
-//            val body = hashMapOf<String, Any>("outing" to editedEvent)
-//            eventPresenter.updateEvent(id, body)
-//        }
-    }
-
-    private fun showAlertDialogCancelEventWithRecurrence() {
-        val custom = LayoutInflater.from(requireContext())
-            .inflate(R.layout.layout_custom_alert_dialog_cancel_event, null)
-        val dialog = AlertDialog.Builder(requireContext()).setView(custom).create()
-
-        val btnYes = custom.findViewById<Button>(R.id.yes)
-        val radioGroup = custom.findViewById<RadioGroup>(R.id.recurrence)
-        val cancelOneEvent = custom.findViewById<RadioButton>(R.id.one_event)
-        val cancelAllEvents = custom.findViewById<RadioButton>(R.id.all_events_recurrent)
-
-        btnYes.isEnabled = false
-        btnYes.background = requireContext().getDrawable(R.drawable.btn_shape_light_orange)
-
-        radioGroup.setOnCheckedChangeListener { group, _ ->
-            btnYes.isEnabled = group.checkedRadioButtonId != -1
-            if (btnYes.isEnabled) {
-                btnYes.background = requireContext().getDrawable(R.drawable.btn_shape_orange_alert_dialog)
-            }
-        }
-
-        btnYes.text = getString(R.string.cancel_event)
-        btnYes.setOnClickListener { dialog.dismiss() }
-
-        custom.findViewById<ImageButton>(R.id.btn_cross).apply {
-            visibility = View.VISIBLE
-            setOnClickListener { dialog.dismiss() }
-        }
-
-        custom.findViewById<TextView>(R.id.title).text = getString(R.string.event_cancel_recurrent_event)
-
-        custom.findViewById<Button>(R.id.yes).setOnClickListener {
-            if (cancelOneEvent.isChecked) cancelEventWithoutRecurrence()
-            if (cancelAllEvents.isChecked) cancelEventWithRecurrence()
-            dialog.dismiss()
-        }
-
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.show()
     }
 
     private fun onEventChanged(done: Boolean) {
