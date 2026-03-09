@@ -552,7 +552,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                             requireContext(),
                             getString(R.string.delete_event_title),
                             getString(R.string.delete_event_confirmation),
-                            getString(R.string.delete)
+                            getString(R.string.cancel_event),
+                            getString(R.string.back)
                         ) {
                             eventsPresenter.cancelEvent(eventId)
                             dismiss()

@@ -24,6 +24,7 @@ object CustomAlertDialog {
         title: String,
         content: String,
         action: String,
+        cancelText: String? = null,
         onNo: () -> (Unit) = {},
         onYes: (() -> Unit),
     ) {
@@ -35,6 +36,9 @@ object CustomAlertDialog {
         customDialog.findViewById<TextView>(R.id.title).text = title
         customDialog.findViewById<TextView>(R.id.content).text = content
         customDialog.findViewById<TextView>(R.id.yes).text = action
+        if (cancelText != null) {
+            customDialog.findViewById<TextView>(R.id.no).text = cancelText
+        }
         customDialog.findViewById<ImageButton>(R.id.btn_cross).setOnClickListener {
             alertDialog.dismiss()
         }
