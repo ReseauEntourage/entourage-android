@@ -56,7 +56,7 @@ workflows:
                 App|${BITRISE_APP_TITLE}
                 Branch|${BITRISE_GIT_BRANCH}
                 Workflow|${BITRISE_TRIGGERED_WORKFLOW_ID}
-                PR|${$BITRISEIO_PULL_REQUEST_REPOSITORY_URL}
+                PR|${BITRISEIO_PULL_REQUEST_REPOSITORY_URL}
                 Jira|<${JIRA_BASE_URL}browse/${JIRA_ISSUE_KEYS}|${JIRA_ISSUE_KEYS}>
             - api_token: "$SLACK__BOT_API_TOKEN"
             - channel: "#androiddev"
