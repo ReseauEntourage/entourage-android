@@ -60,7 +60,7 @@ protected var isOne2One = false
 protected var isConversation = false
 protected var isFromNotif = false
 var currentParentPost:Post? = null
-private val universalLinkManager = UniversalLinkManager(this)
+val universalLinkManager = UniversalLinkManager(this)
 var photoUri: Uri? = null
 private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
 private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }

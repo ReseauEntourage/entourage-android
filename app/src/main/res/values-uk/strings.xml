@@ -280,6 +280,7 @@
     <string name="leave_group_dialog_content">Ви хочете залишити групу?</string>
     <string name="discuss">Коментувати…</string>
     <string name="discussbis">Щоб написати повідомлення…</string>
+    <string name="staff_out_of_office_banner">Команда на перерві... 🌙 У разі надзвичайної ситуації: &lt;a href="tel:15"&gt;15&lt;/a&gt;, &lt;a href="tel:18"&gt;18&lt;/a&gt; або &lt;a href="tel:115"&gt;115&lt;/a&gt;. Для негайної допомоги ваші сусіди в &lt;a href="entourage://groupe"&gt;групі&lt;/a&gt;! 🏠 Ми відповімо незабаром.</string>
     <string name="no_comments">Без коментарів</string>
     <string name="comments_title">Коментарі</string>
     <string name="write_your_message">Напишіть своє повідомлення</string>

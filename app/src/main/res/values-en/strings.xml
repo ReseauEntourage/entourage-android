@@ -253,6 +253,7 @@
     <string name="leave_group_dialog_content">Do you want to leave the group?</string>
     <string name="discuss">Comment…</string>
     <string name="discussbis">Write a message…</string>
+    <string name="staff_out_of_office_banner">The team is on a break... 🌙 In case of emergency: &lt;a href="tel:15"&gt;15&lt;/a&gt;, &lt;a href="tel:18"&gt;18&lt;/a&gt; or &lt;a href="tel:115"&gt;115&lt;/a&gt;. For immediate help, your neighbors are on the &lt;a href="entourage://groupe"&gt;group&lt;/a&gt;! 🏠 We\'ll answer you soon.</string>
     <string name="no_comments">No comments</string>
     <string name="comments_title">Comments</string>
     <string name="write_your_message">Write your message</string>

@@ -36,6 +36,7 @@ import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.GroupMember
+import social.entourage.android.api.model.toUser
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.SmallTalk
 import social.entourage.android.api.model.User
@@ -78,6 +79,9 @@ class DetailConversationActivity : CommentActivity() {
     private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
     private val smallTalkViewModel: SmallTalkViewModel by viewModels()
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
+
+    // State
+    private var hasClosedStaffBanner: Boolean = false
 
     // Launchers
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
@@ -128,6 +132,12 @@ class DetailConversationActivity : CommentActivity() {
         discussionsPresenter.detailConversation.observe(this) { handleDetailConversation(it) }
         eventPresenter.getEvent.observe(this) { handleGetEvent(it) }
         eventPresenter.getMembersSearch.observe(this) { handleMembersSearch(it) }
+        groupPresenter.getGroup.observe(this) { group ->
+            group?.let {
+                val uri = Uri.parse("https://app.entourage.social/groups/${it.id}")
+                universalLinkManager.handleUniversalLink(uri)
+            }
+        }
         binding.comments.layoutManager = LinearLayoutManager(this)
         setupScrollPagination()
 
@@ -705,6 +715,119 @@ class DetailConversationActivity : CommentActivity() {
         // Mémoriser les membres pour les mentions
         allMembers = conversation.members ?: emptyList()
         Timber.d("[DetailConversation] allMembers.size=%s", allMembers.size)
+
+        // Banner Staff Out-of-Office check
+        checkStaffBannerDisplay(conversation)
+    }
+
+    private fun checkStaffBannerDisplay(conversation: Conversation) {
+        if (hasClosedStaffBanner) {
+            binding.layoutStaffBanner.visibility = View.GONE
+            return
+        }
+
+        // Must be a 1-to-1 conversation
+        if (!isOne2One || conversation.type == "outing") {
+            binding.layoutStaffBanner.visibility = View.GONE
+            return
+        }
+
+        // Find the other user
+        val meId = EntourageApplication.get().me()?.id
+        val otherUser = conversation.members?.firstOrNull { it.id != meId }
+
+        if (otherUser == null) {
+            binding.layoutStaffBanner.visibility = View.GONE
+            return
+        }
+
+        // Convert GroupMember to User to get roles
+        val otherUserRoles = conversation.user?.roles ?: otherUser.toUser().roles
+
+        val isStaff = otherUserRoles?.any { it.equals("Équipe Entourage", ignoreCase = true) } == true
+
+        if (!isStaff) {
+            binding.layoutStaffBanner.visibility = View.GONE
+            return
+        }
+
+        // Time Check
+        val calendar = java.util.Calendar.getInstance(java.util.TimeZone.getDefault())
+        val dayOfWeek = calendar.get(java.util.Calendar.DAY_OF_WEEK)
+        val hourOfDay = calendar.get(java.util.Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(java.util.Calendar.MINUTE)
+
+        val isWeekend = (dayOfWeek == java.util.Calendar.FRIDAY && (hourOfDay > 18 || (hourOfDay == 18 && minute > 0))) ||
+                        dayOfWeek == java.util.Calendar.SATURDAY ||
+                        dayOfWeek == java.util.Calendar.SUNDAY ||
+                        (dayOfWeek == java.util.Calendar.MONDAY && (hourOfDay < 8 || (hourOfDay == 8 && minute < 59)))
+
+        val isNightTime = (hourOfDay > 18 || (hourOfDay == 18 && minute > 0)) ||
+                          (hourOfDay < 8 || (hourOfDay == 8 && minute < 59))
+
+        if (isWeekend || isNightTime) {
+            binding.layoutStaffBanner.visibility = View.VISIBLE
+            setupStaffBannerContent()
+        } else {
+            binding.layoutStaffBanner.visibility = View.GONE
+        }
+    }
+
+    private fun setupStaffBannerContent() {
+        // Handle links in the banner text
+        val staffMessage = getString(R.string.staff_out_of_office_banner)
+        val spannableStr = android.text.SpannableStringBuilder()
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            spannableStr.append(android.text.Html.fromHtml(staffMessage, android.text.Html.FROM_HTML_MODE_COMPACT))
+        } else {
+            @Suppress("DEPRECATION")
+            spannableStr.append(android.text.Html.fromHtml(staffMessage))
+        }
+
+        val spans = spannableStr.getSpans(0, spannableStr.length, android.text.style.URLSpan::class.java)
+        for (span in spans) {
+            val start = spannableStr.getSpanStart(span)
+            val end = spannableStr.getSpanEnd(span)
+            val flags = spannableStr.getSpanFlags(span)
+            val url = span.url
+
+            spannableStr.removeSpan(span)
+            val clickableSpan = object : android.text.style.ClickableSpan() {
+                override fun onClick(widget: View) {
+                    if (url.startsWith("tel:")) {
+                        val intent = Intent(Intent.ACTION_DIAL, Uri.parse(url))
+                        startActivity(intent)
+                    } else if (url == "entourage://groupe") {
+                        groupPresenter.getDefaultGroup()
+                    }
+                }
+
+                override fun updateDrawState(ds: android.text.TextPaint) {
+                    super.updateDrawState(ds)
+                    ds.color = ContextCompat.getColor(this@DetailConversationActivity, R.color.orange)
+                    ds.isUnderlineText = true
+                }
+            }
+            spannableStr.setSpan(clickableSpan, start, end, flags)
+        }
+
+        binding.tvStaffBannerMessage.text = spannableStr
+        binding.tvStaffBannerMessage.movementMethod = android.text.method.LinkMovementMethod.getInstance()
+
+        binding.btnCloseStaffBanner.setOnClickListener {
+            hasClosedStaffBanner = true
+            binding.layoutStaffBanner.animate()
+                .translationY(binding.layoutStaffBanner.height.toFloat())
+                .alpha(0f)
+                .setDuration(300)
+                .withEndAction {
+                    binding.layoutStaffBanner.visibility = View.GONE
+                    binding.layoutStaffBanner.translationY = 0f
+                    binding.layoutStaffBanner.alpha = 1f
+                }
+                .start()
+        }
     }
 
     private fun handleGetEvent(event: Events?) {
