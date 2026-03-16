@@ -304,10 +304,16 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
         Timber.d("***** Go next = $currentFragmentPosition")
         when (currentFragmentPosition) {
             PositionsType.NamesPhone.pos -> {
+                social.entourage.android.tools.log.AnalyticsEvents.logEvent(social.entourage.android.tools.log.AnalyticsEvents.Clic__Next__Onboarding__InputNames)
                 callSignup()
             }
             PositionsType.Passcode.pos -> {
+                social.entourage.android.tools.log.AnalyticsEvents.logEvent(social.entourage.android.tools.log.AnalyticsEvents.Clic__Next__Onboarding__InputCode)
                 sendPasscode()
+            }
+            PositionsType.Type.pos -> {
+                social.entourage.android.tools.log.AnalyticsEvents.logEvent(social.entourage.android.tools.log.AnalyticsEvents.Clic__Next__Onboarding__Profile)
+                updateGoal()
             }
             else -> {
                 updateGoal()

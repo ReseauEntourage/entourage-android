@@ -18,6 +18,38 @@ import java.util.*
  * Created by Mihai Ionescu on 03/10/2017.
  */
 object AnalyticsEvents {
+//Onboarding Tracking Request
+    const val View__Onboarding__InputNames = "View__Onboarding__InputNames"
+    const val Clic__Next__Onboarding__InputNames = "Clic__Next__Onboarding__InputNames"
+
+    const val View__Onboarding__InputCode = "View__Onboarding__InputCode"
+    const val Clic__New__Code__Onboarding__InputCode = "Clic__New__Code__Onboarding__InputCode"
+    const val Clic__Contact__Onboarding__InputCode = "Clic__Contact__Onboarding__InputCode"
+    const val Clic__Next__Onboarding__InputCode = "Clic__Next__Onboarding__InputCode"
+
+    const val View__Onboarding__InputProfile = "View__Onboarding__InputProfile"
+    const val Clic__Next__Onboarding__Profile = "Clic__Next__Onboarding__Profile"
+
+    const val View__Onboarding__AssoSearch = "View__Onboarding__AssoSearch"
+    const val Clic__Back__Onboarding__AssoSearch = "Clic__Back__Onboarding__AssoSearch"
+    const val Clic__Next__Onboarding__AssoSearch = "Clic__Next__Onboarding__AssoSearch"
+
+    const val View__Onboarding__Location = "View__Onboarding__Location"
+    const val Clic__Back__Onboarding__Location = "Clic__Back__Onboarding__Location"
+    const val Clic__Next__Onboarding__Location = "Clic__Next__Onboarding__Location"
+
+    const val View__Onboarding__Confirmation = "View__Onboarding__Confirmation"
+    const val Clic__Start__Onboarding__Confirmation = "Clic__Start__Onboarding__Confirmation"
+
+    const val View__Onboarding__Notifications = "View__Onboarding__Notifications"
+    const val Clic__Enable__Onboarding__Notifications = "Clic__Enable__Onboarding__Notifications"
+    const val Clic__Skip__Onboarding__Notifications = "Clic__Skip__Onboarding__Notifications"
+
+    const val View__Onboarding__AssoDescription = "View__Onboarding__AssoDescription"
+    const val Clic__Later__Onboarding__AssoDescription = "Clic__Later__Onboarding__AssoDescription"
+    const val Clic__Finish__Onboarding__AssoDescription = "Clic__Finish__Onboarding__AssoDescription"
+
+
     // Analytics events
     const val EVENT_OPEN_POI_FROM_MAP = "Open_POI_From_Map"
 
