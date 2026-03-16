@@ -61,6 +61,8 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityOnboardingZoneChoiceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        social.entourage.android.tools.log.AnalyticsEvents.logEvent(social.entourage.android.tools.log.AnalyticsEvents.View__Onboarding__Location)
+
         selectedUserType = intent.getStringExtra(EXTRA_USER_TYPE)
             ?.let { runCatching { UserType.valueOf(it) }.getOrNull() }
             ?: UserType.ENTOUR
@@ -106,10 +108,12 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setupButtons() {
         binding.buttonConfigureLater.setOnClickListener {
+            social.entourage.android.tools.log.AnalyticsEvents.logEvent(social.entourage.android.tools.log.AnalyticsEvents.Clic__Back__Onboarding__Location)
             onBackPressed()
         }
 
         binding.buttonStart.setOnClickListener {
+            social.entourage.android.tools.log.AnalyticsEvents.logEvent(social.entourage.android.tools.log.AnalyticsEvents.Clic__Next__Onboarding__Location)
             val latLng = currentLatLng
             if (latLng == null) {
                 Toast.makeText(this, R.string.onboarding_zone_pick_location_first, Toast.LENGTH_SHORT).show()

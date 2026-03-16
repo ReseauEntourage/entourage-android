@@ -33,6 +33,8 @@ class OnboardingAssociationChoiceActivity : AppCompatActivity() {
         binding = ActivityOnboardingAssociationChoiceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        social.entourage.android.tools.log.AnalyticsEvents.logEvent(social.entourage.android.tools.log.AnalyticsEvents.View__Onboarding__AssoSearch)
+
         initialAddress = intent.getStringExtra(EXTRA_ADDRESS)
         initialLat = intent.getDoubleExtra(EXTRA_LAT, Double.NaN).takeIf { !it.isNaN() }
         initialLng = intent.getDoubleExtra(EXTRA_LNG, Double.NaN).takeIf { !it.isNaN() }
@@ -135,9 +137,13 @@ class OnboardingAssociationChoiceActivity : AppCompatActivity() {
     }
 
     private fun setupButtons() {
-        binding.buttonPrevious.setOnClickListener { finish() }
+        binding.buttonPrevious.setOnClickListener {
+            social.entourage.android.tools.log.AnalyticsEvents.logEvent(social.entourage.android.tools.log.AnalyticsEvents.Clic__Back__Onboarding__AssoSearch)
+            finish()
+        }
 
         binding.buttonNext.setOnClickListener {
+            social.entourage.android.tools.log.AnalyticsEvents.logEvent(social.entourage.android.tools.log.AnalyticsEvents.Clic__Next__Onboarding__AssoSearch)
             val picked = (binding.dropdownAssoc.editText as? AutoCompleteTextView)
                 ?.text?.toString()?.trim().orEmpty()
 

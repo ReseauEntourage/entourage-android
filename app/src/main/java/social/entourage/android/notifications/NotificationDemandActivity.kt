@@ -25,7 +25,7 @@ class NotificationDemandActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityNotificationDemandBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        AnalyticsEvents.logEvent(AnalyticsEvents.notification_settings_page_view)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__Onboarding__Notifications)
 
         // Initialize the permission launcher
         initializePermissionLauncher()
@@ -35,14 +35,14 @@ class NotificationDemandActivity : BaseActivity() {
 
         // Set up click listeners
         binding.buttonStart.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Clic__Enable__Onboarding__Notifications)
             requestNotificationPermission()
-            AnalyticsEvents.logEvent(AnalyticsEvents.notification_activate_button_clic)
 
         }
 
         binding.buttonConfigureLater.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Clic__Skip__Onboarding__Notifications)
             goMain()
-            AnalyticsEvents.logEvent(AnalyticsEvents.notification_deactivate_button_clic)
         }
 
         // Check if notifications are already enabled
