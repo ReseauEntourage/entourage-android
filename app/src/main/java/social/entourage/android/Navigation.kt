@@ -65,9 +65,7 @@ object Navigation {
                         )
                 }
                 ActionSummary.INDEX -> {
-                    val bottomNavigationView =
-                        (context as Activity).findViewById<BottomNavigationView>(R.id.nav_view)
-                    bottomNavigationView.selectedItemId = R.id.navigation_messages
+                    fragmentManager.primaryNavigationFragment?.findNavController()?.navigate(R.id.navigation_messages)
                 }
                 ActionSummary.CREATE -> Utils.showToast(
                     context,
@@ -82,9 +80,7 @@ object Navigation {
                     )
                 ActionSummary.INDEX -> {
                     ViewPagerDefaultPageController.shouldSelectDiscoverGroups = true
-                    val bottomNavigationView =
-                        (context as Activity).findViewById<BottomNavigationView>(R.id.nav_view)
-                    bottomNavigationView.selectedItemId = R.id.navigation_groups
+                    fragmentManager.primaryNavigationFragment?.findNavController()?.navigate(R.id.navigation_groups)
                 }
                 ActionSummary.CREATE ->
                     return Intent(context, CreateGroupActivity::class.java)
@@ -139,11 +135,8 @@ object Navigation {
                             Const.IS_OUTING_DISCOVER,
                             NavArgument.Builder().setDefaultValue(true).build()
                         )
+                        it.navigate(R.id.navigation_events)
                     }
-
-                    val bottomNavigationView =
-                        (context as Activity).findViewById<BottomNavigationView>(R.id.nav_view)
-                    bottomNavigationView.selectedItemId = R.id.navigation_events
                 }
                 ActionSummary.CREATE ->
                     return Intent(context, CreateEventActivity::class.java)
@@ -161,9 +154,7 @@ object Navigation {
                         .putExtra(Const.IS_ACTION_MINE, false)
                 }
                 ActionSummary.INDEX -> {
-                    val bottomNavigationView =
-                        (context as Activity).findViewById<BottomNavigationView>(R.id.nav_view)
-                    bottomNavigationView.selectedItemId = R.id.navigation_donations
+                    fragmentManager.primaryNavigationFragment?.findNavController()?.navigate(R.id.navigation_donations)
                 }
                 ActionSummary.CREATE -> {
                     return Intent(context, CreateActionActivity::class.java)
@@ -184,11 +175,8 @@ object Navigation {
                             Const.IS_ACTION_DEMAND,
                             NavArgument.Builder().setDefaultValue(true).build()
                         )
+                        it.navigate(R.id.navigation_donations)
                     }
-
-                    val bottomNavigationView =
-                        (context as Activity).findViewById<BottomNavigationView>(R.id.nav_view)
-                    bottomNavigationView.selectedItemId = R.id.navigation_donations
                 }
                 ActionSummary.CREATE -> {
                     return Intent(context, CreateActionActivity::class.java)
