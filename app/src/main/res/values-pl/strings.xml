@@ -280,6 +280,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="leave_group_dialog_content">Czy chcesz opuścić grupę?</string>
     <string name="discuss">Komentarz…</string>
     <string name="discussbis">Aby napisać wiadomość…</string>
+    <string name="staff_out_of_office_banner">Zespół ma przerwę... 🌙 W nagłych wypadkach: &lt;a href="tel:15"&gt;15&lt;/a&gt;, &lt;a href="tel:18"&gt;18&lt;/a&gt; lub &lt;a href="tel:115"&gt;115&lt;/a&gt;. Aby uzyskać natychmiastową pomoc, twoi sąsiedzi są w &lt;a href="entourage://groupe"&gt;grupie&lt;/a&gt;! 🏠 Odpowiemy wkrótce.</string>
     <string name="no_comments">Bez komentarza</string>
     <string name="comments_title">Uwagi</string>
     <string name="write_your_message">Napisz swoją wiadomość</string>

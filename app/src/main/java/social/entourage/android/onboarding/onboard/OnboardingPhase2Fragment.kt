@@ -91,7 +91,7 @@ class OnboardingPhase2Fragment : Fragment() {
         setupViews()
         setupOtp()
         activateTimer()
-        AnalyticsEvents.logEvent(AnalyticsEvents.Onboard_code)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__Onboarding__InputCode)
 
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
@@ -200,6 +200,7 @@ class OnboardingPhase2Fragment : Fragment() {
         // Lien "Renvoyer le code"
         binding.tvRetryLink.setOnClickListener {
             if (binding.tvRetryLink.isEnabled) {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Clic__New__Code__Onboarding__InputCode)
                 callback?.requestNewCode()
                 activateTimer()
             }
@@ -207,6 +208,7 @@ class OnboardingPhase2Fragment : Fragment() {
 
         // Bouton d'aide → email
         binding.uiOnboardBtHelp.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Clic__Contact__Onboarding__InputCode)
             val intent = Intent(Intent.ACTION_SENDTO).apply { data = Uri.parse("mailto:") }
             intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.contact_email)))
             try {
