@@ -278,6 +278,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="leave_group_dialog_content">Möchten Sie die Gruppe verlassen?</string>
     <string name="discuss">Kommentar…</string>
     <string name="discussbis">Um eine Nachricht zu schreiben…</string>
+    <string name="staff_out_of_office_banner">Das Team macht Pause... 🌙 Im Notfall: &lt;a href="tel:15"&gt;15&lt;/a&gt;, &lt;a href="tel:18"&gt;18&lt;/a&gt; oder &lt;a href="tel:115"&gt;115&lt;/a&gt;. Für sofortige Hilfe sind deine Nachbarn in der &lt;a href="entourage://groupe"&gt;Gruppe&lt;/a&gt;! 🏠 Wir antworten bald.</string>
     <string name="no_comments">Keine Kommentare</string>
     <string name="comments_title">Kommentare</string>
     <string name="write_your_message">Schreibe deine Nachricht</string>

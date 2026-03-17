@@ -280,6 +280,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="leave_group_dialog_content">Souhaitez-vous quitter le groupe ?</string>
     <string name="discuss">Commenter…</string>
     <string name="discussbis">Écrire un message…</string>
+    <string name="staff_out_of_office_banner">L’équipe est en pause... 🌙 En cas d\'urgence : &lt;a href="tel:15"&gt;15&lt;/a&gt;, &lt;a href="tel:18"&gt;18&lt;/a&gt; ou &lt;a href="tel:115"&gt;115&lt;/a&gt;. Pour une aide immédiate, vos voisins sont sur le &lt;a href="entourage://groupe"&gt;groupe&lt;/a&gt; ! 🏠 On vous répond vite.</string>
     <string name="no_comments">Pas de messages</string>
     <string name="event_date">"dd/MM/yyyy"</string>
     <string name="event_date_time">"dd MMMM yyyy à HH'h'mm"</string>

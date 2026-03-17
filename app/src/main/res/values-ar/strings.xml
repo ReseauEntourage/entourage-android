@@ -267,6 +267,7 @@
     <string name="leave_group_dialog_content">هل تريد مغادرة المجموعة؟</string>
     <string name="discuss">يعلق…</string>
     <string name="discussbis">لكتابة رسالة…</string>
+    <string name="staff_out_of_office_banner">الفريق في استراحة... 🌙 في حالة الطوارئ: &lt;a href="tel:15"&gt;15&lt;/a&gt;، &lt;a href="tel:18"&gt;18&lt;/a&gt; أو &lt;a href="tel:115"&gt;115&lt;/a&gt;. للحصول على مساعدة فورية، جيرانك موجودون في &lt;a href="entourage://groupe"&gt;المجموعة&lt;/a&gt;! 🏠 سنرد عليك قريبًا.</string>
     <string name="no_comments">بدون تعليق</string>
     <string name="comments_title">تعليقات</string>
     <string name="write_your_message">اكتب رسالتك</string>
