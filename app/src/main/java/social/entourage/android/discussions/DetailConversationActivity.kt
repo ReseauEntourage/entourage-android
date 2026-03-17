@@ -48,6 +48,7 @@ import social.entourage.android.discussions.members.MembersConversationFragment
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.groups.GroupPresenter
+import social.entourage.android.groups.details.feed.GroupFeedActivity
 import social.entourage.android.profile.MyProfileFullActivity
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.small_talks.SmallTalkGuidelinesActivity
@@ -134,8 +135,12 @@ class DetailConversationActivity : CommentActivity() {
         eventPresenter.getMembersSearch.observe(this) { handleMembersSearch(it) }
         groupPresenter.getGroup.observe(this) { group ->
             group?.let {
-                val uri = Uri.parse("https://app.entourage.social/groups/${it.id}")
-                universalLinkManager.handleUniversalLink(uri)
+                startActivity(
+                    Intent(this, GroupFeedActivity::class.java).putExtra(
+                        Const.GROUP_ID,
+                        group.id
+                    )
+                )
             }
         }
         binding.comments.layoutManager = LinearLayoutManager(this)
