@@ -511,7 +511,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
         concatAdapter = ConcatAdapter(
             config,
-          //  welcomeJourneyAdapter,
+            welcomeJourneyAdapter,
             initialPedagoHeaderAdapter,
 
             initialPedagoWrapperAdapter,
