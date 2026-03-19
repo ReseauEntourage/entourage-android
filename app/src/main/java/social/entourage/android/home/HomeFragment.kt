@@ -104,6 +104,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
     // Welcome Journey
     private lateinit var welcomeJourneyAdapter: HomeWelcomeJourneyAdapter
+    private val homeSkeletonAdapter = HomeSkeletonAdapter()
     private var currentCompletedSteps = 0
 
 
@@ -511,24 +512,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
         concatAdapter = ConcatAdapter(
             config,
-            welcomeJourneyAdapter,
-            initialPedagoHeaderAdapter,
-
-            initialPedagoWrapperAdapter,
-            actionHeaderAdapter,
-            actionWrapperAdapter,
-            actionButtonAdapter,
-            eventHeaderAdapter,
-            eventWrapperAdapter,
-            eventButtonAdapter,
-            homeModeratorAdapter,
-            groupHeaderAdapter,
-            groupWrapperAdapter,
-            groupButtonAdapter,
-            horsZoneAdapter,
-            smallTalkWrapperAdapter,
-            homeToolsAdapter,
-            homePedagoAdapter
+            homeSkeletonAdapter
         )
 
         binding.rvHome.apply {
@@ -799,6 +783,28 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         // CORRECTION: On fait un fade out sur la progress bar plutôt que de changer la visibilité du RV
         // Ça évite le saut de contenu
         if (totalchecksum >= 4) {
+            if (concatAdapter.adapters.contains(homeSkeletonAdapter)) {
+                concatAdapter.removeAdapter(homeSkeletonAdapter)
+                concatAdapter.addAdapter(welcomeJourneyAdapter)
+                concatAdapter.addAdapter(initialPedagoHeaderAdapter)
+                concatAdapter.addAdapter(initialPedagoWrapperAdapter)
+                concatAdapter.addAdapter(actionHeaderAdapter)
+                concatAdapter.addAdapter(actionWrapperAdapter)
+                concatAdapter.addAdapter(actionButtonAdapter)
+                concatAdapter.addAdapter(eventHeaderAdapter)
+                concatAdapter.addAdapter(eventWrapperAdapter)
+                concatAdapter.addAdapter(eventButtonAdapter)
+                concatAdapter.addAdapter(homeModeratorAdapter)
+                concatAdapter.addAdapter(groupHeaderAdapter)
+                concatAdapter.addAdapter(groupWrapperAdapter)
+                concatAdapter.addAdapter(groupButtonAdapter)
+                concatAdapter.addAdapter(horsZoneAdapter)
+                concatAdapter.addAdapter(smallTalkHeaderAdapter)
+                concatAdapter.addAdapter(smallTalkWrapperAdapter)
+                concatAdapter.addAdapter(homeToolsAdapter)
+                concatAdapter.addAdapter(homePedagoAdapter)
+                binding.rvHome.scheduleLayoutAnimation()
+            }
             if (binding.progressBar.visibility == View.VISIBLE) {
                 binding.progressBar.animate()
                     .alpha(0f)

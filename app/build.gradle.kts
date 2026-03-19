@@ -251,6 +251,7 @@ dependencies {
     //entourageImplementation facebookDependencies.values()
     implementation(libs.facebook.android.sdk)
     implementation(libs.facebook.core)
+    implementation(libs.shimmer)
     compileOnly(libs.javax.annotation)
 
     // Instrumentation tests
