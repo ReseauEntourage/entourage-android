@@ -171,6 +171,9 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
 
     private fun updateWelcomeJourneyStep(stepIndex: Int) {
+        // Prevent incrementing if already complete (e.g. from backend state)
+        if (stepIndex <= currentCompletedSteps) return
+
         welcomeJourneyAdapter.updateStepState(stepIndex, true)
         currentCompletedSteps++
 
@@ -202,6 +205,34 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 popupWindow.dismiss()
             }
         }, 4000)
+    }
+
+    private fun handleWelcomeJourneyState(events: List<String>?) {
+        if (!::welcomeJourneyAdapter.isInitialized) return
+
+        val hasWatchedVideo = events?.contains("onboarding.resource.welcome_watched") == true
+        val hasJoinedWebinar = events?.contains("onboarding.outing.webinar_or_first_steps") == true
+        val hasJoinedPapotages = events?.contains("onboarding.outing.papotages") == true
+
+        var completedCount = 0
+        if (hasWatchedVideo) {
+            welcomeJourneyAdapter.updateStepState(1, true)
+            completedCount++
+        }
+        if (hasJoinedWebinar) {
+            welcomeJourneyAdapter.updateStepState(2, true)
+            completedCount++
+        }
+        if (hasJoinedPapotages) {
+            welcomeJourneyAdapter.updateStepState(3, true)
+            completedCount++
+        }
+
+        currentCompletedSteps = completedCount
+
+        if (currentCompletedSteps >= 3) {
+            welcomeJourneyAdapter.setFullyCompleted(true)
+        }
     }
 
     private fun handleWelcomeJourneyClick(stepIndex: Int) {
@@ -978,6 +1009,8 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
     private fun updateContributionsView(summary: Summary) {
         if (!isAdded) return
+
+        handleWelcomeJourneyState(summary.events)
 
         val isAssociationFromSummary = summary.association == true
         EntourageApplication.get().sharedPreferences.edit {
