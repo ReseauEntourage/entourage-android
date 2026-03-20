@@ -16,19 +16,39 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/grey" />
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/layout_title"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:fontFamily="@font/quicksand_bold"
         android:gravity="center"
-        android:text="Découvrez l'esprit Entourage"
-        android:textColor="@color/black"
-        android:textSize="15sp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_close" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_close">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_bold"
+            android:text="Découvrez l'esprit Entourage"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_badge_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_badge_todo"
+            android:fontFamily="@font/nunitosans_bold"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp"
+            android:text="1 min"
+            android:textColor="@color/orange"
+            android:textSize="11sp" />
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_video_placeholder"
@@ -36,7 +56,7 @@
         android:layout_height="200dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/bg_placeholder_video"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title">
+        app:layout_constraintTop_toBottomOf="@+id/layout_title">
 
         <ImageView
             android:id="@+id/iv_play"
