@@ -278,8 +278,15 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             bottomSheetDialog.dismiss()
         }
 
+        var countDownTimer: android.os.CountDownTimer? = null
+        btnContinue?.isEnabled = false
+
+        bottomSheetDialog.setOnDismissListener {
+            countDownTimer?.cancel()
+        }
+
         layoutVideo?.setOnClickListener {
-            btnContinue?.isEnabled = true
+            // Already clicked or logic for video player
         }
 
         btnContinue?.setOnClickListener {
@@ -288,6 +295,21 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         }
 
         bottomSheetDialog.show()
+
+        val originalText = btnContinue?.text?.toString() ?: ""
+        countDownTimer = object : android.os.CountDownTimer(5000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                if (!isAdded) return
+                val secondsRemaining = millisUntilFinished / 1000 + 1
+                btnContinue?.text = "$originalText ($secondsRemaining)"
+            }
+
+            override fun onFinish() {
+                if (!isAdded) return
+                btnContinue?.text = originalText
+                btnContinue?.isEnabled = true
+            }
+        }.start()
     }
 
     override fun onCreateView(
