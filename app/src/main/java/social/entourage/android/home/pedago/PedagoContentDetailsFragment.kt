@@ -81,7 +81,7 @@ class PedagoContentDetailsFragment : Fragment() {
                 setBackgroundColor(Color.TRANSPARENT)
                 settings.javaScriptEnabled = true
                 loadDataWithBaseURL(
-                    null, htmlContent, "text/html", "utf-8", null
+                    "https://www.entourage.social", htmlContent, "text/html", "utf-8", null
                 )
             }
         }
