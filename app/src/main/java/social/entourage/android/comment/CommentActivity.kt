@@ -12,6 +12,8 @@ import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.EntourageApplication
@@ -95,7 +97,14 @@ override fun onCreate(savedInstanceState: Bundle?) {
 
     handleSendButtonState()
 
+
     updatePaddingTopForEdgeToEdge(binding.header.headerLayout)
+
+    ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
+        val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.ime())
+        view.setPadding(0, 0, 0, insets.bottom)
+        windowInsets
+    }
 }
 
 fun setIsEventTrue(){
