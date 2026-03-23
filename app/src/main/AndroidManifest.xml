@@ -128,7 +128,7 @@
             android:exported="false" />
         <activity
             android:name=".discussions.DetailConversationActivity"
-            android:windowSoftInputMode="adjustPan"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".tools.image_viewer.ImageListActivity"
@@ -155,11 +155,11 @@
             android:exported="false" />
         <activity
             android:name=".events.details.feed.EventCommentActivity"
-            android:windowSoftInputMode="adjustPan"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".groups.details.feed.GroupCommentActivity"
-            android:windowSoftInputMode="adjustPan"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".events.details.feed.EventFeedActivity"
@@ -188,7 +188,7 @@
         <!-- abstract class declared here to make sure child classes work -->
         <activity
             android:name=".comment.CommentActivity"
-            android:windowSoftInputMode="adjustPan"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
 
         <activity
