@@ -88,27 +88,31 @@ class OnboardingEditPhotoFragment : DialogFragment() {
 
         binding.cropView.addOnCropListener(object : OnCropListener {
             override fun onSuccess(bitmap: Bitmap) {
-                binding.uiPhotoEditProgressBar.visibility = View.GONE
-                try {
-                    val squareBitmap = cropToSquare(bitmap)
-                    saveBitmapSecure(squareBitmap)
-                    updateProfilePicture()
-                } catch (e: IOException) {
-                    Timber.e(e)
-                    Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show()
+                activity?.runOnUiThread {
+                    binding.uiPhotoEditProgressBar.visibility = View.GONE
+                    try {
+                        val squareBitmap = cropToSquare(bitmap)
+                        saveBitmapSecure(squareBitmap)
+                        updateProfilePicture()
+                    } catch (e: IOException) {
+                        Timber.e(e)
+                        Toast.makeText(activity, R.string.user_photo_error_not_saved, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
 
             override fun onFailure(e: Exception) {
                 Timber.w(e)
-                activity?.let { activity->
-                    try {
-                        Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
-                    } catch (ee: Exception) {
-                        Timber.e(ee)
+                activity?.runOnUiThread {
+                    activity?.let { activity ->
+                        try {
+                            Toast.makeText(activity, R.string.user_photo_error_no_photo, Toast.LENGTH_SHORT).show()
+                        } catch (ee: Exception) {
+                            Timber.e(ee)
+                        }
+                        binding.uiPhotoEditProgressBar.visibility = View.GONE
+                        binding.uiEditPhotoValidate.isEnabled = true
                     }
-                    binding.uiPhotoEditProgressBar.visibility = View.GONE
-                    binding.uiEditPhotoValidate.isEnabled = true
                 }
             }
         })
