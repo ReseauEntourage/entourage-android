@@ -3,6 +3,8 @@
     <string name="app_name" translatable="false">Entourage</string>
     <string name="full_app_name">Entourage</string>
     <string name="button_loading">Chargement…</string>
+    <string name="title_welcome_webinar">Prochaines visios</string>
+    <string name="title_welcome_papotages">Prochains papotages</string>
     <string name="error_not_yet_implemented">Indisponible</string>
     <string name="error_google_play_store_not_installed">Le Google Play Store n\'est pas intallé</string>
     <string name="error_application_update">La version d\'Entourage installée n\'est plus supportée. Pour pouvoir continuer à utiliser nos services et profiter de la meilleure expérience possible, veuillez la mettre à jour avec la dernière version en cliquant sur le lien suivant.</string>
@@ -17,6 +19,7 @@
     <string name="register">Enregistrer</string>
     <string name="ignore">Ignorer</string>
     <string name="continue_string">Continuer</string>
+    <string name="no_events_found">Aucun événement trouvé</string>
     <string name="close">Fermer</string>
     <string name="edit">Modifier</string>
     <string name="activate">Activer</string>

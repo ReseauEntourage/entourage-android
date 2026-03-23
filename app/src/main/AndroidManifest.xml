@@ -116,6 +116,10 @@
             android:exported="false"/>
         <activity android:name=".small_talks.SmallTalkNoBandFound"
             android:exported="false"/>
+        <activity android:name=".events.list.WelcomeEventsListActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.EntourageSocial" />
         <activity android:name=".comment.ImageZoomActivity"
             />
         <activity

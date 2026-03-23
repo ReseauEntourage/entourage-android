@@ -243,22 +243,14 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         when (stepIndex) {
             1 -> showVideoModal()
             2 -> {
-                val urlString = if (BuildConfig.DEBUG) {
-                    "https://preprod.entourage.social/app/outings/webinar"
-                } else {
-                    "https://www.entourage.social/app/outings/webinar"
-                }
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlString))
+                val intent = Intent(requireContext(), social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
+                intent.putExtra("TYPE", "webinar")
                 startActivity(intent)
                 updateWelcomeJourneyStep(2)
             }
             3 -> {
-                val urlString = if (BuildConfig.DEBUG) {
-                    "https://preprod.entourage.social/app/outings/papotages"
-                } else {
-                    "https://www.entourage.social/app/outings/papotages"
-                }
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlString))
+                val intent = Intent(requireContext(), social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
+                intent.putExtra("TYPE", "papotages")
                 startActivity(intent)
                 updateWelcomeJourneyStep(3)
             }
