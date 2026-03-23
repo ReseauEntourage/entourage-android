@@ -118,6 +118,12 @@ interface EventsRequest {
     @GET("outings/first_steps")
     fun getEventWelcome(): Call<EventWrapper>
 
+    @GET("outings/papotages")
+    fun getEventsPapotages(): Call<EventsListWrapper>
+
+    @GET("outings/webinar")
+    fun getEventsWebinar(): Call<EventsListWrapper>
+
     @POST("outings/{event_id}/users")
     fun participate(
         @Path("event_id") eventId: Int
