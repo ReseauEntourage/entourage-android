@@ -47,8 +47,11 @@ class CreatePostGroupActivity : CreatePostActivity() {
 
     // Publication d'un post avec image
     override fun addPostWithImage(file: File) {
+        val messageText = binding.message.text.toString().trim()
+        val finalMessage = if (messageText.isEmpty()) null else messageText
+
         groupPresenter.addPost(
-            binding.message.text.toString(),
+            finalMessage,
             file,
             groupId
         )

@@ -555,12 +555,16 @@ class DetailConversationActivity : CommentActivity() {
             return
         }
         val spanned = binding.commentMessage.editableText
-        val caption = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Html.toHtml(spanned, Html.FROM_HTML_MODE_LEGACY)
+        val caption = if (spanned.toString().trim().isEmpty()) {
+            null
         } else {
-            @Suppress("DEPRECATION")
-            Html.toHtml(spanned)
-        }.trim().ifEmpty { null }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Html.toHtml(spanned, Html.FROM_HTML_MODE_LEGACY)
+            } else {
+                @Suppress("DEPRECATION")
+                Html.toHtml(spanned)
+            }.trim().ifEmpty { null }
+        }
         if (isSmallTalkMode) {
             smallTalkViewModel.addMessageWithImage(smallTalkId, caption, file)
         } else if (detailConversation?.type == "outing") {
