@@ -777,6 +777,8 @@ class DetailConversationActivity : CommentActivity() {
             binding.layoutStaffBanner.visibility = View.GONE
         }
     }
+
+    
     private fun setupStaffBannerContent() {
         // Handle links in the banner text
         val staffMessage = getString(R.string.staff_out_of_office_banner)
