@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebChromeClient
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
@@ -81,7 +82,7 @@ class PedagoContentDetailsFragment : Fragment() {
                 setBackgroundColor(Color.TRANSPARENT)
                 settings.javaScriptEnabled = true
                 loadDataWithBaseURL(
-                    null, htmlContent, "text/html", "utf-8", null
+                    "https://www.entourage.social", htmlContent, "text/html", "utf-8", null
                 )
             }
         }
@@ -143,17 +144,31 @@ class CustomWebViewClient(
     private val universalLinkManager: UniversalLinkManager
 ) : WebViewClient() {
 
-    @Deprecated("Deprecated in kt 1.9.0")
-    override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-        url?.let {
-            val uri = Uri.parse(it)
-            // Vérifiez si l'URL correspond à l'un de vos deeplinks
-            if (uri.host == universalLinkManager.prodURL || uri.host == universalLinkManager.stagingURL) {
-                // Si c'est un deeplink, utilisez UniversalLinkManager pour le gérer
-                universalLinkManager.handleUniversalLink(uri)
-                return true // Indiquez que vous avez pris en charge le lien
+    override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+        request?.let {
+            val uri = it.url
+            // On vérifie que c'est bien un clic utilisateur (hasGesture) pour ne pas intercepter
+            // le chargement initial d'iframe ou redirections automatiques de la baseURL
+            if (it.hasGesture()) {
+                if (uri.host == universalLinkManager.prodURL || uri.host == universalLinkManager.stagingURL) {
+                    universalLinkManager.handleUniversalLink(uri)
+                    return true
+                }
             }
         }
-        return false // Laissez WebView gérer l'URL comme d'habitude
+        return false // Laissez WebView gérer l'URL comme d'habitude si ce n'est pas intercepté
+    }
+
+    @Deprecated("Deprecated in kt 1.9.0")
+    override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+        // Fallback for API < 24 if ever used, without hasGesture() which is not available here
+        url?.let {
+            val uri = Uri.parse(it)
+            if (uri.host == universalLinkManager.prodURL || uri.host == universalLinkManager.stagingURL) {
+                universalLinkManager.handleUniversalLink(uri)
+                return true
+            }
+        }
+        return false
     }
 }
