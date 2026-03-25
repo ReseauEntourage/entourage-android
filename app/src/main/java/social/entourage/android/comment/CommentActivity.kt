@@ -275,11 +275,16 @@ fun updateView(emptyState: Boolean) {
     private fun handleCommentAction() {
     binding.comment.setOnClickListener {
         // Convertir le contenu de l'EditText en HTML pour préserver les retours à la ligne
-        val message = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Html.toHtml(binding.commentMessage.text, Html.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
+        val rawText = binding.commentMessage.text.toString().trim()
+        val message = if (rawText.isEmpty()) {
+            ""
         } else {
-            @Suppress("DEPRECATION")
-            Html.toHtml(binding.commentMessage.text)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Html.toHtml(binding.commentMessage.text, Html.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
+            } else {
+                @Suppress("DEPRECATION")
+                Html.toHtml(binding.commentMessage.text)
+            }
         }
 
         if (message.isNotBlank() || photoUri != null) {
