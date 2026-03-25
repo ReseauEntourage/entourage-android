@@ -118,8 +118,7 @@
             android:exported="false"/>
         <activity android:name=".events.list.WelcomeEventsListActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.EntourageSocial" />
+            android:screenOrientation="portrait" />
         <activity android:name=".comment.ImageZoomActivity"
             />
         <activity
