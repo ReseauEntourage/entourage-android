@@ -267,10 +267,11 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
     private fun handleReactions(resp: CompleteReactionsResponse) {
         membersList.clear()
         reactionList.clear()
+        val reactionsMap = MainActivity.reactionsList?.associateBy { it.id }
         resp.user_reactions.forEach { ur ->
             membersList += ur.user
-            val match = MainActivity.reactionsList?.find { it.id == ur.reaction_id }
-            val reaction = match ?: ReactionType(ur.reaction_id, match?.key, match?.imageUrl)
+            val match = reactionsMap?.get(ur.reaction_id)
+            val reaction = match ?: ReactionType(ur.reaction_id, null, null)
             reactionList += reaction
         }
         binding.progressBar.visibility = View.GONE
