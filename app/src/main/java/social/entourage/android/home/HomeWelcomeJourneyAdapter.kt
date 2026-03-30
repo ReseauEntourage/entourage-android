@@ -30,7 +30,8 @@ class HomeWelcomeJourneyAdapter(
             2 -> step2Completed = isCompleted
             3 -> step3Completed = isCompleted
         }
-        notifyItemChanged(0)
+        // Utilisation d'un payload pour éviter l'animation de clignotement / recréation de vue
+        notifyItemChanged(0, "REFRESH_STATE")
     }
 
     fun setVisible(visible: Boolean) {
@@ -50,6 +51,15 @@ class HomeWelcomeJourneyAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind()
+    }
+
+    // Surcharge avec payload pour mettre à jour l'UI sans détruire/recréer la vue
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
+        if (payloads.isNotEmpty()) {
+            holder.bind()
+        } else {
+            super.onBindViewHolder(holder, position, payloads)
+        }
     }
 
     override fun getItemCount(): Int {
@@ -132,6 +142,7 @@ class HomeWelcomeJourneyAdapter(
                 btnStep1.visibility = View.GONE
                 cardStep1.setOnClickListener(null)
                 cardStep1.isClickable = false
+                cardStep1.isEnabled = false
                 ivIconStep1.setImageResource(R.drawable.ic_lucide_check)
                 ivIconStep1.setBackgroundResource(R.drawable.bg_circle_green_lucide)
             } else {
@@ -143,9 +154,11 @@ class HomeWelcomeJourneyAdapter(
                 tvBadgeStep1.setTextColor(ContextCompat.getColor(context, R.color.orange))
                 tvBadgeStep1.setBackgroundResource(R.drawable.bg_badge_todo)
                 btnStep1.visibility = View.VISIBLE
+                btnStep1.isEnabled = true
                 btnStep1.setOnClickListener { onStepClick(1) }
                 cardStep1.setOnClickListener { onStepClick(1) }
                 cardStep1.isClickable = true
+                cardStep1.isEnabled = true
                 ivIconStep1.setImageResource(R.drawable.ic_lucide_video)
                 ivIconStep1.setBackgroundResource(R.drawable.bg_circle_orange_lucide)
             }
@@ -163,6 +176,7 @@ class HomeWelcomeJourneyAdapter(
                 btnStep2.visibility = View.GONE
                 cardStep2.setOnClickListener(null)
                 cardStep2.isClickable = false
+                cardStep2.isEnabled = false
                 ivIconStep2.setImageResource(R.drawable.ic_lucide_check)
                 ivIconStep2.setBackgroundResource(R.drawable.bg_circle_green_lucide)
             } else if (step1Completed) { // Step 2 is active
@@ -175,9 +189,11 @@ class HomeWelcomeJourneyAdapter(
                 tvBadgeStep2.setTextColor(ContextCompat.getColor(context, R.color.orange))
                 tvBadgeStep2.setBackgroundResource(R.drawable.bg_badge_todo)
                 btnStep2.visibility = View.VISIBLE
+                btnStep2.isEnabled = true
                 btnStep2.setOnClickListener { onStepClick(2) }
                 cardStep2.setOnClickListener { onStepClick(2) }
                 cardStep2.isClickable = true
+                cardStep2.isEnabled = true
                 ivIconStep2.setImageResource(R.drawable.ic_lucide_users)
                 ivIconStep2.setBackgroundResource(R.drawable.bg_circle_orange_lucide)
             } else { // Step 2 is future (Bloqué)
@@ -187,8 +203,10 @@ class HomeWelcomeJourneyAdapter(
                 tvDescStep2.setTextColor(ContextCompat.getColor(context, R.color.grey))
                 tvBadgeStep2.visibility = View.GONE
                 btnStep2.visibility = View.GONE
+                btnStep2.isEnabled = false
                 cardStep2.setOnClickListener(null)
                 cardStep2.isClickable = false // NON CLIQUABLE
+                cardStep2.isEnabled = false
                 ivIconStep2.setImageResource(R.drawable.ic_lucide_users)
                 ivIconStep2.setBackgroundResource(R.drawable.bg_circle_orange_lucide)
             }
@@ -206,6 +224,7 @@ class HomeWelcomeJourneyAdapter(
                 btnStep3.visibility = View.GONE
                 cardStep3.setOnClickListener(null)
                 cardStep3.isClickable = false
+                cardStep3.isEnabled = false
                 ivIconStep3.setImageResource(R.drawable.ic_lucide_check)
                 ivIconStep3.setBackgroundResource(R.drawable.bg_circle_green_lucide)
             } else if (step2Completed) { // Step 3 is active
@@ -218,9 +237,11 @@ class HomeWelcomeJourneyAdapter(
                 tvBadgeStep3.setTextColor(ContextCompat.getColor(context, R.color.orange))
                 tvBadgeStep3.setBackgroundResource(R.drawable.bg_badge_todo)
                 btnStep3.visibility = View.VISIBLE
+                btnStep3.isEnabled = true
                 btnStep3.setOnClickListener { onStepClick(3) }
                 cardStep3.setOnClickListener { onStepClick(3) }
                 cardStep3.isClickable = true
+                cardStep3.isEnabled = true
                 ivIconStep3.setImageResource(R.drawable.ic_lucide_messages)
                 ivIconStep3.setBackgroundResource(R.drawable.bg_circle_orange_lucide)
             } else { // Step 3 is future (Bloqué)
@@ -230,8 +251,10 @@ class HomeWelcomeJourneyAdapter(
                 tvDescStep3.setTextColor(ContextCompat.getColor(context, R.color.grey))
                 tvBadgeStep3.visibility = View.GONE
                 btnStep3.visibility = View.GONE
+                btnStep3.isEnabled = false
                 cardStep3.setOnClickListener(null)
                 cardStep3.isClickable = false // NON CLIQUABLE
+                cardStep3.isEnabled = false
                 ivIconStep3.setImageResource(R.drawable.ic_lucide_messages)
                 ivIconStep3.setBackgroundResource(R.drawable.bg_circle_orange_lucide)
             }

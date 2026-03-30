@@ -107,7 +107,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     // Welcome Journey
     private lateinit var welcomeJourneyAdapter: HomeWelcomeJourneyAdapter
     private val homeSkeletonAdapter = HomeSkeletonAdapter()
-    private var currentCompletedSteps = 0
+    private var completedJourneySteps = mutableSetOf<Int>() // Remplacé par un Set
 
 
     // Sensibilisation (Initial Pedago)
@@ -173,16 +173,18 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     }
 
 
-    private fun updateWelcomeJourneyStep(stepIndex: Int) {
-        // Prevent incrementing if already complete (e.g. from backend state)
-        if (stepIndex <= currentCompletedSteps) return
+    private fun updateWelcomeJourneyStep(stepIndex: Int, isFromBackend: Boolean = false) {
+        // Prevent if already complete
+        if (completedJourneySteps.contains(stepIndex)) return
 
+        completedJourneySteps.add(stepIndex)
         welcomeJourneyAdapter.updateStepState(stepIndex, true)
-        currentCompletedSteps++
 
-        if (currentCompletedSteps >= 3) {
+        if (completedJourneySteps.size >= 3) {
             welcomeJourneyAdapter.setFullyCompleted(true)
-            showCelebrationTooltip()
+            if (!isFromBackend) {
+                showCelebrationTooltip()
+            }
         }
     }
 
@@ -198,9 +200,9 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         )
 
         binding.rvHome.postDelayed({
-             if (isAdded) {
+            if (isAdded) {
                 popupWindow.showAtLocation(binding.rvHome, android.view.Gravity.TOP or android.view.Gravity.CENTER_HORIZONTAL, 0, 300)
-             }
+            }
         }, 500)
 
         binding.rvHome.postDelayed({
@@ -217,31 +219,12 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         val hasJoinedWebinar = events?.contains("onboarding.outing.webinar_or_first_steps") == true
         val hasJoinedPapotages = events?.contains("onboarding.outing.papotages") == true
 
-        var completedCount = 0
-        if (hasWatchedVideo) {
-            welcomeJourneyAdapter.updateStepState(1, true)
-            completedCount++
-        }
-        if (hasJoinedWebinar) {
-            welcomeJourneyAdapter.updateStepState(2, true)
-            completedCount++
-        }
-        if (hasJoinedPapotages) {
-            welcomeJourneyAdapter.updateStepState(3, true)
-            completedCount++
-        }
-
-        currentCompletedSteps = completedCount
-
-        if (currentCompletedSteps >= 3) {
-            welcomeJourneyAdapter.setFullyCompleted(true)
-        }
+        if (hasWatchedVideo) updateWelcomeJourneyStep(1, isFromBackend = true)
+        if (hasJoinedWebinar) updateWelcomeJourneyStep(2, isFromBackend = true)
+        if (hasJoinedPapotages) updateWelcomeJourneyStep(3, isFromBackend = true)
     }
 
     private fun handleWelcomeJourneyClick(stepIndex: Int) {
-        // Sécurité : on empêche de cliquer sur une étape si la précédente n'est pas terminée
-        if (stepIndex > currentCompletedSteps + 1) return
-
         when (stepIndex) {
             1 -> showVideoModal()
             2 -> {
@@ -886,7 +869,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             startActivityForResult(intent, 0)
         }
     }
-
+    
     private fun setObservations() {
         homePresenter.summary.observe(viewLifecycleOwner) { updateContributionsView(it) }
         homePresenter.getAllEvents.observe(viewLifecycleOwner) { handleEvent(it) }

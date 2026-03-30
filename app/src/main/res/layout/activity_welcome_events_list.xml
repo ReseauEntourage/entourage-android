@@ -21,14 +21,16 @@
 
         <TextView
             android:id="@+id/tv_welcome_list_title"
-            style="@style/h2"
+            android:fontFamily="@font/quicksand_bold"
+            android:textSize="24sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/tv_welcome_list_subtitle"
-            style="@style/body_1"
+            android:fontFamily="@font/nunitosans_regular"
+            android:textSize="15sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp" />

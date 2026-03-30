@@ -402,7 +402,7 @@
 
     <style name="h2">
         <item name="android:textSize">@dimen/profile_description</item>
-        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
 
