@@ -11,7 +11,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import social.entourage.android.R
-import social.entourage.android.tools.utils.Const
 
 class HomeWelcomeJourneyAdapter(
     private val context: Context,
@@ -24,24 +23,23 @@ class HomeWelcomeJourneyAdapter(
     private var isVisible = true
     private var isCompletedFully = false
 
-    fun updateStepState(stepIndex: Int, isCompleted: Boolean) {
-        when (stepIndex) {
-            1 -> step1Completed = isCompleted
-            2 -> step2Completed = isCompleted
-            3 -> step3Completed = isCompleted
-        }
-        // Utilisation d'un payload pour éviter l'animation de clignotement / recréation de vue
+    // Nouvelle fonction pour mettre à jour toutes les étapes d'un coup (depuis le summary)
+    fun updateAllSteps(isStep1Done: Boolean, isStep2Done: Boolean, isStep3Done: Boolean) {
+        this.step1Completed = isStep1Done
+        this.step2Completed = isStep2Done
+        this.step3Completed = isStep3Done
+
+        // On vérifie si tout est fini pour afficher l'encart vert "Vous êtes intégré"
+        this.isCompletedFully = isStep1Done && isStep2Done && isStep3Done
+
         notifyItemChanged(0, "REFRESH_STATE")
     }
 
     fun setVisible(visible: Boolean) {
-        isVisible = visible
-        notifyDataSetChanged()
-    }
-
-    fun setFullyCompleted(completed: Boolean) {
-        isCompletedFully = completed
-        notifyDataSetChanged()
+        if (isVisible != visible) {
+            isVisible = visible
+            notifyDataSetChanged()
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

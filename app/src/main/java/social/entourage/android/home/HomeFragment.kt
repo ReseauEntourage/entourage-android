@@ -100,15 +100,13 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private var welcomeVideoUrl: String? = null
     private var welcomeVideoHtml: String? = null
 
-
     // Adapters
     private lateinit var concatAdapter: ConcatAdapter
 
     // Welcome Journey
     private lateinit var welcomeJourneyAdapter: HomeWelcomeJourneyAdapter
     private val homeSkeletonAdapter = HomeSkeletonAdapter()
-    private var completedJourneySteps = mutableSetOf<Int>() // Remplacé par un Set
-
+    private var completedJourneySteps = mutableSetOf<Int>()
 
     // Sensibilisation (Initial Pedago)
     private lateinit var initialPedagoHeaderAdapter: HomeSectionHeaderAdapter
@@ -123,7 +121,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     // Actions
     private lateinit var actionHeaderAdapter: HomeSectionHeaderAdapter
     private lateinit var homeActionAdapter: HomeActionAdapter
-    private lateinit var actionWrapperAdapter: HomeHorizontalWrapperAdapter // NOUVEAU
+    private lateinit var actionWrapperAdapter: HomeHorizontalWrapperAdapter
     private lateinit var actionButtonAdapter: HomeSectionButtonAdapter
 
     // Events
@@ -172,22 +170,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         }
     }
 
-
-    private fun updateWelcomeJourneyStep(stepIndex: Int, isFromBackend: Boolean = false) {
-        // Prevent if already complete
-        if (completedJourneySteps.contains(stepIndex)) return
-
-        completedJourneySteps.add(stepIndex)
-        welcomeJourneyAdapter.updateStepState(stepIndex, true)
-
-        if (completedJourneySteps.size >= 3) {
-            welcomeJourneyAdapter.setFullyCompleted(true)
-            if (!isFromBackend) {
-                showCelebrationTooltip()
-            }
-        }
-    }
-
     private fun showCelebrationTooltip() {
         if (!isAdded) return
         val inflater = LayoutInflater.from(requireContext())
@@ -212,16 +194,49 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         }, 4000)
     }
 
-    private fun handleWelcomeJourneyState(events: List<String>?) {
+    private fun handleWelcomeJourneyState(summary: Summary) {
         if (!::welcomeJourneyAdapter.isInitialized) return
 
-        val hasWatchedVideo = events?.contains("onboarding.resource.welcome_watched") == true
-        val hasJoinedWebinar = events?.contains("onboarding.outing.webinar_or_first_steps") == true
-        val hasJoinedPapotages = events?.contains("onboarding.outing.papotages") == true
+        // Règle 1: Masquer si l'utilisateur est une association
+        val currentUser = EntourageApplication.me(requireContext())
+        if (currentUser?.goal == "asso") {
+            welcomeJourneyAdapter.setVisible(false)
+            return
+        }
 
-        if (hasWatchedVideo) updateWelcomeJourneyStep(1, isFromBackend = true)
-        if (hasJoinedWebinar) updateWelcomeJourneyStep(2, isFromBackend = true)
-        if (hasJoinedPapotages) updateWelcomeJourneyStep(3, isFromBackend = true)
+        // Récupération des informations de validation via le WS uniquement
+        val events = summary.events
+        val isStep1Done = events?.contains("onboarding.resource.welcome_watched") == true
+        val isStep2Done = events?.contains("onboarding.outing.webinar_or_first_steps") == true
+        val isStep3Done = events?.contains("onboarding.outing.papotages") == true
+
+        val allCompleted = isStep1Done && isStep2Done && isStep3Done
+
+        // Règle 2: Initialisation du companion object au premier passage
+        if (hasInitiallyCompletedAll == null) {
+            hasInitiallyCompletedAll = allCompleted
+        }
+
+        // Règle 3: Si tout était validé dès le lancement de l'application, on masque tout complètement
+        if (hasInitiallyCompletedAll == true) {
+            welcomeJourneyAdapter.setVisible(false)
+        } else {
+            // Sinon on affiche le composant et on met à jour les données
+            welcomeJourneyAdapter.setVisible(true)
+            welcomeJourneyAdapter.updateAllSteps(isStep1Done, isStep2Done, isStep3Done)
+
+            // Détection du moment où le parcours est terminé pour afficher le Tooltip de célébration
+            val previouslyCompletedSize = completedJourneySteps.size
+            completedJourneySteps.clear()
+            if (isStep1Done) completedJourneySteps.add(1)
+            if (isStep2Done) completedJourneySteps.add(2)
+            if (isStep3Done) completedJourneySteps.add(3)
+
+            // Si on vient juste de finir les 3 étapes (n'était pas à 3 avant)
+            if (allCompleted && previouslyCompletedSize < 3) {
+                showCelebrationTooltip()
+            }
+        }
     }
 
     private fun handleWelcomeJourneyClick(stepIndex: Int) {
@@ -231,13 +246,11 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 val intent = Intent(requireContext(), social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
                 intent.putExtra("TYPE", "webinar")
                 startActivity(intent)
-                updateWelcomeJourneyStep(2)
             }
             3 -> {
                 val intent = Intent(requireContext(), social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
                 intent.putExtra("TYPE", "papotages")
                 startActivity(intent)
-                updateWelcomeJourneyStep(3)
             }
         }
     }
@@ -273,8 +286,8 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         }
 
         btnContinue?.setOnClickListener {
+            // L'état de complétion de la vidéo n'est plus mis à jour localement, la validation passe par l'API
             bottomSheetDialog.dismiss()
-            updateWelcomeJourneyStep(1)
         }
 
         bottomSheetDialog.show()
@@ -869,7 +882,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             startActivityForResult(intent, 0)
         }
     }
-    
+
     private fun setObservations() {
         homePresenter.summary.observe(viewLifecycleOwner) { updateContributionsView(it) }
         homePresenter.getAllEvents.observe(viewLifecycleOwner) { handleEvent(it) }
@@ -1025,7 +1038,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private fun updateContributionsView(summary: Summary) {
         if (!isAdded) return
 
-        handleWelcomeJourneyState(summary.events)
+        handleWelcomeJourneyState(summary)
 
         val isAssociationFromSummary = summary.association == true
         EntourageApplication.get().sharedPreferences.edit {
@@ -1287,6 +1300,9 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         const val PREF_ENHANCED_ONBOARDING_COMPLETED = "PREF_ENHANCED_ONBOARDING_COMPLETED"
         private const val PREF_IS_ASSOCIATION_FROM_SUMMARY = "PREF_IS_ASSOCIATION_FROM_SUMMARY"
         private const val PREF_BIRTHDAY_SHOWN_YEAR = "PREF_BIRTHDAY_SHOWN_YEAR"
+
+        // Nouvelle variable pour mémoriser si le parcours était fini au lancement
+        private var hasInitiallyCompletedAll: Boolean? = null
     }
 }
 
