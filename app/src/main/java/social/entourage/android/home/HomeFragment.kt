@@ -99,6 +99,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private var currentRequests: List<UserSmallTalkRequest> = emptyList()
     private var welcomeVideoUrl: String? = null
     private var welcomeVideoHtml: String? = null
+    private var currentVideoWebView: android.webkit.WebView? = null
 
     // Adapters
     private lateinit var concatAdapter: ConcatAdapter
@@ -256,6 +257,16 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         }
     }
 
+    private fun loadVideoIntoWebView() {
+        currentVideoWebView?.let { webView ->
+            if (!welcomeVideoHtml.isNullOrBlank()) {
+                webView.loadDataWithBaseURL("https://www.entourage.social", welcomeVideoHtml!!, "text/html", "utf-8", null)
+            } else if (!welcomeVideoUrl.isNullOrBlank()) {
+                webView.loadUrl(welcomeVideoUrl!!)
+            }
+        }
+    }
+
     private fun showVideoModal() {
         if (!isAdded) return
         val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme)
@@ -265,6 +276,10 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         val btnContinue = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_continue)
         val webView = view.findViewById<android.webkit.WebView>(R.id.webview_video)
         val ivClose = view.findViewById<android.widget.ImageView>(R.id.iv_close)
+
+        // On déclenche l'appel API uniquement à l'ouverture de la modale
+        currentVideoWebView = webView
+        homePresenter.getWelcomeResource()
 
         ivClose?.setOnClickListener {
             bottomSheetDialog.dismiss()
@@ -276,15 +291,13 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         bottomSheetDialog.setOnDismissListener {
             countDownTimer?.cancel()
             webView?.destroy()
+            currentVideoWebView = null
         }
 
         webView?.settings?.javaScriptEnabled = true
         webView?.webChromeClient = android.webkit.WebChromeClient()
-        if (!welcomeVideoHtml.isNullOrBlank()) {
-            webView?.loadDataWithBaseURL("https://www.entourage.social", welcomeVideoHtml!!, "text/html", "utf-8", null)
-        } else if (!welcomeVideoUrl.isNullOrBlank()) {
-            webView?.loadUrl(welcomeVideoUrl!!)
-        }
+
+        loadVideoIntoWebView()
 
         btnContinue?.setOnClickListener {
             // L'état de complétion de la vidéo n'est plus mis à jour localement, la validation passe par l'API
@@ -816,7 +829,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 homePresenter.getPedagogicalResources()
                 homePresenter.getInitialPedagogicalResources()
                 homePresenter.getNotificationsCount()
-                homePresenter.getWelcomeResource()
                 userPresenter.getUser(meId)
             }
         }
@@ -894,6 +906,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         homePresenter.welcomeResource.observe(viewLifecycleOwner) { pedago ->
             welcomeVideoUrl = pedago.url
             welcomeVideoHtml = pedago.html
+            loadVideoIntoWebView()
         }
         actionsPresenter.unreadMessages.observe(viewLifecycleOwner) { updateUnreadCount(it) }
         discussionsPresenter.newConversation.observe(viewLifecycleOwner) { conversation ->
