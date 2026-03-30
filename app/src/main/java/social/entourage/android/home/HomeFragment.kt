@@ -277,10 +277,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         val webView = view.findViewById<android.webkit.WebView>(R.id.webview_video)
         val ivClose = view.findViewById<android.widget.ImageView>(R.id.iv_close)
 
-        // On déclenche l'appel API uniquement à l'ouverture de la modale
-        currentVideoWebView = webView
-        homePresenter.getWelcomeResource()
-
         ivClose?.setOnClickListener {
             bottomSheetDialog.dismiss()
         }
@@ -288,19 +284,24 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         var countDownTimer: android.os.CountDownTimer? = null
         btnContinue?.isEnabled = false
 
+        // On intercepte la fermeture de la modale (croix, bouton continuer, ou swipe)
         bottomSheetDialog.setOnDismissListener {
             countDownTimer?.cancel()
             webView?.destroy()
-            currentVideoWebView = null
+            // On force le rechargement de la Home pour récupérer le nouveau "summary"
+            callToInitHome()
         }
 
         webView?.settings?.javaScriptEnabled = true
         webView?.webChromeClient = android.webkit.WebChromeClient()
-
-        loadVideoIntoWebView()
+        if (!welcomeVideoHtml.isNullOrBlank()) {
+            webView?.loadDataWithBaseURL("https://www.entourage.social", welcomeVideoHtml!!, "text/html", "utf-8", null)
+        } else if (!welcomeVideoUrl.isNullOrBlank()) {
+            webView?.loadUrl(welcomeVideoUrl!!)
+        }
 
         btnContinue?.setOnClickListener {
-            // L'état de complétion de la vidéo n'est plus mis à jour localement, la validation passe par l'API
+            // Ça va déclencher le dismiss, qui lui-même déclenchera le onDismissListener
             bottomSheetDialog.dismiss()
         }
 
