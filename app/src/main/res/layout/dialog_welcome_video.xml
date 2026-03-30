@@ -53,32 +53,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_video_placeholder"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="0dp"
         android:layout_marginTop="24dp"
         android:background="@drawable/bg_placeholder_video"
+        app:layout_constraintDimensionRatio="H,16:9"
         app:layout_constraintTop_toBottomOf="@+id/layout_title">
 
-        <ImageView
-            android:id="@+id/iv_play"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:src="@drawable/ic_play_circle_orange"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/quicksand_bold"
-            android:text="Vidéo à venir"
-            android:textColor="@color/white"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_play" />
+        <WebView
+            android:id="@+id/webview_video"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView

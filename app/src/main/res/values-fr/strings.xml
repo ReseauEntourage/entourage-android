@@ -630,7 +630,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="action_my_empty_subtitle">Vous pouvez créer une contribution ou une demande en cliquant sur le « + » de la page « Entraide »</string>
 
     <string name="action_cancel_title">L’annonce a été supprimée…</string>
-    <string name="action_cancel_subtitle">Vous pouvez voir d’autres annonces susceptibles de vous interesser ou créer une demande dans la partie « Entraide »</string>
+    <string name="action_cancel_subtitle">Vous pouvez voir d\'autres annonces susceptibles de vous interesser ou créer une demande dans la partie « Entraide »</string>
 
     <string name="action_report_demand">Signaler la demande</string>
     <string name="action_report_contrib">Signaler la contribution</string>
@@ -2727,5 +2727,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="enhanced_onboarding_asso_btn_finish">Terminer</string>
 
     <string name="guide_help_orientation_button">Aide &amp; orientation</string>
+    <string name="welcome_video_cta">Regarder la vidéo</string>
+    <string name="welcome_step3_title">Papotages entre membres</string>
+    <string name="welcome_webinar_list_title">Premiers pas sur Entourage</string>
+    <string name="welcome_webinar_list_subtitle">Prenez en main l\'application et posez toutes vos questions à l\'équipe — en petit groupe, en 45 minutes en visio.</string>
+    <string name="welcome_papotages_list_title">Papotages solidaires</string>
+    <string name="welcome_papotages_list_subtitle">Discussions libres en sous-groupes de 2 à 3 personnes, animées par un bénévole formé ou un membre de l\'équipe. Vous restez le temps que vous voulez. Tous les mardis à 18h.</string>
 </resources>
 
