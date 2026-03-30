@@ -34,7 +34,8 @@ class WelcomeEventsListActivity : AppCompatActivity() {
             adapter = eventsAdapter
         }
 
-        binding.header.iconBack.setOnClickListener {
+        binding.header.iconBack.visibility = View.GONE
+        binding.btnBack.setOnClickListener {
             finish()
         }
 
