@@ -34,19 +34,17 @@ class WelcomeEventsListActivity : AppCompatActivity() {
             adapter = eventsAdapter
         }
 
-        binding.header.iconBack.visibility = View.GONE
+        // Branchement du nouveau bouton retour
         binding.btnBack.setOnClickListener {
             finish()
         }
 
         if (type == "webinar") {
-            binding.header.title = getString(R.string.title_welcome_webinar)
             binding.tvWelcomeListTitle.text = getString(R.string.welcome_webinar_list_title)
             binding.tvWelcomeListSubtitle.text = getString(R.string.welcome_webinar_list_subtitle)
             eventsPresenter.getEventsWebinar.observe(this, ::handleEventsResponse)
             eventsPresenter.getEventsWebinar()
         } else {
-            binding.header.title = getString(R.string.title_welcome_papotages)
             binding.tvWelcomeListTitle.text = getString(R.string.welcome_papotages_list_title)
             binding.tvWelcomeListSubtitle.text = getString(R.string.welcome_papotages_list_subtitle)
             eventsPresenter.getEventsPapotages.observe(this, ::handleEventsResponse)

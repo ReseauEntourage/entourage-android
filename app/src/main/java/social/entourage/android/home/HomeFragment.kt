@@ -97,9 +97,11 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     }
     private var isRequestLoaded = false
     private var currentRequests: List<UserSmallTalkRequest> = emptyList()
+
+    // Variables pour la vidéo
     private var welcomeVideoUrl: String? = null
     private var welcomeVideoHtml: String? = null
-    private var currentVideoWebView: android.webkit.WebView? = null
+    private var currentVideoWebView: android.webkit.WebView? = null // Permet d'injecter la vidéo une fois reçue
 
     // Adapters
     private lateinit var concatAdapter: ConcatAdapter
@@ -198,9 +200,15 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private fun handleWelcomeJourneyState(summary: Summary) {
         if (!::welcomeJourneyAdapter.isInitialized) return
 
-        // Règle 1: Masquer si l'utilisateur est une association
         val currentUser = EntourageApplication.me(requireContext())
 
+        // Sécurité pour réinitialiser l'état local si l'utilisateur s'est déconnecté/reconnecté avec un autre compte
+        if (currentUser?.id != currentUserIdForJourney) {
+            hasInitiallyCompletedAll = null
+            currentUserIdForJourney = currentUser?.id
+        }
+
+        // Règle 1: Masquer si l'utilisateur est partenaire
         if (currentUser?.partner != null) {
             welcomeJourneyAdapter.setVisible(false)
             return
@@ -257,16 +265,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         }
     }
 
-    private fun loadVideoIntoWebView() {
-        currentVideoWebView?.let { webView ->
-            if (!welcomeVideoHtml.isNullOrBlank()) {
-                webView.loadDataWithBaseURL("https://www.entourage.social", welcomeVideoHtml!!, "text/html", "utf-8", null)
-            } else if (!welcomeVideoUrl.isNullOrBlank()) {
-                webView.loadUrl(welcomeVideoUrl!!)
-            }
-        }
-    }
-
     private fun showVideoModal() {
         if (!isAdded) return
         val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme)
@@ -277,6 +275,9 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         val webView = view.findViewById<android.webkit.WebView>(R.id.webview_video)
         val ivClose = view.findViewById<android.widget.ImageView>(R.id.iv_close)
 
+        // On sauvegarde la référence pour que l'observer puisse injecter la vidéo à la réception
+        currentVideoWebView = webView
+
         ivClose?.setOnClickListener {
             bottomSheetDialog.dismiss()
         }
@@ -284,24 +285,30 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         var countDownTimer: android.os.CountDownTimer? = null
         btnContinue?.isEnabled = false
 
-        // On intercepte la fermeture de la modale (croix, bouton continuer, ou swipe)
+        // On intercepte la fermeture de la modale pour forcer la mise à jour
         bottomSheetDialog.setOnDismissListener {
             countDownTimer?.cancel()
             webView?.destroy()
-            // On force le rechargement de la Home pour récupérer le nouveau "summary"
-            callToInitHome()
+            currentVideoWebView = null // On libère la mémoire
+            // On appelle DIRECTEMENT getSummary() pour que l'adapter se mette à jour instantanément
+            homePresenter.getSummary()
         }
 
         webView?.settings?.javaScriptEnabled = true
         webView?.webChromeClient = android.webkit.WebChromeClient()
+
+        // Si on a déjà les infos en cache (suite à une ouverture précédente dans la même session), on charge
         if (!welcomeVideoHtml.isNullOrBlank()) {
             webView?.loadDataWithBaseURL("https://www.entourage.social", welcomeVideoHtml!!, "text/html", "utf-8", null)
         } else if (!welcomeVideoUrl.isNullOrBlank()) {
             webView?.loadUrl(welcomeVideoUrl!!)
         }
 
+        // C'est cet appel qui valide la ressource côté backend et télécharge les URLs de la vidéo
+        homePresenter.getWelcomeResource()
+
         btnContinue?.setOnClickListener {
-            // Ça va déclencher le dismiss, qui lui-même déclenchera le onDismissListener
+            // Le dismiss va déclencher le setOnDismissListener
             bottomSheetDialog.dismiss()
         }
 
@@ -830,6 +837,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 homePresenter.getPedagogicalResources()
                 homePresenter.getInitialPedagogicalResources()
                 homePresenter.getNotificationsCount()
+                // ATTENTION: getWelcomeResource() a été retiré d'ici pour éviter l'auto-validation !
                 userPresenter.getUser(meId)
             }
         }
@@ -907,7 +915,15 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         homePresenter.welcomeResource.observe(viewLifecycleOwner) { pedago ->
             welcomeVideoUrl = pedago.url
             welcomeVideoHtml = pedago.html
-            loadVideoIntoWebView()
+
+            // On injecte le contenu vidéo dès qu'il est reçu (uniquement si la modale est ouverte)
+            currentVideoWebView?.let { webView ->
+                if (!welcomeVideoHtml.isNullOrBlank()) {
+                    webView.loadDataWithBaseURL("https://www.entourage.social", welcomeVideoHtml!!, "text/html", "utf-8", null)
+                } else if (!welcomeVideoUrl.isNullOrBlank()) {
+                    webView.loadUrl(welcomeVideoUrl!!)
+                }
+            }
         }
         actionsPresenter.unreadMessages.observe(viewLifecycleOwner) { updateUnreadCount(it) }
         discussionsPresenter.newConversation.observe(viewLifecycleOwner) { conversation ->
@@ -1316,8 +1332,10 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         private const val PREF_IS_ASSOCIATION_FROM_SUMMARY = "PREF_IS_ASSOCIATION_FROM_SUMMARY"
         private const val PREF_BIRTHDAY_SHOWN_YEAR = "PREF_BIRTHDAY_SHOWN_YEAR"
 
-        // Nouvelle variable pour mémoriser si le parcours était fini au lancement
+        // Variable pour mémoriser si le parcours était fini au lancement
         private var hasInitiallyCompletedAll: Boolean? = null
+        // On stocke l'ID pour réinitialiser l'état si on change de compte
+        private var currentUserIdForJourney: Int? = null
     }
 }
 
