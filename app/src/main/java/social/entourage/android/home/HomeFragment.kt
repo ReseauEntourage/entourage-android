@@ -199,6 +199,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
         // Règle 1: Masquer si l'utilisateur est une association
         val currentUser = EntourageApplication.me(requireContext())
+
         if (currentUser?.partner != null) {
             welcomeJourneyAdapter.setVisible(false)
             return
