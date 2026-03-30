@@ -216,7 +216,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
         // Récupération des informations de validation via le WS uniquement
         val events = summary.events
-        val isStep1Done = events?.contains("onboarding.resource.welcome_watched") == true
+        val isStep1Done = events?.contains("onboarding.resource.welcome_watchedHACK") == true
         val isStep2Done = events?.contains("onboarding.outing.webinar_or_first_steps") == true
         val isStep3Done = events?.contains("onboarding.outing.papotages") == true
 
@@ -297,11 +297,9 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         webView?.settings?.javaScriptEnabled = true
         webView?.webChromeClient = android.webkit.WebChromeClient()
 
-        // Si on a déjà les infos en cache (suite à une ouverture précédente dans la même session), on charge
-        if (!welcomeVideoHtml.isNullOrBlank()) {
-            webView?.loadDataWithBaseURL("https://www.entourage.social", welcomeVideoHtml!!, "text/html", "utf-8", null)
-        } else if (!welcomeVideoUrl.isNullOrBlank()) {
-            webView?.loadUrl(welcomeVideoUrl!!)
+        // Si on a déjà l'url en cache (suite à une ouverture précédente dans la même session), on charge notre HTML clean
+        if (!welcomeVideoUrl.isNullOrBlank()) {
+            webView?.let { loadCleanVideo(it, welcomeVideoUrl!!) }
         }
 
         // C'est cet appel qui valide la ressource côté backend et télécharge les URLs de la vidéo
@@ -918,10 +916,8 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
             // On injecte le contenu vidéo dès qu'il est reçu (uniquement si la modale est ouverte)
             currentVideoWebView?.let { webView ->
-                if (!welcomeVideoHtml.isNullOrBlank()) {
-                    webView.loadDataWithBaseURL("https://www.entourage.social", welcomeVideoHtml!!, "text/html", "utf-8", null)
-                } else if (!welcomeVideoUrl.isNullOrBlank()) {
-                    webView.loadUrl(welcomeVideoUrl!!)
+                if (!welcomeVideoUrl.isNullOrBlank()) {
+                    loadCleanVideo(webView, welcomeVideoUrl!!)
                 }
             }
         }
@@ -1318,6 +1314,27 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     override fun onHomeChangeLocationUpdateClearFragment() {
         binding.frameLayoutChangeLocation.visibility = View.GONE
         callToInitHome()
+    }
+
+    private fun loadCleanVideo(webView: android.webkit.WebView, videoUrl: String) {
+        val cleanUrl = if (videoUrl.contains("?")) "$videoUrl&rel=0" else "$videoUrl?rel=0"
+        val customHtml = """
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+                <style>
+                    body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #000000; overflow: hidden; }
+                    iframe { width: 100%; height: 100%; border: none; }
+                </style>
+            </head>
+            <body>
+                <iframe src="$cleanUrl" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+            </body>
+            </html>
+        """.trimIndent()
+
+        webView.loadDataWithBaseURL("https://www.entourage.social", customHtml, "text/html", "utf-8", null)
     }
 
     companion object {
