@@ -216,7 +216,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
         // Récupération des informations de validation via le WS uniquement
         val events = summary.events
-        val isStep1Done = events?.contains("onboarding.resource.welcome_watchedHACK") == true
+        val isStep1Done = events?.contains("onboarding.resource.welcome_watched") == true
         val isStep2Done = events?.contains("onboarding.outing.webinar_or_first_steps") == true
         val isStep3Done = events?.contains("onboarding.outing.papotages") == true
 
