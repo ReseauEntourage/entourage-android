@@ -173,28 +173,16 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         }
     }
 
-    private fun showCelebrationTooltip() {
+    private fun showCongratDialog(summary: Summary) {
         if (!isAdded) return
-        val inflater = LayoutInflater.from(requireContext())
-        val view = inflater.inflate(R.layout.layout_celebration_tooltip, null)
-        val popupWindow = PopupWindow(
-            view,
-            android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-            android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
-            true
-        )
-
-        binding.rvHome.postDelayed({
-            if (isAdded) {
-                popupWindow.showAtLocation(binding.rvHome, android.view.Gravity.TOP or android.view.Gravity.CENTER_HORIZONTAL, 0, 300)
-            }
-        }, 500)
-
-        binding.rvHome.postDelayed({
-            if (isAdded && popupWindow.isShowing) {
-                popupWindow.dismiss()
-            }
-        }, 4000)
+        val actions = summary.congratulations?.let { ArrayList(it) } ?: arrayListOf()
+        if (actions.isEmpty()) {
+            actions.add(social.entourage.android.api.model.HomeAction().apply { name = "Découvrez l'esprit Entourage" })
+            actions.add(social.entourage.android.api.model.HomeAction().apply { name = "Participez à la visio des nouveaux" })
+            actions.add(social.entourage.android.api.model.HomeAction().apply { name = "Rejoignez les papotages solidaires" })
+        }
+        val dialog = HomeCongratPopFragment.newInstance(actions)
+        dialog.show(parentFragmentManager, HomeCongratPopFragment.TAG)
     }
 
     private fun handleWelcomeJourneyState(summary: Summary) {
@@ -244,7 +232,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
             // Si on vient juste de finir les 3 étapes (n'était pas à 3 avant)
             if (allCompleted && previouslyCompletedSize < 3) {
-                showCelebrationTooltip()
+            showCongratDialog(summary)
             }
         }
     }

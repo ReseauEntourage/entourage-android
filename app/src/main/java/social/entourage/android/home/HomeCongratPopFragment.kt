@@ -12,16 +12,18 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentHomeCongratPopBinding
 import social.entourage.android.api.model.HomeAction
 import social.entourage.android.tools.utils.px
 
-class HomeCongratPopFragment : DialogFragment() {
+class HomeCongratPopFragment : BottomSheetDialogFragment() {
     private val ARGS_Actions = "Actions"
     private val animFadeDuration: Long = 2000
 
@@ -46,21 +48,23 @@ class HomeCongratPopFragment : DialogFragment() {
         return binding.root
     }
 
+    override fun getTheme(): Int {
+        return R.style.AppBottomSheetDialogTheme
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        populateViews()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        dialog?.window?.let { window ->
-            val params: ViewGroup.LayoutParams = window.attributes
-            params.width =  ViewGroup.LayoutParams.MATCH_PARENT
-            params.height = ViewGroup.LayoutParams.WRAP_CONTENT
-            window.attributes = params as WindowManager.LayoutParams
-            window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.setOnShowListener { dialog ->
+            val d = dialog as BottomSheetDialog
+            val bottomSheet = d.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            bottomSheet?.let {
+                val behavior = BottomSheetBehavior.from(it)
+                behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            }
         }
+
+        populateViews()
     }
 
     private fun populateViews() {
