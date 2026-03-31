@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/transparent"
-    android:paddingHorizontal="20dp">
+    android:background="@drawable/bg_bottom_sheet_rounded"
+    android:padding="24dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="190dp"
-        android:background="@drawable/new_rounded_button"
+        android:background="@color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +21,7 @@
             android:id="@+id/ui_layout_anim"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/new_rounded_button"
+            android:background="@color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +62,7 @@
             android:id="@+id/ui_layout_list"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/new_rounded_button"
+            android:background="@color/transparent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -206,7 +206,7 @@
             android:id="@+id/ui_layout_end"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/new_rounded_button"
+            android:background="@color/transparent"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -235,12 +235,11 @@
 
     <ImageView
         android:id="@+id/ui_pop_close"
-        android:layout_width="40dp"
-        android:layout_height="50dp"
-        android:layout_marginRight="16dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="14dp"
-        android:src="@drawable/new_cross"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:padding="8dp"
+        android:src="@drawable/icon_cross"
+        app:tint="@color/grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

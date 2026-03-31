@@ -1,0 +1,332 @@
+Initialized native services in: /home/jules/.gradle/native
+Initialized jansi services in: /home/jules/.gradle/native
+The client will now receive all logging from the daemon (pid: 1722). The daemon log file: /home/jules/.gradle/daemon/9.1.0/daemon-1722.out.log
+Starting 7th build in daemon [uptime: 10 mins 56.261 secs, performance: 99%, GC rate: 0.02/s, heap usage: 3% of 4 GiB, non-heap usage: 26% of 1 GiB]
+Using 4 worker leases.
+Configuration on demand is an incubating feature.
+Not watching /app since the file system is not supported
+Watching the file system is configured to be enabled if available
+File system watching is active
+Starting Build
+Settings evaluated using settings file '/app/settings.gradle.kts'.
+Using local directory build cache for the root build (location = /home/jules/.gradle/caches/build-cache-1, remove unused entries = after 7 days).
+Projects loaded. Root project using build file '/app/build.gradle.kts'.
+Included projects: [root project 'app', project ':app']
+
+> Configure project :
+Evaluating root project 'app' using build file '/app/build.gradle.kts'.
+Resolved plugin [id: 'com.android.application', version: '9.0.1', apply: false]
+Resolved plugin [id: 'com.google.gms.google-services', version: '4.4.4', apply: false]
+Resolved plugin [id: 'com.google.firebase.crashlytics', version: '3.0.6', apply: false]
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.3.10', apply: false]
+Resolved plugin [id: 'org.jetbrains.kotlin.android', version: '2.3.10', apply: false]
+Resolved plugin [id: 'androidx.navigation.safeargs', version: '2.9.7', apply: false]
+Resolved plugin [id: 'com.mikepenz.aboutlibraries.plugin.android', version: '13.2.1', apply: false]
+
+> Configure project :app
+Evaluating project ':app' using build file '/app/app/build.gradle.kts'.
+Resolved plugin [id: 'com.android.application', version: '9.0.1']
+Resolved plugin [id: 'org.jetbrains.kotlin.android', version: '2.3.10']
+Resolved plugin [id: 'com.google.firebase.crashlytics', version: '3.0.6']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.3.10']
+Resolved plugin [id: 'org.jetbrains.kotlin.kapt']
+Resolved plugin [id: 'androidx.navigation.safeargs', version: '2.9.7']
+Resolved plugin [id: 'com.google.gms.google-services', version: '4.4.4']
+Resolved plugin [id: 'com.mikepenz.aboutlibraries.plugin.android', version: '13.2.1']
+WARNING: The option setting 'android.builtInKotlin=false' is deprecated.
+The current default is 'true'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+WARNING: The option setting 'android.newDsl=false' is deprecated.
+The current default is 'true'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+WARNING: The option setting 'android.enableJetifier=true' is deprecated.
+The current default is 'false'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+Using default execution profile
+Build a0b15e4e-c1ad-467c-8035-d63db2be62f4 is started
+Using Kotlin Gradle Plugin gradle813 variant
+Starting process 'command 'git''. Working directory: /app/app Command: git rev-list HEAD --count
+Successfully started process 'command 'git''
+Starting process 'command 'git''. Working directory: /app/app Command: git rev-parse --abbrev-ref HEAD
+Successfully started process 'command 'git''
+WARNING: The property android.dependency.excludeLibraryComponentsFromConstraints improves project import performance for very large projects. It should be enabled to improve performance.
+To suppress this warning, add android.generateSyncIssueWhenLibraryConstraintsAreEnabled=false to gradle.properties
+WARNING: The property android.dependency.excludeLibraryComponentsFromConstraints improves project import performance for very large projects. It should be enabled to improve performance.
+To suppress this warning, add android.generateSyncIssueWhenLibraryConstraintsAreEnabled=false to gradle.properties
+WARNING: The property android.dependency.excludeLibraryComponentsFromConstraints improves project import performance for very large projects. It should be enabled to improve performance.
+To suppress this warning, add android.generateSyncIssueWhenLibraryConstraintsAreEnabled=false to gradle.properties
+WARNING: The property android.dependency.excludeLibraryComponentsFromConstraints improves project import performance for very large projects. It should be enabled to improve performance.
+To suppress this warning, add android.generateSyncIssueWhenLibraryConstraintsAreEnabled=false to gradle.properties
+WARNING: The property android.dependency.excludeLibraryComponentsFromConstraints improves project import performance for very large projects. It should be enabled to improve performance.
+To suppress this warning, add android.generateSyncIssueWhenLibraryConstraintsAreEnabled=false to gradle.properties
+WARNING: The property android.dependency.excludeLibraryComponentsFromConstraints improves project import performance for very large projects. It should be enabled to improve performance.
+To suppress this warning, add android.generateSyncIssueWhenLibraryConstraintsAreEnabled=false to gradle.properties
+WARNING: The property android.dependency.excludeLibraryComponentsFromConstraints improves project import performance for very large projects. It should be enabled to improve performance.
+To suppress this warning, add android.generateSyncIssueWhenLibraryConstraintsAreEnabled=false to gradle.properties
+WARNING: The property android.dependency.excludeLibraryComponentsFromConstraints improves project import performance for very large projects. It should be enabled to improve performance.
+To suppress this warning, add android.generateSyncIssueWhenLibraryConstraintsAreEnabled=false to gradle.properties
+Adding -Xuse-inline-scopes-numbers Kotlin compiler flag for task :app:compileEntourageProdDebugAndroidTestKotlin
+Adding -Xuse-inline-scopes-numbers Kotlin compiler flag for task :app:compileEntourageProdDebugKotlin
+Adding -Xuse-inline-scopes-numbers Kotlin compiler flag for task :app:compileEntourageStagingDebugAndroidTestKotlin
+Adding -Xuse-inline-scopes-numbers Kotlin compiler flag for task :app:compileEntourageStagingDebugKotlin
+w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
+The 'org.jetbrains.kotlin.android' plugin in project ':app' is no longer required for Kotlin support since AGP 9.0.
+[32m[1mSolution:[0m[0m
+[32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
+[36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
+
+Task name matched 'kaptEntourageStagingDebugKotlin'
+Selected primary task 'kaptEntourageStagingDebugKotlin' from project :
+Skipping runtime variant entourageProdDebugAndroidTest from config: entourageProdDebugAndroidTestRuntimeClasspath
+Skipping compile time variant entourageProdDebug from config: entourageProdDebugCompileClasspath
+Skipping runtime variant entourageProdDebug from config: entourageProdDebugRuntimeClasspath
+Skipping runtime variant entourageProdDebugUnitTest from config: entourageProdDebugUnitTestRuntimeClasspath
+Skipping compile time variant entourageProdRelease from config: entourageProdReleaseCompileClasspath
+Skipping runtime variant entourageProdRelease from config: entourageProdReleaseRuntimeClasspath
+Skipping runtime variant entourageStagingDebugAndroidTest from config: entourageStagingDebugAndroidTestRuntimeClasspath
+Collecting dependencies for compile time variant entourageStagingDebug from config: entourageStagingDebugCompileClasspath
+Collecting dependencies for runtime variant entourageStagingDebug from config: entourageStagingDebugRuntimeClasspath
+Skipping runtime variant entourageStagingDebugUnitTest from config: entourageStagingDebugUnitTestRuntimeClasspath
+Skipping compile time variant entourageStagingRelease from config: entourageStagingReleaseCompileClasspath
+Skipping runtime variant entourageStagingRelease from config: entourageStagingReleaseRuntimeClasspath
+All projects evaluated.
+Tasks to be executed: [task ':app:preBuild', task ':app:preEntourageStagingDebugBuild', task ':app:dataBindingMergeDependencyArtifactsEntourageStagingDebug', task ':app:generateEntourageStagingDebugResources', task ':app:injectCrashlyticsMappingFileIdEntourageStagingDebug', task ':app:injectCrashlyticsVersionControlInfoEntourageStagingDebug', task ':app:prepareLibraryDefinitionsEntourageStagingDebug', task ':app:processEntourageStagingDebugGoogleServices', task ':app:mergeEntourageStagingDebugResources', task ':app:packageEntourageStagingDebugResources', task ':app:processEntourageStagingDebugNavigationResources', task ':app:parseEntourageStagingDebugLocalResources', task ':app:dataBindingGenBaseClassesEntourageStagingDebug', task ':app:checkKotlinGradlePluginConfigurationErrors', task ':app:dataBindingTriggerEntourageStagingDebug', task ':app:generateEntourageStagingDebugBuildConfig', task ':app:generateEntourageStagingDebugRFile', task ':app:generateSafeArgsEntourageStagingDebug', task ':app:kaptGenerateStubsEntourageStagingDebugKotlin', task ':app:kaptEntourageStagingDebugKotlin']
+Tasks that were excluded: []
+Resolve mutations for :app:preBuild (Thread[#393,Execution worker,5,main]) started.
+:app:preBuild (Thread[#393,Execution worker,5,main]) started.
+
+> Task :app:preBuild UP-TO-DATE
+Skipping task ':app:preBuild' as it has no actions.
+Resolve mutations for :app:preEntourageStagingDebugBuild (Thread[#392,included builds,5,main]) started.
+:app:preEntourageStagingDebugBuild (Thread[#392,included builds,5,main]) started.
+
+> Task :app:preEntourageStagingDebugBuild UP-TO-DATE
+Skipping task ':app:preEntourageStagingDebugBuild' as it has no actions.
+Resolve mutations for :app:dataBindingMergeDependencyArtifactsEntourageStagingDebug (Thread[#392,included builds,5,main]) started.
+:app:dataBindingMergeDependencyArtifactsEntourageStagingDebug (Thread[#392,included builds,5,main]) started.
+
+> Task :app:dataBindingMergeDependencyArtifactsEntourageStagingDebug UP-TO-DATE
+Registered task dependencies: app:entourageStagingDebugCompileClasspath
+Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
+Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
+Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
+Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
+Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
+Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
+Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
+Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
+Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
+Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
+Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
+Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
+Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
+Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
+Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
+Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
+Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
+Skipping misunderstood TO dep string: com.google.firebase:firebase-analytics
+Skipping misunderstood TO dep string: com.google.firebase:firebase-messaging
+Skipping misunderstood TO dep string: com.google.firebase:firebase-inappmessaging-display
+Skipping misunderstood TO dep string: com.google.firebase:firebase-crashlytics
+Skipping misunderstood TO dep string: com.google.firebase:firebase-config
+Skipping misunderstood TO dep string: com.squareup.okhttp3:okhttp
+Skipping misunderstood TO dep string: com.squareup.okhttp3:logging-interceptor
+Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
+Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
+Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
+Skipping misunderstood TO dep string: com.google.firebase:firebase-database
+Starting dependency analysis
+Caching disabled for task ':app:dataBindingMergeDependencyArtifactsEntourageStagingDebug' because:
+  Caching has been disabled for the task
+Skipping task ':app:dataBindingMergeDependencyArtifactsEntourageStagingDebug' as it is up-to-date.
+Resolve mutations for :app:generateEntourageStagingDebugResources (Thread[#392,included builds,5,main]) started.
+:app:generateEntourageStagingDebugResources (Thread[#392,included builds,5,main]) started.
+
+> Task :app:generateEntourageStagingDebugResources UP-TO-DATE
+Build cache key for task ':app:generateEntourageStagingDebugResources' is 2c89429c71e3e995cf1fc08c527e1b8d
+Skipping task ':app:generateEntourageStagingDebugResources' as it is up-to-date.
+Resolve mutations for :app:injectCrashlyticsMappingFileIdEntourageStagingDebug (Thread[#392,included builds,5,main]) started.
+:app:injectCrashlyticsMappingFileIdEntourageStagingDebug (Thread[#392,included builds,5,main]) started.
+
+> Task :app:injectCrashlyticsMappingFileIdEntourageStagingDebug UP-TO-DATE
+Build cache key for task ':app:injectCrashlyticsMappingFileIdEntourageStagingDebug' is 89c9dbfa5898ba34f7127e16a1a6b521
+Skipping task ':app:injectCrashlyticsMappingFileIdEntourageStagingDebug' as it is up-to-date.
+Resolve mutations for :app:injectCrashlyticsVersionControlInfoEntourageStagingDebug (Thread[#392,included builds,5,main]) started.
+:app:injectCrashlyticsVersionControlInfoEntourageStagingDebug (Thread[#392,included builds,5,main]) started.
+
+> Task :app:injectCrashlyticsVersionControlInfoEntourageStagingDebug UP-TO-DATE
+Build cache key for task ':app:injectCrashlyticsVersionControlInfoEntourageStagingDebug' is 83bad59ae3fbf1026828d22b3007f85d
+Skipping task ':app:injectCrashlyticsVersionControlInfoEntourageStagingDebug' as it is up-to-date.
+Resolve mutations for :app:prepareLibraryDefinitionsEntourageStagingDebug (Thread[#392,included builds,5,main]) started.
+:app:prepareLibraryDefinitionsEntourageStagingDebug (Thread[#392,included builds,5,main]) started.
+
+> Task :app:prepareLibraryDefinitionsEntourageStagingDebug UP-TO-DATE
+Build cache key for task ':app:prepareLibraryDefinitionsEntourageStagingDebug' is a8244f89e907ad2d0cf8a47d74caf26d
+Skipping task ':app:prepareLibraryDefinitionsEntourageStagingDebug' as it is up-to-date.
+Resolve mutations for :app:processEntourageStagingDebugGoogleServices (Thread[#392,included builds,5,main]) started.
+:app:processEntourageStagingDebugGoogleServices (Thread[#392,included builds,5,main]) started.
+
+> Task :app:processEntourageStagingDebugGoogleServices UP-TO-DATE
+Build cache key for task ':app:processEntourageStagingDebugGoogleServices' is 47ed5a019b5d8ae8193277220b5ceeff
+Skipping task ':app:processEntourageStagingDebugGoogleServices' as it is up-to-date.
+Resolve mutations for :app:mergeEntourageStagingDebugResources (Thread[#392,included builds,5,main]) started.
+:app:mergeEntourageStagingDebugResources (Thread[#392,included builds,5,main]) started.
+
+> Task :app:mergeEntourageStagingDebugResources UP-TO-DATE
+Build cache key for task ':app:mergeEntourageStagingDebugResources' is 272da8f7bf62f85e4c49b0b04959ed4b
+Skipping task ':app:mergeEntourageStagingDebugResources' as it is up-to-date.
+Resolve mutations for :app:packageEntourageStagingDebugResources (Thread[#392,included builds,5,main]) started.
+:app:packageEntourageStagingDebugResources (Thread[#392,included builds,5,main]) started.
+
+> Task :app:packageEntourageStagingDebugResources UP-TO-DATE
+Build cache key for task ':app:packageEntourageStagingDebugResources' is 302315c20962e299ae3a3f877611b4a3
+Skipping task ':app:packageEntourageStagingDebugResources' as it is up-to-date.
+Resolve mutations for :app:processEntourageStagingDebugNavigationResources (Thread[#392,included builds,5,main]) started.
+:app:processEntourageStagingDebugNavigationResources (Thread[#392,included builds,5,main]) started.
+
+> Task :app:processEntourageStagingDebugNavigationResources UP-TO-DATE
+Build cache key for task ':app:processEntourageStagingDebugNavigationResources' is 3a6b10e2debd3575f9b074b8025629c8
+Skipping task ':app:processEntourageStagingDebugNavigationResources' as it is up-to-date.
+Resolve mutations for :app:parseEntourageStagingDebugLocalResources (Thread[#392,included builds,5,main]) started.
+:app:parseEntourageStagingDebugLocalResources (Thread[#392,included builds,5,main]) started.
+
+> Task :app:parseEntourageStagingDebugLocalResources UP-TO-DATE
+Build cache key for task ':app:parseEntourageStagingDebugLocalResources' is ab185c84012ccd5a55678e3f4e00cf62
+Skipping task ':app:parseEntourageStagingDebugLocalResources' as it is up-to-date.
+Resolve mutations for :app:dataBindingGenBaseClassesEntourageStagingDebug (Thread[#392,included builds,5,main]) started.
+:app:dataBindingGenBaseClassesEntourageStagingDebug (Thread[#392,included builds,5,main]) started.
+
+> Task :app:dataBindingGenBaseClassesEntourageStagingDebug UP-TO-DATE
+Build cache key for task ':app:dataBindingGenBaseClassesEntourageStagingDebug' is edc1d18695a13ef28412876d29d2489f
+Skipping task ':app:dataBindingGenBaseClassesEntourageStagingDebug' as it is up-to-date.
+Resolve mutations for :app:checkKotlinGradlePluginConfigurationErrors (Thread[#392,included builds,5,main]) started.
+:app:checkKotlinGradlePluginConfigurationErrors (Thread[#392,included builds,5,main]) started.
+
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':app:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+Resolve mutations for :app:dataBindingTriggerEntourageStagingDebug (Thread[#392,included builds,5,main]) started.
+:app:dataBindingTriggerEntourageStagingDebug (Thread[#392,included builds,5,main]) started.
+
+> Task :app:dataBindingTriggerEntourageStagingDebug UP-TO-DATE
+Caching disabled for task ':app:dataBindingTriggerEntourageStagingDebug' because:
+  Caching has been disabled for the task
+Skipping task ':app:dataBindingTriggerEntourageStagingDebug' as it is up-to-date.
+Resolve mutations for :app:generateEntourageStagingDebugBuildConfig (Thread[#392,included builds,5,main]) started.
+:app:generateEntourageStagingDebugBuildConfig (Thread[#392,included builds,5,main]) started.
+
+> Task :app:generateEntourageStagingDebugBuildConfig UP-TO-DATE
+Build cache key for task ':app:generateEntourageStagingDebugBuildConfig' is a6147c9b30fac510039c570fece5ddb8
+Skipping task ':app:generateEntourageStagingDebugBuildConfig' as it is up-to-date.
+Resolve mutations for :app:generateEntourageStagingDebugRFile (Thread[#392,included builds,5,main]) started.
+:app:generateEntourageStagingDebugRFile (Thread[#392,included builds,5,main]) started.
+
+> Task :app:generateEntourageStagingDebugRFile UP-TO-DATE
+Build cache key for task ':app:generateEntourageStagingDebugRFile' is 5c8a9aad60babfcefe78e78a96c5c100
+Skipping task ':app:generateEntourageStagingDebugRFile' as it is up-to-date.
+Resolve mutations for :app:generateSafeArgsEntourageStagingDebug (Thread[#392,included builds,5,main]) started.
+:app:generateSafeArgsEntourageStagingDebug (Thread[#392,included builds,5,main]) started.
+
+> Task :app:generateSafeArgsEntourageStagingDebug UP-TO-DATE
+Build cache key for task ':app:generateSafeArgsEntourageStagingDebug' is c3a2bde02879206ddbacc9df2a50042e
+Skipping task ':app:generateSafeArgsEntourageStagingDebug' as it is up-to-date.
+Resolve mutations for :app:kaptGenerateStubsEntourageStagingDebugKotlin (Thread[#392,included builds,5,main]) started.
+:app:kaptGenerateStubsEntourageStagingDebugKotlin (Thread[#392,included builds,5,main]) started.
+
+> Task :app:kaptGenerateStubsEntourageStagingDebugKotlin UP-TO-DATE
+Registered task dependencies: app:kotlinCompilerClasspath
+Starting dependency analysis
+Registered task dependencies: app:kotlinCompilerPluginClasspathEntourageStagingDebug
+Starting dependency analysis
+Build cache key for task ':app:kaptGenerateStubsEntourageStagingDebugKotlin' is d8aa3e1c5e891d903803eb6ddee7d8b8
+Skipping task ':app:kaptGenerateStubsEntourageStagingDebugKotlin' as it is up-to-date.
+Resolve mutations for :app:kaptEntourageStagingDebugKotlin (Thread[#392,included builds,5,main]) started.
+:app:kaptEntourageStagingDebugKotlin (Thread[#392,included builds,5,main]) started.
+
+> Task :app:kaptEntourageStagingDebugKotlin UP-TO-DATE
+file or directory '/app/app/src/entourageStagingDebug/kotlin', not found
+file or directory '/app/app/src/entourageStagingDebug/java', not found
+file or directory '/app/app/src/entourageStagingDebug/kotlin', not found
+file or directory '/app/app/src/entourageStagingDebug/java', not found
+file or directory '/app/app/src/entourageStagingDebug/kotlin', not found
+file or directory '/app/app/src/entourageStagingDebug/java', not found
+file or directory '/app/app/src/main/kotlin', not found
+file or directory '/app/app/src/main/kotlin', not found
+file or directory '/app/app/src/main/kotlin', not found
+file or directory '/app/app/src/staging/kotlin', not found
+file or directory '/app/app/src/staging/java', not found
+file or directory '/app/app/src/staging/kotlin', not found
+file or directory '/app/app/src/staging/java', not found
+file or directory '/app/app/src/staging/kotlin', not found
+file or directory '/app/app/src/staging/java', not found
+file or directory '/app/app/src/entourage/kotlin', not found
+file or directory '/app/app/src/entourage/java', not found
+file or directory '/app/app/src/entourage/kotlin', not found
+file or directory '/app/app/src/entourage/java', not found
+file or directory '/app/app/src/entourage/kotlin', not found
+file or directory '/app/app/src/entourage/java', not found
+file or directory '/app/app/src/entourageStaging/kotlin', not found
+file or directory '/app/app/src/entourageStaging/java', not found
+file or directory '/app/app/src/entourageStaging/kotlin', not found
+file or directory '/app/app/src/entourageStaging/java', not found
+file or directory '/app/app/src/entourageStaging/kotlin', not found
+file or directory '/app/app/src/entourageStaging/java', not found
+file or directory '/app/app/src/debug/kotlin', not found
+file or directory '/app/app/src/debug/java', not found
+file or directory '/app/app/src/debug/kotlin', not found
+file or directory '/app/app/src/debug/java', not found
+file or directory '/app/app/src/debug/kotlin', not found
+file or directory '/app/app/src/debug/java', not found
+file or directory '/app/app/src/main/kotlin', not found
+file or directory '/app/app/src/main/kotlin', not found
+file or directory '/app/app/src/main/kotlin', not found
+file or directory '/app/app/src/staging/kotlin', not found
+file or directory '/app/app/src/staging/java', not found
+file or directory '/app/app/src/staging/kotlin', not found
+file or directory '/app/app/src/staging/java', not found
+file or directory '/app/app/src/staging/kotlin', not found
+file or directory '/app/app/src/staging/java', not found
+file or directory '/app/app/src/entourage/kotlin', not found
+file or directory '/app/app/src/entourage/java', not found
+file or directory '/app/app/src/entourage/kotlin', not found
+file or directory '/app/app/src/entourage/java', not found
+file or directory '/app/app/src/entourage/kotlin', not found
+file or directory '/app/app/src/entourage/java', not found
+file or directory '/app/app/src/entourageStaging/kotlin', not found
+file or directory '/app/app/src/entourageStaging/java', not found
+file or directory '/app/app/src/entourageStaging/kotlin', not found
+file or directory '/app/app/src/entourageStaging/java', not found
+file or directory '/app/app/src/entourageStaging/kotlin', not found
+file or directory '/app/app/src/entourageStaging/java', not found
+file or directory '/app/app/src/debug/kotlin', not found
+file or directory '/app/app/src/debug/java', not found
+file or directory '/app/app/src/debug/kotlin', not found
+file or directory '/app/app/src/debug/java', not found
+file or directory '/app/app/src/debug/kotlin', not found
+file or directory '/app/app/src/debug/java', not found
+file or directory '/app/app/src/entourageStagingDebug/kotlin', not found
+file or directory '/app/app/src/entourageStagingDebug/java', not found
+file or directory '/app/app/src/entourageStagingDebug/kotlin', not found
+file or directory '/app/app/src/entourageStagingDebug/java', not found
+file or directory '/app/app/src/entourageStagingDebug/kotlin', not found
+file or directory '/app/app/src/entourageStagingDebug/java', not found
+file or directory '/app/app/src/staging/java', not found
+file or directory '/app/app/src/entourage/java', not found
+file or directory '/app/app/src/entourageStaging/java', not found
+file or directory '/app/app/src/debug/java', not found
+file or directory '/app/app/src/entourageStagingDebug/java', not found
+file or directory '/app/app/src/main/kotlin', not found
+file or directory '/app/app/src/staging/kotlin', not found
+file or directory '/app/app/src/entourage/kotlin', not found
+file or directory '/app/app/src/entourageStaging/kotlin', not found
+file or directory '/app/app/src/debug/kotlin', not found
+file or directory '/app/app/src/entourageStagingDebug/kotlin', not found
+Build cache key for task ':app:kaptEntourageStagingDebugKotlin' is 926ba91011eac5d462e645461376fc0c
+Skipping task ':app:kaptEntourageStagingDebugKotlin' as it is up-to-date.
+Build a0b15e4e-c1ad-467c-8035-d63db2be62f4 is closed
+
+[Incubating] Problems report is available at: file:///app/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 2s
+17 actionable tasks: 17 up-to-date
+Some of the file system contents retained in the virtual file system are on file systems that Gradle doesn't support watching. The relevant state was discarded to ensure changes to these locations are properly detected. You can override this by explicitly enabling file system watching.
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.1.0/userguide/configuration_cache_enabling.html
