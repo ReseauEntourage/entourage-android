@@ -42,8 +42,8 @@ class WelcomeEventsListActivity : AppCompatActivity() {
         if (type == "webinar") {
             binding.tvWelcomeListTitle.text = getString(R.string.welcome_webinar_list_title)
             binding.tvWelcomeListSubtitle.text = getString(R.string.welcome_webinar_list_subtitle)
-            eventsPresenter.getEventsWebinar.observe(this, ::handleEventsResponse)
-            eventsPresenter.getEventsWebinar()
+            eventsPresenter.getEventsFirstSteps.observe(this, ::handleEventsResponse)
+            eventsPresenter.getEventsFirstSteps()
         } else {
             binding.tvWelcomeListTitle.text = getString(R.string.welcome_papotages_list_title)
             binding.tvWelcomeListSubtitle.text = getString(R.string.welcome_papotages_list_subtitle)

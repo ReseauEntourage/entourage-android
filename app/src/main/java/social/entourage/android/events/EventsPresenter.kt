@@ -41,6 +41,7 @@ class EventsPresenter : ViewModel() {
     var getEvent = MutableLiveData<Events>()
     var getEventsPapotages = MutableLiveData<MutableList<Events>>()
     var getEventsWebinar = MutableLiveData<MutableList<Events>>()
+    var getEventsFirstSteps = MutableLiveData<MutableList<Events>>()
     var isEventReported = MutableLiveData<Boolean>()
     var isEventDeleted = MutableLiveData<Boolean>()
     var isEventPostReported = MutableLiveData<Boolean>()
@@ -173,6 +174,26 @@ class EventsPresenter : ViewModel() {
                     if (response.isSuccessful) {
                         response.body()?.let { eventsListWrapper ->
                             getEventsPapotages.value = eventsListWrapper.allEvents
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
+                    Timber.wtf("wtf error " + t.message)
+                }
+            })
+    }
+
+    fun getEventsFirstSteps() {
+        EntourageApplication.get().apiModule.eventsRequest.getEventListWelcome()
+            .enqueue(object : Callback<EventsListWrapper> {
+                override fun onResponse(
+                    call: Call<EventsListWrapper>,
+                    response: Response<EventsListWrapper>
+                ) {
+                    if (response.isSuccessful) {
+                        response.body()?.let { eventsListWrapper ->
+                            getEventsFirstSteps.value = eventsListWrapper.allEvents
                         }
                     }
                 }
