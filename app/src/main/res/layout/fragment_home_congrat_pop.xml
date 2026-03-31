@@ -55,26 +55,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title" />
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/btn_lets_go"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="16dp"
-        android:gravity="center"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:padding="0dp"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="47dp"
+        android:layout_marginVertical="20dp"
+        android:layout_marginStart="4dp"
+        android:layout_weight="1"
+        android:background="@drawable/shape_button_v9_positive"
+        android:elevation="0dp"
+        android:fontFamily="@font/quicksand_bold"
+        android:paddingVertical="10dp"
         android:text="c'est parti !"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:backgroundTint="@color/orange"
         android:textAllCaps="false"
-        app:cornerRadius="28dp"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_subtitle" />
+        app:layout_constraintTop_toBottomOf="@id/tv_subtitle"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

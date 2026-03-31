@@ -228,6 +228,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             if (allCompleted && previouslyCompletedSize < 3) {
                 showCongratDialog(summary)
             }
+            showCongratDialog(summary)
         }
     }
 
