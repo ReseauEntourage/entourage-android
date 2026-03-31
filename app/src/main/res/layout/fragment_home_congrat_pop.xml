@@ -67,7 +67,7 @@
         android:elevation="0dp"
         android:fontFamily="@font/quicksand_bold"
         android:paddingVertical="10dp"
-        android:text="c'est parti !"
+        android:text="C'est parti !"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="14sp"
