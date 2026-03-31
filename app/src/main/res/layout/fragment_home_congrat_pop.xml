@@ -25,7 +25,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ui_pop_close"
         app:lottie_autoPlay="true"
-        app:lottie_loop="false"
+        app:lottie_loop="true"
         app:lottie_rawRes="@raw/congrat_short_anim" />
 
     <TextView
@@ -65,7 +65,7 @@
         android:insetTop="0dp"
         android:insetBottom="0dp"
         android:padding="0dp"
-        android:text="C'est parti !"
+        android:text="c'est parti !"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold"
