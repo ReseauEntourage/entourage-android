@@ -2725,6 +2725,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="enhanced_onboarding_asso_description_hint">Ex. : Association de quartier œuvrant pour le lien social via des événements ouverts à tous.</string>
     <string name="enhanced_onboarding_asso_btn_later">Plus tard</string>
     <string name="enhanced_onboarding_asso_btn_finish">Terminer</string>
+    <string name="welcome_welcome_list_title">Premiers pas sur Entourage</string>
+    <string name="welcome_welcome_list_subtitle">Prenez en main l\'application et posez toutes vos questions à l\'équipe — en petit groupe, en 45 minutes en visio.</string>
 
     <string name="guide_help_orientation_button">Aide &amp; orientation</string>
     <string name="welcome_video_cta">Regarder la vidéo</string>
