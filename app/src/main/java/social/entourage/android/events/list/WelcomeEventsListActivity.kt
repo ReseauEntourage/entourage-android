@@ -39,11 +39,16 @@ class WelcomeEventsListActivity : AppCompatActivity() {
             finish()
         }
 
-        if (type == "webinar") {
-            binding.tvWelcomeListTitle.text = getString(R.string.welcome_webinar_list_title)
-            binding.tvWelcomeListSubtitle.text = getString(R.string.welcome_webinar_list_subtitle)
+        if (type == "welcome") {
+            binding.tvWelcomeListTitle.text = getString(R.string.welcome_welcome_list_title)
+            binding.tvWelcomeListSubtitle.text = getString(R.string.welcome_welcome_list_subtitle)
             eventsPresenter.getEventsFirstSteps.observe(this, ::handleEventsResponse)
             eventsPresenter.getEventsFirstSteps()
+        }else if(type == "webinar") {
+            binding.tvWelcomeListTitle.text = getString(R.string.welcome_webinar_list_title)
+            binding.tvWelcomeListSubtitle.text = getString(R.string.welcome_webinar_list_subtitle)
+            eventsPresenter.getEventsWebinar.observe(this, ::handleEventsResponse)
+            eventsPresenter.getEventsWebinar()
         } else {
             binding.tvWelcomeListTitle.text = getString(R.string.welcome_papotages_list_title)
             binding.tvWelcomeListSubtitle.text = getString(R.string.welcome_papotages_list_subtitle)

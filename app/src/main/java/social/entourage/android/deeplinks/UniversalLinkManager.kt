@@ -249,7 +249,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
             (context as? Activity)?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         } else if (pathSegments.contains("welcome")) {
             val intent = Intent(context, social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
-            intent.putExtra("TYPE", "papotages")
+            intent.putExtra("TYPE", "welcome")
             context.startActivity(intent)
             (context as? Activity)?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         } else if (pathSegments.size > 3) {
