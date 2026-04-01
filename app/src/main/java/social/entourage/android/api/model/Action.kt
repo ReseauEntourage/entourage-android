@@ -120,7 +120,7 @@ data class Action(
         createdAt?.let {
             var locale = LanguageManager.getLocaleFromPreferences(context)
             val _str = SimpleDateFormat(
-                context?.getString(R.string.feed_event_date),
+                context.getString(R.string.feed_event_date),
                 locale
             ).format(
                 it

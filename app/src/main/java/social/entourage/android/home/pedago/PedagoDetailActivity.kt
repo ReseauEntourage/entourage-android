@@ -1,3 +1,4 @@
+@file:Suppress("DEPRECATION", "UNCHECKED_CAST", "OVERRIDE_DEPRECATION", "DEPRECATION_ERROR")
 package social.entourage.android.home.pedago
 
 import android.os.Bundle
@@ -57,11 +58,9 @@ class PedagoDetailActivity : AppCompatActivity() {
     }
 
     fun handlePedago(pedago: Pedago){
-        if(pedago != null){
-            id = pedago.id!!
-            htmlContent = pedago.html!!
-            isFromNotif = true
-        }
+        id = pedago.id!!
+        htmlContent = pedago.html!!
+        isFromNotif = true
         showFragment()
     }
 

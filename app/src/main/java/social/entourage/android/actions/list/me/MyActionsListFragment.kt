@@ -1,3 +1,4 @@
+@file:Suppress("DEPRECATION", "UNCHECKED_CAST", "OVERRIDE_DEPRECATION", "DEPRECATION_ERROR")
 package social.entourage.android.actions.list.me
 
 import android.content.Intent

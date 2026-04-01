@@ -1,3 +1,4 @@
+@file:Suppress("DEPRECATION", "UNCHECKED_CAST", "OVERRIDE_DEPRECATION", "DEPRECATION_ERROR")
 package social.entourage.android.discussions
 
 import android.content.Intent
@@ -257,7 +258,7 @@ class DetailConversationActivity : CommentActivity() {
             val sheet = when (mode) {
                 SheetMode.DISCUSSION_ONE_TO_ONE -> {
                     val otherUserId = detailConversation?.members
-                        ?.firstOrNull { it?.id != EntourageApplication.get().me()?.id }
+                        ?.firstOrNull { it.id != EntourageApplication.get().me()?.id }
                         ?.id ?: 0
                     ActionSheetFragment.newDiscussion(
                         conversationId = if (isSmallTalkMode) smallTalkId.toIntOrNull() ?: 0 else id,
@@ -286,10 +287,7 @@ class DetailConversationActivity : CommentActivity() {
                 SheetMode.MESSAGE_ACTIONS -> {
                     ActionSheetFragment.newGroup(detailConversation?.id ?: id)
                 }
-                else -> {
-                    Timber.e("Mode non géré : $mode, fallback vers GROUP")
-                    ActionSheetFragment.newGroup(detailConversation?.id ?: id)
-                }
+
             }
             sheet.show(supportFragmentManager, "ActionSheetFragment")
         }
@@ -441,7 +439,7 @@ class DetailConversationActivity : CommentActivity() {
     private fun handleMembersSearch(members: List<EntourageUser>?) {
         val currentUserId = EntourageApplication.get().me()?.id
         val filtered = members
-            ?.filter { it?.id != currentUserId?.toLong() }
+            ?.filter { it.id != currentUserId?.toLong() }
             ?.map { it.toGroupMember() }
             ?: emptyList()
         showMentionSuggestions(filtered)
@@ -540,9 +538,9 @@ class DetailConversationActivity : CommentActivity() {
     private fun handleParticipants(participants: List<User>?) {
         val currentUserId = EntourageApplication.get().me()?.id
         val names = participants
-            ?.filter { it?.id != currentUserId }
+            ?.filter { it.id != currentUserId }
             ?.take(5)
-            ?.mapNotNull { it?.displayName }
+            ?.mapNotNull { it.displayName }
             ?.map { if (it.length > 2) it.dropLast(3) else it }
         binding.header.title = names?.joinToString(", ") ?: ""
         allMembers = participants?.map { it.toGroupMember() } ?: emptyList()
@@ -599,7 +597,7 @@ class DetailConversationActivity : CommentActivity() {
 
         val meId = EntourageApplication.get().me()?.id
         val membersStr = conversation.members
-            ?.joinToString { "${it?.id}:${it?.displayName}" } ?: "no-members"
+            ?.joinToString { "${it.id}:${it.displayName}" } ?: "no-members"
 
         Timber.d(
             "[DetailConversation] handleDetailConversation — convId=%s, type=%s, memberCount=%s, meId=%s, members=%s",
@@ -610,7 +608,7 @@ class DetailConversationActivity : CommentActivity() {
         if (isOne2One && conversation.type != "outing") {
             // Résoudre l'autre membre (≠ moi)
             val otherUserId = conversation.members
-                ?.firstOrNull { it?.id != meId }
+                ?.firstOrNull { it.id != meId }
                 ?.id ?: 0
 
             Timber.d(
@@ -695,9 +693,9 @@ class DetailConversationActivity : CommentActivity() {
             hasSeveralPeople = true
             val currentUserId = EntourageApplication.get().me()?.id
             val names = conversation.members
-                ?.filter { it?.id != currentUserId }
+                ?.filter { it.id != currentUserId }
                 ?.take(5)
-                ?.mapNotNull { it?.displayName }
+                ?.mapNotNull { it.displayName }
                 ?.map { if (it.length > 2) it.dropLast(3) else it }
                 ?: emptyList()
             binding.header.title = names.joinToString(", ")

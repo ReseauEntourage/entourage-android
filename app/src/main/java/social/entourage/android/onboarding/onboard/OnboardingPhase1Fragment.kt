@@ -1,3 +1,4 @@
+@file:Suppress("DEPRECATION", "UNCHECKED_CAST", "OVERRIDE_DEPRECATION", "DEPRECATION_ERROR")
 package social.entourage.android.onboarding.onboard
 
 import android.app.DatePickerDialog

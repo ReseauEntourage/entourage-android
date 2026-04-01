@@ -1,3 +1,4 @@
+@file:Suppress("DEPRECATION", "UNCHECKED_CAST", "OVERRIDE_DEPRECATION", "DEPRECATION_ERROR")
 package social.entourage.android.main_filter
 
 import android.app.Activity
@@ -232,7 +233,7 @@ class MainFilterActivity : BaseActivity() {
     }
 
     private fun setupLocationAutoComplete() {
-        val autoCompleteTextView = binding.autoCompleteCityName as AutoCompleteTextView
+        val autoCompleteTextView = binding.autoCompleteCityName
         autoCompleteTextView.threshold = 1
         autoCompleteTextView.setAdapter(ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line))
         autoCompleteTextView.setOnItemClickListener { parent, _, position, _ ->
@@ -290,7 +291,7 @@ class MainFilterActivity : BaseActivity() {
             val place = response.place
             selectedLocation = place.name ?: ""
             binding.autoCompleteCityName.setText(selectedLocation)
-            val autoCompleteTextView = binding.autoCompleteCityName as AutoCompleteTextView
+            val autoCompleteTextView = binding.autoCompleteCityName
             autoCompleteTextView.setSelection(autoCompleteTextView.text.length) // Placer le curseur à la fin
             autoCompleteTextView.dismissDropDown()
             savedLocation = PlaceDetails(place.name!!, place.latLng!!.latitude, place.latLng!!.longitude)

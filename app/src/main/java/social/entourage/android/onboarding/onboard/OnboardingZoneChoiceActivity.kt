@@ -1,3 +1,4 @@
+@file:Suppress("DEPRECATION", "UNCHECKED_CAST", "OVERRIDE_DEPRECATION", "DEPRECATION_ERROR")
 package social.entourage.android.onboarding.onboard
 
 import android.animation.ValueAnimator
@@ -239,12 +240,13 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
 
         placesClient.findAutocompletePredictions(request)
             .addOnSuccessListener { response ->
-                val actv = (binding.autoCompleteCityName as AutoCompleteTextView)
+                val actv = binding.autoCompleteCityName
                 if (suppressAutocomplete || !actv.hasFocus() || myGen != queryGen) return@addOnSuccessListener
                 predictions = response.autocompletePredictions
                 val suggestions = predictions.map { it.getFullText(null).toString() }
+                @Suppress("UNCHECKED_CAST")
                 val adapter = (actv.adapter as? ArrayAdapter<String>)
-                    ?: ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, mutableListOf()).also {
+                    ?: ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, mutableListOf<String>()).also {
                         actv.setAdapter(it)
                     }
 
@@ -308,7 +310,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
                     .center(position)
                     .radius(radiusMeters)
                     .strokeWidth(0f)
-                    .fillColor(0x55FF7F00.toInt())
+                    .fillColor(0x55FF7F00)
             )
         } else {
             circle?.center = position

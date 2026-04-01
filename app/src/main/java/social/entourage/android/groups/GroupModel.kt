@@ -1,3 +1,4 @@
+@file:Suppress("DEPRECATION", "UNCHECKED_CAST", "OVERRIDE_DEPRECATION", "DEPRECATION_ERROR")
 package social.entourage.android.groups
 
 import android.os.Parcel
@@ -37,18 +38,18 @@ data class GroupModel(
     constructor(parcel: Parcel) : this(
         parcel.readValue(Int::class.java.classLoader) as? Int, // id
         parcel.readString(), // name
-        parcel.readParcelable(Translation::class.java.classLoader), // nameTranslations
+        parcel.readParcelable(Translation::class.java.classLoader) as? Translation, // nameTranslations
         parcel.readString(), // uuid_v2
         parcel.readValue(Int::class.java.classLoader) as? Int, // members_count
         parcel.readString(), // address
         mutableListOf<String>().apply { parcel.readStringList(this)}, // interests
         parcel.readString(), // description
-        parcel.readParcelable(Translation::class.java.classLoader), // descriptionTranslations
-        mutableListOf<GroupMember>().apply { parcel.readList(this, GroupMember::class.java.classLoader)}, // members
+        parcel.readParcelable(Translation::class.java.classLoader) as? Translation, // descriptionTranslations
+        mutableListOf<GroupMember>().apply { parcel.readList(this as List<*>, GroupMember::class.java.classLoader)}, // members
         parcel.readByte() != 0.toByte(), // member
         parcel.readByte() != 0.toByte(), // admin
         parcel.readValue(Int::class.java.classLoader) as? Int, // recurrence
-        parcel.readParcelable(Status::class.java.classLoader) // status
+        parcel.readParcelable(Status::class.java.classLoader) as? Status // status
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

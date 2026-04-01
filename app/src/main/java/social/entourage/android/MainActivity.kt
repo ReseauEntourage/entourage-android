@@ -1,3 +1,4 @@
+@file:Suppress("DEPRECATION", "UNCHECKED_CAST", "OVERRIDE_DEPRECATION", "DEPRECATION_ERROR")
 package social.entourage.android
 
 import android.Manifest
@@ -648,8 +649,8 @@ class MainActivity : BaseSecuredActivity() {
         badge.isVisible = true
         badge.maxCharacterCount = 2
         badge.verticalOffsetWithText = 10
-        badge.backgroundColor = resources.getColor(R.color.tomato)
-        badge.badgeTextColor = resources.getColor(R.color.white)
+        badge.backgroundColor = androidx.core.content.ContextCompat.getColor(this, R.color.tomato)
+        badge.badgeTextColor = androidx.core.content.ContextCompat.getColor(this, R.color.white)
         if (count == 0) {
             bottomNavigationView.removeBadge(R.id.navigation_messages)
         }
@@ -664,8 +665,8 @@ class MainActivity : BaseSecuredActivity() {
         badge.isVisible = true
         badge.maxCharacterCount = 2
         badge.verticalOffsetWithText = 10
-        badge.backgroundColor = resources.getColor(R.color.tomato)
-        badge.badgeTextColor = resources.getColor(R.color.white)
+        badge.backgroundColor = androidx.core.content.ContextCompat.getColor(this, R.color.tomato)
+        badge.badgeTextColor = androidx.core.content.ContextCompat.getColor(this, R.color.white)
         if (count == 0) {
             bottomNavigationView.removeBadge(R.id.navigation_groups)
         }

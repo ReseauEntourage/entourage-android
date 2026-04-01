@@ -1,3 +1,4 @@
+@file:Suppress("DEPRECATION", "UNCHECKED_CAST", "OVERRIDE_DEPRECATION", "DEPRECATION_ERROR")
 package social.entourage.android.notifications
 
 import android.annotation.SuppressLint
@@ -401,33 +402,33 @@ object PushNotificationManager {
         args.putSerializable(PUSH_MESSAGE, pushNotificationMessage)
         val messageType: String = pushNotificationMessage.content?.type ?:""
 
-        if(pushNotificationMessage.content?.extra?.stage == "h1"){
+        if(pushNotificationMessage.content.extra?.stage == "h1"){
             val intent = Intent(context, WelcomeOneActivity::class.java)
             intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
             return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
         }
-        if(pushNotificationMessage.content?.extra?.stage == "j2"){
+        if(pushNotificationMessage.content.extra?.stage == "j2"){
             val intent = Intent(context, WelcomeTwoActivity::class.java)
             intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
             intent.putExtra("notification_content_boolean", true)
             return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
         }
-        if(pushNotificationMessage.content?.extra?.stage == "j5"){
+        if(pushNotificationMessage.content.extra?.stage == "j5"){
             val intent = Intent(context, WelcomeThreeActivity::class.java)
             intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
             return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
         }
-        if(pushNotificationMessage.content?.extra?.stage == "j8"){
+        if(pushNotificationMessage.content.extra?.stage == "j8"){
             val intent = Intent(context, WelcomeFourActivity::class.java)
             intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
             return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
         }
-        if(pushNotificationMessage.content?.extra?.stage == "j11"){
+        if(pushNotificationMessage.content.extra?.stage == "j11"){
             val intent = Intent(context, WelcomeFiveActivity::class.java)
             intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
             return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
         }
-        if(pushNotificationMessage.content?.extra?.stage == "birthday"){
+        if(pushNotificationMessage.content.extra?.stage == "birthday"){
             val intent = Intent(context, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             intent.putExtra("goBirthday", true)
@@ -440,8 +441,8 @@ object PushNotificationManager {
             )
         }
 
-        val instance = pushNotificationMessage.content?.extra?.instance
-        val tracking = pushNotificationMessage.content?.extra?.tracking
+        val instance = pushNotificationMessage.content.extra?.instance
+        val tracking = pushNotificationMessage.content.extra?.tracking
 
         val isDiscussionTracking = tracking in listOf(
             "public_chat_message_on_create",

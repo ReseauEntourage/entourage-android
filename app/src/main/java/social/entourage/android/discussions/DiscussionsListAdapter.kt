@@ -1,3 +1,4 @@
+@file:Suppress("DEPRECATION", "UNCHECKED_CAST", "OVERRIDE_DEPRECATION", "DEPRECATION_ERROR")
 package social.entourage.android.discussions
 
 import android.graphics.Typeface
@@ -141,13 +142,13 @@ class DiscussionsListAdapter(
             if (conversation.hasUnread()) {
                 binding.nbUnread.visibility = View.VISIBLE
                 binding.nbUnread.text = conversation.numberUnreadMessages.toString()
-                binding.date.setTextColor(binding.root.context.resources.getColor(R.color.orange))
-                binding.detail.setTextColor(binding.root.context.resources.getColor(R.color.black))
+                binding.date.setTextColor(androidx.core.content.ContextCompat.getColor(binding.root.context, R.color.orange))
+                binding.detail.setTextColor(androidx.core.content.ContextCompat.getColor(binding.root.context, R.color.black))
                 binding.detail.setTypeface(binding.detail.typeface, Typeface.BOLD)
             } else {
                 binding.nbUnread.visibility = View.INVISIBLE
-                binding.date.setTextColor(binding.root.context.resources.getColor(R.color.dark_grey_opacity_40))
-                binding.detail.setTextColor(binding.root.context.resources.getColor(R.color.dark_grey_opacity_40))
+                binding.date.setTextColor(androidx.core.content.ContextCompat.getColor(binding.root.context, R.color.dark_grey_opacity_40))
+                binding.detail.setTextColor(androidx.core.content.ContextCompat.getColor(binding.root.context, R.color.dark_grey_opacity_40))
                 if (!isLastMessageToday(conversation)) {
                     binding.detail.setTypeface(binding.detail.typeface, Typeface.BOLD)
                 } else {

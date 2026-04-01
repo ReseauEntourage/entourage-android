@@ -13,9 +13,9 @@ enum class ProfileChoiceType { ENTOUR, BE_ENTOUR, ASSO }
 
 data class ProfileChoice(
     val type: ProfileChoiceType,
-    @StringRes val titleRes: Int,
-    @StringRes val subtitleRes: Int,
-    @DrawableRes val iconRes: Int,
+    @param:StringRes val titleRes: Int,
+    @param:StringRes val subtitleRes: Int,
+    @param:DrawableRes val iconRes: Int,
     var selected: Boolean
 )
 

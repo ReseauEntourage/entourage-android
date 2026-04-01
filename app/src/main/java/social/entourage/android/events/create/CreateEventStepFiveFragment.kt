@@ -163,11 +163,11 @@ class CreateEventStepFiveFragment : Fragment() {
     private fun handleOnClickNext(onClick: Boolean) {
         if (onClick) {
             if (binding.layout.shareInGroups.isChecked) {
-                CommunicationHandler.event.neighborhoodIds?.clear()
+                CommunicationHandler.event.neighborhoodIds.clear()
                 CommunicationHandler.event.neighborhoodIds?.addAll(selectedGroupsIdList)
             }
             else {
-                CommunicationHandler.event.neighborhoodIds?.clear()
+                CommunicationHandler.event.neighborhoodIds.clear()
             }
 
             if (binding.layout.shareInGroups.isChecked && selectedGroupsIdList.isEmpty()) {

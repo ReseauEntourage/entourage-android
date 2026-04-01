@@ -73,7 +73,7 @@ class CreateActionStepFourFragment : Fragment() {
         }
     }
 
-    private fun handleResponseGetGroups(groups:Group) {
+    private fun handleResponseGetGroups(groups:Group?) {
         if (groups == null ) {
             return
         }

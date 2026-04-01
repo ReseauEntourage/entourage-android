@@ -343,10 +343,7 @@ open class BaseEntourage : FeedItem, Serializable {
                                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
                                 .create()
                         val entourage = gson.fromJson<BaseEntourage>(jsonData, entourageClass)
-                        //HACK we force Date when API gives us NULL created_at
-                        if(entourage.createdTime == null) {
-                            entourage.createdTime = Date()
-                        }
+
                         return entourage
                 } catch (e: Exception) {
                     Timber.e(e)

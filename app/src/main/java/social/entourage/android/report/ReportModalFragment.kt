@@ -1,3 +1,4 @@
+@file:Suppress("DEPRECATION", "UNCHECKED_CAST", "OVERRIDE_DEPRECATION", "DEPRECATION_ERROR")
 package social.entourage.android.report
 
 import android.animation.Animator
@@ -515,7 +516,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                         groupPresenter.deletedGroupPost(gid, id)
                     }
                     if (DetailConversationActivity.isSmallTalkMode) {
-                        smallTalkViewModel.deleteChatMessage(DetailConversationActivity.smallTalkId.toString(), id.toString())
+                        smallTalkViewModel.deleteChatMessage(DetailConversationActivity.smallTalkId, id.toString())
                     } else {
                         discussionsPresenter.deleteMessage(gid, id)
                     }

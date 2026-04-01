@@ -822,7 +822,7 @@ class PostAdapter(
                 .error(R.drawable.new_group_illu)
                 .into(binding.photoPost)
             binding.photoPost.setOnClickListener {
-                onClickImage(post.imageUrl ?: "", post.id ?: 0)
+                onClickImage(post.imageUrl, post.id ?: 0)
                 binding.layoutReactions.visibility = View.GONE
             }
         } else {

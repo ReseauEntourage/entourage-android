@@ -1,3 +1,4 @@
+@file:Suppress("DEPRECATION", "UNCHECKED_CAST", "OVERRIDE_DEPRECATION", "DEPRECATION_ERROR")
 package social.entourage.android.onboarding.login
 
 import android.content.Intent
@@ -94,7 +95,7 @@ class LoginActivity : BaseActivity() {
     private fun setupViews() {
         setEditTextAlignmentBasedOnLocale()
 
-        binding.iconBack?.setOnClickListener {
+        binding.iconBack.setOnClickListener {
             goBack()
         }
 
