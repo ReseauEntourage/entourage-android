@@ -236,7 +236,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             1 -> showVideoModal()
             2 -> {
                 val intent = Intent(requireContext(), social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
-                intent.putExtra("TYPE", "webinar")
+                intent.putExtra("TYPE", "welcome")
                 startActivity(intent)
             }
             3 -> {
