@@ -173,6 +173,7 @@ android {
     compileOptions {
         sourceCompatibility = sourceCompatibilityVersion
         targetCompatibility = targetCompatibilityVersion
+        isCoreLibraryDesugaringEnabled = true
     }
 
     packaging {
