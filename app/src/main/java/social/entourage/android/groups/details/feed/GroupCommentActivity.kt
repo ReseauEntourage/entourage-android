@@ -71,6 +71,7 @@ class GroupCommentActivity : CommentActivity() {
 
     override fun onResume() {
         super.onResume()
+        binding.layoutStaffBanner.visibility = View.GONE
         this.isGroup = true
     }
 
