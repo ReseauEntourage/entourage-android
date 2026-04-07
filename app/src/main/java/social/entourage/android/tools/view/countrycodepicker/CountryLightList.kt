@@ -36,6 +36,46 @@ internal object CountryLightList {
                 context.getString(R.string.country_belgium_number),
                 context.getString(R.string.country_belgium_name),context.getString(R.string.country_belgium_flag))
         )
+        newCountries.add(
+            Country(context.getString(R.string.country_guadeloupe_code),
+                context.getString(R.string.country_guadeloupe_number),
+                context.getString(R.string.country_guadeloupe_name),context.getString(R.string.country_guadeloupe_flag))
+        )
+        newCountries.add(
+            Country(context.getString(R.string.country_martinique_code),
+                context.getString(R.string.country_martinique_number),
+                context.getString(R.string.country_martinique_name),context.getString(R.string.country_martinique_flag))
+        )
+        newCountries.add(
+            Country(context.getString(R.string.country_french_guyana_code),
+                context.getString(R.string.country_french_guyana_number),
+                context.getString(R.string.country_french_guyana_name),context.getString(R.string.country_french_guyana_flag))
+        )
+        newCountries.add(
+            Country(context.getString(R.string.country_reunion_code),
+                context.getString(R.string.country_reunion_number),
+                context.getString(R.string.country_reunion_name),context.getString(R.string.country_reunion_flag))
+        )
+        newCountries.add(
+            Country(context.getString(R.string.country_mayotte_code),
+                context.getString(R.string.country_mayotte_number),
+                context.getString(R.string.country_mayotte_name),context.getString(R.string.country_mayotte_flag))
+        )
+        newCountries.add(
+            Country(context.getString(R.string.country_french_polynesia_code),
+                context.getString(R.string.country_french_polynesia_number),
+                context.getString(R.string.country_french_polynesia_name),context.getString(R.string.country_french_polynesia_flag))
+        )
+        newCountries.add(
+            Country(context.getString(R.string.country_new_caledonia_code),
+                context.getString(R.string.country_new_caledonia_number),
+                context.getString(R.string.country_new_caledonia_name),context.getString(R.string.country_new_caledonia_flag))
+        )
+        newCountries.add(
+            Country(context.getString(R.string.country_saint_martin_code),
+                context.getString(R.string.country_saint_martin_number),
+                context.getString(R.string.country_saint_martin_name),context.getString(R.string.country_saint_martin_flag))
+        )
         newCountries.sortWith { o1: Country, o2: Country -> o1.name.compareTo(o2.name) }
         countries = newCountries
         return newCountries

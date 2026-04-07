@@ -1021,10 +1021,12 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="country_french_guyana_name">Guyane française</string>
     <string name="country_french_guyana_code">gf</string>
     <string name="country_french_guyana_number" translatable="false">594</string>
+    <string name="country_french_guyana_flag" translatable="false">🇬🇫</string>
 
     <string name="country_french_polynesia_name">Polynésie française</string>
     <string name="country_french_polynesia_code">pf</string>
     <string name="country_french_polynesia_number" translatable="false">689</string>
+    <string name="country_french_polynesia_flag" translatable="false">🇵🇫</string>
 
     <string name="country_gabon_name">Gabon</string>
     <string name="country_gabon_code">ga</string>
@@ -1057,6 +1059,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="country_guadeloupe_name">Guadeloupe</string>
     <string name="country_guadeloupe_code">gp</string>
     <string name="country_guadeloupe_number" translatable="false">590</string>
+    <string name="country_guadeloupe_flag" translatable="false">🇬🇵</string>
 
     <string name="country_guatemala_name">Guatemala</string>
     <string name="country_guatemala_code">gt</string>
@@ -1225,6 +1228,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="country_martinique_name">Martinique</string>
     <string name="country_martinique_code">mq</string>
     <string name="country_martinique_number" translatable="false">596</string>
+    <string name="country_martinique_flag" translatable="false">🇲🇶</string>
 
     <string name="country_mauritania_name">Mauritanie</string>
     <string name="country_mauritania_code">mr</string>
@@ -1237,6 +1241,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="country_mayotte_name">Mayotte</string>
     <string name="country_mayotte_code">yt</string>
     <string name="country_mayotte_number" translatable="false">262</string>
+    <string name="country_mayotte_flag" translatable="false">🇾🇹</string>
 
     <string name="country_mexico_name">Mexique</string>
     <string name="country_mexico_code">mx</string>
@@ -1281,6 +1286,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="country_new_caledonia_name">Nouvelle-Calédonie</string>
     <string name="country_new_caledonia_code">nc</string>
     <string name="country_new_caledonia_number" translatable="false">687</string>
+    <string name="country_new_caledonia_flag" translatable="false">🇳🇨</string>
 
     <string name="country_new_zealand_name">Nouvelle-Zélande</string>
     <string name="country_new_zealand_code">nz</string>
@@ -1349,6 +1355,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="country_reunion_name">Réunion</string>
     <string name="country_reunion_code">re</string>
     <string name="country_reunion_number" translatable="false">262</string>
+    <string name="country_reunion_flag" translatable="false">🇷🇪</string>
 
     <string name="country_romania_name">Roumanie</string>
     <string name="country_romania_code">ro</string>
@@ -1361,6 +1368,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="country_rwanda_name">Rwanda</string>
     <string name="country_rwanda_code">rw</string>
     <string name="country_rwanda_number" translatable="false">250</string>
+
+    <string name="country_saint_martin_name">Saint-Martin / St-Barth</string>
+    <string name="country_saint_martin_code">mf</string>
+    <string name="country_saint_martin_number" translatable="false">590</string>
+    <string name="country_saint_martin_flag" translatable="false">🇲🇫</string>
 
     <string name="country_saudi_arabia_name">Arabie Saoudite</string>
     <string name="country_saudi_arabia_code">sa</string>
