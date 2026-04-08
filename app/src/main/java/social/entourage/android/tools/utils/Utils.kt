@@ -47,6 +47,16 @@ import java.util.Date
 import kotlin.math.max
 
 object Utils {
+    fun getPhoneNumberPlaceholder(countryCode: String): String {
+        return when (countryCode) {
+            "33" -> "06 XX XX XX XX" // France
+            "262" -> "06 92 XX XX XX" // La Réunion
+            "590" -> "06 90 XX XX XX" // Guadeloupe
+            "212" -> "6 XX XX XX XX" // Maroc
+            else -> "XX XX XX XX XX" // Autres
+        }
+    }
+
     fun showToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }

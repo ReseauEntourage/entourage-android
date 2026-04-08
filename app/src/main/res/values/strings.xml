@@ -1266,6 +1266,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="country_morocco_name">Maroc</string>
     <string name="country_morocco_code">ma</string>
     <string name="country_morocco_number" translatable="false">212</string>
+    <string name="country_morocco_flag" translatable="false">🇲🇦</string>
 
     <string name="country_mozambique_name">Mozambique</string>
     <string name="country_mozambique_code">mz</string>

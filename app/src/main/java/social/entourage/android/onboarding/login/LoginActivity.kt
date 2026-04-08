@@ -91,8 +91,21 @@ class LoginActivity : BaseActivity() {
         return getInputText(view).isNotEmpty()
     }
 
+    private fun updatePlaceholder(countryCode: String) {
+        binding.uiLoginPhoneInputLayout.placeholderText = Utils.getPhoneNumberPlaceholder(countryCode)
+    }
+
     private fun setupViews() {
         setEditTextAlignmentBasedOnLocale()
+
+        binding.uiLoginPhoneCcpCode.countryCodePickerListener = object : social.entourage.android.tools.view.countrycodepicker.CountryCodePickerListener {
+            override fun updatedCountry(country: social.entourage.android.tools.view.countrycodepicker.Country) {
+                updatePlaceholder(country.phoneCode)
+            }
+        }
+
+        val initialCountryCode = binding.uiLoginPhoneCcpCode.selectedCountry?.phoneCode ?: "33"
+        updatePlaceholder(initialCountryCode)
 
         binding.iconBack?.setOnClickListener {
             goBack()
