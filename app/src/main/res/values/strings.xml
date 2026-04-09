@@ -3278,4 +3278,13 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="welcome_webinar_list_title">Sensibilisations Entourage</string>
     <string name="welcome_webinar_list_subtitle">L\'équipe Entourage vous donne les clefs pour appréhender le monde de la rue et les solutions d\'aide existantes lors d\'un atelier en ligne de 1h.</string>
+    <string name="message_action_title">Actions du message</string>
+    <string name="message_action_copy">Copier le texte</string>
+    <string name="message_action_report">Signaler le message</string>
+    <string name="message_action_delete">Supprimer mon message</string>
+
+    <string name="event_settings_see_photos">Voir les photos</string>
 </resources>
+
+
+

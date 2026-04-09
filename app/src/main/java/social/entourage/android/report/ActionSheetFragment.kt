@@ -59,7 +59,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
     private var eventAddress: String? = null
     private var forceShowEdit: Boolean = false
     private var isEventCreator: Boolean = false
-    private var canEditEvent: Boolean = false // NEW: vient de manageable_by_current_user
+    private var canEditEvent: Boolean = false
     private var isSmallTalk: Boolean = false
     private var smallTalkId: String? = null
 
@@ -99,7 +99,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             isGroupContext = getBoolean(ARG_IS_GROUP_CONTEXT, false)
             headerFromEventFeed = getBoolean(ARG_HEADER_FROM_EVENT_FEED, false)
             isEventCreator = getBoolean(ARG_IS_EVENT_CREATOR, false)
-            canEditEvent = getBoolean(ARG_CAN_EDIT_EVENT, false) // NEW
+            canEditEvent = getBoolean(ARG_CAN_EDIT_EVENT, false)
 
             @Suppress("DEPRECATION")
             if (containsKey(Const.EVENT_UI)) {
@@ -163,10 +163,15 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
                 binding.layoutBlock.isVisible = !imBlocker
                 binding.block.text = getString(R.string.discussion_block_title)
-                binding.blockSub.text =
-                    getString(R.string.discussion_block_subtitle, username)
+                binding.blockSub.text = getString(R.string.discussion_block_subtitle, username)
 
-                binding.quit.profileSettingsItemLayout.isVisible = false
+                // Affichage du bouton "Quitter" pour le 1-to-1
+                binding.quit.profileSettingsItemLayout.isVisible = true
+                binding.quit.setLabel(getString(R.string.leave_conversation))
+                binding.quit.profileSettingsItemLabel.setTextColor(
+                    ContextCompat.getColor(requireContext(), R.color.orange)
+                )
+
                 binding.eventInfo.isVisible = false
                 binding.rules.profileSettingsItemLayout.isVisible = false
                 binding.photos.profileSettingsItemLayout.isVisible = false
@@ -222,7 +227,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.layoutBlock.isVisible = false
                 binding.quit.profileSettingsItemLayout.isVisible = true
 
-                // Libellé et couleur du bouton selon le créateur
                 if (isEventCreator) {
                     binding.quit.setLabel(getString(R.string.delete_event))
                     binding.quit.profileSettingsItemLabel.setTextColor(
@@ -257,13 +261,9 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.rules.setLabel(getString(R.string.event_params_cgu_title))
 
                 binding.photos.profileSettingsItemLayout.isVisible = true
-                binding.photos.setLabel("Voir les photos")
+                binding.photos.setLabel(getString(R.string.event_settings_see_photos))
 
-                // Bouton "Modifier l’événement" :
-                // visible si on a un eventObj OU forceShowEdit,
-                // ET si user est créateur OU manageable_by_current_user = true
-                val showEdit =
-                    (eventObj != null || forceShowEdit) && (isEventCreator || canEditEvent)
+                val showEdit = (eventObj != null || forceShowEdit) && (isEventCreator || canEditEvent)
                 binding.edit.profileSettingsItemLayout.isVisible = showEdit
                 if (showEdit) {
                     binding.edit.setLabel(getString(R.string.edit_event_information))
@@ -271,16 +271,16 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             }
 
             SheetMode.MESSAGE_ACTIONS -> {
-                binding.header.title = "Actions du message"
+                binding.header.title = getString(R.string.message_action_title)
 
-                binding.profile.setLabel("Copier le texte")
+                binding.profile.setLabel(getString(R.string.message_action_copy))
                 binding.profile.profileSettingsItemSubLabel.visibility = View.GONE
 
-                binding.report.text = "Signaler le message"
+                binding.report.text = getString(R.string.message_action_report)
                 binding.layoutReport.isVisible = !isMyMessage
 
                 binding.quit.profileSettingsItemLayout.isVisible = isMyMessage
-                binding.quit.setLabel("Supprimer mon message")
+                binding.quit.setLabel(getString(R.string.message_action_delete))
                 binding.quit.profileSettingsItemLabel.setTextColor(
                     ContextCompat.getColor(requireContext(), R.color.orange)
                 )
@@ -302,12 +302,10 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             binding.photos.profileSettingsItemLayout.visibility = View.GONE
         }
 
-        // Double sécurité : si ni créateur ni manageable_by_current_user, on masque l’édition
         if (!isEventCreator && !canEditEvent && mode == SheetMode.EVENT) {
             binding.edit.profileSettingsItemLayout.isVisible = false
         }
 
-        // remove if not part of event
         if (mode == SheetMode.EVENT) {
             val isMember = eventObj?.member ?: EventFeedActivity.isFromMyEvent
             if (!isMember) {
@@ -317,7 +315,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
     }
 
     private fun setupClicks() {
-        // Ouvrir “Profil / Membres / Copier le texte” selon le mode
         binding.profile.profileSettingsItemLayout.setOnClickListener {
             when (mode) {
                 SheetMode.DISCUSSION_ONE_TO_ONE -> {
@@ -326,7 +323,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                             .putExtra(Const.USER_ID, userId)
                     )
                 }
-
                 SheetMode.EVENT -> {
                     MembersConversationFragment.isFromDiscussion = false
                     val isAnimator =
@@ -340,13 +336,11 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                     )
                     dismiss()
                 }
-
                 SheetMode.DISCUSSION_GROUP, SheetMode.GROUP -> {
                     MembersConversationFragment.isFromDiscussion = true
                     MembersConversationFragment.newInstance(conversationId)
                         .show(parentFragmentManager, "")
                 }
-
                 SheetMode.MESSAGE_ACTIONS -> {
                     val plain = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         Html.fromHtml(
@@ -370,7 +364,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             }
         }
 
-        // Règles
         binding.rules.profileSettingsItemLayout.setOnClickListener {
             startActivity(
                 Intent(requireContext(), GroupRulesActivity::class.java)
@@ -379,7 +372,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             dismiss()
         }
 
-        // Editer l’événement
         binding.edit.profileSettingsItemLayout.setOnClickListener {
             eventObj?.let { ev ->
                 startActivity(
@@ -396,7 +388,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             dismiss()
         }
 
-        // Voir les photos (si on a une conversation liée)
         binding.photos.profileSettingsItemLayout.setOnClickListener {
             if (mode == SheetMode.EVENT && conversationId > 0) {
                 startActivity(
@@ -407,7 +398,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             }
         }
 
-        // Signaler
         binding.layoutReport.setOnClickListener {
             when (mode) {
                 SheetMode.GROUP -> {
@@ -422,7 +412,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                         openDirectSignal = true
                     ).show(parentFragmentManager, ReportModalFragment.TAG)
                 }
-
                 SheetMode.EVENT -> {
                     ReportModalFragment.newInstance(
                         id = eventId,
@@ -435,7 +424,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                         openDirectSignal = true
                     ).show(parentFragmentManager, ReportModalFragment.TAG)
                 }
-
                 SheetMode.DISCUSSION_ONE_TO_ONE, SheetMode.DISCUSSION_GROUP -> {
                     ReportModalFragment.newInstance(
                         id = conversationId,
@@ -448,7 +436,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                         openDirectSignal = true
                     ).show(parentFragmentManager, ReportModalFragment.TAG)
                 }
-
                 SheetMode.MESSAGE_ACTIONS -> {
                     val plain = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         Html.fromHtml(
@@ -462,16 +449,9 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
                     val isConversationContext = !isEventContext && !isGroupContext
                     if (isConversationContext) {
-                        // Use local isSmallTalk flag if available, fallback to activity static variable only if local flag is false
-                        // Note: In this specific context (Message Actions), we might not have passed isSmallTalk explicitly
-                        // But let's check if we can retrieve it or rely on DetailConversationActivity.isSmallTalkMode
-                        // Since we are modifying ActionSheetFragment to handle this better in general,
-                        // let's try to use the passed argument if possible, but for MessageActions initialized via newMessageActions,
-                        // we might need to add isSmallTalk there too or keep relying on global state for now as the plan focused on newDiscussion.
-                        // However, to be safe and consistent with the fix:
                         val isSmallTalkMode = isSmallTalk || DetailConversationActivity.isSmallTalkMode
                         val convOrSmallTalkId = if (isSmallTalkMode) {
-                             smallTalkId ?: DetailConversationActivity.smallTalkId
+                            smallTalkId ?: DetailConversationActivity.smallTalkId
                         } else {
                             conversationId
                         }
@@ -509,10 +489,11 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             }
         }
 
-        // Quitter / Supprimer / Supprimer mon message
         binding.quit.profileSettingsItemLayout.setOnClickListener {
             when (mode) {
-                SheetMode.DISCUSSION_GROUP -> {
+                // Regroupement du 1-to-1 et Discussion Group puisque l'action "Quitter"
+                // utilise la même méthode (leaveConverstion)
+                SheetMode.DISCUSSION_ONE_TO_ONE, SheetMode.DISCUSSION_GROUP -> {
                     if (isSmallTalk) {
                         CustomAlertDialog.showWithCancelFirst(
                             requireContext(),
@@ -547,7 +528,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
                 SheetMode.EVENT -> {
                     if (isEventCreator) {
-                        // SUPPRIMER l’événement (cancelEvent)
                         CustomAlertDialog.showWithCancelFirst(
                             requireContext(),
                             getString(R.string.delete_event_title),
@@ -560,7 +540,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                             activity?.finish()
                         }
                     } else {
-                        // QUITTER l’événement
                         CustomAlertDialog.showWithCancelFirst(
                             requireContext(),
                             getString(R.string.leave_event),
@@ -592,7 +571,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             }
         }
 
-        // Bloquer (1to1)
         binding.layoutBlock.setOnClickListener {
             if (mode == SheetMode.DISCUSSION_ONE_TO_ONE) {
                 val desc =
@@ -631,7 +609,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         private const val ARG_FORCE_SHOW_EDIT = "forceShowEdit"
         private const val ARG_HEADER_FROM_EVENT_FEED = "headerFromEventFeed"
         private const val ARG_IS_EVENT_CREATOR = "isEventCreator"
-        private const val ARG_CAN_EDIT_EVENT = "canEditEvent" // NEW
+        private const val ARG_CAN_EDIT_EVENT = "canEditEvent"
         private const val ARG_IS_SMALL_TALK = "isSmallTalk"
         private const val ARG_SMALL_TALK_ID = "smallTalkId"
 
@@ -667,7 +645,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             }
         }
 
-        // 1) “ID only” — peut afficher Modifier via forceShowEdit (fallback EVENT_ID au clic)
         fun newEvent(
             eventId: Int,
             conversationId: Int,
@@ -678,7 +655,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             forceShowEdit: Boolean = false,
             fromEventFeed: Boolean = false,
             isEventCreator: Boolean = false,
-            canEditEvent: Boolean = false // NEW
+            canEditEvent: Boolean = false
         ) = ActionSheetFragment().apply {
             arguments = Bundle().apply {
                 putString(ARG_MODE, SheetMode.EVENT.name)
@@ -695,14 +672,13 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             }
         }
 
-        // 2) “Full object” — bouton Modifier opérationnel (EVENT_UI)
         fun newEvent(
             event: Events,
             conversationId: Int,
             canManageParticipants: Boolean = false,
             fromEventFeed: Boolean = false,
             isEventCreator: Boolean = false,
-            canEditEvent: Boolean = false // NEW
+            canEditEvent: Boolean = false
         ) = ActionSheetFragment().apply {
             arguments = Bundle().apply {
                 putString(ARG_MODE, SheetMode.EVENT.name)

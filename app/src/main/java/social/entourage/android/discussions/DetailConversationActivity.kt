@@ -128,7 +128,6 @@ class DetailConversationActivity : CommentActivity() {
         setupOptionMenu()
         setupOptionActions()
         observeDeletedMessage()
-        setupStaffBannerContent()
 
         // Observers
         discussionsPresenter.detailConversation.observe(this) { handleDetailConversation(it) }
@@ -757,7 +756,7 @@ class DetailConversationActivity : CommentActivity() {
         val isStaff = otherUserRoles?.any { it.equals("Équipe Entourage", ignoreCase = true) } == true
 
         if (!isStaff) {
-            binding.layoutStaffBanner.visibility = View.VISIBLE
+            binding.layoutStaffBanner.visibility = View.GONE
             return
         }
 
@@ -779,8 +778,7 @@ class DetailConversationActivity : CommentActivity() {
             binding.layoutStaffBanner.visibility = View.VISIBLE
             setupStaffBannerContent()
         } else {
-            binding.layoutStaffBanner.visibility = View.VISIBLE
-            setupStaffBannerContent()
+            binding.layoutStaffBanner.visibility = View.GONE
         }
     }
 
