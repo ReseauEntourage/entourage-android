@@ -137,6 +137,9 @@
 
     <string name="delete_account_dialog_title">Suppression du compte</string>
     <string name="delete_account_dialog_content">Souhaitez-vous supprimer votre compte ?</string>
+    <string name="delete_conversation">Supprimer la conversation</string>
+    <string name="delete_conversation_dialog_content">Êtes-vous sûr de vouloir supprimer cette conversation ?</string>
+
 
     <string name="unsubscribe_title">Voulez-vous vous désabonner ?</string>
     <string name="unsubscribe_content">En vous désabonnant, vous ne recevrez plus les notifications, nouvelles, et les nouveaux événements de cette association </string>
