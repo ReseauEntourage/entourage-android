@@ -140,6 +140,10 @@ class OnboardingPhase1Fragment : Fragment() {
 
     // ------------------ UI Setup ------------------
 
+    private fun updatePlaceholder(countryCode: String) {
+        binding.tilPhone.placeholderText = social.entourage.android.tools.utils.Utils.getPhoneNumberPlaceholder(countryCode)
+    }
+
     private fun setupViews() {
         setEditTextAlignmentBasedOnLocale()
 
@@ -187,9 +191,13 @@ class OnboardingPhase1Fragment : Fragment() {
         binding.uiOnboardPhoneCcpCode.countryCodePickerListener = object : CountryCodePickerListener {
             override fun updatedCountry(newCountry: Country) {
                 country = newCountry
+                updatePlaceholder(newCountry.phoneCode)
                 updateButtonNext()
             }
         }
+
+        val initialCountryCode = binding.uiOnboardPhoneCcpCode.selectedCountry?.phoneCode ?: "33"
+        updatePlaceholder(initialCountryCode)
 
         // Cachés au départ
         binding.tilCompany.isVisible = false
