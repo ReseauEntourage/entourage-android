@@ -17,9 +17,16 @@ import java.util.*
 class DiscussionsListAdapter(
     private val messagesList: MutableList<Conversation>
 ) : RecyclerView.Adapter<DiscussionsListAdapter.ViewHolder>() {
+    var isDeletionMode: Boolean = false
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
 
     interface OnItemClickListener {
         fun onItemClick(position: Int, conversation: Conversation)
+        fun onItemLongClick(position: Int, conversation: Conversation): Boolean
     }
 
     private var onItemClickListener: OnItemClickListener? = null
@@ -54,7 +61,26 @@ class DiscussionsListAdapter(
         fun bind(conversation: Conversation) {
             // Gestion du clic
             binding.layout.setOnClickListener {
+                if (isDeletionMode) {
+                    onItemClickListener?.onItemClick(adapterPosition, conversation)
+                } else {
+                    onItemClickListener?.onItemClick(adapterPosition, conversation)
+                }
+            }
+            binding.layout.setOnLongClickListener {
+                onItemClickListener?.onItemLongClick(adapterPosition, conversation) ?: false
+            }
+            binding.iconDelete.setOnClickListener {
                 onItemClickListener?.onItemClick(adapterPosition, conversation)
+            }
+
+            if (isDeletionMode) {
+                binding.iconDelete.visibility = View.VISIBLE
+                binding.date.visibility = View.INVISIBLE
+                binding.dateEvent.visibility = View.INVISIBLE
+                binding.nbUnread.visibility = View.INVISIBLE
+            } else {
+                binding.iconDelete.visibility = View.GONE
             }
 
             // === Affichage de l'image/avatar ===
@@ -116,46 +142,52 @@ class DiscussionsListAdapter(
             }
             binding.name.text = nameToDisplay
 
-            if (conversation.type == "outing") {
-                binding.date.visibility = View.GONE
-                binding.dateEvent.visibility = View.VISIBLE
-                binding.dateEvent.text = conversation.subname
-            } else {
-                binding.date.visibility = View.VISIBLE
-                binding.dateEvent.visibility = View.GONE
-                binding.date.text = conversation.dateFormattedString(binding.root.context)
-            }
+            if (!isDeletionMode) {
+    if (conversation.type == "outing") {
+                    binding.date.visibility = View.GONE
+                    binding.dateEvent.visibility = View.VISIBLE
+                    binding.dateEvent.text = conversation.subname
+                } else {
+                    binding.date.visibility = View.VISIBLE
+                    binding.dateEvent.visibility = View.GONE
+                    binding.date.text = conversation.dateFormattedString(binding.root.context)
+                }
 
-            // === Rôles ===
-            if (!conversation.getRolesWithPartnerFormated().isNullOrEmpty()) {
-                binding.role.visibility = View.VISIBLE
-                binding.role.text = conversation.getRolesWithPartnerFormated()
-            } else {
-                binding.role.visibility = View.GONE
-            }
+                // === Rôles ===
+                if (!conversation.getRolesWithPartnerFormated().isNullOrEmpty()) {
+                    binding.role.visibility = View.VISIBLE
+                    binding.role.text = conversation.getRolesWithPartnerFormated()
+                } else {
+                    binding.role.visibility = View.GONE
+                }
 
-            // === Dernier message ===
-            binding.detail.text = conversation.getLastMessage(context = binding.root.context)
+                // === Dernier message ===
+                binding.detail.text = conversation.getLastMessage(context = binding.root.context)
 
-            // === État "lu/non lu" ===
-            if (conversation.hasUnread()) {
-                binding.nbUnread.visibility = View.VISIBLE
-                binding.nbUnread.text = conversation.numberUnreadMessages.toString()
-                binding.date.setTextColor(binding.root.context.resources.getColor(R.color.orange))
-                binding.detail.setTextColor(binding.root.context.resources.getColor(R.color.black))
-                binding.detail.setTypeface(binding.detail.typeface, Typeface.BOLD)
-            } else {
-                binding.nbUnread.visibility = View.INVISIBLE
-                binding.date.setTextColor(binding.root.context.resources.getColor(R.color.dark_grey_opacity_40))
-                binding.detail.setTextColor(binding.root.context.resources.getColor(R.color.dark_grey_opacity_40))
-                if (!isLastMessageToday(conversation)) {
+                // === État "lu/non lu" ===
+                if (conversation.hasUnread()) {
+                    binding.nbUnread.visibility = View.VISIBLE
+                    binding.nbUnread.text = conversation.numberUnreadMessages.toString()
+                    binding.date.setTextColor(binding.root.context.resources.getColor(R.color.orange))
+                    binding.detail.setTextColor(binding.root.context.resources.getColor(R.color.black))
                     binding.detail.setTypeface(binding.detail.typeface, Typeface.BOLD)
                 } else {
-                    binding.detail.setTypeface(binding.detail.typeface, Typeface.NORMAL)
+                    binding.nbUnread.visibility = View.INVISIBLE
+                    binding.date.setTextColor(binding.root.context.resources.getColor(R.color.dark_grey_opacity_40))
+                    binding.detail.setTextColor(binding.root.context.resources.getColor(R.color.dark_grey_opacity_40))
+                    if (!isLastMessageToday(conversation)) {
+                        binding.detail.setTypeface(binding.detail.typeface, Typeface.BOLD)
+                    } else {
+                        binding.detail.setTypeface(binding.detail.typeface, Typeface.NORMAL)
+                    }
                 }
-            }
 
-            // === Info de blocage ===
+                } else {
+    binding.date.visibility = View.INVISIBLE
+    binding.dateEvent.visibility = View.INVISIBLE
+    binding.nbUnread.visibility = View.INVISIBLE
+}
+// === Info de blocage ===
             if (conversation.imBlocker()) {
                 binding.detail.text = binding.root.resources.getText(R.string.message_user_blocked_by_me_list)
                 binding.detail.setTextColor(binding.root.resources.getColor(R.color.red))

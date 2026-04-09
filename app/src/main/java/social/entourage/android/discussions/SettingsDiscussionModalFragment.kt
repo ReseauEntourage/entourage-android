@@ -113,6 +113,9 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         binding.quit.profileSettingsItemLayout.isVisible = !mustHideQuit
         binding.quit.profileSettingsItemArrow.isVisible  = !mustHideQuit
         if (!mustHideQuit) binding.quit.profileSettingsItemLabel.text = getString(R.string.discussion_settings_quit)
+
+        binding.delete.profileSettingsItemLayout.isVisible = isOneToOne
+        binding.delete.profileSettingsItemLabel.text = getString(R.string.delete_conversation)
     }
 
     /* ─────────────────────────── Observers ─────────────────────────── */
@@ -193,6 +196,19 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
                 } else {
                     conversationId?.let { discussionPresenter.leaveConverstion(it) }
                 }
+            }
+        }
+
+
+        /* ▶️ Supprimer la conversation (1-1) */
+        binding.delete.profileSettingsItemLayout.setOnClickListener {
+            CustomAlertDialog.showWithCancelFirst(
+                requireContext(),
+                getString(R.string.delete_conversation),
+                getString(R.string.delete_conversation_dialog_content),
+                getString(R.string.delete)
+            ) {
+                conversationId?.let { discussionPresenter.leaveConverstion(it) }
             }
         }
 
