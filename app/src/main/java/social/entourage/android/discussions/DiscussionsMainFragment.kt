@@ -158,8 +158,8 @@ class DiscussionsMainFragment : Fragment() {
                     }
                 }
                 override fun onItemLongClick(position: Int, conversation: Conversation): Boolean {
-                    discussionsAdapter.isDeletionMode = true
-                    binding.btnValidate.visibility = View.VISIBLE
+                    //discussionsAdapter.isDeletionMode = true
+                    //binding.btnValidate.visibility = View.VISIBLE
                     return true
                 }
             })

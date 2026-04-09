@@ -130,6 +130,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_block"
                     android:layout_width="match_parent"
@@ -147,14 +148,15 @@
                         app:layout_constraintBottom_toTopOf='@id/divider_block'
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/new_block" />
+                        app:srcCompat="@drawable/new_block"
+                        app:tint="@color/orange" />
                     <TextView
                         android:id="@+id/block"
-                        style="@style/report"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:textColor="@color/black"
+                        android:textColor="@color/orange"
+                        android:fontFamily="@font/nunitosans_regular"
                         app:layout_constraintStart_toEndOf='@id/iconBlock'
                         app:layout_constraintTop_toTopOf="parent" />
                     <TextView
