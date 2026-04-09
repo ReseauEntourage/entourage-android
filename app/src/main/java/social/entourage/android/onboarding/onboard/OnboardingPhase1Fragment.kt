@@ -23,6 +23,7 @@ import social.entourage.android.tools.isValidEmail
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.countrycodepicker.Country
 import social.entourage.android.tools.view.countrycodepicker.CountryCodePickerListener
+import social.entourage.android.tools.utils.Utils
 import timber.log.Timber
 import java.util.Calendar
 import java.util.Locale
@@ -141,11 +142,20 @@ class OnboardingPhase1Fragment : Fragment() {
     // ------------------ UI Setup ------------------
 
     private fun updatePlaceholder(countryCode: String) {
-        binding.tilPhone.placeholderText = social.entourage.android.tools.utils.Utils.getPhoneNumberPlaceholder(countryCode)
+        binding.tilPhone.placeholderText = Utils.getPhoneNumberPlaceholder(countryCode)
     }
 
     private fun setupViews() {
         setEditTextAlignmentBasedOnLocale()
+
+        // Country picker listener
+        binding.uiOnboardPhoneCcpCode.countryCodePickerListener = object : CountryCodePickerListener {
+            override fun updatedCountry(newCountry: Country) {
+                country = newCountry
+                updatePlaceholder(newCountry.phoneCode)
+                updateButtonNext()
+            }
+        }
 
         // Champ date : non éditable au clavier
         binding.uiOnboardBirthdate.apply {
@@ -172,7 +182,6 @@ class OnboardingPhase1Fragment : Fragment() {
         // Préremplissage
         binding.uiOnboardEmail.setText(email)
         binding.uiOnboardPhoneCcpCode.selectedCountry = country
-        binding.uiOnboardPhoneCcpCode.selectedCountry?.flagTxt = country?.flagTxt
         binding.uiOnboardPhoneEtPhone.setText(phone)
         binding.uiOnboardNamesEtLastname.setText(lastname)
         binding.uiOnboardNamesEtFirstname.setText(firstname)
@@ -187,15 +196,7 @@ class OnboardingPhase1Fragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        // Country picker
-        binding.uiOnboardPhoneCcpCode.countryCodePickerListener = object : CountryCodePickerListener {
-            override fun updatedCountry(newCountry: Country) {
-                country = newCountry
-                updatePlaceholder(newCountry.phoneCode)
-                updateButtonNext()
-            }
-        }
-
+        // On force l'update du placeholder initialement
         val initialCountryCode = binding.uiOnboardPhoneCcpCode.selectedCountry?.phoneCode ?: "33"
         updatePlaceholder(initialCountryCode)
 

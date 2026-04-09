@@ -47,34 +47,15 @@ internal object CountryLightList {
                 context.getString(R.string.country_martinique_name),context.getString(R.string.country_martinique_flag))
         )
         newCountries.add(
-            Country(context.getString(R.string.country_french_guyana_code),
-                context.getString(R.string.country_french_guyana_number),
-                context.getString(R.string.country_french_guyana_name),context.getString(R.string.country_french_guyana_flag))
-        )
-        newCountries.add(
             Country(context.getString(R.string.country_reunion_code),
                 context.getString(R.string.country_reunion_number),
                 context.getString(R.string.country_reunion_name),context.getString(R.string.country_reunion_flag))
         )
         newCountries.add(
-            Country(context.getString(R.string.country_mayotte_code),
-                context.getString(R.string.country_mayotte_number),
-                context.getString(R.string.country_mayotte_name),context.getString(R.string.country_mayotte_flag))
-        )
-        newCountries.add(
-            Country(context.getString(R.string.country_french_polynesia_code),
-                context.getString(R.string.country_french_polynesia_number),
-                context.getString(R.string.country_french_polynesia_name),context.getString(R.string.country_french_polynesia_flag))
-        )
-        newCountries.add(
-            Country(context.getString(R.string.country_new_caledonia_code),
-                context.getString(R.string.country_new_caledonia_number),
-                context.getString(R.string.country_new_caledonia_name),context.getString(R.string.country_new_caledonia_flag))
-        )
-        newCountries.add(
-            Country(context.getString(R.string.country_saint_martin_code),
-                context.getString(R.string.country_saint_martin_number),
-                context.getString(R.string.country_saint_martin_name),context.getString(R.string.country_saint_martin_flag))
+            Country(context.getString(R.string.country_morocco_code),
+                context.getString(R.string.country_morocco_number),
+                context.getString(R.string.country_morocco_name),
+                context.getString(R.string.country_morocco_flag))
         )
         newCountries.sortWith { o1: Country, o2: Country -> o1.name.compareTo(o2.name) }
         countries = newCountries
@@ -139,7 +120,7 @@ internal object CountryLightList {
     /**
      * Search a country which matches @param nameCode.
      *
-     * @param nameCode country name code. i.e US or us or Au. See countries.xml for all code names.
+     * @param nameCode country name code. i.i US or us or Au. See countries.xml for all code names.
      * @return Country that has phone code as @param code.
      * or returns null if no country matches given code.
      */

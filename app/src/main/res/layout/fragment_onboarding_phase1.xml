@@ -162,8 +162,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="@string/onboard_welcome_title_phone_required"
-                    app:placeholderText="@string/onboard_welcome_placeholder_phone_new">
+                    android:hint="@string/onboard_welcome_title_phone_required">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/ui_onboard_phone_et_phone"
