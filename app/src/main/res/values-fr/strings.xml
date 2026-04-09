@@ -408,7 +408,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="created_at">Créé le %s</string>
     <string name="updated_at">Modifié le %s</string>
     <string name="canceled_at">Annulé le %s</string>
-    <string name="leave_event">Quitter l\'événement</string>
+    <string name="leave_event">Je ne souhaite plus participer</string>
     <string name="leave_event_dialog_content">Souhaitez-vous quitter l\'événement ?</string>
     <string name="dot">•</string>
     <string name="event_limited_places_title">Événement à places limitées</string>
@@ -1608,7 +1608,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_discussion_title">Vous pouvez poser vos questions et échanger avec l\'organisateur et les participants de l\'événement</string>
     <string name="event_discussion_button">Discussion de l\'événement</string>
     <string name="event_cancel_button">Annuler l\'événement</string>
-    <string name="event_leave_button">Quitter l\'événement</string>
+    <string name="event_leave_button">Je ne souhaite plus participer</string>
 
     <!-- STRING GET INVOLVED -->
     <string name="get_involved_title">Suivre Entourage</string>
