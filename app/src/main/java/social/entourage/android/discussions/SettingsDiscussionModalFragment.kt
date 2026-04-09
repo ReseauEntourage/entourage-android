@@ -109,13 +109,13 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun updateInputs() {
-        val mustHideQuit = isCreator || isOneToOne || isEvent
+        // We do not hide quit for 1-1. For 1-1, user can always quit.
+        val mustHideQuit = if (isOneToOne) false else (isCreator || isEvent)
         binding.quit.profileSettingsItemLayout.isVisible = !mustHideQuit
         binding.quit.profileSettingsItemArrow.isVisible  = !mustHideQuit
         if (!mustHideQuit) binding.quit.profileSettingsItemLabel.text = getString(R.string.discussion_settings_quit)
 
-        binding.delete.profileSettingsItemLayout.isVisible = isOneToOne
-        binding.delete.profileSettingsItemLabel.text = getString(R.string.delete_conversation)
+        binding.delete.profileSettingsItemLayout.isVisible = false
     }
 
     /* ─────────────────────────── Observers ─────────────────────────── */
