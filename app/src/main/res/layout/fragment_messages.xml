@@ -45,6 +45,20 @@
                     android:visibility="gone"
                     />
 
+                <Button
+                    android:id="@+id/btn_validate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|top"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="16dp"
+                    android:backgroundTint="@color/orange"
+                    android:textColor="@color/white"
+                    android:text="@string/validate"
+                    android:visibility="gone"
+                    />
+
+
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="wrap_content"

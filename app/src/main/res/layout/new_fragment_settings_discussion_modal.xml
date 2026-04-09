@@ -185,6 +185,16 @@
                     android:layout_marginStart="25dp"
                     android:layout_marginEnd="25dp"
                     app:icon='@{@drawable/new_sign_out}' />
+
+                <include
+                    android:id="@+id/delete"
+                    layout="@layout/layout_settings_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"
+                    android:visibility="gone"
+                    app:icon='@{@drawable/new_delete}' />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
