@@ -167,8 +167,15 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
                 // Affichage du bouton "Quitter" pour le 1-to-1
                 binding.quit.profileSettingsItemLayout.isVisible = true
-                binding.quit.setLabel(getString(R.string.leave_conversation))
+                binding.quit.setLabel(getString(R.string.discussion_settings_quit))
                 binding.quit.profileSettingsItemLabel.setTextColor(
+                    ContextCompat.getColor(requireContext(), R.color.orange)
+                )
+
+                // Affichage du bouton "Supprimer" pour le 1-to-1
+                binding.delete.profileSettingsItemLayout.isVisible = true
+                binding.delete.setLabel(getString(R.string.delete_conversation))
+                binding.delete.profileSettingsItemLabel.setTextColor(
                     ContextCompat.getColor(requireContext(), R.color.orange)
                 )
 
@@ -567,6 +574,22 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                     dismiss()
                 }
 
+                else -> Unit
+            }
+        }
+
+        binding.delete.profileSettingsItemLayout.setOnClickListener {
+            when (mode) {
+                SheetMode.DISCUSSION_ONE_TO_ONE -> {
+                    CustomAlertDialog.showWithCancelFirst(
+                        requireContext(),
+                        getString(R.string.delete_conversation),
+                        getString(R.string.delete_conversation_dialog_content),
+                        getString(R.string.delete)
+                    ) {
+                        discussionPresenter.leaveConverstion(conversationId)
+                    }
+                }
                 else -> Unit
             }
         }

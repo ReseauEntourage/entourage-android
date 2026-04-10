@@ -36,6 +36,8 @@ internal object CountryLightList {
                 context.getString(R.string.country_belgium_number),
                 context.getString(R.string.country_belgium_name),context.getString(R.string.country_belgium_flag))
         )
+        // Les autres pays sont cachés pour le moment à la demande de l'utilisateur
+        /*
         newCountries.add(
             Country(context.getString(R.string.country_guadeloupe_code),
                 context.getString(R.string.country_guadeloupe_number),
@@ -57,6 +59,7 @@ internal object CountryLightList {
                 context.getString(R.string.country_morocco_name),
                 context.getString(R.string.country_morocco_flag))
         )
+        */
         newCountries.sortWith { o1: Country, o2: Country -> o1.name.compareTo(o2.name) }
         countries = newCountries
         return newCountries
