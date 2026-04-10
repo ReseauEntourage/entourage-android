@@ -69,6 +69,7 @@ class DiscussionsPresenter : ViewModel() {
     var isLoadingComments = false
 
     val memberships = MutableLiveData<List<ConversationMembership>>()
+    val updatedMemberships = MutableLiveData<List<ConversationMembership>>()
     var currentPageMemberships = 1
     val perPageMemberships = 50
     var isLastPageMemberships = false
@@ -459,6 +460,23 @@ class DiscussionsPresenter : ViewModel() {
                 }
                 override fun onFailure(call: Call<PostListWrapper>, t: Throwable) {
                     isLoadingComments = false
+                }
+            })
+    }
+
+    fun updateMembershipsBackground(type: String?) {
+        EntourageApplication.get().apiModule.discussionsRequest
+            .getConversationMemberships(type, 1, perPageMemberships * Math.max(1, currentPageMemberships - 1))
+            .enqueue(object : Callback<ConversationMembershipsWrapper> {
+                override fun onResponse(
+                    call: Call<ConversationMembershipsWrapper>,
+                    response: Response<ConversationMembershipsWrapper>
+                ) {
+                    val newItems = response.body()?.memberships.orEmpty()
+                    updatedMemberships.postValue(newItems)
+                }
+
+                override fun onFailure(call: Call<ConversationMembershipsWrapper>, t: Throwable) {
                 }
             })
     }

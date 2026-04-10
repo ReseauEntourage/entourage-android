@@ -87,6 +87,7 @@ class DiscussionsMainFragment : Fragment() {
         discussionsPresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
         smallTalkViewModel.smallTalks.observe(viewLifecycleOwner, ::handleResponseGetSmallTalks)
         discussionsPresenter.memberships.observe(viewLifecycleOwner, ::handleResponseGetMemberships)
+        discussionsPresenter.updatedMemberships.observe(viewLifecycleOwner, ::handleUpdatedMemberships)
         discussionsPresenter.hasUserLeftConversation.observe(viewLifecycleOwner, ::handleConversationLeft)
         eventsPresenter.hasUserLeftEvent.observe(viewLifecycleOwner, ::handleConversationLeft)
         groupPresenter.hasUserLeftGroup.observe(viewLifecycleOwner, ::handleConversationLeft)
@@ -106,6 +107,7 @@ class DiscussionsMainFragment : Fragment() {
             reloadFromStart()
         } else if (isFromDetail) {
             isFromDetail = false
+            updateDiscussionsBackground()
         } else {
             reloadFromStart()
         }
@@ -396,6 +398,65 @@ class DiscussionsMainFragment : Fragment() {
             }
         }
         binding.recyclerView.adapter?.notifyDataSetChanged()
+    }
+
+    private fun handleUpdatedMemberships(memberships: List<ConversationMembership>?) {
+        memberships?.let { list ->
+            val updatedConversations = list.map { membershipToConversation(it) }
+            val existingIds = messagesList.mapNotNull { it.id }.toSet()
+            val updatedIds = updatedConversations.mapNotNull { it.id }.toSet()
+
+            // Diff: Remove old ones
+            val idsToRemove = existingIds - updatedIds
+            if (idsToRemove.isNotEmpty()) {
+                val iterator = messagesList.iterator()
+                var index = 0
+                while (iterator.hasNext()) {
+                    val item = iterator.next()
+                    if (item.id in idsToRemove) {
+                        iterator.remove()
+                        discussionsAdapter.notifyItemRemoved(index)
+                    } else {
+                        index++
+                    }
+                }
+            }
+
+            // Update existing or add new ones
+            for (updatedConv in updatedConversations) {
+                val index = messagesList.indexOfFirst { it.id == updatedConv.id }
+                if (index != -1) {
+                    val existingConv = messagesList[index]
+                    var changed = false
+
+                    if (existingConv.lastMessage?.text != updatedConv.lastMessage?.text || existingConv.lastMessage?.imageUrl != updatedConv.lastMessage?.imageUrl) {
+                        existingConv.lastMessage = updatedConv.lastMessage
+                        changed = true
+                    }
+                    if (existingConv.numberUnreadMessages != updatedConv.numberUnreadMessages) {
+                        if (!readConversationIds.contains(existingConv.id ?: 0)) {
+                            existingConv.numberUnreadMessages = updatedConv.numberUnreadMessages
+                            changed = true
+                        } else if ((updatedConv.numberUnreadMessages ?: 0) > 0) {
+                            // If the server says we have unread messages, maybe there's a new message since we opened it
+                            // so we clear our read cache if the text actually changed, but for safety we just rely on last message text changed above
+                        }
+                    }
+
+                    if (changed) {
+                        discussionsAdapter.notifyItemChanged(index)
+                    }
+                } else {
+                    // New conversation appeared
+                    messagesList.add(0, updatedConv)
+                    discussionsAdapter.notifyItemInserted(0)
+                }
+            }
+        }
+    }
+
+    private fun updateDiscussionsBackground() {
+        discussionsPresenter.updateMembershipsBackground(currentFilterModeString())
     }
 
     private fun handleImageViewAnimation() {
