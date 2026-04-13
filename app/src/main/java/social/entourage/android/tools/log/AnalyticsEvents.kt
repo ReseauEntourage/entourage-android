@@ -578,14 +578,6 @@ object AnalyticsEvents {
     const val Onboard_code = "View__Onboarding__InputCode"
     const val Onboard_profile = "View__Onboarding__InputProfile"
     const val Onboard_end = "View__Onboarding__Confirmation"
-    const val View_WelcomeOfferHelp_Day2 = "View_WelcomeOfferHelp_Day2"
-    const val Action_WelcomeOfferHelp_Day2 = "Action_WelcomeOfferHelp_Day2"
-
-    const val View_WelcomeOfferHelp_Day8 = "View_WelcomeOfferHelp_Day8"
-    const val Action_WelcomeOfferHelp_Day8 = "Action_WelcomeOfferHelp_Day8"
-
-    const val View_WelcomeOfferHelp_Day11 = "View_WelcomeOfferHelp_Day11"
-    const val Action_WelcomeOfferHelp_Day11 = "Action_WelcomeOfferHelp_Day11"
 
     const val NotificationReceived__Demand = "NotificationReceived__Demand"
 

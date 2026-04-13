@@ -78,16 +78,10 @@
         <activity
             android:name=".onboarding.onboard.OnboardingEndActivity"
             android:exported="false" />
-        <activity
-            android:name=".welcome.WelcomeOneActivity"
-            android:exported="false" />
         <activity android:name=".enhanced_onboarding.EnhancedOnboarding"
             android:exported="false"/>
         <activity android:name=".notifications.NotificationDemandActivity"
             android:exported="false"/>
-        <activity
-            android:name=".welcome.WelcomeTwoActivity"
-            android:exported="false" />
 
         <activity android:name="social.entourage.android.profile.activities_settings.LanguageSettingsActivity"/>
         <activity android:name="social.entourage.android.profile.activities_settings.SettingsNotificationsActivity"/>
@@ -102,12 +96,6 @@
         <activity android:name=".onboarding.onboard.OnboardingAssociationChoiceActivity"
             android:exported="false" />
         <activity android:name="social.entourage.android.profile.activities_settings.UnblockUsersActivity"/>
-        <activity
-            android:name=".welcome.WelcomeThreeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".welcome.WelcomeFourActivity"
-            android:exported="false" />
         <activity android:name=".members.MembersActivity"
             android:exported="false" />
         <activity android:name=".survey.CreateSurveyActivity"
@@ -173,10 +161,6 @@
             android:exported="false" />
         <activity
             android:name=".events.create.CreateEventActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".welcome.WelcomeFiveActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".profile.editProfile.EditPhotoActivity"

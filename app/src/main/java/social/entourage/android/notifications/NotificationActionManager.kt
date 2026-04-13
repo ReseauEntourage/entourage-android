@@ -19,11 +19,6 @@ import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.small_talks.SmallTalkListOtherBands
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.user.partner.PartnerDetailActivity
-import social.entourage.android.welcome.WelcomeFiveActivity
-import social.entourage.android.welcome.WelcomeFourActivity
-import social.entourage.android.welcome.WelcomeOneActivity
-import social.entourage.android.welcome.WelcomeThreeActivity
-import social.entourage.android.welcome.WelcomeTwoActivity
 import social.entourage.android.home.BirthdayActivity
 
 /**
@@ -56,31 +51,6 @@ object NotificationActionManager {
                 return
             }
         }
-
-        if(!stage.isNullOrEmpty()){
-
-            if(stage.equals("h1")){
-                val intent = Intent(context, WelcomeOneActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j2")){
-                val intent = Intent(context, WelcomeTwoActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j5")){
-                val intent = Intent(context, WelcomeThreeActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j8")){
-                val intent = Intent(context, WelcomeFourActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j11")){
-                val intent = Intent(context, WelcomeFiveActivity::class.java)
-                context.startActivity(intent)
-            }
-        }
-
 
         Log.wtf("wtf", "instance from NotificationActionManager: $instance")
         Log.wtf("wtf", "tracking: from NotificationActionManager$tracking")
@@ -148,26 +118,6 @@ object NotificationActionManager {
 
     fun presentWelcomeAction(context: Context, stage:String? = ""){
         if(!stage.isNullOrEmpty()){
-            if(stage.equals("h1")){
-                val intent = Intent(context, WelcomeOneActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j2")){
-                val intent = Intent(context, WelcomeTwoActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j5")){
-                val intent = Intent(context, WelcomeThreeActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j8")){
-                val intent = Intent(context, WelcomeFourActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j11")){
-                val intent = Intent(context, WelcomeFiveActivity::class.java)
-                context.startActivity(intent)
-            }
             if (stage == "birthday") {
                 if (context is MainActivity) {
                     (context as MainActivity).goHome()
