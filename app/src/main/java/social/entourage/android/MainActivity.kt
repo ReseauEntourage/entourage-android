@@ -58,7 +58,6 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
 import social.entourage.android.enhanced_onboarding.OnboardingNavigation
-import social.entourage.android.welcome.WelcomeTwoActivity
 import timber.log.Timber
 
 class MainActivity : BaseSecuredActivity() {
@@ -257,9 +256,7 @@ class MainActivity : BaseSecuredActivity() {
     private fun handleOnboardingNavigation(navigation: OnboardingNavigation) {
         when (navigation) {
             is OnboardingNavigation.WelcomeGroup -> {
-                val intent = Intent(this, WelcomeTwoActivity::class.java)
-                startActivity(intent)
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                goGroup()
             }
             is OnboardingNavigation.Events -> {
                 shouldLaunchEvent = true
@@ -306,13 +303,6 @@ class MainActivity : BaseSecuredActivity() {
             goEvent()
             return
         }
-        val fromWelcomeActivity = intent.getBooleanExtra("fromWelcomeActivity", false)
-        val fromWelcomeActivityThreeEvent =
-            intent.getBooleanExtra("fromWelcomeActivityThreeEvent", false)
-        val fromWelcomeActivityThreeDemand =
-            intent.getBooleanExtra("fromWelcomeActivityThreeDemand", false)
-        val fromWelcomeActivityThreeContrib =
-            intent.getBooleanExtra("fromWelcomeActivityThreeContrib", false)
         val goContrib = intent.getBooleanExtra("goContrib", false)
         val goDemand = intent.getBooleanExtra("goDemand", false)
         val goDiscoverGroup = intent.getBooleanExtra("goDiscoverGroup", false)
@@ -345,25 +335,6 @@ class MainActivity : BaseSecuredActivity() {
         }
         else if(goDemand){
             goDemand()
-            return
-        }
-        else if (fromWelcomeActivity) {
-            goGroup()
-            return
-        }
-        else if (fromWelcomeActivityThreeEvent) {
-            goEvent()
-            return
-        }
-        else if (fromWelcomeActivityThreeDemand) {
-            goDemand()
-            return
-        }
-        else if (fromWelcomeActivityThreeContrib) {
-            goContrib()
-            val newIntent = Intent(this, CreateActionActivity::class.java)
-            newIntent.putExtra(Const.IS_ACTION_DEMAND, false)
-            startActivity(newIntent)
             return
         }
         else {

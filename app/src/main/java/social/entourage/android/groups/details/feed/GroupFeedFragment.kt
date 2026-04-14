@@ -174,12 +174,6 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
             isLoading = true
             loadPosts()
         }
-        val fromWelcomeActivity = activity?.intent?.getBooleanExtra("fromWelcomeActivity", false)
-        if (fromWelcomeActivity == true) {
-            createAPost()
-            // Réinitialise l'intent
-            activity?.intent = Intent(activity, GroupFeedActivity::class.java)
-        }
         binding.createPost.close()
         binding.overlayView.visibility = View.GONE
     }

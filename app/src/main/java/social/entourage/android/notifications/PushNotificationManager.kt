@@ -30,11 +30,6 @@ import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.home.BirthdayActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
-import social.entourage.android.welcome.WelcomeFiveActivity
-import social.entourage.android.welcome.WelcomeFourActivity
-import social.entourage.android.welcome.WelcomeOneActivity
-import social.entourage.android.welcome.WelcomeThreeActivity
-import social.entourage.android.welcome.WelcomeTwoActivity
 import timber.log.Timber
 
 /**
@@ -401,32 +396,6 @@ object PushNotificationManager {
         args.putSerializable(PUSH_MESSAGE, pushNotificationMessage)
         val messageType: String = pushNotificationMessage.content?.type ?:""
 
-        if(pushNotificationMessage.content?.extra?.stage == "h1"){
-            val intent = Intent(context, WelcomeOneActivity::class.java)
-            intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
-            return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
-        }
-        if(pushNotificationMessage.content?.extra?.stage == "j2"){
-            val intent = Intent(context, WelcomeTwoActivity::class.java)
-            intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
-            intent.putExtra("notification_content_boolean", true)
-            return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
-        }
-        if(pushNotificationMessage.content?.extra?.stage == "j5"){
-            val intent = Intent(context, WelcomeThreeActivity::class.java)
-            intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
-            return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
-        }
-        if(pushNotificationMessage.content?.extra?.stage == "j8"){
-            val intent = Intent(context, WelcomeFourActivity::class.java)
-            intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
-            return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
-        }
-        if(pushNotificationMessage.content?.extra?.stage == "j11"){
-            val intent = Intent(context, WelcomeFiveActivity::class.java)
-            intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
-            return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, intent, PendingIntent.FLAG_IMMUTABLE)
-        }
         if(pushNotificationMessage.content?.extra?.stage == "birthday"){
             val intent = Intent(context, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
