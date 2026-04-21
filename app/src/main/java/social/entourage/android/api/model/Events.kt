@@ -144,12 +144,6 @@ data class Events(
     @SerializedName("neighborhoods")
     var neighborhoods: MutableList<GroupEvent>? = mutableListOf(),
 
-    @field:SerializedName("unsubscribed_participants_offer_help")
-    var unsubscribedParticipantsOfferHelp: Int? = 0,
-
-    @field:SerializedName("unsubscribed_participants_ask_for_help")
-    var unsubscribedParticipantsAskForHelp: Int? = 0,
-
 ) : Serializable
 
 fun Events.toEventUi(context: Context): EventModel {
@@ -171,8 +165,6 @@ fun Events.toEventUi(context: Context): EventModel {
         this.updatedAt,
         this.recurrence,
         this.neighborhoods,
-        this.unsubscribedParticipantsOfferHelp,
-        this.unsubscribedParticipantsAskForHelp,
         this.location,
         this.distance,
         this.status,
