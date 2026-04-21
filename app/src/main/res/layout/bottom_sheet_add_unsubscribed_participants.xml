@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/new_bg_rounded_bottom_sheet"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/new_bg_rounded_grey" />
+
+    <TextView
+        style="@style/h2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="@string/ajouter_des_participants"
+        android:textColor="@color/black" />
+
+    <TextView
+        style="@style/h4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="@string/question_isoles"
+        android:textColor="@color/black" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/btn_minus_isoles"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_circle_light_orange"
+            android:padding="12dp"
+            android:src="@drawable/new_minus"
+            app:tint="@color/orange" />
+
+        <TextView
+            android:id="@+id/tv_count_isoles"
+            style="@style/h2"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/black" />
+
+        <ImageView
+            android:id="@+id/btn_plus_isoles"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_circle_light_orange"
+            android:padding="12dp"
+            android:src="@drawable/new_plus"
+            app:tint="@color/orange" />
+    </LinearLayout>
+
+    <TextView
+        style="@style/h4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="@string/question_riverains"
+        android:textColor="@color/black" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/btn_minus_riverains"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_circle_light_orange"
+            android:padding="12dp"
+            android:src="@drawable/new_minus"
+            app:tint="@color/orange" />
+
+        <TextView
+            android:id="@+id/tv_count_riverains"
+            style="@style/h2"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/black" />
+
+        <ImageView
+            android:id="@+id/btn_plus_riverains"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_circle_light_orange"
+            android:padding="12dp"
+            android:src="@drawable/new_plus"
+            app:tint="@color/orange" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_validate"
+        style="@style/orange_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/validate" />
+
+</LinearLayout>

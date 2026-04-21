@@ -10,7 +10,6 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Image
 import social.entourage.android.api.model.CompleteReactionsResponse
 import social.entourage.android.api.model.ReactionWrapper
-import social.entourage.android.events.JoinRoleBody
 
 class EventsImagesResponse(@field:SerializedName("entourage_images") val eventImages: ArrayList<Image>)
 class EventsListWrapper(@field:SerializedName("outings") val allEvents: MutableList<Events>)
@@ -20,6 +19,12 @@ class EventWrapper(@field:SerializedName("outing") val event: Events)
 class EventWeekAverageResponse(@field:SerializedName("average") val average: Float)
 
 interface EventsRequest {
+    @POST("outings/{id}/users/unsubscribed_participants")
+    fun updateUnsubscribedParticipants(
+        @Path("id") eventId: Int,
+        @Query("offer_help") offerHelp: Int,
+        @Query("ask_for_help") askForHelp: Int
+    ): Call<EventWrapper>
     @GET("outings/week_average")
     fun getEventsWeekAverage(
         @Query("latitude") latitude: Double,
@@ -267,3 +272,8 @@ interface EventsRequest {
     ): Call<okhttp3.ResponseBody>
 
 }
+
+data class JoinRoleBody(
+    @com.google.gson.annotations.SerializedName("role")
+    val role: String
+)
