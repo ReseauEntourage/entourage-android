@@ -27,6 +27,11 @@ import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.events.AcceptPhotoDialogFragment
 import social.entourage.android.events.EventsPresenter
+
+import social.entourage.android.EntourageApplication
+import social.entourage.android.groups.details.members.AddUnsubscribedParticipantsBottomSheet
+import social.entourage.android.api.model.Events
+
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.members.MembersListAdapter
 import social.entourage.android.groups.details.members.OnItemShowListener
@@ -45,6 +50,11 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
     private val reactionList: MutableList<ReactionType> = mutableListOf()
     private var id: Int = Const.DEFAULT_VALUE
     private var type: MembersType = MembersType.GROUP
+
+    private var isolesCount = 0
+    private var riverainsCount = 0
+    private var isEquipeEntourage = false
+
 
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
@@ -186,6 +196,14 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
             observeReactions()
             return
         }
+
+        eventPresenter.getEvent.observe(this, ::handleGetEvent)
+        eventPresenter.unsubscribedParticipantsUpdated.observe(this) { success ->
+            if (success) {
+                eventPresenter.getEvent(id.toString())
+            }
+        }
+
         when (type) {
             MembersType.GROUP -> {
                 observeGroupMembers()
@@ -222,6 +240,12 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
     }
 
     private fun loadFirstPage() {
+
+        isEquipeEntourage = EntourageApplication.get().me()?.roles?.contains("Équipe Entourage") == true
+        if (type == MembersType.EVENT && isEquipeEntourage) {
+            eventPresenter.getEvent(id.toString())
+        }
+
         if (isFromReact) {
             binding.layoutSearchbar.visibility = View.GONE
             when (type) {
@@ -369,6 +393,56 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
         eventPresenter.declinePhotoForUser(id, userId)
         eventPresenter.participateForUser(id, userId)
 
+    }
+
+
+    private fun handleGetEvent(event: social.entourage.android.api.model.Events?) {
+        event?.metadata?.let { metadata ->
+            isolesCount = metadata.unsubscribedParticipantsAskForHelp ?: 0
+            riverainsCount = metadata.unsubscribedParticipantsOfferHelp ?: 0
+            updateUnsubscribedUI()
+        }
+    }
+
+    private fun updateUnsubscribedUI() {
+        if (type == MembersType.EVENT && isEquipeEntourage) {
+            binding.fabAddUnsubscribed.visibility = android.view.View.VISIBLE
+            binding.fabAddUnsubscribed.setOnClickListener {
+                val bottomSheet = AddUnsubscribedParticipantsBottomSheet.newInstance(isolesCount, riverainsCount)
+                bottomSheet.onValidateCounts = { newIsole, newRiverain ->
+                    eventPresenter.updateUnsubscribedParticipants(id, newRiverain, newIsole)
+                }
+                bottomSheet.show(supportFragmentManager, "AddUnsubscribedBottomSheet")
+            }
+
+            if (isolesCount > 0 || riverainsCount > 0) {
+                binding.layoutUnsubscribedParticipants.visibility = android.view.View.VISIBLE
+
+                if (isolesCount > 0) {
+                    binding.layoutIsoles.visibility = android.view.View.VISIBLE
+                    binding.tvIsolesCount.text = if (isolesCount > 1) {
+                        getString(R.string.personnes_isolees, isolesCount)
+                    } else {
+                        getString(R.string.personne_isolee, isolesCount)
+                    }
+                } else {
+                    binding.layoutIsoles.visibility = android.view.View.GONE
+                }
+
+                if (riverainsCount > 0) {
+                    binding.layoutRiverains.visibility = android.view.View.VISIBLE
+                    binding.tvRiverainsCount.text = if (riverainsCount > 1) {
+                        getString(R.string.riverains, riverainsCount)
+                    } else {
+                        getString(R.string.riverain, riverainsCount)
+                    }
+                } else {
+                    binding.layoutRiverains.visibility = android.view.View.GONE
+                }
+            } else {
+                binding.layoutUnsubscribedParticipants.visibility = android.view.View.GONE
+            }
+        }
     }
 
     companion object {
