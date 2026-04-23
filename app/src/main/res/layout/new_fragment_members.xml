@@ -155,35 +155,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#FFF5F0"
+        android:background="@color/white"
         android:orientation="vertical"
-        android:padding="16dp"
+        android:paddingBottom="90dp"
         android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
             android:text="@string/participants_ajoutes_sur_place"
-            android:textColor="@color/black"
+            android:textColor="@color/grey"
             android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textAllCaps="true" />
 
         <LinearLayout
             android:id="@+id/layout_isoles"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
             android:gravity="center_vertical"
+            android:background="#FFF5F0"
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="16dp"
             android:orientation="horizontal"
-        android:visibility="gone">
+            android:visibility="gone">
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@drawable/bg_circle_light_orange"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/new_circle_orange_button_fill"
                 android:padding="12dp"
-                android:src="@drawable/placeholder_user" />
+                android:src="@drawable/ic_person_walking" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -214,14 +218,17 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-        android:visibility="gone">
+            android:background="#FFF5F0"
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="16dp"
+            android:visibility="gone">
 
             <ImageView
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@drawable/bg_circle_light_orange"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/new_circle_orange_button_fill"
                 android:padding="12dp"
-                android:src="@drawable/placeholder_user" />
+                android:src="@drawable/ic_house" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -254,9 +261,11 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:src="@drawable/new_plus"
+        android:src="@drawable/new_fab_plus"
+        app:borderWidth="0dp"
+        app:fabSize="normal"
+        app:fab_colorNormal="@color/orange"
         app:backgroundTint="@color/orange"
-        app:tint="@color/white"
         android:visibility="gone" />
 
 </RelativeLayout>
