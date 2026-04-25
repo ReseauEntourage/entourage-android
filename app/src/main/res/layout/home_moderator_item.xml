@@ -47,7 +47,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/tv_title"
             app:layout_constraintTop_toBottomOf="@id/tv_title"
-            tools:text="Je fais parti·e de l'équipe Entourage et je suis là pour t'accompagner. N'hésite pas si tu as des questions ! 🤗" />
+            tools:text="Je fais partie de l'équipe Entourage et je suis là pour t'accompagner. N'hésite pas si tu as des questions ! 🤗" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
