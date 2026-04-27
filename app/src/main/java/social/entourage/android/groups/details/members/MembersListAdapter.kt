@@ -62,7 +62,9 @@ class MembersListAdapter(
 
         // -------- Checkbox participation (visibilité + état + listener) --------
         val isMe = EntourageApplication.get().me()?.id == item.userId
-        if (HomeFragment.signablePermission && ActionSheetFragment.isSignable && !MembersActivity.isFromReact) {
+        val canCheckIn = HomeFragment.signablePermission && ActionSheetFragment.isSignable
+
+        if ((canCheckIn || isMe) && !MembersActivity.isFromReact) {
 
             b.checkboxConfirmation.visibility = View.VISIBLE
             // état actuel : participe si participateAt ou confirmedAt non null
