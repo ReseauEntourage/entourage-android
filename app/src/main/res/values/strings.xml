@@ -1357,7 +1357,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="country_qatar_code">qa</string>
     <string name="country_qatar_number" translatable="false">974</string>
 
-    <string name="country_reunion_name">Réunion</string>
+    <string name="country_reunion_name">La Réunion</string>
     <string name="country_reunion_code">re</string>
     <string name="country_reunion_number" translatable="false">262</string>
     <string name="country_reunion_flag" translatable="false">🇷🇪</string>
