@@ -2494,6 +2494,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="discussion_settings_profil">Voir le profil</string>
     <string name="discussion_settings_members">Membres de la conversation</string>
     <string name="discussion_settings_quit">Quitter la conversation</string>
+    <string name="discussion_settings_no_longer_participate">Je ne participe plus</string>
 
     <string name="discussion_settings_search">Rechercher un membre de la conversation</string>
     <string name="discussion_settings_search_empty">Oups, aucun résultat ne correspond à votre recherche ! </string>
