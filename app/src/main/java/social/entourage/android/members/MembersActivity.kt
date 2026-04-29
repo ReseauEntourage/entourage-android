@@ -49,6 +49,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
     private val membersListSearch: MutableList<EntourageUser> = mutableListOf()
     private val reactionList: MutableList<ReactionType> = mutableListOf()
     private var id: Int = Const.DEFAULT_VALUE
+
     private var type: MembersType = MembersType.GROUP
 
     private var isolesCount = 0

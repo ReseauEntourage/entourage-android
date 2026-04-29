@@ -166,7 +166,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.blockSub.text = getString(R.string.discussion_block_subtitle, username)
 
                 // Affichage du bouton "Quitter" pour le 1-to-1
-                binding.quit.profileSettingsItemLayout.isVisible = true
+                binding.quit.profileSettingsItemLayout.isVisible = false
                 binding.quit.setLabel(getString(R.string.discussion_settings_quit))
                 binding.quit.profileSettingsItemLabel.setTextColor(
                     ContextCompat.getColor(requireContext(), R.color.orange)
@@ -245,6 +245,13 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                         ContextCompat.getColor(requireContext(), R.color.orange)
                     )
                 }
+
+                // Affichage du bouton "Supprimer" pour l'événement
+                binding.delete.profileSettingsItemLayout.isVisible = true
+                binding.delete.setLabel(getString(R.string.delete_conversation))
+                binding.delete.profileSettingsItemLabel.setTextColor(
+                    ContextCompat.getColor(requireContext(), R.color.orange)
+                )
 
                 binding.eventInfo.isVisible = true
                 binding.eventTitle.text = eventTitle.orEmpty()
@@ -587,7 +594,37 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                         getString(R.string.delete_conversation_dialog_content),
                         getString(R.string.delete)
                     ) {
-                        discussionPresenter.leaveConverstion(conversationId)
+                        if (isSmallTalk) {
+                            smallTalkViewModel.leaveSmallTalk(smallTalkId.toString())
+                        } else {
+                            discussionPresenter.leaveConverstion(conversationId)
+                        }
+                    }
+                }
+                SheetMode.EVENT -> {
+                    if (isEventCreator) {
+                        CustomAlertDialog.showWithCancelFirst(
+                            requireContext(),
+                            getString(R.string.delete_event_title),
+                            getString(R.string.delete_event_confirmation),
+                            getString(R.string.cancel_event),
+                            getString(R.string.back)
+                        ) {
+                            eventsPresenter.cancelEvent(eventId)
+                            dismiss()
+                            activity?.finish()
+                        }
+                    } else {
+                        CustomAlertDialog.showWithCancelFirst(
+                            requireContext(),
+                            getString(R.string.delete_conversation),
+                            getString(R.string.delete_conversation_dialog_content),
+                            getString(R.string.delete)
+                        ) {
+                            eventsPresenter.leaveEvent(eventId)
+                            dismiss()
+                            activity?.finish()
+                        }
                     }
                 }
                 else -> Unit
