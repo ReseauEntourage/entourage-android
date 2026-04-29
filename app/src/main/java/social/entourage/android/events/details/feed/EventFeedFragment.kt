@@ -209,7 +209,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         }
 
         if(event?.member == true) {
-           binding.discussionBox.visibility = View.VISIBLE
+            binding.discussionBox.visibility = View.VISIBLE
         }else{
             binding.discussionBox.visibility = View.GONE
         }
@@ -367,8 +367,8 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             }
         }
         if(event?.member == true){
-            binding.buttonJoin.setBackgroundResource(R.drawable.shape_button_v9_negative)
-            binding.buttonJoin.setTextColor(getColor(requireContext(), R.color.black))
+            binding.buttonJoin.setBackgroundResource(R.drawable.new_rounded_button_orange)
+            binding.buttonJoin.setTextColor(getColor(requireContext(), R.color.white))
             if (iAmOrganiser) {
                 binding.buttonJoin.text = getString(R.string.event_cancel_button)
             } else {
@@ -549,7 +549,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             startActivity(Intent.createChooser(shareIntent, getString(R.string.entourage_share_intent_title)))
         }
 
-        binding.btnDiscussion.setOnClickListener {
+        binding.discussionBox.setOnClickListener {
             goDiscussion()
         }
     }

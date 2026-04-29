@@ -317,6 +317,9 @@
                                 android:layout_marginTop="20dp"
                                 android:background="@drawable/bg_info_bubble_beige"
                                 android:padding="16dp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:foreground="?android:attr/selectableItemBackground"
                                 android:visibility="gone"
                                 tools:visibility="visible">
 
@@ -327,7 +330,7 @@
                                     android:src="@drawable/new_top_icn_discussion"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
-                                    app:layout_constraintBottom_toTopOf="@id/btn_discussion" />
+                                    app:layout_constraintBottom_toBottomOf="parent" />
 
                                 <TextView
                                     android:id="@+id/discussion_text"
@@ -339,25 +342,7 @@
                                     app:layout_constraintStart_toEndOf="@id/discussion_icon"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
-                                    app:layout_constraintBottom_toTopOf="@id/btn_discussion" />
-
-                                <Button
-                                    android:id="@+id/btn_discussion"
-                                    style="?android:attr/borderlessButtonStyle"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="16dp"
-                                    android:background="@drawable/new_rounded_button_orange"
-                                    android:fontFamily="@font/quicksand_bold"
-                                    android:paddingHorizontal="24dp"
-                                    android:text="@string/event_discussion_button"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/white"
-                                    android:textSize="14sp"
-                                    android:minHeight="40dp"
-                                    app:layout_constraintStart_toStartOf="parent"
-                                    app:layout_constraintEnd_toEndOf="parent"
-                                    app:layout_constraintTop_toBottomOf="@id/discussion_text" />
+                                    app:layout_constraintBottom_toBottomOf="parent" />
 
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
