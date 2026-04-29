@@ -254,18 +254,15 @@
         </LinearLayout>
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.leinardi.android.speeddial.SpeedDialView
         android:id="@+id/fab_add_unsubscribed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:src="@drawable/new_fab_plus"
-        app:borderWidth="0dp"
-        app:fabSize="normal"
-        app:fab_colorNormal="@color/orange"
-        app:backgroundTint="@color/orange"
+        app:sdMainFabClosedSrc="@drawable/new_fab_plus"
+        app:sdMainFabOpenedSrc="@drawable/new_fab_plus"
         android:visibility="gone" />
 
 </RelativeLayout>

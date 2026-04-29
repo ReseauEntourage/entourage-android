@@ -367,12 +367,16 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             }
         }
         if(event?.member == true){
+            binding.buttonJoin.setBackgroundResource(R.drawable.shape_button_v9_negative)
+            binding.buttonJoin.setTextColor(getColor(requireContext(), R.color.black))
             if (iAmOrganiser) {
                 binding.buttonJoin.text = getString(R.string.event_cancel_button)
             } else {
                 binding.buttonJoin.text = getString(R.string.event_leave_button)
             }
         }else{
+            binding.buttonJoin.setBackgroundResource(R.drawable.shape_button_v9_positive)
+            binding.buttonJoin.setTextColor(getColor(requireContext(), R.color.white))
             binding.buttonJoin.text = getString(R.string.share_and_join_event)
         }
         openGoogleMaps()
