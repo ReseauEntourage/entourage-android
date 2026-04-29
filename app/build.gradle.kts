@@ -19,6 +19,16 @@ fun String.runCommand(currentWorkingDir: File = file("./")): String {
 }
 
 android {
+    val localProperties = java.util.Properties()
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        localPropertiesFile.inputStream().use { localProperties.load(it) }
+    }
+
+    val entourageApiKey = System.getenv("ENTOURAGE_API_KEY")
+        ?: localProperties.getProperty("entourageApiKey")
+        ?: ""
+
 // Java versions
     val sourceCompatibilityVersion = JavaVersion.VERSION_17
     val targetCompatibilityVersion = JavaVersion.VERSION_17
@@ -145,7 +155,7 @@ android {
         }
         create("entourage") {
             dimension = "app"
-            buildConfigField("String", "API_KEY", "\"4a7373f3e7dd45fc391a2f19\"")
+            buildConfigField("String", "API_KEY", "\"$entourageApiKey\"")
         }
     }
 
