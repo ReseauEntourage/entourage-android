@@ -138,8 +138,8 @@
 
     <string name="delete_account_dialog_title">Suppression du compte</string>
     <string name="delete_account_dialog_content">Souhaitez-vous supprimer votre compte ?</string>
-    <string name="delete_conversation">Supprimer la conversation</string>
-    <string name="delete_conversation_dialog_content">Êtes-vous sûr de vouloir supprimer cette conversation ?</string>
+    <string name="delete_conversation">Supprimer la discussion</string>
+    <string name="delete_conversation_dialog_content">Êtes-vous sûr de vouloir supprimer cette discussion ?</string>
 
 
     <string name="unsubscribe_title">Voulez-vous vous désabonner ?</string>
@@ -423,7 +423,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="created_at">Créé le %s</string>
     <string name="updated_at">Modifié le %s</string>
     <string name="canceled_at">Annulé le %s</string>
-    <string name="leave_event">Je ne souhaite plus participer</string>
+    <string name="leave_event">Quitter l\'événement</string>
     <string name="leave_event_dialog_content">Souhaitez-vous quitter l\'événement ?</string>
     <string name="dot">•</string>
     <string name="event_limited_places_title">Événement à places limitées</string>
@@ -611,8 +611,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="info_action_private">Action privée</string>
     <string name="info_event_private">Événement privé</string>
     <string name="info_pop_message_private">Votre demande de participation est en attente de validation.</string>
-    <string name="info_pop_private_message_action">Pour participer à cette action privée, le créateur de cette action doit valider votre participation.\n\nUne fois votre demande acceptée, vous pourrez accéder à la conversation de groupe.</string>
-    <string name="info_pop_private_message_event">Pour participer à cet événement privé, le créateur de cet événement doit valider votre participation.\n\nUne fois votre demande acceptée, vous pourrez accéder à la conversation de groupe.</string>
+    <string name="info_pop_private_message_action">Pour participer à cette action privée, le créateur de cette action doit valider votre participation.\n\nUne fois votre demande acceptée, vous pourrez accéder à la discussion de groupe.</string>
+    <string name="info_pop_private_message_event">Pour participer à cet événement privé, le créateur de cet événement doit valider votre participation.\n\nUne fois votre demande acceptée, vous pourrez accéder à la discussion de groupe.</string>
     <string name="info_pop_private_title">Demande de participation</string>
     <string name="info_pop_private_bt_ok">Confirmer</string>
     <string name="info_pop_private_bt_cancel">Annuler</string>
@@ -1663,7 +1663,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="entourage_join_request_message_sent">Message envoyé</string>
     <string name="entourage_join_request_message_error">Erreur d\'envoi du message</string>
     <string name="entourage_join_request_ok_title">Votre demande est transmise</string>
-    <string name="entourage_join_request_ok_description_entourage">Merci pour votre chaleur humaine !\nVous pouvez envoyer un message aux participants, qui apparaîtra dans la conversation de groupe.</string>
+    <string name="entourage_join_request_ok_description_entourage">Merci pour votre chaleur humaine !\nVous pouvez envoyer un message aux participants, qui apparaîtra dans la discussion de groupe.</string>
     <string name="entourage_join_request_ok_description_outing">@string/entourage_join_request_ok_description_entourage</string>
     <string name="entourage_join_request_ok_message_hint">Votre message…</string>
     <string name="entourage_join_request_rejected">Requête envoyée</string>
@@ -1747,7 +1747,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
 
 
-    <string name="myentourages_no_items_details">Demandez à rejoindre des actions, contactez des membres et vous retrouverez vos conversations avec les membres du réseau ici</string>
+    <string name="myentourages_no_items_details">Demandez à rejoindre des actions, contactez des membres et vous retrouverez vos discussions avec les membres du réseau ici</string>
 
 
     <string name="create_action_wizard_p1_title">DERNIÈRE QUESTION</string>
@@ -1827,7 +1827,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_discussion_title">Vous pouvez poser vos questions et échanger avec l\'organisateur et les participants de l\'événement</string>
     <string name="event_discussion_button">Discussion de l\'événement</string>
     <string name="event_cancel_button">Annuler l\'événement</string>
-    <string name="event_leave_button">Je ne souhaite plus participer</string>
+    <string name="event_leave_button">Quitter l\'événement</string>
 
 
     <string name="get_involved_title">Suivre Entourage</string>
@@ -2473,7 +2473,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="custom_dialog_action_two_button_demand">Voir les demandes</string>
 
     <string name="discussion_main_title">Discussions</string>
-    <string name="discussion_settings_title">Paramètres de la conversation</string>
+    <string name="discussion_settings_title">Paramètres de la discussion</string>
     <string name="discussion_settings_signal">Signaler</string>
     <string name="discussion_choose_signal">Signaler cette publication à l\'équipe Entourage</string>
     <string name="discussion_entraide_signal">Signaler cette entraide à l\'équipe Entourage</string>
@@ -2487,23 +2487,23 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="title_param_message">Paramètres d\'un message</string>
     <string name="title_param_comment">Paramètres d\'un message</string>
     <string name="discussion_ask_supress">Souhaitez-vous supprimer cette publication ?</string>
-    <string name="discussion_ask_supress_message">Souhaitez-vous supprimer ce message de la conversation ?</string>
+    <string name="discussion_ask_supress_message">Souhaitez-vous supprimer ce message de la discussion ?</string>
     <string name="discussion_ask_supress_comment">Souhaitez-vous supprimer ce message ?</string>
     <string name="discussion_button_supress">Supprimer</string>
-    <string name="discussion_settings_signal_sub">Signalez cette conversation à l\'équipe Entourage.</string>
+    <string name="discussion_settings_signal_sub">Signalez cette discussion à l\'équipe Entourage.</string>
     <string name="discussion_settings_profil">Voir le profil</string>
-    <string name="discussion_settings_members">Membres de la conversation</string>
-    <string name="discussion_settings_quit">Quitter la conversation</string>
+    <string name="discussion_settings_members">Membres de la discussion</string>
+    <string name="discussion_settings_quit">Supprimer la discussion</string>
 
-    <string name="discussion_settings_search">Rechercher un membre de la conversation</string>
+    <string name="discussion_settings_search">Rechercher un membre de la discussion</string>
     <string name="discussion_settings_search_empty">Oups, aucun résultat ne correspond à votre recherche ! </string>
-    <string name="discussion_report_conversation">Signaler la conversation</string>
+    <string name="discussion_report_conversation">Signaler la discussion</string>
 
-    <string name="leave_conversation">Quitter la conversation</string>
-    <string name="leave_conversation_dialog_content">Souhaitez-vous quitter la conversation ?</string>
+    <string name="leave_conversation">Supprimer la discussion</string>
+    <string name="leave_conversation_dialog_content">Souhaitez-vous supprimer la discussion ?</string>
 
-    <string name="discussion_pop_new_message_title">Nouvelle conversation</string>
-    <string name="discussion_pop_new_message_subtitle">Vous n’avez pas encore échangé avec cet utilisateur. En cas de problème, vous pouvez signaler la conversation dans les paramètres.</string>
+    <string name="discussion_pop_new_message_title">Nouvelle discussion</string>
+    <string name="discussion_pop_new_message_subtitle">Vous n’avez pas encore échangé avec cet utilisateur. En cas de problème, vous pouvez signaler la discussion dans les paramètres.</string>
 
     <string name="discussion_block_title">Bloquer</string>
     <string name="discussion_block_subtitle">%s ne pourra plus vous écrire.</string>
@@ -2519,7 +2519,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="message_user_blocked_by_me_list">Vous avez bloqué ce contact</string>
     <string name="message_user_blocked_by_me">Vous avez bloqué %s . Vous ne pouvez plus lui envoyer de message.</string>
-    <string name="message_user_blocked_by_other">Vous ne pouvez plus envoyer de message à %s . Cette conversation a été bloquée.</string>
+    <string name="message_user_blocked_by_other">Vous ne pouvez plus envoyer de message à %s . Cette discussion a été bloquée.</string>
 
     <string name="params_unblock_users_title">Débloquer des contacts</string>
 
@@ -2970,8 +2970,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="profil_full_send_message">Envoyer un message</string>
 
     <string name="add_to_agenda">Ajouter à l\agenda</string>
-    <string name="share_and_join_event">Participer et rejoindre la conversation</string>
-    <string name="see_conversation_event">Voir la conversation</string>
+    <string name="share_and_join_event">Participer et rejoindre la discussion</string>
+    <string name="see_conversation_event">Voir la discussion</string>
     <string name="filter_all">Toutes</string>
     <string name="filter_discussions">Discussions</string>
     <string name="filter_events">Événements</string>
@@ -2991,7 +2991,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboarding_title">Prêts à partager des Bonnes ondes ?</string>
     <string name="onboarding_start_button">Je commence</string>
     <string name="onboarding_end_button">Annuler</string>
-    <string name="onboarding_intro_raw">Avec les Bonnes ondes, rencontrez des personnes qui vous ressemblent, échangez en toute simplicité et créez des liens qui font du bien !\n\n1. Vous répondez à quelques questions : pour mieux vous connaître\n2. On vous met en relation avec des personnes : qui vous correspondent\n3. Une conversation de groupe se crée automatiquement dans l\'application : pour échanger et tisser des liens\n4. Si vous le souhaitez, vous choisissez un moment pour vous rencontrer : En visio ou dans la vraie vie, c\'est vous qui voyez !</string>
+    <string name="onboarding_intro_raw">Avec les Bonnes ondes, rencontrez des personnes qui vous ressemblent, échangez en toute simplicité et créez des liens qui font du bien !\n\n1. Vous répondez à quelques questions : pour mieux vous connaître\n2. On vous met en relation avec des personnes : qui vous correspondent\n3. Une discussion de groupe se crée automatiquement dans l\'application : pour échanger et tisser des liens\n4. Si vous le souhaitez, vous choisissez un moment pour vous rencontrer : En visio ou dans la vraie vie, c\'est vous qui voyez !</string>
 
 
     <string name="small_talk_step_title_1">Quel format de discussion vous convient le mieux ?</string>
@@ -3079,7 +3079,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="small_talk_what_it_is_2">Une rencontre authentique et amicale entre plusieurs personnes</string>
     <string name="small_talk_what_it_is_3">Une occasion de briser l\'isolement</string>
     <string name="small_talk_what_it_is_not_1">Un accompagnement social ou une aide formelle</string>
-    <string name="small_talk_what_it_is_not_2">Une conversation à sens unique ou un débat</string>
+    <string name="small_talk_what_it_is_not_2">Une discussion à sens unique ou un débat</string>
     <string name="small_talk_what_it_is_not_3">Une discussion intrusive sur des sujets sensibles</string>
 
     <string name="small_talk_step_1">Bande solidaire – étape 1 – présentation</string>
@@ -3092,7 +3092,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="small_talk_what_it_is_item_3">Une occasion de briser l\'isolement</string>
     <string name="small_talk_what_it_is_not_title">Ce que ce n\'est pas</string>
     <string name="small_talk_what_it_is_not_item_1">Un accompagnement social ou une aide formelle</string>
-    <string name="small_talk_what_it_is_not_item_2">Une conversation à sens unique ou un débat</string>
+    <string name="small_talk_what_it_is_not_item_2">Une discussion à sens unique ou un débat</string>
     <string name="small_talk_what_it_is_not_item_3">Une discussion intrusive sur des sujets sensibles</string>
 
     <string name="small_talk_ethics_title">La charte éthique Entourage</string>
@@ -3164,7 +3164,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_welcome_title_phone_required">Téléphone*</string>
     <string name="onboard_welcome_placeholder_email_new">Ex. : marie.dupont@email.com</string>
 
-    <string name="image_option_title">Photos de la conversation</string>
+    <string name="image_option_title">Photos de la discussion</string>
     <string name="delete_event">Annuler l’événement</string>
     <string name="delete_event_title">Annuler l’événement ?</string>
     <string name="delete_event_confirmation">Cette action est irréversible. Les participants seront informés.</string>

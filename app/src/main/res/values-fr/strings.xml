@@ -408,7 +408,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="created_at">Créé le %s</string>
     <string name="updated_at">Modifié le %s</string>
     <string name="canceled_at">Annulé le %s</string>
-    <string name="leave_event">Je ne souhaite plus participer</string>
+    <string name="leave_event">Quitter l\'événement</string>
     <string name="leave_event_dialog_content">Souhaitez-vous quitter l\'événement ?</string>
     <string name="dot">•</string>
     <string name="event_limited_places_title">Événement à places limitées</string>
@@ -1608,7 +1608,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_discussion_title">Vous pouvez poser vos questions et échanger avec l\'organisateur et les participants de l\'événement</string>
     <string name="event_discussion_button">Discussion de l\'événement</string>
     <string name="event_cancel_button">Annuler l\'événement</string>
-    <string name="event_leave_button">Je ne souhaite plus participer</string>
+    <string name="event_leave_button">Quitter l\'événement</string>
 
     <!-- STRING GET INVOLVED -->
     <string name="get_involved_title">Suivre Entourage</string>
@@ -2252,14 +2252,14 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="discussion_settings_signal_sub">Signalez cette discussion à l\'équipe Entourage.</string>
     <string name="discussion_settings_profil">Voir le profil</string>
     <string name="discussion_settings_members">Membres de la discussion</string>
-    <string name="discussion_settings_quit">Quitter la discussion</string>
+    <string name="discussion_settings_quit">Supprimer la discussion</string>
 
     <string name="discussion_settings_search">Rechercher un membre de la discussion</string>
     <string name="discussion_settings_search_empty">Oups, aucun résultat ne correspond à votre recherche ! </string>
     <string name="discussion_report_discussion">Signaler la discussion</string>
 
-    <string name="leave_discussion">Quitter la discussion</string>
-    <string name="leave_discussion_dialog_content">Souhaitez-vous quitter la discussion ?</string>
+    <string name="leave_discussion">Supprimer la discussion</string>
+    <string name="leave_discussion_dialog_content">Souhaitez-vous supprimer la discussion ?</string>
 
     <string name="discussion_pop_new_message_title">Nouvelle discussion</string>
     <string name="discussion_pop_new_message_subtitle">Vous n’avez pas encore échangé avec cet utilisateur. En cas de problème, vous pouvez signaler la discussion dans les paramètres.</string>
