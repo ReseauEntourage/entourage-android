@@ -113,13 +113,14 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         val mustHideQuit = if (isOneToOne) false else (isCreator || isEvent)
         binding.quit.profileSettingsItemLayout.isVisible = !mustHideQuit
         binding.quit.profileSettingsItemArrow.isVisible  = !mustHideQuit
+
         if (!mustHideQuit) {
             val labelStr = if (isSmallTalk) getString(R.string.leave_group) else getString(R.string.discussion_settings_quit)
             binding.quit.profileSettingsItemLabel.text = labelStr
         }
 
-            binding.delete.profileSettingsItemLayout.isVisible = false
-        }
+        // Correction: Suppression de l'accolade orpheline qui traînait ici
+        binding.delete.profileSettingsItemLayout.isVisible = false
     }
 
     /* ─────────────────────────── Observers ─────────────────────────── */
@@ -203,23 +204,9 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
                 } else {
                     conversationId?.let { discussionPresenter.leaveConverstion(it) }
                 }
-            } else {
-                CustomAlertDialog.showWithCancelFirst(
-                    requireContext(),
-                    getString(R.string.leave_conversation),
-                    getString(R.string.leave_conversation_dialog_content),
-                    getString(R.string.exit)
-                ) {
-                    if (isSmallTalk) {
-                        smallTalkViewModel.leaveSmallTalk(DetailConversationActivity.smallTalkId)
-                        updateLeaveConversation(true)               // fermeture immédiate
-                    } else {
-                        conversationId?.let { discussionPresenter.leaveConverstion(it) }
-                    }
-                }
             }
+            // Correction : Suppression du bloc `else` invalide et dupliqué qui se trouvait ici
         }
-
 
         /* ▶️ Supprimer la conversation (1-1) */
         binding.delete.profileSettingsItemLayout.setOnClickListener {
