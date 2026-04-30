@@ -118,7 +118,8 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
             binding.quit.profileSettingsItemLabel.text = labelStr
         }
 
-        binding.delete.profileSettingsItemLayout.isVisible = false
+            binding.delete.profileSettingsItemLayout.isVisible = false
+        }
     }
 
     /* ─────────────────────────── Observers ─────────────────────────── */
@@ -201,6 +202,20 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
                     updateLeaveConversation(true)               // fermeture immédiate
                 } else {
                     conversationId?.let { discussionPresenter.leaveConverstion(it) }
+                }
+            } else {
+                CustomAlertDialog.showWithCancelFirst(
+                    requireContext(),
+                    getString(R.string.leave_conversation),
+                    getString(R.string.leave_conversation_dialog_content),
+                    getString(R.string.exit)
+                ) {
+                    if (isSmallTalk) {
+                        smallTalkViewModel.leaveSmallTalk(DetailConversationActivity.smallTalkId)
+                        updateLeaveConversation(true)               // fermeture immédiate
+                    } else {
+                        conversationId?.let { discussionPresenter.leaveConverstion(it) }
+                    }
                 }
             }
         }
