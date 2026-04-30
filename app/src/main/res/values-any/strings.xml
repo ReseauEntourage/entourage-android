@@ -591,8 +591,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="info_action_private">Action privée</string>
     <string name="info_event_private">Événement privé</string>
     <string name="info_pop_message_private">Votre demande de participation est en attente de validation.</string>
-    <string name="info_pop_private_message_action">Pour participer à cette action privée, le créateur de cette action doit valider votre participation.\n\nUne fois votre demande acceptée, vous pourrez accéder à la conversation de groupe.</string>
-    <string name="info_pop_private_message_event">Pour participer à cet événement privé, le créateur de cet événement doit valider votre participation.\n\nUne fois votre demande acceptée, vous pourrez accéder à la conversation de groupe.</string>
+    <string name="info_pop_private_message_action">Pour participer à cette action privée, le créateur de cette action doit valider votre participation.\n\nUne fois votre demande acceptée, vous pourrez accéder à la discussion de groupe.</string>
+    <string name="info_pop_private_message_event">Pour participer à cet événement privé, le créateur de cet événement doit valider votre participation.\n\nUne fois votre demande acceptée, vous pourrez accéder à la discussion de groupe.</string>
     <string name="info_pop_private_title">Demande de participation</string>
     <string name="info_pop_private_bt_ok">Confirmer</string>
     <string name="info_pop_private_bt_cancel">Annuler</string>
@@ -1433,7 +1433,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="entourage_join_request_message_sent">Message envoyé</string>
     <string name="entourage_join_request_message_error">Erreur d\'envoi du message</string>
     <string name="entourage_join_request_ok_title">Votre demande est transmise</string>
-    <string name="entourage_join_request_ok_description_entourage">Merci pour votre chaleur humaine !\nVous pouvez envoyer un message aux participants, qui apparaîtra dans la conversation de groupe.</string>
+    <string name="entourage_join_request_ok_description_entourage">Merci pour votre chaleur humaine !\nVous pouvez envoyer un message aux participants, qui apparaîtra dans la discussion de groupe.</string>
     <string name="entourage_join_request_ok_description_outing">@string/entourage_join_request_ok_description_entourage</string>
     <string name="entourage_join_request_ok_message_hint">Votre message…</string>
     <string name="entourage_join_request_rejected">Requête envoyée</string>
@@ -1517,7 +1517,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <!-- Entourage Mini Card -->
 
     <!-- My Entourages -->
-    <string name="myentourages_no_items_details">Demandez à rejoindre des actions, contactez des membres et vous retrouverez vos conversations avec les membres du réseau ici</string>
+    <string name="myentourages_no_items_details">Demandez à rejoindre des actions, contactez des membres et vous retrouverez vos discussions avec les membres du réseau ici</string>
 
     <!-- Create Action Wizard -->
     <string name="create_action_wizard_p1_title">DERNIÈRE QUESTION</string>
@@ -2679,8 +2679,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="enable_notifications">Activez-les pour ne rien manquer</string>
 
     <string name="add_to_agenda">Ajouter à l\'agenda</string>
-    <string name="share_and_join_event">Participer et rejoindre la conversation</string>
-    <string name="see_conversation_event">Voir la conversation</string>
+    <string name="share_and_join_event">Participer et rejoindre la discussion</string>
+    <string name="see_conversation_event">Voir la discussion</string>
     <string name="child_rules">Normes de protection des enfants</string>
     <string name="filter_all">Toutes</string>
     <string name="filter_discussions">Discussions</string>

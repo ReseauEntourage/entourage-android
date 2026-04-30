@@ -250,7 +250,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
             if (event?.member == true) {
                 if (event?.status == Status.OPEN && !isAuthor) {
-                    leave.visibility = View.VISIBLE
+                    leave.visibility = View.GONE
                 }
             }
         }
