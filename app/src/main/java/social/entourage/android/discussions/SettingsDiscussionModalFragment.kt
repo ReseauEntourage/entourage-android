@@ -113,7 +113,10 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         val mustHideQuit = if (isOneToOne) false else (isCreator || isEvent)
         binding.quit.profileSettingsItemLayout.isVisible = !mustHideQuit
         binding.quit.profileSettingsItemArrow.isVisible  = !mustHideQuit
-        if (!mustHideQuit) binding.quit.profileSettingsItemLabel.text = getString(R.string.discussion_settings_quit)
+        if (!mustHideQuit) {
+            val labelStr = if (isSmallTalk) getString(R.string.leave_group) else getString(R.string.discussion_settings_quit)
+            binding.quit.profileSettingsItemLabel.text = labelStr
+        }
 
         binding.delete.profileSettingsItemLayout.isVisible = false
     }
@@ -184,10 +187,13 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
 
         /* ▶️ Quitter la conversation */
         binding.quit.profileSettingsItemLayout.setOnClickListener {
+            val title = if (isSmallTalk) getString(R.string.leave_group) else getString(R.string.leave_conversation)
+            val content = if (isSmallTalk) getString(R.string.leave_group_dialog_content) else getString(R.string.leave_conversation_dialog_content)
+
             CustomAlertDialog.showWithCancelFirst(
                 requireContext(),
-                getString(R.string.leave_conversation),
-                getString(R.string.leave_conversation_dialog_content),
+                title,
+                content,
                 getString(R.string.exit)
             ) {
                 if (isSmallTalk) {

@@ -138,8 +138,8 @@
 
     <string name="delete_account_dialog_title">Suppression du compte</string>
     <string name="delete_account_dialog_content">Souhaitez-vous supprimer votre compte ?</string>
-    <string name="delete_conversation">Supprimer la conversation</string>
-    <string name="delete_conversation_dialog_content">Êtes-vous sûr de vouloir supprimer cette conversation ?</string>
+    <string name="delete_conversation">Supprimer la discussion</string>
+    <string name="delete_conversation_dialog_content">Êtes-vous sûr de vouloir supprimer cette discussion ?</string>
 
 
     <string name="unsubscribe_title">Voulez-vous vous désabonner ?</string>
@@ -2493,14 +2493,14 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="discussion_settings_signal_sub">Signalez cette conversation à l\'équipe Entourage.</string>
     <string name="discussion_settings_profil">Voir le profil</string>
     <string name="discussion_settings_members">Membres de la conversation</string>
-    <string name="discussion_settings_quit">Quitter la conversation</string>
+    <string name="discussion_settings_quit">Supprimer la discussion</string>
 
     <string name="discussion_settings_search">Rechercher un membre de la conversation</string>
     <string name="discussion_settings_search_empty">Oups, aucun résultat ne correspond à votre recherche ! </string>
     <string name="discussion_report_conversation">Signaler la conversation</string>
 
-    <string name="leave_conversation">Quitter la conversation</string>
-    <string name="leave_conversation_dialog_content">Souhaitez-vous quitter la conversation ?</string>
+    <string name="leave_conversation">Supprimer la discussion</string>
+    <string name="leave_conversation_dialog_content">Souhaitez-vous supprimer la discussion ?</string>
 
     <string name="discussion_pop_new_message_title">Nouvelle conversation</string>
     <string name="discussion_pop_new_message_subtitle">Vous n’avez pas encore échangé avec cet utilisateur. En cas de problème, vous pouvez signaler la conversation dans les paramètres.</string>
