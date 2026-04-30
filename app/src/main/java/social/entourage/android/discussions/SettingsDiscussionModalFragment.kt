@@ -109,27 +109,14 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun updateInputs() {
-        if (isOneToOne) {
-            // For 1-1 conversation: show ONLY "Supprimer la conversation" (delete button)
-            binding.quit.profileSettingsItemLayout.isVisible = false
-            binding.delete.profileSettingsItemLayout.isVisible = true
-            binding.delete.profileSettingsItemLabel.text = getString(R.string.delete_conversation)
-        } else if (isEvent) {
-            // For event conversation: show "Je ne participe plus" (quit button) AND "Supprimer la conversation" (delete button)
-            // But only if they are not the creator (or as required by existing logic for events).
-            // The previous logic hid "quit" if isEvent was true. Now we should show both.
-            binding.quit.profileSettingsItemLayout.isVisible = true
-            binding.quit.profileSettingsItemArrow.isVisible = true
-            binding.quit.profileSettingsItemLabel.text = getString(R.string.discussion_settings_no_longer_participate)
-
-            binding.delete.profileSettingsItemLayout.isVisible = true
-            binding.delete.profileSettingsItemLabel.text = getString(R.string.delete_conversation)
-        } else {
-            // For group conversation: show "Quitter la conversation" (quit button) if not creator
-            val mustHideQuit = isCreator
-            binding.quit.profileSettingsItemLayout.isVisible = !mustHideQuit
-            binding.quit.profileSettingsItemArrow.isVisible = !mustHideQuit
-            if (!mustHideQuit) binding.quit.profileSettingsItemLabel.text = getString(R.string.discussion_settings_quit)
+        // We do not hide quit for 1-1. For 1-1, user can always quit.
+        val mustHideQuit = if (isOneToOne) false else (isCreator || isEvent)
+        binding.quit.profileSettingsItemLayout.isVisible = !mustHideQuit
+        binding.quit.profileSettingsItemArrow.isVisible  = !mustHideQuit
+        if (!mustHideQuit) {
+            val labelStr = if (isSmallTalk) getString(R.string.leave_group) else getString(R.string.discussion_settings_quit)
+            binding.quit.profileSettingsItemLabel.text = labelStr
+        }
 
             binding.delete.profileSettingsItemLayout.isVisible = false
         }
@@ -201,13 +188,19 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
 
         /* ▶️ Quitter la conversation */
         binding.quit.profileSettingsItemLayout.setOnClickListener {
-            if (isEvent) {
-                CustomAlertDialog.showWithCancelFirst(
-                    requireContext(),
-                    getString(R.string.leave_conversation),
-                    getString(R.string.leave_conversation_dialog_content),
-                    getString(R.string.exit)
-                ) {
+            val title = if (isSmallTalk) getString(R.string.leave_group) else getString(R.string.leave_conversation)
+            val content = if (isSmallTalk) getString(R.string.leave_group_dialog_content) else getString(R.string.leave_conversation_dialog_content)
+
+            CustomAlertDialog.showWithCancelFirst(
+                requireContext(),
+                title,
+                content,
+                getString(R.string.exit)
+            ) {
+                if (isSmallTalk) {
+                    smallTalkViewModel.leaveSmallTalk(DetailConversationActivity.smallTalkId)
+                    updateLeaveConversation(true)               // fermeture immédiate
+                } else {
                     conversationId?.let { discussionPresenter.leaveConverstion(it) }
                 }
             } else {

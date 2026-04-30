@@ -366,10 +366,10 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
 
             if (event?.member == true) {
                 label = getString(R.string.participating)
-                textColor = ContextCompat.getColor(requireContext(), R.color.orange)
+                textColor = ContextCompat.getColor(requireContext(), R.color.black)
                 background = ResourcesCompat.getDrawable(
                     resources,
-                    R.drawable.new_bg_rounded_button_orange_stroke,
+                    R.drawable.shape_button_v9_negative,
                     null
                 )
                 rightDrawable = ResourcesCompat.getDrawable(resources, R.drawable.new_check, null)
@@ -378,7 +378,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                 textColor = ContextCompat.getColor(requireContext(), R.color.white)
                 background = ResourcesCompat.getDrawable(
                     resources,
-                    R.drawable.new_bg_rounded_button_orange_fill,
+                    R.drawable.shape_button_v9_positive,
                     null
                 )
                 rightDrawable =

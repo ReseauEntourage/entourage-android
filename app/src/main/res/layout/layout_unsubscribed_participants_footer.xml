@@ -8,31 +8,29 @@
         android:id="@+id/tv_footer_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="20dp"
+        android:paddingHorizontal="@dimen/padding_horizontal"
         android:paddingVertical="16dp"
         android:text="@string/participants_ajoutes_sur_place"
         android:textAllCaps="true"
-        android:textColor="@color/grey"
-        android:textSize="12sp"
-        android:textStyle="bold" />
+        android:textColor="@color/black"
+        style="@style/left_courant_bold_black"
+        android:textSize="12sp" />
 
     <LinearLayout
         android:id="@+id/ll_isoles"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFF5ED"
+        android:background="@color/beige_clair"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingHorizontal="20dp"
+        android:paddingHorizontal="@dimen/padding_horizontal"
         android:paddingVertical="16dp"
         android:visibility="gone">
 
         <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@drawable/bg_circle_light_orange"
-            android:padding="8dp"
-            android:src="@drawable/ic_lucide_users" />
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/placeholder_user" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -42,7 +40,7 @@
 
             <TextView
                 android:id="@+id/tv_isoles_count"
-                style="@style/h4"
+                style="@style/h2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black" />
@@ -51,7 +49,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ajoutes_sur_place"
-                android:textColor="@color/grey"
+                style="@style/left_courant_black"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
@@ -60,19 +59,17 @@
         android:id="@+id/ll_riverains"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#FFF5ED"
+        android:background="@color/beige_clair"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingHorizontal="20dp"
+        android:paddingHorizontal="@dimen/padding_horizontal"
         android:paddingVertical="16dp"
         android:visibility="gone">
 
         <ImageView
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="@drawable/bg_circle_light_orange"
-            android:padding="8dp"
-            android:src="@drawable/ic_lucide_users" />
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/placeholder_user" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -82,7 +79,7 @@
 
             <TextView
                 android:id="@+id/tv_riverains_count"
-                style="@style/h4"
+                style="@style/h2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black" />
@@ -91,7 +88,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/ajoutes_sur_place"
-                android:textColor="@color/grey"
+                style="@style/left_courant_black"
+                android:textColor="@color/black"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>

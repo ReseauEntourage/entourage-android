@@ -40,12 +40,12 @@
 
         <ImageView
             android:id="@+id/btn_minus_isoles"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/bg_circle_light_orange"
-            android:padding="12dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/new_circle_orange_button_fill"
+            android:padding="8dp"
             android:src="@drawable/new_minus"
-            app:tint="@color/orange" />
+            app:tint="@color/white" />
 
         <TextView
             android:id="@+id/tv_count_isoles"
@@ -58,12 +58,12 @@
 
         <ImageView
             android:id="@+id/btn_plus_isoles"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/bg_circle_light_orange"
-            android:padding="12dp"
-            android:src="@drawable/new_plus"
-            app:tint="@color/orange" />
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/new_circle_orange_button_fill"
+            android:padding="8dp"
+            android:src="@drawable/new_fab_plus"
+            app:tint="@color/white" />
     </LinearLayout>
 
     <TextView
@@ -84,12 +84,12 @@
 
         <ImageView
             android:id="@+id/btn_minus_riverains"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/bg_circle_light_orange"
-            android:padding="12dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/new_circle_orange_button_fill"
+            android:padding="8dp"
             android:src="@drawable/new_minus"
-            app:tint="@color/orange" />
+            app:tint="@color/white" />
 
         <TextView
             android:id="@+id/tv_count_riverains"
@@ -102,20 +102,25 @@
 
         <ImageView
             android:id="@+id/btn_plus_riverains"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/bg_circle_light_orange"
-            android:padding="12dp"
-            android:src="@drawable/new_plus"
-            app:tint="@color/orange" />
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/new_circle_orange_button_fill"
+            android:padding="8dp"
+            android:src="@drawable/new_fab_plus"
+            app:tint="@color/white" />
     </LinearLayout>
 
     <Button
         android:id="@+id/btn_validate"
-        style="@style/orange_button"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="47dp"
         android:layout_marginTop="16dp"
-        android:text="@string/validate" />
+        android:background="@drawable/shape_button_v9_positive"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="@string/validate"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="14sp" />
 
 </LinearLayout>

@@ -8,7 +8,6 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -39,6 +38,7 @@ import social.entourage.android.home.HomeFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
+import com.leinardi.android.speeddial.SpeedDialView
 import social.entourage.android.ui.ActionSheetFragment
 import timber.log.Timber
 
@@ -49,6 +49,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
     private val membersListSearch: MutableList<EntourageUser> = mutableListOf()
     private val reactionList: MutableList<ReactionType> = mutableListOf()
     private var id: Int = Const.DEFAULT_VALUE
+
     private var type: MembersType = MembersType.GROUP
 
     private var isolesCount = 0
@@ -407,13 +408,17 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
     private fun updateUnsubscribedUI() {
         if (type == MembersType.EVENT && isEquipeEntourage) {
             binding.fabAddUnsubscribed.visibility = android.view.View.VISIBLE
-            binding.fabAddUnsubscribed.setOnClickListener {
-                val bottomSheet = AddUnsubscribedParticipantsBottomSheet.newInstance(isolesCount, riverainsCount)
-                bottomSheet.onValidateCounts = { newIsole, newRiverain ->
-                    eventPresenter.updateUnsubscribedParticipants(id, newRiverain, newIsole)
+            binding.fabAddUnsubscribed.setOnChangeListener(object : SpeedDialView.OnChangeListener {
+                override fun onMainActionSelected(): Boolean {
+                    val bottomSheet = AddUnsubscribedParticipantsBottomSheet.newInstance(isolesCount, riverainsCount)
+                    bottomSheet.onValidateCounts = { newIsole, newRiverain ->
+                        eventPresenter.updateUnsubscribedParticipants(id, newRiverain, newIsole)
+                    }
+                    bottomSheet.show(supportFragmentManager, "AddUnsubscribedBottomSheet")
+                    return true
                 }
-                bottomSheet.show(supportFragmentManager, "AddUnsubscribedBottomSheet")
-            }
+                override fun onToggleChanged(isOpen: Boolean) {}
+            })
 
             if (isolesCount > 0 || riverainsCount > 0) {
                 binding.layoutUnsubscribedParticipants.visibility = android.view.View.VISIBLE
