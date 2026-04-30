@@ -242,7 +242,8 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
 
     private fun loadFirstPage() {
 
-        isEquipeEntourage = EntourageApplication.get().me()?.roles?.contains("Équipe Entourage") == true
+        isEquipeEntourage = EntourageApplication.get().me()?.roles?.contains("Équipe Entourage") == true || EntourageApplication.get().me()?.roles?.contains("Animateur Entourage") == true
+
         if (type == MembersType.EVENT && isEquipeEntourage) {
             eventPresenter.getEvent(id.toString())
         }
@@ -406,6 +407,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
     }
 
     private fun updateUnsubscribedUI() {
+
         if (type == MembersType.EVENT && isEquipeEntourage) {
             binding.fabAddUnsubscribed.visibility = android.view.View.VISIBLE
             binding.fabAddUnsubscribed.setOnChangeListener(object : SpeedDialView.OnChangeListener {
