@@ -496,6 +496,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         horsZoneAdapter = HomeSingleLayoutAdapter(R.layout.home_hors_zone) { view ->
             val button = view.findViewById<View>(R.id.button_hz_item)
             button.setOnClickListener {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Buffet)
                 val urlString =
                     "https://reseauentourage.notion.site/Buffet-du-lien-social-69c20e089dbd483cb093e90ae2953a54"
                 WebViewFragment.newInstance(urlString, 0, true)
