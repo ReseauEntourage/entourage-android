@@ -3285,4 +3285,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="message_action_delete">Supprimer mon message</string>
 
     <string name="event_settings_see_photos">Voir les photos</string>
+    <string name="discussion_de_groupe">Discussion de groupe</string>
+    <string name="echanger_avec_participants">Echanger avec les participants</string>
 <string name="ajouter_des_participants">Ajouter des participants</string><string name="question_isoles">Combien de personnes isolées supplémentaires ont rejoint l\'événement ?</string><string name="question_riverains">Combien de riverains supplémentaires ont rejoint l\'événement ?</string><string name="participants_ajoutes_sur_place">PARTICIPANTS AJOUTÉS SUR PLACE</string><string name="personnes_isolees">%1$d personnes isolées</string><string name="personne_isolee">%1$d personne isolée</string><string name="riverains">%1$d riverains</string><string name="riverain">%1$d riverain</string><string name="ajoutes_sur_place">Ajoutés sur place</string><string name="ajoute_sur_place">Ajouté sur place</string></resources>
