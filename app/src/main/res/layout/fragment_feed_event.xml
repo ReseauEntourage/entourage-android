@@ -405,13 +405,13 @@ purus dui, aliquet cursus tellus a, dictum hen." />
             android:layout_height="47dp"
             android:layout_margin="30dp"
             android:layout_gravity="bottom|center_horizontal"
-            android:background="@drawable/shape_button_v9_positive"
+            android:background="@drawable/shape_button_v9_negative"
             android:elevation="10dp"
             android:fontFamily="@font/quicksand_bold"
             android:paddingVertical="10dp"
             android:text="@string/share_and_join_event"
             android:textAllCaps="false"
-            android:textColor="@android:color/white"
+            android:textColor="@color/black"
             android:textSize="14sp" />
 
     </FrameLayout>

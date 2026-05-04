@@ -375,14 +375,14 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                 rightDrawable = ResourcesCompat.getDrawable(resources, R.drawable.new_check, null)
             } else {
                 label = getString(R.string.participate)
-                textColor = ContextCompat.getColor(requireContext(), R.color.white)
+                textColor = ContextCompat.getColor(requireContext(), R.color.black)
                 background = ResourcesCompat.getDrawable(
                     resources,
-                    R.drawable.shape_button_v9_positive,
+                    R.drawable.shape_button_v9_negative,
                     null
                 )
                 rightDrawable =
-                    ResourcesCompat.getDrawable(resources, R.drawable.new_plus_white, null)
+                    ResourcesCompat.getDrawable(resources, R.drawable.new_plus, null)
             }
             with(binding) {
                 join.text = label
