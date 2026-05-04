@@ -356,6 +356,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="16dp"
                                     android:layout_marginEnd="16dp"
+                                    android:fontFamily="@font/nunitosans_regular"
+                                    android:textSize="13sp"
                                     android:text="@string/echanger_avec_participants"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toStartOf="@+id/discussion_arrow"
