@@ -157,7 +157,6 @@
         android:layout_alignParentBottom="true"
         android:background="@color/white"
         android:orientation="vertical"
-        android:paddingBottom="90dp"
         android:visibility="gone">
 
         <TextView
