@@ -76,6 +76,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
         type = MembersType.values().firstOrNull { it.code == typeCode } ?: MembersType.GROUP
         //iAmOrganiser = intent.getBooleanExtra("ROLE", false)
         iAmOrganiser = ActionSheetFragment.isSignable && HomeFragment.signablePermission
+        Timber.wtf("wtf" + iAmOrganiser)
         setupToolbar()
         setupLists()
         setupSearchBar()
