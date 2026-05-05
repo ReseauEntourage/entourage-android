@@ -63,17 +63,15 @@ class MembersListAdapter(
         val canCheckIn = HomeFragment.signablePermission && ActionSheetFragment.isSignable
 
         // -------- Nom + badge "organizer" (Spannable coloré) --------
-        val isOrganizer = item.groupRole == "organizer" || item.groupRole == "creator" || 
-                         item.communityRoles?.contains("Animateur Entourage") == true || 
+        val isOrganizer = item.groupRole == "organizer" || item.groupRole == "creator" ||
+                         item.communityRoles?.contains("Animateur Entourage") == true ||
                          item.communityRoles?.contains("Équipe Entourage") == true ||
                          item.communityRoles?.contains("Ambassadeur") == true
 
-        if ((canCheckIn || isMe || isOrganizer) && !MembersActivity.isFromReact) {
-
+        if ((canCheckIn) && !MembersActivity.isFromReact) {
             b.checkboxConfirmation.visibility = View.VISIBLE
             // état actuel : participe si participateAt ou confirmedAt est true
             val isParticipating = (item.participateAt == true) || (item.confirmedAt == true)
-
             b.checkboxConfirmation.setOnCheckedChangeListener(null)
             b.checkboxConfirmation.isChecked = isParticipating
             b.checkboxConfirmation.setOnCheckedChangeListener { _, isChecked ->
@@ -117,7 +115,7 @@ class MembersListAdapter(
             val currentText = b.name.text
             val suffix = " - Participation confirmée"
             val fullText = SpannableString("$currentText$suffix")
-            
+
             // Si c'était un spannable (organisateur), on essaie de préserver le style du début
             if (currentText is Spannable) {
                 val spans = currentText.getSpans(0, currentText.length, Any::class.java)
