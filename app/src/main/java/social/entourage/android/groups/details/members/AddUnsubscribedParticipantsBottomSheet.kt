@@ -14,11 +14,13 @@ class AddUnsubscribedParticipantsBottomSheet : BottomSheetDialogFragment() {
 
     private var initialIsolesCount = 0
     private var initialRiverainsCount = 0
+    private var initialFemmesIsoleesCount = 0
 
     private var isolesCount = 0
     private var riverainsCount = 0
+    private var femmesIsoleesCount = 0
 
-    var onValidateCounts: ((isolesCount: Int, riverainsCount: Int) -> Unit)? = null
+    var onValidateCounts: ((isolesCount: Int, riverainsCount: Int, femmesIsoleesCount: Int) -> Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,10 +37,12 @@ class AddUnsubscribedParticipantsBottomSheet : BottomSheetDialogFragment() {
         arguments?.let {
             initialIsolesCount = it.getInt(ARG_ISOLES_COUNT, 0)
             initialRiverainsCount = it.getInt(ARG_RIVERAINS_COUNT, 0)
+            initialFemmesIsoleesCount = it.getInt(ARG_FEMMES_ISOLEES_COUNT, 0)
         }
 
         isolesCount = initialIsolesCount
         riverainsCount = initialRiverainsCount
+        femmesIsoleesCount = initialFemmesIsoleesCount
 
         updateCounters()
 
@@ -66,8 +70,20 @@ class AddUnsubscribedParticipantsBottomSheet : BottomSheetDialogFragment() {
             updateCounters()
         }
 
+        binding.btnMinusFemmesIsolees.setOnClickListener {
+            if (femmesIsoleesCount > 0) {
+                femmesIsoleesCount--
+                updateCounters()
+            }
+        }
+
+        binding.btnPlusFemmesIsolees.setOnClickListener {
+            femmesIsoleesCount++
+            updateCounters()
+        }
+
         binding.btnValidate.setOnClickListener {
-            onValidateCounts?.invoke(isolesCount, riverainsCount)
+            onValidateCounts?.invoke(isolesCount, riverainsCount, femmesIsoleesCount)
             dismiss()
         }
     }
@@ -75,6 +91,7 @@ class AddUnsubscribedParticipantsBottomSheet : BottomSheetDialogFragment() {
     private fun updateCounters() {
         binding.tvCountIsoles.text = isolesCount.toString()
         binding.tvCountRiverains.text = riverainsCount.toString()
+        binding.tvCountFemmesIsolees.text = femmesIsoleesCount.toString()
     }
 
     override fun onDestroyView() {
@@ -85,11 +102,13 @@ class AddUnsubscribedParticipantsBottomSheet : BottomSheetDialogFragment() {
     companion object {
         private const val ARG_ISOLES_COUNT = "ARG_ISOLES_COUNT"
         private const val ARG_RIVERAINS_COUNT = "ARG_RIVERAINS_COUNT"
+        private const val ARG_FEMMES_ISOLEES_COUNT = "ARG_FEMMES_ISOLEES_COUNT"
 
-        fun newInstance(isolesCount: Int, riverainsCount: Int): AddUnsubscribedParticipantsBottomSheet {
+        fun newInstance(isolesCount: Int, riverainsCount: Int, femmesIsoleesCount: Int): AddUnsubscribedParticipantsBottomSheet {
             val args = Bundle()
             args.putInt(ARG_ISOLES_COUNT, isolesCount)
             args.putInt(ARG_RIVERAINS_COUNT, riverainsCount)
+            args.putInt(ARG_FEMMES_ISOLEES_COUNT, femmesIsoleesCount)
             val fragment = AddUnsubscribedParticipantsBottomSheet()
             fragment.arguments = args
             return fragment

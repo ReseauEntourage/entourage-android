@@ -23,7 +23,8 @@ interface EventsRequest {
     fun updateUnsubscribedParticipants(
         @Path("id") eventId: Int,
         @Query("offer_help") offerHelp: Int,
-        @Query("ask_for_help") askForHelp: Int
+        @Query("ask_for_help") askForHelp: Int,
+        @Query("female") female: Int
     ): Call<EventWrapper>
     @GET("outings/week_average")
     fun getEventsWeekAverage(
