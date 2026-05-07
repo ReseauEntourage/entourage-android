@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import social.entourage.android.R
 import social.entourage.android.databinding.BottomSheetAddUnsubscribedParticipantsBinding
 
 class AddUnsubscribedParticipantsBottomSheet : BottomSheetDialogFragment() {
@@ -49,6 +50,9 @@ class AddUnsubscribedParticipantsBottomSheet : BottomSheetDialogFragment() {
         binding.btnMinusIsoles.setOnClickListener {
             if (isolesCount > 0) {
                 isolesCount--
+                if (femmesIsoleesCount > isolesCount) {
+                    femmesIsoleesCount = isolesCount
+                }
                 updateCounters()
             }
         }
@@ -78,8 +82,10 @@ class AddUnsubscribedParticipantsBottomSheet : BottomSheetDialogFragment() {
         }
 
         binding.btnPlusFemmesIsolees.setOnClickListener {
-            femmesIsoleesCount++
-            updateCounters()
+            if (femmesIsoleesCount < isolesCount) {
+                femmesIsoleesCount++
+                updateCounters()
+            }
         }
 
         binding.btnValidate.setOnClickListener {
@@ -92,6 +98,16 @@ class AddUnsubscribedParticipantsBottomSheet : BottomSheetDialogFragment() {
         binding.tvCountIsoles.text = isolesCount.toString()
         binding.tvCountRiverains.text = riverainsCount.toString()
         binding.tvCountFemmesIsolees.text = femmesIsoleesCount.toString()
+
+        binding.tvQuestionFemmesIsolees.text = getString(R.string.question_femmes_isolees, isolesCount)
+
+        if (femmesIsoleesCount >= isolesCount) {
+            binding.btnPlusFemmesIsolees.setBackgroundResource(R.drawable.new_circle_grey_button_fill)
+            binding.btnPlusFemmesIsolees.isEnabled = false
+        } else {
+            binding.btnPlusFemmesIsolees.setBackgroundResource(R.drawable.new_circle_orange_button_fill)
+            binding.btnPlusFemmesIsolees.isEnabled = true
+        }
     }
 
     override fun onDestroyView() {
