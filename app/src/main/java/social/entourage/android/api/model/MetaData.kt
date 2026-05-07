@@ -51,6 +51,9 @@ data class EventMetadata(
 
     @field:SerializedName("unsubscribed_participants_ask_for_help")
     var unsubscribedParticipantsAskForHelp: Int? = 0,
+
+    @field:SerializedName("unsubscribed_participants_female")
+    var unsubscribedParticipantsFemale: Int? = 0,
 ) : Serializable
 
 data class ActionMetadata(
