@@ -3068,6 +3068,12 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
 
     <string name="home_title_small_talk">Rejoindre une discussion solidaire</string>
+    <string name="home_title_small_talk_active">Vos discussions solidaires</string>
+    <string name="home_subtitle_small_talk_active">%1$d discussions actives</string>
+    <string name="home_subtitle_small_talk_active_single">%1$d discussion active</string>
+    <string name="home_small_talk_matching">+%1$d en cours de matching</string>
+    <string name="home_small_talk_launch_new">+ Lancer une nouvelle rencontre (%1$d/3)</string>
+    <string name="home_small_talk_subtitle_waiting">%1$d discussion en cours de matching</string>
     <string name="small_talk_subtitle_match">On vous met en relation avec un petit groupe de personnes qui partagent vos centres d’intérêt, partout en France.</string>
     <string name="small_talk_button_match">Discuter</string>
     <string name="small_talk_title_waiting">Bientôt de nouvelles rencontres</string>

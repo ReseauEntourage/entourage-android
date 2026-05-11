@@ -1864,6 +1864,12 @@
 
     <string name="guide_help_orientation_button">Help &amp; orientation</string>
     <string name="home_title_small_talk">Join a supportive discussion</string>
+    <string name="home_title_small_talk_active">Your supportive discussions</string>
+    <string name="home_subtitle_small_talk_active">%1$d active discussions</string>
+    <string name="home_subtitle_small_talk_active_single">%1$d active discussion</string>
+    <string name="home_small_talk_matching">+%1$d matching in progress</string>
+    <string name="home_small_talk_launch_new">+ Launch a new meeting (%1$d/3)</string>
+    <string name="home_small_talk_subtitle_waiting">%1$d discussion being matched</string>
     <string name="small_talk_subtitle_match">Connect with a small group of people who share your interests, anywhere in France.</string>
     <string name="welcome_video_cta">Regarder la vidéo</string>
     <string name="welcome_step3_title">Papotages entre membres</string>
