@@ -11,17 +11,28 @@
         android:layout_height="match_parent"
         android:scaleType="fitCenter" />
 
-
     <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
         android:id="@+id/btn_quit_photo"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/icon_cross"
+        android:src="@drawable/ic_arrow_left_black"
         android:background="@drawable/bg_beige_round_15"
         android:padding="8dp"
+        android:layout_gravity="start"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="20dp"
+        app:tint="@color/black" />
+
+    <ImageView
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:id="@+id/btn_download_photo"
+        android:src="@drawable/ic_download"
+        android:background="@drawable/bg_beige_round_15"
+        android:padding="6dp"
         android:layout_gravity="end"
         android:layout_marginTop="40dp"
-        android:layout_marginEnd="20dp"/>
+        android:layout_marginEnd="20dp"
+        app:tint="@color/black" />
+
 </FrameLayout>

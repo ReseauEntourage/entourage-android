@@ -1871,4 +1871,8 @@
     <string name="welcome_webinar_list_subtitle">Prenez en main l\'application et posez toutes vos questions à l\'équipe — en petit groupe, en 45 minutes en visio.</string>
     <string name="welcome_papotages_list_title">Papotages solidaires</string>
     <string name="welcome_papotages_list_subtitle">Discussions libres en sous-groupes de 2 à 3 personnes, animées par un bénévole formé ou un membre de l\'équipe. Vous restez le temps que vous voulez. Tous les mardis à 18h.</string>
+    <string name="download_image_title">Downloading photo</string>
+    <string name="download_image_description">Downloading...</string>
+    <string name="download_started">Download started</string>
+    <string name="download_error">Error during download</string>
 </resources>
