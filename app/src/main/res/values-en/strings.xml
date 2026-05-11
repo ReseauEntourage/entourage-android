@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="full_app_name">Entourage</string>
     <string name="button_loading">Loading…</string>
@@ -873,10 +873,10 @@
     <string name="poi_detail_soliguide_1">Information on this location is provided by Soliguide, solidarity cartography.</string>
     <string name="poi_detail_soliguide_2">For even more complete information available in several languages</string>
     <string name="poi_detail_soliguide_consult">Consult</string>
-    <string name="map_poi_empty_popup"><![CDATA[It looks like it is calm here!<br/><br/>
-    Move around to find out about support structures: solidarity restaurants, public showers, medical centers open to unhoused people...<br/><br/>
-    A structure is missing on the map?<br/>
-    <a href=\'%1$s\'>Propose a structure</a>]]></string>
+    <string name="map_poi_empty_popup">It looks like it is calm here!&lt;br/&gt;&lt;br/&gt;
+    Move around to find out about support structures: solidarity restaurants, public showers, medical centers open to unhoused people...&lt;br/&gt;&lt;br/&gt;
+    A structure is missing on the map?&lt;br/&gt;
+    &lt;a href=\'%1$s\'&gt;Propose a structure&lt;/a&gt;</string>
     <string name="map_poi_info_popup">The Solidarity Guide allows you to find out about support structures: solidarity restaurants, public showers, medical centers open to unhoused people...\n\n</string>
     <string name="map_empty_poi_recyclerV">That\'s all for the solidarity places in this radius around you</string>
     <string name="guide_filter_title">Filters</string>
@@ -1440,7 +1440,7 @@
     <string name="home_v2_hz_item_title">Hey, it seems a little quiet around here…</string>
     <string name="home_v2_hz_item_subtitle">How about bringing solidarity to your city? Entourage gives you the keys to getting started!</string>
     <string name="home_v2_hz_item_button">Learn more</string>
-    <string name="empty_description"></string>
+    <string name="empty_description" />
     <plurals name="number_of_people">
         <item quantity="one">%1$d participant</item>
         <item quantity="other">%1$d participants</item>
@@ -1532,13 +1532,13 @@
     <string name="newsfeed_tab_events_no_items_button"><u>Find more Entourage events here</u></string>
     <string name="pre_onboard_choice_about"><u>Who is the Entourage association?</u></string>
     <string name="onboard_sms_help"><u>Need help?\nContact the Entourage team.</u></string>
-    <string name="outing_message_card_updated_author"><![CDATA[%1$s has <b>modified</b> an <font color=\"%2$s\">outing</font>:]]></string>
+    <string name="outing_message_card_updated_author">%1$s has &lt;b&gt;modified&lt;/b&gt; an &lt;font color=\"%2$s\"&gt;outing&lt;/font&gt;:</string>
     <string name="create_action_wizard_p1_description">Are you creating this solidarity action <b>for an identified person, other than yourself:</b> a friend in precarious situation, a person you met on the street?</string>
     <string name="create_action_wizard_p2_description">Have you <b>obtained their consent</b> to broadcast this action for them on Entourage?</string>
     <string name="menu_info_social">To experience <b>even more solidarity</b> follow Entourage on your networks!</string>
     <string name="map_filter_entourage_demand_text"><b>See requests regarding:</b></string>
     <string name="map_filter_entourage_contribution_text"><b>See contributions regarding:</b></string>
-    <string name="custom_dialog_action_content_one_contrib">Is your action \"<![CDATA[<b>%1$s</b>]]>\" completed?</string>
+    <string name="custom_dialog_action_content_one_contrib">Is your action \"&lt;b&gt;%1$s&lt;/b&gt;\" completed?</string>
     <string name="search_member_hint">Search a member</string>
 
     <string name="action_crete_cat_about">Are you looking to offer a %s that does not fit into one of these categories? It seems that \ has no place on the network,but you can always</string>
@@ -1659,7 +1659,7 @@
     <string name="event_search_hint">Search for an event</string>
     <string name="action_search_hint">Search for an action</string>
     <string name="search_participant_hint">Search for a participant</string>
-    <string name="onboard_waiting_dialog"></string>
+    <string name="onboard_waiting_dialog" />
     <string name="home_title_sensibilisation">Get informed</string>
     <string name="home_subtitle_sensibilisation">Some reading suggestions to get started</string>
     <string name="interest_activites_onboarding">Manual \nactivities</string>
@@ -1796,10 +1796,10 @@
     <string name="onboard_phase3_asso_title">I work within an association</string>
     <string name="onboard_phase3_asso_desc">I want to collaborate with Entourage, create events, and refer beneficiaries.</string>
 
-    <!-- Misc -->
+
     <string name="contact_email">contact@entourage.social</string>
     <string name="error_no_email">No email app found</string>
-    <string name="terms_and_conditions_html"><![CDATA[By signing up, you accept our <a href="https://www.entourage.social/conditions-generales-dutilisation">Terms of Use</a> and our <a href="https://www.entourage.social/politique-de-confidentialite">Privacy Policy</a>.]]></string>
+    <string name="terms_and_conditions_html">By signing up, you accept our &lt;a href="https://www.entourage.social/conditions-generales-dutilisation"&gt;Terms of Use&lt;/a&gt; and our &lt;a href="https://www.entourage.social/politique-de-confidentialite"&gt;Privacy Policy&lt;/a&gt;.</string>
 
     <string name="onboard_welcome_title_gender">I am</string>
     <string name="onboard_welcome_title_how_did_you_hear">How did you hear about us?</string>
@@ -1871,4 +1871,10 @@
     <string name="welcome_webinar_list_subtitle">Prenez en main l\'application et posez toutes vos questions à l\'équipe — en petit groupe, en 45 minutes en visio.</string>
     <string name="welcome_papotages_list_title">Papotages solidaires</string>
     <string name="welcome_papotages_list_subtitle">Discussions libres en sous-groupes de 2 à 3 personnes, animées par un bénévole formé ou un membre de l\'équipe. Vous restez le temps que vous voulez. Tous les mardis à 18h.</string>
-</resources>
+<string name="home_title_small_talk_active">Vos discussions solidaires</string>
+    <string name="home_subtitle_small_talk_active">%1$d discussions actives</string>
+    <string name="home_subtitle_small_talk_active_single">%1$d discussion active</string>
+    <string name="home_small_talk_matching">+%1$d en cours de matching</string>
+    <string name="home_small_talk_launch_new">+ Lancer une nouvelle rencontre (%1$d/3)</string>
+    <string name="home_small_talk_subtitle_waiting">%1$d discussion en cours de matching</string>
+    </resources>
