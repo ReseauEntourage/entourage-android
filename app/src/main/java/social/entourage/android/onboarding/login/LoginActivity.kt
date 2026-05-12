@@ -148,7 +148,7 @@ class LoginActivity : BaseActivity() {
     private fun activateTimer() {
         cancelTimer()
         timeOut = TIME_BEFORE_CALL
-        countDownTimer = object : CountDownTimer(600000, 1000) {
+        countDownTimer = object : CountDownTimer(60000, 1000) {
             override fun onFinish() {
                 cancelTimer()
             }
