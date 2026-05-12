@@ -75,6 +75,13 @@ class DiscussionsMainFragment : Fragment() {
 
         binding.progressBar.visibility = View.VISIBLE
         initializeSearchBar()
+
+        arguments?.getBoolean("isSmallTalkFilter")?.let { isSmallTalkFilter ->
+            if (isSmallTalkFilter) {
+                changeFilterMode(FilterMode.SMALLTALKS, binding.filterSmalltalks)
+            }
+        }
+
         initializeRecyclerView()
         handleSwipeRefresh()
         binding.btnValidate.visibility = View.GONE

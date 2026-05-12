@@ -1,3 +1,4 @@
+cat << 'INNER_EOF' > app/src/main/java/social/entourage/android/comment/ImageZoomActivity.kt
 package social.entourage.android.comment
 
 import android.app.DownloadManager
@@ -66,3 +67,4 @@ class ImageZoomActivity : BaseActivity() {
         }
     }
 }
+INNER_EOF
