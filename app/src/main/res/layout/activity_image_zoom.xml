@@ -12,27 +12,27 @@
         android:scaleType="fitCenter" />
 
     <ImageView
-        android:layout_width="34dp"
-        android:layout_height="34dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:id="@+id/btn_quit_photo"
-        android:src="@drawable/ic_arrow_left_black"
-        android:background="@drawable/bg_beige_round_15"
-        android:padding="8dp"
+        android:src="@drawable/ic_close_black_24dp"
+        android:background="@android:color/transparent"
+        android:padding="12dp"
         android:layout_gravity="start"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="20dp"
-        app:tint="@color/black" />
+        android:layout_marginTop="33dp"
+        android:layout_marginStart="13dp"
+        app:tint="@color/white" />
 
     <ImageView
-        android:layout_width="34dp"
-        android:layout_height="34dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:id="@+id/btn_download_photo"
-        android:src="@drawable/ic_download"
-        android:background="@drawable/bg_beige_round_15"
-        android:padding="6dp"
+        android:src="@drawable/new_share"
+        android:background="@android:color/transparent"
+        android:padding="12dp"
         android:layout_gravity="end"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="20dp"
-        app:tint="@color/black" />
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="13dp"
+        app:tint="@color/white" />
 
 </FrameLayout>
