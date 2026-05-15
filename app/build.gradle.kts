@@ -146,6 +146,8 @@ android {
         create("entourage") {
             dimension = "app"
             buildConfigField("String", "API_KEY", "\"4a7373f3e7dd45fc391a2f19\"")
+            val hmacSecret = System.getenv("HMAC_SECRET_ANDROID") ?: ""
+            buildConfigField("String", "HMAC_SECRET", "\"$hmacSecret\"")
         }
     }
 
