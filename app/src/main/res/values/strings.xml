@@ -2654,6 +2654,16 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="interest_marauding">Maraudes sociales</string>
     <string name="interest_other">Autre</string>
 
+    <string name="interest_sport_subtitle">Football, yoga, basket…</string>
+    <string name="interest_animaux_subtitle">Refuge, soin, promenade…</string>
+    <string name="interest_marauding_subtitle">Repas, café, discussion…</string>
+    <string name="interest_bien_etre_subtitle">Relaxation, soin, hygiène…</string>
+    <string name="interest_cuisine_subtitle">Partage de repas, recettes…</string>
+    <string name="interest_culture_subtitle">Sorties, musées, ciné…</string>
+    <string name="interest_nature_subtitle">Jardinage, parcs, forêt…</string>
+    <string name="interest_jeux_subtitle">Jeux de société, cartes, plein air…</string>
+    <string name="interest_activites_subtitle">Bricolage, couture, réparation…</string>
+    <string name="interest_other_subtitle"></string>
     <string name="modify_image"><u>Modifier ma photo</u></string>
     <string name="more"><u>En savoir plus</u></string>
     <string name="posts_comment_number"><u>%d messages</u></string>

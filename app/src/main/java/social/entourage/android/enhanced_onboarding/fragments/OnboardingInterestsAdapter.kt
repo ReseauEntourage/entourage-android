@@ -36,9 +36,18 @@ class OnboardingInterestsAdapter(
             if (isFromInterest || isFromInterestLocal) {
                 binding.tvInterestTitle.text = interest.title
                 binding.tvInterestTitle.visibility = View.VISIBLE
+
+                if (interest.subtitle.isNotEmpty()) {
+                    binding.tvInterestSubTitle.text = interest.subtitle
+                    binding.tvInterestSubTitle.visibility = View.VISIBLE
+                } else {
+                    binding.tvInterestSubTitle.visibility = View.GONE
+                }
+
                 binding.tvInterestTitleFromRight.visibility = View.GONE
                 binding.tvInterestSubTitleFromRight.visibility = View.GONE
             } else {
+                binding.tvInterestSubTitle.visibility = View.GONE
                 binding.tvInterestTitleFromRight.text = interest.title
                 binding.tvInterestSubTitleFromRight.text = interest.subtitle
                 binding.tvInterestTitle.visibility = View.GONE
