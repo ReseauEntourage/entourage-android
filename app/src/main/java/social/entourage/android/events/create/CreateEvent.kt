@@ -89,6 +89,9 @@ data class CreateEvent(
     @SerializedName("entourage_image_id")
     var entourageImageId: Int? = null,
 
+    @SerializedName("image_url")
+    var imageUrl: String? = null,
+
     @SerializedName("neighborhood_ids")
     var neighborhoodIds: MutableList<Int> = mutableListOf(),
 
@@ -122,6 +125,10 @@ data class CreateEvent(
         entourageImageId = value
     }
 
+    fun imageUrl(value: String?) = apply {
+        imageUrl = value
+    }
+
     fun description(value: String) = apply {
         description = value
     }
@@ -143,7 +150,7 @@ data class CreateEvent(
     }
 
     override fun toString(): String {
-        return "CreateEvent(metadata=$metadata, description=$description, title=$title, eventUrl=$eventUrl, online=$online, latitude=$latitude, longitude=$longitude, otherInterest=$otherInterest, interests=$interests, entourageImageId=$entourageImageId, neighborhoodIds=$neighborhoodIds, recurrence=$recurrence)"
+        return "CreateEvent(metadata=$metadata, description=$description, title=$title, eventUrl=$eventUrl, online=$online, latitude=$latitude, longitude=$longitude, otherInterest=$otherInterest, interests=$interests, entourageImageId=$entourageImageId, imageUrl=$imageUrl, neighborhoodIds=$neighborhoodIds, recurrence=$recurrence)"
     }
 
 }

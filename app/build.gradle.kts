@@ -242,6 +242,7 @@ dependencies {
     implementation(libs.material.datetime.picker)
     implementation(libs.fab)
     implementation(libs.cropme)
+    implementation(libs.ucrop)
     implementation(libs.maps.utils.ktx)
     implementation(libs.material)
     implementation(libs.glide)
