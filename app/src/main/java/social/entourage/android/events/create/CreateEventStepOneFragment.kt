@@ -40,10 +40,19 @@ class CreateEventStepOneFragment : Fragment(), EventImageUploadView {
 
     private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
-            val destinationUri = Uri.fromFile(File(requireContext().cacheDir, "cropped_event_image.jpg"))
+            // CORRECTION : Générer un nom de fichier unique avec le timestamp
+            // Cela empêche Glide de charger l'ancienne image depuis son cache mémoire
+            val uniqueFileName = "cropped_event_image_${System.currentTimeMillis()}.jpg"
+            val destinationUri = Uri.fromFile(File(requireContext().cacheDir, uniqueFileName))
+
             val options = UCrop.Options()
             options.setToolbarTitle(getString(R.string.group_choose_photo))
             options.setCircleDimmedLayer(false)
+
+            // CORRECTION : Forcer l'affichage des contrôles pour aider l'UI à se redessiner
+            options.setHideBottomControls(false)
+            options.setFreeStyleCropEnabled(true)
+
             UCrop.of(it, destinationUri)
                 .withAspectRatio(16f, 9f)
                 .withOptions(options)
