@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Image
 import social.entourage.android.databinding.NewFragmentCreateGroupChoosePhotoModalBinding
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import android.content.Intent
 
 private const val SPAN_COUNT = 3
 
@@ -102,8 +104,23 @@ class ChooseGalleryPhotoModalFragment : BottomSheetDialogFragment() {
         imagesType = arguments?.getSerializable(Const.IMAGES_TYPE) as ImagesType
     }
 
+    private fun hasValidRole(): Boolean {
+        val userRoles = EntourageApplication.get().me()?.roles ?: return false
+        return userRoles.contains("Association") ||
+               userRoles.contains("Équipe Entourage") ||
+               userRoles.contains("Animateur Entourage")
+    }
+
     private fun initializeInterests() {
-        choosePhotoAdapter = ChoosePhotoAdapter(photosList, imagesType == ImagesType.EVENTS)
+        val showAddPhoto = hasValidRole() && imagesType == ImagesType.EVENTS
+        choosePhotoAdapter = ChoosePhotoAdapter(photosList, imagesType == ImagesType.EVENTS, showAddPhoto) {
+            setFragmentResult(
+                Const.REQUEST_KEY_CHOOSE_PHOTO,
+                bundleOf("is_add_photo" to true)
+            )
+            dismiss()
+        }
+
         binding.recyclerView.apply {
             layoutManager = GridLayoutManager(context, SPAN_COUNT)
             adapter = choosePhotoAdapter
@@ -126,7 +143,7 @@ class ChooseGalleryPhotoModalFragment : BottomSheetDialogFragment() {
             image?.let {
                 setFragmentResult(
                     Const.REQUEST_KEY_CHOOSE_PHOTO,
-                    bundleOf(Const.CHOOSE_PHOTO_PATH to it)
+                    bundleOf(Const.CHOOSE_PHOTO_PATH to it, "is_add_photo" to false)
                 )
                 dismiss()
             }

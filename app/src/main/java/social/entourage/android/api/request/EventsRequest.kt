@@ -179,6 +179,11 @@ interface EventsRequest {
         @Body params: RequestContent
     ): Call<PrepareAddPostResponse>
 
+    @POST("outings/presigned_upload")
+    fun prepareImageUpload(
+        @Body params: social.entourage.android.events.create.PrepareEventImageUploadRepository.Request
+    ): Call<social.entourage.android.events.create.PrepareEventImageUploadRepository.Response>
+
     @GET("outings/{event_id}/chat_messages/{post_id}/comments")
     fun getPostComments(
         @Path("event_id") eventId: Int,
