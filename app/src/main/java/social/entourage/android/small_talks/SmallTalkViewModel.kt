@@ -99,8 +99,7 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
                 InterestForAdapter(R.drawable.ic_onboarding_interest_name_art, context.getString(R.string.interest_culture), context.getString(R.string.interest_culture_subtitle), false, "culture"),
                 InterestForAdapter(R.drawable.ic_onboarding_interest_name_nature, context.getString(R.string.interest_nature), context.getString(R.string.interest_nature_subtitle), false, "nature"),
                 InterestForAdapter(R.drawable.ic_onboarding_interest_name_jeux, context.getString(R.string.interest_jeux), context.getString(R.string.interest_jeux_subtitle), false, "jeux"),
-                InterestForAdapter(R.drawable.ic_onboarding_interest_name_activite_manuelle, context.getString(R.string.interest_activites_onboarding), context.getString(R.string.interest_activites_subtitle), false, "activites"),
-                InterestForAdapter(R.drawable.ic_onboarding_interest_name_autre, context.getString(R.string.interest_other), context.getString(R.string.interest_other_subtitle), false, "other")
+                InterestForAdapter(R.drawable.ic_onboarding_interest_name_activite_manuelle, context.getString(R.string.interest_activites_onboarding), context.getString(R.string.interest_activites_subtitle), false, "activites")
             )
         )
     )

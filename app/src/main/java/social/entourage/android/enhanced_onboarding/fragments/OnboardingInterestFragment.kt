@@ -175,15 +175,6 @@ class OnboardingInterestFragment : Fragment() {
                     id = "activites",
                     subtitle = getString(R.string.interest_activites_subtitle)
                 )
-            },
-            user?.interests?.contains("other")?.let {
-                InterestForAdapter(
-                    icon = getIconForInterest("other"),
-                    title = getString(R.string.interest_other),
-                    isSelected = it,
-                    id = "other",
-                    subtitle = getString(R.string.interest_other_subtitle)
-                )
             }
         ).filterNotNull()
 
@@ -201,7 +192,6 @@ class OnboardingInterestFragment : Fragment() {
             "nature" -> R.drawable.ic_onboarding_interest_name_nature
             "jeux" -> R.drawable.ic_onboarding_interest_name_jeux
             "activites" -> R.drawable.ic_onboarding_interest_name_activite_manuelle
-            "other" -> R.drawable.ic_onboarding_interest_name_autre
             else -> R.drawable.ic_onboarding_interest_name_autre
         }
     }
