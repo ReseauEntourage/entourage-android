@@ -22,6 +22,7 @@ import social.entourage.android.members.MembersActivity
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.ui.ActionSheetFragment
+import timber.log.Timber
 
 interface OnItemShowListener {
     fun onShowConversation(userId: Int)
@@ -71,7 +72,7 @@ class MembersListAdapter(
         if ((canCheckIn) && !MembersActivity.isFromReact) {
             b.checkboxConfirmation.visibility = View.VISIBLE
             // état actuel : participe si participateAt ou confirmedAt est true
-            val isParticipating = (item.participateAt == true) || (item.confirmedAt == true)
+            val isParticipating = item.participateAt?.isNotEmpty() == true
             b.checkboxConfirmation.setOnCheckedChangeListener(null)
             b.checkboxConfirmation.isChecked = isParticipating
             b.checkboxConfirmation.setOnCheckedChangeListener { _, isChecked ->
