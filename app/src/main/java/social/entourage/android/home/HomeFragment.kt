@@ -252,16 +252,13 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme)
         val view = layoutInflater.inflate(R.layout.dialog_welcome_video, null)
         bottomSheetDialog.setContentView(view)
-
-        // --- AJOUT IMPORTANT ICI ---
-        // On force la BottomSheet à s'étendre au maximum de son contenu dès l'ouverture
+        
         val bottomSheet = bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
         bottomSheet?.let {
             val behavior = com.google.android.material.bottomsheet.BottomSheetBehavior.from(it)
             behavior.skipCollapsed = true
             behavior.state = com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
         }
-        // ---------------------------
 
         val btnContinue = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_continue)
         val webView = view.findViewById<android.webkit.WebView>(R.id.webview_video)
