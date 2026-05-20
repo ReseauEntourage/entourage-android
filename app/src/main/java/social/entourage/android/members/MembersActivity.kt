@@ -8,7 +8,6 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -39,6 +38,7 @@ import social.entourage.android.home.HomeFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
+import com.leinardi.android.speeddial.SpeedDialView
 import social.entourage.android.ui.ActionSheetFragment
 import timber.log.Timber
 
@@ -49,10 +49,12 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
     private val membersListSearch: MutableList<EntourageUser> = mutableListOf()
     private val reactionList: MutableList<ReactionType> = mutableListOf()
     private var id: Int = Const.DEFAULT_VALUE
+
     private var type: MembersType = MembersType.GROUP
 
     private var isolesCount = 0
     private var riverainsCount = 0
+    private var femmesIsoleesCount = 0
     private var isEquipeEntourage = false
 
 
@@ -75,6 +77,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
         type = MembersType.values().firstOrNull { it.code == typeCode } ?: MembersType.GROUP
         //iAmOrganiser = intent.getBooleanExtra("ROLE", false)
         iAmOrganiser = ActionSheetFragment.isSignable && HomeFragment.signablePermission
+        Timber.wtf("wtf" + iAmOrganiser)
         setupToolbar()
         setupLists()
         setupSearchBar()
@@ -241,7 +244,8 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
 
     private fun loadFirstPage() {
 
-        isEquipeEntourage = EntourageApplication.get().me()?.roles?.contains("Équipe Entourage") == true
+        isEquipeEntourage = EntourageApplication.get().me()?.roles?.contains("Équipe Entourage") == true || EntourageApplication.get().me()?.roles?.contains("Animateur Entourage") == true
+
         if (type == MembersType.EVENT && isEquipeEntourage) {
             eventPresenter.getEvent(id.toString())
         }
@@ -400,22 +404,28 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
         event?.metadata?.let { metadata ->
             isolesCount = metadata.unsubscribedParticipantsAskForHelp ?: 0
             riverainsCount = metadata.unsubscribedParticipantsOfferHelp ?: 0
+            femmesIsoleesCount = metadata.unsubscribedParticipantsFemale ?: 0
             updateUnsubscribedUI()
         }
     }
 
     private fun updateUnsubscribedUI() {
+
         if (type == MembersType.EVENT && isEquipeEntourage) {
             binding.fabAddUnsubscribed.visibility = android.view.View.VISIBLE
-            binding.fabAddUnsubscribed.setOnClickListener {
-                val bottomSheet = AddUnsubscribedParticipantsBottomSheet.newInstance(isolesCount, riverainsCount)
-                bottomSheet.onValidateCounts = { newIsole, newRiverain ->
-                    eventPresenter.updateUnsubscribedParticipants(id, newRiverain, newIsole)
+            binding.fabAddUnsubscribed.setOnChangeListener(object : SpeedDialView.OnChangeListener {
+                override fun onMainActionSelected(): Boolean {
+                    val bottomSheet = AddUnsubscribedParticipantsBottomSheet.newInstance(isolesCount, riverainsCount, femmesIsoleesCount)
+                    bottomSheet.onValidateCounts = { newIsole, newRiverain, newFemmesIsolees ->
+                        eventPresenter.updateUnsubscribedParticipants(id, newRiverain, newIsole, newFemmesIsolees)
+                    }
+                    bottomSheet.show(supportFragmentManager, "AddUnsubscribedBottomSheet")
+                    return true
                 }
-                bottomSheet.show(supportFragmentManager, "AddUnsubscribedBottomSheet")
-            }
+                override fun onToggleChanged(isOpen: Boolean) {}
+            })
 
-            if (isolesCount > 0 || riverainsCount > 0) {
+            if (isolesCount > 0 || riverainsCount > 0 || femmesIsoleesCount > 0) {
                 binding.layoutUnsubscribedParticipants.visibility = android.view.View.VISIBLE
 
                 if (isolesCount > 0) {
@@ -438,6 +448,17 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
                     }
                 } else {
                     binding.layoutRiverains.visibility = android.view.View.GONE
+                }
+
+                if (femmesIsoleesCount > 0) {
+                    binding.layoutFemmesIsolees.visibility = android.view.View.VISIBLE
+                    binding.tvFemmesIsoleesCount.text = if (femmesIsoleesCount > 1) {
+                        getString(R.string.femmes_isolees, femmesIsoleesCount)
+                    } else {
+                        getString(R.string.femme_isolee, femmesIsoleesCount)
+                    }
+                } else {
+                    binding.layoutFemmesIsolees.visibility = android.view.View.GONE
                 }
             } else {
                 binding.layoutUnsubscribedParticipants.visibility = android.view.View.GONE

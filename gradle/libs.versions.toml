@@ -54,7 +54,7 @@ review = "2.0.2"
 speed-dial = "3.3.0"
 ktor = "3.4.1"
 aboutlibraries = "13.2.1"
-android-application = "9.0.1"
+android-application = "9.2.1"
 google-services = "4.4.4"
 firebase-crashlytics = "3.0.6"
 kotlin-plugin-serialization = "2.3.10"
@@ -65,6 +65,7 @@ play-services-auth-api-phone = "18.3.0"
 espresso-contrib = "3.7.0"
 
 [libraries]
+ucrop = { module = "com.github.yalantis:ucrop", version = "2.2.8" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core" }
 okhttp-bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okhttp-bom" }
 androidx-annotation = { module = "androidx.annotation:annotation", version.ref = "androidx-annotation" }

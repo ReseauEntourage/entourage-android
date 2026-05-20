@@ -101,7 +101,7 @@ class OnboardingInterestFragment : Fragment() {
                     title = getString(R.string.interest_sport),
                     isSelected = it,
                     id = "sport",
-                    subtitle = ""
+                    subtitle = getString(R.string.interest_sport_subtitle)
                 )
             },
             user?.interests?.contains("animaux")?.let {
@@ -110,7 +110,7 @@ class OnboardingInterestFragment : Fragment() {
                     title = getString(R.string.interest_animaux),
                     isSelected = it,
                     id = "animaux",
-                    subtitle = ""
+                    subtitle = getString(R.string.interest_animaux_subtitle)
                 )
             },
             user?.interests?.contains("marauding")?.let {
@@ -119,7 +119,7 @@ class OnboardingInterestFragment : Fragment() {
                     title = getString(R.string.interest_marauding),
                     isSelected = it,
                     id = "marauding",
-                    subtitle = ""
+                    subtitle = getString(R.string.interest_marauding_subtitle)
                 )
             },
             user?.interests?.contains("bien-etre")?.let {
@@ -128,7 +128,7 @@ class OnboardingInterestFragment : Fragment() {
                     title = getString(R.string.interest_bien_etre),
                     isSelected = it,
                     id = "bien-etre",
-                    subtitle = ""
+                    subtitle = getString(R.string.interest_bien_etre_subtitle)
                 )
             },
             user?.interests?.contains("cuisine")?.let {
@@ -137,7 +137,7 @@ class OnboardingInterestFragment : Fragment() {
                     title = getString(R.string.interest_cuisine),
                     isSelected = it,
                     id = "cuisine",
-                    subtitle = ""
+                    subtitle = getString(R.string.interest_cuisine_subtitle)
                 )
             },
             user?.interests?.contains("culture")?.let {
@@ -146,7 +146,7 @@ class OnboardingInterestFragment : Fragment() {
                     title = getString(R.string.interest_culture),
                     isSelected = it,
                     id = "culture",
-                    subtitle = ""
+                    subtitle = getString(R.string.interest_culture_subtitle)
                 )
             },
             user?.interests?.contains("nature")?.let {
@@ -155,7 +155,7 @@ class OnboardingInterestFragment : Fragment() {
                     title = getString(R.string.interest_nature),
                     isSelected = it,
                     id = "nature",
-                    subtitle = ""
+                    subtitle = getString(R.string.interest_nature_subtitle)
                 )
             },
             user?.interests?.contains("jeux")?.let {
@@ -164,7 +164,7 @@ class OnboardingInterestFragment : Fragment() {
                     title = getString(R.string.interest_jeux),
                     isSelected = it,
                     id = "jeux",
-                    subtitle = ""
+                    subtitle = getString(R.string.interest_jeux_subtitle)
                 )
             },
             user?.interests?.contains("activites")?.let {
@@ -173,7 +173,7 @@ class OnboardingInterestFragment : Fragment() {
                     title = getString(R.string.interest_activites_onboarding),
                     isSelected = it,
                     id = "activites",
-                    subtitle = ""
+                    subtitle = getString(R.string.interest_activites_subtitle)
                 )
             },
             user?.interests?.contains("other")?.let {
@@ -182,7 +182,7 @@ class OnboardingInterestFragment : Fragment() {
                     title = getString(R.string.interest_other),
                     isSelected = it,
                     id = "other",
-                    subtitle = ""
+                    subtitle = getString(R.string.interest_other_subtitle)
                 )
             }
         ).filterNotNull()

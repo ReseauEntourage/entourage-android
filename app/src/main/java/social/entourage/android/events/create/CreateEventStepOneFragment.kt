@@ -9,10 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import android.content.Intent
+import android.app.Activity
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import com.bumptech.glide.Glide
+import com.yalantis.ucrop.UCrop
+import java.io.File
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import android.widget.Toast
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.api.model.Image
@@ -23,17 +29,87 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 
-class CreateEventStepOneFragment : Fragment() {
+class CreateEventStepOneFragment : Fragment(), EventImageUploadView {
 
     private var _binding: NewFragmentCreateEventStepOneBinding? = null
     val binding: NewFragmentCreateEventStepOneBinding get() = _binding!!
     private var selectedImage: Image? = null
+    private var uploadedImageFile: File? = null
+    private lateinit var uploadPresenter: EventImageUploadPresenter
+    private var isUploading = false
+
+    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let {
+            // CORRECTION : Générer un nom de fichier unique avec le timestamp
+            // Cela empêche Glide de charger l'ancienne image depuis son cache mémoire
+            val uniqueFileName = "cropped_event_image_${System.currentTimeMillis()}.jpg"
+            val destinationUri = Uri.fromFile(File(requireContext().cacheDir, uniqueFileName))
+
+            val options = UCrop.Options()
+            options.setToolbarTitle(getString(R.string.group_choose_photo))
+            options.setCircleDimmedLayer(false)
+
+            // CORRECTION : Forcer l'affichage des contrôles pour aider l'UI à se redessiner
+            options.setHideBottomControls(false)
+            options.setFreeStyleCropEnabled(true)
+
+            UCrop.of(it, destinationUri)
+                .withAspectRatio(16f, 9f)
+                .withOptions(options)
+                .start(requireContext(), this)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+            val resultUri = UCrop.getOutput(data!!)
+            resultUri?.let { uri ->
+                val file = File(uri.path!!)
+                uploadedImageFile = file
+                selectedImage = null // Clear previously selected default image
+                CommunicationHandler.event.entourageImageId(null)
+
+                binding.layout.addPhotoLayout.visibility = View.GONE
+                binding.layout.addPhoto.visibility = View.VISIBLE
+                Glide.with(requireActivity())
+                    .load(uri)
+                    .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
+                    .into(binding.layout.addPhoto)
+
+                CommunicationHandler.isButtonClickable.value =
+                    isGroupNameValid() && isGroupDescriptionValid() && isImageValid()
+
+                isUploading = true
+                CommunicationHandler.isButtonClickable.value = false
+                Toast.makeText(requireContext(), "Upload de l'image en cours...", Toast.LENGTH_SHORT).show()
+                uploadPresenter.uploadPhoto(file)
+            }
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            val cropError = UCrop.getError(data!!)
+            cropError?.printStackTrace()
+        }
+    }
+
+    override fun onUploadError() {
+        isUploading = false
+        Toast.makeText(requireContext(), "Erreur lors du chargement de l'image", Toast.LENGTH_SHORT).show()
+        CommunicationHandler.isButtonClickable.value = false
+    }
+
+    override fun onUploadSuccess(uploadKey: String) {
+        isUploading = false
+        CommunicationHandler.event.imageUrl(uploadKey)
+        CommunicationHandler.isButtonClickable.value =
+            isGroupNameValid() && isGroupDescriptionValid() && isImageValid()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = NewFragmentCreateEventStepOneBinding.inflate(inflater, container, false)
+        uploadPresenter = EventImageUploadPresenter(this, EventImageUploadRepository())
         return binding.root
     }
 
@@ -88,20 +164,27 @@ class CreateEventStepOneFragment : Fragment() {
 
     private fun onFragmentResult() {
         setFragmentResultListener(Const.REQUEST_KEY_CHOOSE_PHOTO) { _, bundle ->
-            selectedImage = bundle.getParcelable(Const.CHOOSE_PHOTO_PATH)
-            CommunicationHandler.isButtonClickable.value = isImageValid()
-            CommunicationHandler.event.entourageImageId(selectedImage?.id)
-            val imageUrl =
-                if (selectedImage?.portraitUrl != null) selectedImage?.portraitUrl else selectedImage?.landscapeUrl
-            imageUrl?.let { url ->
-                CommunicationHandler.isButtonClickable.value =
-                    isGroupNameValid() && isGroupDescriptionValid() && isImageValid()
-                binding.layout.addPhotoLayout.visibility = View.GONE
-                binding.layout.addPhoto.visibility = View.VISIBLE
-                Glide.with(requireActivity())
-                    .load(Uri.parse(url))
-                    .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
-                    .into(binding.layout.addPhoto)
+            val isAddPhoto = bundle.getBoolean("is_add_photo", false)
+            if (isAddPhoto) {
+                getContent.launch("image/*")
+            } else {
+                selectedImage = bundle.getParcelable(Const.CHOOSE_PHOTO_PATH)
+                uploadedImageFile = null
+                CommunicationHandler.isButtonClickable.value = isImageValid()
+                CommunicationHandler.event.entourageImageId(selectedImage?.id)
+                CommunicationHandler.event.imageUrl(null)
+                val imageUrl =
+                    if (selectedImage?.portraitUrl != null) selectedImage?.portraitUrl else selectedImage?.landscapeUrl
+                imageUrl?.let { url ->
+                    CommunicationHandler.isButtonClickable.value =
+                        isGroupNameValid() && isGroupDescriptionValid() && isImageValid()
+                    binding.layout.addPhotoLayout.visibility = View.GONE
+                    binding.layout.addPhoto.visibility = View.VISIBLE
+                    Glide.with(requireActivity())
+                        .load(Uri.parse(url))
+                        .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
+                        .into(binding.layout.addPhoto)
+                }
             }
         }
     }
@@ -132,7 +215,7 @@ class CreateEventStepOneFragment : Fragment() {
     }
 
     fun isImageValid(): Boolean {
-        return selectedImage != null
+        return (selectedImage != null || uploadedImageFile != null) && !isUploading
     }
 
     fun canExitEventCreation(): Boolean {

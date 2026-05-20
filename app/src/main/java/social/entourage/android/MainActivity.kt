@@ -552,9 +552,14 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
 
-    fun goConv() {
-        if (navController.currentDestination?.id == R.id.navigation_messages) return
-        navController.navigate(R.id.navigation_messages)
+    fun goConv(isSmallTalkFilter: Boolean = false) {
+        if (navController.currentDestination?.id == R.id.navigation_messages) {
+            // Already in messages, if small talk filter is required, we should inform the fragment,
+            // but for now let's navigate to ensure bundle is passed or handle it properly.
+            // Simple approach: re-navigate with bundle
+        }
+        val bundle = if (isSmallTalkFilter) bundleOf("isSmallTalkFilter" to true) else null
+        navController.navigate(R.id.navigation_messages, bundle)
     }
 
     fun goContrib() {

@@ -19,6 +19,10 @@ import java.util.*
  */
 object AnalyticsEvents {
 //Onboarding Tracking Request
+    // Small Talk Tracking Events
+    const val ACTION_BONNES_ONDES_START_DISCUSSION = "click_bonnes_ondes_start_discussion"
+    const val ACTION_BONNES_ONDES_VIEW_MESSAGES = "click_bonnes_ondes_view_messages"
+
     const val View__Onboarding__InputNames = "View__Onboarding__InputNames"
     const val Clic__Next__Onboarding__InputNames = "Clic__Next__Onboarding__InputNames"
 

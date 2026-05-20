@@ -34,8 +34,8 @@ android {
     val targetCompatibilityVersion = JavaVersion.VERSION_17
 
     // App versions
-    val versionMajor = 13
-    val versionMinor = 6
+    val versionMajor = 14
+    val versionMinor = 0
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -66,7 +66,7 @@ android {
         }
     }
 
-    compileSdk = 36
+    compileSdk = 37
     buildToolsVersion = "36.1.0"
 
     val localTestAccountLogin = System.getenv("TEST_ACCOUNT_LOGIN")?.let { login -> "\""+ login+ "\"" }
@@ -93,7 +93,7 @@ android {
         applicationId = "social.entourage.android"
 
         minSdk = 23 /*November 2015: Android 6.0, MarshMallow*/
-        targetSdk = 36
+        targetSdk = 37
 
         // Making either of these two values dynamic in the defaultConfig will
         // require a full APK build and reinstallation because the AndroidManifest.xml
@@ -155,7 +155,11 @@ android {
         }
         create("entourage") {
             dimension = "app"
-            buildConfigField("String", "API_KEY", "\"$entourageApiKey\"")
+            buildConfigField("String", "API_KEY", "\"4a7373f3e7dd45fc391a2f19\"")
+            val hmacSecret = (System.getenv("HMAC_SECRET_ANDROID")
+                ?: findProperty("entourageHmacSecret") as String?
+                ?: "")
+            buildConfigField("String", "HMAC_SECRET", "\"$hmacSecret\"")
         }
     }
 
@@ -252,6 +256,7 @@ dependencies {
     implementation(libs.material.datetime.picker)
     implementation(libs.fab)
     implementation(libs.cropme)
+    implementation(libs.ucrop)
     implementation(libs.maps.utils.ktx)
     implementation(libs.material)
     implementation(libs.glide)

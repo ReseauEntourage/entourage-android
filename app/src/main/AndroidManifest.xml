@@ -358,6 +358,11 @@
          <uses-library
              android:name="android.test.runner"
              android:required="false" />
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.UCropStrict"
+            tools:replace="android:theme" />
      </application>
 
  </manifest>

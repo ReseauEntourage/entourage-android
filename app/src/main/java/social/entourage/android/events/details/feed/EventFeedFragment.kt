@@ -209,7 +209,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         }
 
         if(event?.member == true) {
-           binding.discussionBox.visibility = View.VISIBLE
+            binding.discussionBox.visibility = View.VISIBLE
         }else{
             binding.discussionBox.visibility = View.GONE
         }
@@ -367,12 +367,16 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             }
         }
         if(event?.member == true){
+            binding.buttonJoin.setBackgroundResource(R.drawable.shape_button_v9_positive)
+            binding.buttonJoin.setTextColor(getColor(requireContext(), R.color.white))
             if (iAmOrganiser) {
                 binding.buttonJoin.text = getString(R.string.event_cancel_button)
             } else {
                 binding.buttonJoin.text = getString(R.string.event_leave_button)
             }
         }else{
+            binding.buttonJoin.setBackgroundResource(R.drawable.shape_button_v9_positive)
+            binding.buttonJoin.setTextColor(getColor(requireContext(), R.color.white))
             binding.buttonJoin.text = getString(R.string.share_and_join_event)
         }
         openGoogleMaps()
@@ -545,7 +549,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             startActivity(Intent.createChooser(shareIntent, getString(R.string.entourage_share_intent_title)))
         }
 
-        binding.btnDiscussion.setOnClickListener {
+        binding.discussionBox.setOnClickListener {
             goDiscussion()
         }
     }

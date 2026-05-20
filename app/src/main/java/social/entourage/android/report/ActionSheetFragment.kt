@@ -166,15 +166,17 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.blockSub.text = getString(R.string.discussion_block_subtitle, username)
 
                 // Affichage du bouton "Quitter" pour le 1-to-1
-                binding.quit.profileSettingsItemLayout.isVisible = true
-                binding.quit.setLabel(getString(R.string.discussion_settings_quit))
+                binding.quit.profileSettingsItemLayout.isVisible = false
+                val quitLabel11 = if (isSmallTalk) getString(R.string.leave_group) else getString(R.string.discussion_settings_quit)
+                binding.quit.setLabel(quitLabel11)
                 binding.quit.profileSettingsItemLabel.setTextColor(
                     ContextCompat.getColor(requireContext(), R.color.orange)
                 )
 
                 // Affichage du bouton "Supprimer" pour le 1-to-1
                 binding.delete.profileSettingsItemLayout.isVisible = true
-                binding.delete.setLabel(getString(R.string.delete_conversation))
+                val deleteLabel11 = if (isSmallTalk) getString(R.string.leave_group) else getString(R.string.delete_conversation)
+                binding.delete.setLabel(deleteLabel11)
                 binding.delete.profileSettingsItemLabel.setTextColor(
                     ContextCompat.getColor(requireContext(), R.color.orange)
                 )
@@ -192,7 +194,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.layoutBlock.isVisible = false
 
                 binding.quit.profileSettingsItemLayout.isVisible = true
-                binding.quit.setLabel(getString(R.string.discussion_settings_quit))
+                val quitLabelGroup = if (isSmallTalk) getString(R.string.leave_group) else getString(R.string.discussion_settings_quit)
+                binding.quit.setLabel(quitLabelGroup)
                 binding.quit.profileSettingsItemLabel.setTextColor(
                     ContextCompat.getColor(requireContext(), R.color.orange)
                 )
@@ -245,6 +248,9 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                         ContextCompat.getColor(requireContext(), R.color.orange)
                     )
                 }
+
+                // Le bouton "Supprimer" pour l'événement faisait doublon avec "Quitter", on ne l'affiche plus.
+                binding.delete.profileSettingsItemLayout.isVisible = false
 
                 binding.eventInfo.isVisible = true
                 binding.eventTitle.text = eventTitle.orEmpty()
@@ -504,8 +510,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                     if (isSmallTalk) {
                         CustomAlertDialog.showWithCancelFirst(
                             requireContext(),
-                            getString(R.string.leave_conversation),
-                            getString(R.string.leave_conversation_dialog_content),
+                            getString(R.string.leave_group),
+                            getString(R.string.leave_group_dialog_content),
                             getString(R.string.exit)
                         ) {
                             smallTalkViewModel.leaveSmallTalk(smallTalkId.toString())
@@ -581,13 +587,19 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         binding.delete.profileSettingsItemLayout.setOnClickListener {
             when (mode) {
                 SheetMode.DISCUSSION_ONE_TO_ONE -> {
+                    val title = if (isSmallTalk) getString(R.string.leave_group) else getString(R.string.delete_conversation)
+                    val content = if (isSmallTalk) getString(R.string.leave_group_dialog_content) else getString(R.string.delete_conversation_dialog_content)
                     CustomAlertDialog.showWithCancelFirst(
                         requireContext(),
-                        getString(R.string.delete_conversation),
-                        getString(R.string.delete_conversation_dialog_content),
+                        title,
+                        content,
                         getString(R.string.delete)
                     ) {
-                        discussionPresenter.leaveConverstion(conversationId)
+                        if (isSmallTalk) {
+                            smallTalkViewModel.leaveSmallTalk(smallTalkId.toString())
+                        } else {
+                            discussionPresenter.leaveConverstion(conversationId)
+                        }
                     }
                 }
                 else -> Unit

@@ -91,16 +91,16 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
             title = context.getString(R.string.small_talk_step_interest_title),
             subtitle = context.getString(R.string.small_talk_step_interest_subtitle),
             items = listOf(
-                InterestForAdapter(R.drawable.ic_onboarding_interest_sport, context.getString(R.string.interest_sport), "", false, "sport"),
-                InterestForAdapter(R.drawable.ic_onboarding_interest_name_animaux, context.getString(R.string.interest_animaux), "", false, "animaux"),
-                InterestForAdapter(R.drawable.ic_onboarding_interest_name_rencontre_nomade, context.getString(R.string.interest_marauding), "", false, "marauding"),
-                InterestForAdapter(R.drawable.ic_onboarding_interest_name_bien_etre, context.getString(R.string.interest_bien_etre), "", false, "bien-etre"),
-                InterestForAdapter(R.drawable.ic_onboarding_interest_name_cuisine, context.getString(R.string.interest_cuisine), "", false, "cuisine"),
-                InterestForAdapter(R.drawable.ic_onboarding_interest_name_art, context.getString(R.string.interest_culture), "", false, "culture"),
-                InterestForAdapter(R.drawable.ic_onboarding_interest_name_nature, context.getString(R.string.interest_nature), "", false, "nature"),
-                InterestForAdapter(R.drawable.ic_onboarding_interest_name_jeux, context.getString(R.string.interest_jeux), "", false, "jeux"),
-                InterestForAdapter(R.drawable.ic_onboarding_interest_name_activite_manuelle, context.getString(R.string.interest_activites_onboarding), "", false, "activites"),
-                InterestForAdapter(R.drawable.ic_onboarding_interest_name_autre, context.getString(R.string.interest_other), "", false, "other")
+                InterestForAdapter(R.drawable.ic_onboarding_interest_sport, context.getString(R.string.interest_sport), context.getString(R.string.interest_sport_subtitle), false, "sport"),
+                InterestForAdapter(R.drawable.ic_onboarding_interest_name_animaux, context.getString(R.string.interest_animaux), context.getString(R.string.interest_animaux_subtitle), false, "animaux"),
+                InterestForAdapter(R.drawable.ic_onboarding_interest_name_rencontre_nomade, context.getString(R.string.interest_marauding), context.getString(R.string.interest_marauding_subtitle), false, "marauding"),
+                InterestForAdapter(R.drawable.ic_onboarding_interest_name_bien_etre, context.getString(R.string.interest_bien_etre), context.getString(R.string.interest_bien_etre_subtitle), false, "bien-etre"),
+                InterestForAdapter(R.drawable.ic_onboarding_interest_name_cuisine, context.getString(R.string.interest_cuisine), context.getString(R.string.interest_cuisine_subtitle), false, "cuisine"),
+                InterestForAdapter(R.drawable.ic_onboarding_interest_name_art, context.getString(R.string.interest_culture), context.getString(R.string.interest_culture_subtitle), false, "culture"),
+                InterestForAdapter(R.drawable.ic_onboarding_interest_name_nature, context.getString(R.string.interest_nature), context.getString(R.string.interest_nature_subtitle), false, "nature"),
+                InterestForAdapter(R.drawable.ic_onboarding_interest_name_jeux, context.getString(R.string.interest_jeux), context.getString(R.string.interest_jeux_subtitle), false, "jeux"),
+                InterestForAdapter(R.drawable.ic_onboarding_interest_name_activite_manuelle, context.getString(R.string.interest_activites_onboarding), context.getString(R.string.interest_activites_subtitle), false, "activites"),
+                InterestForAdapter(R.drawable.ic_onboarding_interest_name_autre, context.getString(R.string.interest_other), context.getString(R.string.interest_other_subtitle), false, "other")
             )
         )
     )
