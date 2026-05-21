@@ -1,39 +1,7 @@
-Initialized native services in: /home/jules/.gradle/native
-Initialized jansi services in: /home/jules/.gradle/native
-The client will now receive all logging from the daemon (pid: 38347). The daemon log file: /home/jules/.gradle/daemon/9.4.1/daemon-38347.out.log
-Starting 11th build in daemon [uptime: 1 hrs 27 mins 58.041 secs, performance: 98%, GC rate: 0.00/s, heap usage: 3% of 4 GiB, non-heap usage: 28% of 1 GiB]
-Using 4 worker leases.
-Operational build model parameters: {cachingModelBuilding=false, configurationCache=false, configurationCacheDisabledReason=null, configurationCacheParallelLoad=false, configurationCacheParallelStore=false, configureOnDemand=true, invalidateCoupledProjects=false, isolatedProjects=false, modelAsProjectDependency=false, modelBuilding=false, parallelModelBuilding=false, parallelProjectConfiguration=false, parallelProjectExecution=false, resilientModelBuilding=false}
+Starting a Gradle Daemon (subsequent builds will be faster)
 Configuration on demand is an incubating feature.
-Not watching /app since the file system is not supported
-Watching the file system is configured to be enabled if available
-File system watching is active
-Starting Build
-Settings evaluated using settings file '/app/settings.gradle.kts'.
-Using local directory build cache for the root build (location = /home/jules/.gradle/caches/build-cache-1, remove unused entries = after 7 days).
-Projects loaded. Root project using build file '/app/build.gradle.kts'.
-Included projects: [root project 'app', project ':app']
-
-> Configure project :
-Evaluating root project 'app' using build file '/app/build.gradle.kts'.
-Resolved plugin [id: 'com.android.application', version: '9.2.0', apply: false]
-Resolved plugin [id: 'com.google.gms.google-services', version: '4.4.4', apply: false]
-Resolved plugin [id: 'com.google.firebase.crashlytics', version: '3.0.6', apply: false]
-Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.3.10', apply: false]
-Resolved plugin [id: 'org.jetbrains.kotlin.android', version: '2.3.10', apply: false]
-Resolved plugin [id: 'androidx.navigation.safeargs', version: '2.9.7', apply: false]
-Resolved plugin [id: 'com.mikepenz.aboutlibraries.plugin.android', version: '13.2.1', apply: false]
 
 > Configure project :app
-Evaluating project ':app' using build file '/app/app/build.gradle.kts'.
-Resolved plugin [id: 'com.android.application', version: '9.2.0']
-Resolved plugin [id: 'org.jetbrains.kotlin.android', version: '2.3.10']
-Resolved plugin [id: 'com.google.firebase.crashlytics', version: '3.0.6']
-Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.3.10']
-Resolved plugin [id: 'org.jetbrains.kotlin.kapt']
-Resolved plugin [id: 'androidx.navigation.safeargs', version: '2.9.7']
-Resolved plugin [id: 'com.google.gms.google-services', version: '4.4.4']
-Resolved plugin [id: 'com.mikepenz.aboutlibraries.plugin.android', version: '13.2.1']
 WARNING: The option setting 'android.builtInKotlin=false' is deprecated.
 The current default is 'true'.
 It will be removed in version 10.0 of the Android Gradle plugin.
@@ -43,9 +11,6 @@ It will be removed in version 10.0 of the Android Gradle plugin.
 WARNING: The option setting 'android.enableJetifier=true' is deprecated.
 The current default is 'false'.
 It will be removed in version 10.0 of the Android Gradle plugin.
-Using default execution profile
-Build b5723ff0-4f0a-4f2a-a8f7-a020a4a2ce91 is started
-Using Kotlin Gradle Plugin gradle813 variant
 WARNING: API 'applicationVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
 It will be removed in version 10.0 of the Android Gradle plugin.
 The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding
@@ -70,10 +35,6 @@ to this project's gradle.properties file.
 For more information, see http://developer.android.com/build/r/new-dsl.
 
 To determine what is calling unitTestVariants, use -Pandroid.debug.obsoleteApi=true on the command line to display more information.
-Starting process 'command 'git''. Working directory: /app/app Command: git rev-list HEAD --count
-Successfully started process 'command 'git''
-Starting process 'command 'git''. Working directory: /app/app Command: git rev-parse --abbrev-ref HEAD
-Successfully started process 'command 'git''
 WARNING: The property android.dependency.excludeLibraryComponentsFromConstraints improves project import performance for very large projects. It should be enabled to improve performance.
 To suppress this warning, add android.generateSyncIssueWhenLibraryConstraintsAreEnabled=false to gradle.properties
 WARNING: The property android.dependency.excludeLibraryComponentsFromConstraints improves project import performance for very large projects. It should be enabled to improve performance.
@@ -90,274 +51,1074 @@ WARNING: The property android.dependency.excludeLibraryComponentsFromConstraints
 To suppress this warning, add android.generateSyncIssueWhenLibraryConstraintsAreEnabled=false to gradle.properties
 WARNING: The property android.dependency.excludeLibraryComponentsFromConstraints improves project import performance for very large projects. It should be enabled to improve performance.
 To suppress this warning, add android.generateSyncIssueWhenLibraryConstraintsAreEnabled=false to gradle.properties
-Adding -Xuse-inline-scopes-numbers Kotlin compiler flag for task :app:compileEntourageProdDebugAndroidTestKotlin
-Adding -Xuse-inline-scopes-numbers Kotlin compiler flag for task :app:compileEntourageProdDebugKotlin
-Adding -Xuse-inline-scopes-numbers Kotlin compiler flag for task :app:compileEntourageStagingDebugAndroidTestKotlin
-Adding -Xuse-inline-scopes-numbers Kotlin compiler flag for task :app:compileEntourageStagingDebugKotlin
 w: [33m[1m⚠️ Deprecated 'org.jetbrains.kotlin.android' plugin usage[0m[0m
 The 'org.jetbrains.kotlin.android' plugin in project ':app' is no longer required for Kotlin support since AGP 9.0.
 [32m[1mSolution:[0m[0m
 [32m[3mRemove both `android.builtInKotlin=true` and `android.newDsl=false` from `gradle.properties`, then migrate to built-in Kotlin.[0m[0m
 [36mSee [0m[34mhttps://kotl.in/gradle/agp-built-in-kotlin[0m[36m for more details.[0m
 
-Task name matched 'compileEntourageStagingDebugKotlin'
-Selected primary task 'compileEntourageStagingDebugKotlin' from project :
-Skipping runtime variant entourageProdDebugAndroidTest from config: entourageProdDebugAndroidTestRuntimeClasspath
-Skipping compile time variant entourageProdDebug from config: entourageProdDebugCompileClasspath
-Skipping runtime variant entourageProdDebug from config: entourageProdDebugRuntimeClasspath
-Skipping runtime variant entourageProdDebugUnitTest from config: entourageProdDebugUnitTestRuntimeClasspath
-Skipping compile time variant entourageProdRelease from config: entourageProdReleaseCompileClasspath
-Skipping runtime variant entourageProdRelease from config: entourageProdReleaseRuntimeClasspath
-Skipping runtime variant entourageStagingDebugAndroidTest from config: entourageStagingDebugAndroidTestRuntimeClasspath
-Collecting dependencies for compile time variant entourageStagingDebug from config: entourageStagingDebugCompileClasspath
-Collecting dependencies for runtime variant entourageStagingDebug from config: entourageStagingDebugRuntimeClasspath
-Skipping runtime variant entourageStagingDebugUnitTest from config: entourageStagingDebugUnitTestRuntimeClasspath
-Skipping compile time variant entourageStagingRelease from config: entourageStagingReleaseCompileClasspath
-Skipping runtime variant entourageStagingRelease from config: entourageStagingReleaseRuntimeClasspath
-All projects evaluated.
-Tasks to be executed: [task ':app:checkKotlinGradlePluginConfigurationErrors', task ':app:preBuild', task ':app:preEntourageStagingDebugBuild', task ':app:dataBindingMergeDependencyArtifactsEntourageStagingDebug', task ':app:generateEntourageStagingDebugResources', task ':app:injectCrashlyticsMappingFileIdEntourageStagingDebug', task ':app:injectCrashlyticsVersionControlInfoEntourageStagingDebug', task ':app:prepareLibraryDefinitionsEntourageStagingDebug', task ':app:processEntourageStagingDebugGoogleServices', task ':app:mergeEntourageStagingDebugResources', task ':app:packageEntourageStagingDebugResources', task ':app:processEntourageStagingDebugNavigationResources', task ':app:parseEntourageStagingDebugLocalResources', task ':app:dataBindingGenBaseClassesEntourageStagingDebug', task ':app:dataBindingTriggerEntourageStagingDebug', task ':app:generateEntourageStagingDebugBuildConfig', task ':app:generateEntourageStagingDebugRFile', task ':app:generateSafeArgsEntourageStagingDebug', task ':app:kaptGenerateStubsEntourageStagingDebugKotlin', task ':app:kaptEntourageStagingDebugKotlin', task ':app:compileEntourageStagingDebugKotlin']
-Tasks that were excluded: []
-Resolve mutations for :app:checkKotlinGradlePluginConfigurationErrors (Thread[#577,Execution worker,5,main]) started.
-:app:checkKotlinGradlePluginConfigurationErrors (Thread[#577,Execution worker,5,main]) started.
-
-> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
-Skipping task ':app:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
-Resolve mutations for :app:preBuild (Thread[#577,Execution worker,5,main]) started.
-:app:preBuild (Thread[#577,Execution worker,5,main]) started.
 
 > Task :app:preBuild UP-TO-DATE
-Skipping task ':app:preBuild' as it has no actions.
-Resolve mutations for :app:preEntourageStagingDebugBuild (Thread[#577,Execution worker,5,main]) started.
-:app:preEntourageStagingDebugBuild (Thread[#577,Execution worker,5,main]) started.
-
+> Task :app:preEntourageProdDebugBuild UP-TO-DATE
+> Task :app:mergeEntourageProdDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:dataBindingMergeDependencyArtifactsEntourageProdDebug UP-TO-DATE
+> Task :app:generateEntourageProdDebugResources UP-TO-DATE
+> Task :app:injectCrashlyticsMappingFileIdEntourageProdDebug UP-TO-DATE
+> Task :app:injectCrashlyticsVersionControlInfoEntourageProdDebug UP-TO-DATE
+> Task :app:prepareLibraryDefinitionsEntourageProdDebug UP-TO-DATE
+> Task :app:processEntourageProdDebugGoogleServices UP-TO-DATE
+> Task :app:mergeEntourageProdDebugResources UP-TO-DATE
+> Task :app:packageEntourageProdDebugResources UP-TO-DATE
+> Task :app:processEntourageProdDebugNavigationResources UP-TO-DATE
+> Task :app:parseEntourageProdDebugLocalResources UP-TO-DATE
+> Task :app:dataBindingGenBaseClassesEntourageProdDebug UP-TO-DATE
+> Task :app:dataBindingTriggerEntourageProdDebug UP-TO-DATE
+> Task :app:generateEntourageProdDebugBuildConfig UP-TO-DATE
+> Task :app:generateEntourageProdDebugRFile UP-TO-DATE
+> Task :app:generateSafeArgsEntourageProdDebug UP-TO-DATE
+> Task :app:kaptGenerateStubsEntourageProdDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileEntourageProdDebug UP-TO-DATE
+> Task :app:generateEntourageProdDebugAssets UP-TO-DATE
+> Task :app:mergeEntourageProdDebugAssets UP-TO-DATE
+> Task :app:compressEntourageProdDebugAssets UP-TO-DATE
+> Task :app:generateEntourageProdDebugGlobalSynthetics UP-TO-DATE
+> Task :app:l8DexDesugarLibEntourageProdDebug UP-TO-DATE
+> Task :app:checkEntourageProdDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarEntourageProdDebugFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexEntourageProdDebug UP-TO-DATE
+> Task :app:mergeLibDexEntourageProdDebug UP-TO-DATE
+> Task :app:checkEntourageProdDebugAarMetadata UP-TO-DATE
+> Task :app:mapEntourageProdDebugSourceSetPaths UP-TO-DATE
+> Task :app:compileEntourageProdDebugNavigationResources UP-TO-DATE
+> Task :app:createEntourageProdDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksEntourageProdDebug UP-TO-DATE
+> Task :app:processEntourageProdDebugMainManifest UP-TO-DATE
+> Task :app:processEntourageProdDebugManifest UP-TO-DATE
+> Task :app:processEntourageProdDebugManifestForPackage UP-TO-DATE
+> Task :app:processEntourageProdDebugResources UP-TO-DATE
+> Task :app:mergeEntourageProdDebugJniLibFolders UP-TO-DATE
+> Task :app:mergeEntourageProdDebugNativeLibs UP-TO-DATE
+> Task :app:stripEntourageProdDebugDebugSymbols UP-TO-DATE
+> Task :app:validateSigningEntourageProdDebug UP-TO-DATE
+> Task :app:writeEntourageProdDebugAppMetadata UP-TO-DATE
+> Task :app:writeEntourageProdDebugSigningConfigVersions UP-TO-DATE
 > Task :app:preEntourageStagingDebugBuild UP-TO-DATE
-Skipping task ':app:preEntourageStagingDebugBuild' as it has no actions.
-Resolve mutations for :app:dataBindingMergeDependencyArtifactsEntourageStagingDebug (Thread[#577,Execution worker,5,main]) started.
-:app:dataBindingMergeDependencyArtifactsEntourageStagingDebug (Thread[#577,Execution worker,5,main]) started.
-
+> Task :app:mergeEntourageStagingDebugNativeDebugMetadata NO-SOURCE
 > Task :app:dataBindingMergeDependencyArtifactsEntourageStagingDebug UP-TO-DATE
-Registered task dependencies: app:entourageStagingDebugCompileClasspath
-Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
-Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
-Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
-Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
-Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
-Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
-Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
-Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
-Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
-Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
-Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
-Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
-Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
-Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
-Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
-Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
-Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
-Skipping misunderstood TO dep string: com.google.firebase:firebase-analytics
-Skipping misunderstood TO dep string: com.google.firebase:firebase-messaging
-Skipping misunderstood TO dep string: com.google.firebase:firebase-inappmessaging-display
-Skipping misunderstood TO dep string: com.google.firebase:firebase-crashlytics
-Skipping misunderstood TO dep string: com.google.firebase:firebase-config
-Skipping misunderstood TO dep string: com.squareup.okhttp3:okhttp
-Skipping misunderstood TO dep string: com.squareup.okhttp3:logging-interceptor
-Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
-Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
-Skipping misunderstood TO dep string: org.jetbrains.kotlin:kotlin-stdlib
-Skipping misunderstood TO dep string: com.google.firebase:firebase-database
-Starting dependency analysis
-Caching disabled for task ':app:dataBindingMergeDependencyArtifactsEntourageStagingDebug' because:
-  Caching has been disabled for the task
-Skipping task ':app:dataBindingMergeDependencyArtifactsEntourageStagingDebug' as it is up-to-date.
-Resolve mutations for :app:generateEntourageStagingDebugResources (Thread[#577,Execution worker,5,main]) started.
-:app:generateEntourageStagingDebugResources (Thread[#577,Execution worker,5,main]) started.
-
 > Task :app:generateEntourageStagingDebugResources UP-TO-DATE
-Build cache key for task ':app:generateEntourageStagingDebugResources' is de169c7f0b07185ac09269cc33517fbf
-Skipping task ':app:generateEntourageStagingDebugResources' as it is up-to-date.
-Resolve mutations for :app:injectCrashlyticsMappingFileIdEntourageStagingDebug (Thread[#577,Execution worker,5,main]) started.
-:app:injectCrashlyticsMappingFileIdEntourageStagingDebug (Thread[#577,Execution worker,5,main]) started.
-
 > Task :app:injectCrashlyticsMappingFileIdEntourageStagingDebug UP-TO-DATE
-Build cache key for task ':app:injectCrashlyticsMappingFileIdEntourageStagingDebug' is 2e506d5473763cd634806d91c61d7a45
-Skipping task ':app:injectCrashlyticsMappingFileIdEntourageStagingDebug' as it is up-to-date.
-Resolve mutations for :app:injectCrashlyticsVersionControlInfoEntourageStagingDebug (Thread[#577,Execution worker,5,main]) started.
-:app:injectCrashlyticsVersionControlInfoEntourageStagingDebug (Thread[#577,Execution worker,5,main]) started.
-
 > Task :app:injectCrashlyticsVersionControlInfoEntourageStagingDebug UP-TO-DATE
-Build cache key for task ':app:injectCrashlyticsVersionControlInfoEntourageStagingDebug' is 3d77f49a7ddced9aaa8ce8f038913abe
-Skipping task ':app:injectCrashlyticsVersionControlInfoEntourageStagingDebug' as it is up-to-date.
-Resolve mutations for :app:prepareLibraryDefinitionsEntourageStagingDebug (Thread[#577,Execution worker,5,main]) started.
-:app:prepareLibraryDefinitionsEntourageStagingDebug (Thread[#577,Execution worker,5,main]) started.
-
 > Task :app:prepareLibraryDefinitionsEntourageStagingDebug UP-TO-DATE
-Build cache key for task ':app:prepareLibraryDefinitionsEntourageStagingDebug' is 73962726aed97a18c418bc69cd90900b
-Skipping task ':app:prepareLibraryDefinitionsEntourageStagingDebug' as it is up-to-date.
-Resolve mutations for :app:processEntourageStagingDebugGoogleServices (Thread[#577,Execution worker,5,main]) started.
-:app:processEntourageStagingDebugGoogleServices (Thread[#577,Execution worker,5,main]) started.
-
 > Task :app:processEntourageStagingDebugGoogleServices UP-TO-DATE
-Build cache key for task ':app:processEntourageStagingDebugGoogleServices' is 5a80be523011a9647f069daad5ad3288
-Skipping task ':app:processEntourageStagingDebugGoogleServices' as it is up-to-date.
-Resolve mutations for :app:mergeEntourageStagingDebugResources (Thread[#577,Execution worker,5,main]) started.
-:app:mergeEntourageStagingDebugResources (Thread[#577,Execution worker,5,main]) started.
-
 > Task :app:mergeEntourageStagingDebugResources UP-TO-DATE
-Build cache key for task ':app:mergeEntourageStagingDebugResources' is 299942e3f8625581a5036ea6d4751124
-Skipping task ':app:mergeEntourageStagingDebugResources' as it is up-to-date.
-Resolve mutations for :app:packageEntourageStagingDebugResources (Thread[#577,Execution worker,5,main]) started.
-:app:packageEntourageStagingDebugResources (Thread[#577,Execution worker,5,main]) started.
-
 > Task :app:packageEntourageStagingDebugResources UP-TO-DATE
-Build cache key for task ':app:packageEntourageStagingDebugResources' is e74dcf3431c98def5634ce01abfe970d
-Skipping task ':app:packageEntourageStagingDebugResources' as it is up-to-date.
-Resolve mutations for :app:processEntourageStagingDebugNavigationResources (Thread[#577,Execution worker,5,main]) started.
-:app:processEntourageStagingDebugNavigationResources (Thread[#577,Execution worker,5,main]) started.
-
 > Task :app:processEntourageStagingDebugNavigationResources UP-TO-DATE
-Build cache key for task ':app:processEntourageStagingDebugNavigationResources' is 1eb7cff23b5e2d4deb8a7d7fb4b4baf4
-Skipping task ':app:processEntourageStagingDebugNavigationResources' as it is up-to-date.
-Resolve mutations for :app:parseEntourageStagingDebugLocalResources (Thread[#577,Execution worker,5,main]) started.
-:app:parseEntourageStagingDebugLocalResources (Thread[#577,Execution worker,5,main]) started.
-
 > Task :app:parseEntourageStagingDebugLocalResources UP-TO-DATE
-Build cache key for task ':app:parseEntourageStagingDebugLocalResources' is 0549a543e57405e24be78f2a3b1b5c77
-Skipping task ':app:parseEntourageStagingDebugLocalResources' as it is up-to-date.
-Resolve mutations for :app:dataBindingGenBaseClassesEntourageStagingDebug (Thread[#577,Execution worker,5,main]) started.
-:app:dataBindingGenBaseClassesEntourageStagingDebug (Thread[#577,Execution worker,5,main]) started.
-
 > Task :app:dataBindingGenBaseClassesEntourageStagingDebug UP-TO-DATE
-Build cache key for task ':app:dataBindingGenBaseClassesEntourageStagingDebug' is e96200c2b1969c267fdf55c3d6952281
-Skipping task ':app:dataBindingGenBaseClassesEntourageStagingDebug' as it is up-to-date.
-Resolve mutations for :app:dataBindingTriggerEntourageStagingDebug (Thread[#577,Execution worker,5,main]) started.
-:app:dataBindingTriggerEntourageStagingDebug (Thread[#577,Execution worker,5,main]) started.
-
 > Task :app:dataBindingTriggerEntourageStagingDebug UP-TO-DATE
-Caching disabled for task ':app:dataBindingTriggerEntourageStagingDebug' because:
-  Caching has been disabled for the task
-Skipping task ':app:dataBindingTriggerEntourageStagingDebug' as it is up-to-date.
-Resolve mutations for :app:generateEntourageStagingDebugBuildConfig (Thread[#577,Execution worker,5,main]) started.
-:app:generateEntourageStagingDebugBuildConfig (Thread[#577,Execution worker,5,main]) started.
-
 > Task :app:generateEntourageStagingDebugBuildConfig UP-TO-DATE
-Build cache key for task ':app:generateEntourageStagingDebugBuildConfig' is a99c9092370c5ac1958a6dfee000a7d4
-Skipping task ':app:generateEntourageStagingDebugBuildConfig' as it is up-to-date.
-Resolve mutations for :app:generateEntourageStagingDebugRFile (Thread[#577,Execution worker,5,main]) started.
-:app:generateEntourageStagingDebugRFile (Thread[#577,Execution worker,5,main]) started.
-
 > Task :app:generateEntourageStagingDebugRFile UP-TO-DATE
-Build cache key for task ':app:generateEntourageStagingDebugRFile' is 839d2805d781b9a0448bf8e14e4eba78
-Skipping task ':app:generateEntourageStagingDebugRFile' as it is up-to-date.
-Resolve mutations for :app:generateSafeArgsEntourageStagingDebug (Thread[#577,Execution worker,5,main]) started.
-:app:generateSafeArgsEntourageStagingDebug (Thread[#577,Execution worker,5,main]) started.
-
 > Task :app:generateSafeArgsEntourageStagingDebug UP-TO-DATE
-Build cache key for task ':app:generateSafeArgsEntourageStagingDebug' is 796a9722ad93d9e089e1c4b60f926208
-Skipping task ':app:generateSafeArgsEntourageStagingDebug' as it is up-to-date.
-Resolve mutations for :app:kaptGenerateStubsEntourageStagingDebugKotlin (Thread[#577,Execution worker,5,main]) started.
-:app:kaptGenerateStubsEntourageStagingDebugKotlin (Thread[#577,Execution worker,5,main]) started.
+> Task :app:javaPreCompileEntourageStagingDebug UP-TO-DATE
+> Task :app:generateEntourageStagingDebugAssets UP-TO-DATE
+> Task :app:mergeEntourageStagingDebugAssets UP-TO-DATE
+> Task :app:compressEntourageStagingDebugAssets UP-TO-DATE
+> Task :app:generateEntourageStagingDebugGlobalSynthetics UP-TO-DATE
+> Task :app:l8DexDesugarLibEntourageStagingDebug UP-TO-DATE
+> Task :app:checkEntourageStagingDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarEntourageStagingDebugFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexEntourageStagingDebug UP-TO-DATE
+> Task :app:mergeLibDexEntourageStagingDebug FROM-CACHE
+> Task :app:checkEntourageStagingDebugAarMetadata UP-TO-DATE
+> Task :app:mapEntourageStagingDebugSourceSetPaths UP-TO-DATE
+> Task :app:compileEntourageStagingDebugNavigationResources UP-TO-DATE
+> Task :app:createEntourageStagingDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksEntourageStagingDebug UP-TO-DATE
+> Task :app:processEntourageStagingDebugMainManifest UP-TO-DATE
+> Task :app:processEntourageStagingDebugManifest
+> Task :app:mergeEntourageStagingDebugJniLibFolders
+> Task :app:processEntourageStagingDebugManifestForPackage
+> Task :app:mergeEntourageStagingDebugNativeLibs
 
-> Task :app:kaptGenerateStubsEntourageStagingDebugKotlin UP-TO-DATE
-Registered task dependencies: app:kotlinCompilerClasspath
-Starting dependency analysis
-Registered task dependencies: app:kotlinCompilerPluginClasspathEntourageStagingDebug
-Starting dependency analysis
-Build cache key for task ':app:kaptGenerateStubsEntourageStagingDebugKotlin' is e18fd691952de59d096c8d03cc23973a
-Skipping task ':app:kaptGenerateStubsEntourageStagingDebugKotlin' as it is up-to-date.
-Resolve mutations for :app:kaptEntourageStagingDebugKotlin (Thread[#577,Execution worker,5,main]) started.
-:app:kaptEntourageStagingDebugKotlin (Thread[#577,Execution worker,5,main]) started.
+> Task :app:stripEntourageStagingDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so. Run with --info option to learn more.
 
-> Task :app:kaptEntourageStagingDebugKotlin UP-TO-DATE
-file or directory '/app/app/src/entourageStagingDebug/kotlin', not found
-file or directory '/app/app/src/entourageStagingDebug/java', not found
-file or directory '/app/app/src/entourageStagingDebug/kotlin', not found
-file or directory '/app/app/src/entourageStagingDebug/java', not found
-file or directory '/app/app/src/entourageStagingDebug/kotlin', not found
-file or directory '/app/app/src/entourageStagingDebug/java', not found
-file or directory '/app/app/src/main/kotlin', not found
-file or directory '/app/app/src/main/kotlin', not found
-file or directory '/app/app/src/main/kotlin', not found
-file or directory '/app/app/src/staging/kotlin', not found
-file or directory '/app/app/src/staging/java', not found
-file or directory '/app/app/src/staging/kotlin', not found
-file or directory '/app/app/src/staging/java', not found
-file or directory '/app/app/src/staging/kotlin', not found
-file or directory '/app/app/src/staging/java', not found
-file or directory '/app/app/src/entourage/kotlin', not found
-file or directory '/app/app/src/entourage/java', not found
-file or directory '/app/app/src/entourage/kotlin', not found
-file or directory '/app/app/src/entourage/java', not found
-file or directory '/app/app/src/entourage/kotlin', not found
-file or directory '/app/app/src/entourage/java', not found
-file or directory '/app/app/src/entourageStaging/kotlin', not found
-file or directory '/app/app/src/entourageStaging/java', not found
-file or directory '/app/app/src/entourageStaging/kotlin', not found
-file or directory '/app/app/src/entourageStaging/java', not found
-file or directory '/app/app/src/entourageStaging/kotlin', not found
-file or directory '/app/app/src/entourageStaging/java', not found
-file or directory '/app/app/src/debug/kotlin', not found
-file or directory '/app/app/src/debug/java', not found
-file or directory '/app/app/src/debug/kotlin', not found
-file or directory '/app/app/src/debug/java', not found
-file or directory '/app/app/src/debug/kotlin', not found
-file or directory '/app/app/src/debug/java', not found
-file or directory '/app/app/src/main/kotlin', not found
-file or directory '/app/app/src/main/kotlin', not found
-file or directory '/app/app/src/main/kotlin', not found
-file or directory '/app/app/src/staging/kotlin', not found
-file or directory '/app/app/src/staging/java', not found
-file or directory '/app/app/src/staging/kotlin', not found
-file or directory '/app/app/src/staging/java', not found
-file or directory '/app/app/src/staging/kotlin', not found
-file or directory '/app/app/src/staging/java', not found
-file or directory '/app/app/src/entourage/kotlin', not found
-file or directory '/app/app/src/entourage/java', not found
-file or directory '/app/app/src/entourage/kotlin', not found
-file or directory '/app/app/src/entourage/java', not found
-file or directory '/app/app/src/entourage/kotlin', not found
-file or directory '/app/app/src/entourage/java', not found
-file or directory '/app/app/src/entourageStaging/kotlin', not found
-file or directory '/app/app/src/entourageStaging/java', not found
-file or directory '/app/app/src/entourageStaging/kotlin', not found
-file or directory '/app/app/src/entourageStaging/java', not found
-file or directory '/app/app/src/entourageStaging/kotlin', not found
-file or directory '/app/app/src/entourageStaging/java', not found
-file or directory '/app/app/src/debug/kotlin', not found
-file or directory '/app/app/src/debug/java', not found
-file or directory '/app/app/src/debug/kotlin', not found
-file or directory '/app/app/src/debug/java', not found
-file or directory '/app/app/src/debug/kotlin', not found
-file or directory '/app/app/src/debug/java', not found
-file or directory '/app/app/src/entourageStagingDebug/kotlin', not found
-file or directory '/app/app/src/entourageStagingDebug/java', not found
-file or directory '/app/app/src/entourageStagingDebug/kotlin', not found
-file or directory '/app/app/src/entourageStagingDebug/java', not found
-file or directory '/app/app/src/entourageStagingDebug/kotlin', not found
-file or directory '/app/app/src/entourageStagingDebug/java', not found
-file or directory '/app/app/src/staging/java', not found
-file or directory '/app/app/src/entourage/java', not found
-file or directory '/app/app/src/entourageStaging/java', not found
-file or directory '/app/app/src/debug/java', not found
-file or directory '/app/app/src/entourageStagingDebug/java', not found
-file or directory '/app/app/src/main/kotlin', not found
-file or directory '/app/app/src/staging/kotlin', not found
-file or directory '/app/app/src/entourage/kotlin', not found
-file or directory '/app/app/src/entourageStaging/kotlin', not found
-file or directory '/app/app/src/debug/kotlin', not found
-file or directory '/app/app/src/entourageStagingDebug/kotlin', not found
-Build cache key for task ':app:kaptEntourageStagingDebugKotlin' is 8403d509c4c98fd1a518e4abd3fb06df
-Skipping task ':app:kaptEntourageStagingDebugKotlin' as it is up-to-date.
-Resolve mutations for :app:compileEntourageStagingDebugKotlin (Thread[#577,Execution worker,5,main]) started.
-:app:compileEntourageStagingDebugKotlin (Thread[#577,Execution worker,5,main]) started.
+> Task :app:validateSigningEntourageStagingDebug
+> Task :app:writeEntourageStagingDebugAppMetadata
+> Task :app:writeEntourageStagingDebugSigningConfigVersions
 
-> Task :app:compileEntourageStagingDebugKotlin UP-TO-DATE
-Build cache key for task ':app:compileEntourageStagingDebugKotlin' is e0746312a54f8e843960c5e00e54807f
-Skipping task ':app:compileEntourageStagingDebugKotlin' as it is up-to-date.
-Build b5723ff0-4f0a-4f2a-a8f7-a020a4a2ce91 is closed
+> Task :app:kaptEntourageProdDebugKotlin
+Note: [1] Wrote GeneratedAppGlideModule with: []
 
-[Incubating] Problems report is available at: file:///app/build/reports/problems/problems-report.html
+warn: removing resource social.entourage.android.preprod.debug:string/discussion_report_discussion without required default value.
+warn: removing resource social.entourage.android.preprod.debug:string/leave_discussion without required default value.
+warn: removing resource social.entourage.android.preprod.debug:string/leave_discussion_dialog_content without required default value.
+warn: removing resource social.entourage.android.preprod.debug:string/see_discussion_event without required default value.
 
-BUILD SUCCESSFUL in 2s
-18 actionable tasks: 18 up-to-date
-Some of the file system contents retained in the virtual file system are on file systems that Gradle doesn't support watching. The relevant state was discarded to ensure changes to these locations are properly detected. You can override this by explicitly enabling file system watching.
-Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.4.1/userguide/configuration_cache_enabling.html
+
+> Task :app:processEntourageStagingDebugResources
+> Task :app:kaptGenerateStubsEntourageStagingDebugKotlin
+> Task :app:compileEntourageProdDebugKotlin
+
+> Task :app:kaptEntourageStagingDebugKotlin
+Note: [1] Wrote GeneratedAppGlideModule with: []
+
+> Task :app:compileEntourageProdDebugKotlin
+w: file:///app/app/src/main/java/social/entourage/android/MainActivity.kt:196:38 'fun startUpdateFlowForResult(p0: AppUpdateInfo, p1: Int, p2: Activity, p3: Int): Boolean' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/MainActivity.kt:272:17 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/MainActivity.kt:289:36 'fun <T : Parcelable!> getParcelableExtra(p0: String!): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/MainActivity.kt:627:43 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/MainActivity.kt:628:42 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/MainActivity.kt:643:43 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/MainActivity.kt:644:42 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/MainActivity.kt:652:9 'fun startActivityForResult(intent: Intent, requestCode: Int): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}
+      passing in a {@link StartActivityForResult} object for the {@link ActivityResultContract}.
+w: file:///app/app/src/main/java/social/entourage/android/MainActivity.kt:680:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/ActionsFragment.kt:66:27 'fun getSerializableExtra(p0: String!): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/ActionsFragment.kt:71:27 'fun getSerializableExtra(p0: String!): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/ActionsFragment.kt:259:31 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/ActionsFragment.kt:343:21 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/ActionsFragment.kt:349:21 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/create/CreateActionActivity.kt:17:29 'fun getSerializableExtra(p0: String!): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/create/CreateActionStepDescriptionFragment.kt:177:41 'fun <T : Parcelable!> getParcelable(p0: String?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/create/CreateActionStepFourFragment.kt:77:13 Condition is always 'false'.
+w: file:///app/app/src/main/java/social/entourage/android/actions/detail/ActionDetailFragment.kt:116:15 'fun onAttach(p0: Activity): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/detail/ActionDetailFragment.kt:213:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/detail/ActionDetailFragment.kt:250:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/detail/ActionDetailFragment.kt:254:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/detail/ActionDetailFragment.kt:270:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/detail/ActionDetailFragment.kt:323:41 'field locale: Locale!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/list/ActionsListAdapter.kt:112:54 'field locale: Locale!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/list/me/MyActionsListFragment.kt:136:9 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/api/model/Action.kt:123:24 Unnecessary safe call on a non-null receiver of type 'Context'.
+w: file:///app/app/src/main/java/social/entourage/android/api/model/BaseEntourage.kt:161:26 'fun setColorFilter(p0: Int, p1: PorterDuff.Mode): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/api/model/BaseEntourage.kt:347:28 Condition is always 'false'.
+w: file:///app/app/src/main/java/social/entourage/android/api/model/Events.kt:190:17 Duplicate branch condition in 'when'.
+w: file:///app/app/src/main/java/social/entourage/android/api/model/Events.kt:192:17 Duplicate branch condition in 'when'.
+w: file:///app/app/src/main/java/social/entourage/android/api/model/Events.kt:194:17 Duplicate branch condition in 'when'.
+w: file:///app/app/src/main/java/social/entourage/android/api/model/Events.kt:195:17 Duplicate branch condition in 'when'.
+w: file:///app/app/src/main/java/social/entourage/android/api/model/Events.kt:196:17 Duplicate branch condition in 'when'.
+w: file:///app/app/src/main/java/social/entourage/android/base/BaseDialogFragment.kt:38:15 'fun onActivityCreated(p0: Bundle?): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/base/location/LocationUtils.kt:18:32 'static fun create(): LocationRequest' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/base/location/LocationUtils.kt:19:14 'fun setInterval(p0: Long): LocationRequest' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/base/location/LocationUtils.kt:20:14 'fun setFastestInterval(p0: Long): LocationRequest' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/base/location/LocationUtils.kt:21:14 'fun setPriority(p0: Int): LocationRequest' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/comment/CommentsListAdapter.kt:179:22 'static fun fromHtml(p0: String!): Spanned!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/comment/CommentsListAdapter.kt:353:22 'static fun fromHtml(p0: String!): Spanned!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/comment/CommentsListAdapter.kt:517:26 'fun setColorFilter(p0: Int, p1: PorterDuff.Mode): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/comment/CommentsListAdapter.kt:578:26 'fun setColorFilter(p0: Int, p1: PorterDuff.Mode): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/comment/PostAdapter.kt:825:44 Elvis operator (?:) always returns the left operand of non-nullable type 'String'.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/DeepLinksManager.kt:161:44 'static field ALL: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:57:51 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:72:51 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:150:47 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:157:53 'fun startActivityForResult(intent: Intent, requestCode: Int): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}
+      passing in a {@link StartActivityForResult} object for the {@link ActivityResultContract}.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:167:51 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:175:53 'fun startActivityForResult(intent: Intent, requestCode: Int): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}
+      passing in a {@link StartActivityForResult} object for the {@link ActivityResultContract}.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:185:51 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:192:43 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:213:51 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:217:51 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:221:51 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:226:51 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:240:37 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:243:41 'fun startActivityForResult(intent: Intent, requestCode: Int): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}
+      passing in a {@link StartActivityForResult} object for the {@link ActivityResultContract}.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:248:37 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:253:37 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:266:35 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:300:35 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:309:35 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:331:25 'fun startActivityForResult(intent: Intent, requestCode: Int): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}
+      passing in a {@link StartActivityForResult} object for the {@link ActivityResultContract}.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:337:39 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:354:61 Redundant call of conversion method.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:260:43 Unnecessary safe call on a non-null receiver of type 'GroupMember'.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:289:17 'when' is exhaustive so 'else' is redundant here.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:444:26 Unnecessary safe call on a non-null receiver of type 'EntourageUser'.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:543:26 Unnecessary safe call on a non-null receiver of type 'User'.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:545:30 Unnecessary safe call on a non-null receiver of type 'User'.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:602:35 Unnecessary safe call on a non-null receiver of type 'GroupMember'.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:602:45 Unnecessary safe call on a non-null receiver of type 'GroupMember'.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:613:35 Unnecessary safe call on a non-null receiver of type 'GroupMember'.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:635:21 'fun startActivityForResult(intent: Intent, requestCode: Int): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}
+      passing in a {@link StartActivityForResult} object for the {@link ActivityResultContract}.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:641:21 'fun startActivityForResult(intent: Intent, requestCode: Int): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}
+      passing in a {@link StartActivityForResult} object for the {@link ActivityResultContract}.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:698:30 Unnecessary safe call on a non-null receiver of type 'GroupMember'.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:700:34 Unnecessary safe call on a non-null receiver of type 'GroupMember'.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DiscussionsListAdapter.kt:65:54 'val adapterPosition: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DiscussionsListAdapter.kt:67:54 'val adapterPosition: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DiscussionsListAdapter.kt:71:54 'val adapterPosition: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DiscussionsListAdapter.kt:74:50 'val adapterPosition: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DiscussionsListAdapter.kt:171:78 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DiscussionsListAdapter.kt:172:80 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DiscussionsListAdapter.kt:176:78 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DiscussionsListAdapter.kt:177:80 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DiscussionsListAdapter.kt:193:68 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/enhanced_onboarding/EnhancedOnboarding.kt:36:48 'static field SOFT_INPUT_ADJUST_RESIZE: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/enhanced_onboarding/EnhancedOnboarding.kt:224:13 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/enhanced_onboarding/fragments/OnboardingActionWishesFragment.kt:102:50 Elvis operator (?:) always returns the left operand of non-nullable type 'ArrayList<String>'.
+w: file:///app/app/src/main/java/social/entourage/android/enhanced_onboarding/fragments/OnboardingActionWishesFragment.kt:103:50 Elvis operator (?:) always returns the left operand of non-nullable type 'ArrayList<String>'.
+w: file:///app/app/src/main/java/social/entourage/android/entourage/ShareEntourageAdapter.kt:67:26 'fun setColorFilter(p0: Int, p1: PorterDuff.Mode): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EditRecurrenceActivity.kt:32:23 'fun getSerializableExtra(p0: String!): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventFiltersActivity.kt:75:33 'fun getSerializableExtra(p0: String!): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventFiltersActivity.kt:242:44 'val address: String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventFiltersActivity.kt:243:34 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'String?'.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventFiltersActivity.kt:243:40 'val address: String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventFiltersActivity.kt:249:45 'val latLng: LatLng!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventFiltersActivity.kt:249:70 'val latLng: LatLng!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventFiltersActivity.kt:254:44 'val latLng: LatLng!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventFiltersActivity.kt:267:49 'fun getFromLocation(p0: Double, p1: Double, p2: Int): (Mutable)List<Address!>?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventFiltersActivity.kt:309:53 'fun getFromLocation(p0: Double, p1: Double, p2: Int): (Mutable)List<Address!>?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventModel.kt:53:16 'fun readSerializable(): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventModel.kt:58:53 'fun readList(p0: (MutableList<Any?>..List<*>), p1: ClassLoader?): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventsFragment.kt:64:40 'fun getSerializableExtra(p0: String!): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventsFragment.kt:247:30 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventsFragment.kt:350:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventsFragment.kt:382:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventsFragment.kt:389:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/create/CreateEventFragment.kt:67:35 'fun getSerializableExtra(p0: String!): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/create/CreateEventStepFiveFragment.kt:166:59 Unnecessary safe call on a non-null receiver of type 'MutableList<Int>'.
+w: file:///app/app/src/main/java/social/entourage/android/events/create/CreateEventStepFiveFragment.kt:167:59 Unnecessary safe call on a non-null receiver of type 'MutableList<Int>'.
+w: file:///app/app/src/main/java/social/entourage/android/events/create/CreateEventStepFiveFragment.kt:170:59 Unnecessary safe call on a non-null receiver of type 'MutableList<Int>'.
+w: file:///app/app/src/main/java/social/entourage/android/events/create/CreateEventStepOneFragment.kt:63:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///app/app/src/main/java/social/entourage/android/events/create/CreateEventStepOneFragment.kt:64:15 'fun onActivityResult(p0: Int, p1: Int, p2: Intent?): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/create/CreateEventStepOneFragment.kt:171:40 'fun <T : Parcelable!> getParcelable(p0: String?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/create/CreateEventStepTwoFragment.kt:142:68 Java type mismatch: inferred type is 'Date?', but 'Date' was expected.
+w: file:///app/app/src/main/java/social/entourage/android/events/create/CreateEventStepTwoFragment.kt:143:66 Java type mismatch: inferred type is 'Date?', but 'Date' was expected.
+w: file:///app/app/src/main/java/social/entourage/android/events/create/CreateEventSuccessFragment.kt:40:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/SettingsModalFragment.kt:84:28 'fun getSerializable(p0: String?): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/SettingsModalFragment.kt:171:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/SettingsModalFragment.kt:179:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/SettingsModalFragment.kt:195:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/feed/AboutEventFragment.kt:307:9 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/feed/AboutEventFragment.kt:319:21 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/feed/EventCommentActivity.kt:129:18 'static fun toHtml(p0: Spanned!): String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/feed/EventFeedFragment.kt:244:35 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/feed/EventFeedFragment.kt:407:35 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/feed/EventFeedFragment.kt:417:9 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/feed/EventFeedFragment.kt:429:21 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/feed/EventFeedFragment.kt:689:31 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/feed/EventFeedFragment.kt:803:27 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/feed/EventFeedFragment.kt:839:27 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/list/AllEventAdapter.kt:98:37 Unnecessary safe call on a non-null receiver of type 'FeedItemAuthor'.
+w: file:///app/app/src/main/java/social/entourage/android/events/list/DiscoverEventsListFragment.kt:71:40 'fun getSerializableExtra(p0: String!): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/list/GroupEventsListFragment.kt:80:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/list/MyEventsListFragment.kt:81:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/GroupModel.kt:37:35 Type argument for type parameter 'T' has possible incompatible upper bounds: Parcelable!, Translation? (final class and interface: android/os/Parcelable, social/entourage/android/api/model/notification/Translation).
+w: file:///app/app/src/main/java/social/entourage/android/groups/GroupModel.kt:40:16 'fun <T : Parcelable!> readParcelable(p0: ClassLoader?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/GroupModel.kt:46:16 'fun <T : Parcelable!> readParcelable(p0: ClassLoader?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/GroupModel.kt:47:53 'fun readList(p0: (MutableList<Any?>..List<*>), p1: ClassLoader?): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/GroupModel.kt:51:16 'fun <T : Parcelable!> readParcelable(p0: ClassLoader?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/GroupsFragment.kt:118:31 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/GroupsFragment.kt:466:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/GroupsFragment.kt:472:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/choosePhoto/ChooseGalleryPhotoModalFragment.kt:104:33 'fun getSerializable(p0: String?): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/create/CreateGroupStepThreeFragment.kt:103:36 'fun <T : Parcelable!> getParcelable(p0: String?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/create/CreateGroupSuccessFragment.kt:70:31 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/GroupDetailsFragment.kt:182:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/GroupDetailsFragment.kt:216:28 'fun <T : Parcelable!> getParcelable(p0: String?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/GroupDetailsFragment.kt:226:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/feed/GroupCommentActivity.kt:93:18 'static fun toHtml(p0: Spanned!): String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/feed/GroupFeedFragment.kt:328:9 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/feed/GroupFeedFragment.kt:439:27 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/feed/GroupFeedFragment.kt:496:27 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/feed/GroupFeedFragment.kt:559:27 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/feed/GroupFeedFragment.kt:684:31 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/feed/GroupFeedFragment.kt:828:9 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/feed/GroupFeedFragment.kt:985:21 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/feed/GroupFeedFragment.kt:1000:39 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/members/MembersFragment.kt:176:58 Condition is always 'true'.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/members/MembersFragment.kt:177:65 Unnecessary non-null assertion (!!) on a non-null receiver of type 'Int'.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/members/MembersFragment.kt:205:58 Condition is always 'true'.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/members/MembersFragment.kt:206:65 Unnecessary non-null assertion (!!) on a non-null receiver of type 'Int'.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/members/MembersFragment.kt:223:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/edit/EditGroupFragment.kt:205:36 'fun <T : Parcelable!> getParcelable(p0: String?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSMainActivity.kt:18:47 'fun onBackPressed(): Unit' is deprecated. This method has been deprecated in favor of using the
+      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.
+      The OnBackPressedDispatcher controls how back button events are dispatched
+      to one or more {@link OnBackPressedCallback} objects.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:63:27 Unnecessary safe call on a non-null receiver of type 'ProgressBar'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:64:32 Unnecessary safe call on a non-null receiver of type 'ImageButton'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:66:25 Unnecessary safe call on a non-null receiver of type 'ImageButton'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:67:31 Unnecessary safe call on a non-null receiver of type 'EditText'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:71:32 Unnecessary safe call on a non-null receiver of type 'ImageButton'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:72:31 Unnecessary safe call on a non-null receiver of type 'EditText'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:77:27 Unnecessary safe call on a non-null receiver of type 'EditText'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:89:44 Unnecessary safe call on a non-null receiver of type 'ImageButton'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:92:44 Unnecessary safe call on a non-null receiver of type 'ImageButton'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:99:27 Unnecessary safe call on a non-null receiver of type 'EditText'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:102:27 Unnecessary safe call on a non-null receiver of type 'EditText'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:107:31 Unnecessary safe call on a non-null receiver of type 'RecyclerView'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:110:31 Unnecessary safe call on a non-null receiver of type 'RecyclerView'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:111:31 Unnecessary safe call on a non-null receiver of type 'RecyclerView'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:116:32 Unnecessary safe call on a non-null receiver of type 'EditText'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:118:27 Unnecessary safe call on a non-null receiver of type 'EditText'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:120:27 Unnecessary safe call on a non-null receiver of type 'ProgressBar'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:133:35 Unnecessary safe call on a non-null receiver of type 'ProgressBar'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:139:35 Unnecessary safe call on a non-null receiver of type 'ProgressBar'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GuideHubFragment.kt:34:38 Unnecessary safe call on a non-null receiver of type 'ConstraintLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GuideHubFragment.kt:35:38 Unnecessary safe call on a non-null receiver of type 'ConstraintLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GuideHubFragment.kt:39:30 Unnecessary safe call on a non-null receiver of type 'ConstraintLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GuideHubFragment.kt:44:31 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GuideHubFragment.kt:47:30 Unnecessary safe call on a non-null receiver of type 'ConstraintLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GuideHubFragment.kt:51:30 Unnecessary safe call on a non-null receiver of type 'ConstraintLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GuideHubFragment.kt:55:30 Unnecessary safe call on a non-null receiver of type 'ConstraintLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GuideHubFragment.kt:59:30 Unnecessary safe call on a non-null receiver of type 'ConstraintLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GuideMapFragment.kt:161:45 'val myLocation: Location' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GuideMapFragment.kt:177:18 'val myLocation: Location' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/guide/poi/ReadPoiFragment.kt:49:26 'fun getSerializable(p0: String?): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeActionAdapter.kt:65:57 'field locale: Locale!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeEventAdapter.kt:81:57 'field locale: Locale!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeEventAdapter.kt:144:29 Unnecessary safe call on a non-null receiver of type 'FeedItemAuthor'.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeEventAdapter.kt:144:99 Unnecessary safe call on a non-null receiver of type 'FeedItemAuthor'.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:431:39 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:512:17 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:518:35 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:552:39 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:699:31 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:714:31 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:746:27 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:752:27 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:896:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:1053:31 Unnecessary safe call on a non-null receiver of type 'HomePedagoAdapter'.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:1172:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeSingleLayoutAdapter.kt:10:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to field.
+- To opt in to applying to both value parameter and field, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///app/app/src/main/java/social/entourage/android/home/RecommendationsListAdapter.kt:51:66 'fun getDrawable(p0: Int): Drawable!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/pedago/PedagoContentDetailsFragment.kt:67:27 'fun onBackPressed(): Unit' is deprecated. This method has been deprecated in favor of using the
+      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.
+      The OnBackPressedDispatcher controls how back button events are dispatched
+      to one or more {@link OnBackPressedCallback} objects.
+w: file:///app/app/src/main/java/social/entourage/android/home/pedago/PedagoContentDetailsFragment.kt:70:27 'fun onBackPressed(): Unit' is deprecated. This method has been deprecated in favor of using the
+      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.
+      The OnBackPressedDispatcher controls how back button events are dispatched
+      to one or more {@link OnBackPressedCallback} objects.
+w: file:///app/app/src/main/java/social/entourage/android/home/pedago/PedagoContentDetailsFragment.kt:112:34 'var systemUiVisibility: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/pedago/PedagoContentDetailsFragment.kt:126:63 'var systemUiVisibility: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/pedago/PedagoContentDetailsFragment.kt:136:34 'var systemUiVisibility: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/pedago/PedagoDetailActivity.kt:60:12 Condition is always 'true'.
+w: file:///app/app/src/main/java/social/entourage/android/home/pedago/PedagoDetailActivity.kt:71:18 'fun onBackPressed(): Unit' is deprecated. This method has been deprecated in favor of using the
+      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.
+      The OnBackPressedDispatcher controls how back button events are dispatched
+      to one or more {@link OnBackPressedCallback} objects.
+w: file:///app/app/src/main/java/social/entourage/android/home/pedago/PedagoListFragment.kt:148:31 'fun onBackPressed(): Unit' is deprecated. This method has been deprecated in favor of using the
+      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.
+      The OnBackPressedDispatcher controls how back button events are dispatched
+      to one or more {@link OnBackPressedCallback} objects.
+w: file:///app/app/src/main/java/social/entourage/android/involvement/RateActivity.kt:18:24 'static field FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/involvement/ShareActivity.kt:15:24 'static field FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/language/LanguageManager.kt:47:16 'constructor(p0: String!): Locale' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/language/LanguageManager.kt:51:22 'constructor(p0: String!): Locale' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/language/LanguageManager.kt:55:27 'fun updateConfiguration(p0: Configuration!, p1: DisplayMetrics!): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/main_filter/MainFilterActivity.kt:237:65 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/main_filter/MainFilterActivity.kt:280:43 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/main_filter/MainFilterActivity.kt:293:38 'val name: String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/main_filter/MainFilterActivity.kt:295:69 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/main_filter/MainFilterActivity.kt:298:48 'val name: String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/main_filter/MainFilterActivity.kt:298:62 'val latLng: LatLng!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/main_filter/MainFilterActivity.kt:298:87 'val latLng: LatLng!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/main_filter/MainFilterActivity.kt:325:65 Elvis operator (?:) always returns the left operand of non-nullable type 'String'.
+w: file:///app/app/src/main/java/social/entourage/android/members/MembersActivity.kt:167:38 Elvis operator (?:) always returns the left operand of non-nullable type 'Int'.
+w: file:///app/app/src/main/java/social/entourage/android/members/MembersActivity.kt:356:9 'fun startActivityForResult(intent: Intent, requestCode: Int): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}
+      passing in a {@link StartActivityForResult} object for the {@link ActivityResultContract}.
+w: file:///app/app/src/main/java/social/entourage/android/notifications/InAppListNotificationsAdapter.kt:84:80 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/notifications/InAppListNotificationsAdapter.kt:85:90 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/notifications/InAppListNotificationsAdapter.kt:88:80 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/notifications/InAppListNotificationsAdapter.kt:89:90 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/notifications/NotificationActionManager.kt:34:26 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/notifications/NotificationActionManager.kt:45:26 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/notifications/NotificationActionManager.kt:123:30 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/notifications/PushNotificationManager.kt:319:22 'field defaults: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/notifications/PushNotificationManager.kt:347:22 'field defaults: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/notifications/PushNotificationManager.kt:430:68 Unnecessary safe call on a non-null receiver of type 'PushNotificationContent'.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/login/LoginActivity.kt:110:25 Unnecessary safe call on a non-null receiver of type 'ImageView'.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/login/LoginActivity.kt:143:13 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/login/LoginActivity.kt:185:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/login/LoginActivity.kt:190:15 'fun onBackPressed(): Unit' is deprecated. This method has been deprecated in favor of using the
+      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.
+      The OnBackPressedDispatcher controls how back button events are dispatched
+      to one or more {@link OnBackPressedCallback} objects.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingAssociationChoiceActivity.kt:190:58 'static field SHOW_IMPLICIT: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingEditPhotoFragment.kt:39:27 'fun <T : Parcelable!> getParcelable(p0: String?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingEditPhotoFragment.kt:77:67 'fun setColorFilter(p0: Int, p1: PorterDuff.Mode): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase1Fragment.kt:98:26 'fun getSerializable(p0: String?): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase1Fragment.kt:153:41 The corresponding parameter in the supertype 'CountryCodePickerListener' is named 'country'. This may cause problems when calling this function with named arguments.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase1Fragment.kt:337:51 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase1Fragment.kt:354:58 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase1Fragment.kt:372:52 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase1Fragment.kt:409:50 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase1Fragment.kt:436:59 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase1Fragment.kt:437:57 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase1Fragment.kt:478:25 'val calendarView: CalendarView!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase2Fragment.kt:56:44 'fun <T : Parcelable!> getParcelable(p0: String?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase2Fragment.kt:75:26 'fun get(p0: String!): Any?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingStartActivity.kt:84:15 'fun onBackPressed(): Unit' is deprecated. This method has been deprecated in favor of using the
+      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.
+      The OnBackPressedDispatcher controls how back button events are dispatched
+      to one or more {@link OnBackPressedCallback} objects.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingZoneChoiceActivity.kt:112:13 'fun onBackPressed(): Unit' is deprecated. This method has been deprecated in favor of using the
+      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.
+      The OnBackPressedDispatcher controls how back button events are dispatched
+      to one or more {@link OnBackPressedCallback} objects.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingZoneChoiceActivity.kt:187:49 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingZoneChoiceActivity.kt:242:58 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingZoneChoiceActivity.kt:246:45 Unchecked cast of 'ListAdapter!' to 'ArrayAdapter<String>'.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingZoneChoiceActivity.kt:274:36 'val latLng: LatLng!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingZoneChoiceActivity.kt:275:35 'val name: String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingZoneChoiceActivity.kt:275:49 'val address: String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingZoneChoiceActivity.kt:311:43 Redundant call of conversion method.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/ProfileChoiceAdapter.kt:16:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to field.
+- To opt in to applying to both value parameter and field, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/ProfileChoiceAdapter.kt:17:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to field.
+- To opt in to applying to both value parameter and field, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/ProfileChoiceAdapter.kt:18:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to field.
+- To opt in to applying to both value parameter and field, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/pre_onboarding/PreOnboardingRVAdapter.kt:19:88 'static field LAYOUT_DIRECTION_RTL: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/pre_onboarding/PreOnboardingStartActivity.kt:94:75 'static field LAYOUT_DIRECTION_RTL: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/pre_onboarding/PreOnboardingStartActivity.kt:97:24 'static fun setLayoutDirection(p0: View, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/pre_onboarding/PreOnboardingStartActivity.kt:97:78 'static field LAYOUT_DIRECTION_RTL: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/pre_onboarding/PreOnboardingStartActivity.kt:99:24 'static fun setLayoutDirection(p0: View, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/pre_onboarding/PreOnboardingStartActivity.kt:99:78 'static field LAYOUT_DIRECTION_LTR: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/posts/CreatePostActivity.kt:230:31 'fun <T : Parcelable!> getParcelable(p0: String?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/profile/EditProfileActivity.kt:274:37 'field locale: Locale!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/profile/EditProfileActivity.kt:397:46 'val name: String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/profile/EditProfileActivity.kt:399:35 'val latLng: LatLng!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/profile/EditProfileActivity.kt:401:27 'val name: String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/profile/ProfileFullActivity.kt:189:17 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/profile/ProfileFullActivity.kt:670:13 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/profile/ProfileFullActivity.kt:1365:17 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/profile/SettingProfileFullAdapter.kt:98:49 'field locale: Locale!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/profile/activities_settings/EditPasswordActivity.kt:39:112 Elvis operator (?:) always returns the left operand of non-nullable type 'String'.
+w: file:///app/app/src/main/java/social/entourage/android/profile/association/AssociationPresenter.kt:140:40 'fun create(contentType: MediaType?, content: ByteArray, offset: Int = ..., byteCount: Int = ...): RequestBody' is deprecated. Moved to extension function. Put the 'content' argument first to fix Java.
+w: file:///app/app/src/main/java/social/entourage/android/profile/association/AssociationProfileFragment.kt:137:27 'fun onBackPressed(): Unit' is deprecated. This method has been deprecated in favor of using the
+      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.
+      The OnBackPressedDispatcher controls how back button events are dispatched
+      to one or more {@link OnBackPressedCallback} objects.
+w: file:///app/app/src/main/java/social/entourage/android/profile/editProfile/EditPasswordFragment.kt:54:104 Elvis operator (?:) always returns the left operand of non-nullable type 'String'.
+w: file:///app/app/src/main/java/social/entourage/android/profile/oss/OSSLibsActivity.kt:5:8 'class LibsBuilder : Serializable' is deprecated. The legacy view based UI will be deprecated in the future. Please consider moving to the compose based UI.
+w: file:///app/app/src/main/java/social/entourage/android/profile/oss/OSSLibsActivity.kt:13:24 'constructor(): LibsBuilder' is deprecated. The legacy view based UI will be deprecated in the future. Please consider moving to the compose based UI.
+w: file:///app/app/src/main/java/social/entourage/android/report/ActionSheetFragment.kt:153:32 Unnecessary safe call on a non-null receiver of type 'ImageView'.
+w: file:///app/app/src/main/java/social/entourage/android/report/ActionSheetFragment.kt:583:17 'when' is exhaustive so 'else' is redundant here.
+w: file:///app/app/src/main/java/social/entourage/android/report/ReportModalFragment.kt:143:22 'fun getRealMetrics(p0: DisplayMetrics!): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/report/ReportModalFragment.kt:518:101 Redundant call of conversion method.
+w: file:///app/app/src/main/java/social/entourage/android/small_talks/SmallTalkActivity.kt:160:67 Elvis operator (?:) always returns the left operand of non-nullable type 'String'.
+w: file:///app/app/src/main/java/social/entourage/android/small_talks/SmallTalkActivity.kt:235:17 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/small_talks/SmallTalkIntroActivity.kt:75:17 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/survey/ResponseSurveyActivity.kt:75:13 'fun startActivityForResult(intent: Intent, requestCode: Int): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}
+      passing in a {@link StartActivityForResult} object for the {@link ActivityResultContract}.
+w: file:///app/app/src/main/java/social/entourage/android/tools/Extensions.kt:93:14 'fun setColorFilter(p0: Int, p1: PorterDuff.Mode): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/Extensions.kt:93:39 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/Extensions.kt:131:13 'fun toggleSoftInput(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/Extensions.kt:132:36 'static field SHOW_FORCED: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/Extensions.kt:133:36 'static field HIDE_IMPLICIT_ONLY: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/image_viewer/ImageViewerActivity.kt:54:23 'val defaultDisplay: Display!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/image_viewer/ImageViewerActivity.kt:54:38 'fun getMetrics(p0: DisplayMetrics!): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/utils/EditTextExtension.kt:90:60 'static field SHOW_IMPLICIT: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/utils/Utils.kt:255:18 'static fun fromHtml(p0: String!): Spanned!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/utils/Utils.kt:332:37 'static fun getBitmap(p0: ContentResolver!, p1: Uri!): Bitmap!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/ShareMessageFragment.kt:48:47 Unnecessary safe call on a non-null receiver of type 'FloatingActionButton'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/ShareMessageFragment.kt:54:47 Unnecessary safe call on a non-null receiver of type 'FloatingActionButton'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/ShareMessageFragment.kt:114:45 Unnecessary safe call on a non-null receiver of type 'RecyclerView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/ShareMessageFragment.kt:115:45 Unnecessary safe call on a non-null receiver of type 'RecyclerView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/ShareMessageFragment.kt:116:45 Unnecessary safe call on a non-null receiver of type 'RecyclerView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:32:8 'class GestureDetectorCompat : Any' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:52:40 'class GestureDetectorCompat : Any' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:65:9 'fun setHasOptionsMenu(p0: Boolean): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:92:24 Unnecessary safe call on a non-null receiver of type 'WebView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:120:38 Unnecessary safe call on a non-null receiver of type 'RelativeLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:133:38 Unnecessary safe call on a non-null receiver of type 'RelativeLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:137:24 Unnecessary safe call on a non-null receiver of type 'WebView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:138:24 Unnecessary safe call on a non-null receiver of type 'WebView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:139:24 Unnecessary safe call on a non-null receiver of type 'WebView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:140:24 Unnecessary safe call on a non-null receiver of type 'WebView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:144:37 'constructor(p0: Context, p1: GestureDetector.OnGestureListener): GestureDetectorCompat' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:153:38 Unnecessary safe call on a non-null receiver of type 'RelativeLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:161:28 Unnecessary safe call on a non-null receiver of type 'WebView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:162:28 Unnecessary safe call on a non-null receiver of type 'WebView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:176:24 Unnecessary safe call on a non-null receiver of type 'WebView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:188:24 Unnecessary safe call on a non-null receiver of type 'WebView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:198:24 Unnecessary safe call on a non-null receiver of type 'WebView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:251:39 Unnecessary safe call on a non-null receiver of type 'ProgressBar'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:257:19 'fun onReceivedError(p0: WebView!, p1: Int, p2: String!, p3: String!): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:258:39 Unnecessary safe call on a non-null receiver of type 'ProgressBar'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:263:39 Unnecessary safe call on a non-null receiver of type 'ProgressBar'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:268:39 Unnecessary safe call on a non-null receiver of type 'ProgressBar'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:293:61 Unnecessary safe call on a non-null receiver of type 'RelativeLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:296:46 Unnecessary safe call on a non-null receiver of type 'RelativeLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:370:56 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:371:65 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/countrycodepicker/CountryCodeAdapter.kt:27:45 'val adapterPosition: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/countrycodepicker/CountryCodeDialog.kt:114:34 'fun toggleSoftInput(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/countrycodepicker/CountryCodeDialog.kt:114:69 'static field SHOW_FORCED: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/countrycodepicker/CountryCodePicker.kt:8:8 'class PhoneNumberFormattingTextWatcher : Any, TextWatcher' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/countrycodepicker/CountryCodePicker.kt:383:46 'class PhoneNumberFormattingTextWatcher : Any, TextWatcher' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/countrycodepicker/CountryCodePicker.kt:384:25 'constructor(): PhoneNumberFormattingTextWatcher' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/countrycodepicker/CountryCodePicker.kt:385:45 'constructor(p0: String!): PhoneNumberFormattingTextWatcher' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/user/edit/place/UserActionPlaceFragment.kt:73:30 'fun getSerializable(p0: String?): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/user/edit/place/UserActionPlaceFragment.kt:102:15 'fun onActivityResult(p0: Int, p1: Int, p2: Intent?): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/user/edit/place/UserActionPlaceFragment.kt:108:48 'val address: String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/user/edit/place/UserActionPlaceFragment.kt:109:35 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'String?'.
+w: file:///app/app/src/main/java/social/entourage/android/user/edit/place/UserActionPlaceFragment.kt:109:41 'val address: String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/user/edit/place/UserActionPlaceFragment.kt:115:62 'val latLng: LatLng!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/user/edit/place/UserActionPlaceFragment.kt:199:61 'fun getFromLocation(p0: Double, p1: Double, p2: Int): (Mutable)List<Address!>?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/user/edit/place/UserActionPlaceFragment.kt:230:9 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/user/edit/place/UserEditActionZoneFragment.kt:104:30 'fun getFromLocationName(p0: String, p1: Int): (Mutable)List<Address!>?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/user/edit/place/UserEditActionZoneFragment.kt:109:69 Redundant call of conversion method.
+w: file:///app/app/src/main/java/social/entourage/android/user/partner/PartnerFragment.kt:39:34 'fun getSerializable(p0: String?): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/widgets/WidgetMainUpdateService.kt:3:8 'class IntentService : Service' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/widgets/WidgetMainUpdateService.kt:15:33 'constructor(p0: String!): IntentService' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/widgets/WidgetMainUpdateService.kt:15:33 'class IntentService : Service' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/widgets/WidgetMainUpdateService.kt:17:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+
+> Task :app:compileEntourageStagingDebugKotlin
+> Task :app:compileEntourageProdDebugJavaWithJavac
+> Task :app:processEntourageProdDebugJavaRes
+> Task :app:mergeEntourageProdDebugJavaResource
+
+> Task :app:compileEntourageStagingDebugKotlin
+w: file:///app/app/src/main/java/social/entourage/android/MainActivity.kt:196:38 'fun startUpdateFlowForResult(p0: AppUpdateInfo, p1: Int, p2: Activity, p3: Int): Boolean' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/MainActivity.kt:272:17 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/MainActivity.kt:289:36 'fun <T : Parcelable!> getParcelableExtra(p0: String!): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/MainActivity.kt:627:43 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/MainActivity.kt:628:42 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/MainActivity.kt:643:43 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/MainActivity.kt:644:42 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/MainActivity.kt:652:9 'fun startActivityForResult(intent: Intent, requestCode: Int): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}
+      passing in a {@link StartActivityForResult} object for the {@link ActivityResultContract}.
+w: file:///app/app/src/main/java/social/entourage/android/MainActivity.kt:680:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/ActionsFragment.kt:66:27 'fun getSerializableExtra(p0: String!): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/ActionsFragment.kt:71:27 'fun getSerializableExtra(p0: String!): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/ActionsFragment.kt:259:31 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/ActionsFragment.kt:343:21 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/ActionsFragment.kt:349:21 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/create/CreateActionActivity.kt:17:29 'fun getSerializableExtra(p0: String!): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/create/CreateActionStepDescriptionFragment.kt:177:41 'fun <T : Parcelable!> getParcelable(p0: String?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/create/CreateActionStepFourFragment.kt:77:13 Condition is always 'false'.
+w: file:///app/app/src/main/java/social/entourage/android/actions/detail/ActionDetailFragment.kt:116:15 'fun onAttach(p0: Activity): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/detail/ActionDetailFragment.kt:213:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/detail/ActionDetailFragment.kt:250:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/detail/ActionDetailFragment.kt:254:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/detail/ActionDetailFragment.kt:270:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/detail/ActionDetailFragment.kt:323:41 'field locale: Locale!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/list/ActionsListAdapter.kt:112:54 'field locale: Locale!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/actions/list/me/MyActionsListFragment.kt:136:9 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/api/model/Action.kt:123:24 Unnecessary safe call on a non-null receiver of type 'Context'.
+w: file:///app/app/src/main/java/social/entourage/android/api/model/BaseEntourage.kt:161:26 'fun setColorFilter(p0: Int, p1: PorterDuff.Mode): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/api/model/BaseEntourage.kt:347:28 Condition is always 'false'.
+w: file:///app/app/src/main/java/social/entourage/android/api/model/Events.kt:190:17 Duplicate branch condition in 'when'.
+w: file:///app/app/src/main/java/social/entourage/android/api/model/Events.kt:192:17 Duplicate branch condition in 'when'.
+w: file:///app/app/src/main/java/social/entourage/android/api/model/Events.kt:194:17 Duplicate branch condition in 'when'.
+w: file:///app/app/src/main/java/social/entourage/android/api/model/Events.kt:195:17 Duplicate branch condition in 'when'.
+w: file:///app/app/src/main/java/social/entourage/android/api/model/Events.kt:196:17 Duplicate branch condition in 'when'.
+w: file:///app/app/src/main/java/social/entourage/android/base/BaseDialogFragment.kt:38:15 'fun onActivityCreated(p0: Bundle?): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/base/location/LocationUtils.kt:18:32 'static fun create(): LocationRequest' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/base/location/LocationUtils.kt:19:14 'fun setInterval(p0: Long): LocationRequest' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/base/location/LocationUtils.kt:20:14 'fun setFastestInterval(p0: Long): LocationRequest' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/base/location/LocationUtils.kt:21:14 'fun setPriority(p0: Int): LocationRequest' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/comment/CommentsListAdapter.kt:179:22 'static fun fromHtml(p0: String!): Spanned!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/comment/CommentsListAdapter.kt:353:22 'static fun fromHtml(p0: String!): Spanned!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/comment/CommentsListAdapter.kt:517:26 'fun setColorFilter(p0: Int, p1: PorterDuff.Mode): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/comment/CommentsListAdapter.kt:578:26 'fun setColorFilter(p0: Int, p1: PorterDuff.Mode): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/comment/PostAdapter.kt:825:44 Elvis operator (?:) always returns the left operand of non-nullable type 'String'.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/DeepLinksManager.kt:161:44 'static field ALL: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:57:51 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:72:51 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:150:47 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:157:53 'fun startActivityForResult(intent: Intent, requestCode: Int): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}
+      passing in a {@link StartActivityForResult} object for the {@link ActivityResultContract}.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:167:51 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:175:53 'fun startActivityForResult(intent: Intent, requestCode: Int): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}
+      passing in a {@link StartActivityForResult} object for the {@link ActivityResultContract}.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:185:51 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:192:43 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:213:51 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:217:51 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:221:51 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:226:51 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:240:37 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:243:41 'fun startActivityForResult(intent: Intent, requestCode: Int): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}
+      passing in a {@link StartActivityForResult} object for the {@link ActivityResultContract}.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:248:37 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:253:37 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:266:35 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:300:35 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:309:35 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:331:25 'fun startActivityForResult(intent: Intent, requestCode: Int): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}
+      passing in a {@link StartActivityForResult} object for the {@link ActivityResultContract}.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:337:39 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/deeplinks/UniversalLinkManager.kt:354:61 Redundant call of conversion method.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:260:43 Unnecessary safe call on a non-null receiver of type 'GroupMember'.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:289:17 'when' is exhaustive so 'else' is redundant here.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:444:26 Unnecessary safe call on a non-null receiver of type 'EntourageUser'.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:543:26 Unnecessary safe call on a non-null receiver of type 'User'.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:545:30 Unnecessary safe call on a non-null receiver of type 'User'.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:602:35 Unnecessary safe call on a non-null receiver of type 'GroupMember'.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:602:45 Unnecessary safe call on a non-null receiver of type 'GroupMember'.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:613:35 Unnecessary safe call on a non-null receiver of type 'GroupMember'.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:635:21 'fun startActivityForResult(intent: Intent, requestCode: Int): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}
+      passing in a {@link StartActivityForResult} object for the {@link ActivityResultContract}.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:641:21 'fun startActivityForResult(intent: Intent, requestCode: Int): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}
+      passing in a {@link StartActivityForResult} object for the {@link ActivityResultContract}.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:698:30 Unnecessary safe call on a non-null receiver of type 'GroupMember'.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DetailConversationActivity.kt:700:34 Unnecessary safe call on a non-null receiver of type 'GroupMember'.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DiscussionsListAdapter.kt:65:54 'val adapterPosition: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DiscussionsListAdapter.kt:67:54 'val adapterPosition: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DiscussionsListAdapter.kt:71:54 'val adapterPosition: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DiscussionsListAdapter.kt:74:50 'val adapterPosition: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DiscussionsListAdapter.kt:171:78 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DiscussionsListAdapter.kt:172:80 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DiscussionsListAdapter.kt:176:78 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DiscussionsListAdapter.kt:177:80 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/discussions/DiscussionsListAdapter.kt:193:68 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/enhanced_onboarding/EnhancedOnboarding.kt:36:48 'static field SOFT_INPUT_ADJUST_RESIZE: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/enhanced_onboarding/EnhancedOnboarding.kt:224:13 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/enhanced_onboarding/fragments/OnboardingActionWishesFragment.kt:102:50 Elvis operator (?:) always returns the left operand of non-nullable type 'ArrayList<String>'.
+w: file:///app/app/src/main/java/social/entourage/android/enhanced_onboarding/fragments/OnboardingActionWishesFragment.kt:103:50 Elvis operator (?:) always returns the left operand of non-nullable type 'ArrayList<String>'.
+w: file:///app/app/src/main/java/social/entourage/android/entourage/ShareEntourageAdapter.kt:67:26 'fun setColorFilter(p0: Int, p1: PorterDuff.Mode): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EditRecurrenceActivity.kt:32:23 'fun getSerializableExtra(p0: String!): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventFiltersActivity.kt:75:33 'fun getSerializableExtra(p0: String!): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventFiltersActivity.kt:242:44 'val address: String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventFiltersActivity.kt:243:34 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'String?'.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventFiltersActivity.kt:243:40 'val address: String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventFiltersActivity.kt:249:45 'val latLng: LatLng!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventFiltersActivity.kt:249:70 'val latLng: LatLng!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventFiltersActivity.kt:254:44 'val latLng: LatLng!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventFiltersActivity.kt:267:49 'fun getFromLocation(p0: Double, p1: Double, p2: Int): (Mutable)List<Address!>?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventFiltersActivity.kt:309:53 'fun getFromLocation(p0: Double, p1: Double, p2: Int): (Mutable)List<Address!>?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventModel.kt:53:16 'fun readSerializable(): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventModel.kt:58:53 'fun readList(p0: (MutableList<Any?>..List<*>), p1: ClassLoader?): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventsFragment.kt:64:40 'fun getSerializableExtra(p0: String!): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventsFragment.kt:247:30 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventsFragment.kt:350:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventsFragment.kt:382:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/EventsFragment.kt:389:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/create/CreateEventFragment.kt:67:35 'fun getSerializableExtra(p0: String!): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/create/CreateEventStepFiveFragment.kt:166:59 Unnecessary safe call on a non-null receiver of type 'MutableList<Int>'.
+w: file:///app/app/src/main/java/social/entourage/android/events/create/CreateEventStepFiveFragment.kt:167:59 Unnecessary safe call on a non-null receiver of type 'MutableList<Int>'.
+w: file:///app/app/src/main/java/social/entourage/android/events/create/CreateEventStepFiveFragment.kt:170:59 Unnecessary safe call on a non-null receiver of type 'MutableList<Int>'.
+w: file:///app/app/src/main/java/social/entourage/android/events/create/CreateEventStepOneFragment.kt:63:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///app/app/src/main/java/social/entourage/android/events/create/CreateEventStepOneFragment.kt:64:15 'fun onActivityResult(p0: Int, p1: Int, p2: Intent?): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/create/CreateEventStepOneFragment.kt:171:40 'fun <T : Parcelable!> getParcelable(p0: String?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/create/CreateEventStepTwoFragment.kt:142:68 Java type mismatch: inferred type is 'Date?', but 'Date' was expected.
+w: file:///app/app/src/main/java/social/entourage/android/events/create/CreateEventStepTwoFragment.kt:143:66 Java type mismatch: inferred type is 'Date?', but 'Date' was expected.
+w: file:///app/app/src/main/java/social/entourage/android/events/create/CreateEventSuccessFragment.kt:40:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/SettingsModalFragment.kt:84:28 'fun getSerializable(p0: String?): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/SettingsModalFragment.kt:171:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/SettingsModalFragment.kt:179:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/SettingsModalFragment.kt:195:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/feed/AboutEventFragment.kt:307:9 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/feed/AboutEventFragment.kt:319:21 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/feed/EventCommentActivity.kt:129:18 'static fun toHtml(p0: Spanned!): String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/feed/EventFeedFragment.kt:244:35 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/feed/EventFeedFragment.kt:407:35 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/feed/EventFeedFragment.kt:417:9 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/feed/EventFeedFragment.kt:429:21 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/feed/EventFeedFragment.kt:689:31 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/feed/EventFeedFragment.kt:803:27 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/details/feed/EventFeedFragment.kt:839:27 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/list/AllEventAdapter.kt:98:37 Unnecessary safe call on a non-null receiver of type 'FeedItemAuthor'.
+w: file:///app/app/src/main/java/social/entourage/android/events/list/DiscoverEventsListFragment.kt:71:40 'fun getSerializableExtra(p0: String!): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/list/GroupEventsListFragment.kt:80:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/events/list/MyEventsListFragment.kt:81:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/GroupModel.kt:37:35 Type argument for type parameter 'T' has possible incompatible upper bounds: Parcelable!, Translation? (final class and interface: android/os/Parcelable, social/entourage/android/api/model/notification/Translation).
+w: file:///app/app/src/main/java/social/entourage/android/groups/GroupModel.kt:40:16 'fun <T : Parcelable!> readParcelable(p0: ClassLoader?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/GroupModel.kt:46:16 'fun <T : Parcelable!> readParcelable(p0: ClassLoader?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/GroupModel.kt:47:53 'fun readList(p0: (MutableList<Any?>..List<*>), p1: ClassLoader?): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/GroupModel.kt:51:16 'fun <T : Parcelable!> readParcelable(p0: ClassLoader?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/GroupsFragment.kt:118:31 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/GroupsFragment.kt:466:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/GroupsFragment.kt:472:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/choosePhoto/ChooseGalleryPhotoModalFragment.kt:104:33 'fun getSerializable(p0: String?): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/create/CreateGroupStepThreeFragment.kt:103:36 'fun <T : Parcelable!> getParcelable(p0: String?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/create/CreateGroupSuccessFragment.kt:70:31 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/GroupDetailsFragment.kt:182:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/GroupDetailsFragment.kt:216:28 'fun <T : Parcelable!> getParcelable(p0: String?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/GroupDetailsFragment.kt:226:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/feed/GroupCommentActivity.kt:93:18 'static fun toHtml(p0: Spanned!): String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/feed/GroupFeedFragment.kt:328:9 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/feed/GroupFeedFragment.kt:439:27 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/feed/GroupFeedFragment.kt:496:27 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/feed/GroupFeedFragment.kt:559:27 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/feed/GroupFeedFragment.kt:684:31 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/feed/GroupFeedFragment.kt:828:9 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/feed/GroupFeedFragment.kt:985:21 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/feed/GroupFeedFragment.kt:1000:39 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/members/MembersFragment.kt:176:58 Condition is always 'true'.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/members/MembersFragment.kt:177:65 Unnecessary non-null assertion (!!) on a non-null receiver of type 'Int'.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/members/MembersFragment.kt:205:58 Condition is always 'true'.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/members/MembersFragment.kt:206:65 Unnecessary non-null assertion (!!) on a non-null receiver of type 'Int'.
+w: file:///app/app/src/main/java/social/entourage/android/groups/details/members/MembersFragment.kt:223:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/groups/edit/EditGroupFragment.kt:205:36 'fun <T : Parcelable!> getParcelable(p0: String?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSMainActivity.kt:18:47 'fun onBackPressed(): Unit' is deprecated. This method has been deprecated in favor of using the
+      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.
+      The OnBackPressedDispatcher controls how back button events are dispatched
+      to one or more {@link OnBackPressedCallback} objects.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:63:27 Unnecessary safe call on a non-null receiver of type 'ProgressBar'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:64:32 Unnecessary safe call on a non-null receiver of type 'ImageButton'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:66:25 Unnecessary safe call on a non-null receiver of type 'ImageButton'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:67:31 Unnecessary safe call on a non-null receiver of type 'EditText'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:71:32 Unnecessary safe call on a non-null receiver of type 'ImageButton'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:72:31 Unnecessary safe call on a non-null receiver of type 'EditText'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:77:27 Unnecessary safe call on a non-null receiver of type 'EditText'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:89:44 Unnecessary safe call on a non-null receiver of type 'ImageButton'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:92:44 Unnecessary safe call on a non-null receiver of type 'ImageButton'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:99:27 Unnecessary safe call on a non-null receiver of type 'EditText'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:102:27 Unnecessary safe call on a non-null receiver of type 'EditText'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:107:31 Unnecessary safe call on a non-null receiver of type 'RecyclerView'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:110:31 Unnecessary safe call on a non-null receiver of type 'RecyclerView'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:111:31 Unnecessary safe call on a non-null receiver of type 'RecyclerView'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:116:32 Unnecessary safe call on a non-null receiver of type 'EditText'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:118:27 Unnecessary safe call on a non-null receiver of type 'EditText'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:120:27 Unnecessary safe call on a non-null receiver of type 'ProgressBar'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:133:35 Unnecessary safe call on a non-null receiver of type 'ProgressBar'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GDSSearchFragment.kt:139:35 Unnecessary safe call on a non-null receiver of type 'ProgressBar'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GuideHubFragment.kt:34:38 Unnecessary safe call on a non-null receiver of type 'ConstraintLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GuideHubFragment.kt:35:38 Unnecessary safe call on a non-null receiver of type 'ConstraintLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GuideHubFragment.kt:39:30 Unnecessary safe call on a non-null receiver of type 'ConstraintLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GuideHubFragment.kt:44:31 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GuideHubFragment.kt:47:30 Unnecessary safe call on a non-null receiver of type 'ConstraintLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GuideHubFragment.kt:51:30 Unnecessary safe call on a non-null receiver of type 'ConstraintLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GuideHubFragment.kt:55:30 Unnecessary safe call on a non-null receiver of type 'ConstraintLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GuideHubFragment.kt:59:30 Unnecessary safe call on a non-null receiver of type 'ConstraintLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GuideMapFragment.kt:161:45 'val myLocation: Location' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/guide/GuideMapFragment.kt:177:18 'val myLocation: Location' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/guide/poi/ReadPoiFragment.kt:49:26 'fun getSerializable(p0: String?): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeActionAdapter.kt:65:57 'field locale: Locale!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeEventAdapter.kt:81:57 'field locale: Locale!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeEventAdapter.kt:144:29 Unnecessary safe call on a non-null receiver of type 'FeedItemAuthor'.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeEventAdapter.kt:144:99 Unnecessary safe call on a non-null receiver of type 'FeedItemAuthor'.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:431:39 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:512:17 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:518:35 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:552:39 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:699:31 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:714:31 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:746:27 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:752:27 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:896:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:1053:31 Unnecessary safe call on a non-null receiver of type 'HomePedagoAdapter'.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeFragment.kt:1172:13 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/HomeSingleLayoutAdapter.kt:10:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to field.
+- To opt in to applying to both value parameter and field, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///app/app/src/main/java/social/entourage/android/home/RecommendationsListAdapter.kt:51:66 'fun getDrawable(p0: Int): Drawable!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/pedago/PedagoContentDetailsFragment.kt:67:27 'fun onBackPressed(): Unit' is deprecated. This method has been deprecated in favor of using the
+      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.
+      The OnBackPressedDispatcher controls how back button events are dispatched
+      to one or more {@link OnBackPressedCallback} objects.
+w: file:///app/app/src/main/java/social/entourage/android/home/pedago/PedagoContentDetailsFragment.kt:70:27 'fun onBackPressed(): Unit' is deprecated. This method has been deprecated in favor of using the
+      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.
+      The OnBackPressedDispatcher controls how back button events are dispatched
+      to one or more {@link OnBackPressedCallback} objects.
+w: file:///app/app/src/main/java/social/entourage/android/home/pedago/PedagoContentDetailsFragment.kt:112:34 'var systemUiVisibility: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/pedago/PedagoContentDetailsFragment.kt:126:63 'var systemUiVisibility: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/pedago/PedagoContentDetailsFragment.kt:136:34 'var systemUiVisibility: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/home/pedago/PedagoDetailActivity.kt:60:12 Condition is always 'true'.
+w: file:///app/app/src/main/java/social/entourage/android/home/pedago/PedagoDetailActivity.kt:71:18 'fun onBackPressed(): Unit' is deprecated. This method has been deprecated in favor of using the
+      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.
+      The OnBackPressedDispatcher controls how back button events are dispatched
+      to one or more {@link OnBackPressedCallback} objects.
+w: file:///app/app/src/main/java/social/entourage/android/home/pedago/PedagoListFragment.kt:148:31 'fun onBackPressed(): Unit' is deprecated. This method has been deprecated in favor of using the
+      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.
+      The OnBackPressedDispatcher controls how back button events are dispatched
+      to one or more {@link OnBackPressedCallback} objects.
+w: file:///app/app/src/main/java/social/entourage/android/involvement/RateActivity.kt:18:24 'static field FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/involvement/ShareActivity.kt:15:24 'static field FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/language/LanguageManager.kt:47:16 'constructor(p0: String!): Locale' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/language/LanguageManager.kt:51:22 'constructor(p0: String!): Locale' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/language/LanguageManager.kt:55:27 'fun updateConfiguration(p0: Configuration!, p1: DisplayMetrics!): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/main_filter/MainFilterActivity.kt:237:65 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/main_filter/MainFilterActivity.kt:280:43 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/main_filter/MainFilterActivity.kt:293:38 'val name: String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/main_filter/MainFilterActivity.kt:295:69 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/main_filter/MainFilterActivity.kt:298:48 'val name: String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/main_filter/MainFilterActivity.kt:298:62 'val latLng: LatLng!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/main_filter/MainFilterActivity.kt:298:87 'val latLng: LatLng!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/main_filter/MainFilterActivity.kt:325:65 Elvis operator (?:) always returns the left operand of non-nullable type 'String'.
+w: file:///app/app/src/main/java/social/entourage/android/members/MembersActivity.kt:167:38 Elvis operator (?:) always returns the left operand of non-nullable type 'Int'.
+w: file:///app/app/src/main/java/social/entourage/android/members/MembersActivity.kt:356:9 'fun startActivityForResult(intent: Intent, requestCode: Int): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}
+      passing in a {@link StartActivityForResult} object for the {@link ActivityResultContract}.
+w: file:///app/app/src/main/java/social/entourage/android/notifications/InAppListNotificationsAdapter.kt:84:80 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/notifications/InAppListNotificationsAdapter.kt:85:90 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/notifications/InAppListNotificationsAdapter.kt:88:80 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/notifications/InAppListNotificationsAdapter.kt:89:90 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/notifications/NotificationActionManager.kt:34:26 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/notifications/NotificationActionManager.kt:45:26 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/notifications/NotificationActionManager.kt:123:30 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/notifications/PushNotificationManager.kt:319:22 'field defaults: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/notifications/PushNotificationManager.kt:347:22 'field defaults: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/notifications/PushNotificationManager.kt:430:68 Unnecessary safe call on a non-null receiver of type 'PushNotificationContent'.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/login/LoginActivity.kt:110:25 Unnecessary safe call on a non-null receiver of type 'ImageView'.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/login/LoginActivity.kt:143:13 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/login/LoginActivity.kt:185:9 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/login/LoginActivity.kt:190:15 'fun onBackPressed(): Unit' is deprecated. This method has been deprecated in favor of using the
+      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.
+      The OnBackPressedDispatcher controls how back button events are dispatched
+      to one or more {@link OnBackPressedCallback} objects.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingAssociationChoiceActivity.kt:190:58 'static field SHOW_IMPLICIT: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingEditPhotoFragment.kt:39:27 'fun <T : Parcelable!> getParcelable(p0: String?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingEditPhotoFragment.kt:77:67 'fun setColorFilter(p0: Int, p1: PorterDuff.Mode): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase1Fragment.kt:98:26 'fun getSerializable(p0: String?): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase1Fragment.kt:153:41 The corresponding parameter in the supertype 'CountryCodePickerListener' is named 'country'. This may cause problems when calling this function with named arguments.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase1Fragment.kt:337:51 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase1Fragment.kt:354:58 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase1Fragment.kt:372:52 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase1Fragment.kt:409:50 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase1Fragment.kt:436:59 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase1Fragment.kt:437:57 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase1Fragment.kt:478:25 'val calendarView: CalendarView!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase2Fragment.kt:56:44 'fun <T : Parcelable!> getParcelable(p0: String?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingPhase2Fragment.kt:75:26 'fun get(p0: String!): Any?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingStartActivity.kt:84:15 'fun onBackPressed(): Unit' is deprecated. This method has been deprecated in favor of using the
+      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.
+      The OnBackPressedDispatcher controls how back button events are dispatched
+      to one or more {@link OnBackPressedCallback} objects.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingZoneChoiceActivity.kt:112:13 'fun onBackPressed(): Unit' is deprecated. This method has been deprecated in favor of using the
+      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.
+      The OnBackPressedDispatcher controls how back button events are dispatched
+      to one or more {@link OnBackPressedCallback} objects.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingZoneChoiceActivity.kt:187:49 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingZoneChoiceActivity.kt:242:58 No cast needed.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingZoneChoiceActivity.kt:246:45 Unchecked cast of 'ListAdapter!' to 'ArrayAdapter<String>'.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingZoneChoiceActivity.kt:274:36 'val latLng: LatLng!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingZoneChoiceActivity.kt:275:35 'val name: String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingZoneChoiceActivity.kt:275:49 'val address: String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/OnboardingZoneChoiceActivity.kt:311:43 Redundant call of conversion method.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/ProfileChoiceAdapter.kt:16:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to field.
+- To opt in to applying to both value parameter and field, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/ProfileChoiceAdapter.kt:17:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to field.
+- To opt in to applying to both value parameter and field, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/onboard/ProfileChoiceAdapter.kt:18:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to field.
+- To opt in to applying to both value parameter and field, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/pre_onboarding/PreOnboardingRVAdapter.kt:19:88 'static field LAYOUT_DIRECTION_RTL: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/pre_onboarding/PreOnboardingStartActivity.kt:94:75 'static field LAYOUT_DIRECTION_RTL: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/pre_onboarding/PreOnboardingStartActivity.kt:97:24 'static fun setLayoutDirection(p0: View, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/pre_onboarding/PreOnboardingStartActivity.kt:97:78 'static field LAYOUT_DIRECTION_RTL: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/pre_onboarding/PreOnboardingStartActivity.kt:99:24 'static fun setLayoutDirection(p0: View, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/onboarding/pre_onboarding/PreOnboardingStartActivity.kt:99:78 'static field LAYOUT_DIRECTION_LTR: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/posts/CreatePostActivity.kt:230:31 'fun <T : Parcelable!> getParcelable(p0: String?): T?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/profile/EditProfileActivity.kt:274:37 'field locale: Locale!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/profile/EditProfileActivity.kt:397:46 'val name: String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/profile/EditProfileActivity.kt:399:35 'val latLng: LatLng!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/profile/EditProfileActivity.kt:401:27 'val name: String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/profile/ProfileFullActivity.kt:189:17 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/profile/ProfileFullActivity.kt:670:13 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/profile/ProfileFullActivity.kt:1365:17 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/profile/SettingProfileFullAdapter.kt:98:49 'field locale: Locale!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/profile/activities_settings/EditPasswordActivity.kt:39:112 Elvis operator (?:) always returns the left operand of non-nullable type 'String'.
+w: file:///app/app/src/main/java/social/entourage/android/profile/association/AssociationPresenter.kt:140:40 'fun create(contentType: MediaType?, content: ByteArray, offset: Int = ..., byteCount: Int = ...): RequestBody' is deprecated. Moved to extension function. Put the 'content' argument first to fix Java.
+w: file:///app/app/src/main/java/social/entourage/android/profile/association/AssociationProfileFragment.kt:137:27 'fun onBackPressed(): Unit' is deprecated. This method has been deprecated in favor of using the
+      {@link OnBackPressedDispatcher} via {@link #getOnBackPressedDispatcher()}.
+      The OnBackPressedDispatcher controls how back button events are dispatched
+      to one or more {@link OnBackPressedCallback} objects.
+w: file:///app/app/src/main/java/social/entourage/android/profile/editProfile/EditPasswordFragment.kt:54:104 Elvis operator (?:) always returns the left operand of non-nullable type 'String'.
+w: file:///app/app/src/main/java/social/entourage/android/profile/oss/OSSLibsActivity.kt:5:8 'class LibsBuilder : Serializable' is deprecated. The legacy view based UI will be deprecated in the future. Please consider moving to the compose based UI.
+w: file:///app/app/src/main/java/social/entourage/android/profile/oss/OSSLibsActivity.kt:13:24 'constructor(): LibsBuilder' is deprecated. The legacy view based UI will be deprecated in the future. Please consider moving to the compose based UI.
+w: file:///app/app/src/main/java/social/entourage/android/report/ActionSheetFragment.kt:153:32 Unnecessary safe call on a non-null receiver of type 'ImageView'.
+w: file:///app/app/src/main/java/social/entourage/android/report/ActionSheetFragment.kt:583:17 'when' is exhaustive so 'else' is redundant here.
+w: file:///app/app/src/main/java/social/entourage/android/report/ReportModalFragment.kt:143:22 'fun getRealMetrics(p0: DisplayMetrics!): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/report/ReportModalFragment.kt:518:101 Redundant call of conversion method.
+w: file:///app/app/src/main/java/social/entourage/android/small_talks/SmallTalkActivity.kt:160:67 Elvis operator (?:) always returns the left operand of non-nullable type 'String'.
+w: file:///app/app/src/main/java/social/entourage/android/small_talks/SmallTalkActivity.kt:235:17 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/small_talks/SmallTalkIntroActivity.kt:75:17 'fun overridePendingTransition(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/survey/ResponseSurveyActivity.kt:75:13 'fun startActivityForResult(intent: Intent, requestCode: Int): Unit' is deprecated. This method has been deprecated in favor of using the Activity Result API
+      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt
+      contracts for common intents available in
+      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for
+      testing, and allow receiving results in separate, testable classes independent from your
+      activity. Use
+      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}
+      passing in a {@link StartActivityForResult} object for the {@link ActivityResultContract}.
+w: file:///app/app/src/main/java/social/entourage/android/tools/Extensions.kt:93:14 'fun setColorFilter(p0: Int, p1: PorterDuff.Mode): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/Extensions.kt:93:39 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/Extensions.kt:131:13 'fun toggleSoftInput(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/Extensions.kt:132:36 'static field SHOW_FORCED: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/Extensions.kt:133:36 'static field HIDE_IMPLICIT_ONLY: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/image_viewer/ImageViewerActivity.kt:54:23 'val defaultDisplay: Display!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/image_viewer/ImageViewerActivity.kt:54:38 'fun getMetrics(p0: DisplayMetrics!): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/utils/EditTextExtension.kt:90:60 'static field SHOW_IMPLICIT: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/utils/Utils.kt:255:18 'static fun fromHtml(p0: String!): Spanned!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/utils/Utils.kt:332:37 'static fun getBitmap(p0: ContentResolver!, p1: Uri!): Bitmap!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/ShareMessageFragment.kt:48:47 Unnecessary safe call on a non-null receiver of type 'FloatingActionButton'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/ShareMessageFragment.kt:54:47 Unnecessary safe call on a non-null receiver of type 'FloatingActionButton'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/ShareMessageFragment.kt:114:45 Unnecessary safe call on a non-null receiver of type 'RecyclerView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/ShareMessageFragment.kt:115:45 Unnecessary safe call on a non-null receiver of type 'RecyclerView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/ShareMessageFragment.kt:116:45 Unnecessary safe call on a non-null receiver of type 'RecyclerView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:32:8 'class GestureDetectorCompat : Any' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:52:40 'class GestureDetectorCompat : Any' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:65:9 'fun setHasOptionsMenu(p0: Boolean): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:92:24 Unnecessary safe call on a non-null receiver of type 'WebView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:120:38 Unnecessary safe call on a non-null receiver of type 'RelativeLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:133:38 Unnecessary safe call on a non-null receiver of type 'RelativeLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:137:24 Unnecessary safe call on a non-null receiver of type 'WebView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:138:24 Unnecessary safe call on a non-null receiver of type 'WebView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:139:24 Unnecessary safe call on a non-null receiver of type 'WebView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:140:24 Unnecessary safe call on a non-null receiver of type 'WebView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:144:37 'constructor(p0: Context, p1: GestureDetector.OnGestureListener): GestureDetectorCompat' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:153:38 Unnecessary safe call on a non-null receiver of type 'RelativeLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:161:28 Unnecessary safe call on a non-null receiver of type 'WebView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:162:28 Unnecessary safe call on a non-null receiver of type 'WebView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:176:24 Unnecessary safe call on a non-null receiver of type 'WebView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:188:24 Unnecessary safe call on a non-null receiver of type 'WebView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:198:24 Unnecessary safe call on a non-null receiver of type 'WebView'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:251:39 Unnecessary safe call on a non-null receiver of type 'ProgressBar'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:257:19 'fun onReceivedError(p0: WebView!, p1: Int, p2: String!, p3: String!): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:258:39 Unnecessary safe call on a non-null receiver of type 'ProgressBar'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:263:39 Unnecessary safe call on a non-null receiver of type 'ProgressBar'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:268:39 Unnecessary safe call on a non-null receiver of type 'ProgressBar'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:293:61 Unnecessary safe call on a non-null receiver of type 'RelativeLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:296:46 Unnecessary safe call on a non-null receiver of type 'RelativeLayout'.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:370:56 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/WebViewFragment.kt:371:65 'fun getColor(p0: Int): Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/countrycodepicker/CountryCodeAdapter.kt:27:45 'val adapterPosition: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/countrycodepicker/CountryCodeDialog.kt:114:34 'fun toggleSoftInput(p0: Int, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/countrycodepicker/CountryCodeDialog.kt:114:69 'static field SHOW_FORCED: Int' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/countrycodepicker/CountryCodePicker.kt:8:8 'class PhoneNumberFormattingTextWatcher : Any, TextWatcher' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/countrycodepicker/CountryCodePicker.kt:383:46 'class PhoneNumberFormattingTextWatcher : Any, TextWatcher' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/countrycodepicker/CountryCodePicker.kt:384:25 'constructor(): PhoneNumberFormattingTextWatcher' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/tools/view/countrycodepicker/CountryCodePicker.kt:385:45 'constructor(p0: String!): PhoneNumberFormattingTextWatcher' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/user/edit/place/UserActionPlaceFragment.kt:73:30 'fun getSerializable(p0: String?): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/user/edit/place/UserActionPlaceFragment.kt:102:15 'fun onActivityResult(p0: Int, p1: Int, p2: Intent?): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/user/edit/place/UserActionPlaceFragment.kt:108:48 'val address: String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/user/edit/place/UserActionPlaceFragment.kt:109:35 Only safe (?.) or non-null asserted (!!.) calls are allowed on a nullable receiver of type 'String?'.
+w: file:///app/app/src/main/java/social/entourage/android/user/edit/place/UserActionPlaceFragment.kt:109:41 'val address: String!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/user/edit/place/UserActionPlaceFragment.kt:115:62 'val latLng: LatLng!' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/user/edit/place/UserActionPlaceFragment.kt:199:61 'fun getFromLocation(p0: Double, p1: Double, p2: Int): (Mutable)List<Address!>?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/user/edit/place/UserActionPlaceFragment.kt:230:9 'fun startActivityForResult(p0: Intent, p1: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/user/edit/place/UserEditActionZoneFragment.kt:104:30 'fun getFromLocationName(p0: String, p1: Int): (Mutable)List<Address!>?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/user/edit/place/UserEditActionZoneFragment.kt:109:69 Redundant call of conversion method.
+w: file:///app/app/src/main/java/social/entourage/android/user/partner/PartnerFragment.kt:39:34 'fun getSerializable(p0: String?): Serializable?' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/widgets/WidgetMainUpdateService.kt:3:8 'class IntentService : Service' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/widgets/WidgetMainUpdateService.kt:15:33 'constructor(p0: String!): IntentService' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/widgets/WidgetMainUpdateService.kt:15:33 'class IntentService : Service' is deprecated. Deprecated in Java.
+w: file:///app/app/src/main/java/social/entourage/android/widgets/WidgetMainUpdateService.kt:17:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.

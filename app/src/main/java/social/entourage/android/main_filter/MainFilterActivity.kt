@@ -93,8 +93,10 @@ class MainFilterActivity : BaseActivity() {
         super.onResume()
         if(mod == MainFilterMode.ACTION ){
             binding.tvSubtitleItems.text = getString(R.string.main_filter_subtitle_action)
+            binding.tvSubtitleDescription.visibility = View.GONE
         }else{
             binding.tvSubtitleItems.text = getString(R.string.main_filter_subtitle_group_event)
+            binding.tvSubtitleDescription.visibility = View.VISIBLE
         }
     }
 
@@ -182,8 +184,7 @@ class MainFilterActivity : BaseActivity() {
             MainFilterInterestForAdapter("culture", getString(R.string.interest_culture), "", selectedInterests.contains("culture")),
             MainFilterInterestForAdapter("nature", getString(R.string.interest_nature), "", selectedInterests.contains("nature")),
             MainFilterInterestForAdapter("jeux", getString(R.string.interest_jeux), "", selectedInterests.contains("jeux")),
-            MainFilterInterestForAdapter("activites", getString(R.string.interest_activites_main_filter), "", selectedInterests.contains("activites")),
-            MainFilterInterestForAdapter("other", getString(R.string.interest_other), "", selectedInterests.contains("other"))
+            MainFilterInterestForAdapter("activites", getString(R.string.interest_activites_main_filter), "", selectedInterests.contains("activites"))
         )
     }
 
