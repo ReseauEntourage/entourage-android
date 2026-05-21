@@ -47,20 +47,6 @@
             android:textColor="@color/black"
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"/>
-        <TextView
-            android:id="@+id/tv_subtitle_description"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/onboarding_interest_content"
-            android:textSize="13sp"
-            android:fontFamily="@font/nunitosans_regular"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_subtitle_items"
-            android:textColor="@color/greyish"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"/>
 
         <LinearLayout
             android:layout_width="20dp"

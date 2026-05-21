@@ -2,42 +2,44 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:background="@drawable/shape_grey_border"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
     android:layout_marginStart="16dp"
     android:layout_marginEnd="16dp"
     android:layout_marginTop="16dp">
 
+    <!-- Titre aligné au centre verticalement, wrap_content pour ne prendre que sa taille -->
     <TextView
         android:id="@+id/tvInterestTitleFromRight"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginStart="16dp"
         android:fontFamily="@font/nunitosans_regular"
         android:textColor="@color/black"
         android:textSize="14sp"
-        android:text="title" />
+        tools:text="Vêtement" />
 
+    <!-- Sous-titre aligné sur la même ligne de texte (baseline) que le titre -->
     <TextView
         android:id="@+id/tvInterestSubTitleFromRight"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/tvInterestTitleFromRight"
-        app:layout_constraintBottom_toBottomOf="@id/tvInterestTitleFromRight"
+        app:layout_constraintBaseline_toBaselineOf="@id/tvInterestTitleFromRight"
         app:layout_constraintStart_toEndOf="@+id/tvInterestTitleFromRight"
-        android:layout_marginStart="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/ivInterestCheck"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
         android:fontFamily="@font/nunitosans_regular"
-        android:textColor="@color/black"
-        android:textSize="13sp"
-        android:text="subtitle"
+        android:textColor="#888888"
+        android:textSize="12sp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        tools:text="(chaussures, manteau...)"
         android:visibility="visible" />
 
     <ImageView
@@ -48,6 +50,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="16dp"
-        android:src="@drawable/ic_onboarding_uncheck"
-        />
+        android:src="@drawable/ic_onboarding_uncheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>

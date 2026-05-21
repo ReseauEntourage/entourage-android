@@ -93,10 +93,8 @@ class MainFilterActivity : BaseActivity() {
         super.onResume()
         if(mod == MainFilterMode.ACTION ){
             binding.tvSubtitleItems.text = getString(R.string.main_filter_subtitle_action)
-            binding.tvSubtitleDescription.visibility = View.GONE
         }else{
             binding.tvSubtitleItems.text = getString(R.string.main_filter_subtitle_group_event)
-            binding.tvSubtitleDescription.visibility = View.VISIBLE
         }
     }
 
@@ -176,18 +174,17 @@ class MainFilterActivity : BaseActivity() {
 
     private fun loadInterests(): List<MainFilterInterestForAdapter> {
         return listOf(
-            MainFilterInterestForAdapter("sport", getString(R.string.interest_sport), "", selectedInterests.contains("sport")),
-            MainFilterInterestForAdapter("animaux", getString(R.string.interest_animaux), "", selectedInterests.contains("animaux")),
-            MainFilterInterestForAdapter("marauding", getString(R.string.interest_marauding), "", selectedInterests.contains("marauding")),
-            MainFilterInterestForAdapter("bien-etre", getString(R.string.interest_bien_etre), "", selectedInterests.contains("bien-etre")),
-            MainFilterInterestForAdapter("cuisine", getString(R.string.interest_cuisine), "", selectedInterests.contains("cuisine")),
-            MainFilterInterestForAdapter("culture", getString(R.string.interest_culture), "", selectedInterests.contains("culture")),
-            MainFilterInterestForAdapter("nature", getString(R.string.interest_nature), "", selectedInterests.contains("nature")),
-            MainFilterInterestForAdapter("jeux", getString(R.string.interest_jeux), "", selectedInterests.contains("jeux")),
-            MainFilterInterestForAdapter("activites", getString(R.string.interest_activites_main_filter), "", selectedInterests.contains("activites"))
+            MainFilterInterestForAdapter("sport", getString(R.string.interest_sport), getString(R.string.interest_sport_subtitle), selectedInterests.contains("sport")),
+            MainFilterInterestForAdapter("animaux", getString(R.string.interest_animaux), getString(R.string.interest_animaux_subtitle), selectedInterests.contains("animaux")),
+            MainFilterInterestForAdapter("marauding", getString(R.string.interest_marauding), getString(R.string.interest_marauding_subtitle), selectedInterests.contains("marauding")),
+            MainFilterInterestForAdapter("bien-etre", getString(R.string.interest_bien_etre), getString(R.string.interest_bien_etre_subtitle), selectedInterests.contains("bien-etre")),
+            MainFilterInterestForAdapter("cuisine", getString(R.string.interest_cuisine), getString(R.string.interest_cuisine_subtitle), selectedInterests.contains("cuisine")),
+            MainFilterInterestForAdapter("culture", getString(R.string.interest_culture), getString(R.string.interest_culture_subtitle), selectedInterests.contains("culture")),
+            MainFilterInterestForAdapter("nature", getString(R.string.interest_nature), getString(R.string.interest_nature_subtitle), selectedInterests.contains("nature")),
+            MainFilterInterestForAdapter("jeux", getString(R.string.interest_jeux), getString(R.string.interest_jeux_subtitle), selectedInterests.contains("jeux")),
+            MainFilterInterestForAdapter("activites", getString(R.string.interest_activites_main_filter), getString(R.string.interest_activites_subtitle), selectedInterests.contains("activites"))
         )
     }
-
     private fun loadActions(): List<MainFilterInterestForAdapter> {
         //LOG WTF des selectedInterests
         return listOf(
@@ -312,7 +309,7 @@ class MainFilterActivity : BaseActivity() {
         }
     }
 
-     fun resetFilters() {
+    fun resetFilters() {
         val user = EntourageApplication.me(this)
         selectedInterests.clear()
         savedLocation = user?.address?.let { PlaceDetails(it.displayAddress, it.latitude, it.longitude) }
@@ -351,7 +348,6 @@ class MainFilterActivity : BaseActivity() {
             savedActionInterests = selectedInterests
         }
         savedRadius = selectedRadius
-        // savedLocation is already set in fetchPlaceDetails
         finish()
     }
 
