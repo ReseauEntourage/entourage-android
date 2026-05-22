@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.navigation.safeargs)
     alias(libs.plugins.google.services)
-    alias(libs.plugins.aboutlibraries)
 }
 
 fun String.runCommand(currentWorkingDir: File = file("./")): String {
@@ -213,6 +212,10 @@ android {
         offlineMode.set(true)
     }
     namespace = "social.entourage.android"
+}
+
+aboutLibraries {
+    // keep it empty
 }
 
 dependencies {
