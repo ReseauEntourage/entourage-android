@@ -247,7 +247,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         }
     }
 
-    private fun showVideoModal() {
+    fun showVideoModal() {
         if (!isAdded) return
         val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme)
         val view = layoutInflater.inflate(R.layout.dialog_welcome_video, null)
@@ -603,6 +603,12 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         actionsPresenter.getUnreadCount()
         sendUserDiscussionStatus()
         loadSmallTalkItems()
+
+        val mainActivity = requireActivity() as? MainActivity
+        if (mainActivity?.getFromDeepLGoWelcomeVideo() == true) {
+            mainActivity.setGoWelcomeVideoFromDeepL(false)
+            showVideoModal()
+        }
     }
 
     private fun loadSmallTalkItems() {

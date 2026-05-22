@@ -82,6 +82,13 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 pathSegments.contains("app") && pathSegments.size == 1 -> {
                     (context as? MainActivity)?.goHome()
                 }
+                pathSegments.contains("welcome-video") || (pathSegments.contains("home") && pathSegments.contains("welcome-video")) -> {
+                    val intent = Intent(context, MainActivity::class.java)
+                        .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    intent.putExtra("goWelcomeVideo", true)
+                    context.startActivity(intent)
+                    (context as? Activity)?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                }
                 pathSegments.contains("outings") && pathSegments.contains("chat_messages") -> {
                     if (pathSegments.size > 3) {
                         val eventId = pathSegments[2]
