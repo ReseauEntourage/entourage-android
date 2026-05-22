@@ -16,8 +16,8 @@ fun String.runCommand(currentWorkingDir: File = file("./")): String {
 
 android {
 // Java versions
-    val sourceCompatibilityVersion = JavaVersion.VERSION_17
-    val targetCompatibilityVersion = JavaVersion.VERSION_17
+    val sourceCompatibilityVersion = JavaVersion.VERSION_21
+    val targetCompatibilityVersion = JavaVersion.VERSION_21
 
     // App versions
     val isRelease = project.gradle.startParameter.taskNames.any { it.contains("release", ignoreCase = true) }
