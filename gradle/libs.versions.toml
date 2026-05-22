@@ -175,7 +175,6 @@ android-application = { id = "com.android.application", version.ref = "android-a
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-plugin-serialization" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-android" }
 navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "navigation-safeargs" }
 aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutlibraries" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

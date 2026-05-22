@@ -2,13 +2,12 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.aboutlibraries)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.navigation.safeargs)
     alias(libs.plugins.google.services)
-    alias(libs.plugins.aboutlibraries)
 }
 
 fun String.runCommand(currentWorkingDir: File = file("./")): String {
@@ -163,8 +162,8 @@ android {
             signingConfig = signingConfigs.getAt("debug")
             applicationIdSuffix = ".debug"
             //firebaseCrashlytics.mappingFileUploadEnabled = false
-            //optimizing build speed
-            aaptOptions.cruncherEnabled = false
+            //optimizing build speed just for PNG
+            isCrunchPngs = false
             /*FirebasePerformance {
                 // Set this flag to "false" to disable @AddTrace annotation processing and
                 // automatic monitoring of HTTP/S network requests
@@ -201,6 +200,10 @@ android {
         disable += listOf("InvalidPackage")
     }
     namespace = "social.entourage.android"
+}
+
+aboutLibraries {
+    // keep it empty
 }
 
 dependencies {
