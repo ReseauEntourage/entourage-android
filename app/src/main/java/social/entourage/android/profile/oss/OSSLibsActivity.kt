@@ -52,6 +52,7 @@ import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.entity.Library
 import com.mikepenz.aboutlibraries.ui.compose.LibrariesContainer
 import com.mikepenz.aboutlibraries.ui.compose.util.htmlReadyLicenseContent
+import com.mikepenz.aboutlibraries.ui.compose.variant.LibraryBadges
 import com.mikepenz.aboutlibraries.util.withContext
 import social.entourage.android.R
 
@@ -168,10 +169,8 @@ fun OSSLibsScreen(libs: Libs, onBack: () -> Unit) {
             libraries = libs,
             modifier = Modifier.fillMaxSize(),
             contentPadding = WindowInsets.navigationBars.asPaddingValues(),
-            showAuthor = true,
-            showVersion = true,
-            showLicenseBadges = false,
-            onLibraryClick = { library -> selectedLibrary = library },
+            badges = LibraryBadges(version=true, author=true, description=false, license=true, funding=false),
+            onLibraryClick = { library : Library -> selectedLibrary = library; return@LibrariesContainer true },
         )
     }
 
