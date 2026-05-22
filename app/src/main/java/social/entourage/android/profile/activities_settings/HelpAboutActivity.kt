@@ -5,39 +5,62 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.google.android.material.snackbar.Snackbar
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
-import social.entourage.android.databinding.ActivityHelpAboutBinding
 import social.entourage.android.profile.oss.OSSLibsActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
+import social.entourage.android.ui.theme.EntourageComposeStyles
 
 class HelpAboutActivity : BaseActivity() {
 
-    private lateinit var binding: ActivityHelpAboutBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        binding = ActivityHelpAboutBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        initializeView()
-    }
-
-    private fun initializeView() {
-        with(binding) {
-            header.headerHelpIconCross.setOnClickListener { finish() }
-            cgu.layout.setOnClickListener { onTermsClicked() }
-            confidentiality.layout.setOnClickListener { onPrivacyClicked() }
-            feedback.layout.setOnClickListener { onRateUsClicked() }
-            faq.layout.setOnClickListener { onFAQClicked() }
-            donation.layout.setOnClickListener { onDonate() }
-            ambassadorProgram.layout.setOnClickListener { onAmbassadorClicked() }
-            ethic.layout.setOnClickListener { onEthicChartClicked() }
-            partner.layout.setOnClickListener { onPartnerClicked() }
-            childRules.layout.setOnClickListener { onChildRuleClicked()}
-            oss.layout.setOnClickListener { onOSSLicensesClicked() }
+        setContent {
+            HelpAboutScreen(
+                onBack = { finish() },
+                onTermsClicked = { onTermsClicked() },
+                onPrivacyClicked = { onPrivacyClicked() },
+                onRateUsClicked = { onRateUsClicked() },
+                onFAQClicked = { onFAQClicked() },
+                onDonate = { onDonate() },
+                onAmbassadorClicked = { onAmbassadorClicked() },
+                onEthicChartClicked = { onEthicChartClicked() },
+                onPartnerClicked = { onPartnerClicked() },
+                onChildRuleClicked = { onChildRuleClicked() },
+                onOSSLicensesClicked = { onOSSLicensesClicked() }
+            )
         }
     }
 
@@ -115,7 +138,7 @@ class HelpAboutActivity : BaseActivity() {
 
     private fun showNoBrowserError() {
         EntSnackbar.make(
-            binding.aboutCoordinatorLayout,
+            window.decorView.rootView,
             R.string.no_browser_error,
             Snackbar.LENGTH_SHORT
         ).show()
@@ -127,4 +150,121 @@ class HelpAboutActivity : BaseActivity() {
             context.startActivity(intent)
         }
     }
+}
+
+@Composable
+fun HelpAboutScreen(
+    onBack: () -> Unit,
+    onTermsClicked: () -> Unit,
+    onPrivacyClicked: () -> Unit,
+    onRateUsClicked: () -> Unit,
+    onFAQClicked: () -> Unit,
+    onDonate: () -> Unit,
+    onAmbassadorClicked: () -> Unit,
+    onEthicChartClicked: () -> Unit,
+    onPartnerClicked: () -> Unit,
+    onChildRuleClicked: () -> Unit,
+    onOSSLicensesClicked: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .statusBarsPadding()
+    ) {
+        // Header
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .padding(top = 8.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(61.dp)
+            ) {
+                IconButton(
+                    onClick = onBack,
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .size(25.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.new_back),
+                        contentDescription = null,
+                        tint = Color.Unspecified
+                    )
+                }
+
+                Text(
+                    text = stringResource(id = R.string.help_about),
+                    style = EntourageComposeStyles.h2,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+            HorizontalDivider(
+                modifier = Modifier.fillMaxWidth(),
+                thickness = 1.dp,
+                color = colorResource(id = R.color.light_orange_opacity_50)
+            )
+        }
+
+        // List
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = dimensionResource(id = R.dimen.padding_horizontal))
+        ) {
+            AboutItem(label = stringResource(id = R.string.ethics), onClick = onEthicChartClicked)
+            AboutItem(label = stringResource(id = R.string.about_partner), onClick = onPartnerClicked)
+            AboutItem(label = stringResource(id = R.string.ambassador_program), onClick = onAmbassadorClicked)
+            AboutItem(label = stringResource(id = R.string.donation), onClick = onDonate)
+            AboutItem(label = stringResource(id = R.string.faq), onClick = onFAQClicked)
+            AboutItem(label = stringResource(id = R.string.feedback), onClick = onRateUsClicked)
+            AboutItem(label = stringResource(id = R.string.cgu), onClick = onTermsClicked)
+            AboutItem(label = stringResource(id = R.string.confidentiality), onClick = onPrivacyClicked)
+            AboutItem(label = stringResource(id = R.string.child_rules), onClick = onChildRuleClicked)
+            AboutItem(label = stringResource(id = R.string.about_oss_licenses), onClick = onOSSLicensesClicked)
+        }
+    }
+}
+
+@Composable
+fun AboutItem(label: String, onClick: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .padding(top = 20.dp)
+    ) {
+        Text(
+            text = label,
+            style = EntourageComposeStyles.h4,
+            modifier = Modifier.padding(bottom = 20.dp)
+        )
+        HorizontalDivider(
+            modifier = Modifier.fillMaxWidth(),
+            thickness = Dp.Hairline,
+            color = colorResource(id = R.color.light_orange)
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HelpAboutScreenPreview() {
+    HelpAboutScreen(
+        onBack = {},
+        onTermsClicked = {},
+        onPrivacyClicked = {},
+        onRateUsClicked = {},
+        onFAQClicked = {},
+        onDonate = {},
+        onAmbassadorClicked = {},
+        onEthicChartClicked = {},
+        onPartnerClicked = {},
+        onChildRuleClicked = {},
+        onOSSLicensesClicked = {}
+    )
 }

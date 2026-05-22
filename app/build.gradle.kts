@@ -236,10 +236,10 @@ dependencies {
     implementation(libs.androidx.compose.ui.text.android)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.runtime.livedata)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.ui.tooling.preview)
     debugImplementation(libs.androidx.compose.ui.tooling)
-    implementation(libs.aboutlibraries.compose)
 
     implementation(libs.tape)
     implementation(libs.timber)
