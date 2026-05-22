@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.kotlin.serialization)
-    kotlin("kapt")
+    alias(libs.plugins.ksp)
     alias(libs.plugins.navigation.safeargs)
     alias(libs.plugins.google.services)
     alias(libs.plugins.aboutlibraries)
@@ -252,7 +252,7 @@ dependencies {
     implementation(libs.glide)
     implementation(libs.shortcut.badger)
     implementation(libs.keyboard.visibility.event)
-    kapt(libs.glide.compiler)
+    ksp(libs.glide.ksp)
 
     //entourageImplementation facebookDependencies.values()
     implementation(libs.facebook.android.sdk)
