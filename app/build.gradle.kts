@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.aboutlibraries)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
@@ -47,7 +48,7 @@ android {
     buildFeatures {
         viewBinding = true
         dataBinding = true
-
+        compose = true
     }
     bundle {
         language {
@@ -220,6 +221,12 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.preference.ktx)
     implementation(libs.androidx.compose.ui.text.android)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.aboutlibraries.compose)
 
     implementation(libs.tape)
     implementation(libs.timber)

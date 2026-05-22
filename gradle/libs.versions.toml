@@ -12,7 +12,11 @@ androidx-constraintlayout = "2.2.1"
 androidx-fragment = "1.8.9"
 androidx-recyclerview = "1.4.0"
 androidx-preference = "1.2.1"
-androidx-compose-ui-text-android = "1.11.4"
+androidx-compose-ui-text-android = "1.10.4"
+androidx-activity-compose = "1.13.0"
+androidx-compose-ui = "1.11.2"
+androidx-compose-material3 = "1.4.0"
+androidx-compose-ui-tooling-preview = "1.11.2"
 tape = "1.2.3"
 timber = "5.0.1"
 firebase-bom = "34.16.0"
@@ -82,6 +86,11 @@ androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "androidx-recyclerview" }
 androidx-preference-ktx = { module = "androidx.preference:preference-ktx", version.ref = "androidx-preference" }
 androidx-compose-ui-text-android = { module = "androidx.compose.ui:ui-text-android", version.ref = "androidx-compose-ui-text-android" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
+androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "androidx-compose-ui" }
+androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "androidx-compose-material3" }
+androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "androidx-compose-ui" }
+androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "androidx-compose-ui-tooling-preview" }
 tape = { module = "com.squareup:tape", version.ref = "tape" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase-bom" }
@@ -141,6 +150,7 @@ ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "k
 ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
 aboutlibraries-core = { module = "com.mikepenz:aboutlibraries-core", version.ref = "aboutlibraries" }
 aboutlibraries = { module = "com.mikepenz:aboutlibraries", version.ref = "aboutlibraries" }
+aboutlibraries-compose = { module = "com.mikepenz:aboutlibraries-compose", version.ref = "aboutlibraries-compose" }
 play-services-auth-api-phone = { module = "com.google.android.gms:play-services-auth-api-phone", version.ref = "play-services-auth-api-phone" }
 #androidx-test
 androidx-test-ext-junit = { module = "androidx.test.ext:junit", version = "1.3.0" }
@@ -176,5 +186,6 @@ google-services = { id = "com.google.gms.google-services", version.ref = "google
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-plugin-serialization" }
 navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "navigation-safeargs" }
-aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutlibraries" }
+aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin.android", version.ref = "aboutlibraries" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-android" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
