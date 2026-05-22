@@ -31,7 +31,7 @@ class PreOnboardingLanguage:BaseActivity(), OnLanguageClicked {
         binding.rvLangue.adapter = adapter
         setContentView(binding.root)
 
-        updatePaddingTopForEdgeToEdge(binding.layoutLanguage)
+        updatePaddingTopForEdgeToEdge(binding.homeHeader)
     }
 
     private fun fillArray() {
