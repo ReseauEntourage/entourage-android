@@ -3,7 +3,9 @@ package social.entourage.android.profile.oss
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.LibsBuilder
+import com.mikepenz.aboutlibraries.util.withContext
 import social.entourage.android.R
 import social.entourage.android.databinding.ActivityOssLibsBinding
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
@@ -17,7 +19,10 @@ class OSSLibsActivity : AppCompatActivity() {
         setContentView(binding.root)
         updatePaddingTopForEdgeToEdge(binding.root)
 
+        val libs = Libs.Builder().withContext(this).build()
+
         val fragment = LibsBuilder()
+            .withLibs(libs)
             .withAboutAppName(getString(R.string.app_name))
             .withAboutVersionShown(true)
             .withAboutVersionShownName(false)
