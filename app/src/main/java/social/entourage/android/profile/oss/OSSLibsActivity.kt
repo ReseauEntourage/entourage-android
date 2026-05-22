@@ -1,23 +1,24 @@
 package social.entourage.android.profile.oss
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import com.mikepenz.aboutlibraries.Libs
 import com.mikepenz.aboutlibraries.LibsBuilder
 import com.mikepenz.aboutlibraries.util.withContext
 import social.entourage.android.R
+import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityOssLibsBinding
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 
-class OSSLibsActivity : AppCompatActivity() {
+class OSSLibsActivity : BaseActivity() {
     private lateinit var binding: ActivityOssLibsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = ActivityOssLibsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        updatePaddingTopForEdgeToEdge(binding.root)
+
+        binding.header.headerHelpIconCross.setOnClickListener {
+            finish()
+        }
 
         val libs = Libs.Builder().withContext(this).build()
 
@@ -29,11 +30,8 @@ class OSSLibsActivity : AppCompatActivity() {
             .withAboutVersionShownCode(false)
             .withAboutIconShown(aboutShowIcon = true)
             .withAboutMinimalDesign(true)
-//            .withAboutDescription(getString(R.string.about_oss_licenses))
-
             .withEdgeToEdge(true)
             .withActivityTitle(getString(R.string.about_oss_licenses))
-
             .withLicenseShown(false)
             .withVersionShown(false)
             .supportFragment()
