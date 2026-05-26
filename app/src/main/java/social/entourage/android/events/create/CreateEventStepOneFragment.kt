@@ -50,8 +50,8 @@ class CreateEventStepOneFragment : Fragment(), EventImageUploadView {
             options.setCircleDimmedLayer(false)
 
             // CORRECTION : Forcer l'affichage des contrôles pour aider l'UI à se redessiner
-            options.setHideBottomControls(false)
-            options.setFreeStyleCropEnabled(true)
+            options.setHideBottomControls(true)
+            options.setFreeStyleCropEnabled(false)
 
             UCrop.of(it, destinationUri)
                 .withAspectRatio(16f, 9f)
