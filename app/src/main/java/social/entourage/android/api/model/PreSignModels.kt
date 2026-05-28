@@ -4,13 +4,13 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SalesforceEnterprise(
-    val Id: String,
-    val Name: String,
-    val Type_org__c: String
+    val Id: String? = null,
+    val Name: String? = null,
+    val Type_org__c: String? = null
 )
 
 @Serializable
 data class SalesforceEvent(
-    val Id: String,
-    val Name: String
+    val Id: String? = null,
+    val Name: String? = null
 )

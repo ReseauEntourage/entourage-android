@@ -16,6 +16,7 @@ import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.launch
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import social.entourage.android.R
+import social.entourage.android.api.PreonboardingApiModuleKtorClient
 import social.entourage.android.api.model.SalesforceEnterprise
 import social.entourage.android.api.model.SalesforceEvent
 import social.entourage.android.databinding.FragmentOnboardingPhase1Binding
@@ -239,7 +240,7 @@ class OnboardingPhase1Fragment : Fragment() {
 
         val metadata = runCatching { PreonboardingApiModuleKtorClient.fetchSummaryBeforeLogin() }
             .onFailure { e ->
-                Timber.wtf("metadata ${e.javaClass.simpleName}")
+                Timber.wtf(e, "metadata ${e.javaClass.simpleName}")
                 showError(tr(R.string.onboard_welcome_error_load_failed) + " (metadata)")
             }
             .getOrNull() ?: run { showLoading(false); return }
@@ -272,7 +273,8 @@ class OnboardingPhase1Fragment : Fragment() {
         showLoading(true)
 
         val enterprises = runCatching { PreonboardingApiModuleKtorClient.fetchEnterprises() }
-            .onFailure {
+            .onFailure { e ->
+                Timber.e(e, "Erreur lors du chargement ou du parsing des entreprises")
                 showError(tr(R.string.onboard_welcome_error_load_failed) + " (entreprises)")
             }
             .getOrNull()
@@ -296,7 +298,8 @@ class OnboardingPhase1Fragment : Fragment() {
         showLoading(true)
 
         val events = runCatching { PreonboardingApiModuleKtorClient.fetchEventsForEnterprise(enterpriseId) }
-            .onFailure {
+            .onFailure { e ->
+                Timber.e(e, "Erreur lors du chargement ou du parsing des événements")
                 showError(tr(R.string.onboard_welcome_error_load_failed) + " (events)")
             }
             .getOrNull()
@@ -394,8 +397,10 @@ class OnboardingPhase1Fragment : Fragment() {
             val selected = enterpriseList.getOrNull(position) ?: return@setOnItemClickListener
             selectedEnterpriseId = selected.Id
             company = selected.Id
-            // recharge la liste d’événements associée
-            viewLifecycleOwner.lifecycleScope.launch { loadEventsForEnterprise(selected.Id) }
+            selected.Id?.let { id ->
+                // recharge la liste d’événements associée
+                viewLifecycleOwner.lifecycleScope.launch { loadEventsForEnterprise(id) }
+            }
             updateButtonNext()
         }
     }
