@@ -44,9 +44,7 @@
         android:textColor="@color/black"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_home_small_talk_avatar_2"
-        app:layout_constraintEnd_toStartOf="@+id/button_voir"
-        app:layout_constraintBottom_toTopOf="@+id/tv_home_small_talk_subtitle_active"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintEnd_toStartOf="@+id/button_voir" />
 
     <TextView
         android:id="@+id/tv_home_small_talk_subtitle_active"
@@ -61,8 +59,7 @@
         android:textColor="@color/grey_dark"
         app:layout_constraintTop_toBottomOf="@+id/tv_home_small_talk_title_active"
         app:layout_constraintStart_toEndOf="@+id/iv_home_small_talk_avatar_2"
-        app:layout_constraintEnd_toStartOf="@+id/button_voir"
-        app:layout_constraintBottom_toTopOf="@+id/tv_home_small_talk_matching" />
+        app:layout_constraintEnd_toStartOf="@+id/button_voir" />
 
     <TextView
         android:id="@+id/tv_home_small_talk_matching"
@@ -78,8 +75,7 @@
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/tv_home_small_talk_subtitle_active"
         app:layout_constraintStart_toEndOf="@+id/iv_home_small_talk_avatar_2"
-        app:layout_constraintEnd_toStartOf="@+id/button_voir"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/button_voir" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button_voir"
@@ -95,9 +91,9 @@
         android:textColor="@android:color/white"
         android:textSize="14sp"
         android:layout_marginEnd="10dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/tv_home_small_talk_title_active"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_home_small_talk_subtitle_active"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="24dp"
@@ -109,6 +105,7 @@
         android:layout_marginTop="-4dp"
         app:layout_constraintTop_toTopOf="@+id/button_voir"
         app:layout_constraintEnd_toEndOf="@+id/button_voir">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -134,6 +131,7 @@
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_home_small_talk_matching" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_home_small_talk_matching"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
