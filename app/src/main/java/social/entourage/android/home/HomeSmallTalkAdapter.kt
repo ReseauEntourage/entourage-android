@@ -162,7 +162,7 @@ class HomeSmallTalkAdapter(
             }
 
             // Launch new button
-            if (item.totalCount < 3) {
+            if (item.totalCount < 3 && item.waitingCount == 0) {
                 binding.tvHomeSmallTalkLaunchNew.visibility = View.VISIBLE
                 binding.tvHomeSmallTalkLaunchNew.text = context.getString(R.string.home_small_talk_launch_new, item.totalCount)
                 binding.tvHomeSmallTalkLaunchNew.setOnClickListener {
