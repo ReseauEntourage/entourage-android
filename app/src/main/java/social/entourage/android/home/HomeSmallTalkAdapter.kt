@@ -103,8 +103,7 @@ class HomeSmallTalkAdapter(
             // Prepare avatars
             val avatars = listOf(
                 binding.ivHomeSmallTalkAvatar1,
-                binding.ivHomeSmallTalkAvatar2,
-                binding.ivHomeSmallTalkAvatar3
+                binding.ivHomeSmallTalkAvatar2
             )
 
             // Reset images
@@ -114,24 +113,26 @@ class HomeSmallTalkAdapter(
                 imageView.visibility = View.GONE
             }
 
-            // Get one other member per active request
-            var avatarIndex = 0
+            // Extract other members and sort them to prioritize those with an avatar
+            val otherMembers = item.activeRequests.mapNotNull { request ->
+                request.smallTalk?.members?.firstOrNull { it.id != currentUserId }
+            }.sortedByDescending { !it.avatarUrl.isNullOrBlank() }
+
+            // Display up to 2 avatars
+            for (i in 0 until minOf(avatars.size, otherMembers.size)) {
+                val member = otherMembers[i]
+                val imageView = avatars[i]
+                imageView.visibility = View.VISIBLE
+                Glide.with(imageView.context)
+                    .load(member.avatarUrl)
+                    .placeholder(R.drawable.placeholder_user)
+                    .circleCrop()
+                    .into(imageView)
+            }
+
+            // Calculate unread messages
             var totalUnread = 0
-
             for (request in item.activeRequests) {
-                if (avatarIndex >= avatars.size) break
-                val otherMember = request.smallTalk?.members?.firstOrNull { it.id != currentUserId }
-                if (otherMember != null) {
-                    val imageView = avatars[avatarIndex]
-                    imageView.visibility = View.VISIBLE
-                    Glide.with(imageView.context)
-                        .load(otherMember.avatarUrl)
-                        .placeholder(R.drawable.placeholder_user)
-                        .circleCrop()
-                        .into(imageView)
-                    avatarIndex++
-                }
-
                 totalUnread += request.numberOfUnreadMessages ?: 0
             }
 
