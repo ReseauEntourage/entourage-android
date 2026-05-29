@@ -639,9 +639,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
         val hasItems = items.isNotEmpty()
         smallTalkHeaderAdapter.update(getString(R.string.home_title_small_talk), null, hasItems)
-        // smallTalkWrapperAdapter.setVisible(hasItems)
     }
-
 
 
     override fun onDestroyView() {

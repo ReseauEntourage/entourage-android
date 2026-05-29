@@ -72,7 +72,6 @@ class HomeSmallTalkAdapter(
         }
     }
 
-
     inner class MatchViewHolder(private val binding: ItemHomeSmallTalkMatchBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind() {
@@ -85,8 +84,6 @@ class HomeSmallTalkAdapter(
     inner class WaitingViewHolder(private val binding: ItemHomeSmallTalkWaitingBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind() {
-            // we don't have the count here easily, but we can assume it's just 1 if we are in this state.
-            // Or we could pass it down, but let's just keep the generic string without %d or pass 1.
             binding.tvHomeSmallTalkSubtitleWaiting.text = context.getString(R.string.home_small_talk_subtitle_waiting, 1)
             binding.layoutItem.setOnClickListener {
                 onMatchingClick()
@@ -152,7 +149,8 @@ class HomeSmallTalkAdapter(
             }
             binding.tvHomeSmallTalkSubtitleActive.text = activeStr
 
-            // Matching text
+            // --- NOUVELLE LOGIQUE POUR LES ÉLÉMENTS MUTUELLEMENT EXCLUSIFS ---
+            // Matching text (apparaît si waitingCount > 0)
             if (item.waitingCount > 0) {
                 binding.tvHomeSmallTalkMatching.visibility = View.VISIBLE
                 val matchStr = context.getString(R.string.home_small_talk_matching, item.waitingCount)
@@ -161,8 +159,8 @@ class HomeSmallTalkAdapter(
                 binding.tvHomeSmallTalkMatching.visibility = View.GONE
             }
 
-            // Launch new button
-            if (item.totalCount < 3) {
+            // Launch new button (n'apparaît que si totalCount < 3 ET waitingCount == 0)
+            if (item.totalCount < 3 && item.waitingCount == 0) {
                 binding.tvHomeSmallTalkLaunchNew.visibility = View.VISIBLE
                 binding.tvHomeSmallTalkLaunchNew.text = context.getString(R.string.home_small_talk_launch_new, item.totalCount)
                 binding.tvHomeSmallTalkLaunchNew.setOnClickListener {
@@ -171,6 +169,7 @@ class HomeSmallTalkAdapter(
             } else {
                 binding.tvHomeSmallTalkLaunchNew.visibility = View.GONE
             }
+            // ----------------------------------------------------------------------
 
             binding.buttonVoir.setOnClickListener {
                 onViewClick()
