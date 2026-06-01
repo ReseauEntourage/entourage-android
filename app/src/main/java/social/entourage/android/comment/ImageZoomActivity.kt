@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.webkit.MimeTypeMap
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import social.entourage.android.R
@@ -48,12 +49,19 @@ class ImageZoomActivity : BaseActivity() {
         try {
             val request = DownloadManager.Request(Uri.parse(url))
             val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-            val fileName = "Entourage_$timeStamp.jpg"
+
+            var extension = MimeTypeMap.getFileExtensionFromUrl(url)
+            if (extension.isNullOrEmpty()) {
+                extension = "jpg"
+            }
+            val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension) ?: "image/jpeg"
+            val fileName = "Entourage_$timeStamp.$extension"
 
             request.setTitle(getString(R.string.download_image_title))
             request.setDescription(getString(R.string.download_image_description))
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+            request.setMimeType(mimeType)
             request.setAllowedOverMetered(true)
             request.setAllowedOverRoaming(true)
 
