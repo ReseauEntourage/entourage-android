@@ -638,7 +638,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         homeSmallTalkAdapter.submitList(items)
 
         val hasItems = items.isNotEmpty()
-        smallTalkHeaderAdapter.update(getString(R.string.home_title_small_talk), null, hasItems)
+        smallTalkHeaderAdapter.update("", null, false)
     }
 
 
