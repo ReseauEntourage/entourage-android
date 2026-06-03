@@ -7,9 +7,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.button.MaterialButton
 import social.entourage.android.R
 import social.entourage.android.api.model.Group
+import social.entourage.android.tools.utils.px
 
 class NationalGroupsAdapter(
     groups: List<Group>,
@@ -44,7 +48,16 @@ class NationalGroupsAdapter(
             if (!group.imageUrl.isNullOrEmpty()) {
                 Glide.with(itemView.context)
                     .load(group.imageUrl)
-                    .centerCrop()
+                    .apply(RequestOptions().override(100.px, 100.px))
+                    .placeholder(R.drawable.new_placeholder_group)
+                    .error(R.drawable.new_placeholder_group)
+                    .transform(CenterCrop(), RoundedCorners(20.px))
+                    .into(groupImage)
+            } else {
+                Glide.with(itemView.context)
+                    .load(R.drawable.new_placeholder_group)
+                    .apply(RequestOptions().override(100.px, 100.px))
+                    .transform(CenterCrop(), RoundedCorners(20.px))
                     .into(groupImage)
             }
 

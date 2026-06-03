@@ -1,56 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:layout_marginTop="10dp"
+    android:background="@android:color/white">
 
     <ImageView
         android:id="@+id/group_image"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="10dp"
         android:scaleType="centerCrop"
-        android:background="@color/grey"
-        app:layout_constraintDimensionRatio="16:9"/>
+        android:background="@drawable/new_rounded_grey_10dp"
+        android:padding="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/group_name"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="8dp">
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/quicksand_bold"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/group_image"
+        app:layout_constraintEnd_toStartOf="@id/join_button"/>
 
-        <TextView
-            android:id="@+id/group_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/quicksand_bold"
-            android:textColor="@color/black"
-            android:textSize="16sp"/>
+    <TextView
+        android:id="@+id/member_count"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/group_name"
+        app:layout_constraintStart_toEndOf="@id/group_image"
+        app:layout_constraintEnd_toStartOf="@id/join_button"/>
 
-        <TextView
-            android:id="@+id/member_count"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:fontFamily="@font/nunitosans_regular"
-            android:textColor="@color/grey"
-            android:textSize="14sp"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/join_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/quicksand_bold"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="8dp"
-            android:text="Rejoindre"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="14sp"
-            app:backgroundTint="@color/orange"
-            app:cornerRadius="24dp"/>
-    </LinearLayout>
-</LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/join_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/quicksand_bold"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:text="Rejoindre"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:backgroundTint="@color/orange"
+        app:cornerRadius="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
