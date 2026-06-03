@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
+    android:layout_marginTop="16dp"
     android:background="@android:color/white">
 
     <ImageView
         android:id="@+id/group_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginStart="10dp"
+        
         android:scaleType="centerCrop"
         android:background="@drawable/new_rounded_grey_10dp"
         android:padding="0dp"
