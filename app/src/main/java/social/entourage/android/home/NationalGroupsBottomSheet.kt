@@ -56,9 +56,9 @@ class NationalGroupsBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun setupRecyclerView() {
-        adapter = NationalGroupsAdapter(groupsList) { group, position ->
+        adapter = NationalGroupsAdapter(groupsList, { group, position ->
             onJoinButtonClick(group, position)
-        }
+        })
         binding.groupsRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         binding.groupsRecyclerview.adapter = adapter
     }
@@ -86,9 +86,9 @@ class NationalGroupsBottomSheet : BottomSheetDialogFragment() {
     fun setGroups(groups: List<Group>) {
         this.groupsList = groups
         if (::adapter.isInitialized) {
-            adapter = NationalGroupsAdapter(groupsList) { group, position ->
+            adapter = NationalGroupsAdapter(groupsList, { group, position ->
                 onJoinButtonClick(group, position)
-            }
+            })
             binding.groupsRecyclerview.adapter = adapter
         }
     }

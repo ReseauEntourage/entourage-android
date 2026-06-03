@@ -17,7 +17,8 @@ import social.entourage.android.tools.utils.px
 
 class NationalGroupsAdapter(
     groups: List<Group>,
-    private val onJoinClick: (Group, Int) -> Unit
+    private val onJoinClick: (Group, Int) -> Unit,
+    private val onItemClick: ((Group) -> Unit)? = null
 ) : RecyclerView.Adapter<NationalGroupsAdapter.GroupViewHolder>() {
 
     private var groups: List<Group> = groups
@@ -39,6 +40,7 @@ class NationalGroupsAdapter(
         private val groupName: TextView = itemView.findViewById(R.id.group_name)
         private val memberCount: TextView = itemView.findViewById(R.id.member_count)
         private val joinButton: MaterialButton = itemView.findViewById(R.id.join_button)
+        private val rootView: View = itemView.findViewById(R.id.root_view)
 
         fun bind(group: Group) {
             groupName.text = group.name
@@ -64,6 +66,16 @@ class NationalGroupsAdapter(
             // Set button state based on member status
             updateJoinButton(group.member)
 
+            joinButton.setOnClickListener {
+                onJoinClick(group, adapterPosition)
+            }
+
+            // Set click listener on the root view (excluding the join button)
+            rootView.setOnClickListener {
+                onItemClick?.invoke(group)
+            }
+
+            // Prevent join button from triggering item click
             joinButton.setOnClickListener {
                 onJoinClick(group, adapterPosition)
             }

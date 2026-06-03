@@ -1,5 +1,6 @@
 package social.entourage.android.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,8 @@ import social.entourage.android.R
 import social.entourage.android.api.model.Group
 import social.entourage.android.databinding.ActivityNationalGroupsBinding
 import social.entourage.android.groups.GroupPresenter
+import social.entourage.android.groups.details.feed.GroupFeedActivity
+import social.entourage.android.tools.utils.Const
 import timber.log.Timber
 
 class NationalGroupsActivity : AppCompatActivity() {
@@ -39,9 +42,11 @@ class NationalGroupsActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        adapter = NationalGroupsAdapter(emptyList()) { group, position ->
+        adapter = NationalGroupsAdapter(emptyList(), { group, position ->
             handleGroupJoinLeave(group, position)
-        }
+        }, { group ->
+            onGroupItemClick(group)
+        })
         binding.groupsRecyclerview.layoutManager = LinearLayoutManager(this)
         binding.groupsRecyclerview.adapter = adapter
     }
@@ -88,6 +93,16 @@ class NationalGroupsActivity : AppCompatActivity() {
                 // Mettre à jour localement le statut immédiatement
                 adapter.updateGroupJoinedStatus(groupId, true)
             }
+        }
+    }
+
+    private fun onGroupItemClick(group: Group) {
+        // Navigate to group feed activity
+        group.id?.let { groupId ->
+            val intent = Intent(this, GroupFeedActivity::class.java).apply {
+                putExtra(Const.GROUP_ID, groupId)
+            }
+            startActivity(intent)
         }
     }
 
