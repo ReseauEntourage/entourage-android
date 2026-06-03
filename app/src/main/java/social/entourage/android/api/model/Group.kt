@@ -48,15 +48,36 @@ data class Group(
     @SerializedName("future_outings")
     var futureEvents: MutableList<Events>? = mutableListOf(),
     @SerializedName("latitude")
-    var latitude: Double = 0.0,
+    var latitude: Double? = null,
     @SerializedName("longitude")
-    var longitude: Double = 0.0,
+    var longitude: Double? = null,
+    @SerializedName("radius")
+    var radius: Int? = null,
+    @SerializedName("created_at")
+    var createdAt: String? = null,
+    @SerializedName("updated_at")
+    var updatedAt: String? = null,
+    @SerializedName("slug")
+    var slug: String? = null,
+    @SerializedName("default_group")
+    var defaultGroup: Boolean = false,
+    @SerializedName("group_type")
+    var groupType: String? = null,
+    @SerializedName("parent_id")
+    var parentId: Int? = null,
+    @SerializedName("children")
+    var children: MutableList<Group>? = mutableListOf(),
+    @SerializedName("ancestors")
+    var ancestors: MutableList<Group>? = mutableListOf(),
     @SerializedName("display_address")
-    var displayAddress: String = "",
+    var displayAddress: String? = null,
     @SerializedName("unread_posts_count")
-    var unreadPostsCount: Int = 0,
+    var unreadPostsCount: Int? = null,
     var isSelected: Boolean = false
 ) {
+    // Extension property for easier access to joined status
+    val isJoined: Boolean
+        get() = member
 
     fun name(value: String) = apply {
         name = value

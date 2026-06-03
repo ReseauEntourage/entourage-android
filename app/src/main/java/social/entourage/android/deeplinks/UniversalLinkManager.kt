@@ -157,6 +157,11 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                     }
                 }
+                pathSegments.contains("national") -> {
+                    val intent = Intent(context, social.entourage.android.home.NationalGroupsActivity::class.java)
+                    context.startActivity(intent)
+                    (context as? Activity)?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                }
                 pathSegments.contains("solicitations") -> {
                     if (pathSegments.contains("new")) {
                         val intent = Intent(context, CreateActionActivity::class.java)

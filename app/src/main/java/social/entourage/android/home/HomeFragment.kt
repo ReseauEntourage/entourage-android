@@ -97,6 +97,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     }
     private var isRequestLoaded = false
     private var currentRequests: List<UserSmallTalkRequest> = emptyList()
+    private val REQUEST_CODE_NATIONAL_GROUPS = 1001
 
     // Variables pour la vidéo
     private var welcomeVideoUrl: String? = null
@@ -199,10 +200,11 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         // Récupération des informations de validation via le WS uniquement
         val events = summary.events
         val isStep1Done = events?.contains("onboarding.resource.welcome_watched") == true
-        val isStep2Done = events?.contains("onboarding.outing.webinar_or_first_steps") == true
-        val isStep3Done = events?.contains("onboarding.outing.papotages") == true
+        val isStep2Done = events?.contains("onboarding.neighborhood.nationals") == true
+        val isStep3Done = events?.contains("onboarding.outing.webinar_or_first_steps") == true
+        val isStep4Done = events?.contains("onboarding.outing.papotages") == true
 
-        val allCompleted = isStep1Done && isStep2Done && isStep3Done
+        val allCompleted = isStep1Done && isStep2Done && isStep3Done && isStep4Done
 
         // Règle 2: Initialisation du companion object au premier passage
         if (hasInitiallyCompletedAll == null) {
@@ -215,7 +217,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         } else {
             // Sinon on affiche le composant et on met à jour les données
             welcomeJourneyAdapter.setVisible(true)
-            welcomeJourneyAdapter.updateAllSteps(isStep1Done, isStep2Done, isStep3Done)
+            welcomeJourneyAdapter.updateAllSteps(isStep1Done, isStep2Done, isStep3Done, isStep4Done)
 
             // Détection du moment où le parcours est terminé pour afficher le Tooltip de célébration
             val previouslyCompletedSize = completedJourneySteps.size
@@ -223,9 +225,10 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             if (isStep1Done) completedJourneySteps.add(1)
             if (isStep2Done) completedJourneySteps.add(2)
             if (isStep3Done) completedJourneySteps.add(3)
+            if (isStep4Done) completedJourneySteps.add(4)
 
-            // Si on vient juste de finir les 3 étapes (n'était pas à 3 avant)
-            if (allCompleted && previouslyCompletedSize < 3) {
+            // Si on vient juste de finir les 4 étapes (n'était pas à 4 avant)
+            if (allCompleted && previouslyCompletedSize < 4) {
                 showCongratDialog(summary)
             }
         }
@@ -234,17 +237,60 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private fun handleWelcomeJourneyClick(stepIndex: Int) {
         when (stepIndex) {
             1 -> showVideoModal()
-            2 -> {
+            2 -> showNationalGroupsActivity()
+            3 -> {
                 val intent = Intent(requireContext(), social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
                 intent.putExtra("TYPE", "welcome")
                 startActivity(intent)
             }
-            3 -> {
+            4 -> {
                 val intent = Intent(requireContext(), social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
                 intent.putExtra("TYPE", "papotages")
                 startActivity(intent)
             }
         }
+    }
+
+    private fun showNationalGroupsActivity() {
+        if (!isAdded) return
+        
+        val intent = Intent(requireContext(), NationalGroupsActivity::class.java)
+        startActivityForResult(intent, REQUEST_CODE_NATIONAL_GROUPS)
+        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+    }
+    
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_NATIONAL_GROUPS && resultCode == Activity.RESULT_OK) {
+            // Marquer l'étape comme complétée
+            markWelcomeJourneyStepCompleted(2)
+            
+            // Afficher la snackbar
+            showGroupsSnackbar()
+            
+            // Rafraîchir l'état du parcours
+            homePresenter.getSummary()
+        }
+    }
+
+    private fun showGroupsSnackbar() {
+        if (!isAdded) return
+        val snackbar = com.google.android.material.snackbar.Snackbar.make(
+            binding.root,
+            "Vos groupes sont accessibles dans l'onglet Groupes",
+            com.google.android.material.snackbar.Snackbar.LENGTH_LONG
+        )
+        snackbar.setAction("Voir") {
+            // Naviguer vers l'onglet Groupes
+            (requireActivity() as? MainActivity)?.navigateToGroupsTab()
+        }
+        snackbar.show()
+    }
+
+    private fun markWelcomeJourneyStepCompleted(stepIndex: Int) {
+        // Cette méthode sera implémentée pour marquer une étape comme complétée
+        // Pour l'instant, on rafraîchit juste l'état
+        homePresenter.getSummary()
     }
 
     fun showVideoModal() {
