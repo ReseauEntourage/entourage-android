@@ -112,6 +112,7 @@ class HomeWelcomeJourneyAdapter(
             if (step1Completed) completedCount++
             if (step2Completed) completedCount++
             if (step3Completed) completedCount++
+            if (step4Completed) completedCount++
 
             tvStepCounter.text = "$completedCount/4"
             progressBar.progress = completedCount
@@ -120,7 +121,7 @@ class HomeWelcomeJourneyAdapter(
             when (completedCount) {
                 0 -> tvMicrocopy.text = "Commençons 💛"
                 1 -> tvMicrocopy.text = "Vous êtes bien lancé(e) ✨"
-                2 -> tvMicrocopy.text = "Continuez ainsi ! 🌟"
+                2 -> tvMicrocopy.text = "Vous faites partie d'une communauté 🙌"
                 3 -> tvMicrocopy.text = "Plus qu'une étape pour rejoindre la communauté 🎉"
                 else -> tvMicrocopy.text = "Parcours terminé !"
             }
@@ -187,11 +188,7 @@ class HomeWelcomeJourneyAdapter(
                 tvBadgeStep2.text = "Terminé"
                 tvBadgeStep2.setTextColor(ContextCompat.getColor(context, R.color.green))
                 tvBadgeStep2.setBackgroundResource(R.drawable.bg_badge_completed)
-                btnStep2.visibility = View.VISIBLE // Keep visible but show as completed
-                btnStep2.text = "Vous faites partie d'une communauté 🙌"
-                btnStep2.setBackgroundColor(ContextCompat.getColor(context, R.color.green))
-                btnStep2.setTextColor(ContextCompat.getColor(context, R.color.white))
-                btnStep2.setOnClickListener { onStepClick(2) } // Still clickable
+                btnStep2.visibility = View.GONE // Hide button when completed
                 cardStep2.setOnClickListener { onStepClick(2) }
                 cardStep2.isClickable = true
                 cardStep2.isEnabled = true
@@ -242,11 +239,7 @@ class HomeWelcomeJourneyAdapter(
                 tvBadgeStep3.text = "Terminé"
                 tvBadgeStep3.setTextColor(ContextCompat.getColor(context, R.color.green))
                 tvBadgeStep3.setBackgroundResource(R.drawable.bg_badge_completed)
-                btnStep3.visibility = View.VISIBLE // Keep visible but show as completed
-                btnStep3.text = "Vous faites partie d'une communauté 🙌"
-                btnStep3.setBackgroundColor(ContextCompat.getColor(context, R.color.green))
-                btnStep3.setTextColor(ContextCompat.getColor(context, R.color.white))
-                btnStep3.setOnClickListener { onStepClick(3) } // Still clickable
+                btnStep3.visibility = View.GONE // Hide button when completed
                 cardStep3.setOnClickListener { onStepClick(3) }
                 cardStep3.isClickable = true
                 cardStep3.isEnabled = true
