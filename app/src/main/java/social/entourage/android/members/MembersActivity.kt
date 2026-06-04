@@ -411,7 +411,11 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
 
     private fun updateUnsubscribedUI() {
 
-        if (type == MembersType.EVENT && isEquipeEntourage) {
+        // Utiliser la même condition que pour les cases à cocher (checkboxConfirmation)
+        val canShowAddButton = type == MembersType.EVENT && 
+                              HomeFragment.signablePermission && ActionSheetFragment.isSignable
+
+        if (canShowAddButton) {
             binding.fabAddUnsubscribed.visibility = android.view.View.VISIBLE
             binding.fabAddUnsubscribed.setOnChangeListener(object : SpeedDialView.OnChangeListener {
                 override fun onMainActionSelected(): Boolean {
