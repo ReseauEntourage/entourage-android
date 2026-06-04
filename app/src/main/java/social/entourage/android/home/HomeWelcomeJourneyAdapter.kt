@@ -131,6 +131,7 @@ class HomeWelcomeJourneyAdapter(
                 cardStep1.visibility = View.GONE
                 cardStep2.visibility = View.GONE
                 cardStep3.visibility = View.GONE
+                cardStep4.visibility = View.GONE
                 return
             } else {
                 layoutSuccess.visibility = View.GONE
