@@ -4,7 +4,7 @@
     android:id="@+id/root_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
+    android:layout_marginTop="10dp"
     android:background="@android:color/white"
     android:clickable="true"
     android:focusable="true">
@@ -13,7 +13,6 @@
         android:id="@+id/group_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        
         android:scaleType="centerCrop"
         android:background="@drawable/new_rounded_grey_10dp"
         android:padding="0dp"
@@ -28,7 +27,7 @@
         android:layout_marginStart="10dp"
         android:fontFamily="@font/quicksand_bold"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="@dimen/profile_description"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@id/group_image"
         app:layout_constraintEnd_toStartOf="@id/join_button"/>
@@ -41,7 +40,7 @@
         android:layout_marginTop="4dp"
         android:fontFamily="@font/nunitosans_regular"
         android:textColor="@color/grey"
-        android:textSize="14sp"
+        android:textSize="@dimen/profile_labels"
         app:layout_constraintTop_toBottomOf="@id/group_name"
         app:layout_constraintStart_toEndOf="@id/group_image"
         app:layout_constraintEnd_toStartOf="@id/join_button"/>
