@@ -192,7 +192,7 @@ class HomeWelcomeJourneyAdapter(
                 cardStep2.setOnClickListener { onStepClick(2) }
                 cardStep2.isClickable = true
                 cardStep2.isEnabled = true
-                ivIconStep2.setImageResource(R.drawable.ic_lucide_check)
+                ivIconStep2.setImageResource(R.drawable.ic_group_welcome_home)
                 ivIconStep2.setBackgroundResource(R.drawable.bg_circle_green_lucide)
             } else if (step1Completed) { // Step 2 is active
                 cardStep2.alpha = 1.0f // Devient opaque car débloqué
@@ -212,7 +212,7 @@ class HomeWelcomeJourneyAdapter(
                 cardStep2.setOnClickListener { onStepClick(2) }
                 cardStep2.isClickable = true
                 cardStep2.isEnabled = true
-                ivIconStep2.setImageResource(R.drawable.ic_lucide_users)
+                ivIconStep2.setImageResource(R.drawable.ic_group_welcome_home)
                 ivIconStep2.setBackgroundResource(R.drawable.bg_circle_orange_lucide)
             } else { // Step 2 is future (Bloqué)
                 cardStep2.alpha = 0.5f // LÉGÈREMENT TRANSPARENT
@@ -225,7 +225,7 @@ class HomeWelcomeJourneyAdapter(
                 cardStep2.setOnClickListener(null)
                 cardStep2.isClickable = false // NON CLIQUABLE
                 cardStep2.isEnabled = false
-                ivIconStep2.setImageResource(R.drawable.ic_lucide_users)
+                ivIconStep2.setImageResource(R.drawable.ic_group_welcome_home)
                 ivIconStep2.setBackgroundResource(R.drawable.bg_circle_orange_lucide)
             }
 
