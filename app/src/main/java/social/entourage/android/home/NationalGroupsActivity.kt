@@ -57,6 +57,7 @@ class NationalGroupsActivity : AppCompatActivity() {
         groupPresenter.getAllGroups.observe(this) { groups ->
             groups?.let {
                 adapter.updateGroups(it)
+                binding.progressBar.visibility = View.GONE
             }
         }
 
@@ -75,6 +76,7 @@ class NationalGroupsActivity : AppCompatActivity() {
     }
 
     private fun loadNationalGroups() {
+        binding.progressBar.visibility = View.VISIBLE
         groupPresenter.getNationalGroups()
     }
 
