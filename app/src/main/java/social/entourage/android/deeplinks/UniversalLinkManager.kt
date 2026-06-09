@@ -145,6 +145,11 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 pathSegments.contains("outings") -> {
                     handleOutings(pathSegments)
                 }
+                pathSegments.contains("national") -> {
+                    val intent = Intent(context, social.entourage.android.home.NationalGroupsActivity::class.java)
+                    context.startActivity(intent)
+                    (context as? Activity)?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                }
                 pathSegments.contains("neighborhoods") || pathSegments.contains("groups") -> {
                     if (pathSegments.size > 2) {
                         val neighborhoodId = pathSegments[2]
@@ -156,11 +161,6 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         context.startActivity(intent)
                         (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                     }
-                }
-                pathSegments.contains("national") -> {
-                    val intent = Intent(context, social.entourage.android.home.NationalGroupsActivity::class.java)
-                    context.startActivity(intent)
-                    (context as? Activity)?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                 }
                 pathSegments.contains("solicitations") -> {
                     if (pathSegments.contains("new")) {
@@ -291,13 +291,17 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
         )
     }
 
-    override fun onRetrievedGroup(group: Group) {
-        (context as? Activity)?.startActivityForResult(
-            Intent(context, GroupFeedActivity::class.java).putExtra(
-                Const.GROUP_ID,
-                group.id
-            ), 0
-        )
+    override fun onRetrievedGroup(group: Group?) {
+        group?.id?.let { groupId ->
+            (context as? Activity)?.startActivityForResult(
+                Intent(context, GroupFeedActivity::class.java).putExtra(
+                    Const.GROUP_ID,
+                    groupId
+                ), 0
+            )
+        } ?: run {
+            Timber.e("Group or Group ID is null")
+        }
     }
 
     override fun onRetrievedAction(action: Action,isContrib:Boolean) {

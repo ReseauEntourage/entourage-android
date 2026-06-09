@@ -160,7 +160,7 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
 
 interface UniversalLinksPresenterCallback{
     fun onRetrievedEvent(event: Events)
-    fun onRetrievedGroup(group:Group)
+    fun onRetrievedGroup(group:Group?)
     fun onRetrievedAction(action:Action, isContrib:Boolean)
     fun onRetrievedDiscussion(discussion: Conversation)
     fun onUserJoinedConversation()
