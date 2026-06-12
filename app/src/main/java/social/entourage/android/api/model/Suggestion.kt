@@ -2,12 +2,12 @@ package social.entourage.android.api.model
 
 import com.google.gson.annotations.SerializedName
 
-data class SuggestionResponse(
-    @SerializedName("connection") val connection: Suggestion?,
-    @SerializedName("next_step") val nextStep: Suggestion?
+data class ZuggestionResponse(
+    @SerializedName("connection") val connection: Zuggestion?,
+    @SerializedName("next_step") val nextStep: Zuggestion?
 )
 
-data class Suggestion(
+data class Zuggestion(
     @SerializedName("id") val id: Int,
     @SerializedName("suggestion_type") val suggestionType: String,
     @SerializedName("suggested_action") val suggestedAction: String,

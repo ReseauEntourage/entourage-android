@@ -5,17 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import social.entourage.android.R
-import social.entourage.android.api.model.Suggestion
-import social.entourage.android.databinding.HomeSuggestionConnectionItemBinding
+import social.entourage.android.api.model.Zuggestion
+import social.entourage.android.databinding.HomeZuggestionConnectionItemBinding
 
-class HomeSuggestionConnectionAdapter(
-    private val onActionClicked: (Suggestion) -> Unit,
-    private val onDismissClicked: (Suggestion) -> Unit
-) : RecyclerView.Adapter<HomeSuggestionConnectionAdapter.ViewHolder>() {
+class HomeZuggestionConnectionAdapter(
+    private val onActionClicked: (Zuggestion) -> Unit,
+    private val onDismissClicked: (Zuggestion) -> Unit
+) : RecyclerView.Adapter<HomeZuggestionConnectionAdapter.ViewHolder>() {
 
-    private var suggestion: Suggestion? = null
+    private var suggestion: Zuggestion? = null
 
-    fun setSuggestion(s: Suggestion?) {
+    fun setSuggestion(s: Zuggestion?) {
         suggestion = s
         notifyDataSetChanged()
     }
@@ -25,7 +25,7 @@ class HomeSuggestionConnectionAdapter(
     override fun getItemViewType(position: Int): Int = 300
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = HomeSuggestionConnectionItemBinding.inflate(
+        val binding = HomeZuggestionConnectionItemBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
         return ViewHolder(binding)
@@ -50,6 +50,6 @@ class HomeSuggestionConnectionAdapter(
         holder.binding.btnSuggestionDismiss.setOnClickListener { onDismissClicked(s) }
     }
 
-    class ViewHolder(val binding: HomeSuggestionConnectionItemBinding) :
+    class ViewHolder(val binding: HomeZuggestionConnectionItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 }

@@ -5,16 +5,16 @@ import retrofit2.http.GET
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
-import social.entourage.android.api.model.SuggestionResponse
+import social.entourage.android.api.model.ZuggestionResponse
 
-interface SuggestionRequest {
+interface ZuggestionRequest {
 
-    @GET("suggestions")
-    fun getSuggestions(): Call<SuggestionResponse>
+    @GET("zuggestions")
+    fun getSuggestions(): Call<ZuggestionResponse>
 
-    @PUT("suggestions/{id}")
+    @PUT("zuggestions/{id}")
     fun updateSuggestion(
         @Path("id") id: Int,
-        @Query("action") action: String
+        @Query("action_type") action: String
     ): Call<Void>
 }

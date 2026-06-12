@@ -38,7 +38,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Help
 import social.entourage.android.api.model.Pedago
-import social.entourage.android.api.model.Suggestion
+import social.entourage.android.api.model.Zuggestion
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserSmallTalkRequest
@@ -152,8 +152,8 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private lateinit var homePedagoAdapter: HomePedagoAdapter
 
     // Suggestions
-    private lateinit var homeSuggestionConnectionAdapter: HomeSuggestionConnectionAdapter
-    private lateinit var homeSuggestionNextStepAdapter: HomeSuggestionNextStepAdapter
+    private lateinit var homeZuggestionConnectionAdapter: HomeZuggestionConnectionAdapter
+    private lateinit var homeZuggestionNextStepAdapter: HomeZuggestionNextStepAdapter
 
     // Moderator
     private lateinit var homeModeratorAdapter: HomeModeratorAdapter
@@ -609,24 +609,24 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         })
 
         // 9. Suggestions
-        homeSuggestionConnectionAdapter = HomeSuggestionConnectionAdapter(
+        homeZuggestionConnectionAdapter = HomeZuggestionConnectionAdapter(
             onActionClicked = { suggestion ->
                 suggestion.suggestedUserInfo?.id?.let { userId ->
                     discussionsPresenter.createOrGetConversation(userId.toString())
                 }
-                homePresenter.dismissSuggestion(suggestion.id, "actioned")
-                homeSuggestionConnectionAdapter.setSuggestion(null)
+                homePresenter.dismissZuggestion(suggestion.id, "actioned")
+                homeZuggestionConnectionAdapter.setSuggestion(null)
             },
             onDismissClicked = { suggestion ->
-                homePresenter.dismissSuggestion(suggestion.id, "dismissed")
-                homeSuggestionConnectionAdapter.setSuggestion(null)
+                homePresenter.dismissZuggestion(suggestion.id, "dismissed")
+                homeZuggestionConnectionAdapter.setSuggestion(null)
             }
         )
 
-        homeSuggestionNextStepAdapter = HomeSuggestionNextStepAdapter(
+        homeZuggestionNextStepAdapter = HomeZuggestionNextStepAdapter(
             onActionClicked = { suggestion ->
-                homePresenter.dismissSuggestion(suggestion.id, "actioned")
-                homeSuggestionNextStepAdapter.setSuggestion(null)
+                homePresenter.dismissZuggestion(suggestion.id, "actioned")
+                homeZuggestionNextStepAdapter.setSuggestion(null)
                 // Navigate based on action type
                 suggestion.suggestedEntourageInfo?.id?.let { entourageId ->
                     when (suggestion.suggestedAction) {
@@ -643,8 +643,8 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 }
             },
             onDismissClicked = { suggestion ->
-                homePresenter.dismissSuggestion(suggestion.id, "dismissed")
-                homeSuggestionNextStepAdapter.setSuggestion(null)
+                homePresenter.dismissZuggestion(suggestion.id, "dismissed")
+                homeZuggestionNextStepAdapter.setSuggestion(null)
             }
         )
 
@@ -924,7 +924,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 homePresenter.getPedagogicalResources()
                 homePresenter.getInitialPedagogicalResources()
                 homePresenter.getNotificationsCount()
-                homePresenter.fetchSuggestions()
+                homePresenter.fetchZuggestions()
                 // ATTENTION: getWelcomeResource() a été retiré d'ici pour éviter l'auto-validation !
                 userPresenter.getUser(meId)
             }
@@ -953,8 +953,8 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 concatAdapter.addAdapter(eventHeaderAdapter)
                 concatAdapter.addAdapter(eventWrapperAdapter)
                 concatAdapter.addAdapter(eventButtonAdapter)
-                concatAdapter.addAdapter(homeSuggestionConnectionAdapter)
-                concatAdapter.addAdapter(homeSuggestionNextStepAdapter)
+                concatAdapter.addAdapter(homeZuggestionConnectionAdapter)
+                concatAdapter.addAdapter(homeZuggestionNextStepAdapter)
                 concatAdapter.addAdapter(homeModeratorAdapter)
                 concatAdapter.addAdapter(groupHeaderAdapter)
                 concatAdapter.addAdapter(groupWrapperAdapter)
@@ -1013,9 +1013,9 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 }
             }
         }
-        homePresenter.suggestionData.observe(viewLifecycleOwner) { response ->
-            homeSuggestionConnectionAdapter.setSuggestion(response?.connection)
-            homeSuggestionNextStepAdapter.setSuggestion(response?.nextStep)
+        homePresenter.zuggestionData.observe(viewLifecycleOwner) { response ->
+            homeZuggestionConnectionAdapter.setSuggestion(response?.connection)
+            homeZuggestionNextStepAdapter.setSuggestion(response?.nextStep)
         }
         actionsPresenter.unreadMessages.observe(viewLifecycleOwner) { updateUnreadCount(it) }
         discussionsPresenter.newConversation.observe(viewLifecycleOwner) { conversation ->

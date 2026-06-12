@@ -4,17 +4,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.R
-import social.entourage.android.api.model.Suggestion
-import social.entourage.android.databinding.HomeSuggestionNextStepItemBinding
+import social.entourage.android.api.model.Zuggestion
+import social.entourage.android.databinding.HomeZuggestionNextStepItemBinding
 
-class HomeSuggestionNextStepAdapter(
-    private val onActionClicked: (Suggestion) -> Unit,
-    private val onDismissClicked: (Suggestion) -> Unit
-) : RecyclerView.Adapter<HomeSuggestionNextStepAdapter.ViewHolder>() {
+class HomeZuggestionNextStepAdapter(
+    private val onActionClicked: (Zuggestion) -> Unit,
+    private val onDismissClicked: (Zuggestion) -> Unit
+) : RecyclerView.Adapter<HomeZuggestionNextStepAdapter.ViewHolder>() {
 
-    private var suggestion: Suggestion? = null
+    private var suggestion: Zuggestion? = null
 
-    fun setSuggestion(s: Suggestion?) {
+    fun setSuggestion(s: Zuggestion?) {
         suggestion = s
         notifyDataSetChanged()
     }
@@ -24,7 +24,7 @@ class HomeSuggestionNextStepAdapter(
     override fun getItemViewType(position: Int): Int = 301
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = HomeSuggestionNextStepItemBinding.inflate(
+        val binding = HomeZuggestionNextStepItemBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
         return ViewHolder(binding)
@@ -54,6 +54,6 @@ class HomeSuggestionNextStepAdapter(
         holder.binding.btnNextStepDismiss.setOnClickListener { onDismissClicked(s) }
     }
 
-    class ViewHolder(val binding: HomeSuggestionNextStepItemBinding) :
+    class ViewHolder(val binding: HomeZuggestionNextStepItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 }
