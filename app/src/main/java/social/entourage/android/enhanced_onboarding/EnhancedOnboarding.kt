@@ -21,8 +21,12 @@ import social.entourage.android.enhanced_onboarding.fragments.OnboardingDisponib
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestFragment
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingPresentationFragment
 import social.entourage.android.home.HomeFragment // Si besoin d'accès à la constante, sinon chaîne en dur
+import social.entourage.android.suggestions.OnboardingFirstStepFragment
+import social.entourage.android.suggestions.OnboardingTypeFragment
 
-class EnhancedOnboarding : BaseActivity() {
+class EnhancedOnboarding : BaseActivity(),
+    OnboardingTypeFragment.OnTypeSelectedListener,
+    OnboardingFirstStepFragment.OnFirstStepCompleteListener {
     private lateinit var binding: ActivityEnhancedOnboardingLayoutBinding
     private lateinit var viewModel: OnboardingViewModel
     private var backCallback: OnBackPressedCallback? = null
@@ -67,12 +71,14 @@ class EnhancedOnboarding : BaseActivity() {
     }
 
     private fun setupObservers() {
+        viewModel.onboardingTypeStep.observe(this, ::handleOnboardingTypeStep)
         viewModel.onboardingFirstStep.observe(this, ::handleOnboardingFirstStep)
         viewModel.onboardingSecondStep.observe(this, ::handleOnboardingSecondStep)
         viewModel.onboardingThirdStep.observe(this, ::handleOnboardingThirdStep)
         viewModel.onboardingFourthStep.observe(this, ::handleOnboardingFourthStep)
         viewModel.onboardingDisponibilityStep.observe(this, ::handleOnboardingDisponibilityStep)
         viewModel.onboardingFifthStep.observe(this, ::handleOnboardingFifthStep)
+        viewModel.onboardingLastStep.observe(this, ::handleOnboardingLastStep)
         viewModel.onboardingShouldQuit.observe(this, ::handleOnboardingShouldQuit)
         viewModel.shouldDismissBtnBack.observe(this, ::toggleBtnBack)
     }
@@ -95,13 +101,15 @@ class EnhancedOnboarding : BaseActivity() {
             viewModel.setOnboardingFourthStep(true)
         } else {
             when (viewModel.step) {
+                0 -> viewModel.setOnboardingTypeStep(true)
                 1 -> viewModel.setOnboardingFirstStep(true)
                 2 -> viewModel.setOnboardingSecondStep(true)
                 3 -> viewModel.setOnboardingThirdStep(true)
                 4 -> viewModel.setOnboardingFourthStep(true)
                 5 -> viewModel.onboardingDisponibilityStep.postValue(true)
                 6 -> viewModel.setOnboardingFifthStep(true)
-                else -> viewModel.setOnboardingFirstStep(true)
+                7 -> viewModel.setOnboardingLastStep(true)
+                else -> viewModel.setOnboardingTypeStep(true)
             }
         }
     }
@@ -135,6 +143,35 @@ class EnhancedOnboarding : BaseActivity() {
     private fun isAssociationMode(): Boolean {
         return isAssociationFromSummary ?: EntourageApplication.get().sharedPreferences
             .getBoolean(PREF_IS_ASSOCIATION_FROM_SUMMARY, false)
+    }
+
+    // --- Interface OnboardingTypeFragment.OnTypeSelectedListener ---
+    override fun onTypeSelected(type: String) {
+        viewModel.selectedUserType = type
+        // Synchronise le mode association dans le ViewModel/prefs si nécessaire
+        if (type == "association") {
+            isAssociationFromSummary = true
+            EntourageApplication.get().sharedPreferences.edit()
+                .putBoolean(PREF_IS_ASSOCIATION_FROM_SUMMARY, true)
+                .apply()
+        } else {
+            isAssociationFromSummary = false
+            EntourageApplication.get().sharedPreferences.edit()
+                .putBoolean(PREF_IS_ASSOCIATION_FROM_SUMMARY, false)
+                .apply()
+        }
+        viewModel.setOnboardingFirstStep(true)
+    }
+
+    // --- Interface OnboardingFirstStepFragment.OnFirstStepCompleteListener ---
+    override fun onFirstStepComplete(interests: List<String>, maxDistanceKm: Int) {
+        viewModel.suggestionInterests = interests
+        viewModel.suggestionMaxDistanceKm = maxDistanceKm
+        viewModel.registerAndQuit()
+    }
+
+    private fun handleOnboardingTypeStep(value: Boolean) {
+        if (value) replaceFragment(OnboardingTypeFragment.newInstance())
     }
 
     private fun handleOnboardingFirstStep(value: Boolean) {
@@ -172,8 +209,7 @@ class EnhancedOnboarding : BaseActivity() {
     private fun handleOnboardingFifthStep(value: Boolean) {
         if (value) {
             if (isAssociationMode()) {
-
-                viewModel.register { success ->
+                viewModel.register { _ ->
                     viewModel.step = 6
                     replaceFragment(EnhancedOnboardingAssoFragment())
                 }
@@ -181,6 +217,10 @@ class EnhancedOnboarding : BaseActivity() {
                 replaceFragment(OnboardingCongratsFragment())
             }
         }
+    }
+
+    private fun handleOnboardingLastStep(value: Boolean) {
+        if (value) replaceFragment(OnboardingFirstStepFragment.newInstance())
     }
 
     private fun replaceFragment(fragment: androidx.fragment.app.Fragment) {

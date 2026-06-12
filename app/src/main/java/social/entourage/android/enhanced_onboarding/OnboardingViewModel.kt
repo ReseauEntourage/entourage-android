@@ -11,6 +11,9 @@ import social.entourage.android.api.request.UserRequest
 import social.entourage.android.api.request.UserResponse
 
 class OnboardingViewModel : ViewModel() {
+    // Step 0 : type de profil (riverain vs PI) — nouveau
+    var onboardingTypeStep = MutableLiveData<Boolean>()
+
     var onboardingFirstStep = MutableLiveData<Boolean>()
     var onboardingSecondStep = MutableLiveData<Boolean>()
     var onboardingThirdStep = MutableLiveData<Boolean>()
@@ -18,15 +21,31 @@ class OnboardingViewModel : ViewModel() {
     var onboardingFifthStep = MutableLiveData<Boolean>()
     var onboardingDisponibilityStep = MutableLiveData<Boolean>()
 
+    // Dernière étape : préférences suggestions — nouveau
+    var onboardingLastStep = MutableLiveData<Boolean>()
+
     var onboardingShouldQuit = MutableLiveData<Boolean>()
     var hasRegistered = MutableLiveData<Boolean>()
-    var step: Int = 1
+    var step: Int = 0
     var interests = MutableLiveData<List<InterestForAdapter>>()
     var categories = MutableLiveData<List<InterestForAdapter>>()
     var actionsWishes = MutableLiveData<List<InterestForAdapter>>()
     var shouldDismissBtnBack = MutableLiveData<Boolean>()
     var user: social.entourage.android.api.model.User? = null
     var selectedCategory: String? = null
+
+    /** Type choisi dans OnboardingTypeFragment : "neighbour", "volunteer" ou "association" */
+    var selectedUserType: String? = null
+
+    /** Intérêts suggestions choisis dans OnboardingFirstStepFragment */
+    var suggestionInterests: List<String> = emptyList()
+
+    /** Distance max (km) choisie dans OnboardingFirstStepFragment */
+    var suggestionMaxDistanceKm: Int = 5
+
+    /** Riverain = neighbour ou volunteer (affiche l'étape intérêts).
+     *  PI = association (saute l'étape intérêts). */
+    fun isNeighbourType(): Boolean = selectedUserType != "association"
 
     var selectedDays = MutableLiveData<List<String>>()
     var selectedTimeSlots = MutableLiveData<List<String>>()
@@ -182,6 +201,11 @@ class OnboardingViewModel : ViewModel() {
         selectedTimeSlots.postValue(timeSlots)
     }
 
+    fun setOnboardingTypeStep(value: Boolean) {
+        onboardingTypeStep.postValue(value)
+        step = 0
+    }
+
     fun setOnboardingFirstStep(value: Boolean) {
         onboardingFirstStep.postValue(value)
         step = 1
@@ -205,5 +229,10 @@ class OnboardingViewModel : ViewModel() {
     fun setOnboardingFifthStep(value: Boolean) {
         onboardingFifthStep.postValue(value)
         step = 5
+    }
+
+    fun setOnboardingLastStep(value: Boolean) {
+        onboardingLastStep.postValue(value)
+        step = 7
     }
 }

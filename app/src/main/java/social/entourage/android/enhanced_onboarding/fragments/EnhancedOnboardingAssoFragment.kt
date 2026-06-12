@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import social.entourage.android.EntourageApplication
 import social.entourage.android.databinding.FragmentEnhancedOnboardingAssoBinding
+import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
 import social.entourage.android.profile.association.AssociationPresenter
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -75,7 +76,16 @@ class EnhancedOnboardingAssoFragment : Fragment() {
 
         binding.buttonSkip.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Clic__Later__Onboarding__AssoDescription)
-            viewModel.quitNow()
+            // Si on vient du flux onboarding principal (pas depuis les paramètres),
+            // on affiche la dernière étape avant de quitter.
+            if (EnhancedOnboarding.isFromSettingsinterest ||
+                EnhancedOnboarding.isFromSettingsDisponibility ||
+                EnhancedOnboarding.isFromSettingsWishes ||
+                EnhancedOnboarding.isFromSettingsActionCategorie) {
+                viewModel.quitNow()
+            } else {
+                viewModel.setOnboardingLastStep(true)
+            }
         }
 
         binding.buttonFinish.setOnClickListener {
@@ -171,7 +181,15 @@ class EnhancedOnboardingAssoFragment : Fragment() {
         assoPresenter.updatePartnerSuccess.observe(viewLifecycleOwner) { success ->
             isSaving = false
             if (success == true) {
-                viewModel.quitNow()
+                // Si on vient du flux onboarding principal, on affiche la dernière étape avant de quitter.
+                if (EnhancedOnboarding.isFromSettingsinterest ||
+                    EnhancedOnboarding.isFromSettingsDisponibility ||
+                    EnhancedOnboarding.isFromSettingsWishes ||
+                    EnhancedOnboarding.isFromSettingsActionCategorie) {
+                    viewModel.quitNow()
+                } else {
+                    viewModel.setOnboardingLastStep(true)
+                }
             }
         }
     }

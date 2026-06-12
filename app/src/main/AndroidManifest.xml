@@ -368,6 +368,11 @@
             android:name=".home.NationalGroupsActivity"
             android:parentActivityName=".MainActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".suggestions.SuggestionsActivity"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
      </application>
 
  </manifest>

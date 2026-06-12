@@ -52,6 +52,9 @@ class OnboardingInterestFragment : Fragment() {
                 val userGoal = viewModel.user?.goal
                 if (userGoal != null && userGoal.equals(User.USER_GOAL_ASSO, ignoreCase = true)) {
                     viewModel.setOnboardingFifthStep(true)
+                } else if (viewModel.isNeighbourType()) {
+                    // Riverain (neighbour/volunteer) : afficher la dernière étape suggestions
+                    viewModel.setOnboardingLastStep(true)
                 } else {
                     viewModel.setOnboardingFourthStep(true)
                 }

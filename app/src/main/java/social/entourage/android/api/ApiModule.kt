@@ -28,6 +28,7 @@ import social.entourage.android.api.request.PartnerRequest
 import social.entourage.android.api.request.PoiRequest
 import social.entourage.android.api.request.SharingRequest
 import social.entourage.android.api.request.SmallTalkRequest
+import social.entourage.android.api.request.SuggestionsRequest
 import social.entourage.android.api.request.SurveyRequest
 import social.entourage.android.api.request.UserRequest
 import social.entourage.android.authentication.AuthenticationInterceptor
@@ -56,6 +57,7 @@ class ApiModule {
     val appLinksRequest: AppLinksRequest
 
     val associationsRequest: AssociationsRequest
+    val suggestionsRequest: SuggestionsRequest
 
     init {
         okHttpClient = providesOkHttpClient()
@@ -79,6 +81,7 @@ class ApiModule {
         appLinksRequest = providesAppLinksRequest(retrofit)
 
         associationsRequest = providesAssociationsRequest(retrofit)
+        suggestionsRequest = providesSuggestionsRequest(retrofit)
     }
 
     fun providesOkHttpClient(): OkHttpClient {
@@ -198,5 +201,9 @@ class ApiModule {
 
     fun providesAssociationsRequest(restAdapter: Retrofit): AssociationsRequest {
         return restAdapter.create(AssociationsRequest::class.java)
+    }
+
+    fun providesSuggestionsRequest(restAdapter: Retrofit): SuggestionsRequest {
+        return restAdapter.create(SuggestionsRequest::class.java)
     }
 }

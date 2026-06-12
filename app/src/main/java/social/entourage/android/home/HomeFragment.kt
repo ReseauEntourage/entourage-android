@@ -60,6 +60,9 @@ import social.entourage.android.profile.MyProfileFullActivity
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.small_talks.SmallTalkIntroActivity
 import social.entourage.android.small_talks.SmallTalkViewModel
+import social.entourage.android.suggestions.SuggestionFragment
+import social.entourage.android.suggestions.SuggestionReasonBottomSheet
+import social.entourage.android.suggestions.SuggestionsViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
@@ -94,6 +97,9 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private lateinit var actionsPresenter: ActionsPresenter
     private val smallTalkViewModel: SmallTalkViewModel by lazy {
         ViewModelProvider(this).get(SmallTalkViewModel::class.java)
+    }
+    private val suggestionsViewModel: SuggestionsViewModel by lazy {
+        ViewModelProvider(this).get(SuggestionsViewModel::class.java)
     }
     private var isRequestLoaded = false
     private var currentRequests: List<UserSmallTalkRequest> = emptyList()
@@ -152,6 +158,9 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
     // Moderator
     private lateinit var homeModeratorAdapter: HomeModeratorAdapter
+
+    // Suggestions
+    private lateinit var homeSuggestionAdapter: HomeSuggestionAdapter
 
     // Gère uniquement le cycle de vie du fragment pour ne pas lancer plusieurs popups en même temps
     private var hasRunEntryGating = false
@@ -608,6 +617,21 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Moderator)
             discussionsPresenter.createOrGetConversation(moderatorId.toString())
         }
+
+        // 10. Suggestions
+        homeSuggestionAdapter = HomeSuggestionAdapter(object : HomeSuggestionListener {
+            override fun onInfoTap(suggestion: social.entourage.android.api.model.Suggestion) {
+                SuggestionReasonBottomSheet.newInstance(suggestion)
+                    .show(childFragmentManager, "reason")
+            }
+            override fun onSeeAllTap() {
+                val intent = Intent(requireContext(), social.entourage.android.suggestions.SuggestionsActivity::class.java)
+                startActivity(intent)
+            }
+            override fun onCtaTap(suggestion: social.entourage.android.api.model.Suggestion) {
+                // CTA navigation — extend as needed per type
+            }
+        })
     }
 
     private fun setupRecyclerView() {
@@ -635,6 +659,12 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         user = EntourageApplication.me(activity)
         updateAvatar()
         userPresenter.user.observe(viewLifecycleOwner, userObserver)
+
+        // Suggestions
+        suggestionsViewModel.suggestions.observe(viewLifecycleOwner) { list ->
+            homeSuggestionAdapter.setSuggestion(list.firstOrNull())
+        }
+        suggestionsViewModel.loadSuggestions(reset = true)
 
         if (MainActivity.shouldLaunchOnboarding) {
             MainActivity.shouldLaunchOnboarding = false
@@ -898,6 +928,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         if (totalchecksum >= 4) {
             if (concatAdapter.adapters.contains(homeSkeletonAdapter)) {
                 concatAdapter.removeAdapter(homeSkeletonAdapter)
+                concatAdapter.addAdapter(homeSuggestionAdapter)
                 concatAdapter.addAdapter(welcomeJourneyAdapter)
                 concatAdapter.addAdapter(initialPedagoHeaderAdapter)
                 concatAdapter.addAdapter(initialPedagoWrapperAdapter)
