@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/next_step_card_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/bg_next_step_card"
+        android:padding="16dp">
+
+        <!-- Label "VOTRE PROCHAIN PAS" -->
+        <TextView
+            android:id="@+id/tv_next_step_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="VOTRE PROCHAIN PAS"
+            android:textColor="@color/orange"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.08"
+            android:textAllCaps="true"
+            android:fontFamily="@font/nunitosans_bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_next_step_dismiss" />
+
+        <!-- Dismiss button (×) -->
+        <TextView
+            android:id="@+id/btn_next_step_dismiss"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Ignorer"
+            android:text="×"
+            android:textColor="#A0A0A0"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tv_next_step_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="#363636"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/nunitosans_bold"
+            android:lineSpacingMultiplier="1.3"
+            tools:text="Participez à un Papotage solidaire cette semaine"
+            app:layout_constraintTop_toBottomOf="@+id/tv_next_step_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Reason (optional) -->
+        <TextView
+            android:id="@+id/tv_next_step_reason"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textColor="#6D6C6C"
+            android:textSize="13sp"
+            android:fontFamily="@font/nunitosans_regular"
+            android:lineSpacingMultiplier="1.4"
+            android:visibility="gone"
+            tools:text="Parce que vous êtes dans ce quartier"
+            app:layout_constraintTop_toBottomOf="@+id/tv_next_step_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- CTA Button -->
+        <Button
+            android:id="@+id/btn_next_step_cta"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/btn_shape_orange"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/nunitosans_bold"
+            android:textAllCaps="false"
+            tools:text="Voir les prochaines dates"
+            app:layout_constraintTop_toBottomOf="@+id/tv_next_step_reason"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

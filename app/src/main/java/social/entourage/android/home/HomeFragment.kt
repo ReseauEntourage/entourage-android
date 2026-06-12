@@ -107,6 +107,10 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     // Adapters
     private lateinit var concatAdapter: ConcatAdapter
 
+    // Next Step
+    private lateinit var nextStepAdapter: NextStepAdapter
+    private lateinit var nextStepPresenter: NextStepPresenter
+
     // Welcome Journey
     private lateinit var welcomeJourneyAdapter: HomeWelcomeJourneyAdapter
     private val homeSkeletonAdapter = HomeSkeletonAdapter()
@@ -459,6 +463,13 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private fun setupAdapters() {
         val viewPool = RecyclerView.RecycledViewPool()
 
+        // Next Step suggestion card
+        nextStepPresenter = ViewModelProvider(this).get(NextStepPresenter::class.java)
+        nextStepAdapter = NextStepAdapter(
+            onCtaClick = { step -> nextStepPresenter.completeStep(step.id) },
+            onDismissClick = { step -> nextStepPresenter.dismissStep(step.id) }
+        )
+
         // 0. Welcome Journey
         welcomeJourneyAdapter = HomeWelcomeJourneyAdapter(requireContext()) { stepIndex ->
             handleWelcomeJourneyClick(stepIndex)
@@ -636,6 +647,10 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         updateAvatar()
         userPresenter.user.observe(viewLifecycleOwner, userObserver)
 
+        nextStepPresenter.nextStep.observe(viewLifecycleOwner) { step ->
+            nextStepAdapter.update(step)
+        }
+
         if (MainActivity.shouldLaunchOnboarding) {
             MainActivity.shouldLaunchOnboarding = false
         }
@@ -648,6 +663,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         callToInitHome()
         actionsPresenter.getUnreadCount()
         sendUserDiscussionStatus()
+        nextStepPresenter.loadNextStep()
         loadSmallTalkItems()
 
         val mainActivity = requireActivity() as? MainActivity
@@ -898,6 +914,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         if (totalchecksum >= 4) {
             if (concatAdapter.adapters.contains(homeSkeletonAdapter)) {
                 concatAdapter.removeAdapter(homeSkeletonAdapter)
+                concatAdapter.addAdapter(nextStepAdapter)
                 concatAdapter.addAdapter(welcomeJourneyAdapter)
                 concatAdapter.addAdapter(initialPedagoHeaderAdapter)
                 concatAdapter.addAdapter(initialPedagoWrapperAdapter)
