@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/home_v2_action_item_shape"
+    android:padding="16dp">
+
+    <!-- Avatar -->
+    <ImageView
+        android:id="@+id/iv_suggestion_avatar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:scaleType="centerCrop"
+        android:background="@drawable/home_user_avatar_border"
+        android:padding="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/placeholder_user" />
+
+    <!-- First name -->
+    <TextView
+        android:id="@+id/tv_suggestion_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/quicksand_bold"
+        android:textColor="@color/black"
+        android:textSize="@dimen/entourage_font_medium"
+        android:maxLines="1"
+        android:ellipsize="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_suggestion_avatar"
+        app:layout_constraintTop_toTopOf="@id/iv_suggestion_avatar"
+        tools:text="Fatima" />
+
+    <!-- Reason -->
+    <TextView
+        android:id="@+id/tv_suggestion_reason"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textColor="@color/grey_dark"
+        android:textSize="@dimen/entourage_font_small"
+        android:maxLines="2"
+        android:ellipsize="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_suggestion_avatar"
+        app:layout_constraintTop_toBottomOf="@id/tv_suggestion_name"
+        tools:text="parce que vous êtes dans le même quartier" />
+
+    <!-- Primary CTA -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_suggestion_action"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/nunitosans_bold"
+        android:textSize="@dimen/entourage_font_small"
+        android:text="@string/suggestion_connection_cta"
+        app:backgroundTint="@color/orange"
+        app:cornerRadius="8dp"
+        app:layout_constraintEnd_toStartOf="@id/btn_suggestion_dismiss"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_suggestion_avatar" />
+
+    <!-- Dismiss button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_suggestion_dismiss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textSize="@dimen/entourage_font_small"
+        android:text="@string/suggestion_dismiss"
+        android:textColor="@color/grey_dark"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_suggestion_avatar"
+        app:layout_constraintBottom_toBottomOf="@id/btn_suggestion_action"
+        app:layout_constraintBaseline_toBaselineOf="@id/btn_suggestion_action" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

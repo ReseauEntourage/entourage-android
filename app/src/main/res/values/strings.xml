@@ -3307,4 +3307,15 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="download_image_description">Téléchargement en cours...</string>
     <string name="download_started">Téléchargement lancé</string>
     <string name="download_error">Erreur lors du téléchargement</string>
+    <string name="suggestion_connection_title">Nouvelle connexion</string>
+    <string name="suggestion_connection_cta">Dire bonjour</string>
+    <string name="suggestion_dismiss">Pas maintenant</string>
+    <string name="suggestion_next_step_title">Ton prochain pas</string>
+    <string name="suggestion_next_step_cta_join_event">Rejoindre l\'événement</string>
+    <string name="suggestion_next_step_cta_join_group">Rejoindre le groupe</string>
+    <string name="suggestion_next_step_cta_write_group">Écrire au groupe</string>
+    <string name="suggestion_next_step_cta_say_hello">Dire bonjour</string>
+    <string name="suggestion_next_step_cta_create_action">Créer une action</string>
+    <string name="suggestion_next_step_cta_welcome_member">Accueillir le membre</string>
+    <string name="suggestion_next_step_cta_create_event">Créer un événement</string>
 <string name="ajouter_des_participants">Ajouter des participants</string><string name="question_isoles">Combien de personnes isolées supplémentaires ont rejoint l\'événement ?</string><string name="question_riverains">Combien de riverains supplémentaires ont rejoint l\'événement ?</string><string name="question_femmes_isolees">Parmi ces %1$d personnes isolées, combien sont des femmes ?</string><string name="participants_ajoutes_sur_place">PARTICIPANTS AJOUTÉS SUR PLACE</string><string name="personnes_isolees">%1$d personnes isolées</string><string name="personne_isolee">%1$d personne isolée</string><string name="riverains">%1$d riverains</string><string name="riverain">%1$d riverain</string><string name="femmes_isolees">%1$d femmes isolées</string><string name="femme_isolee">%1$d femme isolée</string><string name="ajoutes_sur_place">Ajoutés sur place</string><string name="ajoute_sur_place">Ajouté sur place</string></resources>
