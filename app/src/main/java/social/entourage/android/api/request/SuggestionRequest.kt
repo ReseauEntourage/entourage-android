@@ -10,10 +10,10 @@ import social.entourage.android.api.model.ZuggestionResponse
 interface ZuggestionRequest {
 
     @GET("zuggestions")
-    fun getSuggestions(): Call<ZuggestionResponse>
+    fun getZuggestions(): Call<ZuggestionResponse>
 
     @PUT("zuggestions/{id}")
-    fun updateSuggestion(
+    fun updateZuggestion(
         @Path("id") id: Int,
         @Query("action_type") action: String
     ): Call<Void>
