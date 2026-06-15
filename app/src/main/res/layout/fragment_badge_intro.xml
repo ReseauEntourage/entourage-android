@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <!-- Drag handle -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_rounded_button_grey_stroke_slim" />
+
+    <!-- Beige zone: emoji row -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:background="@color/beige"
+        android:layout_marginTop="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="36sp"
+            android:letterSpacing="0.1"
+            tools:text="👣  🤝  🪁  💬  🌱"
+            android:id="@+id/tv_intro_emoji_row" />
+
+    </FrameLayout>
+
+    <!-- Content -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="32dp">
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:fontFamily="@font/quicksand_bold"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            android:text="@string/badge_intro_title" />
+
+        <!-- Subtitle -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:fontFamily="@font/nunitosans_regular"
+            android:textSize="15sp"
+            android:textColor="@color/grey"
+            android:lineSpacingMultiplier="1.3"
+            android:layout_marginTop="10dp"
+            android:text="@string/badge_intro_subtitle" />
+
+        <!-- Feature 1: Agissez à votre rythme -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="28dp">
+
+            <FrameLayout
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:background="@drawable/bg_circle_light_orange">
+
+                <View
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_circle_solid_orange" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingStart="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunitosans_bold"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:text="@string/badge_intro_feature1_title" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:textSize="13sp"
+                    android:textColor="@color/grey"
+                    android:lineSpacingMultiplier="1.2"
+                    android:layout_marginTop="3dp"
+                    android:text="@string/badge_intro_feature1_desc" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Feature 2: Chaque action laisse une trace -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="20dp">
+
+            <FrameLayout
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:background="@drawable/bg_circle_light_green">
+
+                <View
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_circle_solid_green" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingStart="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunitosans_bold"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:text="@string/badge_intro_feature2_title" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:textSize="13sp"
+                    android:textColor="@color/grey"
+                    android:lineSpacingMultiplier="1.2"
+                    android:layout_marginTop="3dp"
+                    android:text="@string/badge_intro_feature2_desc" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Feature 3: Montrez qui vous êtes -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="20dp">
+
+            <FrameLayout
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:background="@drawable/bg_circle_light_yellow">
+
+                <View
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_circle_solid_yellow" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingStart="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunitosans_bold"
+                    android:textSize="15sp"
+                    android:textColor="@color/black"
+                    android:text="@string/badge_intro_feature3_title" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:textSize="13sp"
+                    android:textColor="@color/grey"
+                    android:lineSpacingMultiplier="1.2"
+                    android:layout_marginTop="3dp"
+                    android:text="@string/badge_intro_feature3_desc" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- CTA Button -->
+        <Button
+            android:id="@+id/btn_discover_badges"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:background="@drawable/bg_button_accent_rounded_large_radius"
+            android:text="@string/badge_intro_cta"
+            android:textColor="@color/white"
+            android:fontFamily="@font/nunitosans_bold"
+            android:textSize="16sp"
+            android:paddingVertical="14dp"
+            android:textAllCaps="false" />
+
+        <!-- Later link -->
+        <TextView
+            android:id="@+id/tv_later"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:fontFamily="@font/nunitosans_semibold"
+            android:textSize="14sp"
+            android:textColor="@color/grey"
+            android:layout_marginTop="14dp"
+            android:paddingBottom="4dp"
+            android:text="@string/badge_intro_later" />
+
+    </LinearLayout>
+
+</LinearLayout>

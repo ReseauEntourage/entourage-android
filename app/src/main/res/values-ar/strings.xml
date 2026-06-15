@@ -2819,6 +2819,18 @@
     <string name="badge_tisseur_liens_what_it_means">الانتظام يبني الثقة. تكرم هذه الشارة من يكونون حاضرين أسبوعاً بعد أسبوع.</string>
     <string name="badge_tisseur_liens_cta">اذهب إلى مجموعاتي</string>
 
+    <!-- Badge intro bottom sheet -->
+    <string name="badge_intro_title">كل إيماءة تحسب</string>
+    <string name="badge_intro_subtitle">أفعالك تنسج روابط.\nشاراتك تحفظ ذكراها.</string>
+    <string name="badge_intro_feature1_title">تصرف بإيقاعك الخاص</string>
+    <string name="badge_intro_feature1_desc">لا ضغط: كل إيماءة في المجتمع تحسب.</string>
+    <string name="badge_intro_feature2_title">كل فعل يترك أثراً</string>
+    <string name="badge_intro_feature2_desc">من خلال تبادلاتك ومشاركاتك، تأتي الشارات لتميّز المحطات.</string>
+    <string name="badge_intro_feature3_title">أظهر من أنت</string>
+    <string name="badge_intro_feature3_desc">تظهر شاراتك على ملفك الشخصي وتحكي قصتك في المجتمع.</string>
+    <string name="badge_intro_cta">اكتشف شاراتي</string>
+    <string name="badge_intro_later">لاحقاً</string>
+
     <!-- Badge unlocked popup -->
     <string name="badge_unlocked_bravo">أحسنت %s!</string>
     <string name="badge_unlocked_subtitle">لقد فتحت للتو الشارة</string>

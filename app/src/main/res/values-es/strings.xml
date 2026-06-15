@@ -2778,6 +2778,18 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="badge_tisseur_liens_what_it_means">La regularidad genera confianza. Esta insignia honra a quienes están presentes semana tras semana.</string>
     <string name="badge_tisseur_liens_cta">Ir a mis grupos</string>
 
+    <!-- Badge intro bottom sheet -->
+    <string name="badge_intro_title">Cada gesto cuenta</string>
+    <string name="badge_intro_subtitle">Tus acciones tejen vínculos.\nTus insignias guardan su memoria.</string>
+    <string name="badge_intro_feature1_title">Actúa a tu ritmo</string>
+    <string name="badge_intro_feature1_desc">Sin presión: cada gesto en la comunidad cuenta.</string>
+    <string name="badge_intro_feature2_title">Cada acción deja huella</string>
+    <string name="badge_intro_feature2_desc">A través de tus intercambios y participaciones, las insignias marcan los hitos.</string>
+    <string name="badge_intro_feature3_title">Muestra quién eres</string>
+    <string name="badge_intro_feature3_desc">Tus insignias aparecen en tu perfil y cuentan tu historia en la comunidad.</string>
+    <string name="badge_intro_cta">Descubrir mis insignias</string>
+    <string name="badge_intro_later">Más tarde</string>
+
     <!-- Badge unlocked popup -->
     <string name="badge_unlocked_bravo">¡Bravo %s!</string>
     <string name="badge_unlocked_subtitle">Acabas de desbloquear la insignia</string>

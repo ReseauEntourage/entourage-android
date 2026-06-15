@@ -2793,6 +2793,18 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="badge_tisseur_liens_what_it_means">Regularitatea creează încredere. Această insignă onorează pe cei care sunt prezenți săptămână de săptămână.</string>
     <string name="badge_tisseur_liens_cta">Mergi la grupurile mele</string>
 
+    <!-- Badge intro bottom sheet -->
+    <string name="badge_intro_title">Fiecare gest contează</string>
+    <string name="badge_intro_subtitle">Acțiunile tale țes legături.\nInsignele tale le păstrează amintirea.</string>
+    <string name="badge_intro_feature1_title">Acționează în ritmul tău</string>
+    <string name="badge_intro_feature1_desc">Fără presiune: fiecare gest în comunitate contează.</string>
+    <string name="badge_intro_feature2_title">Fiecare acțiune lasă o urmă</string>
+    <string name="badge_intro_feature2_desc">Prin schimburile și participările tale, insignele marchează etapele.</string>
+    <string name="badge_intro_feature3_title">Arată cine ești</string>
+    <string name="badge_intro_feature3_desc">Insignele tale apar pe profilul tău și îți spun povestea în comunitate.</string>
+    <string name="badge_intro_cta">Descoperă insignele mele</string>
+    <string name="badge_intro_later">Mai târziu</string>
+
     <!-- Badge unlocked popup -->
     <string name="badge_unlocked_bravo">Bravo %s!</string>
     <string name="badge_unlocked_subtitle">Tocmai ai deblocat insigna</string>

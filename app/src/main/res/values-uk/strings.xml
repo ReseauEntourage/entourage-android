@@ -2705,6 +2705,18 @@
     <string name="badge_tisseur_liens_what_it_means">Регулярність будує довіру. Цей значок відзначає тих, хто присутній тиждень за тижнем.</string>
     <string name="badge_tisseur_liens_cta">Перейти до моїх груп</string>
 
+    <!-- Badge intro bottom sheet -->
+    <string name="badge_intro_title">Кожен жест важливий</string>
+    <string name="badge_intro_subtitle">Ваші дії плетуть зв\'язки.\nВаші значки зберігають їхню пам\'ять.</string>
+    <string name="badge_intro_feature1_title">Дійте у своєму темпі</string>
+    <string name="badge_intro_feature1_desc">Без тиску: кожен жест у спільноті важливий.</string>
+    <string name="badge_intro_feature2_title">Кожна дія залишає слід</string>
+    <string name="badge_intro_feature2_desc">У ході ваших обмінів та участі значки відзначають важливі етапи.</string>
+    <string name="badge_intro_feature3_title">Покажіть, хто ви є</string>
+    <string name="badge_intro_feature3_desc">Ваші значки відображаються у вашому профілі та розповідають вашу історію у спільноті.</string>
+    <string name="badge_intro_cta">Відкрити мої значки</string>
+    <string name="badge_intro_later">Пізніше</string>
+
     <!-- Badge unlocked popup -->
     <string name="badge_unlocked_bravo">Браво %s!</string>
     <string name="badge_unlocked_subtitle">Ви щойно розблокували значок</string>

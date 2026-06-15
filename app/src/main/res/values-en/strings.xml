@@ -1934,6 +1934,18 @@
     <string name="badge_tisseur_liens_what_it_means">Regularity builds trust. This badge honours those who show up week after week, animating local life and maintaining the connection in their neighbourhood.</string>
     <string name="badge_tisseur_liens_cta">Go to my groups</string>
 
+    <!-- Badge intro bottom sheet -->
+    <string name="badge_intro_title">Every gesture counts</string>
+    <string name="badge_intro_subtitle">Your actions weave connections.\nYour badges keep their memory.</string>
+    <string name="badge_intro_feature1_title">Act at your own pace</string>
+    <string name="badge_intro_feature1_desc">No pressure: every gesture in the community counts.</string>
+    <string name="badge_intro_feature2_title">Every action leaves a mark</string>
+    <string name="badge_intro_feature2_desc">Through your exchanges and participation, badges mark the milestones.</string>
+    <string name="badge_intro_feature3_title">Show who you are</string>
+    <string name="badge_intro_feature3_desc">Your badges appear on your profile and tell your story in the community.</string>
+    <string name="badge_intro_cta">Discover my badges</string>
+    <string name="badge_intro_later">Later</string>
+
     <!-- Badge unlocked popup -->
     <string name="badge_unlocked_bravo">Bravo %s!</string>
     <string name="badge_unlocked_subtitle">You just unlocked the badge</string>

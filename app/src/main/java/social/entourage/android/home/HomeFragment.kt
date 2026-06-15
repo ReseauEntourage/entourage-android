@@ -435,6 +435,11 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             ChatBotBottomSheet().show(parentFragmentManager, "chatbot")
         }
 
+        binding.ivLogoHome.setOnClickListener {
+            social.entourage.android.badges.BadgeIntroBottomSheet.newInstance()
+                .show(childFragmentManager, "badge_intro")
+        }
+
         smallTalkViewModel.userRequests.observe(viewLifecycleOwner) { requests ->
             currentRequests = requests
             composeSmallTalkItemsSimplified()
@@ -451,41 +456,9 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             true
         }
 
-        // CLIC SIMPLE : Injection dans le pipeline de notification
         binding.ivLogoHome.setOnClickListener {
-            // 1. Le JSON exact de la payload (avec stage="birthday" qui est la clé critique pour le PendingIntent)
-            val jsonPayload = """
-            {
-                "sender": "L'équipe Entourage",
-                "object": "Joyeux anniversaire 🎉",
-                "content": {
-                    "message": "On est heureux de vous compter parmi nous. Cliquez ici pour lire notre message d'anniversaire !",
-                    "extra": {
-                        "stage": "birthday",
-                        "tracking": "birthday",
-                        "popup": "birthday"
-                    }
-                }
-            }
-            """
-
-            try {
-                // 2. On désérialise le JSON en objet métier PushNotificationMessage
-                val message = com.google.gson.Gson().fromJson(
-                    jsonPayload,
-                    social.entourage.android.api.model.notification.PushNotificationMessage::class.java
-                )
-
-                // 3. On balance ça au Manager.
-                // Il va lire "stage: birthday", créer le PendingIntent avec "goBirthday=true" et afficher la notif système.
-                social.entourage.android.notifications.PushNotificationManager.handlePushNotification(message, requireContext())
-
-                // (Optionnel) Log pour confirmer le tir
-                social.entourage.android.tools.log.AnalyticsEvents.logEvent("debug_birthday_proc_triggered")
-
-            } catch (e: Exception) {
-                android.util.Log.e("DEBUG_NOTIF", "Erreur parsing JSON: ${e.message}")
-            }
+            social.entourage.android.badges.BadgeIntroBottomSheet.newInstance()
+                .show(childFragmentManager, "badge_intro")
         }
     }
 

@@ -825,6 +825,9 @@ object AnalyticsEvents {
     const val CLIC__SMALLTALK__VISIO_ICON = "smalltalk_click_visio_icon_chat_screen"
 
     // Badges
+    const val VIEW__BADGES__INTRO = "View__Badges__Intro"
+    const val ACTION__BADGES__INTRO__DISCOVER = "Action__Badges__Intro__Discover"
+    const val ACTION__BADGES__INTRO__LATER = "Action__Badges__Intro__Later"
     const val VIEW__BADGES__PROFILE_SECTION = "View__Badges__ProfileSection"
     const val ACTION__BADGES__PROFILE__SEE_ALL = "Action__Badges__Profile__SeeAll"
     const val ACTION__BADGES__PROFILE__CARD_CLICK = "Action__Badges__Profile__CardClick"

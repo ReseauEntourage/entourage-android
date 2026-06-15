@@ -2796,6 +2796,18 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="badge_tisseur_liens_what_it_means">Regularność buduje zaufanie. Ta odznaka honoruje tych, którzy są obecni tydzień po tygodniu.</string>
     <string name="badge_tisseur_liens_cta">Przejdź do moich grup</string>
 
+    <!-- Badge intro bottom sheet -->
+    <string name="badge_intro_title">Każdy gest ma znaczenie</string>
+    <string name="badge_intro_subtitle">Twoje działania tworzą więzi.\nTwoje odznaki zachowują ich pamięć.</string>
+    <string name="badge_intro_feature1_title">Działaj we własnym tempie</string>
+    <string name="badge_intro_feature1_desc">Bez presji: każdy gest w społeczności ma znaczenie.</string>
+    <string name="badge_intro_feature2_title">Każde działanie zostawia ślad</string>
+    <string name="badge_intro_feature2_desc">Poprzez Twoje wymiany i uczestnictwo, odznaki wyznaczają kolejne etapy.</string>
+    <string name="badge_intro_feature3_title">Pokaż, kim jesteś</string>
+    <string name="badge_intro_feature3_desc">Twoje odznaki pojawiają się na Twoim profilu i opowiadają Twoją historię w społeczności.</string>
+    <string name="badge_intro_cta">Odkryj moje odznaki</string>
+    <string name="badge_intro_later">Później</string>
+
     <!-- Badge unlocked popup -->
     <string name="badge_unlocked_bravo">Brawo %s!</string>
     <string name="badge_unlocked_subtitle">Właśnie odblokowałeś odznakę</string>
