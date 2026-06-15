@@ -66,7 +66,7 @@ class BadgeDetailBottomSheet : BottomSheetDialogFragment() {
         } ?: return
 
         val userProgress = UserBadgeProgress(def, isObtained, progress, obtainedDate)
-        bindView(userProgress)
+        bindView(userProgress, obtainedKeys.toList())
 
         binding.btnClose.setOnClickListener { dismiss() }
         binding.tvSeeAllBadges.setOnClickListener {
@@ -78,7 +78,7 @@ class BadgeDetailBottomSheet : BottomSheetDialogFragment() {
         }
     }
 
-    private fun bindView(up: UserBadgeProgress) {
+    private fun bindView(up: UserBadgeProgress, obtainedKeys: List<String> = emptyList()) {
         val ctx = requireContext()
         val def = up.definition
 
@@ -122,8 +122,18 @@ class BadgeDetailBottomSheet : BottomSheetDialogFragment() {
         binding.ivMechanismIcon.setImageResource(mechanismIconRes)
 
         binding.btnCta.setOnClickListener {
-            handleCtaClick(def.key)
+            if (up.isObtained) {
+                handleCtaClick(def.key)
+            } else {
+                showUnlockedPopup(def.key, obtainedKeys.toList())
+            }
         }
+    }
+
+    private fun showUnlockedPopup(key: BadgeKey, obtainedKeys: List<String>) {
+        BadgeUnlockedBottomSheet.newInstance(key, obtainedKeys)
+            .show(parentFragmentManager, "badge_unlocked")
+        dismiss()
     }
 
     private fun handleCtaClick(key: BadgeKey) {

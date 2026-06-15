@@ -24,7 +24,8 @@ data class BadgeDefinition(
     val mechanismRes: Int,
     val isReversible: Boolean,
     val ctaLabelRes: Int,
-    val maxProgress: Int
+    val maxProgress: Int,
+    val unlockedMessageRes: Int
 )
 
 val ALL_BADGE_DEFINITIONS = listOf(
@@ -38,7 +39,8 @@ val ALL_BADGE_DEFINITIONS = listOf(
         mechanismRes = R.string.badge_mechanism_irreversible,
         isReversible = false,
         ctaLabelRes = R.string.badge_premier_pas_cta,
-        maxProgress = 1
+        maxProgress = 1,
+        unlockedMessageRes = R.string.badge_premier_pas_unlocked_message
     ),
     BadgeDefinition(
         key = BadgeKey.PREMIER_LIEN,
@@ -50,7 +52,8 @@ val ALL_BADGE_DEFINITIONS = listOf(
         mechanismRes = R.string.badge_mechanism_irreversible,
         isReversible = false,
         ctaLabelRes = R.string.badge_premier_lien_cta,
-        maxProgress = 1
+        maxProgress = 1,
+        unlockedMessageRes = R.string.badge_premier_lien_unlocked_message
     ),
     BadgeDefinition(
         key = BadgeKey.DIFFUSEUR_LIENS,
@@ -62,7 +65,8 @@ val ALL_BADGE_DEFINITIONS = listOf(
         mechanismRes = R.string.badge_mechanism_reversible,
         isReversible = true,
         ctaLabelRes = R.string.badge_diffuseur_liens_cta,
-        maxProgress = 3
+        maxProgress = 3,
+        unlockedMessageRes = R.string.badge_diffuseur_liens_unlocked_message
     ),
     BadgeDefinition(
         key = BadgeKey.AS_PAPOTAGE,
@@ -74,7 +78,8 @@ val ALL_BADGE_DEFINITIONS = listOf(
         mechanismRes = R.string.badge_mechanism_reversible,
         isReversible = true,
         ctaLabelRes = R.string.badge_as_papotage_cta,
-        maxProgress = 3
+        maxProgress = 3,
+        unlockedMessageRes = R.string.badge_as_papotage_unlocked_message
     ),
     BadgeDefinition(
         key = BadgeKey.TISSEUR_LIENS,
@@ -86,7 +91,8 @@ val ALL_BADGE_DEFINITIONS = listOf(
         mechanismRes = R.string.badge_mechanism_reversible,
         isReversible = true,
         ctaLabelRes = R.string.badge_tisseur_liens_cta,
-        maxProgress = 3
+        maxProgress = 3,
+        unlockedMessageRes = R.string.badge_tisseur_liens_unlocked_message
     )
 )
 

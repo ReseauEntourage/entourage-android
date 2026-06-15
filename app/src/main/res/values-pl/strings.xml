@@ -2796,4 +2796,15 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="badge_tisseur_liens_what_it_means">Regularność buduje zaufanie. Ta odznaka honoruje tych, którzy są obecni tydzień po tygodniu.</string>
     <string name="badge_tisseur_liens_cta">Przejdź do moich grup</string>
 
+    <!-- Badge unlocked popup -->
+    <string name="badge_unlocked_bravo">Brawo %s!</string>
+    <string name="badge_unlocked_subtitle">Właśnie odblokowałeś odznakę</string>
+    <string name="badge_unlocked_cta">Zobacz moje odznaki</string>
+    <string name="badge_unlocked_continue">Kontynuuj</string>
+    <string name="badge_premier_pas_unlocked_message">Właśnie zrobiłeś pierwszy krok w społeczności Entourage. Twoja obecność już ma znaczenie, witaj wśród nas.</string>
+    <string name="badge_premier_lien_unlocked_message">Właśnie wymieniłeś swoją pierwszą wiadomość z innym członkiem. Każde tkane połączenie utrzymuje społeczność przy życiu.</string>
+    <string name="badge_diffuseur_liens_unlocked_message">Zorganizowałeś 3 wydarzenia w ciągu ostatnich 90 dni. Wprawiasz społeczność Entourage w ruch, brawo!</string>
+    <string name="badge_as_papotage_unlocked_message">3 solidarne Papotages w ciągu półtora miesiąca — Twoja regularna obecność tworzy więzi i dobrze wpływa na otoczenie. Dziękujemy za stałe zaangażowanie.</string>
+    <string name="badge_tisseur_liens_unlocked_message">3 aktywne tygodnie na 4 — sprawiasz, że serce grup sąsiedzkich bije mocniej. Dziękujemy za stałe zaangażowanie.</string>
+
 </resources>

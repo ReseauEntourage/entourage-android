@@ -2793,4 +2793,15 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="badge_tisseur_liens_what_it_means">Regularitatea creează încredere. Această insignă onorează pe cei care sunt prezenți săptămână de săptămână.</string>
     <string name="badge_tisseur_liens_cta">Mergi la grupurile mele</string>
 
+    <!-- Badge unlocked popup -->
+    <string name="badge_unlocked_bravo">Bravo %s!</string>
+    <string name="badge_unlocked_subtitle">Tocmai ai deblocat insigna</string>
+    <string name="badge_unlocked_cta">Vezi insignele mele</string>
+    <string name="badge_unlocked_continue">Continuă</string>
+    <string name="badge_premier_pas_unlocked_message">Tocmai ai făcut primul pas în comunitatea Entourage. Prezența ta contează deja, bun venit printre noi.</string>
+    <string name="badge_premier_lien_unlocked_message">Tocmai ai schimbat primul mesaj cu un alt membru. Fiecare legătură țesută menține comunitatea vie.</string>
+    <string name="badge_diffuseur_liens_unlocked_message">Ai organizat 3 evenimente în ultimele 90 de zile. Faci comunitatea Entourage să se miște, bravo!</string>
+    <string name="badge_as_papotage_unlocked_message">3 Papotages solidare într-o lună și jumătate — prezența ta regulată creează legături și face bine în jurul tău. Mulțumim pentru angajamentul constant.</string>
+    <string name="badge_tisseur_liens_unlocked_message">3 săptămâni active din 4 — faci inima grupurilor de vecini să bată. Mulțumim pentru angajamentul constant.</string>
+
 </resources>

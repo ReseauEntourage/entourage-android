@@ -2819,4 +2819,15 @@
     <string name="badge_tisseur_liens_what_it_means">الانتظام يبني الثقة. تكرم هذه الشارة من يكونون حاضرين أسبوعاً بعد أسبوع.</string>
     <string name="badge_tisseur_liens_cta">اذهب إلى مجموعاتي</string>
 
+    <!-- Badge unlocked popup -->
+    <string name="badge_unlocked_bravo">أحسنت %s!</string>
+    <string name="badge_unlocked_subtitle">لقد فتحت للتو الشارة</string>
+    <string name="badge_unlocked_cta">عرض شاراتي</string>
+    <string name="badge_unlocked_continue">متابعة</string>
+    <string name="badge_premier_pas_unlocked_message">لقد خطوت للتو خطوتك الأولى في مجتمع Entourage. حضورك يهمنا بالفعل، مرحباً بك بيننا.</string>
+    <string name="badge_premier_lien_unlocked_message">لقد تبادلت للتو أول رسالة مع عضو آخر. كل رابط يُنسج يُبقي المجتمع حياً.</string>
+    <string name="badge_diffuseur_liens_unlocked_message">لقد نظّمت 3 فعاليات خلال آخر 90 يوماً. أنت تُحرّك مجتمع Entourage، أحسنت!</string>
+    <string name="badge_as_papotage_unlocked_message">3 جلسات Papotage تضامنية في شهر ونصف، حضورك المنتظم يخلق روابط ويُفيد المحيطين بك. شكراً على التزامك الدائم.</string>
+    <string name="badge_tisseur_liens_unlocked_message">3 أسابيع نشطة من أصل 4 — أنت تُحرّك قلب مجموعات الجيران. شكراً على التزامك الدائم.</string>
+
 </resources>

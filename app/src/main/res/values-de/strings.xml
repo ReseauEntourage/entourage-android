@@ -2780,4 +2780,15 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="badge_tisseur_liens_what_it_means">Regelmäßigkeit schafft Vertrauen. Dieses Abzeichen ehrt diejenigen, die Woche für Woche präsent sind.</string>
     <string name="badge_tisseur_liens_cta">Zu meinen Gruppen gehen</string>
 
+    <!-- Badge unlocked popup -->
+    <string name="badge_unlocked_bravo">Bravo %s!</string>
+    <string name="badge_unlocked_subtitle">Du hast gerade das Abzeichen freigeschaltet</string>
+    <string name="badge_unlocked_cta">Meine Abzeichen ansehen</string>
+    <string name="badge_unlocked_continue">Weiter</string>
+    <string name="badge_premier_pas_unlocked_message">Du hast gerade deinen ersten Schritt in der Entourage-Gemeinschaft gemacht. Deine Anwesenheit zählt schon, willkommen unter uns.</string>
+    <string name="badge_premier_lien_unlocked_message">Du hast gerade deine erste Nachricht mit einem anderen Mitglied ausgetauscht. Jede geknüpfte Verbindung hält die Gemeinschaft am Leben.</string>
+    <string name="badge_diffuseur_liens_unlocked_message">Du hast in den letzten 90 Tagen 3 Veranstaltungen organisiert. Du bringst die Entourage-Gemeinschaft in Bewegung, großartig!</string>
+    <string name="badge_as_papotage_unlocked_message">3 solidarische Papotages in eineinhalb Monaten — deine regelmäßige Anwesenheit schafft Verbindungen und tut dir gut. Danke für dein konstantes Engagement.</string>
+    <string name="badge_tisseur_liens_unlocked_message">3 aktive Wochen von 4 — du lässt das Herz der Nachbarschaftsgruppen schlagen. Danke für dein konstantes Engagement.</string>
+
 </resources>

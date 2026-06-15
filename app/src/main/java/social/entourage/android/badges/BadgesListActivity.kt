@@ -77,8 +77,11 @@ class BadgesListActivity : AppCompatActivity() {
             getString(R.string.badges_all_title, 0, ALL_BADGE_DEFINITIONS.size)
 
         binding.emptyStateHeader.btnStart.setOnClickListener {
-            Timber.d("Badges empty CTA: navigate to first action")
-            // TODO: deeplink or navigate to first action
+            val intent = android.content.Intent(this, social.entourage.android.MainActivity::class.java).apply {
+                flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
+            }
+            startActivity(intent)
+            finish()
         }
 
         val items = allProgress.map { BadgeListItem.BadgeItem(it) as BadgeListItem }

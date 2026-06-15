@@ -1934,4 +1934,15 @@
     <string name="badge_tisseur_liens_what_it_means">Regularity builds trust. This badge honours those who show up week after week, animating local life and maintaining the connection in their neighbourhood.</string>
     <string name="badge_tisseur_liens_cta">Go to my groups</string>
 
+    <!-- Badge unlocked popup -->
+    <string name="badge_unlocked_bravo">Bravo %s!</string>
+    <string name="badge_unlocked_subtitle">You just unlocked the badge</string>
+    <string name="badge_unlocked_cta">See my badges</string>
+    <string name="badge_unlocked_continue">Continue</string>
+    <string name="badge_premier_pas_unlocked_message">You have just taken your first step in the Entourage community. Your presence already matters — welcome among us.</string>
+    <string name="badge_premier_lien_unlocked_message">You have just exchanged your first message with another member. Every link woven keeps the community alive.</string>
+    <string name="badge_diffuseur_liens_unlocked_message">You have organised 3 events in the last 90 days. You are getting the Entourage community moving — well done!</string>
+    <string name="badge_as_papotage_unlocked_message">3 solidarity Papotages in a month and a half — your regular presence creates bonds and does good around you. Thank you for your constant commitment.</string>
+    <string name="badge_tisseur_liens_unlocked_message">3 active weeks out of 4 — you make the heart of neighbourhood groups beat. Thank you for your constant commitment.</string>
+
 </resources>

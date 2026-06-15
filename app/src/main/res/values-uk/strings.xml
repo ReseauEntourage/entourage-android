@@ -2705,4 +2705,15 @@
     <string name="badge_tisseur_liens_what_it_means">Регулярність будує довіру. Цей значок відзначає тих, хто присутній тиждень за тижнем.</string>
     <string name="badge_tisseur_liens_cta">Перейти до моїх груп</string>
 
+    <!-- Badge unlocked popup -->
+    <string name="badge_unlocked_bravo">Браво %s!</string>
+    <string name="badge_unlocked_subtitle">Ви щойно розблокували значок</string>
+    <string name="badge_unlocked_cta">Переглянути мої значки</string>
+    <string name="badge_unlocked_continue">Продовжити</string>
+    <string name="badge_premier_pas_unlocked_message">Ви щойно зробили перший крок у спільноті Entourage. Ваша присутність вже важлива, ласкаво просимо до нас.</string>
+    <string name="badge_premier_lien_unlocked_message">Ви щойно обмінялися першим повідомленням з іншим учасником. Кожен зв\'язок підтримує спільноту живою.</string>
+    <string name="badge_diffuseur_liens_unlocked_message">Ви організували 3 заходи за останні 90 днів. Ви рухаєте спільноту Entourage вперед, браво!</string>
+    <string name="badge_as_papotage_unlocked_message">3 солідарних Папотажа за півтора місяця — ваша регулярна присутність створює зв\'язки та робить добро навколо вас. Дякуємо за постійну участь.</string>
+    <string name="badge_tisseur_liens_unlocked_message">3 активних тижні з 4 — ви змушуєте серце сусідських груп битися. Дякуємо за постійну участь.</string>
+
 </resources>

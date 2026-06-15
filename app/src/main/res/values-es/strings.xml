@@ -2778,4 +2778,15 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="badge_tisseur_liens_what_it_means">La regularidad genera confianza. Esta insignia honra a quienes están presentes semana tras semana.</string>
     <string name="badge_tisseur_liens_cta">Ir a mis grupos</string>
 
+    <!-- Badge unlocked popup -->
+    <string name="badge_unlocked_bravo">¡Bravo %s!</string>
+    <string name="badge_unlocked_subtitle">Acabas de desbloquear la insignia</string>
+    <string name="badge_unlocked_cta">Ver mis insignias</string>
+    <string name="badge_unlocked_continue">Continuar</string>
+    <string name="badge_premier_pas_unlocked_message">Acabas de dar tu primer paso en la comunidad Entourage. Tu presencia ya cuenta, bienvenido entre nosotros.</string>
+    <string name="badge_premier_lien_unlocked_message">Acabas de intercambiar tu primer mensaje con otro miembro. Cada vínculo tejido mantiene viva la comunidad.</string>
+    <string name="badge_diffuseur_liens_unlocked_message">Has organizado 3 eventos en los últimos 90 días. Estás moviendo a la comunidad Entourage, ¡un gran bravo!</string>
+    <string name="badge_as_papotage_unlocked_message">3 Papotages solidarios en un mes y medio, tu presencia regular crea vínculos y hace el bien a tu alrededor. Gracias por tu compromiso constante.</string>
+    <string name="badge_tisseur_liens_unlocked_message">3 semanas de actividad de cada 4 — haces latir el corazón de los grupos de vecinos. Gracias por tu compromiso constante.</string>
+
 </resources>
