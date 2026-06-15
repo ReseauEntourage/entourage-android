@@ -1,8 +1,13 @@
 package social.entourage.android.home
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
+import android.view.Gravity
+import android.widget.TextView
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -27,7 +32,6 @@ import social.entourage.android.MainActivity
 import social.entourage.android.MainPresenter
 import social.entourage.android.R
 import android.net.Uri
-import android.widget.PopupWindow
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 import social.entourage.android.actions.ActionsPresenter
@@ -99,6 +103,31 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private var isRequestLoaded = false
     private var currentRequests: List<UserSmallTalkRequest> = emptyList()
     private val REQUEST_CODE_NATIONAL_GROUPS = 1001
+
+    // Bouncing heart
+    private var heartX = 0f
+    private var heartY = 0f
+    private var heartVx = 6f
+    private var heartVy = 5f
+    private var heartHandler: android.os.Handler? = null
+    private val heartRunnable = object : Runnable {
+        override fun run() {
+            val heart = binding.bouncingHeart
+            val parent = heart.parent as? android.view.View ?: return
+            val maxX = parent.width - heart.width.coerceAtLeast(1)
+            val maxY = parent.height - heart.height.coerceAtLeast(1)
+            if (maxX <= 0 || maxY <= 0) { heartHandler?.postDelayed(this, 16); return }
+            heartX += heartVx
+            heartY += heartVy
+            if (heartX <= 0f) { heartX = 0f; heartVx = -heartVx }
+            if (heartX >= maxX) { heartX = maxX.toFloat(); heartVx = -heartVx }
+            if (heartY <= 0f) { heartY = 0f; heartVy = -heartVy }
+            if (heartY >= maxY) { heartY = maxY.toFloat(); heartVy = -heartVy }
+            heart.x = heartX
+            heart.y = heartY
+            heartHandler?.postDelayed(this, 16)
+        }
+    }
 
     // Variables pour la vidéo
     private var welcomeVideoUrl: String? = null
@@ -684,6 +713,8 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         if (MainActivity.shouldLaunchOnboarding) {
             MainActivity.shouldLaunchOnboarding = false
         }
+
+        view.post { startBouncingHeart() }
     }
 
     override fun onResume() {
@@ -736,6 +767,114 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     override fun onDestroyView() {
         super.onDestroyView()
         userPresenter.user.removeObserver(userObserver)
+        heartHandler?.removeCallbacks(heartRunnable)
+        heartHandler = null
+    }
+
+    private fun startBouncingHeart() {
+        val heart = binding.bouncingHeart
+        val parent = heart.parent as? android.view.View ?: return
+        heartX = (parent.width / 2).toFloat()
+        heartY = (parent.height / 3).toFloat()
+        heartHandler = android.os.Handler(android.os.Looper.getMainLooper())
+        heart.setOnClickListener { explodeHeart(it) }
+        heartHandler?.post(heartRunnable)
+    }
+
+    private fun explodeHeart(heart: android.view.View) {
+        val parent = heart.parent as? android.view.ViewGroup ?: return
+        val cx = heart.x + heart.width / 2f
+        val cy = heart.y + heart.height / 2f
+        val particles = listOf("❤️", "💛", "💚", "💙", "💜", "🧡", "✨", "⭐", "🌟")
+        repeat(14) { i ->
+            val tv = TextView(requireContext()).apply {
+                text = particles[i % particles.size]
+                textSize = 18f
+                layoutParams = android.view.ViewGroup.LayoutParams(
+                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+            }
+            parent.addView(tv)
+            tv.x = cx
+            tv.y = cy
+            val angle = (i * 360f / 14f) * Math.PI.toFloat() / 180f
+            val dist = (250..420).random().toFloat()
+            val tx = cx + dist * Math.cos(angle.toDouble()).toFloat()
+            val ty = cy + dist * Math.sin(angle.toDouble()).toFloat()
+            AnimatorSet().apply {
+                playTogether(
+                    ObjectAnimator.ofFloat(tv, "x", cx, tx),
+                    ObjectAnimator.ofFloat(tv, "y", cy, ty),
+                    ObjectAnimator.ofFloat(tv, "alpha", 1f, 0f),
+                    ObjectAnimator.ofFloat(tv, "scaleX", 0.5f, 1.6f, 0f),
+                    ObjectAnimator.ofFloat(tv, "scaleY", 0.5f, 1.6f, 0f)
+                )
+                duration = 700
+                start()
+                doOnEnd { parent.removeView(tv) }
+            }
+        }
+        // Pulse du cœur principal
+        AnimatorSet().apply {
+            playTogether(
+                ObjectAnimator.ofFloat(heart, "scaleX", 1f, 1.8f, 0f),
+                ObjectAnimator.ofFloat(heart, "scaleY", 1f, 1.8f, 0f),
+                ObjectAnimator.ofFloat(heart, "alpha", 1f, 0f)
+            )
+            duration = 400
+            start()
+            doOnEnd {
+                heart.scaleX = 1f; heart.scaleY = 1f; heart.alpha = 1f
+                showCourageBottomSheet()
+            }
+        }
+    }
+
+    private fun showCourageBottomSheet() {
+        data class CourageMessage(val text: String, val from: String)
+        val messages = listOf(
+            CourageMessage("Courage, tu assures !", "Marie"),
+            CourageMessage("On croit en toi, continue comme ça !", "Julien"),
+            CourageMessage("Tu fais un super boulot, vraiment.", "Sophie"),
+            CourageMessage("Petit mot pour se souhaiter du courage !", "Lucas"),
+            CourageMessage("T'es génial·e, et on est fier·e de toi.", "Emma"),
+            CourageMessage("Bonne journée, on est tous avec toi !", "Thomas"),
+            CourageMessage("Tu illumines la journée des gens autour de toi.", "Camille")
+        )
+        val msg = messages.random()
+        val ctx = requireContext()
+
+        val sheet = com.google.android.material.bottomsheet.BottomSheetDialog(ctx)
+        val rootView = android.widget.LinearLayout(ctx).apply {
+            orientation = android.widget.LinearLayout.VERTICAL
+            gravity = Gravity.CENTER_HORIZONTAL
+            setPadding(64, 56, 64, 72)
+        }
+
+        rootView.addView(TextView(ctx).apply {
+            text = "❤️"
+            textSize = 48f
+            gravity = Gravity.CENTER
+        })
+        rootView.addView(TextView(ctx).apply {
+            text = "« ${msg.text} »"
+            textSize = 18f
+            gravity = Gravity.CENTER
+            setTextColor(Color.parseColor("#333333"))
+            typeface = android.graphics.Typeface.create("sans-serif", android.graphics.Typeface.BOLD)
+            setPadding(0, 32, 0, 24)
+        })
+        rootView.addView(TextView(ctx).apply {
+            text = "— ${msg.from}"
+            textSize = 15f
+            gravity = Gravity.CENTER
+            setTextColor(Color.parseColor("#888888"))
+            typeface = android.graphics.Typeface.create("sans-serif", android.graphics.Typeface.ITALIC)
+        })
+
+        sheet.setContentView(rootView)
+        sheet.show()
     }
 
     private fun runHomeEntryGatingIfNeeded() {
@@ -924,7 +1063,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 homePresenter.getPedagogicalResources()
                 homePresenter.getInitialPedagogicalResources()
                 homePresenter.getNotificationsCount()
-                homePresenter.fetchSuggestions()
                 // ATTENTION: getWelcomeResource() a été retiré d'ici pour éviter l'auto-validation !
                 userPresenter.getUser(meId)
             }
