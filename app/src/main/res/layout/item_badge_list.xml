@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:paddingHorizontal="16dp"
-    android:paddingVertical="5dp">
+    android:paddingVertical="6dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_badge_item"

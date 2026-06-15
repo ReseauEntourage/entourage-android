@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingHorizontal="16dp"
+        android:paddingHorizontal="24dp"
         android:paddingVertical="8dp">
 
         <ImageView
@@ -73,8 +73,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:textAlignment="center"
-                android:fontFamily="@font/nunitosans_bold"
-                android:textSize="22sp"
+                android:fontFamily="@font/quicksand_bold"
+                android:textSize="24sp"
                 android:textColor="@color/black"
                 tools:text="Premier pas" />
 
@@ -84,7 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                app:cardCornerRadius="10dp"
+                app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
                 app:cardBackgroundColor="@color/green_light">
 
@@ -254,7 +254,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/bg_button_accent_rounded"
+                android:background="@drawable/bg_button_accent_rounded_large_radius"
                 android:textColor="@color/white"
                 android:fontFamily="@font/nunitosans_bold"
                 android:textSize="15sp"

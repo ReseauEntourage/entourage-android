@@ -14,8 +14,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/nunitosans_bold"
-        android:textSize="17sp"
-        android:textColor="@color/black"
+        android:textSize="13sp"
+        android:textColor="@color/grey"
+        android:letterSpacing="0.05"
         tools:text="Obtenus 2/5" />
 
 </LinearLayout>
