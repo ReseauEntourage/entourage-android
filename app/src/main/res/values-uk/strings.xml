@@ -2689,7 +2689,7 @@
     <string name="badge_premier_lien_how_it_works">Обміняйтесь першим приватним повідомленням з іншим учасником. Обидва мають надіслати повідомлення.</string>
     <string name="badge_premier_lien_what_it_means">Перше пряме повідомлення з іншим учасником — важливий момент переходу до відносин.</string>
     <string name="badge_premier_lien_cta">Поспілкуватися з кимось</string>
-    <string name="badge_diffuseur_liens_title">Розповсюджувач зв\'язків</string>
+    <string name="badge_diffuseur_liens_title">Організатор зустрічей</string>
     <string name="badge_diffuseur_liens_description_short">Створіть 3 події за 90 днів</string>
     <string name="badge_diffuseur_liens_how_it_works">Створіть або співорганізуйте щонайменше 3 події за останні 90 днів.</string>
     <string name="badge_diffuseur_liens_what_it_means">Організація зустрічей потребує часу та енергії. Цей значок цінує тих, хто пожвавлює спільноту.</string>

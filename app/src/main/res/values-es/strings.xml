@@ -2762,7 +2762,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="badge_premier_lien_how_it_works">Intercambia tu primer mensaje privado con otro miembro. Ambos deben enviar un mensaje para que el vínculo se contabilice.</string>
     <string name="badge_premier_lien_what_it_means">El primer mensaje directo con otro miembro marca un hito importante: el paso del colectivo a la relación.</string>
     <string name="badge_premier_lien_cta">Chatear con alguien</string>
-    <string name="badge_diffuseur_liens_title">Difusor de vínculos</string>
+    <string name="badge_diffuseur_liens_title">Creador de encuentros</string>
     <string name="badge_diffuseur_liens_description_short">Crea 3 eventos en 90 días</string>
     <string name="badge_diffuseur_liens_how_it_works">Crea o co-anima al menos 3 eventos en los últimos 90 días. No se requiere un mínimo de participantes.</string>
     <string name="badge_diffuseur_liens_what_it_means">Organizar encuentros requiere tiempo y energía. Esta insignia valora a quienes hacen avanzar la comunidad Entourage.</string>

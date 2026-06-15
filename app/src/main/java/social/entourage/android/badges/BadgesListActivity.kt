@@ -33,7 +33,7 @@ class BadgesListActivity : AppCompatActivity() {
             // TODO: open FAQ webview or deeplink
         }
 
-        val demoKeys = listOf("bienvenue", "premier_contact", "fidele_papotages", "voix_presente")
+        val demoKeys = listOf("bienvenue", "premier_contact", "fidele_papotages")
 
         if (BuildConfig.DEBUG) {
             binding.switchBadgesDemo.visibility = View.VISIBLE

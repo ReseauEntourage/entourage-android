@@ -59,30 +59,59 @@ class BadgesListAdapter(
             binding.tvBadgeEmoji.text = def.emoji
             binding.tvBadgeTitle.text = ctx.getString(def.titleRes)
 
-            if (progress.isObtained) {
-                val dateText = progress.obtainedDate ?: ""
-                binding.tvBadgeSubtitle.text = if (dateText.isNotEmpty()) {
-                    ctx.getString(social.entourage.android.R.string.badge_obtained_on, dateText)
-                } else {
-                    ctx.getString(social.entourage.android.R.string.badge_obtained_on, "")
+            when {
+                progress.isObtained -> {
+                    // Green card
+                    binding.cardBadgeItem.setCardBackgroundColor(
+                        androidx.core.content.ContextCompat.getColor(ctx, android.R.color.white))
+                    binding.tvBadgeEmoji.background =
+                        androidx.core.content.ContextCompat.getDrawable(ctx, social.entourage.android.R.drawable.bg_circle_light_orange)
+                    val dateText = progress.obtainedDate ?: ""
+                    binding.tvBadgeSubtitle.text = if (dateText.isNotEmpty()) {
+                        ctx.getString(social.entourage.android.R.string.badge_obtained_on, dateText)
+                    } else {
+                        ctx.getString(social.entourage.android.R.string.badge_obtained_on, "")
+                    }
+                    binding.tvBadgeSubtitle.setTextColor(
+                        androidx.core.content.ContextCompat.getColor(ctx, social.entourage.android.R.color.grey))
+                    binding.progressBar.progress = 100
+                    binding.progressBar.progressDrawable =
+                        androidx.core.content.ContextCompat.getDrawable(ctx, social.entourage.android.R.drawable.badge_progress_bar_green)
+                    binding.progressBar.visibility = android.view.View.VISIBLE
+                    binding.tvBadgeProgressLabel.visibility = android.view.View.GONE
                 }
-                binding.progressBar.progress = 100
-                binding.tvBadgeProgressLabel.visibility = android.view.View.GONE
-            } else {
-                binding.tvBadgeSubtitle.text = ctx.getString(def.descriptionShortRes)
-                val pct = if (def.maxProgress > 0) (progress.progress * 100 / def.maxProgress) else 0
-                binding.progressBar.progress = pct
-                binding.tvBadgeProgressLabel.text = "${progress.progress}/${def.maxProgress}"
-                binding.tvBadgeProgressLabel.visibility = android.view.View.VISIBLE
-            }
-
-            // Color the progress bar green when obtained
-            if (progress.isObtained) {
-                binding.progressBar.progressDrawable =
-                    androidx.core.content.ContextCompat.getDrawable(ctx, social.entourage.android.R.drawable.badge_progress_bar_green)
-            } else {
-                binding.progressBar.progressDrawable =
-                    androidx.core.content.ContextCompat.getDrawable(ctx, social.entourage.android.R.drawable.badge_progress_bar)
+                progress.progress > 0 -> {
+                    // In-progress: white card
+                    binding.cardBadgeItem.setCardBackgroundColor(
+                        androidx.core.content.ContextCompat.getColor(ctx, android.R.color.white))
+                    binding.tvBadgeEmoji.background =
+                        androidx.core.content.ContextCompat.getDrawable(ctx, social.entourage.android.R.drawable.bg_circle_light_orange)
+                    binding.tvBadgeSubtitle.text = ctx.getString(def.descriptionShortRes)
+                    binding.tvBadgeSubtitle.setTextColor(
+                        androidx.core.content.ContextCompat.getColor(ctx, social.entourage.android.R.color.grey))
+                    val pct = (progress.progress * 100 / def.maxProgress)
+                    binding.progressBar.progress = pct
+                    binding.progressBar.progressDrawable =
+                        androidx.core.content.ContextCompat.getDrawable(ctx, social.entourage.android.R.drawable.badge_progress_bar)
+                    binding.progressBar.visibility = android.view.View.VISIBLE
+                    binding.tvBadgeProgressLabel.text = "${progress.progress}/${def.maxProgress}"
+                    binding.tvBadgeProgressLabel.visibility = android.view.View.VISIBLE
+                }
+                else -> {
+                    // Not started: light gray card, all text black
+                    binding.cardBadgeItem.setCardBackgroundColor(
+                        androidx.core.content.ContextCompat.getColor(ctx, social.entourage.android.R.color.primary_light))
+                    binding.tvBadgeEmoji.background =
+                        androidx.core.content.ContextCompat.getDrawable(ctx, social.entourage.android.R.drawable.bg_circle_light)
+                    binding.tvBadgeSubtitle.text = ctx.getString(def.descriptionShortRes)
+                    binding.tvBadgeSubtitle.setTextColor(
+                        androidx.core.content.ContextCompat.getColor(ctx, social.entourage.android.R.color.black))
+                    binding.progressBar.visibility = android.view.View.GONE
+                    binding.tvBadgeProgressLabel.text = "0/${def.maxProgress}"
+                    binding.tvBadgeProgressLabel.setTextColor(
+                        androidx.core.content.ContextCompat.getColor(ctx, social.entourage.android.R.color.black))
+                    binding.tvBadgeProgressLabel.visibility = android.view.View.VISIBLE
+                }
             }
 
             binding.root.setOnClickListener { onClick(progress) }

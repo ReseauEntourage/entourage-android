@@ -3362,7 +3362,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="badge_premier_lien_cta">Discuter avec quelqu\'un</string>
 
     <!-- Badge: Diffuseur de liens -->
-    <string name="badge_diffuseur_liens_title">Diffuseur de liens</string>
+    <string name="badge_diffuseur_liens_title">Créateur de rencontres</string>
     <string name="badge_diffuseur_liens_description_short">Créez 3 événements sur 90 jours</string>
     <string name="badge_diffuseur_liens_how_it_works">Créez ou co-animez au moins 3 événements (physiques ou en ligne) sur les 90 derniers jours. Aucun seuil de participants requis.</string>
     <string name="badge_diffuseur_liens_what_it_means">Organiser des rencontres demande du temps et de l\'énergie. Ce badge valorise celles et ceux qui font bouger la communauté Entourage en proposant des moments de rencontre.</string>
