@@ -1881,4 +1881,57 @@
     <string name="download_image_description">Downloading...</string>
     <string name="download_started">Download started</string>
     <string name="download_error">Error during download</string>
+
+    <!-- Badges section -->
+    <string name="badges_section_title">THEIR BADGES</string>
+    <string name="badges_see_all">See all</string>
+    <string name="badges_screen_title">My badges</string>
+    <string name="badges_screen_subtitle">%1$d earned, %2$d in progress, %3$d to discover. Each badge rewards a concrete action in your community.</string>
+    <string name="badges_section_obtained">Earned %1$d/%2$d</string>
+    <string name="badges_section_in_progress">In progress %1$d/%2$d</string>
+    <string name="badges_section_not_started">Not started %1$d/%2$d</string>
+    <string name="badges_all_title">All badges %1$d/%2$d</string>
+    <string name="badges_empty_title">Your Entourage badges</string>
+    <string name="badges_empty_subtitle">Each badge rewards a concrete action that creates connection in the community. It\'s your turn!</string>
+    <string name="badges_empty_start_label">START WITH</string>
+    <string name="badges_empty_start_badge">The %1$s badge</string>
+    <string name="badges_empty_start_description">Complete your onboarding and take your first action — react, post, join a group or attend an event — to earn this badge.</string>
+    <string name="badges_empty_cta">Let\'s go</string>
+    <string name="badges_faq_link">How do badges work?</string>
+    <string name="badge_obtained_on">Earned on %1$s</string>
+    <string name="badge_not_yet_obtained">Not yet earned</string>
+    <string name="badge_how_it_works_title">HOW IT WORKS</string>
+    <string name="badge_mechanism_title">MECHANISM</string>
+    <string name="badge_what_it_means_title">WHAT IT REPRESENTS</string>
+    <string name="badge_mechanism_irreversible">Irreversible — once earned, it\'s yours forever.</string>
+    <string name="badge_mechanism_reversible">Reversible — renewed every 90 days.</string>
+    <string name="badge_see_all_mine">See all my badges</string>
+    <string name="badge_progress_label">Your progress</string>
+    <string name="badges_debug_switch_label">Badge demo mode</string>
+    <string name="badge_premier_pas_title">First step</string>
+    <string name="badge_premier_pas_description_short">Complete your onboarding and take your first action — react, post, join a group or attend an event.</string>
+    <string name="badge_premier_pas_how_it_works">Complete your onboarding (interests, action goals, mutual aid categories, availability) then take your first action on the app.</string>
+    <string name="badge_premier_pas_what_it_means">This badge celebrates your arrival in the community. It marks your first gesture — the one that turns a created account into a real intention.</string>
+    <string name="badge_premier_pas_cta">Take a first action</string>
+    <string name="badge_premier_lien_title">First connection</string>
+    <string name="badge_premier_lien_description_short">Exchange a first private message with another member</string>
+    <string name="badge_premier_lien_how_it_works">Exchange your first private message with another member. Both of you need to send a message for the connection to count.</string>
+    <string name="badge_premier_lien_what_it_means">The first direct message with another member marks an important milestone: the shift from collective to relationship. That\'s often where the real connection happens.</string>
+    <string name="badge_premier_lien_cta">Chat with someone</string>
+    <string name="badge_diffuseur_liens_title">Link spreader</string>
+    <string name="badge_diffuseur_liens_description_short">Create 3 events in 90 days</string>
+    <string name="badge_diffuseur_liens_how_it_works">Create or co-host at least 3 events (in-person or online) in the last 90 days. No participant threshold required.</string>
+    <string name="badge_diffuseur_liens_what_it_means">Organising meetups takes time and energy. This badge honours those who keep the Entourage community moving by proposing moments to connect.</string>
+    <string name="badge_diffuseur_liens_cta">Create an event</string>
+    <string name="badge_as_papotage_title">Chatter champion</string>
+    <string name="badge_as_papotage_description_short">Attend 3 solidarity Papotages in 90 days</string>
+    <string name="badge_as_papotage_how_it_works">Attend at least 3 solidarity Papotages in the last 90 days.</string>
+    <string name="badge_as_papotage_what_it_means">Papotages are the heartbeat of the online community. Being there regularly means contributing to a lively and warm space for conversation.</string>
+    <string name="badge_as_papotage_cta">Join a papotage</string>
+    <string name="badge_tisseur_liens_title">Link weaver</string>
+    <string name="badge_tisseur_liens_description_short">Be active (posting, commenting, reacting) in your groups 3 out of 4 weeks</string>
+    <string name="badge_tisseur_liens_how_it_works">Be active in your neighbourhood groups (post, comment, react) for at least 3 of the last 4 weeks.</string>
+    <string name="badge_tisseur_liens_what_it_means">Regularity builds trust. This badge honours those who show up week after week, animating local life and maintaining the connection in their neighbourhood.</string>
+    <string name="badge_tisseur_liens_cta">Go to my groups</string>
+
 </resources>

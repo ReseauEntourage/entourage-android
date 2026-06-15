@@ -115,6 +115,11 @@
             />
 
         <activity
+            android:name=".badges.BadgesListActivity"
+            android:exported="false"
+            />
+
+        <activity
             android:name=".home.pedago.PedagoDetailActivity"
             android:exported="false" />
         <activity

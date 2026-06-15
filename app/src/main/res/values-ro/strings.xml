@@ -2740,4 +2740,57 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="home_small_talk_matching">+%1$d en cours de matching</string>
     <string name="home_small_talk_launch_new">+ Lancer une nouvelle rencontre (%1$d/3)</string>
     <string name="home_small_talk_subtitle_waiting">%1$d discussion en cours de matching</string>
-    </resources>
+    
+    <!-- Badges section -->
+    <string name="badges_section_title">INSIGNELE SALE</string>
+    <string name="badges_see_all">Vezi tot</string>
+    <string name="badges_screen_title">Insignele mele</string>
+    <string name="badges_screen_subtitle">%1$d obținute, %2$d în curs, %3$d de descoperit. Fiecare insignă recompensează o acțiune concretă în comunitatea ta.</string>
+    <string name="badges_section_obtained">Obținute %1$d/%2$d</string>
+    <string name="badges_section_in_progress">În curs %1$d/%2$d</string>
+    <string name="badges_section_not_started">Neîncepute %1$d/%2$d</string>
+    <string name="badges_all_title">Toate insignele %1$d/%2$d</string>
+    <string name="badges_empty_title">Insignele tale Entourage</string>
+    <string name="badges_empty_subtitle">Fiecare insignă recompensează o acțiune concretă care creează legături în comunitate. E rândul tău!</string>
+    <string name="badges_empty_start_label">ÎNCEPE CU</string>
+    <string name="badges_empty_start_badge">Insigna %1$s</string>
+    <string name="badges_empty_start_description">Finalizează onboarding-ul și efectuează prima ta acțiune pentru a obține această insignă.</string>
+    <string name="badges_empty_cta">Hai să mergem!</string>
+    <string name="badges_faq_link">Cum funcționează insignele?</string>
+    <string name="badge_obtained_on">Obținută pe %1$s</string>
+    <string name="badge_not_yet_obtained">Încă neobținută</string>
+    <string name="badge_how_it_works_title">CUM FUNCȚIONEAZĂ</string>
+    <string name="badge_mechanism_title">MECANISM</string>
+    <string name="badge_what_it_means_title">CE REPREZINTĂ</string>
+    <string name="badge_mechanism_irreversible">Ireversibilă — odată obținută, este pentru totdeauna.</string>
+    <string name="badge_mechanism_reversible">Reversibilă — se reînnoiește la fiecare 90 de zile.</string>
+    <string name="badge_see_all_mine">Vezi toate insignele mele</string>
+    <string name="badge_progress_label">Progresul tău</string>
+    <string name="badges_debug_switch_label">Mod demo insigne</string>
+    <string name="badge_premier_pas_title">Primul pas</string>
+    <string name="badge_premier_pas_description_short">Finalizează onboarding-ul și efectuează prima ta acțiune.</string>
+    <string name="badge_premier_pas_how_it_works">Finalizează onboarding-ul și efectuează prima ta acțiune în aplicație.</string>
+    <string name="badge_premier_pas_what_it_means">Această insignă celebrează sosirea ta în comunitate.</string>
+    <string name="badge_premier_pas_cta">Efectuează o primă acțiune</string>
+    <string name="badge_premier_lien_title">Prima legătură</string>
+    <string name="badge_premier_lien_description_short">Schimbă un prim mesaj privat cu un alt membru</string>
+    <string name="badge_premier_lien_how_it_works">Schimbă primul tău mesaj privat cu un alt membru. Amândoi trebuie să trimiteți un mesaj.</string>
+    <string name="badge_premier_lien_what_it_means">Primul mesaj direct cu un alt membru marchează un moment important al trecerii la relație.</string>
+    <string name="badge_premier_lien_cta">Discută cu cineva</string>
+    <string name="badge_diffuseur_liens_title">Creator de legături</string>
+    <string name="badge_diffuseur_liens_description_short">Creează 3 evenimente în 90 de zile</string>
+    <string name="badge_diffuseur_liens_how_it_works">Creează sau co-animează cel puțin 3 evenimente în ultimele 90 de zile.</string>
+    <string name="badge_diffuseur_liens_what_it_means">Organizarea întâlnirilor necesită timp și energie. Această insignă valorifică cei care animă comunitatea.</string>
+    <string name="badge_diffuseur_liens_cta">Creează un eveniment</string>
+    <string name="badge_as_papotage_title">As al papotage-ului</string>
+    <string name="badge_as_papotage_description_short">Participă la 3 Papotage-uri solidare în 90 de zile</string>
+    <string name="badge_as_papotage_how_it_works">Participă la cel puțin 3 Papotage-uri solidare în ultimele 90 de zile.</string>
+    <string name="badge_as_papotage_what_it_means">Papotage-urile sunt inima bătătoare a comunității online. Prezența regulată contribuie la menținerea unui spațiu viu de conversație.</string>
+    <string name="badge_as_papotage_cta">Alătură-te unui papotage</string>
+    <string name="badge_tisseur_liens_title">Țesător de legături</string>
+    <string name="badge_tisseur_liens_description_short">Fii activ/ă în grupurile tale 3 săptămâni din 4</string>
+    <string name="badge_tisseur_liens_how_it_works">Fii activ/ă în grupurile de vecini cel puțin 3 din ultimele 4 săptămâni.</string>
+    <string name="badge_tisseur_liens_what_it_means">Regularitatea creează încredere. Această insignă onorează pe cei care sunt prezenți săptămână de săptămână.</string>
+    <string name="badge_tisseur_liens_cta">Mergi la grupurile mele</string>
+
+</resources>

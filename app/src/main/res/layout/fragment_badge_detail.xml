@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="32dp">
+
+    <!-- Drag handle -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/bg_rounded_button_grey_stroke_slim" />
+
+    <!-- Header back -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp">
+
+        <ImageView
+            android:id="@+id/btn_close"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAlignment="center"
+            android:text="@string/badges_screen_title"
+            android:fontFamily="@font/nunitosans_bold"
+            android:textSize="17sp"
+            android:textColor="@color/black" />
+
+        <View android:layout_width="24dp" android:layout_height="24dp" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="24dp">
+
+            <!-- Emoji -->
+            <TextView
+                android:id="@+id/tv_detail_emoji"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:textSize="56sp"
+                tools:text="👣" />
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/tv_detail_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:textAlignment="center"
+                android:fontFamily="@font/nunitosans_bold"
+                android:textSize="22sp"
+                android:textColor="@color/black"
+                tools:text="Premier pas" />
+
+            <!-- Status card -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/green_light">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp"
+                    android:gravity="center">
+
+                    <LinearLayout
+                        android:id="@+id/layout_obtained"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:src="@drawable/ic_check_green"
+                            android:contentDescription="@null" />
+
+                        <TextView
+                            android:id="@+id/tv_obtained_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="6dp"
+                            android:fontFamily="@font/nunitosans_bold"
+                            android:textSize="15sp"
+                            android:textColor="@color/green"
+                            tools:text="Obtenu le 12 janvier 2026" />
+                    </LinearLayout>
+
+                    <!-- Not obtained state -->
+                    <LinearLayout
+                        android:id="@+id/layout_not_obtained"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:text="@string/badge_not_yet_obtained"
+                            android:fontFamily="@font/nunitosans_bold"
+                            android:textSize="15sp"
+                            android:textColor="@color/grey" />
+
+                        <LinearLayout
+                            android:id="@+id/layout_progress_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginTop="8dp"
+                            android:visibility="gone">
+
+                            <ProgressBar
+                                android:id="@+id/progress_bar_detail"
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                android:layout_width="0dp"
+                                android:layout_height="6dp"
+                                android:layout_weight="1"
+                                android:progressDrawable="@drawable/badge_progress_bar"
+                                tools:progress="66" />
+
+                            <TextView
+                                android:id="@+id/tv_progress_detail"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingStart="8dp"
+                                android:fontFamily="@font/nunitosans_bold"
+                                android:textSize="13sp"
+                                android:textColor="@color/orange"
+                                tools:text="2/3" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- How it works -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/badge_how_it_works_title"
+                android:fontFamily="@font/nunitosans_bold"
+                android:textSize="11sp"
+                android:textColor="@color/grey"
+                android:letterSpacing="0.08" />
+
+            <TextView
+                android:id="@+id/tv_how_it_works"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                tools:text="Terminez votre onboarding puis réalisez votre première action sur l'app." />
+
+            <!-- Mechanism -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/badge_mechanism_title"
+                android:fontFamily="@font/nunitosans_bold"
+                android:textSize="11sp"
+                android:textColor="@color/grey"
+                android:letterSpacing="0.08" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="6dp">
+
+                <ImageView
+                    android:id="@+id/iv_mechanism_icon"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_close_black_24dp"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    android:id="@+id/tv_mechanism"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="6dp"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    tools:text="Irréversible — une fois obtenu, c'est pour toujours." />
+            </LinearLayout>
+
+            <!-- What it means -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/badge_what_it_means_title"
+                android:fontFamily="@font/nunitosans_bold"
+                android:textSize="11sp"
+                android:textColor="@color/grey"
+                android:letterSpacing="0.08" />
+
+            <TextView
+                android:id="@+id/tv_what_it_means"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                tools:text="Ce badge célèbre votre arrivée dans la communauté." />
+
+            <!-- CTA Button -->
+            <Button
+                android:id="@+id/btn_cta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bg_button_accent_rounded"
+                android:textColor="@color/white"
+                android:fontFamily="@font/nunitosans_bold"
+                android:textSize="15sp"
+                android:paddingVertical="14dp"
+                android:textAllCaps="false"
+                tools:text="Faire une première action" />
+
+            <!-- Link -->
+            <TextView
+                android:id="@+id/tv_see_all_badges"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textAlignment="center"
+                android:text="@string/badge_see_all_mine"
+                android:textColor="@color/orange"
+                android:fontFamily="@font/nunitosans_semibold"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

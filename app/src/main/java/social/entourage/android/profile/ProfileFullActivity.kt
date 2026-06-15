@@ -68,6 +68,9 @@ class MyProfileFullActivity : BaseSecuredActivity() {
         profilFullViewModel = ViewModelProvider(this).get(ProfilFullViewModel::class.java)
         userPresenter.user.observe(this, ::updateUser)
         homePresenter.notificationsPermission.observe(this, ::updateNotifParam)
+        homePresenter.summary.observe(this) { summary ->
+            updateBadgesSection(summary?.badges ?: emptyList())
+        }
         discussionsPresenter.getBlockedUsers.observe(this, ::handleResponseBlocked)
         profilFullViewModel.hasToUpdate.observe(this, ::updateProfile)
         discussionsPresenter.newConversation.observe(this, ::handleGetConversation)
@@ -97,6 +100,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
 
     override fun onResume() {
         super.onResume()
+        homePresenter.getSummary()
         userPresenter.getUser(id)
         if (user == null) {
             binding.progressBar.visibility = View.VISIBLE
@@ -749,6 +753,43 @@ class MyProfileFullActivity : BaseSecuredActivity() {
     private fun updateProfile(hasToUpdate: Boolean) {
         if (hasToUpdate) {
             userPresenter.getUser(id)
+        }
+    }
+
+    private fun updateBadgesSection(obtainedKeys: List<String>) {
+        val allProgress = social.entourage.android.badges.buildHardcodedProgress(obtainedKeys)
+
+        binding.sectionBadges.visibility = View.VISIBLE
+        binding.badgesRow.removeAllViews()
+
+        val displayed = allProgress.filter { it.isObtained }
+            .ifEmpty { allProgress }
+
+        displayed.forEach { progress ->
+            val cardView = layoutInflater.inflate(
+                R.layout.item_badge_profile_card,
+                binding.badgesRow,
+                false
+            )
+            cardView.findViewById<android.widget.TextView>(R.id.tv_card_emoji).text = progress.definition.emoji
+            cardView.findViewById<android.widget.TextView>(R.id.tv_card_label).text =
+                getString(progress.definition.titleRes)
+            cardView.setOnClickListener {
+                social.entourage.android.badges.BadgeDetailBottomSheet.newInstance(progress, obtainedKeys)
+                    .show(supportFragmentManager, "badge_detail_profile")
+            }
+            binding.badgesRow.addView(cardView)
+        }
+
+        binding.btnVoirBadges.setOnClickListener {
+            val intent = android.content.Intent(this, social.entourage.android.badges.BadgesListActivity::class.java).apply {
+                putStringArrayListExtra(
+                    social.entourage.android.badges.BadgesListActivity.EXTRA_OBTAINED_KEYS,
+                    ArrayList(obtainedKeys)
+                )
+            }
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
 }

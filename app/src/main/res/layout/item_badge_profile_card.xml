@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="96dp"
+    android:layout_height="110dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:layout_marginEnd="8dp"
+    android:padding="10dp"
+    android:background="@drawable/new_rounded_background_statistics">
+
+    <TextView
+        android:id="@+id/tv_card_emoji"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:gravity="center"
+        android:textSize="28sp"
+        tools:text="👣" />
+
+    <TextView
+        android:id="@+id/tv_card_label"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_marginTop="6dp"
+        android:textAlignment="center"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textSize="11sp"
+        android:textColor="@color/black"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:gravity="center"
+        tools:text="Premier pas" />
+
+</LinearLayout>

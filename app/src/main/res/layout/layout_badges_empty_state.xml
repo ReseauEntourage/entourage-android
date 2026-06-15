@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp">
+
+    <!-- Emoji row -->
+    <TextView
+        android:id="@+id/tv_badges_emoji_row"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        android:textSize="28sp"
+        android:letterSpacing="0.1"
+        tools:text="👣 🤝 🪁 💬 🌱" />
+
+    <TextView
+        android:id="@+id/tv_empty_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textAlignment="center"
+        android:fontFamily="@font/nunitosans_bold"
+        android:textSize="22sp"
+        android:textColor="@color/black"
+        android:text="@string/badges_empty_title" />
+
+    <TextView
+        android:id="@+id/tv_empty_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAlignment="center"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textSize="14sp"
+        android:textColor="@color/grey"
+        android:text="@string/badges_empty_subtitle" />
+
+    <!-- Start card -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/beige_clair">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
+                    android:textSize="22sp"
+                    android:text="👣" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingStart="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/badges_empty_start_label"
+                        android:fontFamily="@font/nunitosans_bold"
+                        android:textSize="11sp"
+                        android:textColor="@color/orange"
+                        android:letterSpacing="0.06" />
+
+                    <TextView
+                        android:id="@+id/tv_start_badge_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nunitosans_bold"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"
+                        tools:text="Le badge Premier pas 👣" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/badges_empty_start_description"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textSize="13sp"
+                android:textColor="@color/black" />
+
+            <Button
+                android:id="@+id/btn_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="@string/badges_empty_cta"
+                android:background="@drawable/bg_button_accent_rounded"
+                android:textColor="@color/white"
+                android:fontFamily="@font/nunitosans_bold"
+                android:textSize="14sp"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="10dp"
+                android:textAllCaps="false" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_badges_all_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="@font/nunitosans_bold"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:text="@string/badges_all_title"
+        tools:text="Tous les badges 0/5" />
+
+</LinearLayout>

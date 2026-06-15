@@ -3318,4 +3318,68 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="suggestion_next_step_cta_create_action">Créer une action</string>
     <string name="suggestion_next_step_cta_welcome_member">Accueillir le membre</string>
     <string name="suggestion_next_step_cta_create_event">Créer un événement</string>
-<string name="ajouter_des_participants">Ajouter des participants</string><string name="question_isoles">Combien de personnes isolées supplémentaires ont rejoint l\'événement ?</string><string name="question_riverains">Combien de riverains supplémentaires ont rejoint l\'événement ?</string><string name="question_femmes_isolees">Parmi ces %1$d personnes isolées, combien sont des femmes ?</string><string name="participants_ajoutes_sur_place">PARTICIPANTS AJOUTÉS SUR PLACE</string><string name="personnes_isolees">%1$d personnes isolées</string><string name="personne_isolee">%1$d personne isolée</string><string name="riverains">%1$d riverains</string><string name="riverain">%1$d riverain</string><string name="femmes_isolees">%1$d femmes isolées</string><string name="femme_isolee">%1$d femme isolée</string><string name="ajoutes_sur_place">Ajoutés sur place</string><string name="ajoute_sur_place">Ajouté sur place</string></resources>
+<string name="ajouter_des_participants">Ajouter des participants</string><string name="question_isoles">Combien de personnes isolées supplémentaires ont rejoint l\'événement ?</string><string name="question_riverains">Combien de riverains supplémentaires ont rejoint l\'événement ?</string><string name="question_femmes_isolees">Parmi ces %1$d personnes isolées, combien sont des femmes ?</string><string name="participants_ajoutes_sur_place">PARTICIPANTS AJOUTÉS SUR PLACE</string><string name="personnes_isolees">%1$d personnes isolées</string><string name="personne_isolee">%1$d personne isolée</string><string name="riverains">%1$d riverains</string><string name="riverain">%1$d riverain</string><string name="femmes_isolees">%1$d femmes isolées</string><string name="femme_isolee">%1$d femme isolée</string><string name="ajoutes_sur_place">Ajoutés sur place</string><string name="ajoute_sur_place">Ajouté sur place</string>
+
+    <!-- Badges section -->
+    <string name="badges_section_title">SES BADGES</string>
+    <string name="badges_see_all">Tout voir</string>
+    <string name="badges_screen_title">Mes badges</string>
+    <string name="badges_screen_subtitle">%1$d obtenus, %2$d en cours, %3$d à découvrir. Chaque badge récompense une action concrète dans votre communauté.</string>
+    <string name="badges_section_obtained">Obtenus %1$d/%2$d</string>
+    <string name="badges_section_in_progress">En cours %1$d/%2$d</string>
+    <string name="badges_section_not_started">Non commencés %1$d/%2$d</string>
+    <string name="badges_all_title">Tous les badges %1$d/%2$d</string>
+    <string name="badges_empty_title">Vos badges Entourage</string>
+    <string name="badges_empty_subtitle">Chaque badge valorise une action concrète qui crée du lien dans la communauté. À vous de jouer !</string>
+    <string name="badges_empty_start_label">COMMENCEZ PAR</string>
+    <string name="badges_empty_start_badge">Le badge %1$s</string>
+    <string name="badges_empty_start_description">Terminez votre onboarding et faites votre première action — réaction, post, rejoindre un groupe ou participer à un événement — pour obtenir ce badge.</string>
+    <string name="badges_empty_cta">Je me lance</string>
+    <string name="badges_faq_link">Comment fonctionnent les badges ?</string>
+    <string name="badge_obtained_on">Obtenu le %1$s</string>
+    <string name="badge_not_yet_obtained">Pas encore obtenu</string>
+    <string name="badge_how_it_works_title">COMMENT ÇA MARCHE</string>
+    <string name="badge_mechanism_title">MÉCANIQUE</string>
+    <string name="badge_what_it_means_title">CE QUE ÇA REPRÉSENTE</string>
+    <string name="badge_mechanism_irreversible">Irréversible — une fois obtenu, c\'est pour toujours.</string>
+    <string name="badge_mechanism_reversible">Réversible — à renouveler tous les 90 jours.</string>
+    <string name="badge_see_all_mine">Voir tous mes badges</string>
+    <string name="badge_progress_label">Votre progression</string>
+    <string name="badges_debug_switch_label">Mode démo badges</string>
+
+    <!-- Badge: Premier pas -->
+    <string name="badge_premier_pas_title">Premier pas</string>
+    <string name="badge_premier_pas_description_short">Terminez votre onboarding et faites votre première action — réaction, post, rejoindre un groupe ou participer à un événement — pour obtenir ce badge.</string>
+    <string name="badge_premier_pas_how_it_works">Terminez votre onboarding (centres d\'intérêt, envies d\'agir, catégories d\'entraide, disponibilités) puis réalisez votre première action sur l\'app.</string>
+    <string name="badge_premier_pas_what_it_means">Ce badge célèbre votre arrivée dans la communauté. Il marque votre premier geste — celui qui transforme un compte créé en une réelle intention.</string>
+    <string name="badge_premier_pas_cta">Faire une première action</string>
+
+    <!-- Badge: Premier lien -->
+    <string name="badge_premier_lien_title">Premier lien</string>
+    <string name="badge_premier_lien_description_short">Échangez un premier message en privé avec un autre membre</string>
+    <string name="badge_premier_lien_how_it_works">Échangez votre premier message en privé avec un autre membre. Il faut un message de chacun pour que le lien soit comptabilisé.</string>
+    <string name="badge_premier_lien_what_it_means">Le premier message direct avec un autre membre marque un cap important : le passage du collectif à la relation. C\'est souvent là que le lien devient réel.</string>
+    <string name="badge_premier_lien_cta">Discuter avec quelqu\'un</string>
+
+    <!-- Badge: Diffuseur de liens -->
+    <string name="badge_diffuseur_liens_title">Diffuseur de liens</string>
+    <string name="badge_diffuseur_liens_description_short">Créez 3 événements sur 90 jours</string>
+    <string name="badge_diffuseur_liens_how_it_works">Créez ou co-animez au moins 3 événements (physiques ou en ligne) sur les 90 derniers jours. Aucun seuil de participants requis.</string>
+    <string name="badge_diffuseur_liens_what_it_means">Organiser des rencontres demande du temps et de l\'énergie. Ce badge valorise celles et ceux qui font bouger la communauté Entourage en proposant des moments de rencontre.</string>
+    <string name="badge_diffuseur_liens_cta">Créer un événement</string>
+
+    <!-- Badge: As du papotage -->
+    <string name="badge_as_papotage_title">As du papotage</string>
+    <string name="badge_as_papotage_description_short">Participez à 3 Papotages solidaires sur 90 jours</string>
+    <string name="badge_as_papotage_how_it_works">Participez à au moins 3 Papotages solidaires sur les 90 derniers jours.</string>
+    <string name="badge_as_papotage_what_it_means">Les Papotages sont le cœur battant de la communauté en ligne. Être présent régulièrement, c\'est contribuer à maintenir un espace de parole vivant et chaleureux.</string>
+    <string name="badge_as_papotage_cta">Rejoindre un papotage</string>
+
+    <!-- Badge: Tisseur de liens -->
+    <string name="badge_tisseur_liens_title">Tisseur de liens</string>
+    <string name="badge_tisseur_liens_description_short">Soyez actif·ve (en postant, commentant, réagissant) dans vos groupes 3 semaines sur 4</string>
+    <string name="badge_tisseur_liens_how_it_works">Soyez actif·ve dans vos groupes de voisins (post, commentaire, réaction) pendant au moins 3 des 4 dernières semaines.</string>
+    <string name="badge_tisseur_liens_what_it_means">La régularité crée la confiance. Ce badge honore ceux qui sont là semaine après semaine, qui animent la vie locale et maintiennent le lien dans leur quartier.</string>
+    <string name="badge_tisseur_liens_cta">Aller dans mes groupes</string>
+
+</resources>
