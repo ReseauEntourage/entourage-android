@@ -10,6 +10,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentBadgeDetailBinding
+import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
 class BadgeDetailBottomSheet : BottomSheetDialogFragment() {
@@ -65,11 +66,17 @@ class BadgeDetailBottomSheet : BottomSheetDialogFragment() {
             ALL_BADGE_DEFINITIONS.firstOrNull { it.key == key }
         } ?: return
 
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__BADGES__DETAIL)
+
         val userProgress = UserBadgeProgress(def, isObtained, progress, obtainedDate)
         bindView(userProgress, obtainedKeys.toList())
 
-        binding.btnClose.setOnClickListener { dismiss() }
+        binding.btnClose.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__DETAIL__CLOSE)
+            dismiss()
+        }
         binding.tvSeeAllBadges.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__DETAIL__SEE_ALL)
             val intent = android.content.Intent(requireContext(), BadgesListActivity::class.java).apply {
                 putStringArrayListExtra(BadgesListActivity.EXTRA_OBTAINED_KEYS, obtainedKeys)
             }
@@ -122,6 +129,7 @@ class BadgeDetailBottomSheet : BottomSheetDialogFragment() {
         binding.ivMechanismIcon.setImageResource(mechanismIconRes)
 
         binding.btnCta.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__DETAIL__CTA)
             if (up.isObtained) {
                 handleCtaClick(def.key)
             } else {

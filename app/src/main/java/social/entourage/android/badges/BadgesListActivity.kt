@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.BuildConfig
 import social.entourage.android.R
 import social.entourage.android.databinding.ActivityBadgesListBinding
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import timber.log.Timber
 
@@ -27,8 +28,14 @@ class BadgesListActivity : AppCompatActivity() {
 
         obtainedKeys = intent.getStringArrayListExtra(EXTRA_OBTAINED_KEYS) ?: arrayListOf()
 
-        binding.btnBack.setOnClickListener { finish() }
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__BADGES__LIST)
+
+        binding.btnBack.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__LIST__BACK)
+            finish()
+        }
         binding.tvFaqLink.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__LIST__FAQ)
             Timber.d("Badges FAQ link clicked")
             // TODO: open FAQ webview or deeplink
         }
@@ -77,6 +84,7 @@ class BadgesListActivity : AppCompatActivity() {
             getString(R.string.badges_all_title, 0, ALL_BADGE_DEFINITIONS.size)
 
         binding.emptyStateHeader.btnStart.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__LIST__START)
             val intent = android.content.Intent(this, social.entourage.android.MainActivity::class.java).apply {
                 flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
             }
@@ -120,6 +128,7 @@ class BadgesListActivity : AppCompatActivity() {
 
     private fun setupAdapter(items: List<BadgeListItem>, currentKeys: List<String> = emptyList()) {
         val adapter = BadgesListAdapter(items) { progress ->
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__LIST__BADGE_CLICK)
             BadgeDetailBottomSheet.newInstance(progress, currentKeys)
                 .show(supportFragmentManager, "badge_detail")
         }

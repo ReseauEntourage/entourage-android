@@ -10,6 +10,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentBadgeUnlockedBinding
+import social.entourage.android.tools.log.AnalyticsEvents
 
 class BadgeUnlockedBottomSheet : BottomSheetDialogFragment() {
 
@@ -42,7 +43,6 @@ class BadgeUnlockedBottomSheet : BottomSheetDialogFragment() {
             val behavior = BottomSheetBehavior.from(it)
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
             behavior.skipCollapsed = true
-            it.layoutParams?.height = ViewGroup.LayoutParams.MATCH_PARENT
         }
     }
 
@@ -55,17 +55,26 @@ class BadgeUnlockedBottomSheet : BottomSheetDialogFragment() {
         val key = BadgeKey.fromApiKey(apiKey) ?: return
         val def = ALL_BADGE_DEFINITIONS.firstOrNull { it.key == key } ?: return
 
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__BADGES__UNLOCKED)
+
         val firstName = EntourageApplication.me(requireContext())?.firstName ?: ""
         binding.tvBravoTitle.text = getString(R.string.badge_unlocked_bravo, firstName)
         binding.tvUnlockedEmoji.text = def.emoji
         binding.tvBadgeNameHighlight.text = getString(def.titleRes)
         binding.tvUnlockedDescription.text = getString(def.unlockedMessageRes)
 
-        binding.btnClose.setOnClickListener { dismiss() }
+        binding.btnClose.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__UNLOCKED__CLOSE)
+            dismiss()
+        }
 
-        binding.tvContinue.setOnClickListener { dismiss() }
+        binding.tvContinue.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__UNLOCKED__CONTINUE)
+            dismiss()
+        }
 
         binding.btnSeeBadges.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__UNLOCKED__SEE_BADGES)
             val intent = android.content.Intent(requireContext(), BadgesListActivity::class.java).apply {
                 putStringArrayListExtra(BadgesListActivity.EXTRA_OBTAINED_KEYS, obtainedKeys)
             }

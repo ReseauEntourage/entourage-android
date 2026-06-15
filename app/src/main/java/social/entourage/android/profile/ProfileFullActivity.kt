@@ -38,6 +38,7 @@ import social.entourage.android.profile.settings.ProfilFullViewModel
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.VibrationUtil
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.UserPresenter
 import timber.log.Timber
@@ -762,6 +763,8 @@ class MyProfileFullActivity : BaseSecuredActivity() {
         binding.sectionBadges.visibility = View.VISIBLE
         binding.badgesRow.removeAllViews()
 
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__BADGES__PROFILE_SECTION)
+
         val displayed = allProgress.filter { it.isObtained }
             .ifEmpty { allProgress }
 
@@ -775,6 +778,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
             cardView.findViewById<android.widget.TextView>(R.id.tv_card_label).text =
                 getString(progress.definition.titleRes)
             cardView.setOnClickListener {
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__PROFILE__CARD_CLICK)
                 social.entourage.android.badges.BadgeDetailBottomSheet.newInstance(progress, obtainedKeys)
                     .show(supportFragmentManager, "badge_detail_profile")
             }
@@ -782,6 +786,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
         }
 
         binding.btnVoirBadges.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__PROFILE__SEE_ALL)
             val intent = android.content.Intent(this, social.entourage.android.badges.BadgesListActivity::class.java).apply {
                 putStringArrayListExtra(
                     social.entourage.android.badges.BadgesListActivity.EXTRA_OBTAINED_KEYS,
