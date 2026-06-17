@@ -3321,8 +3321,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 <string name="ajouter_des_participants">Ajouter des participants</string><string name="question_isoles">Combien de personnes isolées supplémentaires ont rejoint l\'événement ?</string><string name="question_riverains">Combien de riverains supplémentaires ont rejoint l\'événement ?</string><string name="question_femmes_isolees">Parmi ces %1$d personnes isolées, combien sont des femmes ?</string><string name="participants_ajoutes_sur_place">PARTICIPANTS AJOUTÉS SUR PLACE</string><string name="personnes_isolees">%1$d personnes isolées</string><string name="personne_isolee">%1$d personne isolée</string><string name="riverains">%1$d riverains</string><string name="riverain">%1$d riverain</string><string name="femmes_isolees">%1$d femmes isolées</string><string name="femme_isolee">%1$d femme isolée</string><string name="ajoutes_sur_place">Ajoutés sur place</string><string name="ajoute_sur_place">Ajouté sur place</string>
 
     <!-- Badges section -->
-    <string name="badges_section_title">SES BADGES</string>
-    <string name="badges_section_title_me">MES BADGES</string>
+    <string name="badges_section_title">Ses Badges</string>
+    <string name="badges_section_title_me">Mes Badges</string>
     <string name="badges_see_all">Tout voir</string>
     <string name="badges_screen_title">Mes badges</string>
     <string name="badges_screen_subtitle">%1$d obtenus, %2$d en cours, %3$d à découvrir. Chaque badge récompense une action concrète dans votre communauté.</string>
