@@ -3322,6 +3322,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <!-- Badges section -->
     <string name="badges_section_title">SES BADGES</string>
+    <string name="badges_section_title_me">MES BADGES</string>
     <string name="badges_see_all">Tout voir</string>
     <string name="badges_screen_title">Mes badges</string>
     <string name="badges_screen_subtitle">%1$d obtenus, %2$d en cours, %3$d à découvrir. Chaque badge récompense une action concrète dans votre communauté.</string>

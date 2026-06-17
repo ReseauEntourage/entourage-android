@@ -97,6 +97,10 @@ class MyProfileFullActivity : BaseSecuredActivity() {
         setButtonListeners()
         setPartnerClickListener()
         binding.iconOption.visibility = View.GONE
+        binding.iconSettings.visibility = View.VISIBLE
+        binding.iconSettings.setOnClickListener {
+            ProfileSettingsActivity.start(this, notifSubTitle, notifBlocked)
+        }
     }
 
     override fun onResume() {
@@ -367,86 +371,6 @@ class MyProfileFullActivity : BaseSecuredActivity() {
                 )
             }
 
-            if (isMe) {
-                items.add(ProfileSectionItem.Separator(getString(R.string.settings_section_title)))
-
-                val currentLanguageCode = LanguageManager.loadLanguageFromPreferences(this)
-                val currentLanguageName = LanguageManager.languageMap.entries.firstOrNull {
-                    it.value == currentLanguageCode
-                }?.key ?: getString(R.string.unknown_language)
-
-                items.add(
-                    ProfileSectionItem.Item(
-                        iconRes = R.drawable.ic_profile_language,
-                        title = getString(R.string.settings_language_title),
-                        subtitle = currentLanguageName
-                    )
-                )
-
-                items.add(
-                    ProfileSectionItem.Item(
-                        iconRes = R.drawable.ic_profile_notifications,
-                        title = getString(R.string.settings_notifications_title),
-                        subtitle = notifSubTitle
-                    )
-                )
-
-                items.add(
-                    ProfileSectionItem.Item(
-                        iconRes = R.drawable.ic_profile_help,
-                        title = getString(R.string.settings_help_title),
-                        subtitle = getString(R.string.settings_help_subtitle)
-                    )
-                )
-
-                items.add(
-                    ProfileSectionItem.Item(
-                        iconRes = R.drawable.ic_profile_unblock_contacts,
-                        title = getString(R.string.settings_unblock_contacts_title),
-                        subtitle = notifBlocked
-                    )
-                )
-
-                items.add(
-                    ProfileSectionItem.Item(
-                        iconRes = R.drawable.ic_profile_feedback,
-                        title = getString(R.string.settings_feedback_title),
-                        subtitle = ""
-                    )
-                )
-
-                items.add(
-                    ProfileSectionItem.Item(
-                        iconRes = R.drawable.ic_profile_share,
-                        title = getString(R.string.settings_share_title),
-                        subtitle = ""
-                    )
-                )
-
-                items.add(
-                    ProfileSectionItem.Item(
-                        iconRes = R.drawable.ic_profile_change_password,
-                        title = getString(R.string.settings_password_title),
-                        subtitle = ""
-                    )
-                )
-
-                items.add(
-                    ProfileSectionItem.Item(
-                        iconRes = R.drawable.ic_profile_logout,
-                        title = getString(R.string.logout_button),
-                        subtitle = ""
-                    )
-                )
-
-                items.add(
-                    ProfileSectionItem.Item(
-                        iconRes = R.drawable.ic_profile_delete_account,
-                        title = getString(R.string.delete_account_button),
-                        subtitle = ""
-                    )
-                )
-            }
 
             val adapter = SettingProfileFullAdapter(items, this, this.supportFragmentManager, isMe)
             binding.rvSectionProfile.layoutManager = LinearLayoutManager(this)
@@ -590,6 +514,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
         binding.progressBar.visibility = View.GONE
 
         binding.myActivityTv.text = getString(R.string.my_activity)
+        binding.tvBadgesTitle.text = getString(R.string.badges_section_title_me)
         user?.email?.let { email ->
             if (email.isNotBlank()) {
                 binding.tvMail.text = email

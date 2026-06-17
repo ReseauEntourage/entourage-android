@@ -56,6 +56,18 @@
                 android:layout_marginStart="20dp"
                 android:padding="10dp"
                 android:src="@drawable/ic_option_profile"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/profile_nested_scroll_view"
+                />
+            <ImageView
+                android:id="@+id/icon_settings"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_settings_profile"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/profile_nested_scroll_view"
@@ -382,14 +394,11 @@
 
                             <TextView
                                 android:id="@+id/tv_badges_title"
+                                style="@style/h2"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="@string/badges_section_title"
-                                android:fontFamily="@font/nunitosans_bold"
-                                android:textSize="12sp"
-                                android:letterSpacing="0.08"
-                                android:textColor="@color/black" />
+                                android:text="@string/badges_section_title" />
 
                             <TextView
                                 android:id="@+id/btn_voir_badges"

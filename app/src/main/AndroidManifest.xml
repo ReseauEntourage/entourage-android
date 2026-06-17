@@ -301,6 +301,9 @@
         <activity
             android:name=".profile.MyProfileFullActivity"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".profile.ProfileSettingsActivity"
+            android:windowSoftInputMode="adjustPan" />
 
          <activity
              android:name=".profile.EditProfileActivity"
