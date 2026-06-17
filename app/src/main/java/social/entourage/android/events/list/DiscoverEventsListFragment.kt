@@ -197,7 +197,9 @@ class DiscoverEventsListFragment : Fragment() {
             }
             updateView(false)
         } else {
-            updateView(true)
+            if (eventsAdapter.itemCount == 0) {
+                updateView(true)
+            }
         }
         isLoading = false
         binding.progressBar.visibility = View.GONE
