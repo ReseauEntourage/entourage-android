@@ -88,10 +88,10 @@ class MembersListAdapter(
         if (isOrganizer) {
             b.layout.background = ContextCompat.getDrawable(context, R.drawable.background_organizer)
 
-            val roleLabel = if (isMe) {
-                context.getString(R.string.animateur_label)
-            } else {
+            val roleLabel = if (item.groupRole == "organizer" || item.groupRole == "creator") {
                 context.getString(R.string.organizer_label)
+            } else {
+                context.getString(R.string.animateur_label)
             }
 
             val baseName = item.displayName ?: ""
