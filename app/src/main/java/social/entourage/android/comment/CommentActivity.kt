@@ -29,7 +29,9 @@ import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.report.onDissmissFragment
 import social.entourage.android.small_talks.SmallTalkViewModel
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.scrollToPositionSmooth
@@ -52,6 +54,7 @@ var messagesFailed: MutableList<Post?> = mutableListOf()
 var comment: Post? = null
 var isEvent = false
 var isGroup = false
+var isSmallTalk = false
 lateinit var viewModel: DiscussionsPresenter
 var haveReloadFromDelete = false
 
@@ -95,8 +98,8 @@ override fun onCreate(savedInstanceState: Bundle?) {
     binding.layoutStaffBanner.visibility = View.GONE
 
     handleSendButtonState()
-
-    updatePaddingTopForEdgeToEdge(binding.header.headerLayout)
+    setupConversationChips()
+    setupWindowInsets()
 }
 
 fun setIsEventTrue(){
@@ -141,8 +144,9 @@ protected fun handleCommentPosted(post: Post?) {
 }
 
 fun updateView(emptyState: Boolean) {
+    val showConvEmptyState = emptyState && isConversation && !isSmallTalk && !isEvent && !isGroup && currentParentPost == null
     if (emptyState) {
-        binding.emptyState.visibility = View.GONE
+        binding.emptyState.visibility = if (showConvEmptyState) View.VISIBLE else View.GONE
         binding.comments.visibility = if (currentParentPost != null) View.VISIBLE else View.GONE
     } else {
         binding.emptyState.visibility = View.GONE
@@ -162,6 +166,48 @@ fun updateView(emptyState: Boolean) {
             titleName
         )
         binding.postComment.visibility = View.GONE
+    }
+}
+
+private fun setupWindowInsets() {
+    ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+        val statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+        val navBars   = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+        val ime       = insets.getInsets(WindowInsetsCompat.Type.ime())
+
+        // Header pushed below status bar
+        binding.header.headerLayout.updatePadding(top = statusBars.top)
+
+        // Root bottom padding = nav bar height normally; keyboard height when IME is visible.
+        // On pre-15 with adjustResize the IME inset is 0 (window is resized instead).
+        // On Android 15+ edge-to-edge the IME inset is dispatched and replaces the resize.
+        binding.root.updatePadding(bottom = maxOf(navBars.bottom, ime.bottom))
+
+        // Scroll to latest message when keyboard opens so the conversation stays in view
+        val imeVisible = insets.isVisible(WindowInsetsCompat.Type.ime())
+        if (imeVisible && commentsList.isNotEmpty()) {
+            binding.comments.scrollToPosition(commentsList.size - 1)
+        }
+
+        insets
+    }
+}
+
+private fun setupConversationChips() {
+    val chips = listOf(
+        binding.chipHello to R.string.conv_draft_hello,
+        binding.chipHelp to R.string.conv_draft_help,
+        binding.chipQuestion to R.string.conv_draft_question,
+        binding.chipEvent to R.string.conv_draft_event,
+    )
+    chips.forEach { (chip, draftRes) ->
+        chip.setOnClickListener {
+            chips.forEach { (c, _) -> c.setBackgroundResource(R.drawable.bg_chip_conversation_suggestion) }
+            chip.setBackgroundResource(R.drawable.bg_chip_conversation_suggestion_selected)
+            binding.commentMessage.setText(getString(draftRes))
+            binding.commentMessage.requestFocus()
+            binding.commentMessage.setSelection(binding.commentMessage.text.length)
+        }
     }
 }
 

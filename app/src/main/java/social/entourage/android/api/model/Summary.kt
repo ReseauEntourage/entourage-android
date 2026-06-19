@@ -61,11 +61,6 @@ class Summary : Serializable {
     @SerializedName("events")
     var events: MutableList<String>? = null
 
-    @SerializedName("badge")
-    var badge: String? = null
-
-    @SerializedName("badges")
-    var badges: MutableList<String>? = null
 
 }
 

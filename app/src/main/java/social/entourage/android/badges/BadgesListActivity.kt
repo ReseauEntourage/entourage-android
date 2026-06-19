@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import social.entourage.android.BuildConfig
 import social.entourage.android.R
 import social.entourage.android.databinding.ActivityBadgesListBinding
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -14,10 +13,10 @@ import timber.log.Timber
 class BadgesListActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBadgesListBinding
-    private var obtainedKeys: List<String> = emptyList()
+    private var apiBadges: List<ApiBadge> = emptyList()
 
     companion object {
-        const val EXTRA_OBTAINED_KEYS = "obtained_keys"
+        const val EXTRA_API_BADGES = "api_badges"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +25,8 @@ class BadgesListActivity : AppCompatActivity() {
         setContentView(binding.root)
         updatePaddingTopForEdgeToEdge(binding.badgeContent)
 
-        obtainedKeys = intent.getStringArrayListExtra(EXTRA_OBTAINED_KEYS) ?: arrayListOf()
+        @Suppress("DEPRECATION")
+        apiBadges = intent.getParcelableArrayListExtra(EXTRA_API_BADGES) ?: arrayListOf()
 
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__BADGES__LIST)
 
@@ -37,39 +37,26 @@ class BadgesListActivity : AppCompatActivity() {
         binding.tvFaqLink.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__LIST__FAQ)
             Timber.d("Badges FAQ link clicked")
-            // TODO: open FAQ webview or deeplink
         }
 
-        val demoKeys = listOf("bienvenue", "premier_contact", "fidele_papotages")
-
-        if (BuildConfig.DEBUG) {
-            binding.switchBadgesDemo.visibility = View.VISIBLE
-            binding.switchBadgesDemo.isChecked = false
-            binding.switchBadgesDemo.setOnCheckedChangeListener { _, isChecked ->
-                renderBadges(if (isChecked) demoKeys else emptyList())
-            }
-        }
-
-        renderBadges(obtainedKeys)
+        renderBadges(apiBadges)
     }
 
-    private fun renderBadges(keys: List<String>) {
-        val allProgress = buildHardcodedProgress(keys)
+    private fun renderBadges(badges: List<ApiBadge>) {
+        val allProgress = buildProgressFromApi(badges)
         val obtained = allProgress.filter { it.isObtained }
         val inProgress = allProgress.filter { !it.isObtained && it.progress > 0 }
         val notStarted = allProgress.filter { !it.isObtained && it.progress == 0 }
         val total = ALL_BADGE_DEFINITIONS.size
 
-        val isEmptyState = obtained.isEmpty() && inProgress.isEmpty()
-
-        if (isEmptyState) {
-            showEmptyState(allProgress, keys)
+        if (obtained.isEmpty() && inProgress.isEmpty()) {
+            showEmptyState(allProgress, badges)
         } else {
-            showBadgesList(obtained, inProgress, notStarted, total, keys)
+            showBadgesList(obtained, inProgress, notStarted, total, badges)
         }
     }
 
-    private fun showEmptyState(allProgress: List<UserBadgeProgress>, keys: List<String> = emptyList()) {
+    private fun showEmptyState(allProgress: List<UserBadgeProgress>, badges: List<ApiBadge>) {
         binding.emptyStateHeader.root.visibility = View.VISIBLE
 
         val firstDef = ALL_BADGE_DEFINITIONS.first()
@@ -92,9 +79,7 @@ class BadgesListActivity : AppCompatActivity() {
             finish()
         }
 
-        val items = allProgress.map { BadgeListItem.BadgeItem(it) as BadgeListItem }
-        setupAdapter(items, keys)
-
+        setupAdapter(allProgress.map { BadgeListItem.BadgeItem(it) as BadgeListItem }, badges)
     }
 
     private fun showBadgesList(
@@ -102,7 +87,7 @@ class BadgesListActivity : AppCompatActivity() {
         inProgress: List<UserBadgeProgress>,
         notStarted: List<UserBadgeProgress>,
         total: Int,
-        keys: List<String>
+        badges: List<ApiBadge>
     ) {
         binding.emptyStateHeader.root.visibility = View.GONE
 
@@ -112,24 +97,22 @@ class BadgesListActivity : AppCompatActivity() {
             items.add(BadgeListItem.Header(getString(R.string.badges_section_obtained, obtained.size, total)))
             obtained.forEach { items.add(BadgeListItem.BadgeItem(it)) }
         }
-
         if (inProgress.isNotEmpty()) {
             items.add(BadgeListItem.Header(getString(R.string.badges_section_in_progress, inProgress.size, total)))
             inProgress.forEach { items.add(BadgeListItem.BadgeItem(it)) }
         }
-
         if (notStarted.isNotEmpty()) {
             items.add(BadgeListItem.Header(getString(R.string.badges_section_not_started, notStarted.size, total)))
             notStarted.forEach { items.add(BadgeListItem.BadgeItem(it)) }
         }
 
-        setupAdapter(items, keys)
+        setupAdapter(items, badges)
     }
 
-    private fun setupAdapter(items: List<BadgeListItem>, currentKeys: List<String> = emptyList()) {
+    private fun setupAdapter(items: List<BadgeListItem>, badges: List<ApiBadge>) {
         val adapter = BadgesListAdapter(items) { progress ->
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__LIST__BADGE_CLICK)
-            BadgeDetailBottomSheet.newInstance(progress, currentKeys)
+            BadgeDetailBottomSheet.newInstance(progress, badges)
                 .show(supportFragmentManager, "badge_detail")
         }
         binding.rvBadges.layoutManager = LinearLayoutManager(this)

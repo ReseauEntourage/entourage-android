@@ -69,9 +69,6 @@ class MyProfileFullActivity : BaseSecuredActivity() {
         profilFullViewModel = ViewModelProvider(this).get(ProfilFullViewModel::class.java)
         userPresenter.user.observe(this, ::updateUser)
         homePresenter.notificationsPermission.observe(this, ::updateNotifParam)
-        homePresenter.summary.observe(this) { summary ->
-            updateBadgesSection(summary?.badges ?: emptyList())
-        }
         discussionsPresenter.getBlockedUsers.observe(this, ::handleResponseBlocked)
         profilFullViewModel.hasToUpdate.observe(this, ::updateProfile)
         discussionsPresenter.newConversation.observe(this, ::handleGetConversation)
@@ -105,7 +102,6 @@ class MyProfileFullActivity : BaseSecuredActivity() {
 
     override fun onResume() {
         super.onResume()
-        homePresenter.getSummary()
         userPresenter.getUser(id)
         if (user == null) {
             binding.progressBar.visibility = View.VISIBLE
@@ -185,6 +181,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
         notifBlocked = ""
         this.user = user
         initUserInfo()
+        updateBadgesSection(user.badges ?: emptyList())
     }
 
     private fun setPartnerClickListener() {
@@ -682,18 +679,17 @@ class MyProfileFullActivity : BaseSecuredActivity() {
         }
     }
 
-    private fun updateBadgesSection(obtainedKeys: List<String>) {
-        val allProgress = social.entourage.android.badges.buildHardcodedProgress(obtainedKeys)
+    private fun updateBadgesSection(apiBadges: List<social.entourage.android.badges.ApiBadge>) {
+        val allProgress = social.entourage.android.badges.buildProgressFromApi(apiBadges)
+        val obtained = allProgress.filter { it.isObtained }
 
         binding.sectionBadges.visibility = View.VISIBLE
+        binding.btnVoirBadges.visibility = View.VISIBLE
         binding.badgesRow.removeAllViews()
 
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__BADGES__PROFILE_SECTION)
 
-        val displayed = allProgress.filter { it.isObtained }
-            .ifEmpty { allProgress }
-
-        displayed.forEach { progress ->
+        obtained.forEach { progress ->
             val cardView = layoutInflater.inflate(
                 R.layout.item_badge_profile_card,
                 binding.badgesRow,
@@ -704,7 +700,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
                 getString(progress.definition.titleRes)
             cardView.setOnClickListener {
                 AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__PROFILE__CARD_CLICK)
-                social.entourage.android.badges.BadgeDetailBottomSheet.newInstance(progress, obtainedKeys)
+                social.entourage.android.badges.BadgeDetailBottomSheet.newInstance(progress, apiBadges)
                     .show(supportFragmentManager, "badge_detail_profile")
             }
             binding.badgesRow.addView(cardView)
@@ -713,9 +709,9 @@ class MyProfileFullActivity : BaseSecuredActivity() {
         binding.btnVoirBadges.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__PROFILE__SEE_ALL)
             val intent = android.content.Intent(this, social.entourage.android.badges.BadgesListActivity::class.java).apply {
-                putStringArrayListExtra(
-                    social.entourage.android.badges.BadgesListActivity.EXTRA_OBTAINED_KEYS,
-                    ArrayList(obtainedKeys)
+                putParcelableArrayListExtra(
+                    social.entourage.android.badges.BadgesListActivity.EXTRA_API_BADGES,
+                    ArrayList(apiBadges)
                 )
             }
             startActivity(intent)
@@ -853,6 +849,32 @@ class ProfileFullActivity : BaseSecuredActivity() {
         notifBlocked = ""
         this.user = user
         initUserInfo()
+        updateBadgesSection(user.badges ?: emptyList())
+    }
+
+    private fun updateBadgesSection(apiBadges: List<social.entourage.android.badges.ApiBadge>) {
+        val obtained = social.entourage.android.badges.buildProgressFromApi(apiBadges).filter { it.isObtained }
+        if (obtained.isEmpty()) {
+            binding.sectionBadges.visibility = View.GONE
+            return
+        }
+
+        binding.sectionBadges.visibility = View.VISIBLE
+        binding.btnVoirBadges.visibility = View.GONE
+        binding.badgesRow.removeAllViews()
+
+        obtained.forEach { progress ->
+            val cardView = layoutInflater.inflate(
+                R.layout.item_badge_profile_card,
+                binding.badgesRow,
+                false
+            )
+            cardView.findViewById<android.widget.TextView>(R.id.tv_card_emoji).text = progress.definition.emoji
+            cardView.findViewById<android.widget.TextView>(R.id.tv_card_label).text =
+                getString(progress.definition.titleRes)
+            cardView.isClickable = false
+            binding.badgesRow.addView(cardView)
+        }
     }
 
     private fun setScrollEffects(isMe: Boolean) {

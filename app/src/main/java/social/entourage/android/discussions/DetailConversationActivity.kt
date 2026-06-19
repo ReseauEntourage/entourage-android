@@ -119,6 +119,7 @@ class DetailConversationActivity : CommentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         isMember = isSmallTalkMode
+        isSmallTalk = isSmallTalkMode
         hasToShowFirstMessage = intent.getBooleanExtra(Const.HAS_TO_SHOW_MESSAGE, false)
         binding.emptyState.visibility = View.GONE
 
@@ -958,6 +959,7 @@ class DetailConversationActivity : CommentActivity() {
         val toAppend = formatted.filter { existingKeys.add(it.diffKey()) }.toMutableList()
         if (toAppend.isEmpty()) {
             binding.progressBar.visibility = View.GONE
+            updateView(commentsList.isEmpty())
             return
         }
 

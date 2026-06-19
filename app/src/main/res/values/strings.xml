@@ -307,6 +307,16 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="old_publications">Anciennes publications</string>
     <string name="new_publications">Nouvelles publications</string>
     <string name="empty_state_comments">Pas encore de message</string>
+    <string name="conv_empty_title">C\'est le début de votre échange</string>
+    <string name="conv_empty_subtitle">Pas sûr de quoi dire ?\nChoisissez un sujet pour démarrer.</string>
+    <string name="conv_chip_hello">Dire bonjour 👋</string>
+    <string name="conv_chip_help">Proposer un coup de main 🤝</string>
+    <string name="conv_chip_question">Poser une question 💬</string>
+    <string name="conv_chip_event">Parler d\'un événement 📅</string>
+    <string name="conv_draft_hello">Bonjour ! Je voulais juste me présenter et prendre contact 😊</string>
+    <string name="conv_draft_help">Bonjour, je peux vous donner un coup de main si vous en avez besoin. N\'hésitez pas à me dire !</string>
+    <string name="conv_draft_question">Bonjour, j\'aurais une petite question à vous poser si vous avez un moment ?</string>
+    <string name="conv_draft_event">Bonjour, je vous ai croisé à un événement et je voulais juste échanger un peu avec vous !</string>
     <string name="retry_comment">Erreur de publication, réessayez</string>
     <string name="join_group_to_comment">* Pour commenter cette publication, rejoignez le groupe « %s » !</string>
     <string name="report_sent">Votre demande a bien été envoyée. Elle sera traitée au plus vite par notre équipe.</string>
@@ -3338,6 +3348,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="badges_empty_cta">Je me lance</string>
     <string name="badges_faq_link">Comment fonctionnent les badges ?</string>
     <string name="badge_obtained_on">Obtenu le %1$s</string>
+    <string name="badge_cta_see_my_badges">Voir mes badges</string>
     <string name="badge_not_yet_obtained">Pas encore obtenu</string>
     <string name="badge_how_it_works_title">COMMENT ÇA MARCHE</string>
     <string name="badge_mechanism_title">MÉCANIQUE</string>

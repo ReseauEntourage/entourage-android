@@ -89,12 +89,12 @@ class BadgesListAdapter(
                     binding.tvBadgeSubtitle.text = ctx.getString(def.descriptionShortRes)
                     binding.tvBadgeSubtitle.setTextColor(
                         androidx.core.content.ContextCompat.getColor(ctx, social.entourage.android.R.color.grey))
-                    val pct = (progress.progress * 100 / def.maxProgress)
+                    val pct = if (progress.maxProgress > 0) (progress.progress * 100 / progress.maxProgress) else 0
                     binding.progressBar.progress = pct
                     binding.progressBar.progressDrawable =
                         androidx.core.content.ContextCompat.getDrawable(ctx, social.entourage.android.R.drawable.badge_progress_bar)
                     binding.progressBar.visibility = android.view.View.VISIBLE
-                    binding.tvBadgeProgressLabel.text = "${progress.progress}/${def.maxProgress}"
+                    binding.tvBadgeProgressLabel.text = "${progress.progress}/${progress.maxProgress}"
                     binding.tvBadgeProgressLabel.visibility = android.view.View.VISIBLE
                 }
                 else -> {
@@ -107,7 +107,7 @@ class BadgesListAdapter(
                     binding.tvBadgeSubtitle.setTextColor(
                         androidx.core.content.ContextCompat.getColor(ctx, social.entourage.android.R.color.black))
                     binding.progressBar.visibility = android.view.View.GONE
-                    binding.tvBadgeProgressLabel.text = "0/${def.maxProgress}"
+                    binding.tvBadgeProgressLabel.text = "0/${progress.maxProgress}"
                     binding.tvBadgeProgressLabel.setTextColor(
                         androidx.core.content.ContextCompat.getColor(ctx, social.entourage.android.R.color.black))
                     binding.tvBadgeProgressLabel.visibility = android.view.View.VISIBLE

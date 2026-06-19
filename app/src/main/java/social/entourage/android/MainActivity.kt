@@ -354,6 +354,19 @@ class MainActivity : BaseSecuredActivity() {
             goDemand()
             return
         }
+
+        val badgeNavTab = intent.getStringExtra(EXTRA_BADGE_NAV_TAB)
+        if (badgeNavTab != null) {
+            intent.removeExtra(EXTRA_BADGE_NAV_TAB)
+            when (badgeNavTab) {
+                "messages" -> goConv()
+                "groups" -> goGroup()
+                "events" -> goEvent()
+                else -> goHome()
+            }
+            return
+        }
+
         else {
             this.intent = intent
             handleUniversalLinkFromMain(intent)
@@ -708,6 +721,7 @@ class MainActivity : BaseSecuredActivity() {
     companion object {
         var instance: MainActivity? = null
         const val UPDATE_REQUEST_CODE = 1001 // Ou tout autre numéro que tu souhaites.
+        const val EXTRA_BADGE_NAV_TAB = "badge_nav_tab"
         var reactionsList: MutableList<ReactionType>? = null
         var interest: MutableList<userConfig>? = null
         var concerns: MutableList<userConfig>? = null

@@ -124,7 +124,7 @@
             android:exported="false" />
         <activity
             android:name=".discussions.DetailConversationActivity"
-            android:windowSoftInputMode="adjustPan"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".tools.image_viewer.ImageListActivity"
