@@ -100,27 +100,23 @@ data class UserBadgeProgress(
     val definition: BadgeDefinition,
     val isObtained: Boolean,
     val progress: Int,
+    val maxProgress: Int,
     val obtainedDate: String? = null
 )
 
-// Hardcoded demo progressions — replace with API data when backend is ready
-fun buildHardcodedProgress(obtainedKeys: List<String>): List<UserBadgeProgress> {
-    val demoInProgress = if (obtainedKeys.isNotEmpty()) mapOf(
-        BadgeKey.AS_PAPOTAGE to 2,
-        BadgeKey.TISSEUR_LIENS to 2
-    ) else emptyMap()
-
+fun buildProgressFromApi(apiBadges: List<ApiBadge>): List<UserBadgeProgress> {
+    val badgeMap = apiBadges.associateBy { it.name }
     return ALL_BADGE_DEFINITIONS.map { def ->
-        val isObtained = obtainedKeys.contains(def.key.apiKey)
-        val progress = when {
-            isObtained -> def.maxProgress
-            else -> demoInProgress[def.key] ?: 0
-        }
+        val api = badgeMap[def.key.apiKey]
+        val isObtained = api != null
+        val current = api?.metadata?.current ?: 0
+        val target = api?.metadata?.target ?: def.maxProgress
         UserBadgeProgress(
             definition = def,
             isObtained = isObtained,
-            progress = progress,
-            obtainedDate = null
+            progress = if (isObtained) target else current,
+            maxProgress = target,
+            obtainedDate = api?.awardedAt
         )
     }
 }

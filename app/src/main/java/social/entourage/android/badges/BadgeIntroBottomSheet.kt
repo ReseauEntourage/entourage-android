@@ -14,15 +14,15 @@ class BadgeIntroBottomSheet : BottomSheetDialogFragment() {
     private var _binding: FragmentBadgeIntroBinding? = null
     private val binding get() = _binding!!
 
-    var onDiscoverClicked: ((List<String>) -> Unit)? = null
+    var onDiscoverClicked: (() -> Unit)? = null
 
     companion object {
-        private const val ARG_OBTAINED_KEYS = "obtained_keys"
+        private const val ARG_API_BADGES = "api_badges"
 
-        fun newInstance(obtainedKeys: List<String> = emptyList()): BadgeIntroBottomSheet {
+        fun newInstance(apiBadges: List<ApiBadge> = emptyList()): BadgeIntroBottomSheet {
             return BadgeIntroBottomSheet().apply {
                 arguments = Bundle().apply {
-                    putStringArrayList(ARG_OBTAINED_KEYS, ArrayList(obtainedKeys))
+                    putParcelableArrayList(ARG_API_BADGES, ArrayList(apiBadges))
                 }
             }
         }
@@ -46,7 +46,8 @@ class BadgeIntroBottomSheet : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val obtainedKeys = arguments?.getStringArrayList(ARG_OBTAINED_KEYS) ?: arrayListOf()
+        @Suppress("DEPRECATION")
+        val apiBadges: ArrayList<ApiBadge> = arguments?.getParcelableArrayList(ARG_API_BADGES) ?: arrayListOf()
 
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__BADGES__INTRO)
 
@@ -56,7 +57,7 @@ class BadgeIntroBottomSheet : BottomSheetDialogFragment() {
         binding.btnDiscoverBadges.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__INTRO__DISCOVER)
             val intent = android.content.Intent(requireContext(), BadgesListActivity::class.java).apply {
-                putStringArrayListExtra(BadgesListActivity.EXTRA_OBTAINED_KEYS, obtainedKeys)
+                putParcelableArrayListExtra(BadgesListActivity.EXTRA_API_BADGES, apiBadges)
             }
             startActivity(intent)
             dismiss()
