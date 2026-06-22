@@ -13,7 +13,7 @@
         android:id="@+id/tv_section_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/nunitosans_bold"
+        android:fontFamily="@font/quicksand_bold"
         android:textSize="13sp"
         android:textColor="@color/grey"
         android:letterSpacing="0.05"

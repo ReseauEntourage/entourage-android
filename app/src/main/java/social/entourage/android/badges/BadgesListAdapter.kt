@@ -5,6 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.databinding.ItemBadgeListBinding
 import social.entourage.android.databinding.ItemBadgeSectionHeaderBinding
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 sealed class BadgeListItem {
     data class Header(val title: String) : BadgeListItem()
@@ -19,6 +21,18 @@ class BadgesListAdapter(
     companion object {
         private const val TYPE_HEADER = 0
         private const val TYPE_BADGE = 1
+
+        fun formatDate(iso8601: String?): String {
+            if (iso8601.isNullOrEmpty()) return ""
+            return try {
+                val inputFmt = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault())
+                val outputFmt = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val date = inputFmt.parse(iso8601) ?: return ""
+                outputFmt.format(date)
+            } catch (e: Exception) {
+                iso8601.substringBefore("T")
+            }
+        }
     }
 
     override fun getItemViewType(position: Int) = when (items[position]) {
@@ -66,9 +80,9 @@ class BadgesListAdapter(
                         androidx.core.content.ContextCompat.getColor(ctx, android.R.color.white))
                     binding.tvBadgeEmoji.background =
                         androidx.core.content.ContextCompat.getDrawable(ctx, social.entourage.android.R.drawable.bg_circle_light_orange)
-                    val dateText = progress.obtainedDate ?: ""
-                    binding.tvBadgeSubtitle.text = if (dateText.isNotEmpty()) {
-                        ctx.getString(social.entourage.android.R.string.badge_obtained_on, dateText)
+                    val formattedDate = formatDate(progress.obtainedDate)
+                    binding.tvBadgeSubtitle.text = if (formattedDate.isNotEmpty()) {
+                        ctx.getString(social.entourage.android.R.string.badge_obtained_on, formattedDate)
                     } else {
                         ctx.getString(social.entourage.android.R.string.badge_obtained_on, "")
                     }

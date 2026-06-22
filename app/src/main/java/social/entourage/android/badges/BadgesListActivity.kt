@@ -36,7 +36,8 @@ class BadgesListActivity : AppCompatActivity() {
         }
         binding.tvFaqLink.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__LIST__FAQ)
-            Timber.d("Badges FAQ link clicked")
+            BadgeIntroBottomSheet.newInstance(apiBadges)
+                .show(supportFragmentManager, "badge_intro")
         }
 
         renderBadges(apiBadges)

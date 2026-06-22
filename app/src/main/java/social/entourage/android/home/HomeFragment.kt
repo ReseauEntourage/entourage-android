@@ -435,11 +435,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             ChatBotBottomSheet().show(parentFragmentManager, "chatbot")
         }
 
-        binding.ivLogoHome.setOnClickListener {
-            social.entourage.android.badges.BadgeIntroBottomSheet.newInstance()
-                .show(childFragmentManager, "badge_intro")
-        }
-
         smallTalkViewModel.userRequests.observe(viewLifecycleOwner) { requests ->
             currentRequests = requests
             composeSmallTalkItemsSimplified()
@@ -448,20 +443,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         loadSmallTalkItems()
         return binding.root
     }
-
-    private fun testNotifDemandePage() {
-        // Appui long existant...
-        binding.ivLogoHome.setOnLongClickListener {
-            // ... ton code existant ...
-            true
-        }
-
-        binding.ivLogoHome.setOnClickListener {
-            social.entourage.android.badges.BadgeIntroBottomSheet.newInstance()
-                .show(childFragmentManager, "badge_intro")
-        }
-    }
-
 
     private fun setupAdapters() {
         val viewPool = RecyclerView.RecycledViewPool()

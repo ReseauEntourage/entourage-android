@@ -13,6 +13,7 @@ import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentBadgeDetailBinding
 import social.entourage.android.events.create.CreateEventActivity
+import social.entourage.android.events.list.WelcomeEventsListActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -47,7 +48,7 @@ class BadgeDetailBottomSheet : BottomSheetDialogFragment() {
             if (iso8601.isNullOrEmpty()) return ""
             return try {
                 val inputFmt = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault())
-                val outputFmt = SimpleDateFormat("d MMMM yyyy", Locale.getDefault())
+                val outputFmt = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 val date = inputFmt.parse(iso8601) ?: return ""
                 outputFmt.format(date)
             } catch (e: Exception) {
@@ -168,7 +169,12 @@ class BadgeDetailBottomSheet : BottomSheetDialogFragment() {
         when (key) {
             BadgeKey.PREMIER_PAS -> navigateToMainTab("home")
             BadgeKey.PREMIER_LIEN -> navigateToMainTab("messages")
-            BadgeKey.AS_PAPOTAGE -> navigateToMainTab("events")
+            BadgeKey.AS_PAPOTAGE -> {
+                startActivity(Intent(requireContext(), WelcomeEventsListActivity::class.java).apply {
+                    putExtra("TYPE", "papotages")
+                })
+                dismiss()
+            }
             BadgeKey.DIFFUSEUR_LIENS -> {
                 startActivity(Intent(requireContext(), CreateEventActivity::class.java))
                 dismiss()
