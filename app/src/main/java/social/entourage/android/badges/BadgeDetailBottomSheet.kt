@@ -48,7 +48,7 @@ class BadgeDetailBottomSheet : BottomSheetDialogFragment() {
             if (iso8601.isNullOrEmpty()) return ""
             return try {
                 val inputFmt = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault())
-                val outputFmt = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val outputFmt = SimpleDateFormat("d MMMM yyyy", Locale.FRENCH)
                 val date = inputFmt.parse(iso8601) ?: return ""
                 outputFmt.format(date)
             } catch (e: Exception) {
