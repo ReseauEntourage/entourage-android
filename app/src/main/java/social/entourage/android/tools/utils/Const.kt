@@ -70,4 +70,6 @@ object Const {
 
     const val APPLINK_RESSOURCE_ID = "applinkRessourceId"
 
+    const val IS_NATIONAL_GROUP = "is_national_group"
+
 }

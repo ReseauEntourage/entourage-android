@@ -2819,4 +2819,23 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="badge_as_papotage_unlocked_message">3 solidarne Papotages w ciągu półtora miesiąca — Twoja regularna obecność tworzy więzi i dobrze wpływa na otoczenie. Dziękujemy za stałe zaangażowanie.</string>
     <string name="badge_tisseur_liens_unlocked_message">3 aktywne tygodnie na 4 — sprawiasz, że serce grup sąsiedzkich bije mocniej. Dziękujemy za stałe zaangażowanie.</string>
 
+    <!-- Chipy inspiracji do tworzenia postów w grupach -->
+    <string name="create_post_inspiration_label">Potrzebujesz inspiracji?</string>
+    <string name="post_chip_neighborhood">Info z okolicy 📢</string>
+    <string name="post_chip_activity">Zaproponuj aktywność 🎉</string>
+    <string name="post_chip_help">Poproś o pomoc 🤝</string>
+    <string name="post_chip_hello">Przywitaj się 👋</string>
+    <string name="post_draft_neighborhood">Chciałem/am podzielić się informacją dotyczącą naszej okolicy: </string>
+    <string name="post_draft_activity">Organizuję małą aktywność i chciałbym/chciałabym was zaprosić! </string>
+    <string name="post_draft_help">Cześć wszystkim, potrzebuję trochę pomocy z </string>
+    <string name="post_draft_hello">Cześć wszystkim! Chciałem/am tylko nawiązać kontakt z grupą 😊</string>
+    <string name="post_chip_share">Podziel się treścią 🎵</string>
+    <string name="post_chip_question">Zadaj pytanie ❓</string>
+    <string name="post_chip_exchange">Zaproponuj wymianę 💬</string>
+    <string name="post_chip_meetup">Zorganizuj spotkanie 📅</string>
+    <string name="post_draft_share">Znalazłem/am coś interesującego do podzielenia się z wami: </string>
+    <string name="post_draft_question">Cześć, mam pytanie do grupy: </string>
+    <string name="post_draft_exchange">Chciałbym/chciałabym, żebyśmy razem porozmawiali na ten temat: </string>
+    <string name="post_draft_meetup">A może spotkamy się wkrótce? Proponuję </string>
+
 </resources>

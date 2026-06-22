@@ -317,6 +317,27 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="conv_draft_help">Bonjour, je peux vous donner un coup de main si vous en avez besoin. N\'hésitez pas à me dire !</string>
     <string name="conv_draft_question">Bonjour, j\'aurais une petite question à vous poser si vous avez un moment ?</string>
     <string name="conv_draft_event">Bonjour, je vous ai croisé à un événement et je voulais juste échanger un peu avec vous !</string>
+
+    <!-- Chips d\'inspiration pour la création de post dans un groupe -->
+    <string name="create_post_inspiration_label">Besoin d\'inspiration ?</string>
+    <!-- Groupe généraliste -->
+    <string name="post_chip_neighborhood">Info de quartier 📢</string>
+    <string name="post_chip_activity">Proposer une activité 🎉</string>
+    <string name="post_chip_help">Demander un coup de main 🤝</string>
+    <string name="post_chip_hello">Dire bonjour 👋</string>
+    <string name="post_draft_neighborhood">Je voulais partager une info qui concerne notre quartier : </string>
+    <string name="post_draft_activity">J\'organise une petite activité et j\'aimerais vous inviter ! </string>
+    <string name="post_draft_help">Bonjour à tous, j\'aurais besoin d\'un petit coup de main pour </string>
+    <string name="post_draft_hello">Bonjour à tous ! Je voulais juste prendre contact avec le groupe 😊</string>
+    <!-- Groupe thématique (national) -->
+    <string name="post_chip_share">Partager un contenu 🎵</string>
+    <string name="post_chip_question">Poser une question ❓</string>
+    <string name="post_chip_exchange">Proposer un échange 💬</string>
+    <string name="post_chip_meetup">Organiser une rencontre 📅</string>
+    <string name="post_draft_share">J\'ai trouvé quelque chose d\'intéressant à partager avec vous : </string>
+    <string name="post_draft_question">Bonjour, j\'aurais une question pour le groupe : </string>
+    <string name="post_draft_exchange">J\'aimerais qu\'on échange sur ce sujet ensemble : </string>
+    <string name="post_draft_meetup">Et si on se retrouvait prochainement ? Je propose </string>
     <string name="retry_comment">Erreur de publication, réessayez</string>
     <string name="join_group_to_comment">* Pour commenter cette publication, rejoignez le groupe « %s » !</string>
     <string name="report_sent">Votre demande a bien été envoyée. Elle sera traitée au plus vite par notre équipe.</string>
@@ -3344,7 +3365,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="badges_empty_subtitle">Chaque badge valorise une action concrète qui crée du lien dans la communauté. À vous de jouer !</string>
     <string name="badges_empty_start_label">COMMENCEZ PAR</string>
     <string name="badges_empty_start_badge">Le badge %1$s</string>
-    <string name="badges_empty_start_description">Terminez votre onboarding et faites votre première action — réaction, post, rejoindre un groupe ou participer à un événement — pour obtenir ce badge.</string>
+    <string name="badges_empty_start_description">Complétez votre profil (envies d\'agir, centres d\'intérêt, catégories d\'entraides préférées, disponibilités) et réalisez votre première action sur l\'app</string>
     <string name="badges_empty_cta">Je me lance</string>
     <string name="badges_faq_link">Comment fonctionnent les badges ?</string>
     <string name="badge_obtained_on">Obtenu le %1$s</string>
@@ -3361,8 +3382,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <!-- Badge: Premier pas -->
     <string name="badge_premier_pas_title">Premier pas</string>
-    <string name="badge_premier_pas_description_short">Terminez votre onboarding et faites votre première action — réaction, post, rejoindre un groupe ou participer à un événement — pour obtenir ce badge.</string>
-    <string name="badge_premier_pas_how_it_works">Terminez votre onboarding (centres d\'intérêt, envies d\'agir, catégories d\'entraide, disponibilités) puis réalisez votre première action sur l\'app.</string>
+    <string name="badge_premier_pas_description_short">Complétez votre profil (envies d\'agir, centres d\'intérêt, catégories d\'entraides préférées, disponibilités) et réalisez votre première action sur l\'app</string>
+    <string name="badge_premier_pas_how_it_works">Complétez votre profil (envies d\'agir, centres d\'intérêt, catégories d\'entraides préférées, disponibilités) et réalisez votre première action sur l\'app</string>
     <string name="badge_premier_pas_what_it_means">Ce badge célèbre votre arrivée dans la communauté. Il marque votre premier geste — celui qui transforme un compte créé en une réelle intention.</string>
     <string name="badge_premier_pas_cta">Faire une première action</string>
 

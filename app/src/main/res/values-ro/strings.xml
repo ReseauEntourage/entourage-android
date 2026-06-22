@@ -2816,4 +2816,23 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="badge_as_papotage_unlocked_message">3 Papotages solidare într-o lună și jumătate — prezența ta regulată creează legături și face bine în jurul tău. Mulțumim pentru angajamentul constant.</string>
     <string name="badge_tisseur_liens_unlocked_message">3 săptămâni active din 4 — faci inima grupurilor de vecini să bată. Mulțumim pentru angajamentul constant.</string>
 
+    <!-- Cipuri de inspirație pentru crearea de postări în grupuri -->
+    <string name="create_post_inspiration_label">Ai nevoie de inspirație?</string>
+    <string name="post_chip_neighborhood">Știre din cartier 📢</string>
+    <string name="post_chip_activity">Propune o activitate 🎉</string>
+    <string name="post_chip_help">Cere o mână de ajutor 🤝</string>
+    <string name="post_chip_hello">Spune salut 👋</string>
+    <string name="post_draft_neighborhood">Am vrut să împărtășesc o informație despre cartierul nostru: </string>
+    <string name="post_draft_activity">Organizez o mică activitate și aș vrea să vă invit! </string>
+    <string name="post_draft_help">Bună tuturor, aș avea nevoie de puțin ajutor pentru </string>
+    <string name="post_draft_hello">Bună tuturor! Am vrut doar să iau legătura cu grupul 😊</string>
+    <string name="post_chip_share">Partajează conținut 🎵</string>
+    <string name="post_chip_question">Pune o întrebare ❓</string>
+    <string name="post_chip_exchange">Propune un schimb 💬</string>
+    <string name="post_chip_meetup">Organizează o întâlnire 📅</string>
+    <string name="post_draft_share">Am găsit ceva interesant de împărtășit cu voi: </string>
+    <string name="post_draft_question">Bună, aș avea o întrebare pentru grup: </string>
+    <string name="post_draft_exchange">Mi-ar plăcea să discutăm împreună despre acest subiect: </string>
+    <string name="post_draft_meetup">Ce-ar fi să ne întâlnim în curând? Propun </string>
+
 </resources>

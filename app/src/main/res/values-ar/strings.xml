@@ -2842,4 +2842,23 @@
     <string name="badge_as_papotage_unlocked_message">3 جلسات Papotage تضامنية في شهر ونصف، حضورك المنتظم يخلق روابط ويُفيد المحيطين بك. شكراً على التزامك الدائم.</string>
     <string name="badge_tisseur_liens_unlocked_message">3 أسابيع نشطة من أصل 4 — أنت تُحرّك قلب مجموعات الجيران. شكراً على التزامك الدائم.</string>
 
+    <!-- شرائح الإلهام لإنشاء منشور في المجموعات -->
+    <string name="create_post_inspiration_label">هل تحتاج إلهامًا؟</string>
+    <string name="post_chip_neighborhood">أخبار الحي 📢</string>
+    <string name="post_chip_activity">اقتراح نشاط 🎉</string>
+    <string name="post_chip_help">طلب المساعدة 🤝</string>
+    <string name="post_chip_hello">إلقاء التحية 👋</string>
+    <string name="post_draft_neighborhood">أردت مشاركة خبر يخص حيّنا: </string>
+    <string name="post_draft_activity">أنا أنظم نشاطًا صغيرًا وأودّ دعوتكم! </string>
+    <string name="post_draft_help">مرحبًا بالجميع، أحتاج إلى بعض المساعدة من أجل </string>
+    <string name="post_draft_hello">مرحبًا بالجميع! أردت فقط التواصل مع المجموعة 😊</string>
+    <string name="post_chip_share">مشاركة محتوى 🎵</string>
+    <string name="post_chip_question">طرح سؤال ❓</string>
+    <string name="post_chip_exchange">اقتراح تبادل 💬</string>
+    <string name="post_chip_meetup">تنظيم لقاء 📅</string>
+    <string name="post_draft_share">وجدت شيئًا مثيرًا للاهتمام لمشاركته معكم: </string>
+    <string name="post_draft_question">مرحبًا، لديّ سؤال للمجموعة: </string>
+    <string name="post_draft_exchange">أودّ أن نتبادل الحديث معًا حول هذا الموضوع: </string>
+    <string name="post_draft_meetup">ماذا لو التقينا قريبًا؟ أقترح </string>
+
 </resources>
