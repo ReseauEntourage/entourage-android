@@ -1957,4 +1957,23 @@
     <string name="badge_as_papotage_unlocked_message">3 solidarity Papotages in a month and a half — your regular presence creates bonds and does good around you. Thank you for your constant commitment.</string>
     <string name="badge_tisseur_liens_unlocked_message">3 active weeks out of 4 — you make the heart of neighbourhood groups beat. Thank you for your constant commitment.</string>
 
+    <!-- Inspiration chips for group post creation -->
+    <string name="create_post_inspiration_label">Need some inspiration?</string>
+    <string name="post_chip_neighborhood">Neighbourhood news 📢</string>
+    <string name="post_chip_activity">Suggest an activity 🎉</string>
+    <string name="post_chip_help">Ask for a helping hand 🤝</string>
+    <string name="post_chip_hello">Say hello 👋</string>
+    <string name="post_draft_neighborhood">I wanted to share some news about our neighbourhood: </string>
+    <string name="post_draft_activity">I\'m organising a little activity and would love to invite you! </string>
+    <string name="post_draft_help">Hi everyone, I could use a little help with </string>
+    <string name="post_draft_hello">Hi everyone! I just wanted to get in touch with the group 😊</string>
+    <string name="post_chip_share">Share some content 🎵</string>
+    <string name="post_chip_question">Ask a question ❓</string>
+    <string name="post_chip_exchange">Start a discussion 💬</string>
+    <string name="post_chip_meetup">Organise a meetup 📅</string>
+    <string name="post_draft_share">I found something interesting to share with you: </string>
+    <string name="post_draft_question">Hi, I have a question for the group: </string>
+    <string name="post_draft_exchange">I\'d love for us to discuss this topic together: </string>
+    <string name="post_draft_meetup">What if we got together soon? I suggest </string>
+
 </resources>

@@ -2803,4 +2803,23 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="badge_as_papotage_unlocked_message">3 solidarische Papotages in eineinhalb Monaten — deine regelmäßige Anwesenheit schafft Verbindungen und tut dir gut. Danke für dein konstantes Engagement.</string>
     <string name="badge_tisseur_liens_unlocked_message">3 aktive Wochen von 4 — du lässt das Herz der Nachbarschaftsgruppen schlagen. Danke für dein konstantes Engagement.</string>
 
+    <!-- Inspirations-Chips für die Erstellung von Beiträgen in Gruppen -->
+    <string name="create_post_inspiration_label">Brauchst du Inspiration?</string>
+    <string name="post_chip_neighborhood">Neuigkeit aus dem Viertel 📢</string>
+    <string name="post_chip_activity">Aktivität vorschlagen 🎉</string>
+    <string name="post_chip_help">Um Hilfe bitten 🤝</string>
+    <string name="post_chip_hello">Hallo sagen 👋</string>
+    <string name="post_draft_neighborhood">Ich wollte eine Information aus unserem Viertel teilen: </string>
+    <string name="post_draft_activity">Ich organisiere eine kleine Aktivität und möchte euch einladen! </string>
+    <string name="post_draft_help">Hallo zusammen, ich könnte Hilfe gebrauchen bei </string>
+    <string name="post_draft_hello">Hallo zusammen! Ich wollte mich einfach mit der Gruppe in Verbindung setzen 😊</string>
+    <string name="post_chip_share">Inhalt teilen 🎵</string>
+    <string name="post_chip_question">Eine Frage stellen ❓</string>
+    <string name="post_chip_exchange">Einen Austausch vorschlagen 💬</string>
+    <string name="post_chip_meetup">Ein Treffen organisieren 📅</string>
+    <string name="post_draft_share">Ich habe etwas Interessantes zum Teilen gefunden: </string>
+    <string name="post_draft_question">Hallo, ich hätte eine Frage an die Gruppe: </string>
+    <string name="post_draft_exchange">Ich würde gerne gemeinsam über dieses Thema diskutieren: </string>
+    <string name="post_draft_meetup">Was wäre, wenn wir uns bald treffen würden? Ich schlage vor </string>
+
 </resources>

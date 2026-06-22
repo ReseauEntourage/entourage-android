@@ -2728,4 +2728,23 @@
     <string name="badge_as_papotage_unlocked_message">3 солідарних Папотажа за півтора місяця — ваша регулярна присутність створює зв\'язки та робить добро навколо вас. Дякуємо за постійну участь.</string>
     <string name="badge_tisseur_liens_unlocked_message">3 активних тижні з 4 — ви змушуєте серце сусідських груп битися. Дякуємо за постійну участь.</string>
 
+    <!-- Чіпи натхнення для створення публікацій у групах -->
+    <string name="create_post_inspiration_label">Потрібне натхнення?</string>
+    <string name="post_chip_neighborhood">Новини кварталу 📢</string>
+    <string name="post_chip_activity">Запропонувати активність 🎉</string>
+    <string name="post_chip_help">Попросити допомоги 🤝</string>
+    <string name="post_chip_hello">Привітатися 👋</string>
+    <string name="post_draft_neighborhood">Хотів/хотіла поділитися інформацією про наш квартал: </string>
+    <string name="post_draft_activity">Я організовую невелику активність і хочу вас запросити! </string>
+    <string name="post_draft_help">Привіт усім, мені потрібна невелика допомога з </string>
+    <string name="post_draft_hello">Привіт усім! Просто хотів/хотіла зв\'язатися з групою 😊</string>
+    <string name="post_chip_share">Поділитися контентом 🎵</string>
+    <string name="post_chip_question">Поставити запитання ❓</string>
+    <string name="post_chip_exchange">Запропонувати обмін 💬</string>
+    <string name="post_chip_meetup">Організувати зустріч 📅</string>
+    <string name="post_draft_share">Знайшов/знайшла щось цікаве, чим хочу поділитися з вами: </string>
+    <string name="post_draft_question">Привіт, у мене є запитання до групи: </string>
+    <string name="post_draft_exchange">Хотів/хотіла б, щоб ми разом обговорили цю тему: </string>
+    <string name="post_draft_meetup">А що, якби ми незабаром зустрілися? Пропоную </string>
+
 </resources>
