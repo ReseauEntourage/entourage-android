@@ -99,6 +99,7 @@
                 android:layout_marginBottom="8dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/quicksand_bold"
+                android:minLines="2"
                 android:maxLines="2"
                 android:textColor="@color/black"
                 android:textSize="15sp"

@@ -681,7 +681,6 @@ class MyProfileFullActivity : BaseSecuredActivity() {
 
     private fun updateBadgesSection(apiBadges: List<social.entourage.android.badges.ApiBadge>) {
         val allProgress = social.entourage.android.badges.buildProgressFromApi(apiBadges)
-        val obtained = allProgress.filter { it.isObtained }
 
         binding.sectionBadges.visibility = View.VISIBLE
         binding.btnVoirBadges.visibility = View.VISIBLE
@@ -689,7 +688,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
 
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__BADGES__PROFILE_SECTION)
 
-        obtained.forEach { progress ->
+        allProgress.forEach { progress ->
             val cardView = layoutInflater.inflate(
                 R.layout.item_badge_profile_card,
                 binding.badgesRow,
@@ -698,6 +697,9 @@ class MyProfileFullActivity : BaseSecuredActivity() {
             cardView.findViewById<android.widget.TextView>(R.id.tv_card_emoji).text = progress.definition.emoji
             cardView.findViewById<android.widget.TextView>(R.id.tv_card_label).text =
                 getString(progress.definition.titleRes)
+            if (!progress.isObtained) {
+                cardView.alpha = 0.35f
+            }
             cardView.setOnClickListener {
                 AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__PROFILE__CARD_CLICK)
                 social.entourage.android.badges.BadgeDetailBottomSheet.newInstance(progress, apiBadges)

@@ -3,6 +3,30 @@
 
     <string name="app_name" translatable="false">Entourage</string>
     <string name="full_app_name">Entourage</string>
+
+    <!-- API Error BottomSheet -->
+    <string name="api_error_badge_label">Erreur</string>
+    <string name="api_error_button_close">Fermer</string>
+    <string name="api_error_title_400">Requête invalide</string>
+    <string name="api_error_desc_400">Votre demande n\'a pas pu être traitée. Veuillez réessayer.</string>
+    <string name="api_error_title_403">Accès refusé</string>
+    <string name="api_error_desc_403">Vous n\'avez pas les droits pour effectuer cette action.</string>
+    <string name="api_error_title_404">On s\'est perdus en chemin !</string>
+    <string name="api_error_desc_404">Cette page n\'existe pas ou a été déplacée. La communauté Entourage est toujours là pour vous.</string>
+    <string name="api_error_title_408">Délai dépassé</string>
+    <string name="api_error_desc_408">La requête a pris trop de temps. Vérifiez votre connexion et réessayez.</string>
+    <string name="api_error_title_409">Conflit</string>
+    <string name="api_error_desc_409">Une action similaire est déjà en cours. Veuillez réessayer.</string>
+    <string name="api_error_title_422">Données invalides</string>
+    <string name="api_error_desc_422">Les informations envoyées sont incorrectes. Veuillez vérifier et réessayer.</string>
+    <string name="api_error_title_429">Trop de requêtes</string>
+    <string name="api_error_desc_429">Vous avez effectué trop d\'actions. Patientez un moment avant de réessayer.</string>
+    <string name="api_error_title_500">Erreur serveur</string>
+    <string name="api_error_desc_500">Un problème est survenu de notre côté. Nos équipes sont sur le coup !</string>
+    <string name="api_error_title_503">Service indisponible</string>
+    <string name="api_error_desc_503">Le service est temporairement indisponible. Réessayez dans quelques instants.</string>
+    <string name="api_error_title_default">Quelque chose s\'est mal passé</string>
+    <string name="api_error_desc_default">Une erreur inattendue s\'est produite. Veuillez réessayer.</string>
     <string name="button_loading">Chargement…</string>
     <string name="title_welcome_webinar">Prochaines visios</string>
     <string name="title_welcome_papotages">Prochains papotages</string>
