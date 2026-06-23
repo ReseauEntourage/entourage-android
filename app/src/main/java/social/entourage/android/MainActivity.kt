@@ -19,6 +19,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
@@ -566,47 +567,42 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
 
+    private fun singleTopNavOptions() = NavOptions.Builder()
+        .setLaunchSingleTop(true)
+        .build()
+
     fun goHome() {
-        navController.navigate(R.id.navigation_home)
+        navController.navigate(R.id.navigation_home, null, singleTopNavOptions())
     }
 
     fun goGroup() {
-        navController.navigate(R.id.navigation_groups)
-
+        navController.navigate(R.id.navigation_groups, null, singleTopNavOptions())
     }
 
     fun goEvent() {
-        navController.navigate(R.id.navigation_events)
+        navController.navigate(R.id.navigation_events, null, singleTopNavOptions())
         if (shouldLaunchEvent == false) {
             MainFilterActivity.resetAllFilters(this)
         }
     }
 
     fun goConv(isSmallTalkFilter: Boolean = false) {
-        if (navController.currentDestination?.id == R.id.navigation_messages) {
-            // Already in messages, if small talk filter is required, we should inform the fragment,
-            // but for now let's navigate to ensure bundle is passed or handle it properly.
-            // Simple approach: re-navigate with bundle
-        }
         val bundle = if (isSmallTalkFilter) bundleOf("isSmallTalkFilter" to true) else null
-        navController.navigate(R.id.navigation_messages, bundle)
+        navController.navigate(R.id.navigation_messages, bundle, singleTopNavOptions())
     }
 
     fun navigateToGroupsTab() {
-        navController.navigate(R.id.navigation_groups)
+        navController.navigate(R.id.navigation_groups, null, singleTopNavOptions())
     }
 
     fun goContrib() {
-        val bundle =
-            bundleOf("isActionDemand" to false) // Mettez ici la valeur souhaitée pour "isActionDemand"
-        navController.navigate(R.id.navigation_donations, bundle)
-
+        val bundle = bundleOf("isActionDemand" to false)
+        navController.navigate(R.id.navigation_donations, bundle, singleTopNavOptions())
     }
 
     fun goDemand() {
-        val bundle =
-            bundleOf("isActionDemand" to true) // Mettez ici la valeur souhaitée pour "isActionDemand"
-        navController.navigate(R.id.navigation_donations, bundle)
+        val bundle = bundleOf("isActionDemand" to true)
+        navController.navigate(R.id.navigation_donations, bundle, singleTopNavOptions())
     }
 
     private fun initializeNavBar() {

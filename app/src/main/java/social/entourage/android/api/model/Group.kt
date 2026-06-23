@@ -11,6 +11,8 @@ data class Group(
     var id: Int? = null,
     @field:SerializedName("uuid_v2")
     var uuid_v2: String? = null,
+    @SerializedName("zone")
+    var zone: String? = null,
     @SerializedName("name")
     var name: String? = null,
     @SerializedName("name_translations")

@@ -824,7 +824,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST)
         val intent = Intent(context, CreatePostGroupActivity::class.java)
         intent.putExtra(Const.ID, groupId)
-        intent.putExtra(Const.IS_NATIONAL_GROUP, group?.national ?: false)
+        intent.putExtra(Const.IS_NATIONAL_GROUP, group?.zone == null)
         if (!isAdded) return
         startActivityForResult(intent, 0)
     }
