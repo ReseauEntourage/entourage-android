@@ -34,7 +34,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.members.MembersListAdapter
 import social.entourage.android.groups.details.members.OnItemShowListener
-import social.entourage.android.home.HomeFragment
+import social.entourage.android.home.HomeState
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
@@ -76,7 +76,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
         val typeCode = intent.getIntExtra("TYPE", MembersType.GROUP.code)
         type = MembersType.values().firstOrNull { it.code == typeCode } ?: MembersType.GROUP
         //iAmOrganiser = intent.getBooleanExtra("ROLE", false)
-        iAmOrganiser = ActionSheetFragment.isSignable && HomeFragment.signablePermission
+        iAmOrganiser = ActionSheetFragment.isSignable && HomeState.signablePermission
         Timber.wtf("wtf" + iAmOrganiser)
         setupToolbar()
         setupLists()
@@ -413,7 +413,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
 
         // Utiliser la même condition que pour les cases à cocher (checkboxConfirmation)
         val canShowAddButton = type == MembersType.EVENT && 
-                              HomeFragment.signablePermission && ActionSheetFragment.isSignable
+                              HomeState.signablePermission && ActionSheetFragment.isSignable
 
         if (canShowAddButton) {
             binding.fabAddUnsubscribed.visibility = android.view.View.VISIBLE
