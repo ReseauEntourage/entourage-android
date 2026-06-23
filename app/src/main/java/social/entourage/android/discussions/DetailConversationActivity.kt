@@ -31,6 +31,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
+import social.entourage.android.api.ConversationWebSocketClient
 import social.entourage.android.R
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.EntourageUser
@@ -107,7 +108,10 @@ class DetailConversationActivity : CommentActivity() {
 
     private var event: Events? = null
 
-    // Refresh (page 1 -> append en bas)
+    // WebSocket temps-réel
+    private var wsClient: ConversationWebSocketClient? = null
+
+    // Polling fallback (désactivé si WebSocket connecté)
     private val refreshHandler = Handler(Looper.getMainLooper())
     private val refreshIntervalMs = 1_500L
     private var refreshRunnable: Runnable? = null
@@ -172,6 +176,12 @@ class DetailConversationActivity : CommentActivity() {
             discussionsPresenter.getDetailConversation(id)
             discussionsPresenter.getAllComments.observe(this) { handleGetPostComments(it) }
             discussionsPresenter.commentPosted.observe(this) { scrollAfterLayout() }
+            discussionsPresenter.newPostFromWebSocket.observe(this) { post ->
+                post?.let { appendWebSocketPost(it) }
+            }
+            discussionsPresenter.updatedPostFromWebSocket.observe(this) { post ->
+                post?.let { refreshPostInList(it) }
+            }
             discussionsPresenter.loadInitialComments(id) // page 1 initiale
         }
 
@@ -219,6 +229,8 @@ class DetailConversationActivity : CommentActivity() {
     override fun onPause() {
         super.onPause()
         stopRefreshing()
+        wsClient?.disconnect()
+        wsClient = null
     }
 
     private fun buildAndShowActionSheet() {
@@ -312,21 +324,23 @@ class DetailConversationActivity : CommentActivity() {
     }
 
     private fun startRefreshing() {
+        if (wsClient?.isConnected == true) return
         if (refreshRunnable != null) return
         refreshRunnable = object : Runnable {
             override fun run() {
+                if (wsClient?.isConnected == true) {
+                    stopRefreshing()
+                    return
+                }
                 if (!isLoadingOlder) {
                     if (isSmallTalkMode) {
                         smallTalkViewModel.listChatMessages(smallTalkId, page = 1)
                     } else {
                         discussionsPresenter.getPostComments(id) // page 1
                     }
-                    // Ajoutez un délai pour laisser le temps à la liste de se mettre à jour
                     Handler(Looper.getMainLooper()).postDelayed({
-                        if (isAtBottom()) {
-                            scrollAfterLayout()
-                        }
-                    }, 300) // Délai court pour laisser le temps à la liste de se recharger
+                        if (isAtBottom()) scrollAfterLayout()
+                    }, 300)
                 }
                 refreshHandler.postDelayed(this, refreshIntervalMs)
             }
@@ -728,6 +742,67 @@ class DetailConversationActivity : CommentActivity() {
 
         // Banner Staff Out-of-Office check
         checkStaffBannerDisplay(conversation)
+
+        // Connexion WebSocket temps-réel
+        connectWebSocket(conversation)
+    }
+
+    private fun connectWebSocket(conversation: Conversation) {
+        val instanceType = ConversationWebSocketClient.instanceTypeFrom(conversation.type) ?: return
+        val instanceId = conversation.id ?: return
+        val token = EntourageApplication.get().me()?.token ?: return
+
+        wsClient?.disconnect()
+        wsClient = ConversationWebSocketClient(
+            okHttpClient = EntourageApplication.get().apiModule.okHttpClient,
+            instanceType = instanceType,
+            instanceId = instanceId,
+            token = token,
+            onMessageCreated = { post ->
+                discussionsPresenter.newPostFromWebSocket.postValue(post)
+            },
+            onMessageUpdated = { post ->
+                discussionsPresenter.updatedPostFromWebSocket.postValue(post)
+            },
+            onConnected = {
+                runOnUiThread { stopRefreshing() }
+            },
+            onDisconnected = {
+                runOnUiThread { startRefreshing() }
+            }
+        )
+        wsClient?.connect()
+    }
+
+    private fun appendWebSocketPost(post: Post) {
+        if (commentsList.any { !it.isDatePostOnly && it.id == post.id }) return
+        val wasAtBottom = isAtBottom()
+
+        val lastRealPost = commentsList.lastOrNull { !it.isDatePostOnly }
+        val lastDate = lastRealPost?.createdTime?.let { Utils.formatEventDateLong(it, this) } ?: ""
+        val newDate = post.createdTime?.let { Utils.formatEventDateLong(it, this) } ?: ""
+        if (newDate.isNotEmpty() && newDate != lastDate) {
+            val sep = Post().apply { isDatePostOnly = true; datePostText = newDate }
+            val sepPos = commentsList.size
+            commentsList.add(sep)
+            binding.comments.adapter?.notifyItemInserted(sepPos)
+        }
+
+        val pos = commentsList.size
+        commentsList.add(post)
+        binding.comments.adapter?.notifyItemInserted(pos)
+        if (wasAtBottom) scrollAfterLayout()
+        updateView(false)
+    }
+
+    private fun refreshPostInList(post: Post) {
+        val idx = commentsList.indexOfFirst { !it.isDatePostOnly && it.id == post.id }
+        if (idx == -1) {
+            appendWebSocketPost(post)
+            return
+        }
+        commentsList[idx] = post
+        binding.comments.adapter?.notifyItemChanged(idx)
     }
 
     private fun checkStaffBannerDisplay(conversation: Conversation) {

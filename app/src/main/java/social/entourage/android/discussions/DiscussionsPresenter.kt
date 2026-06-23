@@ -68,6 +68,9 @@ class DiscussionsPresenter : ViewModel() {
     var isLastPageComments = false
     var isLoadingComments = false
 
+    val newPostFromWebSocket = MutableLiveData<Post?>()
+    val updatedPostFromWebSocket = MutableLiveData<Post?>()
+
     val memberships = MutableLiveData<List<ConversationMembership>>()
     var currentPageMemberships = 1
     val perPageMemberships = 50

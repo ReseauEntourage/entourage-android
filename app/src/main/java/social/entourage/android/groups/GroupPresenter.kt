@@ -51,6 +51,7 @@ class GroupPresenter: ViewModel() {
     var getAllPosts = MutableLiveData<MutableList<Post>>()
     var hasPost = MutableLiveData<Boolean>()
     var commentPosted = MutableLiveData<Post?>()
+    val newPostFromWebSocket = MutableLiveData<Post?>()
     var isGroupReported = MutableLiveData<Boolean>()
     var isPostReported = MutableLiveData<Boolean>()
     var isPostDeleted = MutableLiveData<Boolean>()

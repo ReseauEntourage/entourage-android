@@ -38,6 +38,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
+import social.entourage.android.api.ConversationWebSocketClient
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.EntourageUser
@@ -106,6 +107,8 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
 
     private var dernierClicTime: Long = 0
 
+    private var wsClient: ConversationWebSocketClient? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -134,6 +137,9 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         // groupPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetGroupMembers)
         groupPresenter.getGroup.observe(viewLifecycleOwner, ::handleResponseGetGroup)
         groupPresenter.getAllPosts.observe(viewLifecycleOwner, ::handleResponseGetGroupPosts)
+        groupPresenter.newPostFromWebSocket.observe(viewLifecycleOwner) { post ->
+            post?.let { appendWebSocketPost(it) }
+        }
         groupPresenter.hasUserJoinedGroup.observe(viewLifecycleOwner, ::handleJoinResponse)
         groupPresenter.hasUserLeftGroup.observe(viewLifecycleOwner, ::handleLeftResponse)
         groupPresenter.isPostDeleted.observe(requireActivity(), ::handleDeletedResponse)
@@ -176,6 +182,44 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         }
         binding.createPost.close()
         binding.overlayView.visibility = View.GONE
+        connectWebSocket()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        wsClient?.disconnect()
+        wsClient = null
+    }
+
+    private fun connectWebSocket() {
+        if (groupId <= 0) return
+        val token = EntourageApplication.get().me()?.token ?: return
+        wsClient?.disconnect()
+        wsClient = ConversationWebSocketClient(
+            okHttpClient = EntourageApplication.get().apiModule.okHttpClient,
+            instanceType = "Neighborhood",
+            instanceId = groupId,
+            token = token,
+            onMessageCreated = { post -> groupPresenter.newPostFromWebSocket.postValue(post) },
+            onMessageUpdated = { _ -> },
+            onConnected = {},
+            onDisconnected = {}
+        )
+        wsClient?.connect()
+    }
+
+    private fun appendWebSocketPost(post: Post) {
+        if (post.status == "deleted") return
+        if (allPostsList.any { it.id == post.id }) return
+        allPostsList.add(post)
+        val adapter = binding.postsNewRecyclerview.adapter as? PostAdapter
+        if (adapter != null) {
+            newPostsList.add(post)
+            adapter.notifyItemInserted(newPostsList.size - 1)
+            binding.postsNew.root.visibility = View.VISIBLE
+            binding.postsNewRecyclerview.visibility = View.VISIBLE
+            binding.postsLayoutEmptyState.visibility = View.GONE
+        }
     }
 
     // ============================
