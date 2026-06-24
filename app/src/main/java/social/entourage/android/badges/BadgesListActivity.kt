@@ -43,6 +43,11 @@ class BadgesListActivity : AppCompatActivity() {
         loadBadges()
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadBadges()
+    }
+
     private fun loadBadges() {
         val me = EntourageApplication.get().me() ?: return
         EntourageApplication.get().apiModule.userRequest
