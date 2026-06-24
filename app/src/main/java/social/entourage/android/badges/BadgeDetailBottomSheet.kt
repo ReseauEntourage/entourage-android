@@ -12,6 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentBadgeDetailBinding
+import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.events.create.CreateEventActivity
 import social.entourage.android.events.list.WelcomeEventsListActivity
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -164,7 +165,10 @@ class BadgeDetailBottomSheet : BottomSheetDialogFragment() {
 
     private fun navigateForBadge(key: BadgeKey) {
         when (key) {
-            BadgeKey.PREMIER_PAS -> navigateToMainTab("home")
+            BadgeKey.PREMIER_PAS -> {
+                startActivity(Intent(requireContext(), EnhancedOnboarding::class.java))
+                dismiss()
+            }
             BadgeKey.PREMIER_LIEN -> navigateToMainTab("messages")
             BadgeKey.AS_PAPOTAGE -> {
                 startActivity(Intent(requireContext(), WelcomeEventsListActivity::class.java).apply {

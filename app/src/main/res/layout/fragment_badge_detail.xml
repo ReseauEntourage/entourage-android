@@ -220,7 +220,7 @@
                     android:id="@+id/tv_mechanism"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="6dp"
+                    android:paddingStart="4dp"
                     android:fontFamily="@font/nunitosans_regular"
                     android:textSize="14sp"
                     android:textColor="@color/black"

@@ -697,8 +697,26 @@ class MyProfileFullActivity : BaseSecuredActivity() {
             cardView.findViewById<android.widget.TextView>(R.id.tv_card_emoji).text = progress.definition.emoji
             cardView.findViewById<android.widget.TextView>(R.id.tv_card_label).text =
                 getString(progress.definition.titleRes)
-            if (!progress.isObtained) {
-                cardView.alpha = 0.35f
+            val tvProgress = cardView.findViewById<android.widget.TextView>(R.id.tv_card_progress)
+            when {
+                progress.isObtained -> {
+                    tvProgress.text = getString(R.string.badge_status_obtained)
+                    tvProgress.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.green))
+                    tvProgress.visibility = View.VISIBLE
+                    cardView.alpha = 1f
+                }
+                progress.progress > 0 -> {
+                    tvProgress.text = "${progress.progress}/${progress.maxProgress}"
+                    tvProgress.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.orange))
+                    tvProgress.visibility = View.VISIBLE
+                    cardView.alpha = 1f
+                }
+                else -> {
+                    tvProgress.text = getString(R.string.badge_status_not_obtained)
+                    tvProgress.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.grey))
+                    tvProgress.visibility = View.VISIBLE
+                    cardView.alpha = 0.5f
+                }
             }
             cardView.setOnClickListener {
                 AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__PROFILE__CARD_CLICK)
@@ -868,6 +886,10 @@ class ProfileFullActivity : BaseSecuredActivity() {
             cardView.findViewById<android.widget.TextView>(R.id.tv_card_emoji).text = progress.definition.emoji
             cardView.findViewById<android.widget.TextView>(R.id.tv_card_label).text =
                 getString(progress.definition.titleRes)
+            val tvProgress = cardView.findViewById<android.widget.TextView>(R.id.tv_card_progress)
+            tvProgress.text = getString(R.string.badge_status_obtained)
+            tvProgress.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.green))
+            tvProgress.visibility = View.VISIBLE
             cardView.isClickable = false
             binding.badgesRow.addView(cardView)
         }

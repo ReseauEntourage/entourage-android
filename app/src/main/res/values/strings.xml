@@ -3395,6 +3395,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="badge_obtained_on">Obtenu le %1$s</string>
     <string name="badge_cta_see_my_badges">Voir mes badges</string>
     <string name="badge_not_yet_obtained">Pas encore obtenu</string>
+    <string name="badge_status_obtained">Obtenu</string>
+    <string name="badge_status_not_obtained">Non obtenu</string>
     <string name="badge_how_it_works_title">COMMENT ÇA MARCHE</string>
     <string name="badge_mechanism_title">MÉCANIQUE</string>
     <string name="badge_what_it_means_title">CE QUE ÇA REPRÉSENTE</string>
@@ -3434,8 +3436,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <!-- Badge: Tisseur de liens -->
     <string name="badge_tisseur_liens_title">Tisseur de liens</string>
-    <string name="badge_tisseur_liens_description_short">Soyez actif·ve (en postant, commentant, réagissant) dans vos groupes 3 semaines sur 4</string>
-    <string name="badge_tisseur_liens_how_it_works">Soyez actif·ve dans vos groupes de voisins (post, commentaire, réaction) pendant au moins 3 des 4 dernières semaines.</string>
+    <string name="badge_tisseur_liens_description_short">Soyez actif dans vos groupes (en postant, commentant, réagissant) au moins 3 semaines par mois</string>
+    <string name="badge_tisseur_liens_how_it_works">Soyez actif dans vos groupes (en postant, commentant, réagissant) au moins 3 semaines par mois.</string>
     <string name="badge_tisseur_liens_what_it_means">La régularité crée la confiance. Ce badge honore ceux qui sont là semaine après semaine, qui animent la vie locale et maintiennent le lien dans leur quartier.</string>
     <string name="badge_tisseur_liens_cta">Aller dans mes groupes</string>
 

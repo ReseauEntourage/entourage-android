@@ -3,6 +3,7 @@ package social.entourage.android.badges
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import social.entourage.android.databinding.ItemBadgeListBinding
 import social.entourage.android.databinding.ItemBadgeSectionHeaderBinding
 import java.text.SimpleDateFormat
@@ -73,11 +74,14 @@ class BadgesListAdapter(
             binding.tvBadgeEmoji.text = def.emoji
             binding.tvBadgeTitle.text = ctx.getString(def.titleRes)
 
+            val materialCard = binding.cardBadgeItem as MaterialCardView
             when {
                 progress.isObtained -> {
-                    // Green card
+                    // White card with grey border
                     binding.cardBadgeItem.setCardBackgroundColor(
                         androidx.core.content.ContextCompat.getColor(ctx, android.R.color.white))
+                    materialCard.strokeWidth = 2
+                    materialCard.strokeColor = androidx.core.content.ContextCompat.getColor(ctx, social.entourage.android.R.color.grey_light)
                     binding.tvBadgeEmoji.background =
                         androidx.core.content.ContextCompat.getDrawable(ctx, social.entourage.android.R.drawable.bg_circle_light_orange)
                     val formattedDate = formatDate(progress.obtainedDate)
@@ -95,9 +99,11 @@ class BadgesListAdapter(
                     binding.tvBadgeProgressLabel.visibility = android.view.View.GONE
                 }
                 progress.progress > 0 -> {
-                    // In-progress: white card
+                    // In-progress: white card with grey border
                     binding.cardBadgeItem.setCardBackgroundColor(
                         androidx.core.content.ContextCompat.getColor(ctx, android.R.color.white))
+                    materialCard.strokeWidth = 2
+                    materialCard.strokeColor = androidx.core.content.ContextCompat.getColor(ctx, social.entourage.android.R.color.grey_light)
                     binding.tvBadgeEmoji.background =
                         androidx.core.content.ContextCompat.getDrawable(ctx, social.entourage.android.R.drawable.bg_circle_light_orange)
                     binding.tvBadgeSubtitle.text = ctx.getString(def.descriptionShortRes)
@@ -112,9 +118,10 @@ class BadgesListAdapter(
                     binding.tvBadgeProgressLabel.visibility = android.view.View.VISIBLE
                 }
                 else -> {
-                    // Not started: light gray card, all text black
+                    // Not started: light gray card, no border
                     binding.cardBadgeItem.setCardBackgroundColor(
                         androidx.core.content.ContextCompat.getColor(ctx, social.entourage.android.R.color.primary_light))
+                    materialCard.strokeWidth = 0
                     binding.tvBadgeEmoji.background =
                         androidx.core.content.ContextCompat.getDrawable(ctx, social.entourage.android.R.drawable.bg_circle_light)
                     binding.tvBadgeSubtitle.text = ctx.getString(def.descriptionShortRes)

@@ -93,11 +93,7 @@ class BadgesListActivity : AppCompatActivity() {
 
         binding.emptyStateHeader.btnStart.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__LIST__START)
-            val intent = android.content.Intent(this, social.entourage.android.MainActivity::class.java).apply {
-                flags = android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP or android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP
-            }
-            startActivity(intent)
-            finish()
+            startActivity(android.content.Intent(this, social.entourage.android.enhanced_onboarding.EnhancedOnboarding::class.java))
         }
 
         setupAdapter(allProgress.map { BadgeListItem.BadgeItem(it) as BadgeListItem }, badges)
