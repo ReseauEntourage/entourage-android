@@ -4,16 +4,19 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
+import social.entourage.android.api.request.UserResponse
 import social.entourage.android.databinding.ActivityBadgesListBinding
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
-import timber.log.Timber
 
 class BadgesListActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBadgesListBinding
-    private var apiBadges: List<ApiBadge> = emptyList()
 
     companion object {
         const val EXTRA_API_BADGES = "api_badges"
@@ -25,9 +28,6 @@ class BadgesListActivity : AppCompatActivity() {
         setContentView(binding.root)
         updatePaddingTopForEdgeToEdge(binding.badgeContent)
 
-        @Suppress("DEPRECATION")
-        apiBadges = intent.getParcelableArrayListExtra(EXTRA_API_BADGES) ?: arrayListOf()
-
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__BADGES__LIST)
 
         binding.btnBack.setOnClickListener {
@@ -36,11 +36,26 @@ class BadgesListActivity : AppCompatActivity() {
         }
         binding.tvFaqLink.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__LIST__FAQ)
-            BadgeIntroBottomSheet.newInstance(apiBadges)
+            BadgeIntroBottomSheet.newInstance()
                 .show(supportFragmentManager, "badge_intro")
         }
 
-        renderBadges(apiBadges)
+        loadBadges()
+    }
+
+    private fun loadBadges() {
+        val me = EntourageApplication.get().me() ?: return
+        EntourageApplication.get().apiModule.userRequest
+            .getUser(me.id.toString())
+            .enqueue(object : Callback<UserResponse> {
+                override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                    val badges = response.body()?.user?.badges ?: emptyList()
+                    renderBadges(badges)
+                }
+                override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                    renderBadges(emptyList())
+                }
+            })
     }
 
     private fun renderBadges(badges: List<ApiBadge>) {

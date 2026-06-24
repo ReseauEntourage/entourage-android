@@ -98,7 +98,7 @@ class BadgeDetailBottomSheet : BottomSheetDialogFragment() {
         }
         binding.tvSeeAllBadges.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__DETAIL__SEE_ALL)
-            openBadgesList(apiBadges.toList())
+            openBadgesList()
         }
     }
 
@@ -150,18 +150,15 @@ class BadgeDetailBottomSheet : BottomSheetDialogFragment() {
         binding.btnCta.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__DETAIL__CTA)
             if (up.isObtained) {
-                openBadgesList(apiBadges)
+                openBadgesList()
             } else {
                 navigateForBadge(def.key)
             }
         }
     }
 
-    private fun openBadgesList(apiBadges: List<ApiBadge>) {
-        val intent = Intent(requireContext(), BadgesListActivity::class.java).apply {
-            putParcelableArrayListExtra(BadgesListActivity.EXTRA_API_BADGES, ArrayList(apiBadges))
-        }
-        startActivity(intent)
+    private fun openBadgesList() {
+        startActivity(Intent(requireContext(), BadgesListActivity::class.java))
         dismiss()
     }
 

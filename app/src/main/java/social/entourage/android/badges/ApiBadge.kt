@@ -6,16 +6,19 @@ import com.google.gson.annotations.SerializedName
 
 data class ApiBadge(
     @SerializedName("name") val name: String,
+    @SerializedName("active") val active: Boolean = false,
     @SerializedName("awarded_at") val awardedAt: String?,
     @SerializedName("metadata") val metadata: ApiBadgeMetadata?
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
+        parcel.readByte() != 0.toByte(),
         parcel.readString(),
         parcel.readParcelable(ApiBadgeMetadata::class.java.classLoader)
     )
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
+        parcel.writeByte(if (active) 1 else 0)
         parcel.writeString(awardedAt)
         parcel.writeParcelable(metadata, flags)
     }
@@ -31,12 +34,14 @@ data class ApiBadgeMetadata(
     @SerializedName("current") val current: Int?
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readValue(Int::class.java.classLoader) as? Int,
-        parcel.readValue(Int::class.java.classLoader) as? Int
+        if (parcel.readByte() != 0.toByte()) parcel.readInt() else null,
+        if (parcel.readByte() != 0.toByte()) parcel.readInt() else null
     )
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeValue(target)
-        parcel.writeValue(current)
+        parcel.writeByte(if (target != null) 1 else 0)
+        if (target != null) parcel.writeInt(target)
+        parcel.writeByte(if (current != null) 1 else 0)
+        if (current != null) parcel.writeInt(current)
     }
     override fun describeContents() = 0
     companion object CREATOR : Parcelable.Creator<ApiBadgeMetadata> {

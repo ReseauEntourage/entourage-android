@@ -105,18 +105,19 @@ data class UserBadgeProgress(
 )
 
 fun buildProgressFromApi(apiBadges: List<ApiBadge>): List<UserBadgeProgress> {
-    val badgeMap = apiBadges.associateBy { it.name }
-    return ALL_BADGE_DEFINITIONS.map { def ->
-        val api = badgeMap[def.key.apiKey]
-        val isObtained = api != null
-        val current = api?.metadata?.current ?: 0
-        val target = api?.metadata?.target ?: def.maxProgress
+    return apiBadges.mapNotNull { api ->
+        val def = BadgeKey.fromApiKey(api.name)?.let { key ->
+            ALL_BADGE_DEFINITIONS.firstOrNull { it.key == key }
+        } ?: return@mapNotNull null
+        val isObtained = api.active
+        val current = api.metadata?.current ?: 0
+        val target = api.metadata?.target ?: def.maxProgress
         UserBadgeProgress(
             definition = def,
             isObtained = isObtained,
             progress = if (isObtained) target else current,
             maxProgress = target,
-            obtainedDate = api?.awardedAt
+            obtainedDate = api.awardedAt
         )
     }
 }

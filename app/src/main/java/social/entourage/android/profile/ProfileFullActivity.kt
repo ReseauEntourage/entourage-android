@@ -710,13 +710,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
 
         binding.btnVoirBadges.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__PROFILE__SEE_ALL)
-            val intent = android.content.Intent(this, social.entourage.android.badges.BadgesListActivity::class.java).apply {
-                putParcelableArrayListExtra(
-                    social.entourage.android.badges.BadgesListActivity.EXTRA_API_BADGES,
-                    ArrayList(apiBadges)
-                )
-            }
-            startActivity(intent)
+            startActivity(android.content.Intent(this, social.entourage.android.badges.BadgesListActivity::class.java))
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
