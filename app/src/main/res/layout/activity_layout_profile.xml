@@ -255,6 +255,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="18dp"
+                            android:textSize="18sp"
                             android:text="@string/my_activity"
                             app:layout_constraintBottom_toTopOf="@id/joined"
                             app:layout_constraintStart_toStartOf="parent"
@@ -398,6 +399,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:textSize="18sp"
                                 android:text="@string/badges_section_title" />
 
                             <TextView

@@ -26,10 +26,13 @@ class ImageZoomActivity : BaseActivity() {
 
         val imageUrl = intent.getStringExtra("image_url")
 
+        val metrics = resources.displayMetrics
         Glide.with(this)
             .load(imageUrl)
             .placeholder(R.drawable.place_holder_large)
             .error(R.drawable.place_holder_large)
+            .override(metrics.widthPixels, metrics.heightPixels)
+            .fitCenter()
             .into(binding.fullscreenImage)
 
         binding.fullscreenImage.setOnClickListener {

@@ -47,6 +47,7 @@ import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.databinding.FragmentHomeBinding
+import social.entourage.android.home.HomeState
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
@@ -435,11 +436,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             ChatBotBottomSheet().show(parentFragmentManager, "chatbot")
         }
 
-        binding.ivLogoHome.setOnClickListener {
-            social.entourage.android.badges.BadgeIntroBottomSheet.newInstance()
-                .show(childFragmentManager, "badge_intro")
-        }
-
         smallTalkViewModel.userRequests.observe(viewLifecycleOwner) { requests ->
             currentRequests = requests
             composeSmallTalkItemsSimplified()
@@ -448,20 +444,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         loadSmallTalkItems()
         return binding.root
     }
-
-    private fun testNotifDemandePage() {
-        // Appui long existant...
-        binding.ivLogoHome.setOnLongClickListener {
-            // ... ton code existant ...
-            true
-        }
-
-        binding.ivLogoHome.setOnClickListener {
-            social.entourage.android.badges.BadgeIntroBottomSheet.newInstance()
-                .show(childFragmentManager, "badge_intro")
-        }
-    }
-
 
     private fun setupAdapters() {
         val viewPool = RecyclerView.RecycledViewPool()
@@ -1284,6 +1266,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         handleModerator(summary)
         if (summary.signablePermission != null) {
             HomeFragment.signablePermission = summary.signablePermission!!
+            HomeState.signablePermission = summary.signablePermission!!
         }
 
         isContribution = summary.preference.equals("contribution")
@@ -1563,6 +1546,3 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     }
 }
 
-interface OnHomeChangeLocationUpdate {
-    fun onHomeChangeLocationUpdateClearFragment()
-}

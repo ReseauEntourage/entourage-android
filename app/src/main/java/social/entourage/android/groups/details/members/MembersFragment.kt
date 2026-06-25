@@ -27,7 +27,7 @@ import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.CompleteReactionsResponse
 import social.entourage.android.api.model.ReactionType
-import social.entourage.android.home.HomeFragment
+import social.entourage.android.home.HomeState
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -65,7 +65,7 @@ open class MembersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getArgs()
-        iAmOrganiser = ActionSheetFragment.isSignable && HomeFragment.signablePermission
+        iAmOrganiser = ActionSheetFragment.isSignable && HomeState.signablePermission
         getMembers()
         handleCloseButton()
         initializeMembers()

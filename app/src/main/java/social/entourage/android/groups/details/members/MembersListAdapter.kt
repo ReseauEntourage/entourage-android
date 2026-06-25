@@ -17,7 +17,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.ReactionType
 import social.entourage.android.databinding.NewGroupMemberItemBinding
-import social.entourage.android.home.HomeFragment
+import social.entourage.android.home.HomeState
 import social.entourage.android.members.MembersActivity
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.utils.Const
@@ -61,7 +61,7 @@ class MembersListAdapter(
         val b = holder.binding
         val item = membersList[position]
         val isMe = EntourageApplication.get().me()?.id == item.userId
-        val canCheckIn = HomeFragment.signablePermission && ActionSheetFragment.isSignable
+        val canCheckIn = HomeState.signablePermission && ActionSheetFragment.isSignable
 
         // -------- Nom + badge "organizer" (Spannable coloré) --------
         val isOrganizer = item.groupRole == "organizer" || item.groupRole == "creator" ||

@@ -750,7 +750,6 @@ class MyProfileFullActivity : BaseSecuredActivity() {
 
     private fun updateBadgesSection(apiBadges: List<social.entourage.android.badges.ApiBadge>) {
         val allProgress = social.entourage.android.badges.buildProgressFromApi(apiBadges)
-        val obtained = allProgress.filter { it.isObtained }
 
         binding.sectionBadges.visibility = View.VISIBLE
         binding.btnVoirBadges.visibility = View.VISIBLE
@@ -758,7 +757,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
 
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__BADGES__PROFILE_SECTION)
 
-        obtained.forEach { progress ->
+        allProgress.forEach { progress ->
             val cardView = layoutInflater.inflate(
                 R.layout.item_badge_profile_card,
                 binding.badgesRow,
@@ -767,6 +766,27 @@ class MyProfileFullActivity : BaseSecuredActivity() {
             cardView.findViewById<android.widget.TextView>(R.id.tv_card_emoji).text = progress.definition.emoji
             cardView.findViewById<android.widget.TextView>(R.id.tv_card_label).text =
                 getString(progress.definition.titleRes)
+            val tvProgress = cardView.findViewById<android.widget.TextView>(R.id.tv_card_progress)
+            when {
+                progress.isObtained -> {
+                    tvProgress.text = getString(R.string.badge_status_obtained)
+                    tvProgress.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.green))
+                    tvProgress.visibility = View.VISIBLE
+                    cardView.alpha = 1f
+                }
+                progress.progress > 0 -> {
+                    tvProgress.text = "${progress.progress}/${progress.maxProgress}"
+                    tvProgress.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.orange))
+                    tvProgress.visibility = View.VISIBLE
+                    cardView.alpha = 1f
+                }
+                else -> {
+                    tvProgress.text = getString(R.string.badge_status_not_obtained)
+                    tvProgress.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.grey))
+                    tvProgress.visibility = View.VISIBLE
+                    cardView.alpha = 0.5f
+                }
+            }
             cardView.setOnClickListener {
                 AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__PROFILE__CARD_CLICK)
                 social.entourage.android.badges.BadgeDetailBottomSheet.newInstance(progress, apiBadges)
@@ -777,13 +797,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
 
         binding.btnVoirBadges.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__PROFILE__SEE_ALL)
-            val intent = android.content.Intent(this, social.entourage.android.badges.BadgesListActivity::class.java).apply {
-                putParcelableArrayListExtra(
-                    social.entourage.android.badges.BadgesListActivity.EXTRA_API_BADGES,
-                    ArrayList(apiBadges)
-                )
-            }
-            startActivity(intent)
+            startActivity(android.content.Intent(this, social.entourage.android.badges.BadgesListActivity::class.java))
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
@@ -941,6 +955,10 @@ class ProfileFullActivity : BaseSecuredActivity() {
             cardView.findViewById<android.widget.TextView>(R.id.tv_card_emoji).text = progress.definition.emoji
             cardView.findViewById<android.widget.TextView>(R.id.tv_card_label).text =
                 getString(progress.definition.titleRes)
+            val tvProgress = cardView.findViewById<android.widget.TextView>(R.id.tv_card_progress)
+            tvProgress.text = getString(R.string.badge_status_obtained)
+            tvProgress.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.green))
+            tvProgress.visibility = View.VISIBLE
             cardView.isClickable = false
             binding.badgesRow.addView(cardView)
         }

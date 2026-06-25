@@ -76,10 +76,7 @@ class BadgeUnlockedBottomSheet : BottomSheetDialogFragment() {
 
         binding.btnSeeBadges.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__UNLOCKED__SEE_BADGES)
-            val intent = android.content.Intent(requireContext(), BadgesListActivity::class.java).apply {
-                putParcelableArrayListExtra(BadgesListActivity.EXTRA_API_BADGES, apiBadges)
-            }
-            startActivity(intent)
+            startActivity(android.content.Intent(requireContext(), BadgesListActivity::class.java))
             dismiss()
         }
     }

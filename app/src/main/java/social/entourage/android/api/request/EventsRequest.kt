@@ -155,7 +155,7 @@ interface EventsRequest {
         @Query("per")  per:  Int? = null
     ): Call<MembersWrapper>
 
-    @DELETE("outings/{event_id}")
+    @POST("outings/{event_id}/cancel")
     fun cancelEvent(
         @Path("event_id") eventId: Int
     ): Call<EventWrapper>

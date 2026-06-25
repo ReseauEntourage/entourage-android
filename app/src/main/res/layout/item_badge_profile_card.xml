@@ -21,15 +21,28 @@
     <TextView
         android:id="@+id/tv_card_label"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:textAlignment="center"
-        android:fontFamily="@font/nunitosans_regular"
-        android:textSize="11sp"
+        android:fontFamily="@font/nunitosans_semibold"
+        android:textSize="12sp"
         android:textColor="@color/black"
         android:maxLines="2"
         android:ellipsize="end"
         android:gravity="center"
         tools:text="Premier pas" />
+
+    <TextView
+        android:id="@+id/tv_card_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textAlignment="center"
+        android:fontFamily="@font/nunitosans_bold"
+        android:textSize="11sp"
+        android:textColor="@color/orange"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:text="2/3" />
 
 </LinearLayout>

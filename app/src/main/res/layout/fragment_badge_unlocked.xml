@@ -116,6 +116,7 @@
             android:textColor="@color/white"
             android:fontFamily="@font/nunitosans_bold"
             android:textSize="16sp"
+            android:textAllCaps="false"
             android:paddingVertical="14dp" />
 
         <TextView

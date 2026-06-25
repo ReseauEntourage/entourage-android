@@ -589,6 +589,7 @@ class DetailConversationActivity : CommentActivity() {
     private fun handleDetailConversation(conversation: Conversation?) {
         conversation ?: return
         this.detailConversation = conversation
+        isEvent = conversation.type == "outing"
 
         // Contexte & état de base
         isMember = conversation.member == true

@@ -78,15 +78,17 @@
                 android:textColor="@color/black"
                 tools:text="Premier pas" />
 
-            <!-- Status card -->
-            <androidx.cardview.widget.CardView
+            <!-- Status card — obtained -->
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
-                app:cardBackgroundColor="@color/green_light">
+                app:cardBackgroundColor="@color/green_light"
+                app:strokeWidth="0dp"
+                app:strokeColor="@color/grey_light">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -120,7 +122,7 @@
                             tools:text="Obtenu le 12 janvier 2026" />
                     </LinearLayout>
 
-                    <!-- Not obtained state -->
+                    <!-- Not obtained / in-progress state -->
                     <LinearLayout
                         android:id="@+id/layout_not_obtained"
                         android:layout_width="match_parent"
@@ -128,47 +130,55 @@
                         android:orientation="vertical"
                         android:visibility="gone">
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textAlignment="center"
-                            android:text="@string/badge_not_yet_obtained"
-                            android:fontFamily="@font/nunitosans_bold"
-                            android:textSize="15sp"
-                            android:textColor="@color/grey" />
-
+                        <!-- Row: "Votre progression" + "X/Y" -->
                         <LinearLayout
-                            android:id="@+id/layout_progress_container"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:gravity="center_vertical"
-                            android:layout_marginTop="8dp"
-                            android:visibility="gone">
+                            android:gravity="center_vertical">
 
-                            <ProgressBar
-                                android:id="@+id/progress_bar_detail"
-                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            <TextView
                                 android:layout_width="0dp"
-                                android:layout_height="6dp"
+                                android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:progressDrawable="@drawable/badge_progress_bar"
-                                tools:progress="66" />
+                                android:text="@string/badge_progress_label"
+                                android:fontFamily="@font/nunitosans_bold"
+                                android:textSize="15sp"
+                                android:textColor="@color/black" />
 
                             <TextView
                                 android:id="@+id/tv_progress_detail"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:paddingStart="8dp"
                                 android:fontFamily="@font/nunitosans_bold"
-                                android:textSize="13sp"
+                                android:textSize="15sp"
                                 android:textColor="@color/orange"
-                                tools:text="2/3" />
+                                tools:text="0 / 3" />
                         </LinearLayout>
+
+                        <ProgressBar
+                            android:id="@+id/progress_bar_detail"
+                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="6dp"
+                            android:layout_marginTop="10dp"
+                            android:progressDrawable="@drawable/badge_progress_bar"
+                            tools:progress="0" />
+
+                        <TextView
+                            android:id="@+id/tv_progress_hint"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/nunitosans_regular"
+                            android:textSize="13sp"
+                            android:textColor="@color/grey"
+                            tools:text="Encore 3 événements à créer ou co-animer pour obtenir ce badge." />
+
                     </LinearLayout>
 
                 </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <!-- How it works -->
             <TextView
@@ -207,7 +217,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginTop="6dp">
+                android:layout_marginTop="4dp">
 
                 <ImageView
                     android:id="@+id/iv_mechanism_icon"
@@ -220,7 +230,7 @@
                     android:id="@+id/tv_mechanism"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="6dp"
+                    android:paddingStart="4dp"
                     android:fontFamily="@font/nunitosans_regular"
                     android:textSize="14sp"
                     android:textColor="@color/black"
