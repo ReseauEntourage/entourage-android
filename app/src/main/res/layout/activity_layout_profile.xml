@@ -439,6 +439,16 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         />
+                    <include
+                        android:id="@+id/layout_ambassador_resources"
+                        layout="@layout/layout_ambassador_resources"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@+id/rv_section_profile"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
                     <TextView
                         android:id="@+id/app_version"
                         style="@style/version_number"
@@ -448,7 +458,7 @@
                         android:textAlignment="center"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/rv_section_profile"
+                        app:layout_constraintTop_toBottomOf="@+id/layout_ambassador_resources"
                         app:layout_constraintBottom_toTopOf="@id/app_debug_info"
                         tools:text="Entourage ©2026 v13.0" />
 
