@@ -42,8 +42,9 @@ abstract class BaseActivity : AppCompatActivity() {
             repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.RESUMED) {
                 ApiErrorBus.errors.collect { httpError ->
                     if (supportFragmentManager.findFragmentByTag(ApiErrorBottomSheet.TAG) == null) {
-                        ApiErrorBottomSheet.newInstance(httpError.code)
-                            .show(supportFragmentManager, ApiErrorBottomSheet.TAG)
+                        ApiErrorBottomSheet.newInstance(httpError.code).also { sheet ->
+                            sheet.onFinishActivity = { finish() }
+                        }.show(supportFragmentManager, ApiErrorBottomSheet.TAG)
                     }
                 }
             }

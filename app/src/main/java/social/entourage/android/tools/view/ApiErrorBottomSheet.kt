@@ -1,5 +1,6 @@
 package social.entourage.android.tools.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,10 +8,13 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentApiErrorBottomSheetBinding
 
 class ApiErrorBottomSheet : BottomSheetDialogFragment() {
+
+    var onFinishActivity: (() -> Unit)? = null
 
     private var _binding: FragmentApiErrorBottomSheetBinding? = null
     private val binding get() = _binding!!
@@ -42,7 +46,21 @@ class ApiErrorBottomSheet : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         val code = arguments?.getInt(ARG_CODE) ?: 0
         bindError(code)
-        binding.btnClose.setOnClickListener { dismiss() }
+        binding.lottieError.playAnimation()
+
+        binding.btnGoHome.setOnClickListener {
+            dismiss()
+            startActivity(
+                Intent(requireContext(), MainActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                }
+            )
+        }
+
+        binding.btnDismiss.setOnClickListener {
+            dismiss()
+            onFinishActivity?.invoke()
+        }
     }
 
     private fun bindError(code: Int) {

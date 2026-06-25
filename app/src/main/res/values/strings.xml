@@ -7,6 +7,8 @@
     <!-- API Error BottomSheet -->
     <string name="api_error_badge_label">Erreur</string>
     <string name="api_error_button_close">Fermer</string>
+    <string name="api_error_button_go_home">Retour à l\'accueil</string>
+    <string name="api_error_button_dismiss">Fermer cette page</string>
     <string name="api_error_title_400">Requête invalide</string>
     <string name="api_error_desc_400">Votre demande n\'a pas pu être traitée. Veuillez réessayer.</string>
     <string name="api_error_title_403">Accès refusé</string>

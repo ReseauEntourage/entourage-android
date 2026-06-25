@@ -168,6 +168,7 @@
         android:elevation="20dp"
         android:clickable="true"
         android:focusable="true"
+        android:visibility="invisible"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

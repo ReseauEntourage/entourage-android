@@ -224,8 +224,8 @@ class GroupPresenter: ViewModel() {
     }
 
     fun getGroup(id: Int) {
-        val fakeId = 999999999
-        EntourageApplication.get().apiModule.groupRequest.getGroup(fakeId)
+        //val fakeId = 999999999
+        EntourageApplication.get().apiModule.groupRequest.getGroup(id)
             .enqueue(object : Callback<GroupWrapper> {
                 override fun onResponse(
                     call: Call<GroupWrapper>,

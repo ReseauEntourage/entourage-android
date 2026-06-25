@@ -81,13 +81,26 @@
         tools:text="Cette ressource n'existe pas ou a été déplacée." />
 
     <Button
-        android:id="@+id/btn_close"
+        android:id="@+id/btn_go_home"
         style="@style/AccentButton.BigRoundedCorners"
         android:layout_width="match_parent"
         android:layout_height="52dp"
-        android:text="@string/api_error_button_close"
+        android:text="@string/api_error_button_go_home"
         android:textColor="@color/white"
         android:textSize="15sp"
         android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btn_dismiss"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/shape_button_v9_negative"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="@string/api_error_button_dismiss"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
 
 </LinearLayout>
