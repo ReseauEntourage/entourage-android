@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.card.MaterialCardView
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentBadgeDetailBinding
@@ -130,23 +131,28 @@ class BadgeDetailBottomSheet : BottomSheetDialogFragment() {
         } else {
             binding.btnCta.text = ctx.getString(def.ctaLabelRes)
             binding.cardStatus.setCardBackgroundColor(
-                ContextCompat.getColor(ctx, R.color.primary_light)
+                ContextCompat.getColor(ctx, android.R.color.white)
             )
+            (binding.cardStatus as MaterialCardView).strokeWidth = 2
+            (binding.cardStatus as MaterialCardView).strokeColor =
+                ContextCompat.getColor(ctx, R.color.grey_light)
             binding.layoutObtained.visibility = View.GONE
             binding.layoutNotObtained.visibility = View.VISIBLE
 
-            if (up.progress > 0 && up.maxProgress > 1) {
-                binding.layoutProgressContainer.visibility = View.VISIBLE
-                val pct = (up.progress * 100 / up.maxProgress)
-                binding.progressBarDetail.progress = pct
-                binding.tvProgressDetail.text = "${up.progress}/${up.maxProgress}"
-            } else {
-                binding.layoutProgressContainer.visibility = View.GONE
-            }
+            val pct = if (up.maxProgress > 0) (up.progress * 100 / up.maxProgress) else 0
+            binding.progressBarDetail.progress = pct
+            binding.tvProgressDetail.text = "${up.progress} / ${up.maxProgress}"
+            binding.tvProgressHint.text = ctx.getString(def.howItWorksRes)
         }
 
-        val mechanismIconRes = if (def.isReversible) R.drawable.ic_close_round else R.drawable.ic_check_green
-        binding.ivMechanismIcon.setImageResource(mechanismIconRes)
+        if (def.isReversible) {
+            binding.ivMechanismIcon.setImageDrawable(null)
+            binding.ivMechanismIcon.background =
+                ContextCompat.getDrawable(ctx, R.drawable.bg_circle_orange_stroke)
+        } else {
+            binding.ivMechanismIcon.background = null
+            binding.ivMechanismIcon.setImageResource(R.drawable.ic_check_green)
+        }
 
         binding.btnCta.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__DETAIL__CTA)
