@@ -689,6 +689,12 @@
         <item name="android:windowBackground">@drawable/bg_rounded_dialog</item>
     </style>
 
+    <style name="CustomChip.Availability" parent="CustomChip">
+        <item name="chipMinHeight">48dp</item>
+        <item name="chipStartPadding">12dp</item>
+        <item name="chipEndPadding">12dp</item>
+    </style>
+
     <style name="CustomChip" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="chipBackgroundColor">@color/chip_background_color</item>
         <item name="chipStrokeColor">@color/chip_stroke_color</item>
