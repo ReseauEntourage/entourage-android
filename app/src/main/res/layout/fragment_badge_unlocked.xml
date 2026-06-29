@@ -45,13 +45,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <TextView
-            android:id="@+id/tv_unlocked_emoji"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/iv_badge_icon"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:layout_gravity="center"
-            android:textSize="72sp"
-            tools:text="👣" />
+            android:contentDescription="@null" />
 
     </FrameLayout>
 

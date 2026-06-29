@@ -71,7 +71,7 @@ class BadgesListAdapter(
             val ctx = binding.root.context
             val def = progress.definition
 
-            binding.tvBadgeEmoji.text = def.emoji
+            binding.ivBadgeIcon.loadBadgeSvg(def.svgRes)
             binding.tvBadgeTitle.text = ctx.getString(def.titleRes)
 
             val materialCard = binding.cardBadgeItem as MaterialCardView
@@ -82,8 +82,6 @@ class BadgesListAdapter(
                         androidx.core.content.ContextCompat.getColor(ctx, android.R.color.white))
                     materialCard.strokeWidth = 2
                     materialCard.strokeColor = androidx.core.content.ContextCompat.getColor(ctx, social.entourage.android.R.color.grey_light)
-                    binding.tvBadgeEmoji.background =
-                        androidx.core.content.ContextCompat.getDrawable(ctx, social.entourage.android.R.drawable.bg_circle_light_orange)
                     val formattedDate = formatDate(progress.obtainedDate)
                     binding.tvBadgeSubtitle.text = if (formattedDate.isNotEmpty()) {
                         ctx.getString(social.entourage.android.R.string.badge_obtained_on, formattedDate)
@@ -104,8 +102,6 @@ class BadgesListAdapter(
                         androidx.core.content.ContextCompat.getColor(ctx, android.R.color.white))
                     materialCard.strokeWidth = 2
                     materialCard.strokeColor = androidx.core.content.ContextCompat.getColor(ctx, social.entourage.android.R.color.grey_light)
-                    binding.tvBadgeEmoji.background =
-                        androidx.core.content.ContextCompat.getDrawable(ctx, social.entourage.android.R.drawable.bg_circle_light_orange)
                     binding.tvBadgeSubtitle.text = ctx.getString(def.descriptionShortRes)
                     binding.tvBadgeSubtitle.setTextColor(
                         androidx.core.content.ContextCompat.getColor(ctx, social.entourage.android.R.color.grey))
@@ -122,8 +118,6 @@ class BadgesListAdapter(
                     binding.cardBadgeItem.setCardBackgroundColor(
                         androidx.core.content.ContextCompat.getColor(ctx, social.entourage.android.R.color.primary_light))
                     materialCard.strokeWidth = 0
-                    binding.tvBadgeEmoji.background =
-                        androidx.core.content.ContextCompat.getDrawable(ctx, social.entourage.android.R.drawable.bg_circle_light)
                     binding.tvBadgeSubtitle.text = ctx.getString(def.descriptionShortRes)
                     binding.tvBadgeSubtitle.setTextColor(
                         androidx.core.content.ContextCompat.getColor(ctx, social.entourage.android.R.color.black))

@@ -405,8 +405,23 @@ object PushNotificationManager {
                 context,
                 pushNotificationMessage.pushNotificationId,
                 intent,
-                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT // <--- C'EST CA QUI MANQUAIT
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
             )
+        }
+
+        if(pushNotificationMessage.content?.extra?.tracking == "user_badge") {
+            val badgeKey = pushNotificationMessage.content?.extra?.badge
+            if (!badgeKey.isNullOrEmpty()) {
+                val intent = Intent(context, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                intent.putExtra("badgeKey", badgeKey)
+                return PendingIntent.getActivity(
+                    context,
+                    pushNotificationMessage.pushNotificationId,
+                    intent,
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                )
+            }
         }
 
         val instance = pushNotificationMessage.content?.extra?.instance

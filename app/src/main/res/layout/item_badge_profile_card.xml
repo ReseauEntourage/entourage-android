@@ -2,21 +2,19 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="96dp"
-    android:layout_height="110dp"
+    android:layout_width="152dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
     android:layout_marginEnd="8dp"
     android:padding="10dp"
     android:background="@drawable/new_rounded_background_statistics">
 
-    <TextView
-        android:id="@+id/tv_card_emoji"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:gravity="center"
-        android:textSize="28sp"
-        tools:text="👣" />
+    <ImageView
+        android:id="@+id/iv_badge_icon"
+        android:layout_width="67dp"
+        android:layout_height="67dp"
+        android:contentDescription="@null" />
 
     <TextView
         android:id="@+id/tv_card_label"
@@ -27,6 +25,7 @@
         android:fontFamily="@font/nunitosans_semibold"
         android:textSize="12sp"
         android:textColor="@color/black"
+        android:minLines="2"
         android:maxLines="2"
         android:ellipsize="end"
         android:gravity="center"

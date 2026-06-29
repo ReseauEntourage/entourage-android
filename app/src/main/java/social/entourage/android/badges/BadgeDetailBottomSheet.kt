@@ -108,7 +108,7 @@ class BadgeDetailBottomSheet : BottomSheetDialogFragment() {
         val ctx = requireContext()
         val def = up.definition
 
-        binding.tvDetailEmoji.text = def.emoji
+        binding.ivBadgeIcon.loadBadgeSvg(def.svgRes)
         binding.tvDetailTitle.text = ctx.getString(def.titleRes)
         binding.tvHowItWorks.text = ctx.getString(def.howItWorksRes)
         binding.tvWhatItMeans.text = ctx.getString(def.whatItMeansRes)
@@ -142,7 +142,7 @@ class BadgeDetailBottomSheet : BottomSheetDialogFragment() {
             val pct = if (up.maxProgress > 0) (up.progress * 100 / up.maxProgress) else 0
             binding.progressBarDetail.progress = pct
             binding.tvProgressDetail.text = "${up.progress} / ${up.maxProgress}"
-            binding.tvProgressHint.text = ctx.getString(def.howItWorksRes)
+            binding.tvProgressHint.text = ctx.getString(def.progressHintRes)
         }
 
         if (def.isReversible) {

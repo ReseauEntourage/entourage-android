@@ -60,7 +60,7 @@ class BadgeUnlockedBottomSheet : BottomSheetDialogFragment() {
 
         val firstName = EntourageApplication.me(requireContext())?.firstName ?: ""
         binding.tvBravoTitle.text = getString(R.string.badge_unlocked_bravo, firstName)
-        binding.tvUnlockedEmoji.text = def.emoji
+        binding.ivBadgeIcon.loadBadgeSvg(def.svgRes)
         binding.tvBadgeNameHighlight.text = getString(def.titleRes)
         binding.tvUnlockedDescription.text = getString(def.unlockedMessageRes)
 

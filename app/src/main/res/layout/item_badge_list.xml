@@ -34,15 +34,12 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-                <!-- Emoji in circle -->
-                <TextView
-                    android:id="@+id/tv_badge_emoji"
+                <!-- Badge icon -->
+                <ImageView
+                    android:id="@+id/iv_badge_icon"
                     android:layout_width="44dp"
                     android:layout_height="44dp"
-                    android:gravity="center"
-                    android:textSize="22sp"
-                    android:background="@drawable/bg_circle_light_orange"
-                    tools:text="👣" />
+                    android:contentDescription="@null" />
 
                 <!-- Title + subtitle -->
                 <LinearLayout

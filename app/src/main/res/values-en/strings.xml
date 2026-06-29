@@ -1956,6 +1956,11 @@
     <string name="badge_diffuseur_liens_unlocked_message">You have organised 3 events in the last 90 days. You are getting the Entourage community moving — well done!</string>
     <string name="badge_as_papotage_unlocked_message">3 solidarity Papotages in a month and a half — your regular presence creates bonds and does good around you. Thank you for your constant commitment.</string>
     <string name="badge_tisseur_liens_unlocked_message">3 active weeks out of 4 — you make the heart of neighbourhood groups beat. Thank you for your constant commitment.</string>
+    <string name="badge_premier_pas_progress_hint">Just one action to earn this badge: join an event, send a message to a member, or share a mutual aid.</string>
+    <string name="badge_premier_lien_progress_hint">One exchange with another member of the community will earn you this badge.</string>
+    <string name="badge_diffuseur_liens_progress_hint">Create or co-host events over the past 90 days to earn this badge.</string>
+    <string name="badge_as_papotage_progress_hint">Participate in solidarity Papotages over the past 90 days to earn this badge.</string>
+    <string name="badge_tisseur_liens_progress_hint">Be active in your groups at least 3 weeks out of the last 4 to earn this badge.</string>
 
     <!-- Inspiration chips for group post creation -->
     <string name="create_post_inspiration_label">Need some inspiration?</string>

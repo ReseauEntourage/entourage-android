@@ -3465,5 +3465,10 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="badge_diffuseur_liens_unlocked_message">Vous avez organisé 3 événements sur les 90 derniers jours. Vous faites bouger la communauté Entourage, un grand bravo !</string>
     <string name="badge_as_papotage_unlocked_message">3 Papotages solidaires en 1 mois et demi, votre présence régulière crée du lien et fait du bien autour de vous. Merci pour votre engagement constant.</string>
     <string name="badge_tisseur_liens_unlocked_message">3 semaines d\'activité sur 4 — vous faites battre le cœur des groupes de voisins. Merci pour votre engagement constant.</string>
+    <string name="badge_premier_pas_progress_hint">Une seule action pour obtenir ce badge : rejoindre un événement, envoyer un message à un membre ou partager une entraide.</string>
+    <string name="badge_premier_lien_progress_hint">Un échange avec un autre membre de la communauté vous permet d\'obtenir ce badge.</string>
+    <string name="badge_diffuseur_liens_progress_hint">Créez ou co-animez des événements sur les 90 derniers jours pour obtenir ce badge.</string>
+    <string name="badge_as_papotage_progress_hint">Participez à des Papotages solidaires sur les 90 derniers jours pour obtenir ce badge.</string>
+    <string name="badge_tisseur_liens_progress_hint">Soyez actif dans vos groupes au moins 3 semaines sur les 4 dernières pour obtenir ce badge.</string>
 
 </resources>

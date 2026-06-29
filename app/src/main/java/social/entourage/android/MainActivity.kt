@@ -317,6 +317,18 @@ class MainActivity : BaseSecuredActivity() {
         val goDemand = intent.getBooleanExtra("goDemand", false)
         val goDiscoverGroup = intent.getBooleanExtra("goDiscoverGroup", false)
         val goDiscoverEvent = intent.getBooleanExtra("goDiscoverEvent", false)
+        val badgeKey = intent.getStringExtra("badgeKey")
+        if (badgeKey != null) {
+            intent.removeExtra("badgeKey")
+            goHome()
+            val key = social.entourage.android.badges.BadgeKey.fromApiKey(badgeKey)
+            if (key != null) {
+                social.entourage.android.badges.BadgeUnlockedBottomSheet.newInstance(key)
+                    .show(supportFragmentManager, "BadgeUnlocked")
+            }
+            return
+        }
+
         val goBirthday = intent.getBooleanExtra("goBirthday", false)
         val goWelcomeVideo = intent.getBooleanExtra("goWelcomeVideo", false)
 

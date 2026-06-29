@@ -250,6 +250,7 @@ dependencies {
     implementation(libs.maps.utils.ktx)
     implementation(libs.material)
     implementation(libs.glide)
+    implementation(libs.androidsvg)
     implementation(libs.shortcut.badger)
     implementation(libs.keyboard.visibility.event)
     ksp(libs.glide.ksp)

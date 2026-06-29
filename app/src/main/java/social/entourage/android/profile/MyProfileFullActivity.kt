@@ -1,5 +1,6 @@
 package social.entourage.android.profile
 
+import social.entourage.android.badges.loadBadgeSvg
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
@@ -731,7 +732,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
                 binding.badgesRow,
                 false
             )
-            cardView.findViewById<android.widget.TextView>(R.id.tv_card_emoji).text = progress.definition.emoji
+            cardView.findViewById<android.widget.ImageView>(R.id.iv_badge_icon).loadBadgeSvg(progress.definition.svgRes)
             cardView.findViewById<android.widget.TextView>(R.id.tv_card_label).text =
                 getString(progress.definition.titleRes)
             val tvProgress = cardView.findViewById<android.widget.TextView>(R.id.tv_card_progress)

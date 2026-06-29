@@ -57,14 +57,13 @@
             android:paddingHorizontal="24dp">
 
             <!-- Emoji -->
-            <TextView
-                android:id="@+id/tv_detail_emoji"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/iv_badge_icon"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
-                android:textSize="56sp"
-                tools:text="👣" />
+                android:contentDescription="@null" />
 
             <!-- Title -->
             <TextView
