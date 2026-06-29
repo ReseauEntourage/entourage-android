@@ -33,6 +33,7 @@ import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.home.HomePresenter
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.association.AssociationProfileActivity
+import social.entourage.android.profile.editProfile.EditPhotoActivity
 import social.entourage.android.profile.settings.ProfilFullViewModel
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
@@ -44,7 +45,7 @@ import timber.log.Timber
 import java.text.SimpleDateFormat
 import kotlin.random.Random
 
-class ProfileFullActivity : BaseSecuredActivity() {
+class MyProfileFullActivity : BaseSecuredActivity() {
 
     private lateinit var binding: ActivityLayoutProfileBinding
     private var user: User? = null
@@ -55,6 +56,11 @@ class ProfileFullActivity : BaseSecuredActivity() {
     private var notifSubTitle = ""
     private var notifBlocked = ""
     private var id: Int = 0
+
+    init {
+        user = EntourageApplication.get().me()
+        user?.let { user -> id = user.id }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,8 +73,6 @@ class ProfileFullActivity : BaseSecuredActivity() {
         profilFullViewModel.hasToUpdate.observe(this, ::updateProfile)
         discussionsPresenter.newConversation.observe(this, ::handleGetConversation)
         binding.progressBar.visibility = View.VISIBLE
-
-        id = intent.getIntExtra(Const.USER_ID, 0)
 
         initUserInfo()
         setModifyButton()
@@ -89,7 +93,11 @@ class ProfileFullActivity : BaseSecuredActivity() {
         updateUserView()
         setButtonListeners()
         setPartnerClickListener()
-        setSignalButton()
+        binding.iconOption.visibility = View.GONE
+        binding.iconSettings.visibility = View.VISIBLE
+        binding.iconSettings.setOnClickListener {
+            ProfileSettingsActivity.start(this, notifSubTitle, notifBlocked)
+        }
     }
 
     override fun onResume() {
@@ -176,32 +184,16 @@ class ProfileFullActivity : BaseSecuredActivity() {
         updateBadgesSection(user.badges ?: emptyList())
     }
 
-    private fun updateBadgesSection(apiBadges: List<social.entourage.android.badges.ApiBadge>) {
-        val obtained = social.entourage.android.badges.buildProgressFromApi(apiBadges).filter { it.isObtained }
-        if (obtained.isEmpty()) {
-            binding.sectionBadges.visibility = View.GONE
-            return
-        }
-
-        binding.sectionBadges.visibility = View.VISIBLE
-        binding.btnVoirBadges.visibility = View.GONE
-        binding.badgesRow.removeAllViews()
-
-        obtained.forEach { progress ->
-            val cardView = layoutInflater.inflate(
-                R.layout.item_badge_profile_card,
-                binding.badgesRow,
-                false
-            )
-            cardView.findViewById<android.widget.TextView>(R.id.tv_card_emoji).text = progress.definition.emoji
-            cardView.findViewById<android.widget.TextView>(R.id.tv_card_label).text =
-                getString(progress.definition.titleRes)
-            val tvProgress = cardView.findViewById<android.widget.TextView>(R.id.tv_card_progress)
-            tvProgress.text = getString(R.string.badge_status_obtained)
-            tvProgress.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.green))
-            tvProgress.visibility = View.VISIBLE
-            cardView.isClickable = false
-            binding.badgesRow.addView(cardView)
+    private fun setPartnerClickListener() {
+        binding.ivAssoBadge.setOnClickListener {
+            VibrationUtil.vibrate(this)
+            user?.partner?.id?.let { partnerId ->
+                val intent = Intent(this, AssociationProfileActivity::class.java).apply {
+                    putExtra(Const.PARTNER_ID, partnerId.toInt())
+                }
+                startActivity(intent)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
         }
     }
 
@@ -214,8 +206,10 @@ class ProfileFullActivity : BaseSecuredActivity() {
 
             if (scale == minScale) {
                 binding.ivProfile.visibility = View.GONE
+                binding.btnModifyPhotoProfile.visibility = View.GONE
             } else {
                 binding.ivProfile.visibility = View.VISIBLE
+                binding.btnModifyPhotoProfile.visibility = View.VISIBLE
             }
         }
     }
@@ -231,7 +225,7 @@ class ProfileFullActivity : BaseSecuredActivity() {
         user?.let { user ->
             val items = mutableListOf<ProfileSectionItem>()
 
-            items.add(ProfileSectionItem.Separator(getString(R.string.preferences_section_title_others)))
+            items.add(ProfileSectionItem.Separator(getString(R.string.preferences_section_title)))
 
             val interestsText = if (user.interests.isNotEmpty()) {
                 user.interests.joinToString(", ") { interest ->
@@ -243,7 +237,7 @@ class ProfileFullActivity : BaseSecuredActivity() {
             items.add(
                 ProfileSectionItem.Item(
                     iconRes = R.drawable.ic_profile_interests,
-                    title = getString(R.string.preferences_interest_title_others),
+                    title = getString(R.string.preferences_interest_title),
                     subtitle = interestsText
                 )
             )
@@ -266,7 +260,7 @@ class ProfileFullActivity : BaseSecuredActivity() {
                 items.add(
                     ProfileSectionItem.Item(
                         iconRes = R.drawable.ic_profile_action,
-                        title = getString(R.string.preferences_action_title_others),
+                        title = getString(R.string.preferences_action_title),
                         subtitle = orientationsText
                     )
                 )
@@ -287,7 +281,7 @@ class ProfileFullActivity : BaseSecuredActivity() {
                 items.add(
                     ProfileSectionItem.Item(
                         iconRes = R.drawable.ic_profile_action,
-                        title = getString(R.string.preferences_action_title_others),
+                        title = getString(R.string.preferences_action_title),
                         subtitle = involvementsText
                     )
                 )
@@ -307,7 +301,7 @@ class ProfileFullActivity : BaseSecuredActivity() {
                 items.add(
                     ProfileSectionItem.Item(
                         iconRes = R.drawable.ic_name_don_materiel,
-                        title = getString(R.string.preferences_action_categories_title_others),
+                        title = getString(R.string.preferences_action_categories_title),
                         subtitle = categoriesText
                     )
                 )
@@ -340,13 +334,92 @@ class ProfileFullActivity : BaseSecuredActivity() {
                 items.add(
                     ProfileSectionItem.Item(
                         iconRes = R.drawable.ic_profile_availability,
-                        title = getString(R.string.preferences_availability_title_others),
+                        title = getString(R.string.preferences_availability_title),
                         subtitle = availabilityText
                     )
                 )
             }
 
-            val adapter = SettingProfileFullAdapter(items, this, this.supportFragmentManager, false)
+            items.add(ProfileSectionItem.Separator(getString(R.string.settings_section_title)))
+
+            val currentLanguageCode = LanguageManager.loadLanguageFromPreferences(this)
+            val currentLanguageName = LanguageManager.languageMap.entries.firstOrNull {
+                it.value == currentLanguageCode
+            }?.key ?: getString(R.string.unknown_language)
+
+            items.add(
+                ProfileSectionItem.Item(
+                    iconRes = R.drawable.ic_profile_language,
+                    title = getString(R.string.settings_language_title),
+                    subtitle = currentLanguageName
+                )
+            )
+
+            items.add(
+                ProfileSectionItem.Item(
+                    iconRes = R.drawable.ic_profile_notifications,
+                    title = getString(R.string.settings_notifications_title),
+                    subtitle = notifSubTitle
+                )
+            )
+
+            items.add(
+                ProfileSectionItem.Item(
+                    iconRes = R.drawable.ic_profile_help,
+                    title = getString(R.string.settings_help_title),
+                    subtitle = getString(R.string.settings_help_subtitle)
+                )
+            )
+
+            items.add(
+                ProfileSectionItem.Item(
+                    iconRes = R.drawable.ic_profile_unblock_contacts,
+                    title = getString(R.string.settings_unblock_contacts_title),
+                    subtitle = notifBlocked
+                )
+            )
+
+            items.add(
+                ProfileSectionItem.Item(
+                    iconRes = R.drawable.ic_profile_feedback,
+                    title = getString(R.string.settings_feedback_title),
+                    subtitle = ""
+                )
+            )
+
+            items.add(
+                ProfileSectionItem.Item(
+                    iconRes = R.drawable.ic_profile_share,
+                    title = getString(R.string.settings_share_title),
+                    subtitle = ""
+                )
+            )
+
+            items.add(
+                ProfileSectionItem.Item(
+                    iconRes = R.drawable.ic_profile_change_password,
+                    title = getString(R.string.settings_password_title),
+                    subtitle = ""
+                )
+            )
+
+            items.add(
+                ProfileSectionItem.Item(
+                    iconRes = R.drawable.ic_profile_logout,
+                    title = getString(R.string.logout_button),
+                    subtitle = ""
+                )
+            )
+
+            items.add(
+                ProfileSectionItem.Item(
+                    iconRes = R.drawable.ic_profile_delete_account,
+                    title = getString(R.string.delete_account_button),
+                    subtitle = ""
+                )
+            )
+
+            val adapter = SettingProfileFullAdapter(items, this, this.supportFragmentManager, true)
             binding.rvSectionProfile.layoutManager = LinearLayoutManager(this)
             binding.rvSectionProfile.adapter = adapter
         }
@@ -439,21 +512,24 @@ class ProfileFullActivity : BaseSecuredActivity() {
             )
         binding.appVersion.setOnLongClickListener {
             val clipboard =
-                getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                it.context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
             val clip = android.content.ClipData.newPlainText(
                 "FIId", EntourageApplication.get().sharedPreferences.getString(
                     EntourageApplication.KEY_REGISTRATION_ID,
                     null
                 )
             )
-            clipboard.setPrimaryClip(clip)
-
-            val snackbar = EntSnackbar.make(
-                binding.root,
-                R.string.copied_text,
-                Snackbar.LENGTH_SHORT
-            )
-            snackbar.show()
+            try {
+                clipboard.setPrimaryClip(clip)
+                val snackbar = EntSnackbar.make(
+                    binding.root,
+                    R.string.copied_text,
+                    Snackbar.LENGTH_SHORT
+                )
+                snackbar.show()
+            } catch (e: Exception) {
+                Timber.d(clip.toString())
+            }
             true
         }
         if (!BuildConfig.DEBUG) {
@@ -471,11 +547,38 @@ class ProfileFullActivity : BaseSecuredActivity() {
         }
         binding.progressBar.visibility = View.GONE
 
-        binding.myActivityTv.text = getString(R.string.his_activity)
-        binding.tvMail.visibility = View.GONE
-        binding.tvPhone.visibility = View.GONE
+        binding.myActivityTv.text = getString(R.string.my_activity)
+        binding.tvBadgesTitle.text = getString(R.string.badges_section_title_me)
+        user?.email?.let { email ->
+            if (email.isNotBlank()) {
+                binding.tvMail.text = email
+                binding.tvMail.visibility = View.VISIBLE
+            } else {
+                binding.tvMail.visibility = View.GONE
+            }
+        } ?: run {
+            binding.tvMail.visibility = View.GONE
+        }
+
+        user?.phone?.let { phone ->
+            if (phone.isNotBlank()) {
+                binding.tvPhone.text = phone
+                binding.tvPhone.visibility = View.VISIBLE
+            } else {
+                binding.tvPhone.visibility = View.GONE
+            }
+        } ?: run {
+            binding.tvPhone.visibility = View.GONE
+        }
+
         user?.address?.let { address ->
-            binding.tvZone.text = address.displayAddress
+            if (address.displayAddress.isNotBlank() && user?.travelDistance != null) {
+                binding.tvZone.text =
+                    "${address.displayAddress} - Rayon de ${user?.travelDistance} km"
+                binding.tvZone.visibility = View.VISIBLE
+            } else {
+                binding.tvZone.visibility = View.GONE
+            }
         } ?: run {
             binding.tvZone.visibility = View.GONE
         }
@@ -514,27 +617,24 @@ class ProfileFullActivity : BaseSecuredActivity() {
         }
     }
 
-    private fun setSignalButton() {
-        binding.iconOption.visibility = View.VISIBLE
-        binding.iconOption.setOnClickListener {
-            VibrationUtil.vibrate(this)
-            val bottomSheet = UserOptionsBottomSheet()
-            UserOptionsBottomSheet.user = user
-            bottomSheet.show(supportFragmentManager, "UserOptionsBottomSheet")
-        }
-    }
-
     private fun setModifyButton() {
-        binding.btnModifyPhotoProfile.visibility = View.GONE
+        binding.btnModifyPhotoProfile.setOnClickListener {
+            VibrationUtil.vibrate(this)
+            val intent = Intent(this, EditPhotoActivity::class.java)
+            startActivity(intent)
+        }
+        binding.btnModifyPhotoProfile.visibility = View.VISIBLE
     }
 
     private fun setButtonListeners() {
         binding.buttonModify.setOnClickListener {
             VibrationUtil.vibrate(this)
-            discussionsPresenter.createOrGetConversation(id.toString())
+            val intent = Intent(this, EditProfileActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
         binding.buttonModify.visibility = View.VISIBLE
-        binding.buttonModify.text = getString(R.string.profil_full_send_message)
+        binding.buttonModify.text = getString(R.string.edit)
     }
 
     private fun showConfetti(view: View) {
@@ -550,19 +650,6 @@ class ProfileFullActivity : BaseSecuredActivity() {
             confetti.translationY = y.toFloat() + Random.nextInt(-50, 50)
             parentView.addView(confetti)
             animateConfetti(confetti, parentView)
-        }
-    }
-
-    private fun setPartnerClickListener() {
-        binding.ivAssoBadge.setOnClickListener {
-            VibrationUtil.vibrate(this)
-            user?.partner?.id?.let { partnerId ->
-                val intent = Intent(this, AssociationProfileActivity::class.java).apply {
-                    putExtra(Const.PARTNER_ID, partnerId.toInt())
-                }
-                startActivity(intent)
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-            }
         }
     }
 
@@ -626,6 +713,60 @@ class ProfileFullActivity : BaseSecuredActivity() {
     private fun updateProfile(hasToUpdate: Boolean) {
         if (hasToUpdate) {
             userPresenter.getUser(id)
+        }
+    }
+
+    private fun updateBadgesSection(apiBadges: List<social.entourage.android.badges.ApiBadge>) {
+        val allProgress = social.entourage.android.badges.buildProgressFromApi(apiBadges)
+
+        binding.sectionBadges.visibility = View.VISIBLE
+        binding.btnVoirBadges.visibility = View.VISIBLE
+        binding.badgesRow.removeAllViews()
+
+        AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__BADGES__PROFILE_SECTION)
+
+        allProgress.forEach { progress ->
+            val cardView = layoutInflater.inflate(
+                R.layout.item_badge_profile_card,
+                binding.badgesRow,
+                false
+            )
+            cardView.findViewById<android.widget.TextView>(R.id.tv_card_emoji).text = progress.definition.emoji
+            cardView.findViewById<android.widget.TextView>(R.id.tv_card_label).text =
+                getString(progress.definition.titleRes)
+            val tvProgress = cardView.findViewById<android.widget.TextView>(R.id.tv_card_progress)
+            when {
+                progress.isObtained -> {
+                    tvProgress.text = getString(R.string.badge_status_obtained)
+                    tvProgress.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.green))
+                    tvProgress.visibility = View.VISIBLE
+                    cardView.alpha = 1f
+                }
+                progress.progress > 0 -> {
+                    tvProgress.text = "${progress.progress}/${progress.maxProgress}"
+                    tvProgress.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.orange))
+                    tvProgress.visibility = View.VISIBLE
+                    cardView.alpha = 1f
+                }
+                else -> {
+                    tvProgress.text = getString(R.string.badge_status_not_obtained)
+                    tvProgress.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.grey))
+                    tvProgress.visibility = View.VISIBLE
+                    cardView.alpha = 0.5f
+                }
+            }
+            cardView.setOnClickListener {
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__PROFILE__CARD_CLICK)
+                social.entourage.android.badges.BadgeDetailBottomSheet.newInstance(progress, apiBadges)
+                    .show(supportFragmentManager, "badge_detail_profile")
+            }
+            binding.badgesRow.addView(cardView)
+        }
+
+        binding.btnVoirBadges.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__PROFILE__SEE_ALL)
+            startActivity(android.content.Intent(this, social.entourage.android.badges.BadgesListActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
 }
