@@ -113,8 +113,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="13dp"
-                    android:layout_height="13dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_marginEnd="6dp"
                     android:src="@drawable/new_date_grey" />
 
@@ -124,7 +124,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nunitosans_regular"
                     android:textColor="@color/grey"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     tools:text="Mar. 30 juin · 12h00" />
 
             </LinearLayout>
@@ -136,8 +136,8 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="13dp"
-                    android:layout_height="13dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_marginEnd="6dp"
                     android:src="@drawable/new_location_grey" />
 
@@ -149,7 +149,7 @@
                     android:fontFamily="@font/nunitosans_regular"
                     android:maxLines="1"
                     android:textColor="@color/grey"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     tools:text="Pl. Saint-Mélaine, Rennes" />
 
             </LinearLayout>
@@ -209,7 +209,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nunitosans_regular"
                     android:textColor="@color/grey"
-                    android:textSize="11sp"
+                    android:textSize="13sp"
                     tools:text="21 participants" />
 
             </LinearLayout>

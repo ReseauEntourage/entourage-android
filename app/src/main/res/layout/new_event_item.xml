@@ -176,7 +176,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nunitosans_regular"
                     android:textColor="@color/grey"
-                    android:textSize="13sp"
+                    android:textSize="15sp"
                     tools:text="Aujourd'hui, 10:00 • 30 min" />
 
             </LinearLayout>
@@ -201,7 +201,7 @@
                     android:fontFamily="@font/nunitosans_regular"
                     android:maxLines="1"
                     android:textColor="@color/grey"
-                    android:textSize="13sp"
+                    android:textSize="15sp"
                     tools:text="Paris 10e" />
 
             </LinearLayout>
@@ -232,7 +232,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/nunitosans_regular"
                     android:textColor="@color/grey"
-                    android:textSize="13sp"
+                    android:textSize="15sp"
                     tools:text="Lounès, Myriam et 18 autres y vont" />
 
             </LinearLayout>

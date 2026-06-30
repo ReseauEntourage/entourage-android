@@ -3381,7 +3381,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="badges_section_title">Ses badges</string>
     <string name="badges_section_title_me">Mes badges</string>
     <string name="badges_see_all">Tout voir</string>
-    <string name="badges_screen_title">Détail du badge</string>
+    <string name="badges_screen_title">Mes badges</string>
     <string name="badges_screen_subtitle">%1$d obtenus, %2$d en cours, %3$d à découvrir. Chaque badge récompense une action concrète dans votre communauté.</string>
     <string name="badges_section_obtained">Obtenus %1$d/%2$d</string>
     <string name="badges_section_in_progress">En cours %1$d/%2$d</string>
