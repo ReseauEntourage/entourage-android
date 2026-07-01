@@ -6,6 +6,7 @@ import android.content.Intent
 import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
+import com.google.gson.Gson
 import social.entourage.android.MainActivity
 import social.entourage.android.Navigation
 import social.entourage.android.R
@@ -20,6 +21,7 @@ import social.entourage.android.small_talks.SmallTalkListOtherBands
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.user.partner.PartnerDetailActivity
 import social.entourage.android.home.BirthdayActivity
+import timber.log.Timber
 
 /**
  * Created by Me on 26/09/2022.
@@ -55,6 +57,7 @@ object NotificationActionManager {
         Log.wtf("wtf", "instance from NotificationActionManager: $instance")
         Log.wtf("wtf", "tracking: from NotificationActionManager$tracking")
         Log.wtf("wtf", "id: from NotificationActionManager$id")
+
 
         // Cas spécifiques : si c'est un outing ET que le tracking correspond à une conversation
         val validTracking = listOf(
@@ -100,6 +103,7 @@ object NotificationActionManager {
             InstanceType.SMALLTALK -> showSmallTalk(context,supportFragmentManager,id)
             InstanceType.AlMOSTMATCH -> showAlmostMatch(context,supportFragmentManager,id)
             InstanceType.PARTNERS -> showPartner(context,id)
+            InstanceType.BADGES -> return
             InstanceType.NONE -> return
 
             else -> {
@@ -149,6 +153,7 @@ object NotificationActionManager {
             InstanceType.SOLICITATIONS -> return R.drawable.ic_new_placeholder_notif
             InstanceType.CONVERSATIONS -> return R.drawable.placeholder_user
             InstanceType.PARTNERS -> return R.drawable.ic_new_placeholder_notif
+            InstanceType.BADGES -> return R.drawable.ic_new_placeholder_notif
             InstanceType.NONE -> R.drawable.ic_new_placeholder_notif
             InstanceType.NEIGHBORHOODS_POSTS -> return R.drawable.placeholder_user
             InstanceType.OUTING_POSTS -> return R.drawable.placeholder_user
@@ -292,6 +297,7 @@ object NotificationActionManager {
         SMALLTALK,
         AlMOSTMATCH,
         PARTNERS,
+        BADGES,
         NONE
     }
 
@@ -311,6 +317,7 @@ object NotificationActionManager {
             "smalltalk", "user_smalltalk " -> InstanceType.SMALLTALK
             "almost_matches" -> InstanceType.AlMOSTMATCH
             "partners" -> InstanceType.PARTNERS
+            "badges", "badge", "user_badge" -> InstanceType.BADGES
             else -> InstanceType.NONE
         }
     }

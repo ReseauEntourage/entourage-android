@@ -410,10 +410,17 @@ class MainActivity : BaseSecuredActivity() {
                 // 1. GESTION SPÉCIALE ANNIVERSAIRE (ou tout autre "stage" sans instance)
                 if (extra.stage == "birthday") {
                     NotificationActionManager.presentWelcomeAction(this, extra.stage)
-                    return // On arrête là, pas besoin de chercher une instance
+                    return
                 }
 
-                // 2. GESTION CLASSIQUE (avec instance)
+                // 2. GESTION BADGE
+                if (!extra.badge.isNullOrEmpty()) {
+                    social.entourage.android.badges.BadgeUnlockedBottomSheet.newInstance(extra.badge)
+                        .show(supportFragmentManager, "BadgeUnlocked")
+                    return
+                }
+
+                // 3. GESTION CLASSIQUE (avec instance)
                 extra.instance?.let { instance ->
                     NotificationActionManager.presentAction(
                         this,
