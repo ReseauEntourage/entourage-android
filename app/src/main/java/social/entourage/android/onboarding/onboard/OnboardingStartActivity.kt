@@ -15,11 +15,9 @@ import social.entourage.android.api.model.User
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.databinding.ActivityOnboardingStartBinding
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import social.entourage.android.tools.disable
 import social.entourage.android.tools.enable
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.view.CustomProgressDialog
 import social.entourage.android.tools.view.countrycodepicker.Country
@@ -75,13 +73,7 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
             changeFragment()
         }
         setupViews()
-        ViewCompat.setOnApplyWindowInsetsListener(binding.layoutOnboardingActivity) { view, windowInsets ->
-            val statusBars = windowInsets.getInsets(WindowInsetsCompat.Type.statusBars())
-            val ime = windowInsets.getInsets(WindowInsetsCompat.Type.ime())
-            val nav = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
-            view.updatePadding(top = statusBars.top, bottom = maxOf(ime.bottom, nav.bottom))
-            windowInsets
-        }
+        updatePaddingTopForEdgeToEdge(binding.layoutOnboardingActivity)
 
     }
 
