@@ -25,14 +25,45 @@
             android:paddingTop="20dp"
             android:paddingBottom="20dp">
 
-            <TextView
+            <LinearLayout
                 android:id="@+id/tv_badges_emoji_row"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:textSize="26sp"
-                android:letterSpacing="0.15"
-                tools:text="👣  🤝  🪁  💬  🌱" />
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/iv_empty_badge_icon_0"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginHorizontal="4dp" />
+
+                <ImageView
+                    android:id="@+id/iv_empty_badge_icon_1"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginHorizontal="4dp" />
+
+                <ImageView
+                    android:id="@+id/iv_empty_badge_icon_2"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginHorizontal="4dp" />
+
+                <ImageView
+                    android:id="@+id/iv_empty_badge_icon_3"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginHorizontal="4dp" />
+
+                <ImageView
+                    android:id="@+id/iv_empty_badge_icon_4"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginHorizontal="4dp" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tv_empty_title"
@@ -82,13 +113,12 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-                <TextView
+                <ImageView
+                    android:id="@+id/iv_start_badge_icon"
                     android:layout_width="44dp"
                     android:layout_height="44dp"
-                    android:gravity="center"
-                    android:textSize="22sp"
                     android:background="@drawable/bg_circle_light_orange"
-                    android:text="👣" />
+                    android:padding="6dp" />
 
                 <LinearLayout
                     android:layout_width="0dp"

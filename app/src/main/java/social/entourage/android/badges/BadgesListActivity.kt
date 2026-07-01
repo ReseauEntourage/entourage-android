@@ -83,10 +83,21 @@ class BadgesListActivity : AppCompatActivity() {
         val firstDef = ALL_BADGE_DEFINITIONS.first()
         binding.emptyStateHeader.tvStartBadgeName.text = getString(
             R.string.badges_empty_start_badge,
-            "${getString(firstDef.titleRes)} ${firstDef.emoji}"
+            getString(firstDef.titleRes)
         )
-        binding.emptyStateHeader.tvBadgesEmojiRow.text =
-            ALL_BADGE_DEFINITIONS.joinToString("  ") { it.emoji }
+
+        val iconViews = listOf(
+            binding.emptyStateHeader.ivEmptyBadgeIcon0,
+            binding.emptyStateHeader.ivEmptyBadgeIcon1,
+            binding.emptyStateHeader.ivEmptyBadgeIcon2,
+            binding.emptyStateHeader.ivEmptyBadgeIcon3,
+            binding.emptyStateHeader.ivEmptyBadgeIcon4
+        )
+        ALL_BADGE_DEFINITIONS.forEachIndexed { index, def ->
+            if (index < iconViews.size) iconViews[index].loadBadgeSvg(def.svgRes)
+        }
+
+        binding.emptyStateHeader.ivStartBadgeIcon.loadBadgeSvg(firstDef.svgRes)
 
         binding.emptyStateHeader.tvBadgesAllTitle.text =
             getString(R.string.badges_all_title, 0, ALL_BADGE_DEFINITIONS.size)

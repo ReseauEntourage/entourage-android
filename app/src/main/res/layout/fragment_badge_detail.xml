@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:text="@string/badges_screen_title"
+            android:text="@string/badge_detail_screen_title"
             android:fontFamily="@font/nunitosans_bold"
             android:textSize="17sp"
             android:textColor="@color/black" />

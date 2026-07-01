@@ -138,22 +138,17 @@
                 android:paddingTop="21dp"
                 />
 
-        </LinearLayout>
-
-        <!-- 2) Vue "empty_state" (conversation vide avec chips de suggestion) -->
-        <LinearLayout
-            android:id="@+id/empty_state"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:background="@color/light_beige"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingHorizontal="28dp"
-            android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/post_comment"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            <!-- 2) Vue "empty_state" (conversation vide avec chips de suggestion) -->
+            <LinearLayout
+                android:id="@+id/empty_state"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/light_beige"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingHorizontal="28dp"
+                android:visibility="gone">
 
             <!-- Icône bulle dans un cercle beige -->
             <FrameLayout

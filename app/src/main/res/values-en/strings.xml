@@ -1886,6 +1886,7 @@
     <string name="badges_section_title">THEIR BADGES</string>
     <string name="badges_see_all">See all</string>
     <string name="badges_screen_title">My badges</string>
+    <string name="badge_detail_screen_title">Badge detail</string>
     <string name="badges_screen_subtitle">%1$d earned, %2$d in progress, %3$d to discover. Each badge rewards a concrete action in your community.</string>
     <string name="badges_section_obtained">Earned %1$d/%2$d</string>
     <string name="badges_section_in_progress">In progress %1$d/%2$d</string>
