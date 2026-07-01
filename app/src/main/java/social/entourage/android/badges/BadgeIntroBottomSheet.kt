@@ -40,8 +40,16 @@ class BadgeIntroBottomSheet : BottomSheetDialogFragment() {
 
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__BADGES__INTRO)
 
-        binding.tvIntroEmojiRow.text =
-            ALL_BADGE_DEFINITIONS.joinToString("   ") { it.emoji }
+        val iconViews = listOf(
+            binding.ivBadgeIcon0,
+            binding.ivBadgeIcon1,
+            binding.ivBadgeIcon2,
+            binding.ivBadgeIcon3,
+            binding.ivBadgeIcon4
+        )
+        ALL_BADGE_DEFINITIONS.forEachIndexed { index, def ->
+            if (index < iconViews.size) iconViews[index].loadBadgeSvg(def.svgRes)
+        }
 
         binding.btnDiscoverBadges.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__INTRO__DISCOVER)
