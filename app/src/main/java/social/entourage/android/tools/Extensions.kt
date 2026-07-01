@@ -118,6 +118,25 @@ fun View.hideKeyboard() {
     inputMethodManager?.hideSoftInputFromWindow(this.windowToken, 0)
 }
 
+/**
+ * Ferme le clavier quand l'utilisateur appuie sur le bouton d'action du clavier
+ * (OK / Terminé / Envoyer / Rechercher...), quel que soit le type de clavier.
+ * N'agit pas sur IME_ACTION_NEXT/PREVIOUS pour ne pas casser la navigation entre champs.
+ */
+fun EditText.hideKeyboardOnDone() {
+    setOnEditorActionListener { v, actionId, event ->
+        val isNavigationAction = actionId == android.view.inputmethod.EditorInfo.IME_ACTION_NEXT ||
+            actionId == android.view.inputmethod.EditorInfo.IME_ACTION_PREVIOUS
+        // Pour un Enter physique/logiciel, onEditorAction est appelé pour ACTION_DOWN puis ACTION_UP :
+        // on ne traite que ACTION_DOWN pour ne pas masquer le clavier deux fois.
+        val isKeyRelease = event != null && event.action != android.view.KeyEvent.ACTION_DOWN
+        if (!isNavigationAction && !isKeyRelease) {
+            v.hideKeyboard()
+        }
+        false
+    }
+}
+
 fun String?.isValidEmail(): Boolean {
     return this?.let {
         android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches()

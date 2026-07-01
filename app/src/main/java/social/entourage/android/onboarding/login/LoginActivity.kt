@@ -25,6 +25,7 @@ import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityLoginBinding
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
 import social.entourage.android.tools.hideKeyboard
+import social.entourage.android.tools.hideKeyboardOnDone
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.CustomAlertDialog
@@ -105,6 +106,8 @@ class LoginActivity : BaseActivity() {
 
     private fun setupViews() {
         setEditTextAlignmentBasedOnLocale()
+        binding.uiLoginPhoneEtPhone.hideKeyboardOnDone()
+        binding.uiLoginEtCode.hideKeyboardOnDone()
 
         binding.uiLoginPhoneCcpCode.countryCodePickerListener = object : social.entourage.android.tools.view.countrycodepicker.CountryCodePickerListener {
             override fun updatedCountry(country: social.entourage.android.tools.view.countrycodepicker.Country) {
