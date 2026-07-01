@@ -8,9 +8,11 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import social.entourage.android.MainActivity
 import social.entourage.android.R
+import androidx.appcompat.app.AppCompatActivity
 import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.actions.detail.ActionDetailActivity
 import social.entourage.android.api.model.Action
+import social.entourage.android.badges.BadgeIntroBottomSheet
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
@@ -141,6 +143,12 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 pathSegments.contains("good-waves") -> {
                     val intent = Intent(context, social.entourage.android.small_talks.SmallTalkIntroActivity::class.java)
                     context.startActivity(intent)
+                }
+                pathSegments.contains("badges") && pathSegments.contains("intro") -> {
+                    (context as? AppCompatActivity)?.let { activity ->
+                        BadgeIntroBottomSheet.newInstance()
+                            .show(activity.supportFragmentManager, "badge_intro")
+                    }
                 }
                 pathSegments.contains("outings") -> {
                     handleOutings(pathSegments)
