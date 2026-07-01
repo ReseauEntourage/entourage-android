@@ -32,7 +32,8 @@ data class BadgeDefinition(
     val ctaLabelRes: Int,
     val maxProgress: Int,
     val unlockedMessageRes: Int,
-    val progressHintRes: Int
+    val progressHintRes: Int,
+    val progressHintPluralsId: Int = 0
 )
 
 fun ImageView.loadBadgeSvg(@RawRes resId: Int) {
@@ -86,7 +87,8 @@ val ALL_BADGE_DEFINITIONS = listOf(
         ctaLabelRes = R.string.badge_diffuseur_liens_cta,
         maxProgress = 3,
         unlockedMessageRes = R.string.badge_diffuseur_liens_unlocked_message,
-        progressHintRes = R.string.badge_diffuseur_liens_progress_hint
+        progressHintRes = R.string.badge_diffuseur_liens_progress_hint,
+        progressHintPluralsId = R.plurals.badge_diffuseur_liens_progress_hint_remaining
     ),
     BadgeDefinition(
         key = BadgeKey.AS_PAPOTAGE,
@@ -101,7 +103,8 @@ val ALL_BADGE_DEFINITIONS = listOf(
         ctaLabelRes = R.string.badge_as_papotage_cta,
         maxProgress = 3,
         unlockedMessageRes = R.string.badge_as_papotage_unlocked_message,
-        progressHintRes = R.string.badge_as_papotage_progress_hint
+        progressHintRes = R.string.badge_as_papotage_progress_hint,
+        progressHintPluralsId = R.plurals.badge_as_papotage_progress_hint_remaining
     ),
     BadgeDefinition(
         key = BadgeKey.TISSEUR_LIENS,
@@ -116,7 +119,8 @@ val ALL_BADGE_DEFINITIONS = listOf(
         ctaLabelRes = R.string.badge_tisseur_liens_cta,
         maxProgress = 3,
         unlockedMessageRes = R.string.badge_tisseur_liens_unlocked_message,
-        progressHintRes = R.string.badge_tisseur_liens_progress_hint
+        progressHintRes = R.string.badge_tisseur_liens_progress_hint,
+        progressHintPluralsId = R.plurals.badge_tisseur_liens_progress_hint_remaining
     )
 )
 

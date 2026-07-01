@@ -3470,5 +3470,17 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="badge_diffuseur_liens_progress_hint">Créez ou co-animez des événements sur les 90 derniers jours pour obtenir ce badge.</string>
     <string name="badge_as_papotage_progress_hint">Participez à des Papotages solidaires sur les 90 derniers jours pour obtenir ce badge.</string>
     <string name="badge_tisseur_liens_progress_hint">Soyez actif dans vos groupes au moins 3 semaines sur les 4 dernières pour obtenir ce badge.</string>
+    <plurals name="badge_diffuseur_liens_progress_hint_remaining">
+        <item quantity="one">Plus qu\'1 événement à créer ou co-animer pour obtenir ce badge.</item>
+        <item quantity="other">Encore %d événements à créer ou co-animer pour obtenir ce badge.</item>
+    </plurals>
+    <plurals name="badge_as_papotage_progress_hint_remaining">
+        <item quantity="one">Plus qu\'1 Papotage solidaire pour obtenir ce badge.</item>
+        <item quantity="other">Encore %d Papotages solidaires pour obtenir ce badge.</item>
+    </plurals>
+    <plurals name="badge_tisseur_liens_progress_hint_remaining">
+        <item quantity="one">Plus qu\'1 semaine d\'activité pour obtenir ce badge.</item>
+        <item quantity="other">Encore %d semaines d\'activité pour obtenir ce badge.</item>
+    </plurals>
 
 </resources>

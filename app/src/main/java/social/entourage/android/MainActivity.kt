@@ -321,11 +321,8 @@ class MainActivity : BaseSecuredActivity() {
         if (badgeKey != null) {
             intent.removeExtra("badgeKey")
             goHome()
-            val key = social.entourage.android.badges.BadgeKey.fromApiKey(badgeKey)
-            if (key != null) {
-                social.entourage.android.badges.BadgeUnlockedBottomSheet.newInstance(key)
-                    .show(supportFragmentManager, "BadgeUnlocked")
-            }
+            social.entourage.android.badges.BadgeUnlockedBottomSheet.newInstance(badgeKey)
+                .show(supportFragmentManager, "BadgeUnlocked")
             return
         }
 

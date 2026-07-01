@@ -21,10 +21,10 @@ class BadgeUnlockedBottomSheet : BottomSheetDialogFragment() {
         private const val ARG_BADGE_KEY = "badge_key"
         private const val ARG_API_BADGES = "api_badges"
 
-        fun newInstance(badgeKey: BadgeKey, apiBadges: List<ApiBadge> = emptyList()): BadgeUnlockedBottomSheet {
+        fun newInstance(badgeKey: String, apiBadges: List<ApiBadge> = emptyList()): BadgeUnlockedBottomSheet {
             return BadgeUnlockedBottomSheet().apply {
                 arguments = bundleOf(
-                    ARG_BADGE_KEY to badgeKey.apiKey,
+                    ARG_BADGE_KEY to badgeKey,
                     ARG_API_BADGES to ArrayList(apiBadges)
                 )
             }
@@ -53,8 +53,7 @@ class BadgeUnlockedBottomSheet : BottomSheetDialogFragment() {
         @Suppress("DEPRECATION")
         val apiBadges: ArrayList<ApiBadge> = arguments?.getParcelableArrayList(ARG_API_BADGES) ?: arrayListOf()
 
-        val key = BadgeKey.fromApiKey(apiKey) ?: return
-        val def = ALL_BADGE_DEFINITIONS.firstOrNull { it.key == key } ?: return
+        val def = ALL_BADGE_DEFINITIONS.firstOrNull { it.key.apiKey == apiKey } ?: return
 
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__BADGES__UNLOCKED)
 

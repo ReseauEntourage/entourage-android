@@ -138,10 +138,9 @@ class HomeEventAdapter(
             holder.binding.tvDateHomeV2EventItem.text = Utils.formatEventDateWithTime(it, context)
         }
 
-        // Urgency: show if fewer than 5 places remaining
         val placeLimit = event.metadata?.placeLimit
-        val membersCount = event.membersCount ?: 0
-        if (placeLimit != null) {
+        val membersCount = event.membersCount
+        if (placeLimit != null && placeLimit > 0 && membersCount != null) {
             val remaining = placeLimit - membersCount
             if (remaining in 1..5) {
                 holder.binding.tvUrgencyHomeEvent.text =

@@ -142,7 +142,12 @@ class BadgeDetailBottomSheet : BottomSheetDialogFragment() {
             val pct = if (up.maxProgress > 0) (up.progress * 100 / up.maxProgress) else 0
             binding.progressBarDetail.progress = pct
             binding.tvProgressDetail.text = "${up.progress} / ${up.maxProgress}"
-            binding.tvProgressHint.text = ctx.getString(def.progressHintRes)
+            val remaining = up.maxProgress - up.progress
+            binding.tvProgressHint.text = if (def.progressHintPluralsId != 0 && remaining > 0) {
+                ctx.resources.getQuantityString(def.progressHintPluralsId, remaining, remaining)
+            } else {
+                ctx.getString(def.progressHintRes)
+            }
         }
 
         if (def.isReversible) {
