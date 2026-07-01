@@ -10,6 +10,9 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.content.edit
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import social.entourage.android.EntourageApplication
@@ -48,7 +51,12 @@ class LoginActivity : BaseActivity() {
         setupViews()
         setContentView(binding.root)
 
-        //binding.layoutHeader?.let { updatePaddingTopForEdgeToEdge(it) }
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
+            val imeHeight = windowInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            val navHeight = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
+            view.updatePadding(bottom = maxOf(imeHeight, navHeight))
+            windowInsets
+        }
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_LOGIN_LOGIN)
     }
 
