@@ -20,7 +20,10 @@ class BadgesListActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_API_BADGES = "api_badges"
+        const val EXTRA_OPEN_BADGE_KEY = "open_badge_key"
     }
+
+    private var hasOpenedBadgeFromDeeplink = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +78,17 @@ class BadgesListActivity : AppCompatActivity() {
         } else {
             showBadgesList(obtained, inProgress, notStarted, total, badges)
         }
+
+        openBadgeFromDeeplinkIfNeeded(allProgress, badges)
+    }
+
+    private fun openBadgeFromDeeplinkIfNeeded(allProgress: List<UserBadgeProgress>, badges: List<ApiBadge>) {
+        if (hasOpenedBadgeFromDeeplink) return
+        val badgeKey = intent.getStringExtra(EXTRA_OPEN_BADGE_KEY) ?: return
+        val progress = allProgress.firstOrNull { it.definition.key.apiKey == badgeKey } ?: return
+        hasOpenedBadgeFromDeeplink = true
+        BadgeDetailBottomSheet.newInstance(progress, badges)
+            .show(supportFragmentManager, "badge_detail")
     }
 
     private fun showEmptyState(allProgress: List<UserBadgeProgress>, badges: List<ApiBadge>) {

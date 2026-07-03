@@ -150,6 +150,18 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                             .show(activity.supportFragmentManager, "badge_intro")
                     }
                 }
+                pathSegments.contains("badges") && pathSegments.size > 2 -> {
+                    val badgeId = pathSegments[2]
+                    val intent = Intent(context, social.entourage.android.badges.BadgesListActivity::class.java)
+                    intent.putExtra(social.entourage.android.badges.BadgesListActivity.EXTRA_OPEN_BADGE_KEY, badgeId)
+                    context.startActivity(intent)
+                    (context as? Activity)?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                }
+                pathSegments.contains("badges") -> {
+                    val intent = Intent(context, social.entourage.android.badges.BadgesListActivity::class.java)
+                    context.startActivity(intent)
+                    (context as? Activity)?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                }
                 pathSegments.contains("outings") -> {
                     handleOutings(pathSegments)
                 }
