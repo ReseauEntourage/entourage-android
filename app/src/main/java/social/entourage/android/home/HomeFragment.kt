@@ -544,6 +544,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             onMapClick = {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Map)
                 val intent = Intent(requireContext(), GDSMainActivity::class.java)
+                intent.putExtra(GDSMainActivity.EXTRA_AIR_CONDITIONED, false)
                 startActivityForResult(intent, 0)
             },
             onPedagoClick = {
@@ -571,6 +572,12 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 } catch (e: Exception) {
 
                 }
+            },
+            onClimateMapClick = {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Map)
+                val intent = Intent(requireContext(), GDSMainActivity::class.java)
+                intent.putExtra(GDSMainActivity.EXTRA_AIR_CONDITIONED, true)
+                startActivityForResult(intent, 0)
             }
         )
 

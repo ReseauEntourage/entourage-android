@@ -219,6 +219,7 @@ class GuideMapFragment :
         initializePOIList()
         initializeFloatingButtons()
         initializeFilterButton()
+        initializeAirConditionedButton()
     }
 
     override fun onStart() {
@@ -610,6 +611,24 @@ class GuideMapFragment :
             it.setOnClickListener {onShowFilter()}
             it.setText(if (instance.hasFilteredCategories()) R.string.guide_filters_activated else R.string.guide_no_filter)
         }
+    }
+
+    private fun initializeAirConditionedButton() {
+        binding.fragmentGuideAirConditionedToggle.setOnClickListener { onAirConditionedToggleClicked() }
+        updateAirConditionedButton()
+    }
+
+    private fun onAirConditionedToggleClicked() {
+        instance.isAirConditionedSelected = !instance.isAirConditionedSelected
+        updateAirConditionedButton()
+        onSolidarityGuideFilterChanged()
+    }
+
+    private fun updateAirConditionedButton() {
+        if (context == null) return
+        val colorRes = if (instance.isAirConditionedSelected) R.color.accent else R.color.grey
+        binding.fragmentGuideAirConditionedToggle.backgroundTintList =
+            ContextCompat.getColorStateList(requireContext(), colorRes)
     }
 
     private fun onAnimationUpdate(valueAnimator: ValueAnimator) {

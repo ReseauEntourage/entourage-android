@@ -144,6 +144,31 @@
                 app:layout_constraintTop_toBottomOf="@id/fragment_guide_alert_layout"
                 app:srcCompat="@drawable/ic_map_white_24dp" />
 
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/fragment_guide_air_conditioned_toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:contentDescription="@string/guide_filter_air_conditioned_desc"
+                android:elevation="16dp"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
+                android:text="@string/guide_filter_air_conditioned_title"
+                android:textColor="@color/white"
+                android:textSize="@dimen/entourage_font_large"
+                app:backgroundTint="@color/grey"
+                app:icon="@drawable/ic_air_conditioned_filter"
+                app:iconPadding="0dp"
+                app:layout_anchorGravity="start"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_guide_filter_button" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ui_view_empty_list"
                 android:layout_width="0dp"
