@@ -278,9 +278,9 @@ class GuideMapFragment :
             }
         }
 
-        // Ajouter les POIs à l'adaptateur
+        // Ajouter les POIs à l'adaptateur (toujours vider d'abord pour ne pas garder les POIs de l'état précédent)
+        poisAdapter.removeAll()
         if (poisToAdd.isNotEmpty()) {
-            poisAdapter.removeAll()
             poisAdapter.addItems(poisToAdd)
         }
         isMapReady = MutableLiveData(true)

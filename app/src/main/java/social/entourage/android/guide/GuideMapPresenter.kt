@@ -31,6 +31,7 @@ class GuideMapPresenter (private val fragment: GuideMapFragment) {
 
     //private var previousEmptyListPopupLocation: Location? = null
     private var poisMap: MutableMap<String, Poi> = TreeMap()
+    private var clustersRequestId = 0
 
 
     var previousCameraLocation: Location? = null
@@ -120,10 +121,13 @@ class GuideMapPresenter (private val fragment: GuideMapFragment) {
     private fun retrieveClustersAndPois(currentPosition: CameraPosition, mapDistance: Float) {
         val location = currentPosition.target
         val distance: Double = mapDistance.toDouble() / 2
+        val requestId = ++clustersRequestId
 
         val call = poiRequest.retrieveClustersAndPois(location.latitude, location.longitude, distance, GuideFilter.instance.requestedCategories,GuideFilter.instance.requestedPartnerFilters, GuideFilter.instance.requestedAirConditioned)
         call.enqueue(object : Callback<ClusterPoiResponse> {
             override fun onResponse(call: Call<ClusterPoiResponse>, response: Response<ClusterPoiResponse>) {
+                // Ignore late responses from a previous filter/camera state to avoid showing stale POIs
+                if (requestId != clustersRequestId) return
                 response.body()?.let {
                     if (response.isSuccessful) {
                         fragment.clearMap()
@@ -133,6 +137,7 @@ class GuideMapPresenter (private val fragment: GuideMapFragment) {
             }
 
             override fun onFailure(call: Call<ClusterPoiResponse>, t: Throwable) {
+                if (requestId != clustersRequestId) return
                 Timber.e(t, "Impossible to retrieve clusters and POIs")
                 fragment.showErrorMessage()
             }
