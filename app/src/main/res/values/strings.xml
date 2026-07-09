@@ -1930,6 +1930,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="guide_filter_categories_title">Catégories</string>
     <string name="guide_filter_air_conditioned_desc">Filtrer les lieux climatisés</string>
     <string name="guide_filter_air_conditioned_title">Lieux climatisés</string>
+    <string name="poi_detail_air_conditioned">Lieu climatisé</string>
 
 
     <string name="poi_card_call">APPELER</string>
