@@ -7,6 +7,7 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -17,17 +18,20 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.android.material.snackbar.Snackbar
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.EventUtils
+import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserBlockedUser
 import social.entourage.android.api.model.notification.InAppNotificationPermission
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.databinding.ActivityLayoutProfileBinding
+import social.entourage.android.databinding.LayoutAmbassadorResourcesBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
@@ -74,6 +78,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
         profilFullViewModel.hasToUpdate.observe(this, ::updateProfile)
         discussionsPresenter.newConversation.observe(this, ::handleGetConversation)
         binding.progressBar.visibility = View.VISIBLE
+        homePresenter.summary.observe(this, ::handleAmbassadorSection)
 
         initUserInfo()
         setModifyButton()
@@ -183,6 +188,69 @@ class MyProfileFullActivity : BaseSecuredActivity() {
         this.user = user
         initUserInfo()
         updateBadgesSection(user.badges ?: emptyList())
+        if (user.roles?.contains("Animateur Entourage") == true) {
+            homePresenter.getSummary()
+        }
+    }
+
+    private fun handleAmbassadorSection(summary: Summary?) {
+        val isAmbassador = user?.roles?.contains("Animateur Entourage") == true
+        if (!isAmbassador) return
+
+        val resourcesBinding = LayoutAmbassadorResourcesBinding.bind(binding.layoutAmbassadorResources.root)
+        binding.layoutAmbassadorResources.root.visibility = View.VISIBLE
+
+        // Resource links
+        resourcesBinding.cardToolbox.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://drive.google.com/drive/folders/1H9_G4I7zgcJ7Y4DtZDws3coFPsoVnLLm")))
+        }
+        resourcesBinding.cardCharter.setOnClickListener {
+            startActivity(
+                Intent(this, social.entourage.android.groups.details.rules.GroupRulesActivity::class.java).apply {
+                    putExtra(Const.RULES_TYPE, Const.RULES_EVENT)
+                }
+            )
+        }
+        resourcesBinding.cardWhatsapp.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://chat.whatsapp.com/IvpPJZS0aAKIJKVXmMRTr0")))
+        }
+
+        // Referent card
+        val moderator = summary?.moderator
+        if (moderator != null) {
+            resourcesBinding.tvReferentName.text = moderator.displayName ?: ""
+            resourcesBinding.tvReferentRole.text = getString(R.string.ambassador_referent_role)
+
+            if (!moderator.imageURL.isNullOrBlank()) {
+                Glide.with(this)
+                    .load(moderator.imageURL)
+                    .transform(CircleCrop())
+                    .placeholder(R.drawable.placeholder_user)
+                    .error(R.drawable.placeholder_user)
+                    .into(resourcesBinding.ivReferentAvatar)
+                resourcesBinding.ivReferentAvatar.visibility = View.VISIBLE
+                resourcesBinding.tvReferentInitials.visibility = View.GONE
+            } else {
+                resourcesBinding.ivReferentAvatar.visibility = View.GONE
+                resourcesBinding.tvReferentInitials.visibility = View.VISIBLE
+                resourcesBinding.tvReferentInitials.text = moderator.displayName
+                    ?.split(" ")
+                    ?.mapNotNull { it.firstOrNull()?.uppercaseChar()?.toString() }
+                    ?.take(2)
+                    ?.joinToString("") ?: ""
+            }
+
+            resourcesBinding.btnSendMessageReferent.setOnClickListener {
+                moderator.id?.let { moderatorId ->
+                    discussionsPresenter.createOrGetConversation(moderatorId.toString())
+                }
+            }
+            resourcesBinding.cardReferent.visibility = View.VISIBLE
+            resourcesBinding.tvReferentTitle.visibility = View.VISIBLE
+        } else {
+            resourcesBinding.cardReferent.visibility = View.GONE
+            resourcesBinding.tvReferentTitle.visibility = View.GONE
+        }
     }
 
     private fun setPartnerClickListener() {
