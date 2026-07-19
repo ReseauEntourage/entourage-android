@@ -13,8 +13,8 @@ import social.entourage.android.tools.log.AnalyticsEvents
 
 class OnboardingEndActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         val binding = ActivityOnboardingEndBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
