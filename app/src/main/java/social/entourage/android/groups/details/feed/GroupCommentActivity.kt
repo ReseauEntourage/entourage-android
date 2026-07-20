@@ -2,7 +2,9 @@ package social.entourage.android.groups.details.feed
 
 import android.os.Build
 import android.os.Bundle
-import android.text.*
+import android.text.Editable
+import android.text.Html
+import android.text.TextWatcher
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -17,9 +19,7 @@ import social.entourage.android.api.model.Post
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.MentionAdapter
-import social.entourage.android.databinding.ActivityCommentsBinding
 import social.entourage.android.groups.GroupPresenter
-import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import timber.log.Timber
 import java.util.UUID
@@ -39,12 +39,12 @@ class GroupCommentActivity : CommentActivity() {
         groupPresenter.commentPosted.observe(this, ::handleCommentPosted)
         groupPresenter.getCurrentParentPost.observe(this, ::handleParentPost)
         // Observers pour la suppression de post
-        groupPresenter.isPostDeleted.observe(this, { isDeleted ->
+        groupPresenter.isPostDeleted.observe(this) { isDeleted ->
             if (isDeleted) {
                 // Rafraîchir la liste des commentaires ou des posts
                 groupPresenter.getPostComments(id, postId)
             }
-        })
+        }
 
         // Charge les commentaires du groupe
         groupPresenter.getPostComments(id, postId)
