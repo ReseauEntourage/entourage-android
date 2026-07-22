@@ -13,7 +13,7 @@ import social.entourage.android.api.model.Rules
 import social.entourage.android.databinding.FragmentCreateActionCguBinding
 import social.entourage.android.groups.details.rules.RulesListAdapter
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 
 class CreateActionCGUFragment : Fragment() {
 
@@ -38,7 +38,7 @@ class CreateActionCGUFragment : Fragment() {
     ): View {
         _binding = FragmentCreateActionCguBinding.inflate(inflater, container, false)
 
-        updatePaddingTopForEdgeToEdge(binding.layout)
+        updatePaddingForEdgeToEdge(binding.root)
         return binding.root
     }
 

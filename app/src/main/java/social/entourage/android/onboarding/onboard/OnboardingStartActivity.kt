@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +24,7 @@ import social.entourage.android.tools.view.CustomProgressDialog
 import social.entourage.android.tools.view.countrycodepicker.Country
 import timber.log.Timber
 import androidx.core.content.edit
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 
 class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
     private lateinit var binding: ActivityOnboardingStartBinding
@@ -55,6 +57,7 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityOnboardingStartBinding.inflate(layoutInflater)
         setContentView(binding.root)
         if (FRAGMENT_NUMBER != 0) {
@@ -73,8 +76,7 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
             changeFragment()
         }
         setupViews()
-        updatePaddingTopForEdgeToEdge(binding.layoutOnboardingActivity)
-
+        updatePaddingForEdgeToEdge(binding.layoutOnboardingActivity)
     }
 
     @Deprecated("Deprecated in Java")

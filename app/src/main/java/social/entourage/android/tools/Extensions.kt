@@ -231,7 +231,7 @@ fun Activity.updatePaddingBottomForEdgeToEdge(viewTop:View){
     androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(viewTop) { view, windowInsets ->
         // Get the insets for the statusBars() type:
         val insets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
-        view.layoutParams.height = insets.bottom +view.minimumHeight
+        //view.layoutParams.height = insets.bottom +view.minimumHeight
         view.updatePadding(bottom =  insets.bottom)
         // Return the original insets so they aren’t consumed
         windowInsets
@@ -244,8 +244,24 @@ fun Activity.updatePaddingTopForEdgeToEdge(viewTop:View){
         // Get the insets for the statusBars() type:
         val insets = windowInsets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars())
         view.updatePadding(
-            top = insets.top
+            top = insets.top,
+            bottom = insets.bottom
+        )
+        // Return the original insets so they aren’t consumed
+        windowInsets
+    }
+}
 
+fun Activity.updatePaddingForEdgeToEdge(viewTop:View){
+    // Listen for WindowInsets
+    androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(viewTop) { view, windowInsets ->
+        // Get the insets for the statusBars() type:
+        val insets = windowInsets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars())
+        val navinsets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
+
+        view.updatePadding(
+            top = insets.top,
+            bottom = navinsets.bottom
         )
         // Return the original insets so they aren’t consumed
         windowInsets
@@ -259,6 +275,21 @@ fun Fragment.updatePaddingTopForEdgeToEdge(viewTop:View){
         val insets = windowInsets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars())
         view.updatePadding(
             top = insets.top
+        )
+        // Return the original insets so they aren’t consumed
+        windowInsets
+    }
+}
+
+fun Fragment.updatePaddingForEdgeToEdge(viewTop:View){
+    // Listen for WindowInsets
+    androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(viewTop) { view, windowInsets ->
+        // Get the insets for the statusBars() type:
+        val insets = windowInsets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars())
+        val navinsets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
+        view.updatePadding(
+            top = insets.top,
+            bottom = navinsets.bottom
         )
         // Return the original insets so they aren’t consumed
         windowInsets

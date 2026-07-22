@@ -6,28 +6,28 @@ import android.os.Bundle
 import android.util.Log
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.collection.ArrayMap
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import social.entourage.android.R
-import social.entourage.android.api.model.UserSmallTalkRequest
-import social.entourage.android.base.BaseActivity
-import social.entourage.android.databinding.SmallTalkActivityBinding
-import social.entourage.android.enhanced_onboarding.InterestForAdapter
-import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestsAdapter
-import social.entourage.android.user.UserPresenter
-import social.entourage.android.api.request.UserResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
+import social.entourage.android.R
+import social.entourage.android.api.model.UserSmallTalkRequest
+import social.entourage.android.api.request.UserResponse
+import social.entourage.android.base.BaseActivity
+import social.entourage.android.databinding.SmallTalkActivityBinding
+import social.entourage.android.enhanced_onboarding.InterestForAdapter
+import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestsAdapter
 import social.entourage.android.profile.editProfile.EditPhotoActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.user.UserPresenter
 
 class SmallTalkActivity : BaseActivity() {
 
@@ -52,6 +52,7 @@ class SmallTalkActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = SmallTalkActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
         updatePaddingTopForEdgeToEdge(binding.root)

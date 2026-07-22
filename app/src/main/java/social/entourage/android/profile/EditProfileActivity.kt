@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter
 import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -37,6 +38,7 @@ import social.entourage.android.main_filter.MainFilterActivity.Companion.PlaceDe
 import social.entourage.android.profile.editProfile.EditPhotoActivity
 import social.entourage.android.profile.editProfile.EditProfilePresenter
 import social.entourage.android.tools.isValidEmail
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.transformIntoDatePicker
 import social.entourage.android.tools.utils.trimEnd
 import social.entourage.android.user.AvatarUploadPresenter
@@ -74,8 +76,10 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        updatePaddingForEdgeToEdge(binding.root)
 
         initPlacesClient()
         initAvatarPresenter()

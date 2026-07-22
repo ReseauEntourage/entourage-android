@@ -2,6 +2,7 @@ package social.entourage.android.onboarding.pre_onboarding
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
@@ -10,7 +11,7 @@ import social.entourage.android.language.LanguageAdapter
 import social.entourage.android.language.LanguageItem
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.language.OnLanguageClicked
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import java.util.Locale
 
 class PreOnboardingLanguage:BaseActivity(), OnLanguageClicked {
@@ -22,6 +23,7 @@ class PreOnboardingLanguage:BaseActivity(), OnLanguageClicked {
         val phoneLanguageCode = Locale.getDefault().language
         LanguageManager.setLocale(this, phoneLanguageCode)
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = PreOnboardingActivityLayoutBinding.inflate(layoutInflater)
         handleNextButton()
         fillArray()
@@ -31,7 +33,7 @@ class PreOnboardingLanguage:BaseActivity(), OnLanguageClicked {
         binding.rvLangue.adapter = adapter
         setContentView(binding.root)
 
-        updatePaddingTopForEdgeToEdge(binding.homeHeader)
+        updatePaddingForEdgeToEdge(binding.root)
     }
 
     private fun fillArray() {

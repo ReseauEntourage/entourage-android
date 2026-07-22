@@ -2,6 +2,7 @@ package social.entourage.android.onboarding.login
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
@@ -10,14 +11,17 @@ import social.entourage.android.databinding.ActivityLoginChangePhoneBinding
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.hideKeyboardOnDone
 import social.entourage.android.tools.isValidEmail
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import timber.log.Timber
 
 class LoginChangePhoneActivity : BaseActivity() {
     private lateinit var binding: ActivityLoginChangePhoneBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityLoginChangePhoneBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        updatePaddingForEdgeToEdge(binding.root)
 
         binding.uiLayoutChangePhoneOk.visibility = View.GONE
         binding.uiLayoutWaiting.visibility = View.GONE

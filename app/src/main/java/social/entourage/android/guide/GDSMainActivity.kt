@@ -2,16 +2,19 @@ package social.entourage.android.guide
 
 import android.location.Location
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import social.entourage.android.R
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.databinding.ActivityGDSMainBinding
 import social.entourage.android.guide.filter.GuideFilter
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import timber.log.Timber
 
 class GDSMainActivity : BaseSecuredActivity() {
     lateinit var  guideFg: GuideMapFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         GuideFilter.instance.isAirConditionedSelected = intent.getBooleanExtra(EXTRA_AIR_CONDITIONED, false)
 
@@ -39,6 +42,7 @@ class GDSMainActivity : BaseSecuredActivity() {
                 Timber.w("no map available for updating Guide")
             }
         }
+        updatePaddingForEdgeToEdge(binding.root)
     }
 
     companion object {

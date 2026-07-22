@@ -1,10 +1,8 @@
 package social.entourage.android.profile
 
-import social.entourage.android.badges.loadBadgeSvg
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
@@ -26,6 +24,7 @@ import social.entourage.android.api.model.EventUtils
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserBlockedUser
 import social.entourage.android.api.model.notification.InAppNotificationPermission
+import social.entourage.android.badges.loadBadgeSvg
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.databinding.ActivityLayoutProfileBinding
 import social.entourage.android.discussions.DetailConversationActivity
@@ -38,7 +37,6 @@ import social.entourage.android.profile.settings.ProfilFullViewModel
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.VibrationUtil
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.UserPresenter
 import timber.log.Timber
@@ -199,7 +197,7 @@ class ProfileFullActivity : BaseSecuredActivity() {
                 getString(progress.definition.titleRes)
             val tvProgress = cardView.findViewById<android.widget.TextView>(R.id.tv_card_progress)
             tvProgress.text = getString(R.string.badge_status_obtained)
-            tvProgress.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.green))
+            tvProgress.setTextColor(ContextCompat.getColor(this, R.color.green))
             tvProgress.visibility = View.VISIBLE
             cardView.isClickable = false
             binding.badgesRow.addView(cardView)
@@ -440,7 +438,7 @@ class ProfileFullActivity : BaseSecuredActivity() {
             )
         binding.appVersion.setOnLongClickListener {
             val clipboard =
-                getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
             val clip = android.content.ClipData.newPlainText(
                 "FIId", EntourageApplication.get().sharedPreferences.getString(
                     EntourageApplication.KEY_REGISTRATION_ID,

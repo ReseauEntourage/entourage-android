@@ -1,13 +1,14 @@
 package social.entourage.android.home.pedago
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import social.entourage.android.R
 import social.entourage.android.api.model.Pedago
-import social.entourage.android.home.HomePresenter
+import social.entourage.android.databinding.ActivityPedagoDetailBinding
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 
 class PedagoDetailActivity : AppCompatActivity() {
@@ -16,10 +17,14 @@ class PedagoDetailActivity : AppCompatActivity() {
     var htmlContent = ""
     var isFromNotif = false
     private val pedagoPresenter: PedagoPresenter by lazy { PedagoPresenter() }
+    private lateinit var binding : ActivityPedagoDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pedago_detail)
+        enableEdgeToEdge()
+        binding = ActivityPedagoDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        updatePaddingForEdgeToEdge(binding.root)
 
         id = intent.getIntExtra(Const.ID, Const.DEFAULT_VALUE)
         htmlContent = Companion.getHtmlContent()

@@ -1,11 +1,12 @@
 package social.entourage.android.small_talks
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivitySmallTalkGuidelinesBinding
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 
 class SmallTalkGuidelinesActivity : BaseActivity() {
 
@@ -13,10 +14,11 @@ class SmallTalkGuidelinesActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivitySmallTalkGuidelinesBinding.inflate(layoutInflater)
         setContentView(binding.root)
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__SMALLTALK__CHARTER)
-        updatePaddingTopForEdgeToEdge(binding.root)
+        updatePaddingForEdgeToEdge(binding.root)
         setupUI()
     }
 

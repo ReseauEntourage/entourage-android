@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.MutableLiveData
@@ -13,6 +14,7 @@ import social.entourage.android.api.model.notification.InAppNotificationPermissi
 import social.entourage.android.databinding.ActivitySettingsNotificationsBinding
 import social.entourage.android.home.HomePresenter
 import social.entourage.android.profile.settings.ProfilFullViewModel
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 
 class SettingsNotificationsActivity : AppCompatActivity() {
 
@@ -25,8 +27,10 @@ class SettingsNotificationsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivitySettingsNotificationsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        updatePaddingTopForEdgeToEdge(binding.root)
 
         profilFullViewModel = ViewModelProvider(this).get(ProfilFullViewModel::class.java)
         areNotificationsEnabled = areNotificationsEnabled(this)

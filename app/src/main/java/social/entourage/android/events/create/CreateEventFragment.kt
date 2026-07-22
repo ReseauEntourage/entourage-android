@@ -28,7 +28,7 @@ import social.entourage.android.databinding.FragmentCreateEventBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.create.CommunicationHandler.canExitEventCreation
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
@@ -54,7 +54,7 @@ class CreateEventFragment : Fragment() {
     ): View {
         _binding = FragmentCreateEventBinding.inflate(inflater, container, false)
 
-        updatePaddingTopForEdgeToEdge(binding.header.layout)
+        updatePaddingForEdgeToEdge(binding.root)
         return binding.root
     }
 

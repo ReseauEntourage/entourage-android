@@ -278,15 +278,15 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:elevation="16dp"
-            android:text="@string/guide_help_orientation_button"
-            android:textColor="@color/white"
-            android:visibility="visible"
             android:gravity="center"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            app:iconPadding="5dp"
+            android:text="@string/guide_help_orientation_button"
+            android:textColor="@color/white"
+            android:visibility="visible"
             app:backgroundTint="@color/accent"
             app:icon="@drawable/ic_info_white_24dp"
+            app:iconPadding="5dp"
             app:iconTint="@color/white" />
 
     </RelativeLayout>

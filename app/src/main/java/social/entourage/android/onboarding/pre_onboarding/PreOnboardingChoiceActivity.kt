@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import social.entourage.android.R
@@ -12,7 +13,7 @@ import social.entourage.android.databinding.ActivityPreOnboardingChoiceBinding
 import social.entourage.android.onboarding.login.LoginActivity
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 
 class PreOnboardingChoiceActivity : BaseActivity() {
 
@@ -20,6 +21,7 @@ class PreOnboardingChoiceActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityPreOnboardingChoiceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -47,7 +49,7 @@ class PreOnboardingChoiceActivity : BaseActivity() {
         }
 
         AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_view_choice)
-        updatePaddingTopForEdgeToEdge(binding.logos)
+        updatePaddingForEdgeToEdge(binding.root)
     }
 
     private fun goLogin() {

@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -35,12 +36,12 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.ReactionType
 import social.entourage.android.api.model.formatEventStartTime
-import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.api.request.userConfig
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.databinding.ActivityMainBinding
 import social.entourage.android.deeplinks.UniversalLinkManager
+import social.entourage.android.enhanced_onboarding.OnboardingNavigation
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.BirthdayActivity
@@ -58,7 +59,6 @@ import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
-import social.entourage.android.enhanced_onboarding.OnboardingNavigation
 import timber.log.Timber
 
 class MainActivity : BaseSecuredActivity() {
@@ -76,6 +76,7 @@ class MainActivity : BaseSecuredActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         updateMainLanguage()
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         instance = this
         val binding = ActivityMainBinding.inflate(layoutInflater)

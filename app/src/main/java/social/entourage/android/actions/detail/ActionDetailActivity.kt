@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -16,7 +17,7 @@ import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.api.model.Action
 import social.entourage.android.databinding.ActivityActionDetailBinding
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 
 //Use to hide report button when loading detail action if canceled
@@ -36,6 +37,7 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         actionsPresenter = ViewModelProvider(this).get(ActionsPresenter::class.java)
 
         binding = ActivityActionDetailBinding.inflate(layoutInflater)
@@ -79,7 +81,7 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
 
         handleShareButton()
 
-        updatePaddingTopForEdgeToEdge(binding.actionDetailHeaderLayout)
+        updatePaddingForEdgeToEdge(binding.root)
 
     }
 

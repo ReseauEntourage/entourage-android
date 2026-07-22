@@ -2,6 +2,7 @@ package social.entourage.android.badges
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import retrofit2.Call
@@ -12,7 +13,7 @@ import social.entourage.android.R
 import social.entourage.android.api.request.UserResponse
 import social.entourage.android.databinding.ActivityBadgesListBinding
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 
 class BadgesListActivity : AppCompatActivity() {
 
@@ -27,9 +28,10 @@ class BadgesListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityBadgesListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        updatePaddingTopForEdgeToEdge(binding.badgeContent)
+        updatePaddingForEdgeToEdge(binding.root)
 
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__BADGES__LIST)
 

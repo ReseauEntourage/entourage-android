@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/header_profile_orange"
-    android:fitsSystemWindows="true">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/header_profile_orange">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="10dp"
-        android:paddingHorizontal="15dp">
+        android:paddingHorizontal="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/icon_back"
@@ -33,217 +33,222 @@
             android:text="@string/create_survey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/icon_back"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/header"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/shape_create_survey"
         android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginBottom="70dp"
         android:layout_marginTop="10dp"
-        >
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/shape_create_survey"
+        app:layout_constraintBottom_toTopOf="@+id/validate_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/tv_title_question"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:fontFamily="@font/quicksand_bold"
-                android:textSize="15sp"
-                android:textColor="@color/black"
-                android:text="@string/create_question_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="36dp"
-                android:layout_marginStart="20dp"/>
+                android:fontFamily="@font/quicksand_bold"
+                android:text="@string/create_question_title"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/edit_text_question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="30dp"
+                android:backgroundTint="@color/grey_vote"
+                android:fontFamily="@font/nunitosans_regular"
                 android:hint="@string/create_question_hint"
-                android:textColorHint="@color/grey_vote"
-                android:backgroundTint="@color/grey_vote"
-                app:layout_constraintTop_toBottomOf="@+id/tv_title_question"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="30dp"
-                android:maxLength="500"
                 android:inputType="textCapSentences|textMultiLine"
-                android:fontFamily="@font/nunitosans_regular"
-                android:textSize="15sp"/>
+                android:maxLength="500"
+                android:textColorHint="@color/grey_vote"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title_question" />
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/tv_title_option"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_text_question"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
                 android:fontFamily="@font/quicksand_bold"
-                android:textSize="15sp"
-                android:textColor="@color/black"
                 android:text="@string/create_option_title"
-                android:layout_marginTop="30dp"
-                android:layout_marginStart="20dp"/>
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/edit_text_option_1"
-                android:hint="@string/create_option_hint"
-                app:layout_constraintTop_toBottomOf="@+id/tv_title_option"
-                app:layout_constraintStart_toStartOf="parent"
-                android:textColorHint="@color/grey_vote"
-                android:backgroundTint="@color/grey_vote"
-                android:maxLength="500"
-                android:inputType="textCapSentences|textMultiLine"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="30dp"
-                android:fontFamily="@font/nunitosans_regular"
-                android:textSize="15sp"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/edit_text_option_2"
-                android:hint="@string/create_option_hint"
-                app:layout_constraintTop_toBottomOf="@+id/edit_text_option_1"
-                android:maxLength="500"
-                android:inputType="textCapSentences|textMultiLine"
-                android:textColorHint="@color/grey_vote"
-                android:backgroundTint="@color/grey_vote"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="30dp"
-                android:fontFamily="@font/nunitosans_regular"
-                android:textSize="15sp"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/edit_text_option_3"
-                android:hint="@string/create_option_hint"
-                android:maxLength="500"
-                android:inputType="textCapSentences|textMultiLine"
-                android:textColorHint="@color/grey_vote"
-                android:backgroundTint="@color/grey_vote"
-                app:layout_constraintTop_toBottomOf="@+id/edit_text_option_2"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="30dp"
-                android:fontFamily="@font/nunitosans_regular"
-                android:textSize="15sp"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/edit_text_option_4"
-                android:hint="@string/create_option_hint"
-                android:maxLength="500"
-                android:inputType="textCapSentences|textMultiLine"
-                android:textColorHint="@color/grey_vote"
-                android:backgroundTint="@color/grey_vote"
-                app:layout_constraintTop_toBottomOf="@+id/edit_text_option_3"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="30dp"
-                android:fontFamily="@font/nunitosans_regular"
-                android:textSize="15sp"/>
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/edit_text_option_5"
-                android:hint="@string/create_option_hint"
-                android:maxLength="500"
-                android:inputType="textCapSentences|textMultiLine"
-                android:textColorHint="@color/grey_vote"
-                android:backgroundTint="@color/grey_vote"
-                app:layout_constraintTop_toBottomOf="@+id/edit_text_option_4"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="30dp"
-                android:fontFamily="@font/nunitosans_regular"
-                android:textSize="15sp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tv_title_multiple_choice"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_text_option_5"
-                android:fontFamily="@font/quicksand_bold"
-                android:textSize="15sp"
                 android:textColor="@color/black"
-                android:text="@string/title_switch_mutiple_choice"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_question" />
+
+            <EditText
+                android:id="@+id/edit_text_option_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
-                android:layout_marginStart="20dp"/>
-            <Switch
+                android:layout_marginEnd="30dp"
+                android:backgroundTint="@color/grey_vote"
+                android:fontFamily="@font/nunitosans_regular"
+                android:hint="@string/create_option_hint"
+                android:inputType="textCapSentences|textMultiLine"
+                android:maxLength="500"
+                android:textColorHint="@color/grey_vote"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title_option" />
+
+            <EditText
+                android:id="@+id/edit_text_option_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="30dp"
+                android:backgroundTint="@color/grey_vote"
+                android:fontFamily="@font/nunitosans_regular"
+                android:hint="@string/create_option_hint"
+                android:inputType="textCapSentences|textMultiLine"
+                android:maxLength="500"
+                android:textColorHint="@color/grey_vote"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_option_1" />
+
+            <EditText
+                android:id="@+id/edit_text_option_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="30dp"
+                android:backgroundTint="@color/grey_vote"
+                android:fontFamily="@font/nunitosans_regular"
+                android:hint="@string/create_option_hint"
+                android:inputType="textCapSentences|textMultiLine"
+                android:maxLength="500"
+                android:textColorHint="@color/grey_vote"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_option_2" />
+
+            <EditText
+                android:id="@+id/edit_text_option_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="30dp"
+                android:backgroundTint="@color/grey_vote"
+                android:fontFamily="@font/nunitosans_regular"
+                android:hint="@string/create_option_hint"
+                android:inputType="textCapSentences|textMultiLine"
+                android:maxLength="500"
+                android:textColorHint="@color/grey_vote"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_option_3" />
+
+            <EditText
+                android:id="@+id/edit_text_option_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="30dp"
+                android:backgroundTint="@color/grey_vote"
+                android:fontFamily="@font/nunitosans_regular"
+                android:hint="@string/create_option_hint"
+                android:inputType="textCapSentences|textMultiLine"
+                android:maxLength="500"
+                android:textColorHint="@color/grey_vote"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_option_4" />
+
+            <TextView
+                android:id="@+id/tv_title_multiple_choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/quicksand_bold"
+                android:text="@string/title_switch_mutiple_choice"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_text_option_5" />
+
+            <Switch
                 android:id="@+id/switch_multiple_choice"
-                app:layout_constraintTop_toTopOf="@+id/tv_title_multiple_choice"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_title_multiple_choice"
-                app:layout_constraintStart_toEndOf="@+id/tv_title_multiple_choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="60dp"
                 android:thumbTint="@color/switch_selector"
-                android:trackTint="@color/switch_selector"/>
+                android:trackTint="@color/switch_selector"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_title_multiple_choice"
+                app:layout_constraintStart_toEndOf="@+id/tv_title_multiple_choice"
+                app:layout_constraintTop_toTopOf="@+id/tv_title_multiple_choice" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/guideline"
-        app:layout_constraintGuide_percent="0.5"
-        android:orientation="vertical"/>
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
     <Button
         android:id="@+id/validate_btn"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_gravity="end|bottom"
         android:layout_margin="15dp"
-        android:text="@string/btn_survey_validate"
-        android:textColor="@color/white"
-        android:padding="10dp"
-        android:textSize="15sp"
-        android:fontFamily="@font/quicksand_bold"
-        android:textAllCaps="false"
-
         android:background="@drawable/btn_shape_orange"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/guideline"
+        android:fontFamily="@font/quicksand_bold"
+        android:padding="10dp"
+        android:text="@string/btn_survey_validate"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+
+        android:textSize="15sp"
         android:visibility="visible"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/guideline" />
+
     <Button
         android:id="@+id/cancel_button"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_gravity="end|bottom"
-        android:layout_margin="15dp"
+        android:layout_marginRight="15dp"
+        android:background="@drawable/btn_shape_light_orange"
+        android:fontFamily="@font/quicksand_bold"
+        android:padding="10dp"
         android:text="@string/btn_survey_cancel"
         android:textAllCaps="false"
         android:textColor="@color/orange"
-        android:padding="10dp"
         android:textSize="15sp"
-        android:fontFamily="@font/quicksand_bold"
-        android:background="@drawable/btn_shape_light_orange"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:visibility="visible"
-        />
+        app:layout_constraintTop_toTopOf="@+id/validate_btn"
+        app:layout_constraintEnd_toStartOf="@+id/guideline" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

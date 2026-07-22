@@ -3,12 +3,11 @@ package social.entourage.android.onboarding.login
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.text.Html
-import android.text.method.LinkMovementMethod
 import android.view.Gravity
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -24,10 +23,9 @@ import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityLoginBinding
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
-import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.hideKeyboardOnDone
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.view.CustomProgressDialog
@@ -46,11 +44,13 @@ class LoginActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityLoginBinding.inflate(layoutInflater)
         authenticationController = EntourageApplication.get().authenticationController
         alertDialog = CustomProgressDialog(this)
         setupViews()
         setContentView(binding.root)
+        updatePaddingForEdgeToEdge(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
             val imeHeight = windowInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom

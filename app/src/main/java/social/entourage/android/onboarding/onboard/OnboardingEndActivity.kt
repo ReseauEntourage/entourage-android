@@ -4,12 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import social.entourage.android.databinding.ActivityOnboardingEndBinding
 import social.entourage.android.notifications.NotificationDemandActivity
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 
 class OnboardingEndActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -18,16 +16,7 @@ class OnboardingEndActivity : AppCompatActivity() {
         val binding = ActivityOnboardingEndBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, windowInsets ->
-            val systemBars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.updatePadding(
-                left = systemBars.left,
-                top = systemBars.top,
-                right = systemBars.right,
-                bottom = systemBars.bottom
-            )
-            windowInsets
-        }
+        updatePaddingForEdgeToEdge(binding.root)
 
         binding.uiOnboardingBtEnd.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Clic__Start__Onboarding__Confirmation)

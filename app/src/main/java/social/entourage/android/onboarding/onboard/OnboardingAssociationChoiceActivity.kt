@@ -8,12 +8,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import social.entourage.android.R
 import social.entourage.android.databinding.ActivityOnboardingAssociationChoiceBinding
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 
 class OnboardingAssociationChoiceActivity : AppCompatActivity() {
 
@@ -30,6 +31,7 @@ class OnboardingAssociationChoiceActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityOnboardingAssociationChoiceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -40,7 +42,7 @@ class OnboardingAssociationChoiceActivity : AppCompatActivity() {
         initialLng = intent.getDoubleExtra(EXTRA_LNG, Double.NaN).takeIf { !it.isNaN() }
         initialPostalCode = intent.getStringExtra(EXTRA_POSTAL_CODE)
 
-        updatePaddingTopForEdgeToEdge(binding.rootScroll)
+        updatePaddingForEdgeToEdge(binding.root)
 
         setupTexts()
         setupDropdown()

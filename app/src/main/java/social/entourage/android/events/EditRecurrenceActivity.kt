@@ -1,6 +1,7 @@
 package social.entourage.android.events
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.ArrayMap
 import social.entourage.android.R
@@ -8,7 +9,7 @@ import social.entourage.android.RefreshController
 import social.entourage.android.databinding.ActivityEditRecurrenceBinding
 import social.entourage.android.events.create.Recurrence
 import social.entourage.android.language.LanguageManager
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -24,6 +25,7 @@ class EditRecurrenceActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityEditRecurrenceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -58,7 +60,7 @@ class EditRecurrenceActivity : AppCompatActivity() {
             Recurrence.EVERY_TWO_WEEKS.value -> binding.everyTwoWeek.isChecked = true
             else -> binding.once.isChecked = true
         }
-        updatePaddingTopForEdgeToEdge(binding.header.layout)
+        updatePaddingForEdgeToEdge(binding.root)
     }
 
     private fun validateEditRecurrence() {
