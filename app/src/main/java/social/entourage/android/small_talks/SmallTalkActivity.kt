@@ -26,7 +26,7 @@ import social.entourage.android.enhanced_onboarding.InterestForAdapter
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestsAdapter
 import social.entourage.android.profile.editProfile.EditPhotoActivity
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.user.UserPresenter
 
 class SmallTalkActivity : BaseActivity() {
@@ -55,7 +55,7 @@ class SmallTalkActivity : BaseActivity() {
         enableEdgeToEdge()
         binding = SmallTalkActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        updatePaddingTopForEdgeToEdge(binding.root)
+        updatePaddingForEdgeToEdge(binding.root)
         viewModel = ViewModelProvider(this)[SmallTalkViewModel::class.java]
         userPresenter = UserPresenter()
         val currentUser = EntourageApplication.me(this)

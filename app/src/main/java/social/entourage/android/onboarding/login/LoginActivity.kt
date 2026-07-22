@@ -52,12 +52,6 @@ class LoginActivity : BaseActivity() {
         setContentView(binding.root)
         updatePaddingForEdgeToEdge(binding.root)
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
-            val imeHeight = windowInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom
-            val navHeight = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
-            view.updatePadding(bottom = maxOf(imeHeight, navHeight))
-            windowInsets
-        }
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_LOGIN_LOGIN)
     }
 

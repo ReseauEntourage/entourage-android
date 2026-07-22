@@ -258,10 +258,11 @@ fun Activity.updatePaddingForEdgeToEdge(viewTop:View){
         // Get the insets for the statusBars() type:
         val insets = windowInsets.getInsets(androidx.core.view.WindowInsetsCompat.Type.statusBars())
         val navinsets = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
+        val imeHeight = windowInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom
 
         view.updatePadding(
             top = insets.top,
-            bottom = navinsets.bottom
+            bottom = maxOf(imeHeight, navinsets.bottom)
         )
         // Return the original insets so they aren’t consumed
         windowInsets
