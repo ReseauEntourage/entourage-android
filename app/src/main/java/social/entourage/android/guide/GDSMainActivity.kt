@@ -5,12 +5,15 @@ import android.os.Bundle
 import social.entourage.android.R
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.databinding.ActivityGDSMainBinding
+import social.entourage.android.guide.filter.GuideFilter
 import timber.log.Timber
 
 class GDSMainActivity : BaseSecuredActivity() {
     lateinit var  guideFg: GuideMapFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        GuideFilter.instance.isAirConditionedSelected = intent.getBooleanExtra(EXTRA_AIR_CONDITIONED, false)
 
         val binding:ActivityGDSMainBinding = ActivityGDSMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -36,5 +39,9 @@ class GDSMainActivity : BaseSecuredActivity() {
                 Timber.w("no map available for updating Guide")
             }
         }
+    }
+
+    companion object {
+        const val EXTRA_AIR_CONDITIONED = "extra_air_conditioned"
     }
 }

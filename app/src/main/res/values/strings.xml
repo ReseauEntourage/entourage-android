@@ -1928,6 +1928,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="guide_filters_activated">Filtres activés</string>
     <string name="guide_no_filter">Filtres</string>
     <string name="guide_filter_categories_title">Catégories</string>
+    <string name="guide_filter_air_conditioned_desc">Filtrer les lieux climatisés</string>
+    <string name="guide_filter_air_conditioned_title">Lieux climatisés</string>
+    <string name="poi_detail_air_conditioned">Lieu climatisé</string>
 
 
     <string name="poi_card_call">APPELER</string>
@@ -3343,6 +3346,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_tools_map">Carte des lieux solidaires</string>
     <string name="home_tools_pedago">Ressources utiles</string>
     <string name="home_tools_charter">Charte éthique Entourage</string>
+    <string name="home_climate_banner_title">Lieux solidaires climatisés</string>
+    <string name="home_climate_banner_subtitle">Trouvez un endroit frais près de chez vous pendant la canicule.</string>
+    <string name="home_climate_banner_badge">Spécial canicule</string>
     <string name="welcome_video_cta">Regarder la vidéo</string>
     <string name="welcome_step3_title">Papotages entre membres</string>
     <string name="welcome_welcome_list_title">Premiers pas sur Entourage</string>
