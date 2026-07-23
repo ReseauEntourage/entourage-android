@@ -131,8 +131,12 @@ class EventCommentActivity : CommentActivity() {
         // 3) Vérifie s'il y a une balise <a href="...">
         val hasLink = fullHtml.contains("<a href=")
 
-        // 4) Choix final : HTML ou texte brut
-        val finalContent = if (hasLink) fullHtml else spannedText.toString()
+        // 4) Choix final : HTML ou texte brut (et on vérifie qu'il n'est pas vide pour l'image)
+        val finalContent = if (spannedText.toString().trim().isEmpty()) {
+            null
+        } else {
+            if (hasLink) fullHtml else spannedText.toString()
+        }
 
         // 5) Construit le Post
         val currentUserId = EntourageApplication.me(this)?.id ?: 0

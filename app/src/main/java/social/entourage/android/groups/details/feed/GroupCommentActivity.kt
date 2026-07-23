@@ -71,6 +71,7 @@ class GroupCommentActivity : CommentActivity() {
 
     override fun onResume() {
         super.onResume()
+        binding.layoutStaffBanner.visibility = View.GONE
         this.isGroup = true
     }
 
@@ -96,11 +97,15 @@ class GroupCommentActivity : CommentActivity() {
         // 3) Vérifie si on a un lien <a href="...">
         val hasLink = fullHtml.contains("<a href=")
 
-        // 4) Choix final du contenu
-        val finalContent = if (hasLink) {
-            fullHtml
+        // 4) Choix final du contenu (et on vérifie qu'il n'est pas vide)
+        val finalContent = if (spannedText.toString().trim().isEmpty()) {
+            null
         } else {
-            spannedText.toString()
+            if (hasLink) {
+                fullHtml
+            } else {
+                spannedText.toString()
+            }
         }
 
         // 5) Construit le Post comme dans l'ancienne version

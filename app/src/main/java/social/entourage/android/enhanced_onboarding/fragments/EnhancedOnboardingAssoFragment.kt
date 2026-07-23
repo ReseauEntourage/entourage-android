@@ -64,6 +64,8 @@ class EnhancedOnboardingAssoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__Onboarding__AssoDescription)
+
         viewModel.shouldDismissBtnBack.postValue(true)
         setupKeyboardHandling()
 
@@ -72,12 +74,12 @@ class EnhancedOnboardingAssoFragment : Fragment() {
         binding.btnUploadLogo.setOnClickListener { pickImage() }
 
         binding.buttonSkip.setOnClickListener {
-            AnalyticsEvents.logEvent("onboarding_asso_skip_clic")
+            AnalyticsEvents.logEvent(AnalyticsEvents.Clic__Later__Onboarding__AssoDescription)
             viewModel.quitNow()
         }
 
         binding.buttonFinish.setOnClickListener {
-            AnalyticsEvents.logEvent("onboarding_asso_finish_clic")
+            AnalyticsEvents.logEvent(AnalyticsEvents.Clic__Finish__Onboarding__AssoDescription)
             onFinishClicked()
         }
 

@@ -15,8 +15,8 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/quicksand_bold"
         android:text="Votre parcours de bienvenue"
-        android:textColor="@color/black"
-        android:textSize="15sp"
+        android:textColor="@color/grey_dark"
+        android:textSize="@dimen/entourage_font_large"
         app:layout_constraintEnd_toStartOf="@+id/tv_step_counter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -72,7 +72,9 @@
             android:id="@+id/iv_icon_step_1"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_play_circle_orange"
+            android:background="@drawable/bg_circle_orange_lucide"
+            android:padding="8dp"
+            android:src="@drawable/ic_lucide_video"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -83,7 +85,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/quicksand_bold"
-            android:text="Commencer par la vidéo de bienvenue"
+            android:text="1 min pour tout comprendre"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintEnd_toStartOf="@+id/tv_badge_step_1"
@@ -95,9 +97,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_badge_todo"
-            android:fontFamily="@font/nunitosans_regular"
+            android:fontFamily="@font/nunitosans_bold"
             android:paddingHorizontal="8dp"
-            android:paddingVertical="4dp"
+            android:paddingVertical="2dp"
             android:text="À faire"
             android:textColor="@color/orange"
             android:textSize="13sp"
@@ -111,12 +113,31 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:fontFamily="@font/nunitosans_regular"
-            android:text="Découvrez l'esprit d'Entourage et voyez comment agir concrètement contre l'isolement."
+            android:text="Qui sommes-nous, comment ça marche, et comment vous pouvez agir en 1 minute"
             android:textColor="@color/grey"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_title_step_1"
             app:layout_constraintTop_toBottomOf="@+id/tv_title_step_1" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_step_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/quicksand_bold"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="10dp"
+            android:text="@string/welcome_video_cta"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            app:backgroundTint="@color/orange"
+            app:cornerRadius="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_desc_step_1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -133,10 +154,11 @@
             android:id="@+id/iv_icon_step_2"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/new_group_persons"
+            android:background="@drawable/bg_circle_orange_lucide"
+            android:padding="8dp"
+            android:src="@drawable/ic_lucide_users"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/orange" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_title_step_2"
@@ -145,7 +167,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/quicksand_bold"
-            android:text="S'inscrire au webinaire de prise en main"
+            android:text="Rencontrez l'équipe en visio"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintEnd_toStartOf="@+id/tv_badge_step_2"
@@ -157,9 +179,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_badge_future"
-            android:fontFamily="@font/nunitosans_regular"
+            android:fontFamily="@font/nunitosans_bold"
             android:paddingHorizontal="8dp"
-            android:paddingVertical="4dp"
+            android:paddingVertical="2dp"
             android:text="À faire"
             android:textColor="@color/grey"
             android:textSize="13sp"
@@ -174,7 +196,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:fontFamily="@font/nunitosans_regular"
-            android:text="Découvrez l'application en 45 min avec notre équipe et posez toutes vos questions."
+            android:text="Une session d'accueil en petit groupe pour poser vos questions à l'équipe avec plusieurs créneaux disponibles."
             android:textColor="@color/grey"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -183,13 +205,13 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_step_2"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/quicksand_bold"
             android:paddingHorizontal="24dp"
             android:paddingVertical="10dp"
-            android:text="S'inscrire"
+            android:text="Voir les prochaines dates"
             android:textAlignment="center"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
@@ -197,6 +219,8 @@
             android:visibility="gone"
             app:backgroundTint="@color/orange"
             app:cornerRadius="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_desc_step_2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -214,10 +238,11 @@
             android:id="@+id/iv_icon_step_3"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/bottom_navigation_messages"
+            android:background="@drawable/bg_circle_orange_lucide"
+            android:padding="8dp"
+            android:src="@drawable/ic_lucide_messages"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/orange" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_title_step_3"
@@ -226,7 +251,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/quicksand_bold"
-            android:text="Rejoindre une session de papotages"
+            android:text="@string/welcome_step3_title"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintEnd_toStartOf="@+id/tv_badge_step_3"
@@ -238,9 +263,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_badge_future"
-            android:fontFamily="@font/nunitosans_regular"
+            android:fontFamily="@font/nunitosans_bold"
             android:paddingHorizontal="8dp"
-            android:paddingVertical="4dp"
+            android:paddingVertical="2dp"
             android:text="À faire"
             android:textColor="@color/grey"
             android:textSize="13sp"
@@ -255,7 +280,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:fontFamily="@font/nunitosans_regular"
-            android:text="Chaque mardi à 18h, un moment convivial en visio pour discuter de tout et de rien avec d'autres membres."
+            android:text="Chaque mardi à 18h, en petits groupes animés, pour discuter de tout et de rien. Pas d'ordre du jour, pas de pression — juste une conversation."
             android:textColor="@color/grey"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -264,20 +289,22 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_step_3"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/quicksand_bold"
             android:textAlignment="center"
             android:paddingHorizontal="24dp"
             android:paddingVertical="10dp"
-            android:text="Rejoindre"
+            android:text="Voir les prochaines sessions"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             android:visibility="gone"
             app:backgroundTint="@color/orange"
             app:cornerRadius="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_desc_step_3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

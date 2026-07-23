@@ -128,7 +128,7 @@ class OnboardingPhase1Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
-        AnalyticsEvents.logEvent(AnalyticsEvents.Onboard_name)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__Onboarding__InputNames)
         // Charge les métadonnées et la liste d'entreprises
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {

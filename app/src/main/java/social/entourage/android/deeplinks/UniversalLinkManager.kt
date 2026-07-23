@@ -235,14 +235,23 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
 
     private fun handleOutings(pathSegments: List<String>) {
         if (pathSegments.contains("papotages")) {
-            presenter.getEventSmallTalk()
+            val intent = Intent(context, social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
+            intent.putExtra("TYPE", "papotages")
+            context.startActivity(intent)
+            (context as? Activity)?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         } else if (pathSegments.contains("new")) {
             val intent = Intent(context, social.entourage.android.events.create.CreateEventActivity::class.java)
             (context as? MainActivity)?.startActivityForResult(intent, 0)
         } else if (pathSegments.contains("webinar")) {
-            presenter.getEventSensibilisation()
+            val intent = Intent(context, social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
+            intent.putExtra("TYPE", "webinar")
+            context.startActivity(intent)
+            (context as? Activity)?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         } else if (pathSegments.contains("welcome")) {
-            presenter.getEventWelcome()
+            val intent = Intent(context, social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
+            intent.putExtra("TYPE", "welcome")
+            context.startActivity(intent)
+            (context as? Activity)?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         } else if (pathSegments.size > 3) {
             val outingId = pathSegments[2]
             EventFeedFragment.shouldAddToAgenda = true

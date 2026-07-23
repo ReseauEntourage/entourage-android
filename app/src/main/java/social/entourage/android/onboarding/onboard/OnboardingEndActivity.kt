@@ -17,10 +17,11 @@ class OnboardingEndActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.uiOnboardingBtEnd.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Clic__Start__Onboarding__Confirmation)
             goNotifChoicePage()
         }
 
-        AnalyticsEvents.logEvent(AnalyticsEvents.Onboard_end)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__Onboarding__Confirmation)
     }
     fun goNotifChoicePage() {
         val intent = Intent(this, NotificationDemandActivity::class.java).apply {

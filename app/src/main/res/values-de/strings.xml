@@ -278,6 +278,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="leave_group_dialog_content">Möchten Sie die Gruppe verlassen?</string>
     <string name="discuss">Kommentar…</string>
     <string name="discussbis">Um eine Nachricht zu schreiben…</string>
+    <string name="staff_out_of_office_banner">Das Team macht Pause... 🌙 Im Notfall: &lt;a href="tel:15"&gt;15&lt;/a&gt;, &lt;a href="tel:18"&gt;18&lt;/a&gt; oder &lt;a href="tel:115"&gt;115&lt;/a&gt;. Für sofortige Hilfe sind deine Nachbarn in der &lt;a href="entourage://groupe"&gt;Gruppe&lt;/a&gt;! 🏠 Wir antworten bald.</string>
     <string name="no_comments">Keine Kommentare</string>
     <string name="comments_title">Kommentare</string>
     <string name="write_your_message">Schreibe deine Nachricht</string>
@@ -2714,4 +2715,10 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="guide_help_orientation_button">Hilfe &amp; Orientierung</string>
     <string name="home_title_small_talk">Nimm an einer solidarischen Diskussion teil</string>
     <string name="small_talk_subtitle_match">Wir bringen Sie mit einer kleinen Gruppe von Menschen zusammen, die Ihre Interessen teilen, überall in Frankreich.</string>
+    <string name="welcome_video_cta">Regarder la vidéo</string>
+    <string name="welcome_step3_title">Papotages entre membres</string>
+    <string name="welcome_webinar_list_title">Premiers pas sur Entourage</string>
+    <string name="welcome_webinar_list_subtitle">Prenez en main l\'application et posez toutes vos questions à l\'équipe — en petit groupe, en 45 minutes en visio.</string>
+    <string name="welcome_papotages_list_title">Papotages solidaires</string>
+    <string name="welcome_papotages_list_subtitle">Discussions libres en sous-groupes de 2 à 3 personnes, animées par un bénévole formé ou un membre de l\'équipe. Vous restez le temps que vous voulez. Tous les mardis à 18h.</string>
 </resources>

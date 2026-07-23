@@ -98,14 +98,18 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private var isRequestLoaded = false
     private var currentRequests: List<UserSmallTalkRequest> = emptyList()
 
+    // Variables pour la vidéo
+    private var welcomeVideoUrl: String? = null
+    private var welcomeVideoHtml: String? = null
+    private var currentVideoWebView: android.webkit.WebView? = null // Permet d'injecter la vidéo une fois reçue
 
     // Adapters
     private lateinit var concatAdapter: ConcatAdapter
 
     // Welcome Journey
     private lateinit var welcomeJourneyAdapter: HomeWelcomeJourneyAdapter
-    private var currentCompletedSteps = 0
-
+    private val homeSkeletonAdapter = HomeSkeletonAdapter()
+    private var completedJourneySteps = mutableSetOf<Int>()
 
     // Sensibilisation (Initial Pedago)
     private lateinit var initialPedagoHeaderAdapter: HomeSectionHeaderAdapter
@@ -120,7 +124,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     // Actions
     private lateinit var actionHeaderAdapter: HomeSectionHeaderAdapter
     private lateinit var homeActionAdapter: HomeActionAdapter
-    private lateinit var actionWrapperAdapter: HomeHorizontalWrapperAdapter // NOUVEAU
+    private lateinit var actionWrapperAdapter: HomeHorizontalWrapperAdapter
     private lateinit var actionButtonAdapter: HomeSectionButtonAdapter
 
     // Events
@@ -169,66 +173,76 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         }
     }
 
+    private fun showCongratDialog(summary: Summary) {
+        if (!isAdded) return
+        val dialog = HomeCongratPopFragment.newInstance()
+        dialog.show(parentFragmentManager, HomeCongratPopFragment.TAG)
+    }
 
-    private fun updateWelcomeJourneyStep(stepIndex: Int) {
-        welcomeJourneyAdapter.updateStepState(stepIndex, true)
-        currentCompletedSteps++
+    private fun handleWelcomeJourneyState(summary: Summary) {
+        if (!::welcomeJourneyAdapter.isInitialized) return
 
-        if (currentCompletedSteps >= 3) {
-            welcomeJourneyAdapter.setFullyCompleted(true)
-            showCelebrationTooltip()
+        val currentUser = EntourageApplication.me(requireContext())
+
+        // Sécurité pour réinitialiser l'état local si l'utilisateur s'est déconnecté/reconnecté avec un autre compte
+        if (currentUser?.id != currentUserIdForJourney) {
+            hasInitiallyCompletedAll = null
+            currentUserIdForJourney = currentUser?.id
+        }
+
+        // Règle 1: Masquer si l'utilisateur est partenaire
+        if (currentUser?.partner != null) {
+            welcomeJourneyAdapter.setVisible(false)
+            return
+        }
+
+        // Récupération des informations de validation via le WS uniquement
+        val events = summary.events
+        val isStep1Done = events?.contains("onboarding.resource.welcome_watched") == true
+        val isStep2Done = events?.contains("onboarding.outing.webinar_or_first_steps") == true
+        val isStep3Done = events?.contains("onboarding.outing.papotages") == true
+
+        val allCompleted = isStep1Done && isStep2Done && isStep3Done
+
+        // Règle 2: Initialisation du companion object au premier passage
+        if (hasInitiallyCompletedAll == null) {
+            hasInitiallyCompletedAll = allCompleted
+        }
+
+        // Règle 3: Si tout était validé dès le lancement de l'application, on masque tout complètement
+        if (hasInitiallyCompletedAll == true) {
+            welcomeJourneyAdapter.setVisible(false)
+        } else {
+            // Sinon on affiche le composant et on met à jour les données
+            welcomeJourneyAdapter.setVisible(true)
+            welcomeJourneyAdapter.updateAllSteps(isStep1Done, isStep2Done, isStep3Done)
+
+            // Détection du moment où le parcours est terminé pour afficher le Tooltip de célébration
+            val previouslyCompletedSize = completedJourneySteps.size
+            completedJourneySteps.clear()
+            if (isStep1Done) completedJourneySteps.add(1)
+            if (isStep2Done) completedJourneySteps.add(2)
+            if (isStep3Done) completedJourneySteps.add(3)
+
+            // Si on vient juste de finir les 3 étapes (n'était pas à 3 avant)
+            if (allCompleted && previouslyCompletedSize < 3) {
+                showCongratDialog(summary)
+            }
         }
     }
 
-    private fun showCelebrationTooltip() {
-        if (!isAdded) return
-        val inflater = LayoutInflater.from(requireContext())
-        val view = inflater.inflate(R.layout.layout_celebration_tooltip, null)
-        val popupWindow = PopupWindow(
-            view,
-            android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-            android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
-            true
-        )
-
-        binding.rvHome.postDelayed({
-             if (isAdded) {
-                popupWindow.showAtLocation(binding.rvHome, android.view.Gravity.TOP or android.view.Gravity.CENTER_HORIZONTAL, 0, 300)
-             }
-        }, 500)
-
-        binding.rvHome.postDelayed({
-            if (isAdded && popupWindow.isShowing) {
-                popupWindow.dismiss()
-            }
-        }, 4000)
-    }
-
     private fun handleWelcomeJourneyClick(stepIndex: Int) {
-        // Sécurité : on empêche de cliquer sur une étape si la précédente n'est pas terminée
-        if (stepIndex > currentCompletedSteps + 1) return
-
         when (stepIndex) {
             1 -> showVideoModal()
             2 -> {
-                val urlString = if (BuildConfig.DEBUG) {
-                    "https://preprod.entourage.social/app/outings/webinar"
-                } else {
-                    "https://www.entourage.social/app/outings/webinar"
-                }
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlString))
+                val intent = Intent(requireContext(), social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
+                intent.putExtra("TYPE", "welcome")
                 startActivity(intent)
-                updateWelcomeJourneyStep(2)
             }
             3 -> {
-                val urlString = if (BuildConfig.DEBUG) {
-                    "https://preprod.entourage.social/app/outings/papotages"
-                } else {
-                    "https://www.entourage.social/app/outings/papotages"
-                }
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlString))
+                val intent = Intent(requireContext(), social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
+                intent.putExtra("TYPE", "papotages")
                 startActivity(intent)
-                updateWelcomeJourneyStep(3)
             }
         }
     }
@@ -239,24 +253,71 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         val view = layoutInflater.inflate(R.layout.dialog_welcome_video, null)
         bottomSheetDialog.setContentView(view)
 
+        // --- AJOUT IMPORTANT ICI ---
+        // On force la BottomSheet à s'étendre au maximum de son contenu dès l'ouverture
+        val bottomSheet = bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+        bottomSheet?.let {
+            val behavior = com.google.android.material.bottomsheet.BottomSheetBehavior.from(it)
+            behavior.skipCollapsed = true
+            behavior.state = com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
+        }
+        // ---------------------------
+
         val btnContinue = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_continue)
-        val layoutVideo = view.findViewById<androidx.constraintlayout.widget.ConstraintLayout>(R.id.layout_video_placeholder)
+        val webView = view.findViewById<android.webkit.WebView>(R.id.webview_video)
         val ivClose = view.findViewById<android.widget.ImageView>(R.id.iv_close)
+
+        // On sauvegarde la référence pour que l'observer puisse injecter la vidéo à la réception
+        currentVideoWebView = webView
 
         ivClose?.setOnClickListener {
             bottomSheetDialog.dismiss()
         }
 
-        layoutVideo?.setOnClickListener {
-            btnContinue?.isEnabled = true
+        var countDownTimer: android.os.CountDownTimer? = null
+        btnContinue?.isEnabled = false
+
+        // On intercepte la fermeture de la modale pour forcer la mise à jour
+        bottomSheetDialog.setOnDismissListener {
+            countDownTimer?.cancel()
+            webView?.destroy()
+            currentVideoWebView = null // On libère la mémoire
+            // On appelle DIRECTEMENT getSummary() pour que l'adapter se mette à jour instantanément
+            homePresenter.getSummary()
         }
 
+        webView?.settings?.javaScriptEnabled = true
+        webView?.webChromeClient = android.webkit.WebChromeClient()
+
+        // Si on a déjà l'url en cache (suite à une ouverture précédente dans la même session), on charge notre HTML clean
+        if (!welcomeVideoUrl.isNullOrBlank()) {
+            webView?.let { loadCleanVideo(it, welcomeVideoUrl!!) }
+        }
+
+        // C'est cet appel qui valide la ressource côté backend et télécharge les URLs de la vidéo
+        homePresenter.getWelcomeResource()
+
         btnContinue?.setOnClickListener {
+            // Le dismiss va déclencher le setOnDismissListener
             bottomSheetDialog.dismiss()
-            updateWelcomeJourneyStep(1)
         }
 
         bottomSheetDialog.show()
+
+        val originalText = btnContinue?.text?.toString() ?: ""
+        countDownTimer = object : android.os.CountDownTimer(5000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                if (!isAdded) return
+                val secondsRemaining = millisUntilFinished / 1000 + 1
+                btnContinue?.text = "$originalText ($secondsRemaining)"
+            }
+
+            override fun onFinish() {
+                if (!isAdded) return
+                btnContinue?.text = originalText
+                btnContinue?.isEnabled = true
+            }
+        }.start()
     }
 
     override fun onCreateView(
@@ -511,24 +572,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
         concatAdapter = ConcatAdapter(
             config,
-          //  welcomeJourneyAdapter,
-            initialPedagoHeaderAdapter,
-
-            initialPedagoWrapperAdapter,
-            actionHeaderAdapter,
-            actionWrapperAdapter,
-            actionButtonAdapter,
-            eventHeaderAdapter,
-            eventWrapperAdapter,
-            eventButtonAdapter,
-            homeModeratorAdapter,
-            groupHeaderAdapter,
-            groupWrapperAdapter,
-            groupButtonAdapter,
-            horsZoneAdapter,
-            smallTalkWrapperAdapter,
-            homeToolsAdapter,
-            homePedagoAdapter
+            homeSkeletonAdapter
         )
 
         binding.rvHome.apply {
@@ -783,6 +827,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 homePresenter.getPedagogicalResources()
                 homePresenter.getInitialPedagogicalResources()
                 homePresenter.getNotificationsCount()
+                // ATTENTION: getWelcomeResource() a été retiré d'ici pour éviter l'auto-validation !
                 userPresenter.getUser(meId)
             }
         }
@@ -799,6 +844,28 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         // CORRECTION: On fait un fade out sur la progress bar plutôt que de changer la visibilité du RV
         // Ça évite le saut de contenu
         if (totalchecksum >= 4) {
+            if (concatAdapter.adapters.contains(homeSkeletonAdapter)) {
+                concatAdapter.removeAdapter(homeSkeletonAdapter)
+                concatAdapter.addAdapter(welcomeJourneyAdapter)
+                concatAdapter.addAdapter(initialPedagoHeaderAdapter)
+                concatAdapter.addAdapter(initialPedagoWrapperAdapter)
+                concatAdapter.addAdapter(actionHeaderAdapter)
+                concatAdapter.addAdapter(actionWrapperAdapter)
+                concatAdapter.addAdapter(actionButtonAdapter)
+                concatAdapter.addAdapter(eventHeaderAdapter)
+                concatAdapter.addAdapter(eventWrapperAdapter)
+                concatAdapter.addAdapter(eventButtonAdapter)
+                concatAdapter.addAdapter(homeModeratorAdapter)
+                concatAdapter.addAdapter(groupHeaderAdapter)
+                concatAdapter.addAdapter(groupWrapperAdapter)
+                concatAdapter.addAdapter(groupButtonAdapter)
+                concatAdapter.addAdapter(horsZoneAdapter)
+                concatAdapter.addAdapter(smallTalkHeaderAdapter)
+                concatAdapter.addAdapter(smallTalkWrapperAdapter)
+                concatAdapter.addAdapter(homeToolsAdapter)
+                concatAdapter.addAdapter(homePedagoAdapter)
+                binding.rvHome.scheduleLayoutAnimation()
+            }
             if (binding.progressBar.visibility == View.VISIBLE) {
                 binding.progressBar.animate()
                     .alpha(0f)
@@ -835,6 +902,17 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         homePresenter.pedagogicalContent.observe(viewLifecycleOwner) { handlePedago(it) }
         homePresenter.pedagogicalInitialContent.observe(viewLifecycleOwner) { handleInitialPedago(it) }
         homePresenter.notifsCount.observe(viewLifecycleOwner) { updateNotifsCount(it) }
+        homePresenter.welcomeResource.observe(viewLifecycleOwner) { pedago ->
+            welcomeVideoUrl = pedago.url
+            welcomeVideoHtml = pedago.html
+
+            // On injecte le contenu vidéo dès qu'il est reçu (uniquement si la modale est ouverte)
+            currentVideoWebView?.let { webView ->
+                if (!welcomeVideoUrl.isNullOrBlank()) {
+                    loadCleanVideo(webView, welcomeVideoUrl!!)
+                }
+            }
+        }
         actionsPresenter.unreadMessages.observe(viewLifecycleOwner) { updateUnreadCount(it) }
         discussionsPresenter.newConversation.observe(viewLifecycleOwner) { conversation ->
             conversation?.let {
@@ -978,6 +1056,8 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
     private fun updateContributionsView(summary: Summary) {
         if (!isAdded) return
+
+        handleWelcomeJourneyState(summary)
 
         val isAssociationFromSummary = summary.association == true
         EntourageApplication.get().sharedPreferences.edit {
@@ -1228,6 +1308,27 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         callToInitHome()
     }
 
+    private fun loadCleanVideo(webView: android.webkit.WebView, videoUrl: String) {
+        val cleanUrl = if (videoUrl.contains("?")) "$videoUrl&rel=0" else "$videoUrl?rel=0"
+        val customHtml = """
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+                <style>
+                    body, html { margin: 0; padding: 0; width: 100%; height: 100%; background-color: #000000; overflow: hidden; }
+                    iframe { width: 100%; height: 100%; border: none; }
+                </style>
+            </head>
+            <body>
+                <iframe src="$cleanUrl" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+            </body>
+            </html>
+        """.trimIndent()
+
+        webView.loadDataWithBaseURL("https://www.entourage.social", customHtml, "text/html", "utf-8", null)
+    }
+
     companion object {
         var isContribProfile = false
         var signablePermission = false
@@ -1239,6 +1340,11 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         const val PREF_ENHANCED_ONBOARDING_COMPLETED = "PREF_ENHANCED_ONBOARDING_COMPLETED"
         private const val PREF_IS_ASSOCIATION_FROM_SUMMARY = "PREF_IS_ASSOCIATION_FROM_SUMMARY"
         private const val PREF_BIRTHDAY_SHOWN_YEAR = "PREF_BIRTHDAY_SHOWN_YEAR"
+
+        // Variable pour mémoriser si le parcours était fini au lancement
+        private var hasInitiallyCompletedAll: Boolean? = null
+        // On stocke l'ID pour réinitialiser l'état si on change de compte
+        private var currentUserIdForJourney: Int? = null
     }
 }
 

@@ -25,7 +25,7 @@ android {
 
     // App versions
     val versionMajor = 13
-    val versionMinor = 4
+    val versionMinor = 5
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -143,7 +143,7 @@ android {
             buildConfigField("String", "PEDAGO_GUIDE_ID", "\"eyck8DuIn3cI\"")
 
         }
-         create("entourage") {
+        create("entourage") {
             dimension = "app"
             buildConfigField("String", "API_KEY", "\"4a7373f3e7dd45fc391a2f19\"")
         }
@@ -173,6 +173,7 @@ android {
     compileOptions {
         sourceCompatibility = sourceCompatibilityVersion
         targetCompatibility = targetCompatibilityVersion
+        isCoreLibraryDesugaringEnabled = true
     }
 
     packaging {
@@ -251,6 +252,7 @@ dependencies {
     //entourageImplementation facebookDependencies.values()
     implementation(libs.facebook.android.sdk)
     implementation(libs.facebook.core)
+    implementation(libs.shimmer)
     compileOnly(libs.javax.annotation)
 
     // Instrumentation tests
@@ -290,6 +292,9 @@ dependencies {
     //UNCOMMENT FOR VIDEO CALL FEATURE
     //implementation("com.dafruits:webrtc:123.0.0")
     implementation(libs.bundles.oss)
+
+    // Ajout du dictionnaire de rétrocompatibilité (Desugaring)
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 }
 
 tasks.register<Exec>("clearSnapshots") {
@@ -302,14 +307,14 @@ tasks.register<Exec>("clearSnapshots") {
 tasks.register<Exec>("pullSnapshots") {
     group = "verification"
     description = "Transférer les snapshots du device vers le répertoire local et vider le device"
-    
+
     val localDir = File(project.layout.buildDirectory.asFile.get(), "reports/snapshots")
     doFirst {
         if (!localDir.exists()) localDir.mkdirs()
     }
 
     commandLine("adb", "pull", "/sdcard/Download/entourage_snapshots/.", localDir.absolutePath)
-    
+
     isIgnoreExitValue = true
     finalizedBy("clearSnapshots")
 }

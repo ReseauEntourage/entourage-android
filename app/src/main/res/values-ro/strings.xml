@@ -280,6 +280,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="leave_group_dialog_content">Vrei să părăsești grupul?</string>
     <string name="discuss">Cometariu…</string>
     <string name="discussbis">Pentru a scrie un mesaj...</string>
+    <string name="staff_out_of_office_banner">Echipa este în pauză... 🌙 În caz de urgență: &lt;a href="tel:15"&gt;15&lt;/a&gt;, &lt;a href="tel:18"&gt;18&lt;/a&gt; sau &lt;a href="tel:115"&gt;115&lt;/a&gt;. Pentru ajutor imediat, vecinii tăi sunt în &lt;a href="entourage://groupe"&gt;grup&lt;/a&gt;! 🏠 Vă vom răspunde în curând.</string>
     <string name="no_comments">Fara comentarii</string>
     <string name="comments_title">Comentarii</string>
     <string name="write_your_message">Scrie-ți mesajul</string>
@@ -2727,4 +2728,10 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="guide_help_orientation_button">Ajutor și orientare</string>
     <string name="home_title_small_talk">Alătură-te unei discuții de susținere</string>
     <string name="small_talk_subtitle_match">Te conectăm cu un mic grup de persoane care îți împărtășesc interesele, oriunde în Franța.</string>
+    <string name="welcome_video_cta">Regarder la vidéo</string>
+    <string name="welcome_step3_title">Papotages entre membres</string>
+    <string name="welcome_webinar_list_title">Premiers pas sur Entourage</string>
+    <string name="welcome_webinar_list_subtitle">Prenez en main l\'application et posez toutes vos questions à l\'équipe — en petit groupe, en 45 minutes en visio.</string>
+    <string name="welcome_papotages_list_title">Papotages solidaires</string>
+    <string name="welcome_papotages_list_subtitle">Discussions libres en sous-groupes de 2 à 3 personnes, animées par un bénévole formé ou un membre de l\'équipe. Vous restez le temps que vous voulez. Tous les mardis à 18h.</string>
 </resources>

@@ -3,6 +3,8 @@
     <string name="app_name" translatable="false">Entourage</string>
     <string name="full_app_name">Entourage</string>
     <string name="button_loading">Chargement…</string>
+    <string name="title_welcome_webinar">Prochaines visios</string>
+    <string name="title_welcome_papotages">Prochains papotages</string>
     <string name="error_not_yet_implemented">Indisponible</string>
     <string name="error_google_play_store_not_installed">Le Google Play Store n\'est pas intallé</string>
     <string name="error_application_update">La version d\'Entourage installée n\'est plus supportée. Pour pouvoir continuer à utiliser nos services et profiter de la meilleure expérience possible, veuillez la mettre à jour avec la dernière version en cliquant sur le lien suivant.</string>
@@ -17,6 +19,7 @@
     <string name="register">Enregistrer</string>
     <string name="ignore">Ignorer</string>
     <string name="continue_string">Continuer</string>
+    <string name="no_events_found">Aucun événement trouvé</string>
     <string name="close">Fermer</string>
     <string name="edit">Modifier</string>
     <string name="activate">Activer</string>
@@ -288,6 +291,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="leave_group_dialog_content">Souhaitez-vous quitter le groupe ?</string>
     <string name="discuss">Commenter…</string>
     <string name="discussbis">Écrire un message…</string>
+    <string name="staff_out_of_office_banner">L’équipe est en pause... 🌙 En cas d\'urgence : &lt;a href="tel:15"&gt;15&lt;/a&gt;, &lt;a href="tel:18"&gt;18&lt;/a&gt; ou &lt;a href="tel:115"&gt;115&lt;/a&gt;. Pour une aide immédiate, vos voisins sont sur le &lt;a href="entourage://groupe"&gt;groupe&lt;/a&gt; ! 🏠 On vous répond vite.</string>
     <string name="no_comments">Pas de messages</string>
     <string name="event_date">"dd/MM/yyyy"</string>
     <string name="event_date_time">"dd MMMM yyyy à HH'h'mm"</string>
@@ -643,7 +647,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="action_my_empty_subtitle">Vous pouvez créer une contribution ou une demande en cliquant sur le « + » de la page « Entraide »</string>
 
     <string name="action_cancel_title">L’annonce a été supprimée…</string>
-    <string name="action_cancel_subtitle">Vous pouvez voir d’autres annonces susceptibles de vous interesser ou créer une demande dans la partie « Entraide »</string>
+    <string name="action_cancel_subtitle">Vous pouvez voir d\'autres annonces susceptibles de vous interesser ou créer une demande dans la partie « Entraide »</string>
 
     <string name="action_report_demand">Signaler la demande</string>
     <string name="action_report_contrib">Signaler la contribution</string>
@@ -3249,4 +3253,13 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_tools_map">Carte des lieux solidaires</string>
     <string name="home_tools_pedago">Ressources utiles</string>
     <string name="home_tools_charter">Charte éthique Entourage</string>
+    <string name="welcome_video_cta">Regarder la vidéo</string>
+    <string name="welcome_step3_title">Papotages entre membres</string>
+    <string name="welcome_welcome_list_title">Premiers pas sur Entourage</string>
+    <string name="welcome_welcome_list_subtitle">Prenez en main l\'application et posez toutes vos questions à l\'équipe — en petit groupe, en 45 minutes en visio.</string>
+    <string name="welcome_papotages_list_title">Papotages solidaires</string>
+    <string name="welcome_papotages_list_subtitle">Discussions libres en sous-groupes de 2 à 3 personnes, animées par un bénévole formé ou un membre de l\'équipe. Vous restez le temps que vous voulez. Tous les mardis à 18h.</string>
+
+    <string name="welcome_webinar_list_title">Sensibilisations Entourage</string>
+    <string name="welcome_webinar_list_subtitle">L\'équipe Entourage vous donne les clefs pour appréhender le monde de la rue et les solutions d\'aide existantes lors d\'un atelier en ligne de 1h.</string>
 </resources>

@@ -253,6 +253,7 @@
     <string name="leave_group_dialog_content">Do you want to leave the group?</string>
     <string name="discuss">Comment…</string>
     <string name="discussbis">Write a message…</string>
+    <string name="staff_out_of_office_banner">The team is on a break... 🌙 In case of emergency: &lt;a href="tel:15"&gt;15&lt;/a&gt;, &lt;a href="tel:18"&gt;18&lt;/a&gt; or &lt;a href="tel:115"&gt;115&lt;/a&gt;. For immediate help, your neighbors are on the &lt;a href="entourage://groupe"&gt;group&lt;/a&gt;! 🏠 We\'ll answer you soon.</string>
     <string name="no_comments">No comments</string>
     <string name="comments_title">Comments</string>
     <string name="write_your_message">Write your message</string>
@@ -1864,4 +1865,10 @@
     <string name="guide_help_orientation_button">Help &amp; orientation</string>
     <string name="home_title_small_talk">Join a supportive discussion</string>
     <string name="small_talk_subtitle_match">Connect with a small group of people who share your interests, anywhere in France.</string>
+    <string name="welcome_video_cta">Regarder la vidéo</string>
+    <string name="welcome_step3_title">Papotages entre membres</string>
+    <string name="welcome_webinar_list_title">Premiers pas sur Entourage</string>
+    <string name="welcome_webinar_list_subtitle">Prenez en main l\'application et posez toutes vos questions à l\'équipe — en petit groupe, en 45 minutes en visio.</string>
+    <string name="welcome_papotages_list_title">Papotages solidaires</string>
+    <string name="welcome_papotages_list_subtitle">Discussions libres en sous-groupes de 2 à 3 personnes, animées par un bénévole formé ou un membre de l\'équipe. Vous restez le temps que vous voulez. Tous les mardis à 18h.</string>
 </resources>
