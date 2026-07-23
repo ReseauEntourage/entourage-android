@@ -32,6 +32,9 @@ data class Metadata(
 
     @field:SerializedName("google_place_id")
     var googlePlaceId: String? = "",
+
+    @SerializedName("reserved_female")
+    var reserved_female: Boolean? = null,
 ) {
     fun endsAt(value: String) = apply {
         endsAt = value
@@ -50,7 +53,7 @@ data class Metadata(
     }
 
     override fun toString(): String {
-        return "EventMetadata(streetAddress=$streetAddress, startsAt=$startsAt, placeLimit=$placeLimit, displayAddress=$displayAddress, endsAt=$endsAt, googlePlaceId=$googlePlaceId)"
+        return "EventMetadata(streetAddress=$streetAddress, startsAt=$startsAt, placeLimit=$placeLimit, displayAddress=$displayAddress, endsAt=$endsAt, googlePlaceId=$googlePlaceId, reserved_female=$reserved_female)"
     }
 
 }

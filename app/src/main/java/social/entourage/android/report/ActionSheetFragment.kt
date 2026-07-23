@@ -11,12 +11,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.EntourageApplication
+import social.entourage.android.RefreshController
 import social.entourage.android.R
 import social.entourage.android.api.model.Events
 import social.entourage.android.databinding.NewFragmentSettingsDiscussionModalBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
-import social.entourage.android.discussions.imageviewier.ImageListActivity
 import social.entourage.android.discussions.members.MembersConversationFragment
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.create.CreateEventActivity
@@ -29,6 +29,7 @@ import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.small_talks.SmallTalkViewModel
+import social.entourage.android.tools.image_viewer.ImageListActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 
@@ -59,6 +60,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
     private var forceShowEdit: Boolean = false
     private var isEventCreator: Boolean = false
     private var canEditEvent: Boolean = false // NEW: vient de manageable_by_current_user
+    private var isSmallTalk: Boolean = false
+    private var smallTalkId: String? = null
 
     // Message actions
     private var messageId: Int = 0
@@ -86,6 +89,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             eventParticipantsCount = getInt(ARG_EVENT_PARTICIPANTS, 0)
             eventAddress = getString(ARG_EVENT_ADDRESS)
             forceShowEdit = getBoolean(ARG_FORCE_SHOW_EDIT, false)
+            isSmallTalk = getBoolean(ARG_IS_SMALL_TALK, false)
+            smallTalkId = getString(ARG_SMALL_TALK_ID)
 
             messageId = getInt(ARG_MESSAGE_ID, 0)
             messageHtml = getString(ARG_MESSAGE_HTML)
@@ -123,6 +128,24 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         configureUI()
         setupClicks()
+        setupObservers()
+    }
+
+    private fun setupObservers() {
+        discussionPresenter.hasUserLeftConversation.observe(viewLifecycleOwner) { hasLeft ->
+            if (hasLeft) {
+                RefreshController.shouldRefreshFragment = true
+                dismiss()
+                activity?.finish()
+            }
+        }
+        smallTalkViewModel.shouldLeave.observe(viewLifecycleOwner) { hasLeft ->
+            if (hasLeft) {
+                RefreshController.shouldRefreshFragment = true
+                dismiss()
+                activity?.finish()
+            }
+        }
     }
 
     private fun configureUI() {
@@ -285,8 +308,11 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         }
 
         // remove if not part of event
-        if (EventFeedActivity.isFromMyEvent == false && mode == SheetMode.EVENT) {
-            binding.quit.profileSettingsItemLayout.isVisible = false
+        if (mode == SheetMode.EVENT) {
+            val isMember = eventObj?.member ?: EventFeedActivity.isFromMyEvent
+            if (!isMember) {
+                binding.quit.profileSettingsItemLayout.isVisible = false
+            }
         }
     }
 
@@ -375,7 +401,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             if (mode == SheetMode.EVENT && conversationId > 0) {
                 startActivity(
                     Intent(requireContext(), ImageListActivity::class.java)
-                        .putExtra("conversation_id", conversationId)
+                        .putExtra(Const.CONVERSATION_ID, conversationId)
                 )
                 dismiss()
             }
@@ -436,10 +462,19 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
                     val isConversationContext = !isEventContext && !isGroupContext
                     if (isConversationContext) {
-                        val isSmallTalk = DetailConversationActivity.isSmallTalkMode
-                        val convOrSmallTalkId =
-                            if (isSmallTalk) DetailConversationActivity.smallTalkId
-                            else conversationId
+                        // Use local isSmallTalk flag if available, fallback to activity static variable only if local flag is false
+                        // Note: In this specific context (Message Actions), we might not have passed isSmallTalk explicitly
+                        // But let's check if we can retrieve it or rely on DetailConversationActivity.isSmallTalkMode
+                        // Since we are modifying ActionSheetFragment to handle this better in general,
+                        // let's try to use the passed argument if possible, but for MessageActions initialized via newMessageActions,
+                        // we might need to add isSmallTalk there too or keep relying on global state for now as the plan focused on newDiscussion.
+                        // However, to be safe and consistent with the fix:
+                        val isSmallTalkMode = isSmallTalk || DetailConversationActivity.isSmallTalkMode
+                        val convOrSmallTalkId = if (isSmallTalkMode) {
+                             smallTalkId ?: DetailConversationActivity.smallTalkId
+                        } else {
+                            conversationId
+                        }
 
                         ReportModalFragment.newInstance(
                             id = convOrSmallTalkId,
@@ -450,7 +485,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                             isOneToOne = false,
                             contentCopied = plain,
                             openDirectSignal = true,
-                            isSmallTalk = isSmallTalk
+                            isSmallTalk = isSmallTalkMode
                         ).show(parentFragmentManager, ReportModalFragment.TAG)
                     } else {
                         val (containerId, rType) = when {
@@ -478,15 +513,14 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         binding.quit.profileSettingsItemLayout.setOnClickListener {
             when (mode) {
                 SheetMode.DISCUSSION_GROUP -> {
-                    if (DetailConversationActivity.isSmallTalkMode) {
+                    if (isSmallTalk) {
                         CustomAlertDialog.showWithCancelFirst(
                             requireContext(),
                             getString(R.string.leave_conversation),
                             getString(R.string.leave_conversation_dialog_content),
                             getString(R.string.exit)
                         ) {
-                            smallTalkViewModel.leaveSmallTalk(conversationId.toString())
-                            dismiss()
+                            smallTalkViewModel.leaveSmallTalk(smallTalkId.toString())
                         }
                     } else {
                         CustomAlertDialog.showWithCancelFirst(
@@ -496,7 +530,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                             getString(R.string.exit)
                         ) {
                             discussionPresenter.leaveConverstion(conversationId)
-                            dismiss()
                         }
                     }
                 }
@@ -519,7 +552,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                             requireContext(),
                             getString(R.string.delete_event_title),
                             getString(R.string.delete_event_confirmation),
-                            getString(R.string.delete)
+                            getString(R.string.cancel_event),
+                            getString(R.string.back)
                         ) {
                             eventsPresenter.cancelEvent(eventId)
                             dismiss()
@@ -598,6 +632,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         private const val ARG_HEADER_FROM_EVENT_FEED = "headerFromEventFeed"
         private const val ARG_IS_EVENT_CREATOR = "isEventCreator"
         private const val ARG_CAN_EDIT_EVENT = "canEditEvent" // NEW
+        private const val ARG_IS_SMALL_TALK = "isSmallTalk"
+        private const val ARG_SMALL_TALK_ID = "smallTalkId"
 
         var isSignable = false
 
@@ -688,7 +724,9 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             isOneToOne: Boolean,
             userId: Int,
             username: String?,
-            blocked: Boolean
+            blocked: Boolean,
+            isSmallTalk: Boolean = false,
+            smallTalkId: String? = null
         ) = ActionSheetFragment().apply {
             arguments = Bundle().apply {
                 putString(
@@ -700,6 +738,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 putInt(ARG_USER_ID, userId)
                 putString(ARG_USERNAME, username)
                 putBoolean(ARG_BLOCKED, blocked)
+                putBoolean(ARG_IS_SMALL_TALK, isSmallTalk)
+                putString(ARG_SMALL_TALK_ID, smallTalkId)
             }
         }
     }

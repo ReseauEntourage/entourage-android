@@ -606,7 +606,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="actions_tab_demands">Upraszanie</string>
 
     <string name="action_date_list">%s</string>
-    <string name="action_bt_my_actions">Moje reklamy</string>
 
     <string name="action_contrib_empty_state_title">Brak wpisów pasujących do Twojego wyszukiwania</string>
     <string name="action_contrib_empty_state_desc">Możesz poszerzyć swoje pole wyszukiwania lub dodać wpis</string>
@@ -614,14 +613,8 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="action_demand_empty_state_title">Żadne żądania nie pasują do Twojego wyszukiwania</string>
     <string name="action_demand_empty_state_desc">Możesz rozszerzyć pole wyszukiwania lub utworzyć zapytanie</string>
 
-    <string name="action_bt_cat_filters">Kategorie</string>
-    <string name="action_cat_filters_title">Filtruj według kategorii</string>
-    <string name="action_location_filter_title">Filtruj według lokalizacji</string>
-
     <string name="action_menu_create_demand">Utwórz prośbę</string>
     <string name="action_menu_create_contrib">Utwórz wkład</string>
-
-    <string name="action_my_actions">Moje reklamy</string>
 
     <string name="action_my_empty_title">Nie opublikowałeś żadnych ogłoszeń</string>
     <string name="action_my_empty_subtitle">Możesz utworzyć wkład lub prośbę, klikając „+” na stronie „Wzajemna pomoc”.</string>
@@ -2735,4 +2728,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="onboard_sms_wait_countdown">Nowy kod będziesz mógł/mogła zamówić za %1$s</string>
 
     <string name="guide_help_orientation_button">Pomoc i orientacja</string>
+    <string name="home_title_small_talk">Dołącz do wspierającej dyskusji</string>
+    <string name="small_talk_subtitle_match">Łączymy Cię z małą grupą osób o podobnych zainteresowaniach, w całej Francji.</string>
 </resources>

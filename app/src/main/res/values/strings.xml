@@ -425,6 +425,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="add">Ajouter</string>
     <string name="add_oui">Oui</string>
     <string name="event_places">Nombre de places</string>
+    <string name="event_reserved_female_question">Cet événement est-il réservé aux femmes ?</string>
+    <string name="event_reserved_female_banner">Cet événement est réservé aux femmes</string>
     <string name="event_canceled">Evénement annulé</string>
     <string name="member_since">Membre Entourage depuis</string>
     <string name="profile_date_format">MM/yyyy</string>
@@ -628,22 +630,14 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="action_date_list">%s</string>
 
-    <string name="action_bt_my_actions">Mes annonces</string>
-
     <string name="action_contrib_empty_state_title">Aucune contribution ne correspond à votre recherche</string>
     <string name="action_contrib_empty_state_desc">Vous pouvez élargir votre champ de recherche ou créer une contribution</string>
 
     <string name="action_demand_empty_state_title">Aucune demande ne correspond à votre recherche</string>
     <string name="action_demand_empty_state_desc">Vous pouvez élargir votre champ de recherche ou créer une demande</string>
 
-    <string name="action_bt_cat_filters">Catégories</string>
-    <string name="action_cat_filters_title">Filtrer par catégories</string>
-    <string name="action_location_filter_title">Filtrer par localisation</string>
-
     <string name="action_menu_create_demand">Créer une demande</string>
     <string name="action_menu_create_contrib">Créer une contribution</string>
-
-    <string name="action_my_actions">Mes annonces</string>
 
     <string name="action_my_empty_title">Vous n’avez publié aucune annonce</string>
     <string name="action_my_empty_subtitle">Vous pouvez créer une contribution ou une demande en cliquant sur le « + » de la page « Entraide »</string>
@@ -1809,6 +1803,10 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_location_title">Localisez votre événement</string>
     <string name="event_location_detail">L’adresse sera ajoutée à la description détaillée de votre événement.</string>
     <string name="event_btn_share_title">Partager</string>
+    <string name="event_discussion_title">Vous pouvez poser vos questions et échanger avec l\'organisateur et les participants de l\'événement</string>
+    <string name="event_discussion_button">Discussion de l\'événement</string>
+    <string name="event_cancel_button">Annuler l\'événement</string>
+    <string name="event_leave_button">Quitter l\'événement</string>
 
     <!-- STRING GET INVOLVED -->
     <string name="get_involved_title">Suivre Entourage</string>
@@ -2564,9 +2562,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_v2_help_title_one">Comment créer un groupe ?</string>
     <string name="home_v2_help_title_two">Comment créer un événement ?</string>
     <string name="home_help_title_three">Une question ?\nContactez %s</string>
+    <string name="home_moderator_title">%s, votre contact dédié</string>
+    <string name="home_moderator_message">Je fais parti·e de l\'équipe Entourage et je suis là pour vous accompagner. N\'hésitez pas si vous avez des questions ! 🤗</string>
 
 
-    <string name="home_v2_pedago_item_length_title">"%d min de lecture</string>
+    <string name="home_v2_pedago_item_length_title">"%d min</string>
 
     <string name="home_v2_hz_item_title">"Tiens, ça semble un peu calme par ici…</string>
     <string name="home_v2_hz_item_subtitle">"Et si vous mettiez un peu de solidarité dans votre ville ? Entourage vous donne les clés pour vous lancer !</string>
@@ -2579,6 +2579,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="other">Autre</string>
     <string name="date_today">Aujourd\'hui</string>
     <string name="date_today_lower">aujourd\'hui</string>
+    <string name="date_tomorrow">Demain</string>
     <string name="date_format">%1$d %2$s %3$d</string>
     <string name="date_format_short">%1$d %2$s</string>
 
@@ -3045,8 +3046,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="small_talk_group_found_subtitle">Découvrez les personnes de votre groupe</string>
 
     <!-- Accueil -->
-    <string name="home_title_small_talk">Partager des « Bonnes Ondes » !</string>
-    <string name="small_talk_subtitle_match">Découvrez un nouveau moyen de discuter et de créer des liens qui durent dans le temps !</string>
+    <string name="home_title_small_talk">Rejoindre une discussion solidaire</string>
+    <string name="small_talk_subtitle_match">On vous met en relation avec un petit groupe de personnes qui partagent vos centres d’intérêt, partout en France.</string>
     <string name="small_talk_button_match">Discuter</string>
     <string name="small_talk_title_waiting">Bientôt de nouvelles rencontres</string>
     <string name="small_talk_subtitle_waiting">On vous prévient dès qu\'on a trouvé des gens qui sont sur la même longueur d\'onde ;)</string>
@@ -3242,4 +3243,10 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="birthday_button">Revenir à la page d\'accueil</string>
 
     <string name="guide_help_orientation_button">Aide &amp; orientation</string>
+
+    <!-- Home Tools -->
+    <string name="home_title_tools">Tes outils solidaires</string>
+    <string name="home_tools_map">Carte des lieux solidaires</string>
+    <string name="home_tools_pedago">Ressources utiles</string>
+    <string name="home_tools_charter">Charte éthique Entourage</string>
 </resources>

@@ -150,10 +150,10 @@ class CreateSurveyActivity: BaseActivity() {
             getString(R.string.popup_survey_title),
             getString(R.string.popup_survey_content),
             getString(R.string.popup_survey_btn_leave),
-            {
+            onNo = {
 
             },
-            {
+            onYes = {
                 finish()
             })
     }

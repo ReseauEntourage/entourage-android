@@ -107,14 +107,6 @@
                         app:title='@{@string/phone}' />
 
                     <include
-                        android:id="@+id/language"
-                        layout="@layout/profile_edit_clickable_item"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:icon='@{@drawable/planete}'
-                        app:title='@{@string/language}' />
-
-                    <include
                         android:id="@+id/email"
                         layout="@layout/profile_edit_editable_item"
                         android:layout_width="match_parent"

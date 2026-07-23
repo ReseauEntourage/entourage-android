@@ -3,19 +3,33 @@ package social.entourage.android.guide.poi
 import android.content.Context
 import android.graphics.Color
 import androidx.appcompat.content.res.AppCompatResources
+import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.MarkerOptions
+import java.util.concurrent.ConcurrentHashMap
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.tools.utils.Utils
 
 class PoiRenderer {
+    companion object {
+        private val iconsCache = ConcurrentHashMap<Int, BitmapDescriptor>()
+    }
+
     // ----------------------------------
     // PUBLIC METHODS
     // ----------------------------------
     fun getMarkerOptions(poi: Poi, context: Context): MarkerOptions? {
-        val drawable = AppCompatResources.getDrawable(context, categoryForCategoryId(poi.categoryId).resourceId) ?: return null
-        val icon = Utils.getBitmapDescriptorFromDrawable(drawable, BaseEntourage.getMarkerSize(context), BaseEntourage.getMarkerSize(context))
+        val resourceId = categoryForCategoryId(poi.categoryId).resourceId
+
+        val icon = iconsCache[resourceId] ?: run {
+            val drawable = AppCompatResources.getDrawable(context, resourceId) ?: return null
+            val size = BaseEntourage.getMarkerSize(context)
+            val newIcon = Utils.getBitmapDescriptorFromDrawable(drawable, size, size)
+            iconsCache[resourceId] = newIcon
+            newIcon
+        }
+
         return MarkerOptions()
                 .position(poi.position)
                 .title(poi.title)

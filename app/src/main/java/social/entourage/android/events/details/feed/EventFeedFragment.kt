@@ -117,6 +117,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         eventPresenter.getEvent.observe(viewLifecycleOwner, ::handleResponseGetEvent)
         eventPresenter.isEventReported.observe(requireActivity(), ::handleDeletedResponse)
         eventPresenter.hasUserLeftEvent.observe(requireActivity(),::handleLeaveResponse)
+        eventPresenter.eventCanceled.observe(requireActivity(),::handleCanceledResponse)
         eventPresenter.isUserParticipating.observe(viewLifecycleOwner, ::handleParticipateResponse)
         surveyPresenter.isSurveyVoted.observe(requireActivity(), ::handleSurveyPostResponse)
         eventPresenter.getMembers.observe(viewLifecycleOwner, ::handleResponseGetMembers)
@@ -142,35 +143,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
 
     fun reduceButtonSizeImage(){
-        // Pour le bouton de partage
-        binding.bigBtnShare.post {
-            try {
-                val shareDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.share_icon)
-                shareDrawable?.let {
-                    val sizeInPx = TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, 14f, resources.displayMetrics
-                    ).toInt()
-                    it.setBounds(0, 0, sizeInPx, sizeInPx)
-                    binding.bigBtnShare.setCompoundDrawablesRelative(null, null, it, null)
-                }
-            } catch (e: IllegalStateException) {
-                Timber.e(e, "Error setting share icon")
-            }
-        }
-        binding.btnAddCalendar.post {
-            try {
-                ContextCompat.getDrawable(requireContext(), R.drawable.new_calendar)?.let {
-                    val sizeInPx = TypedValue.applyDimension(
-                        TypedValue.COMPLEX_UNIT_DIP, 14f, resources.displayMetrics
-                    ).toInt()
-                    it.setBounds(0, 0, sizeInPx, sizeInPx)
-                    binding.btnAddCalendar.setCompoundDrawablesRelative(null, null, it, null)
-                }
-            } catch (e: IllegalStateException) {
-                Timber.e(e, "Error setting calendar icon")
-            }
-        }
-
+        // Les anciens boutons ont été supprimés (bigBtnShare, btnAddCalendar)
     }
 
     override fun onPause() {
@@ -220,25 +193,25 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         val longitude = event?.location?.longitude ?: 0.0
         if(latitude == 0.0 && longitude == 0.0){
             binding.mapView.visibility = View.GONE
-            return
+        } else {
+            binding.mapView.visibility = View.VISIBLE
+            val latLng = LatLng(latitude, longitude)
+            // Mise à jour de la carte
+            mMap?.apply {
+                clear() // Optionnel, pour effacer les anciens marqueurs
+                addMarker(MarkerOptions().position(latLng))
+                val cameraPosition = CameraPosition.Builder()
+                    .target(latLng)
+                    .zoom(ZOOM)
+                    .build()
+                animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+            }
         }
+
         if(event?.member == true) {
-           binding.participateView.visibility = View.VISIBLE
-           binding.btnAddCalendar.visibility = View.VISIBLE
+           binding.discussionBox.visibility = View.VISIBLE
         }else{
-            binding.participateView.visibility = View.GONE
-            binding.btnAddCalendar.visibility = View.GONE
-        }
-        val latLng = LatLng(latitude, longitude)
-        // Mise à jour de la carte
-        mMap?.apply {
-            clear() // Optionnel, pour effacer les anciens marqueurs
-            addMarker(MarkerOptions().position(latLng))
-            val cameraPosition = CameraPosition.Builder()
-                .target(latLng)
-                .zoom(ZOOM)
-                .build()
-            animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+            binding.discussionBox.visibility = View.GONE
         }
     }
 
@@ -280,6 +253,11 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         with(binding) {
             eventName.text = event?.title
             eventNameToolbar.text = event?.title
+            if (event?.metadata?.reserved_female == true) {
+                tvReservedFemale.visibility = View.VISIBLE
+            } else {
+                tvReservedFemale.visibility = View.GONE
+            }
             eventDescription.enableCopyOnLongClick(requireContext())
             if(event != null && event?.membersCount!! > 1){
                 eventMembersNumberLocation.text = String.format(
@@ -307,20 +285,21 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 )
             }
             event?.metadata?.startsAt?.let {
-                binding.dateStartsAt.content.text = SimpleDateFormat(
-                    context?.getString(R.string.feed_event_date),
-                    locale
-                ).format(
-                    it
+                binding.dateStartsAt.content.text = Utils.formatEventDateForDisplay(
+                    it,
+                    requireContext()
                 )
             }
-            event?.metadata?.startsAt?.let {
-                binding.time.content.text = SimpleDateFormat(
-                    context?.getString(R.string.feed_event_time),
-                    locale
-                ).format(
-                    it
-                )
+            event?.metadata?.startsAt?.let { startsAt ->
+                val endsAt = event?.metadata?.endsAt
+                val timeFormat = SimpleDateFormat(context?.getString(R.string.feed_event_time), locale)
+                val startTime = timeFormat.format(startsAt)
+                binding.time.content.text = if (endsAt != null) {
+                    val endTime = timeFormat.format(endsAt)
+                    "$startTime - $endTime"
+                } else {
+                    startTime
+                }
             }
             initializeMembersPhotos()
             initializeInterests()
@@ -388,7 +367,11 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             }
         }
         if(event?.member == true){
-            binding.buttonJoin.text = getString(R.string.see_conversation_event)
+            if (iAmOrganiser) {
+                binding.buttonJoin.text = getString(R.string.event_cancel_button)
+            } else {
+                binding.buttonJoin.text = getString(R.string.event_leave_button)
+            }
         }else{
             binding.buttonJoin.text = getString(R.string.share_and_join_event)
         }
@@ -397,6 +380,12 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun handleBackButton() {
         binding.iconBack.setOnClickListener {
+            requireActivity().finish()
+        }
+    }
+
+    private fun handleCanceledResponse(isCanceled: Boolean) {
+        if (isCanceled) {
             requireActivity().finish()
         }
     }
@@ -519,7 +508,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     }
 
     private fun handleAboutButton() {
-        binding.btnAddCalendar.setOnClickListener {
+        binding.dateStartsAt.root.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.add_to_calendar_yes_clicked)
             shouldAddToAgenda = false
             val startMillis: Long = Calendar.getInstance().run {
@@ -546,7 +535,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             requireContext().startActivity(intent)
         }
 
-        binding.bigBtnShare.setOnClickListener {
+        binding.iconShare.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SHARED)
             val shareTitle = getString(R.string.share_title_event)
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
@@ -554,6 +543,10 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 putExtra(Intent.EXTRA_TEXT, shareTitle + "\n" + event?.title + ": " + "\n" + createShareUrl())
             }
             startActivity(Intent.createChooser(shareIntent, getString(R.string.entourage_share_intent_title)))
+        }
+
+        binding.btnDiscussion.setOnClickListener {
+            goDiscussion()
         }
     }
 
@@ -633,12 +626,33 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun handleParticipateButton() {
         binding.buttonJoin.setOnClickListener {
+            if (event?.member == true) {
+                if (iAmOrganiser) {
+                    CustomAlertDialog.showWithCancelFirst(
+                        requireContext(),
+                        getString(R.string.delete_event_title),
+                        getString(R.string.delete_event_confirmation),
+                        getString(R.string.cancel_event),
+                        getString(R.string.back)
+                    ) {
+                        eventPresenter.cancelEvent(eventId)
+                    }
+                } else {
+                    CustomAlertDialog.showWithCancelFirst(
+                        requireContext(),
+                        getString(R.string.leave_event),
+                        getString(R.string.leave_event_dialog_content),
+                        getString(R.string.exit)
+                    ) {
+                        eventPresenter.leaveEvent(eventId)
+                    }
+                }
+                return@setOnClickListener
+            }
+
             requestInAppReview(requireContext())
             val meUser = EntourageApplication.me(activity)
             if(meUser?.roles?.contains("Ambassadeur") == true){
-                if(event?.member==true){
-                    goDiscussion()
-                }
                 CustomAlertDialog.showAmbassadorWithTwoButton(requireContext(),
                     onNo = {
                         if (event?.member==false){
@@ -652,9 +666,6 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             }else{
                 if (event?.member==false){
                     eventPresenter.participate(eventId)
-                    binding.participateView.visibility = View.VISIBLE
-                }else{
-                    goDiscussion()
                 }
             }
         }
@@ -697,10 +708,8 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     }
 
     private fun handleLeaveResponse(isParticipating: Boolean) {
-        event?.let {event ->
-            event.member = !event.member
-            //handleCreatePostButton()
-            eventPresenter.getEvent(eventId.toString())
+        if (isParticipating) {
+            requireActivity().finish()
         }
     }
 

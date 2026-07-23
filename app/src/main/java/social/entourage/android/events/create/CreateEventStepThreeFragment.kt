@@ -46,6 +46,13 @@ class CreateEventStepThreeFragment : Fragment() {
     private fun setViewMultiSelect() {
         setPlaceSelection()
         setLimitedPlacesSelection()
+        setReservedFemale()
+    }
+
+    private fun setReservedFemale() {
+        binding.layout.switchReservedFemale.setOnCheckedChangeListener { _, isChecked ->
+            CommunicationHandler.event.metadata?.reserved_female = isChecked
+        }
     }
 
     private fun adjustTextViewsForRTL(view: View) {
@@ -187,6 +194,9 @@ class CreateEventStepThreeFragment : Fragment() {
                     binding.layout.no.isChecked = true
                     binding.layout.eventLimitedPlaceCount.visibility = View.GONE
                 }
+
+                binding.layout.switchReservedFemale.isChecked = this.metadata?.reserved_female ?: false
+                CommunicationHandler.event.metadata?.reserved_female = this.metadata?.reserved_female ?: false
             }
         }
     }

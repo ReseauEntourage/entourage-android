@@ -158,7 +158,7 @@ class CreateGroupFragment : Fragment() {
                     getString(R.string.back_create_group_title),
                     getString(R.string.back_create_group_content),
                     getString(R.string.exit),
-                    {
+                    onNo = {
                         AnalyticsEvents.logEvent(
                             AnalyticsEvents.ACTION_NEW_GROUP_CANCEL_POP_CANCEL
                         )

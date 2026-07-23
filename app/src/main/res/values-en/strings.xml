@@ -542,17 +542,13 @@
     <string name="actions_tab_demands">Requests</string>
     <string name="action_date_list">%s</string>
 
-    <string name="action_bt_my_actions">My listings</string>
     <string name="action_contrib_empty_state_title">No contributions match your search</string>
     <string name="action_contrib_empty_state_desc">You can broaden your search field or create a contribution</string>
     <string name="action_demand_empty_state_title">No requests match your search</string>
     <string name="action_demand_empty_state_desc">You can expand your search field or create a request</string>
-    <string name="action_bt_cat_filters">Categories</string>
-    <string name="action_cat_filters_title">Filter by categories</string>
-    <string name="action_location_filter_title">Filter by location</string>
+
     <string name="action_menu_create_demand">Create request</string>
     <string name="action_menu_create_contrib">Create contribution</string>
-    <string name="action_my_actions">My listings</string>
     <string name="action_my_empty_title">You have not published any listings</string>
     <string name="action_my_empty_subtitle">You can create a contribution or request by clicking on the “+” on the “Mutual aid” page.</string>
     <string name="action_cancel_title">The listing has been deleted...</string>
@@ -855,6 +851,10 @@
     <string name="event_location_title">Locate your event</string>
     <string name="event_location_detail">The address will be added to the detailed description of your event.</string>
     <string name="event_btn_share_title">Share</string>
+    <string name="event_discussion_title">You can ask questions and discuss with the organizer and participants</string>
+    <string name="event_discussion_button">Event discussion</string>
+    <string name="event_cancel_button">Cancel event</string>
+    <string name="event_leave_button">Leave event</string>
     <string name="get_involved_title">Follow Entourage</string>
     <string name="get_involved_rate_us">Rate us in the Play Store</string>
     <string name="get_involved_facebook">Like our Facebook page</string>
@@ -1447,6 +1447,7 @@
     <string name="other">Other</string>
     <string name="date_today">Today</string>
     <string name="date_today_lower">today</string>
+    <string name="date_tomorrow">Tomorrow</string>
     <string name="date_format">%1$d %2$s %3$d</string>
     <string name="date_format_short">%1$d %2$s</string>
 
@@ -1861,4 +1862,6 @@
 
 
     <string name="guide_help_orientation_button">Help &amp; orientation</string>
+    <string name="home_title_small_talk">Join a supportive discussion</string>
+    <string name="small_talk_subtitle_match">Connect with a small group of people who share your interests, anywhere in France.</string>
 </resources>

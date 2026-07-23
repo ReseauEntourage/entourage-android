@@ -617,23 +617,14 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="action_date_list">%s</string>
 
-    <string name="action_bt_my_actions">Mes annonces</string>
-
     <string name="action_contrib_empty_state_title">Aucune contribution ne correspond à votre recherche</string>
     <string name="action_contrib_empty_state_desc">Vous pouvez élargir votre champ de recherche ou créer une contribution</string>
 
     <string name="action_demand_empty_state_title">Aucune demande ne correspond à votre recherche</string>
     <string name="action_demand_empty_state_desc">Vous pouvez élargir votre champ de recherche ou créer une demande</string>
 
-    <string name="action_bt_cat_filters">Catégories</string>
-    <string name="action_cat_filters_title">Filtrer par catégories</string>
-    <string name="action_location_filter_title">Filtrer par localisation</string>
-
     <string name="action_menu_create_demand">Créer une demande</string>
     <string name="action_menu_create_contrib">Créer une contribution</string>
-
-    <string name="action_my_actions">Mes annonces</string>
-
     <string name="action_my_empty_title">Vous n’avez publié aucune annonce</string>
     <string name="action_my_empty_subtitle">Vous pouvez créer une contribution ou une demande en cliquant sur le « + » de la page « Entraide »</string>
 
@@ -1613,6 +1604,10 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_location_title">Localisez votre événement</string>
     <string name="event_location_detail">L’adresse sera ajoutée à la description détaillée de votre événement.</string>
     <string name="event_btn_share_title">Partager</string>
+    <string name="event_discussion_title">Vous pouvez poser vos questions et échanger avec l\'organisateur et les participants de l\'événement</string>
+    <string name="event_discussion_button">Discussion de l\'événement</string>
+    <string name="event_cancel_button">Annuler l\'événement</string>
+    <string name="event_leave_button">Quitter l\'événement</string>
 
     <!-- STRING GET INVOLVED -->
     <string name="get_involved_title">Suivre Entourage</string>
@@ -2347,7 +2342,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_v2_help_title_two">Comment créer un événement ?</string>
     <string name="home_help_title_three">Une question ?\nContactez %s</string>
 
-    <string name="home_v2_pedago_item_length_title">"%d min de lecture</string>
+    <string name="home_v2_pedago_item_length_title">"%d min</string>
 
     <string name="home_v2_hz_item_title">"Tiens, ça semble un peu calme par ici…</string>
     <string name="home_v2_hz_item_subtitle">"Et si vous mettiez un peu de solidarité dans votre ville ? Entourage vous donne les clés pour vous lancer !</string>
@@ -2360,6 +2355,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="other">Autre</string>
     <string name="date_today">Aujourd\'hui</string>
     <string name="date_today_lower">aujourd\'hui</string>
+    <string name="date_tomorrow">Demain</string>
     <string name="date_format">%1$d %2$s %3$d</string>
     <string name="date_format_short">%1$d %2$s</string>
 

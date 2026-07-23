@@ -25,7 +25,7 @@ android {
 
     // App versions
     val versionMajor = 13
-    val versionMinor = 2
+    val versionMinor = 4
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -93,7 +93,6 @@ android {
 
         buildConfigField("String", "VERSION_FULL_NAME", "\"" + versionNameProd + "\"")
         buildConfigField("String", "VERSION_DISPLAY_BRANCH_NAME", "\"" + versionBranchName + "\"")
-        multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 
@@ -210,7 +209,6 @@ dependencies {
     implementation(libs.androidx.coordinatorlayout)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.fragment.ktx)
-    implementation(libs.androidx.multidex)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.preference.ktx)
     implementation(libs.androidx.compose.ui.text.android)
@@ -256,17 +254,11 @@ dependencies {
     compileOnly(libs.javax.annotation)
 
     // Instrumentation tests
-    androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    androidTestImplementation(libs.espresso.core)
-    androidTestImplementation(libs.androidx.test.runner)
-    androidTestImplementation(libs.androidx.test.rules)
-    androidTestImplementation(libs.androidx.test.core.ktx)
-
-    androidTestImplementation(libs.androidx.uiautomator)
-    androidTestImplementation(libs.espresso.intents)
-    androidTestImplementation(libs.okhttp3.idling.resource)
-    androidTestImplementation(libs.androidx.arch.core.testing)
+    androidTestImplementation(libs.bundles.androidx.test)
+    androidTestImplementation(libs.androidx.espresso.contrib) {
+        exclude(group = "com.google.protobuf", module = "protobuf-lite")
+    }
+    androidTestImplementation(libs.bundles.espresso.test)
 
     // Unit tests
     testImplementation(libs.junit)
@@ -275,6 +267,7 @@ dependencies {
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.inline)
     testImplementation(libs.mockito.kotlin)
+
     implementation(libs.flexbox)
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
@@ -297,4 +290,26 @@ dependencies {
     //UNCOMMENT FOR VIDEO CALL FEATURE
     //implementation("com.dafruits:webrtc:123.0.0")
     implementation(libs.bundles.oss)
+}
+
+tasks.register<Exec>("clearSnapshots") {
+    group = "verification"
+    description = "Vider les snapshots sur le device"
+    commandLine("adb", "shell", "rm", "-rf", "/sdcard/Download/entourage_snapshots/*")
+    isIgnoreExitValue = true
+}
+
+tasks.register<Exec>("pullSnapshots") {
+    group = "verification"
+    description = "Transférer les snapshots du device vers le répertoire local et vider le device"
+    
+    val localDir = File(project.layout.buildDirectory.asFile.get(), "reports/snapshots")
+    doFirst {
+        if (!localDir.exists()) localDir.mkdirs()
+    }
+
+    commandLine("adb", "pull", "/sdcard/Download/entourage_snapshots/.", localDir.absolutePath)
+    
+    isIgnoreExitValue = true
+    finalizedBy("clearSnapshots")
 }

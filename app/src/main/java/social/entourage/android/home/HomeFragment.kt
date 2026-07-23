@@ -1,6 +1,7 @@
 package social.entourage.android.home
 
 import android.animation.ValueAnimator
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,6 +26,10 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.MainPresenter
 import social.entourage.android.R
+import android.net.Uri
+import android.widget.PopupWindow
+import com.google.android.material.bottomsheet.BottomSheetDialog
+
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionSectionFilters
@@ -38,8 +43,10 @@ import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.databinding.FragmentHomeBinding
 import social.entourage.android.discussions.DetailConversationActivity
+import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.events.create.CommunicationHandler
+import social.entourage.android.groups.details.rules.GroupRulesActivity
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.chatbot.ChatBotBottomSheet
 import social.entourage.android.home.pedago.OnItemClick
@@ -61,11 +68,12 @@ import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
 import timber.log.Timber
 
-class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocationUpdate {
+class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var homePresenter: HomePresenter
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
+    private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
     private lateinit var mainPresenter: MainPresenter
     private var pageEvent = 0
     private var nbOfItemForHozrizontalList = 10
@@ -90,8 +98,14 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     private var isRequestLoaded = false
     private var currentRequests: List<UserSmallTalkRequest> = emptyList()
 
+
     // Adapters
     private lateinit var concatAdapter: ConcatAdapter
+
+    // Welcome Journey
+    private lateinit var welcomeJourneyAdapter: HomeWelcomeJourneyAdapter
+    private var currentCompletedSteps = 0
+
 
     // Sensibilisation (Initial Pedago)
     private lateinit var initialPedagoHeaderAdapter: HomeSectionHeaderAdapter
@@ -106,6 +120,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     // Actions
     private lateinit var actionHeaderAdapter: HomeSectionHeaderAdapter
     private lateinit var homeActionAdapter: HomeActionAdapter
+    private lateinit var actionWrapperAdapter: HomeHorizontalWrapperAdapter // NOUVEAU
     private lateinit var actionButtonAdapter: HomeSectionButtonAdapter
 
     // Events
@@ -121,18 +136,17 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     private lateinit var groupButtonAdapter: HomeSectionButtonAdapter
 
     // Map & Hors Zone
-    private lateinit var mapHeaderAdapter: HomeSectionHeaderAdapter
-    private lateinit var mapSingleViewAdapter: HomeSingleLayoutAdapter
     private lateinit var horsZoneAdapter: HomeSingleLayoutAdapter
+
+    // Tools
+    private lateinit var homeToolsAdapter: HomeToolsAdapter
 
     // Pedago
     private lateinit var pedagoHeaderAdapter: HomeSectionHeaderAdapter
     private lateinit var homePedagoAdapter: HomePedagoAdapter
-    private lateinit var pedagoButtonAdapter: HomeSectionButtonAdapter
 
-    // Help
-    private lateinit var helpHeaderAdapter: HomeSectionHeaderAdapter
-    private lateinit var homeHelpAdapter: HomeHelpAdapter
+    // Moderator
+    private lateinit var homeModeratorAdapter: HomeModeratorAdapter
 
     // Gère uniquement le cycle de vie du fragment pour ne pas lancer plusieurs popups en même temps
     private var hasRunEntryGating = false
@@ -155,6 +169,96 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         }
     }
 
+
+    private fun updateWelcomeJourneyStep(stepIndex: Int) {
+        welcomeJourneyAdapter.updateStepState(stepIndex, true)
+        currentCompletedSteps++
+
+        if (currentCompletedSteps >= 3) {
+            welcomeJourneyAdapter.setFullyCompleted(true)
+            showCelebrationTooltip()
+        }
+    }
+
+    private fun showCelebrationTooltip() {
+        if (!isAdded) return
+        val inflater = LayoutInflater.from(requireContext())
+        val view = inflater.inflate(R.layout.layout_celebration_tooltip, null)
+        val popupWindow = PopupWindow(
+            view,
+            android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+            android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+            true
+        )
+
+        binding.rvHome.postDelayed({
+             if (isAdded) {
+                popupWindow.showAtLocation(binding.rvHome, android.view.Gravity.TOP or android.view.Gravity.CENTER_HORIZONTAL, 0, 300)
+             }
+        }, 500)
+
+        binding.rvHome.postDelayed({
+            if (isAdded && popupWindow.isShowing) {
+                popupWindow.dismiss()
+            }
+        }, 4000)
+    }
+
+    private fun handleWelcomeJourneyClick(stepIndex: Int) {
+        // Sécurité : on empêche de cliquer sur une étape si la précédente n'est pas terminée
+        if (stepIndex > currentCompletedSteps + 1) return
+
+        when (stepIndex) {
+            1 -> showVideoModal()
+            2 -> {
+                val urlString = if (BuildConfig.DEBUG) {
+                    "https://preprod.entourage.social/app/outings/webinar"
+                } else {
+                    "https://www.entourage.social/app/outings/webinar"
+                }
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlString))
+                startActivity(intent)
+                updateWelcomeJourneyStep(2)
+            }
+            3 -> {
+                val urlString = if (BuildConfig.DEBUG) {
+                    "https://preprod.entourage.social/app/outings/papotages"
+                } else {
+                    "https://www.entourage.social/app/outings/papotages"
+                }
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlString))
+                startActivity(intent)
+                updateWelcomeJourneyStep(3)
+            }
+        }
+    }
+
+    private fun showVideoModal() {
+        if (!isAdded) return
+        val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme)
+        val view = layoutInflater.inflate(R.layout.dialog_welcome_video, null)
+        bottomSheetDialog.setContentView(view)
+
+        val btnContinue = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_continue)
+        val layoutVideo = view.findViewById<androidx.constraintlayout.widget.ConstraintLayout>(R.id.layout_video_placeholder)
+        val ivClose = view.findViewById<android.widget.ImageView>(R.id.iv_close)
+
+        ivClose?.setOnClickListener {
+            bottomSheetDialog.dismiss()
+        }
+
+        layoutVideo?.setOnClickListener {
+            btnContinue?.isEnabled = true
+        }
+
+        btnContinue?.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            updateWelcomeJourneyStep(1)
+        }
+
+        bottomSheetDialog.show()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -168,7 +272,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         binding.homeHeader.visibility = View.VISIBLE
 
         mainPresenter = MainPresenter(requireActivity() as MainActivity)
-        binding.progressBar.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
         homePresenter = ViewModelProvider(requireActivity()).get(HomePresenter::class.java)
         actionsPresenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
 
@@ -199,12 +303,63 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         }
 
         loadSmallTalkItems()
-
         return binding.root
     }
 
+    private fun testNotifDemandePage() {
+        // Appui long existant...
+        binding.ivLogoHome.setOnLongClickListener {
+            // ... ton code existant ...
+            true
+        }
+
+        // CLIC SIMPLE : Injection dans le pipeline de notification
+        binding.ivLogoHome.setOnClickListener {
+            // 1. Le JSON exact de la payload (avec stage="birthday" qui est la clé critique pour le PendingIntent)
+            val jsonPayload = """
+            {
+                "sender": "L'équipe Entourage",
+                "object": "Joyeux anniversaire 🎉",
+                "content": {
+                    "message": "On est heureux de vous compter parmi nous. Cliquez ici pour lire notre message d'anniversaire !",
+                    "extra": {
+                        "stage": "birthday",
+                        "tracking": "birthday",
+                        "popup": "birthday"
+                    }
+                }
+            }
+            """
+
+            try {
+                // 2. On désérialise le JSON en objet métier PushNotificationMessage
+                val message = com.google.gson.Gson().fromJson(
+                    jsonPayload,
+                    social.entourage.android.api.model.notification.PushNotificationMessage::class.java
+                )
+
+                // 3. On balance ça au Manager.
+                // Il va lire "stage: birthday", créer le PendingIntent avec "goBirthday=true" et afficher la notif système.
+                social.entourage.android.notifications.PushNotificationManager.handlePushNotification(message, requireContext())
+
+                // (Optionnel) Log pour confirmer le tir
+                social.entourage.android.tools.log.AnalyticsEvents.logEvent("debug_birthday_proc_triggered")
+
+            } catch (e: Exception) {
+                android.util.Log.e("DEBUG_NOTIF", "Erreur parsing JSON: ${e.message}")
+            }
+        }
+    }
+
+
     private fun setupAdapters() {
         val viewPool = RecyclerView.RecycledViewPool()
+
+        // 0. Welcome Journey
+        welcomeJourneyAdapter = HomeWelcomeJourneyAdapter(requireContext()) { stepIndex ->
+            handleWelcomeJourneyClick(stepIndex)
+        }
+
 
         // 1. Initial Pedago
         initialPedagoHeaderAdapter = HomeSectionHeaderAdapter()
@@ -250,6 +405,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         // 3. Actions
         actionHeaderAdapter = HomeSectionHeaderAdapter()
         homeActionAdapter = HomeActionAdapter(false)
+        actionWrapperAdapter = HomeHorizontalWrapperAdapter(homeActionAdapter, viewPool) // NOUVEAU
         actionButtonAdapter = HomeSectionButtonAdapter {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Demand_All)
             (requireActivity() as? MainActivity)?.goDemand()
@@ -287,17 +443,44 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         }
         horsZoneAdapter.setVisible(false)
 
-        mapHeaderAdapter = HomeSectionHeaderAdapter()
-        mapSingleViewAdapter = HomeSingleLayoutAdapter(R.layout.home_map_card) { view ->
-            view.findViewById<View>(R.id.home_button_map).setOnClickListener {
+        // 7. Tools
+        homeToolsAdapter = HomeToolsAdapter(requireContext(),
+            onMapClick = {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Map)
                 val intent = Intent(requireContext(), GDSMainActivity::class.java)
                 startActivityForResult(intent, 0)
-            }
-        }
+            },
+            onPedagoClick = {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Pedago)
+                val intent = Intent(requireActivity(), PedagoListActivity::class.java)
+                requireContext().startActivity(intent)
+                requireActivity().overridePendingTransition(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+                )
+            },
+            onCharterClick = {
+                // Sélection de l'URL selon l'environnement (DEBUG = preprod / RELEASE = prod)
+                val urlString = if (BuildConfig.DEBUG) {
+                    "https://preprod.entourage.social/app/resources/87203debda8b"
+                } else {
+                    "https://www.entourage.social/app/resources/eMU_InNSSJbE"
+                }
 
-        // 7. Pedago
+                try {
+                    val uri = android.net.Uri.parse(urlString)
+                    val intent = Intent(Intent.ACTION_VIEW, uri)
+
+                    startActivity(intent)
+                } catch (e: Exception) {
+
+                }
+            }
+        )
+
+        // 8. Pedago
         pedagoHeaderAdapter = HomeSectionHeaderAdapter()
+
         homePedagoAdapter = HomePedagoAdapter(object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
                 if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
@@ -312,63 +495,49 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
                 }
             }
         })
-        pedagoButtonAdapter = HomeSectionButtonAdapter {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Pedago)
-            val intent = Intent(requireActivity(), PedagoListActivity::class.java)
-            requireContext().startActivity(intent)
-            requireActivity().overridePendingTransition(
-                R.anim.slide_in_right,
-                R.anim.slide_out_left
-            )
-        }
 
-        // 8. Help
-        helpHeaderAdapter = HomeSectionHeaderAdapter()
-        homeHelpAdapter = HomeHelpAdapter(this)
+        // 9. Moderator
+        homeModeratorAdapter = HomeModeratorAdapter { moderatorId ->
+            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Moderator)
+            discussionsPresenter.createOrGetConversation(moderatorId.toString())
+        }
     }
 
     private fun setupRecyclerView() {
-        // CORRECTION : Config pour stabiliser le ConcatAdapter
         val config = ConcatAdapter.Config.Builder()
             .setIsolateViewTypes(true)
             .build()
 
+
         concatAdapter = ConcatAdapter(
             config,
+          //  welcomeJourneyAdapter,
             initialPedagoHeaderAdapter,
+
             initialPedagoWrapperAdapter,
-            smallTalkHeaderAdapter,
-            smallTalkWrapperAdapter,
             actionHeaderAdapter,
-            homeActionAdapter,
+            actionWrapperAdapter,
             actionButtonAdapter,
             eventHeaderAdapter,
             eventWrapperAdapter,
             eventButtonAdapter,
+            homeModeratorAdapter,
             groupHeaderAdapter,
             groupWrapperAdapter,
             groupButtonAdapter,
             horsZoneAdapter,
-            mapHeaderAdapter,
-            mapSingleViewAdapter,
-            pedagoHeaderAdapter,
-            homePedagoAdapter,
-            pedagoButtonAdapter,
-            helpHeaderAdapter,
-            homeHelpAdapter
+            smallTalkWrapperAdapter,
+            homeToolsAdapter,
+            homePedagoAdapter
         )
 
         binding.rvHome.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = concatAdapter
-            // CORRECTION: Désactiver l'animator évite le "blink" à l'insertion des items
             itemAnimator = null
-            // CORRECTION: On laisse VISIBLE mais vide au lieu de GONE pour garder la structure
             visibility = View.VISIBLE
         }
 
-        // On masque la map via l'adapter plutôt que la vue entière pour garder le layout stable
-        mapHeaderAdapter.update(getString(R.string.home_title_map), getString(R.string.home_subtitle_map), true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -388,7 +557,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         resetFilter()
         callToInitHome()
         actionsPresenter.getUnreadCount()
-        testNotifDemandePage()
         sendUserDiscussionStatus()
         loadSmallTalkItems()
     }
@@ -422,17 +590,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         smallTalkWrapperAdapter.setVisible(hasItems)
     }
 
-    private fun testNotifDemandePage() {
-        binding.ivLogoHome.setOnLongClickListener {
-            val intent = Intent(requireContext(), SmallTalkIntroActivity::class.java)
-            startActivity(intent)
-            requireActivity().overridePendingTransition(
-                R.anim.slide_in_right,
-                R.anim.slide_out_left
-            )
-            true
-        }
-    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -671,13 +829,27 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     }
 
     private fun setObservations() {
-        homePresenter.summary.observe(viewLifecycleOwner, ::updateContributionsView)
-        homePresenter.getAllEvents.observe(viewLifecycleOwner, ::handleEvent)
-        homePresenter.getAllActions.observe(viewLifecycleOwner, ::handleAction)
-        homePresenter.pedagogicalContent.observe(viewLifecycleOwner, ::handlePedago)
-        homePresenter.pedagogicalInitialContent.observe(viewLifecycleOwner, ::handleInitialPedago)
-        homePresenter.notifsCount.observe(viewLifecycleOwner, ::updateNotifsCount)
-        actionsPresenter.unreadMessages.observe(viewLifecycleOwner, ::updateUnreadCount)
+        homePresenter.summary.observe(viewLifecycleOwner) { updateContributionsView(it) }
+        homePresenter.getAllEvents.observe(viewLifecycleOwner) { handleEvent(it) }
+        homePresenter.getAllActions.observe(viewLifecycleOwner) { handleAction(it) }
+        homePresenter.pedagogicalContent.observe(viewLifecycleOwner) { handlePedago(it) }
+        homePresenter.pedagogicalInitialContent.observe(viewLifecycleOwner) { handleInitialPedago(it) }
+        homePresenter.notifsCount.observe(viewLifecycleOwner) { updateNotifsCount(it) }
+        actionsPresenter.unreadMessages.observe(viewLifecycleOwner) { updateUnreadCount(it) }
+        discussionsPresenter.newConversation.observe(viewLifecycleOwner) { conversation ->
+            conversation?.let {
+                startActivity(
+                    Intent(requireContext(), DetailConversationActivity::class.java)
+                        .putExtra(Const.ID, it.id)
+                        .putExtra(Const.POST_ID, it.id)
+                        .putExtra(Const.POST_AUTHOR_ID, it.user?.id)
+                        .putExtra(Const.IS_CONVERSATION_1TO1, true)
+                        .putExtra(Const.IS_MEMBER, true)
+                        .putExtra(Const.IS_CONVERSATION, true)
+                        .putExtra(Const.HAS_TO_SHOW_MESSAGE, it.hasToShowFirstMessage())
+                )
+            }
+        }
     }
 
     fun handleGroup(allGroup: MutableList<Group>?) {
@@ -747,6 +919,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         }
 
         actionHeaderAdapter.update(title, subtitle, showActions)
+        actionWrapperAdapter.setVisible(showActions) // NOUVEAU : On gère la visibilité du wrapper
         actionButtonAdapter.update(btnText, showActions, clickListener)
     }
 
@@ -776,7 +949,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
 
         val pedagos: MutableList<Pedago> = mutableListOf()
         for (pedago in allPedago) {
-            if (pedagos.size > 1) {
+            if (pedagos.size > 2) {
                 break
             }
             if (pedago.watched == false) {
@@ -801,8 +974,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         homePresenter.getSummary()
 
         val show = allPedago.isNotEmpty()
-        pedagoHeaderAdapter.update(getString(R.string.home_title_pedago), getString(R.string.home_subtitle_pedago), show)
-        pedagoButtonAdapter.update(getString(R.string.home_btn_more_pedago), show)
     }
 
     private fun updateContributionsView(summary: Summary) {
@@ -815,7 +986,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         EnhancedOnboarding.isAssociationFromSummary = isAssociationFromSummary
         EnhancedOnboarding.preference = summary.preference ?: ""
         onActionUnclosed(summary)
-        handleHelps(summary)
+        handleModerator(summary)
         if (summary.signablePermission != null) {
             HomeFragment.signablePermission = summary.signablePermission!!
         }
@@ -846,19 +1017,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         }
     }
 
-    private fun handleHelps(summary: Summary) {
+    private fun handleModerator(summary: Summary) {
         if (isAdded) {
             doTotalchecksumToDisplayHomeFirstTime()
-            val formattedString = requireContext().getString(
-                R.string.home_help_title_three,
-                summary.moderator?.displayName
-            )
-            val help3 = Help(formattedString, R.drawable.first_help_item_illu)
-            val helps: MutableList<Help> = mutableListOf()
-            helps.add(help3)
-            homeHelpAdapter.resetData(helps, summary)
-
-            helpHeaderAdapter.update(getString(R.string.home_title_help), getString(R.string.home_subtitle_help), true)
+            homeModeratorAdapter.updateSummary(summary)
         }
     }
 
@@ -904,7 +1066,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     private fun updateUser(user: User) {
         this.user = user
         updateAvatar()
-        //checkBirthday()
+
     }
 
     private fun checkBirthday() {
@@ -979,41 +1141,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         animator.start()
     }
 
-    override fun onItemClick(position: Int, moderatorId: Int) {
-        if (position == 2) {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_CreateGroup)
-            val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
-            intent.putExtra(Const.ID, pedagoItemForCreateGroup?.id)
-            PedagoDetailActivity.setPedagoId(pedagoItemForCreateGroup?.id!!)
-            PedagoDetailActivity.setHtmlContent(pedagoItemForCreateGroup?.html!!)
-            requireActivity().startActivity(intent)
-            requireActivity().overridePendingTransition(
-                R.anim.slide_in_right,
-                R.anim.slide_out_left
-            )
-        }
-        if (position == 1) {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_CreateEvent)
-            val intent = Intent(requireActivity(), PedagoDetailActivity::class.java)
-            intent.putExtra(Const.ID, pedagoItemForCreateEvent?.id)
-            PedagoDetailActivity.setPedagoId(pedagoItemForCreateEvent?.id!!)
-            PedagoDetailActivity.setHtmlContent(pedagoItemForCreateEvent?.html!!)
-            requireActivity().startActivity(intent)
-            requireActivity().overridePendingTransition(
-                R.anim.slide_in_right,
-                R.anim.slide_out_left
-            )
-        }
-        if (position == 0) {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Moderator)
-            startActivity(
-                Intent(context, ProfileFullActivity::class.java).putExtra(
-                    Const.USER_ID,
-                    moderatorId
-                )
-            )
-        }
-    }
 
     private fun onActionUnclosed(summary: Summary) {
         summary.unclosedAction?.let { unclosedAction ->
@@ -1035,7 +1162,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
                                 getString(R.string.custom_dialog_action_content_two_demande),
                                 getString(R.string.custom_dialog_action_two_button_contrib),
                                 onYes = {
-                                    (requireActivity() as? MainActivity)?.goContrib()
+                                    (requireActivity() as? MainActivity)?.goDemand()
                                     AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeDemand__Day10)
                                 }
                             )
@@ -1106,7 +1233,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         var signablePermission = false
         private const val PREF_GATING_ZONE_SHOWN = "PREF_GATING_ZONE_SHOWN"
         private const val PREF_GATING_NOTIF_SHOWN = "PREF_GATING_NOTIF_SHOWN"
-        private const val PREF_GATING_ENHANCED_ONBOARDING_SHOWN =
+        internal const val PREF_GATING_ENHANCED_ONBOARDING_SHOWN =
             "PREF_GATING_ENHANCED_ONBOARDING_SHOWN"
 
         const val PREF_ENHANCED_ONBOARDING_COMPLETED = "PREF_ENHANCED_ONBOARDING_COMPLETED"
