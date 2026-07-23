@@ -2725,4 +2725,99 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="home_small_talk_matching">+%1$d en cours de matching</string>
     <string name="home_small_talk_launch_new">+ Lancer une nouvelle rencontre (%1$d/3)</string>
     <string name="home_small_talk_subtitle_waiting">%1$d discussion en cours de matching</string>
-    </resources>
+    
+    <!-- Badges section -->
+    <string name="badges_section_title">SUS INSIGNIAS</string>
+    <string name="badges_see_all">Ver todo</string>
+    <string name="badges_screen_title">Mis insignias</string>
+    <string name="badges_screen_subtitle">%1$d obtenidas, %2$d en curso, %3$d por descubrir. Cada insignia recompensa una acción concreta en tu comunidad.</string>
+    <string name="badges_section_obtained">Obtenidas %1$d/%2$d</string>
+    <string name="badges_section_in_progress">En curso %1$d/%2$d</string>
+    <string name="badges_section_not_started">No iniciadas %1$d/%2$d</string>
+    <string name="badges_all_title">Todas las insignias %1$d/%2$d</string>
+    <string name="badges_empty_title">Tus insignias Entourage</string>
+    <string name="badges_empty_subtitle">Cada insignia recompensa una acción concreta que crea vínculos en la comunidad. ¡Es tu turno!</string>
+    <string name="badges_empty_start_label">EMPIEZA POR</string>
+    <string name="badges_empty_start_badge">La insignia %1$s</string>
+    <string name="badges_empty_start_description">Completa tu onboarding y realiza tu primera acción — reacción, publicación, unirte a un grupo o participar en un evento — para obtener esta insignia.</string>
+    <string name="badges_empty_cta">¡Vamos!</string>
+    <string name="badges_faq_link">¿Cómo funcionan las insignias?</string>
+    <string name="badge_obtained_on">Obtenida el %1$s</string>
+    <string name="badge_not_yet_obtained">Aún no obtenida</string>
+    <string name="badge_how_it_works_title">CÓMO FUNCIONA</string>
+    <string name="badge_mechanism_title">MECANISMO</string>
+    <string name="badge_what_it_means_title">LO QUE REPRESENTA</string>
+    <string name="badge_mechanism_irreversible">Irreversible — una vez obtenida, es para siempre.</string>
+    <string name="badge_mechanism_reversible">Reversible — se renueva cada 90 días.</string>
+    <string name="badge_see_all_mine">Ver todas mis insignias</string>
+    <string name="badge_progress_label">Tu progreso</string>
+    <string name="badges_debug_switch_label">Modo demo insignias</string>
+    <string name="badge_premier_pas_title">Primer paso</string>
+    <string name="badge_premier_pas_description_short">Completa tu onboarding y realiza tu primera acción — reacción, publicación, grupo o evento.</string>
+    <string name="badge_premier_pas_how_it_works">Completa tu onboarding y realiza tu primera acción en la app.</string>
+    <string name="badge_premier_pas_what_it_means">Esta insignia celebra tu llegada a la comunidad. Marca tu primer gesto — el que transforma una cuenta creada en una intención real.</string>
+    <string name="badge_premier_pas_cta">Realizar una primera acción</string>
+    <string name="badge_premier_lien_title">Primer vínculo</string>
+    <string name="badge_premier_lien_description_short">Intercambia un primer mensaje privado con otro miembro</string>
+    <string name="badge_premier_lien_how_it_works">Intercambia tu primer mensaje privado con otro miembro. Ambos deben enviar un mensaje para que el vínculo se contabilice.</string>
+    <string name="badge_premier_lien_what_it_means">El primer mensaje directo con otro miembro marca un hito importante: el paso del colectivo a la relación.</string>
+    <string name="badge_premier_lien_cta">Chatear con alguien</string>
+    <string name="badge_diffuseur_liens_title">Creador de encuentros</string>
+    <string name="badge_diffuseur_liens_description_short">Crea 3 eventos en 90 días</string>
+    <string name="badge_diffuseur_liens_how_it_works">Crea o co-anima al menos 3 eventos en los últimos 90 días. No se requiere un mínimo de participantes.</string>
+    <string name="badge_diffuseur_liens_what_it_means">Organizar encuentros requiere tiempo y energía. Esta insignia valora a quienes hacen avanzar la comunidad Entourage.</string>
+    <string name="badge_diffuseur_liens_cta">Crear un evento</string>
+    <string name="badge_as_papotage_title">As de la charla</string>
+    <string name="badge_as_papotage_description_short">Participa en 3 Papotages solidarios en 90 días</string>
+    <string name="badge_as_papotage_how_it_works">Participa en al menos 3 Papotages solidarios en los últimos 90 días.</string>
+    <string name="badge_as_papotage_what_it_means">Los Papotages son el corazón latiente de la comunidad en línea. Estar presente regularmente contribuye a mantener un espacio de conversación vivo y cálido.</string>
+    <string name="badge_as_papotage_cta">Unirse a un papotage</string>
+    <string name="badge_tisseur_liens_title">Tejedor de vínculos</string>
+    <string name="badge_tisseur_liens_description_short">Sé activo/a en tus grupos 3 de cada 4 semanas</string>
+    <string name="badge_tisseur_liens_how_it_works">Sé activo/a en tus grupos de vecinos (publicación, comentario, reacción) durante al menos 3 de las últimas 4 semanas.</string>
+    <string name="badge_tisseur_liens_what_it_means">La regularidad genera confianza. Esta insignia honra a quienes están presentes semana tras semana.</string>
+    <string name="badge_tisseur_liens_cta">Ir a mis grupos</string>
+
+    <!-- Badge intro bottom sheet -->
+    <string name="badge_intro_title">Cada gesto cuenta</string>
+    <string name="badge_intro_subtitle">Tus acciones tejen vínculos.\nTus insignias guardan su memoria.</string>
+    <string name="badge_intro_feature1_title">Actúa a tu ritmo</string>
+    <string name="badge_intro_feature1_desc">Sin presión: cada gesto en la comunidad cuenta.</string>
+    <string name="badge_intro_feature2_title">Cada acción deja huella</string>
+    <string name="badge_intro_feature2_desc">A través de tus intercambios y participaciones, las insignias marcan los hitos.</string>
+    <string name="badge_intro_feature3_title">Tu recorrido es visible</string>
+    <string name="badge_intro_feature3_desc">Tus insignias aparecen en tu perfil y cuentan tu historia en la comunidad.</string>
+    <string name="badge_intro_cta">Descubrir mis insignias</string>
+    <string name="badge_intro_later">Más tarde</string>
+
+    <!-- Badge unlocked popup -->
+    <string name="badge_unlocked_bravo">¡Bravo %s!</string>
+    <string name="badge_unlocked_subtitle">Acabas de desbloquear la insignia</string>
+    <string name="badge_unlocked_cta">Ver mis insignias</string>
+    <string name="badge_unlocked_continue">Continuar</string>
+    <string name="badge_premier_pas_unlocked_message">Acabas de dar tu primer paso en la comunidad Entourage. Tu presencia ya cuenta, bienvenido entre nosotros.</string>
+    <string name="badge_premier_lien_unlocked_message">Acabas de intercambiar tu primer mensaje con otro miembro. Cada vínculo tejido mantiene viva la comunidad.</string>
+    <string name="badge_diffuseur_liens_unlocked_message">Has organizado 3 eventos en los últimos 90 días. Estás moviendo a la comunidad Entourage, ¡un gran bravo!</string>
+    <string name="badge_as_papotage_unlocked_message">3 Papotages solidarios en un mes y medio, tu presencia regular crea vínculos y hace el bien a tu alrededor. Gracias por tu compromiso constante.</string>
+    <string name="badge_tisseur_liens_unlocked_message">3 semanas de actividad de cada 4 — haces latir el corazón de los grupos de vecinos. Gracias por tu compromiso constante.</string>
+
+    <!-- Chips de inspiración para crear publicaciones en grupos -->
+    <string name="create_post_inspiration_label">¿Necesitas inspiración?</string>
+    <string name="post_chip_neighborhood">Noticias del barrio 📢</string>
+    <string name="post_chip_activity">Proponer una actividad 🎉</string>
+    <string name="post_chip_help">Pedir una mano 🤝</string>
+    <string name="post_chip_hello">Saludar 👋</string>
+    <string name="post_draft_neighborhood">Quería compartir algo sobre nuestro barrio: </string>
+    <string name="post_draft_activity">¡Estoy organizando una pequeña actividad y me gustaría invitaros! </string>
+    <string name="post_draft_help">Hola a todos, necesitaría un pequeño favor para </string>
+    <string name="post_draft_hello">¡Hola a todos! Solo quería ponerme en contacto con el grupo 😊</string>
+    <string name="post_chip_share">Compartir contenido 🎵</string>
+    <string name="post_chip_question">Hacer una pregunta ❓</string>
+    <string name="post_chip_exchange">Proponer un intercambio 💬</string>
+    <string name="post_chip_meetup">Organizar un encuentro 📅</string>
+    <string name="post_draft_share">Encontré algo interesante para compartir con vosotros: </string>
+    <string name="post_draft_question">Hola, tengo una pregunta para el grupo: </string>
+    <string name="post_draft_exchange">Me gustaría que debatiéramos juntos sobre este tema: </string>
+    <string name="post_draft_meetup">¿Y si nos reunimos pronto? Propongo </string>
+
+</resources>

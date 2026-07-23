@@ -4,15 +4,20 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.gson.Gson
+import kotlinx.coroutines.launch
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
+import social.entourage.android.api.ApiErrorBus
 import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.view.ApiErrorBottomSheet
 import social.entourage.android.tools.view.WebViewFragment
 import timber.log.Timber
 
@@ -29,6 +34,21 @@ abstract class BaseActivity : AppCompatActivity() {
         entApp?.onActivityCreated(this)
         window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
         super.onCreate(savedInstanceState)
+        observeApiErrors()
+    }
+
+    private fun observeApiErrors() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(androidx.lifecycle.Lifecycle.State.RESUMED) {
+                ApiErrorBus.errors.collect { httpError ->
+                    if (supportFragmentManager.findFragmentByTag(ApiErrorBottomSheet.TAG) == null) {
+                        ApiErrorBottomSheet.newInstance(httpError.code).also { sheet ->
+                            sheet.onFinishActivity = { finish() }
+                        }.show(supportFragmentManager, ApiErrorBottomSheet.TAG)
+                    }
+                }
+            }
+        }
     }
 
     override fun onDestroy() {

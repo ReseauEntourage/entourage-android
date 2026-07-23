@@ -91,7 +91,7 @@ class OnboardingCongratsFragment: Fragment() {
             binding.tvTitle.setText(titleRes)
             binding.tvDescription.setText(contentRes)
             binding.buttonStart.setText(buttonTextRes)
-            category = "contribution"
+            category = "event"
         }
         // Priorité 1 : Présence de "both_actions" dans la liste
         else if (categoriesList.contains("both_actions")) {

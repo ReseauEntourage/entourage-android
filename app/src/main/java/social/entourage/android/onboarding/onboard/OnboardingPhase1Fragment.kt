@@ -20,6 +20,7 @@ import social.entourage.android.api.PreonboardingApiModuleKtorClient
 import social.entourage.android.api.model.SalesforceEnterprise
 import social.entourage.android.api.model.SalesforceEvent
 import social.entourage.android.databinding.FragmentOnboardingPhase1Binding
+import social.entourage.android.tools.hideKeyboardOnDone
 import social.entourage.android.tools.isValidEmail
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.countrycodepicker.Country
@@ -148,6 +149,10 @@ class OnboardingPhase1Fragment : Fragment() {
 
     private fun setupViews() {
         setEditTextAlignmentBasedOnLocale()
+        binding.uiOnboardNamesEtFirstname.hideKeyboardOnDone()
+        binding.uiOnboardNamesEtLastname.hideKeyboardOnDone()
+        binding.uiOnboardPhoneEtPhone.hideKeyboardOnDone()
+        binding.uiOnboardEmail.hideKeyboardOnDone()
 
         // Country picker listener
         binding.uiOnboardPhoneCcpCode.countryCodePickerListener = object : CountryCodePickerListener {

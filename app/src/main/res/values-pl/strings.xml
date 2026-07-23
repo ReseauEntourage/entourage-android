@@ -2743,4 +2743,99 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="home_small_talk_matching">+%1$d en cours de matching</string>
     <string name="home_small_talk_launch_new">+ Lancer une nouvelle rencontre (%1$d/3)</string>
     <string name="home_small_talk_subtitle_waiting">%1$d discussion en cours de matching</string>
-    </resources>
+    
+    <!-- Badges section -->
+    <string name="badges_section_title">JEGO ODZNAKI</string>
+    <string name="badges_see_all">Zobacz wszystkie</string>
+    <string name="badges_screen_title">Moje odznaki</string>
+    <string name="badges_screen_subtitle">%1$d zdobytych, %2$d w toku, %3$d do odkrycia. Każda odznaka nagradza konkretne działanie w Twojej społeczności.</string>
+    <string name="badges_section_obtained">Zdobyte %1$d/%2$d</string>
+    <string name="badges_section_in_progress">W toku %1$d/%2$d</string>
+    <string name="badges_section_not_started">Nierozpoczęte %1$d/%2$d</string>
+    <string name="badges_all_title">Wszystkie odznaki %1$d/%2$d</string>
+    <string name="badges_empty_title">Twoje odznaki Entourage</string>
+    <string name="badges_empty_subtitle">Każda odznaka nagradza konkretne działanie tworzące więzi w społeczności. Twoja kolej!</string>
+    <string name="badges_empty_start_label">ZACZNIJ OD</string>
+    <string name="badges_empty_start_badge">Odznaka %1$s</string>
+    <string name="badges_empty_start_description">Ukończ onboarding i wykonaj swoją pierwszą akcję, aby zdobyć tę odznakę.</string>
+    <string name="badges_empty_cta">Zaczynamy!</string>
+    <string name="badges_faq_link">Jak działają odznaki?</string>
+    <string name="badge_obtained_on">Zdobyta %1$s</string>
+    <string name="badge_not_yet_obtained">Jeszcze nie zdobyta</string>
+    <string name="badge_how_it_works_title">JAK TO DZIAŁA</string>
+    <string name="badge_mechanism_title">MECHANIZM</string>
+    <string name="badge_what_it_means_title">CO TO OZNACZA</string>
+    <string name="badge_mechanism_irreversible">Nieodwracalna — raz zdobyta, zostaje na zawsze.</string>
+    <string name="badge_mechanism_reversible">Odwracalna — odnawiana co 90 dni.</string>
+    <string name="badge_see_all_mine">Zobacz wszystkie moje odznaki</string>
+    <string name="badge_progress_label">Twój postęp</string>
+    <string name="badges_debug_switch_label">Tryb demo odznak</string>
+    <string name="badge_premier_pas_title">Pierwszy krok</string>
+    <string name="badge_premier_pas_description_short">Ukończ onboarding i wykonaj swoją pierwszą akcję.</string>
+    <string name="badge_premier_pas_how_it_works">Ukończ onboarding i wykonaj swoją pierwszą akcję w aplikacji.</string>
+    <string name="badge_premier_pas_what_it_means">Ta odznaka świętuje Twoje przybycie do społeczności.</string>
+    <string name="badge_premier_pas_cta">Wykonaj pierwszą akcję</string>
+    <string name="badge_premier_lien_title">Pierwsze połączenie</string>
+    <string name="badge_premier_lien_description_short">Wymień pierwszą prywatną wiadomość z innym członkiem</string>
+    <string name="badge_premier_lien_how_it_works">Wymień pierwszą prywatną wiadomość z innym członkiem. Oboje musicie wysłać wiadomość.</string>
+    <string name="badge_premier_lien_what_it_means">Pierwsza bezpośrednia wiadomość z innym członkiem to ważny kamień milowy.</string>
+    <string name="badge_premier_lien_cta">Porozmawiaj z kimś</string>
+    <string name="badge_diffuseur_liens_title">Twórca spotkań</string>
+    <string name="badge_diffuseur_liens_description_short">Stwórz 3 wydarzenia w ciągu 90 dni</string>
+    <string name="badge_diffuseur_liens_how_it_works">Stwórz lub współprowadź co najmniej 3 wydarzenia w ostatnich 90 dniach.</string>
+    <string name="badge_diffuseur_liens_what_it_means">Organizowanie spotkań wymaga czasu i energii. Ta odznaka docenia tych, którzy ożywiają społeczność.</string>
+    <string name="badge_diffuseur_liens_cta">Stwórz wydarzenie</string>
+    <string name="badge_as_papotage_title">Mistrz rozmów</string>
+    <string name="badge_as_papotage_description_short">Weź udział w 3 solidarnościowych Papotages w ciągu 90 dni</string>
+    <string name="badge_as_papotage_how_it_works">Weź udział w co najmniej 3 solidarnościowych Papotages w ostatnich 90 dniach.</string>
+    <string name="badge_as_papotage_what_it_means">Papotages to bijące serce społeczności online. Regularna obecność przyczynia się do tworzenia żywej przestrzeni rozmowy.</string>
+    <string name="badge_as_papotage_cta">Dołącz do papotage</string>
+    <string name="badge_tisseur_liens_title">Tkacz więzi</string>
+    <string name="badge_tisseur_liens_description_short">Bądź aktywny/a w swoich grupach przez 3 z 4 tygodni</string>
+    <string name="badge_tisseur_liens_how_it_works">Bądź aktywny/a w swoich grupach sąsiedzkich przez co najmniej 3 z ostatnich 4 tygodni.</string>
+    <string name="badge_tisseur_liens_what_it_means">Regularność buduje zaufanie. Ta odznaka honoruje tych, którzy są obecni tydzień po tygodniu.</string>
+    <string name="badge_tisseur_liens_cta">Przejdź do moich grup</string>
+
+    <!-- Badge intro bottom sheet -->
+    <string name="badge_intro_title">Każdy gest ma znaczenie</string>
+    <string name="badge_intro_subtitle">Twoje działania tworzą więzi.\nTwoje odznaki zachowują ich pamięć.</string>
+    <string name="badge_intro_feature1_title">Działaj we własnym tempie</string>
+    <string name="badge_intro_feature1_desc">Bez presji: każdy gest w społeczności ma znaczenie.</string>
+    <string name="badge_intro_feature2_title">Każde działanie zostawia ślad</string>
+    <string name="badge_intro_feature2_desc">Poprzez Twoje wymiany i uczestnictwo, odznaki wyznaczają kolejne etapy.</string>
+    <string name="badge_intro_feature3_title">Twoja droga jest widoczna</string>
+    <string name="badge_intro_feature3_desc">Twoje odznaki pojawiają się na Twoim profilu i opowiadają Twoją historię w społeczności.</string>
+    <string name="badge_intro_cta">Odkryj moje odznaki</string>
+    <string name="badge_intro_later">Później</string>
+
+    <!-- Badge unlocked popup -->
+    <string name="badge_unlocked_bravo">Brawo %s!</string>
+    <string name="badge_unlocked_subtitle">Właśnie odblokowałeś odznakę</string>
+    <string name="badge_unlocked_cta">Zobacz moje odznaki</string>
+    <string name="badge_unlocked_continue">Kontynuuj</string>
+    <string name="badge_premier_pas_unlocked_message">Właśnie zrobiłeś pierwszy krok w społeczności Entourage. Twoja obecność już ma znaczenie, witaj wśród nas.</string>
+    <string name="badge_premier_lien_unlocked_message">Właśnie wymieniłeś swoją pierwszą wiadomość z innym członkiem. Każde tkane połączenie utrzymuje społeczność przy życiu.</string>
+    <string name="badge_diffuseur_liens_unlocked_message">Zorganizowałeś 3 wydarzenia w ciągu ostatnich 90 dni. Wprawiasz społeczność Entourage w ruch, brawo!</string>
+    <string name="badge_as_papotage_unlocked_message">3 solidarne Papotages w ciągu półtora miesiąca — Twoja regularna obecność tworzy więzi i dobrze wpływa na otoczenie. Dziękujemy za stałe zaangażowanie.</string>
+    <string name="badge_tisseur_liens_unlocked_message">3 aktywne tygodnie na 4 — sprawiasz, że serce grup sąsiedzkich bije mocniej. Dziękujemy za stałe zaangażowanie.</string>
+
+    <!-- Chipy inspiracji do tworzenia postów w grupach -->
+    <string name="create_post_inspiration_label">Potrzebujesz inspiracji?</string>
+    <string name="post_chip_neighborhood">Info z okolicy 📢</string>
+    <string name="post_chip_activity">Zaproponuj aktywność 🎉</string>
+    <string name="post_chip_help">Poproś o pomoc 🤝</string>
+    <string name="post_chip_hello">Przywitaj się 👋</string>
+    <string name="post_draft_neighborhood">Chciałem/am podzielić się informacją dotyczącą naszej okolicy: </string>
+    <string name="post_draft_activity">Organizuję małą aktywność i chciałbym/chciałabym was zaprosić! </string>
+    <string name="post_draft_help">Cześć wszystkim, potrzebuję trochę pomocy z </string>
+    <string name="post_draft_hello">Cześć wszystkim! Chciałem/am tylko nawiązać kontakt z grupą 😊</string>
+    <string name="post_chip_share">Podziel się treścią 🎵</string>
+    <string name="post_chip_question">Zadaj pytanie ❓</string>
+    <string name="post_chip_exchange">Zaproponuj wymianę 💬</string>
+    <string name="post_chip_meetup">Zorganizuj spotkanie 📅</string>
+    <string name="post_draft_share">Znalazłem/am coś interesującego do podzielenia się z wami: </string>
+    <string name="post_draft_question">Cześć, mam pytanie do grupy: </string>
+    <string name="post_draft_exchange">Chciałbym/chciałabym, żebyśmy razem porozmawiali na ten temat: </string>
+    <string name="post_draft_meetup">A może spotkamy się wkrótce? Proponuję </string>
+
+</resources>

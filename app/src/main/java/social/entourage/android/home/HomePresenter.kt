@@ -13,6 +13,8 @@ import social.entourage.android.api.request.*
 import social.entourage.android.api.model.notification.InAppNotification
 import social.entourage.android.api.model.notification.InAppNotificationPermission
 import social.entourage.android.api.model.Pedago
+import social.entourage.android.api.model.Suggestion
+import social.entourage.android.api.model.SuggestionResponse
 import social.entourage.android.api.model.Summary
 import social.entourage.android.events.list.EVENTS_PER_PAGE
 
@@ -34,6 +36,36 @@ class HomePresenter: ViewModel() {
 
     var getAllEvents = MutableLiveData<MutableList<Events>>()
     var getAllActions = MutableLiveData<MutableList<Action>>()
+
+    var suggestionData = MutableLiveData<SuggestionResponse?>()
+
+    fun fetchSuggestions() {
+        EntourageApplication.get().apiModule.suggestionRequest
+            .getSuggestions()
+            .enqueue(object : Callback<SuggestionResponse> {
+                override fun onResponse(
+                    call: Call<SuggestionResponse>,
+                    response: Response<SuggestionResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        suggestionData.value = response.body()
+                    }
+                }
+
+                override fun onFailure(call: Call<SuggestionResponse>, t: Throwable) {
+                    suggestionData.value = null
+                }
+            })
+    }
+
+    fun dismissSuggestion(id: Int, action: String) {
+        EntourageApplication.get().apiModule.suggestionRequest
+            .updateSuggestion(id, action)
+            .enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {}
+                override fun onFailure(call: Call<Void>, t: Throwable) {}
+            })
+    }
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false

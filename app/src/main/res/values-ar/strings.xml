@@ -2766,4 +2766,99 @@
     <string name="home_small_talk_matching">+%1$d en cours de matching</string>
     <string name="home_small_talk_launch_new">+ Lancer une nouvelle rencontre (%1$d/3)</string>
     <string name="home_small_talk_subtitle_waiting">%1$d discussion en cours de matching</string>
-    </resources>
+    
+    <!-- Badges section -->
+    <string name="badges_section_title">شاراته</string>
+    <string name="badges_see_all">عرض الكل</string>
+    <string name="badges_screen_title">شاراتي</string>
+    <string name="badges_screen_subtitle">%1$d محصولة، %2$d جارية، %3$d لاكتشافها. كل شارة تكافئ عملاً ملموساً في مجتمعك.</string>
+    <string name="badges_section_obtained">محصولة %1$d/%2$d</string>
+    <string name="badges_section_in_progress">جارية %1$d/%2$d</string>
+    <string name="badges_section_not_started">لم تبدأ %1$d/%2$d</string>
+    <string name="badges_all_title">جميع الشارات %1$d/%2$d</string>
+    <string name="badges_empty_title">شارات Entourage الخاصة بك</string>
+    <string name="badges_empty_subtitle">كل شارة تكافئ عملاً ملموساً يخلق روابط في المجتمع. حان دورك!</string>
+    <string name="badges_empty_start_label">ابدأ بـ</string>
+    <string name="badges_empty_start_badge">شارة %1$s</string>
+    <string name="badges_empty_start_description">أكمل الإعداد الأولي وقم بأول إجراء للحصول على هذه الشارة.</string>
+    <string name="badges_empty_cta">هيا نبدأ!</string>
+    <string name="badges_faq_link">كيف تعمل الشارات؟</string>
+    <string name="badge_obtained_on">تم الحصول عليها في %1$s</string>
+    <string name="badge_not_yet_obtained">لم تُحصل بعد</string>
+    <string name="badge_how_it_works_title">كيف يعمل</string>
+    <string name="badge_mechanism_title">الآلية</string>
+    <string name="badge_what_it_means_title">ما الذي يمثله</string>
+    <string name="badge_mechanism_irreversible">لا رجعة فيه — بمجرد الحصول عليه، يكون ملكك للأبد.</string>
+    <string name="badge_mechanism_reversible">قابل للعكس — يتجدد كل 90 يوماً.</string>
+    <string name="badge_see_all_mine">عرض جميع شاراتي</string>
+    <string name="badge_progress_label">تقدمك</string>
+    <string name="badges_debug_switch_label">وضع عرض الشارات</string>
+    <string name="badge_premier_pas_title">الخطوة الأولى</string>
+    <string name="badge_premier_pas_description_short">أكمل الإعداد الأولي وقم بأول إجراء.</string>
+    <string name="badge_premier_pas_how_it_works">أكمل الإعداد الأولي وقم بأول إجراء في التطبيق.</string>
+    <string name="badge_premier_pas_what_it_means">تحتفل هذه الشارة بوصولك إلى المجتمع.</string>
+    <string name="badge_premier_pas_cta">قم بأول إجراء</string>
+    <string name="badge_premier_lien_title">الرابط الأول</string>
+    <string name="badge_premier_lien_description_short">تبادل رسالة خاصة أولى مع عضو آخر</string>
+    <string name="badge_premier_lien_how_it_works">تبادل أول رسالة خاصة مع عضو آخر. يجب أن يرسل كلاكما رسالة.</string>
+    <string name="badge_premier_lien_what_it_means">الرسالة المباشرة الأولى مع عضو آخر تمثل لحظة مهمة في بناء العلاقة.</string>
+    <string name="badge_premier_lien_cta">تحدث مع شخص ما</string>
+    <string name="badge_diffuseur_liens_title">منظم اللقاءات</string>
+    <string name="badge_diffuseur_liens_description_short">أنشئ 3 فعاليات في 90 يوماً</string>
+    <string name="badge_diffuseur_liens_how_it_works">أنشئ أو شارك في تنظيم 3 فعاليات على الأقل خلال آخر 90 يوماً.</string>
+    <string name="badge_diffuseur_liens_what_it_means">تنظيم اللقاءات يتطلب وقتاً وطاقة. تقدر هذه الشارة من يحرك المجتمع.</string>
+    <string name="badge_diffuseur_liens_cta">إنشاء فعالية</string>
+    <string name="badge_as_papotage_title">بطل المحادثة</string>
+    <string name="badge_as_papotage_description_short">شارك في 3 Papotages تضامنية في 90 يوماً</string>
+    <string name="badge_as_papotage_how_it_works">شارك في 3 Papotages تضامنية على الأقل خلال آخر 90 يوماً.</string>
+    <string name="badge_as_papotage_what_it_means">Papotages هي القلب النابض للمجتمع عبر الإنترنت. الحضور المنتظم يساهم في الحفاظ على فضاء محادثة حي.</string>
+    <string name="badge_as_papotage_cta">الانضمام إلى papotage</string>
+    <string name="badge_tisseur_liens_title">نساج الروابط</string>
+    <string name="badge_tisseur_liens_description_short">كن نشيطاً في مجموعاتك 3 أسابيع من أصل 4</string>
+    <string name="badge_tisseur_liens_how_it_works">كن نشيطاً في مجموعات الجوار الخاصة بك لمدة 3 أسابيع على الأقل من آخر 4 أسابيع.</string>
+    <string name="badge_tisseur_liens_what_it_means">الانتظام يبني الثقة. تكرم هذه الشارة من يكونون حاضرين أسبوعاً بعد أسبوع.</string>
+    <string name="badge_tisseur_liens_cta">اذهب إلى مجموعاتي</string>
+
+    <!-- Badge intro bottom sheet -->
+    <string name="badge_intro_title">كل إيماءة تحسب</string>
+    <string name="badge_intro_subtitle">أفعالك تنسج روابط.\nشاراتك تحفظ ذكراها.</string>
+    <string name="badge_intro_feature1_title">تصرف بإيقاعك الخاص</string>
+    <string name="badge_intro_feature1_desc">لا ضغط: كل إيماءة في المجتمع تحسب.</string>
+    <string name="badge_intro_feature2_title">كل فعل يترك أثراً</string>
+    <string name="badge_intro_feature2_desc">من خلال تبادلاتك ومشاركاتك، تأتي الشارات لتميّز المحطات.</string>
+    <string name="badge_intro_feature3_title">مسيرتك مرئية للجميع</string>
+    <string name="badge_intro_feature3_desc">تظهر شاراتك على ملفك الشخصي وتحكي قصتك في المجتمع.</string>
+    <string name="badge_intro_cta">اكتشف شاراتي</string>
+    <string name="badge_intro_later">لاحقاً</string>
+
+    <!-- Badge unlocked popup -->
+    <string name="badge_unlocked_bravo">أحسنت %s!</string>
+    <string name="badge_unlocked_subtitle">لقد فتحت للتو الشارة</string>
+    <string name="badge_unlocked_cta">عرض شاراتي</string>
+    <string name="badge_unlocked_continue">متابعة</string>
+    <string name="badge_premier_pas_unlocked_message">لقد خطوت للتو خطوتك الأولى في مجتمع Entourage. حضورك يهمنا بالفعل، مرحباً بك بيننا.</string>
+    <string name="badge_premier_lien_unlocked_message">لقد تبادلت للتو أول رسالة مع عضو آخر. كل رابط يُنسج يُبقي المجتمع حياً.</string>
+    <string name="badge_diffuseur_liens_unlocked_message">لقد نظّمت 3 فعاليات خلال آخر 90 يوماً. أنت تُحرّك مجتمع Entourage، أحسنت!</string>
+    <string name="badge_as_papotage_unlocked_message">3 جلسات Papotage تضامنية في شهر ونصف، حضورك المنتظم يخلق روابط ويُفيد المحيطين بك. شكراً على التزامك الدائم.</string>
+    <string name="badge_tisseur_liens_unlocked_message">3 أسابيع نشطة من أصل 4 — أنت تُحرّك قلب مجموعات الجيران. شكراً على التزامك الدائم.</string>
+
+    <!-- شرائح الإلهام لإنشاء منشور في المجموعات -->
+    <string name="create_post_inspiration_label">هل تحتاج إلهامًا؟</string>
+    <string name="post_chip_neighborhood">أخبار الحي 📢</string>
+    <string name="post_chip_activity">اقتراح نشاط 🎉</string>
+    <string name="post_chip_help">طلب المساعدة 🤝</string>
+    <string name="post_chip_hello">إلقاء التحية 👋</string>
+    <string name="post_draft_neighborhood">أردت مشاركة خبر يخص حيّنا: </string>
+    <string name="post_draft_activity">أنا أنظم نشاطًا صغيرًا وأودّ دعوتكم! </string>
+    <string name="post_draft_help">مرحبًا بالجميع، أحتاج إلى بعض المساعدة من أجل </string>
+    <string name="post_draft_hello">مرحبًا بالجميع! أردت فقط التواصل مع المجموعة 😊</string>
+    <string name="post_chip_share">مشاركة محتوى 🎵</string>
+    <string name="post_chip_question">طرح سؤال ❓</string>
+    <string name="post_chip_exchange">اقتراح تبادل 💬</string>
+    <string name="post_chip_meetup">تنظيم لقاء 📅</string>
+    <string name="post_draft_share">وجدت شيئًا مثيرًا للاهتمام لمشاركته معكم: </string>
+    <string name="post_draft_question">مرحبًا، لديّ سؤال للمجموعة: </string>
+    <string name="post_draft_exchange">أودّ أن نتبادل الحديث معًا حول هذا الموضوع: </string>
+    <string name="post_draft_meetup">ماذا لو التقينا قريبًا؟ أقترح </string>
+
+</resources>

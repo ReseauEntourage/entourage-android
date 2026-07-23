@@ -61,6 +61,7 @@ class Summary : Serializable {
     @SerializedName("events")
     var events: MutableList<String>? = null
 
+
 }
 
 class HomeAction : Serializable {

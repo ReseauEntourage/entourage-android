@@ -66,7 +66,8 @@
                         android:hint="@string/write_your_message"
                         android:inputType="textCapSentences|textMultiLine"
                         android:maxLines="4"
-                        android:paddingTop="0dp" />
+                        android:paddingTop="0dp"
+                        android:textSize="@dimen/profile_description" />
 
                     <!--
                          FrameLayout pour afficher la liste des suggestions
@@ -88,6 +89,35 @@
                             android:clipToPadding="false"
                             android:padding="8dp" />
                     </FrameLayout>
+
+                    <!-- Section chips d'inspiration (groupes uniquement) -->
+                    <LinearLayout
+                        android:id="@+id/chips_section"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="16dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/create_post_inspiration_label"
+                            android:textSize="12sp"
+                            android:fontFamily="@font/nunitosans_semibold"
+                            android:textColor="@color/light_orange"
+                            android:layout_marginBottom="8dp" />
+
+                        <com.google.android.flexbox.FlexboxLayout
+                            android:id="@+id/chips_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:flexWrap="wrap"
+                            app:flexDirection="row"
+                            app:alignItems="flex_start"
+                            app:justifyContent="flex_start" />
+
+                    </LinearLayout>
 
                     <!-- Label "Add image" -->
                     <TextView

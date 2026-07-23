@@ -8,9 +8,11 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import social.entourage.android.MainActivity
 import social.entourage.android.R
+import androidx.appcompat.app.AppCompatActivity
 import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.actions.detail.ActionDetailActivity
 import social.entourage.android.api.model.Action
+import social.entourage.android.badges.BadgeIntroBottomSheet
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
@@ -141,6 +143,24 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 pathSegments.contains("good-waves") -> {
                     val intent = Intent(context, social.entourage.android.small_talks.SmallTalkIntroActivity::class.java)
                     context.startActivity(intent)
+                }
+                pathSegments.contains("badges") && pathSegments.contains("intro") -> {
+                    (context as? AppCompatActivity)?.let { activity ->
+                        BadgeIntroBottomSheet.newInstance()
+                            .show(activity.supportFragmentManager, "badge_intro")
+                    }
+                }
+                pathSegments.contains("badges") && pathSegments.size > 2 -> {
+                    val badgeId = pathSegments[2]
+                    val intent = Intent(context, social.entourage.android.badges.BadgesListActivity::class.java)
+                    intent.putExtra(social.entourage.android.badges.BadgesListActivity.EXTRA_OPEN_BADGE_KEY, badgeId)
+                    context.startActivity(intent)
+                    (context as? Activity)?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                }
+                pathSegments.contains("badges") -> {
+                    val intent = Intent(context, social.entourage.android.badges.BadgesListActivity::class.java)
+                    context.startActivity(intent)
+                    (context as? Activity)?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
                 }
                 pathSegments.contains("outings") -> {
                     handleOutings(pathSegments)

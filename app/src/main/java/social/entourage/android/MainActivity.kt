@@ -19,6 +19,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
@@ -316,6 +317,15 @@ class MainActivity : BaseSecuredActivity() {
         val goDemand = intent.getBooleanExtra("goDemand", false)
         val goDiscoverGroup = intent.getBooleanExtra("goDiscoverGroup", false)
         val goDiscoverEvent = intent.getBooleanExtra("goDiscoverEvent", false)
+        val badgeKey = intent.getStringExtra("badgeKey")
+        if (badgeKey != null) {
+            intent.removeExtra("badgeKey")
+            goHome()
+            social.entourage.android.badges.BadgeUnlockedBottomSheet.newInstance(badgeKey)
+                .show(supportFragmentManager, "BadgeUnlocked")
+            return
+        }
+
         val goBirthday = intent.getBooleanExtra("goBirthday", false)
         val goWelcomeVideo = intent.getBooleanExtra("goWelcomeVideo", false)
 
@@ -354,6 +364,19 @@ class MainActivity : BaseSecuredActivity() {
             goDemand()
             return
         }
+
+        val badgeNavTab = intent.getStringExtra(EXTRA_BADGE_NAV_TAB)
+        if (badgeNavTab != null) {
+            intent.removeExtra(EXTRA_BADGE_NAV_TAB)
+            when (badgeNavTab) {
+                "messages" -> goConv()
+                "groups" -> goGroup()
+                "events" -> goEvent()
+                else -> goHome()
+            }
+            return
+        }
+
         else {
             this.intent = intent
             handleUniversalLinkFromMain(intent)
@@ -387,10 +410,17 @@ class MainActivity : BaseSecuredActivity() {
                 // 1. GESTION SPÉCIALE ANNIVERSAIRE (ou tout autre "stage" sans instance)
                 if (extra.stage == "birthday") {
                     NotificationActionManager.presentWelcomeAction(this, extra.stage)
-                    return // On arrête là, pas besoin de chercher une instance
+                    return
                 }
 
-                // 2. GESTION CLASSIQUE (avec instance)
+                // 2. GESTION BADGE
+                if (!extra.badge.isNullOrEmpty()) {
+                    social.entourage.android.badges.BadgeUnlockedBottomSheet.newInstance(extra.badge)
+                        .show(supportFragmentManager, "BadgeUnlocked")
+                    return
+                }
+
+                // 3. GESTION CLASSIQUE (avec instance)
                 extra.instance?.let { instance ->
                     NotificationActionManager.presentAction(
                         this,
@@ -553,47 +583,42 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
 
+    private fun singleTopNavOptions() = NavOptions.Builder()
+        .setLaunchSingleTop(true)
+        .build()
+
     fun goHome() {
-        navController.navigate(R.id.navigation_home)
+        navController.navigate(R.id.navigation_home, null, singleTopNavOptions())
     }
 
     fun goGroup() {
-        navController.navigate(R.id.navigation_groups)
-
+        navController.navigate(R.id.navigation_groups, null, singleTopNavOptions())
     }
 
     fun goEvent() {
-        navController.navigate(R.id.navigation_events)
+        navController.navigate(R.id.navigation_events, null, singleTopNavOptions())
         if (shouldLaunchEvent == false) {
             MainFilterActivity.resetAllFilters(this)
         }
     }
 
     fun goConv(isSmallTalkFilter: Boolean = false) {
-        if (navController.currentDestination?.id == R.id.navigation_messages) {
-            // Already in messages, if small talk filter is required, we should inform the fragment,
-            // but for now let's navigate to ensure bundle is passed or handle it properly.
-            // Simple approach: re-navigate with bundle
-        }
         val bundle = if (isSmallTalkFilter) bundleOf("isSmallTalkFilter" to true) else null
-        navController.navigate(R.id.navigation_messages, bundle)
+        navController.navigate(R.id.navigation_messages, bundle, singleTopNavOptions())
     }
 
     fun navigateToGroupsTab() {
-        navController.navigate(R.id.navigation_groups)
+        navController.navigate(R.id.navigation_groups, null, singleTopNavOptions())
     }
 
     fun goContrib() {
-        val bundle =
-            bundleOf("isActionDemand" to false) // Mettez ici la valeur souhaitée pour "isActionDemand"
-        navController.navigate(R.id.navigation_donations, bundle)
-
+        val bundle = bundleOf("isActionDemand" to false)
+        navController.navigate(R.id.navigation_donations, bundle, singleTopNavOptions())
     }
 
     fun goDemand() {
-        val bundle =
-            bundleOf("isActionDemand" to true) // Mettez ici la valeur souhaitée pour "isActionDemand"
-        navController.navigate(R.id.navigation_donations, bundle)
+        val bundle = bundleOf("isActionDemand" to true)
+        navController.navigate(R.id.navigation_donations, bundle, singleTopNavOptions())
     }
 
     private fun initializeNavBar() {
@@ -708,6 +733,7 @@ class MainActivity : BaseSecuredActivity() {
     companion object {
         var instance: MainActivity? = null
         const val UPDATE_REQUEST_CODE = 1001 // Ou tout autre numéro que tu souhaites.
+        const val EXTRA_BADGE_NAV_TAB = "badge_nav_tab"
         var reactionsList: MutableList<ReactionType>? = null
         var interest: MutableList<userConfig>? = null
         var concerns: MutableList<userConfig>? = null

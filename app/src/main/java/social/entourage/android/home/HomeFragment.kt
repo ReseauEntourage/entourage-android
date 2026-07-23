@@ -1,8 +1,13 @@
 package social.entourage.android.home
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
+import android.view.Gravity
+import android.widget.TextView
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -27,7 +32,6 @@ import social.entourage.android.MainActivity
 import social.entourage.android.MainPresenter
 import social.entourage.android.R
 import android.net.Uri
-import android.widget.PopupWindow
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 import social.entourage.android.actions.ActionsPresenter
@@ -38,10 +42,12 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Help
 import social.entourage.android.api.model.Pedago
+import social.entourage.android.api.model.Suggestion
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.databinding.FragmentHomeBinding
+import social.entourage.android.home.HomeState
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
@@ -99,6 +105,31 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private var currentRequests: List<UserSmallTalkRequest> = emptyList()
     private val REQUEST_CODE_NATIONAL_GROUPS = 1001
 
+    // Bouncing heart
+    private var heartX = 0f
+    private var heartY = 0f
+    private var heartVx = 6f
+    private var heartVy = 5f
+    private var heartHandler: android.os.Handler? = null
+    private val heartRunnable = object : Runnable {
+        override fun run() {
+            val heart = binding.bouncingHeart
+            val parent = heart.parent as? android.view.View ?: return
+            val maxX = parent.width - heart.width.coerceAtLeast(1)
+            val maxY = parent.height - heart.height.coerceAtLeast(1)
+            if (maxX <= 0 || maxY <= 0) { heartHandler?.postDelayed(this, 16); return }
+            heartX += heartVx
+            heartY += heartVy
+            if (heartX <= 0f) { heartX = 0f; heartVx = -heartVx }
+            if (heartX >= maxX) { heartX = maxX.toFloat(); heartVx = -heartVx }
+            if (heartY <= 0f) { heartY = 0f; heartVy = -heartVy }
+            if (heartY >= maxY) { heartY = maxY.toFloat(); heartVy = -heartVy }
+            heart.x = heartX
+            heart.y = heartY
+            heartHandler?.postDelayed(this, 16)
+        }
+    }
+
     // Variables pour la vidéo
     private var welcomeVideoUrl: String? = null
     private var welcomeVideoHtml: String? = null
@@ -149,6 +180,10 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     // Pedago
     private lateinit var pedagoHeaderAdapter: HomeSectionHeaderAdapter
     private lateinit var homePedagoAdapter: HomePedagoAdapter
+
+    // Suggestions
+    private lateinit var homeSuggestionConnectionAdapter: HomeSuggestionConnectionAdapter
+    private lateinit var homeSuggestionNextStepAdapter: HomeSuggestionNextStepAdapter
 
     // Moderator
     private lateinit var homeModeratorAdapter: HomeModeratorAdapter
@@ -410,52 +445,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         return binding.root
     }
 
-    private fun testNotifDemandePage() {
-        // Appui long existant...
-        binding.ivLogoHome.setOnLongClickListener {
-            // ... ton code existant ...
-            true
-        }
-
-        // CLIC SIMPLE : Injection dans le pipeline de notification
-        binding.ivLogoHome.setOnClickListener {
-            // 1. Le JSON exact de la payload (avec stage="birthday" qui est la clé critique pour le PendingIntent)
-            val jsonPayload = """
-            {
-                "sender": "L'équipe Entourage",
-                "object": "Joyeux anniversaire 🎉",
-                "content": {
-                    "message": "On est heureux de vous compter parmi nous. Cliquez ici pour lire notre message d'anniversaire !",
-                    "extra": {
-                        "stage": "birthday",
-                        "tracking": "birthday",
-                        "popup": "birthday"
-                    }
-                }
-            }
-            """
-
-            try {
-                // 2. On désérialise le JSON en objet métier PushNotificationMessage
-                val message = com.google.gson.Gson().fromJson(
-                    jsonPayload,
-                    social.entourage.android.api.model.notification.PushNotificationMessage::class.java
-                )
-
-                // 3. On balance ça au Manager.
-                // Il va lire "stage: birthday", créer le PendingIntent avec "goBirthday=true" et afficher la notif système.
-                social.entourage.android.notifications.PushNotificationManager.handlePushNotification(message, requireContext())
-
-                // (Optionnel) Log pour confirmer le tir
-                social.entourage.android.tools.log.AnalyticsEvents.logEvent("debug_birthday_proc_triggered")
-
-            } catch (e: Exception) {
-                android.util.Log.e("DEBUG_NOTIF", "Erreur parsing JSON: ${e.message}")
-            }
-        }
-    }
-
-
     private fun setupAdapters() {
         val viewPool = RecyclerView.RecycledViewPool()
 
@@ -603,7 +592,47 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             }
         })
 
-        // 9. Moderator
+        // 9. Suggestions
+        homeSuggestionConnectionAdapter = HomeSuggestionConnectionAdapter(
+            onActionClicked = { suggestion ->
+                suggestion.suggestedUserInfo?.id?.let { userId ->
+                    discussionsPresenter.createOrGetConversation(userId.toString())
+                }
+                homePresenter.dismissSuggestion(suggestion.id, "actioned")
+                homeSuggestionConnectionAdapter.setSuggestion(null)
+            },
+            onDismissClicked = { suggestion ->
+                homePresenter.dismissSuggestion(suggestion.id, "dismissed")
+                homeSuggestionConnectionAdapter.setSuggestion(null)
+            }
+        )
+
+        homeSuggestionNextStepAdapter = HomeSuggestionNextStepAdapter(
+            onActionClicked = { suggestion ->
+                homePresenter.dismissSuggestion(suggestion.id, "actioned")
+                homeSuggestionNextStepAdapter.setSuggestion(null)
+                // Navigate based on action type
+                suggestion.suggestedEntourageInfo?.id?.let { entourageId ->
+                    when (suggestion.suggestedAction) {
+                        "join_event" -> {
+                            startActivity(
+                                Intent(
+                                    requireContext(),
+                                    social.entourage.android.events.details.feed.EventFeedActivity::class.java
+                                ).putExtra(social.entourage.android.tools.utils.Const.EVENT_ID, entourageId)
+                            )
+                        }
+                        else -> {}
+                    }
+                }
+            },
+            onDismissClicked = { suggestion ->
+                homePresenter.dismissSuggestion(suggestion.id, "dismissed")
+                homeSuggestionNextStepAdapter.setSuggestion(null)
+            }
+        )
+
+        // 10. Moderator
         homeModeratorAdapter = HomeModeratorAdapter { moderatorId ->
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Moderator)
             discussionsPresenter.createOrGetConversation(moderatorId.toString())
@@ -639,6 +668,8 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         if (MainActivity.shouldLaunchOnboarding) {
             MainActivity.shouldLaunchOnboarding = false
         }
+
+        view.post { startBouncingHeart() }
     }
 
     override fun onResume() {
@@ -691,6 +722,114 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     override fun onDestroyView() {
         super.onDestroyView()
         userPresenter.user.removeObserver(userObserver)
+        heartHandler?.removeCallbacks(heartRunnable)
+        heartHandler = null
+    }
+
+    private fun startBouncingHeart() {
+        val heart = binding.bouncingHeart
+        val parent = heart.parent as? android.view.View ?: return
+        heartX = (parent.width / 2).toFloat()
+        heartY = (parent.height / 3).toFloat()
+        heartHandler = android.os.Handler(android.os.Looper.getMainLooper())
+        heart.setOnClickListener { explodeHeart(it) }
+        heartHandler?.post(heartRunnable)
+    }
+
+    private fun explodeHeart(heart: android.view.View) {
+        val parent = heart.parent as? android.view.ViewGroup ?: return
+        val cx = heart.x + heart.width / 2f
+        val cy = heart.y + heart.height / 2f
+        val particles = listOf("❤️", "💛", "💚", "💙", "💜", "🧡", "✨", "⭐", "🌟")
+        repeat(14) { i ->
+            val tv = TextView(requireContext()).apply {
+                text = particles[i % particles.size]
+                textSize = 18f
+                layoutParams = android.view.ViewGroup.LayoutParams(
+                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
+                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+            }
+            parent.addView(tv)
+            tv.x = cx
+            tv.y = cy
+            val angle = (i * 360f / 14f) * Math.PI.toFloat() / 180f
+            val dist = (250..420).random().toFloat()
+            val tx = cx + dist * Math.cos(angle.toDouble()).toFloat()
+            val ty = cy + dist * Math.sin(angle.toDouble()).toFloat()
+            AnimatorSet().apply {
+                playTogether(
+                    ObjectAnimator.ofFloat(tv, "x", cx, tx),
+                    ObjectAnimator.ofFloat(tv, "y", cy, ty),
+                    ObjectAnimator.ofFloat(tv, "alpha", 1f, 0f),
+                    ObjectAnimator.ofFloat(tv, "scaleX", 0.5f, 1.6f, 0f),
+                    ObjectAnimator.ofFloat(tv, "scaleY", 0.5f, 1.6f, 0f)
+                )
+                duration = 700
+                start()
+                doOnEnd { parent.removeView(tv) }
+            }
+        }
+        // Pulse du cœur principal
+        AnimatorSet().apply {
+            playTogether(
+                ObjectAnimator.ofFloat(heart, "scaleX", 1f, 1.8f, 0f),
+                ObjectAnimator.ofFloat(heart, "scaleY", 1f, 1.8f, 0f),
+                ObjectAnimator.ofFloat(heart, "alpha", 1f, 0f)
+            )
+            duration = 400
+            start()
+            doOnEnd {
+                heart.scaleX = 1f; heart.scaleY = 1f; heart.alpha = 1f
+                showCourageBottomSheet()
+            }
+        }
+    }
+
+    private fun showCourageBottomSheet() {
+        data class CourageMessage(val text: String, val from: String)
+        val messages = listOf(
+            CourageMessage("Courage, tu assures !", "Marie"),
+            CourageMessage("On croit en toi, continue comme ça !", "Julien"),
+            CourageMessage("Tu fais un super boulot, vraiment.", "Sophie"),
+            CourageMessage("Petit mot pour se souhaiter du courage !", "Lucas"),
+            CourageMessage("T'es génial·e, et on est fier·e de toi.", "Emma"),
+            CourageMessage("Bonne journée, on est tous avec toi !", "Thomas"),
+            CourageMessage("Tu illumines la journée des gens autour de toi.", "Camille")
+        )
+        val msg = messages.random()
+        val ctx = requireContext()
+
+        val sheet = com.google.android.material.bottomsheet.BottomSheetDialog(ctx)
+        val rootView = android.widget.LinearLayout(ctx).apply {
+            orientation = android.widget.LinearLayout.VERTICAL
+            gravity = Gravity.CENTER_HORIZONTAL
+            setPadding(64, 56, 64, 72)
+        }
+
+        rootView.addView(TextView(ctx).apply {
+            text = "❤️"
+            textSize = 48f
+            gravity = Gravity.CENTER
+        })
+        rootView.addView(TextView(ctx).apply {
+            text = "« ${msg.text} »"
+            textSize = 18f
+            gravity = Gravity.CENTER
+            setTextColor(Color.parseColor("#333333"))
+            typeface = android.graphics.Typeface.create("sans-serif", android.graphics.Typeface.BOLD)
+            setPadding(0, 32, 0, 24)
+        })
+        rootView.addView(TextView(ctx).apply {
+            text = "— ${msg.from}"
+            textSize = 15f
+            gravity = Gravity.CENTER
+            setTextColor(Color.parseColor("#888888"))
+            typeface = android.graphics.Typeface.create("sans-serif", android.graphics.Typeface.ITALIC)
+        })
+
+        sheet.setContentView(rootView)
+        sheet.show()
     }
 
     private fun runHomeEntryGatingIfNeeded() {
@@ -907,6 +1046,8 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 concatAdapter.addAdapter(eventHeaderAdapter)
                 concatAdapter.addAdapter(eventWrapperAdapter)
                 concatAdapter.addAdapter(eventButtonAdapter)
+                concatAdapter.addAdapter(homeSuggestionConnectionAdapter)
+                concatAdapter.addAdapter(homeSuggestionNextStepAdapter)
                 concatAdapter.addAdapter(homeModeratorAdapter)
                 concatAdapter.addAdapter(groupHeaderAdapter)
                 concatAdapter.addAdapter(groupWrapperAdapter)
@@ -964,6 +1105,10 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                     loadCleanVideo(webView, welcomeVideoUrl!!)
                 }
             }
+        }
+        homePresenter.suggestionData.observe(viewLifecycleOwner) { response ->
+            homeSuggestionConnectionAdapter.setSuggestion(response?.connection)
+            homeSuggestionNextStepAdapter.setSuggestion(response?.nextStep)
         }
         actionsPresenter.unreadMessages.observe(viewLifecycleOwner) { updateUnreadCount(it) }
         discussionsPresenter.newConversation.observe(viewLifecycleOwner) { conversation ->
@@ -1121,6 +1266,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         handleModerator(summary)
         if (summary.signablePermission != null) {
             HomeFragment.signablePermission = summary.signablePermission!!
+            HomeState.signablePermission = summary.signablePermission!!
         }
 
         isContribution = summary.preference.equals("contribution")
@@ -1400,6 +1546,3 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     }
 }
 
-interface OnHomeChangeLocationUpdate {
-    fun onHomeChangeLocationUpdateClearFragment()
-}

@@ -48,6 +48,7 @@ navigation = "2.9.7"
 sectioned-recyclerview = "2.1.1"
 lottie = "6.7.1"
 photoview = "2.3.0"
+androidsvg = "1.4"
 transition = "1.7.0"
 asset-delivery = "2.3.0"
 feature-delivery = "2.1.0"
@@ -122,6 +123,7 @@ navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.
 sectioned-recyclerview = { module = "com.github.IntruderShanky:Sectioned-RecyclerView", version.ref = "sectioned-recyclerview" }
 lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 photoview = { module = "com.github.chrisbanes:PhotoView", version.ref = "photoview" }
+androidsvg = { module = "com.caverock:androidsvg-aar", version.ref = "androidsvg" }
 transition = { module = "androidx.transition:transition", version.ref = "transition" }
 play-asset-delivery = { module = "com.google.android.play:asset-delivery", version.ref = "asset-delivery" }
 play-asset-delivery-ktx = { module = "com.google.android.play:asset-delivery-ktx", version.ref = "asset-delivery" }

@@ -161,6 +161,14 @@ class InAppNotificationListFragment : Fragment() {
                     else {
                         itemSelected = -1
                     }
+
+                    val badgeTag = notif.badge ?: social.entourage.android.badges.BadgeKey.fromApiKey(notifContext ?: "")?.apiKey
+                    if (badgeTag != null) {
+                        social.entourage.android.badges.BadgeUnlockedBottomSheet.newInstance(badgeTag)
+                            .show(parentFragmentManager, "BadgeUnlocked")
+                        return
+                    }
+
                     if(instance != null) {
                         NotificationActionManager.presentAction(requireContext(),parentFragmentManager,instance,instanceId,postId,stage, notifContext = notifContext )
                     } else{

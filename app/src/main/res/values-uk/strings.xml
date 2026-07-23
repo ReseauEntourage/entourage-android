@@ -2652,4 +2652,99 @@
     <string name="home_small_talk_matching">+%1$d en cours de matching</string>
     <string name="home_small_talk_launch_new">+ Lancer une nouvelle rencontre (%1$d/3)</string>
     <string name="home_small_talk_subtitle_waiting">%1$d discussion en cours de matching</string>
-    </resources>
+    
+    <!-- Badges section -->
+    <string name="badges_section_title">ЙОГО ЗНАЧКИ</string>
+    <string name="badges_see_all">Переглянути все</string>
+    <string name="badges_screen_title">Мої значки</string>
+    <string name="badges_screen_subtitle">%1$d отримано, %2$d в процесі, %3$d для відкриття. Кожен значок винагороджує конкретну дію у вашій спільноті.</string>
+    <string name="badges_section_obtained">Отримано %1$d/%2$d</string>
+    <string name="badges_section_in_progress">В процесі %1$d/%2$d</string>
+    <string name="badges_section_not_started">Не розпочато %1$d/%2$d</string>
+    <string name="badges_all_title">Всі значки %1$d/%2$d</string>
+    <string name="badges_empty_title">Ваші значки Entourage</string>
+    <string name="badges_empty_subtitle">Кожен значок винагороджує конкретну дію, що створює зв\'язки в спільноті. Ваша черга!</string>
+    <string name="badges_empty_start_label">ПОЧНІТЬ З</string>
+    <string name="badges_empty_start_badge">Значок %1$s</string>
+    <string name="badges_empty_start_description">Завершіть онбординг і виконайте першу дію, щоб отримати цей значок.</string>
+    <string name="badges_empty_cta">Починаємо!</string>
+    <string name="badges_faq_link">Як працюють значки?</string>
+    <string name="badge_obtained_on">Отримано %1$s</string>
+    <string name="badge_not_yet_obtained">Ще не отримано</string>
+    <string name="badge_how_it_works_title">ЯК ЦЕ ПРАЦЮЄ</string>
+    <string name="badge_mechanism_title">МЕХАНІЗМ</string>
+    <string name="badge_what_it_means_title">ЩО ЦЕ ОЗНАЧАЄ</string>
+    <string name="badge_mechanism_irreversible">Незворотний — отримавши, залишається назавжди.</string>
+    <string name="badge_mechanism_reversible">Зворотний — оновлюється кожні 90 днів.</string>
+    <string name="badge_see_all_mine">Переглянути всі мої значки</string>
+    <string name="badge_progress_label">Ваш прогрес</string>
+    <string name="badges_debug_switch_label">Демо-режим значків</string>
+    <string name="badge_premier_pas_title">Перший крок</string>
+    <string name="badge_premier_pas_description_short">Завершіть онбординг і виконайте першу дію.</string>
+    <string name="badge_premier_pas_how_it_works">Завершіть онбординг і виконайте першу дію в додатку.</string>
+    <string name="badge_premier_pas_what_it_means">Цей значок відзначає ваш прихід до спільноти.</string>
+    <string name="badge_premier_pas_cta">Виконати першу дію</string>
+    <string name="badge_premier_lien_title">Перший зв\'язок</string>
+    <string name="badge_premier_lien_description_short">Обміняйтесь першим приватним повідомленням з іншим учасником</string>
+    <string name="badge_premier_lien_how_it_works">Обміняйтесь першим приватним повідомленням з іншим учасником. Обидва мають надіслати повідомлення.</string>
+    <string name="badge_premier_lien_what_it_means">Перше пряме повідомлення з іншим учасником — важливий момент переходу до відносин.</string>
+    <string name="badge_premier_lien_cta">Поспілкуватися з кимось</string>
+    <string name="badge_diffuseur_liens_title">Організатор зустрічей</string>
+    <string name="badge_diffuseur_liens_description_short">Створіть 3 події за 90 днів</string>
+    <string name="badge_diffuseur_liens_how_it_works">Створіть або співорганізуйте щонайменше 3 події за останні 90 днів.</string>
+    <string name="badge_diffuseur_liens_what_it_means">Організація зустрічей потребує часу та енергії. Цей значок цінує тих, хто пожвавлює спільноту.</string>
+    <string name="badge_diffuseur_liens_cta">Створити подію</string>
+    <string name="badge_as_papotage_title">Майстер спілкування</string>
+    <string name="badge_as_papotage_description_short">Беріть участь у 3 солідарних Папотажах за 90 днів</string>
+    <string name="badge_as_papotage_how_it_works">Беріть участь щонайменше у 3 солідарних Папотажах за останні 90 днів.</string>
+    <string name="badge_as_papotage_what_it_means">Папотажі — серце онлайн-спільноти. Регулярна присутність підтримує живий простір для спілкування.</string>
+    <string name="badge_as_papotage_cta">Приєднатися до папотажу</string>
+    <string name="badge_tisseur_liens_title">Ткач зв\'язків</string>
+    <string name="badge_tisseur_liens_description_short">Будьте активними у своїх групах 3 тижні з 4</string>
+    <string name="badge_tisseur_liens_how_it_works">Будьте активними у своїх сусідських групах щонайменше 3 з останніх 4 тижнів.</string>
+    <string name="badge_tisseur_liens_what_it_means">Регулярність будує довіру. Цей значок відзначає тих, хто присутній тиждень за тижнем.</string>
+    <string name="badge_tisseur_liens_cta">Перейти до моїх груп</string>
+
+    <!-- Badge intro bottom sheet -->
+    <string name="badge_intro_title">Кожен жест важливий</string>
+    <string name="badge_intro_subtitle">Ваші дії плетуть зв\'язки.\nВаші значки зберігають їхню пам\'ять.</string>
+    <string name="badge_intro_feature1_title">Дійте у своєму темпі</string>
+    <string name="badge_intro_feature1_desc">Без тиску: кожен жест у спільноті важливий.</string>
+    <string name="badge_intro_feature2_title">Кожна дія залишає слід</string>
+    <string name="badge_intro_feature2_desc">У ході ваших обмінів та участі значки відзначають важливі етапи.</string>
+    <string name="badge_intro_feature3_title">Ваш шлях видимий</string>
+    <string name="badge_intro_feature3_desc">Ваші значки відображаються у вашому профілі та розповідають вашу історію у спільноті.</string>
+    <string name="badge_intro_cta">Відкрити мої значки</string>
+    <string name="badge_intro_later">Пізніше</string>
+
+    <!-- Badge unlocked popup -->
+    <string name="badge_unlocked_bravo">Браво %s!</string>
+    <string name="badge_unlocked_subtitle">Ви щойно розблокували значок</string>
+    <string name="badge_unlocked_cta">Переглянути мої значки</string>
+    <string name="badge_unlocked_continue">Продовжити</string>
+    <string name="badge_premier_pas_unlocked_message">Ви щойно зробили перший крок у спільноті Entourage. Ваша присутність вже важлива, ласкаво просимо до нас.</string>
+    <string name="badge_premier_lien_unlocked_message">Ви щойно обмінялися першим повідомленням з іншим учасником. Кожен зв\'язок підтримує спільноту живою.</string>
+    <string name="badge_diffuseur_liens_unlocked_message">Ви організували 3 заходи за останні 90 днів. Ви рухаєте спільноту Entourage вперед, браво!</string>
+    <string name="badge_as_papotage_unlocked_message">3 солідарних Папотажа за півтора місяця — ваша регулярна присутність створює зв\'язки та робить добро навколо вас. Дякуємо за постійну участь.</string>
+    <string name="badge_tisseur_liens_unlocked_message">3 активних тижні з 4 — ви змушуєте серце сусідських груп битися. Дякуємо за постійну участь.</string>
+
+    <!-- Чіпи натхнення для створення публікацій у групах -->
+    <string name="create_post_inspiration_label">Потрібне натхнення?</string>
+    <string name="post_chip_neighborhood">Новини кварталу 📢</string>
+    <string name="post_chip_activity">Запропонувати активність 🎉</string>
+    <string name="post_chip_help">Попросити допомоги 🤝</string>
+    <string name="post_chip_hello">Привітатися 👋</string>
+    <string name="post_draft_neighborhood">Хотів/хотіла поділитися інформацією про наш квартал: </string>
+    <string name="post_draft_activity">Я організовую невелику активність і хочу вас запросити! </string>
+    <string name="post_draft_help">Привіт усім, мені потрібна невелика допомога з </string>
+    <string name="post_draft_hello">Привіт усім! Просто хотів/хотіла зв\'язатися з групою 😊</string>
+    <string name="post_chip_share">Поділитися контентом 🎵</string>
+    <string name="post_chip_question">Поставити запитання ❓</string>
+    <string name="post_chip_exchange">Запропонувати обмін 💬</string>
+    <string name="post_chip_meetup">Організувати зустріч 📅</string>
+    <string name="post_draft_share">Знайшов/знайшла щось цікаве, чим хочу поділитися з вами: </string>
+    <string name="post_draft_question">Привіт, у мене є запитання до групи: </string>
+    <string name="post_draft_exchange">Хотів/хотіла б, щоб ми разом обговорили цю тему: </string>
+    <string name="post_draft_meetup">А що, якби ми незабаром зустрілися? Пропоную </string>
+
+</resources>

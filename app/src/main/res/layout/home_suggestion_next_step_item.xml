@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/home_v2_action_item_shape"
+    android:padding="16dp">
+
+    <!-- Header label -->
+    <TextView
+        android:id="@+id/tv_next_step_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nunitosans_bold"
+        android:textColor="@color/orange"
+        android:textSize="@dimen/entourage_font_very_small"
+        android:text="@string/suggestion_next_step_title"
+        android:textAllCaps="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Suggestion title/text -->
+    <TextView
+        android:id="@+id/tv_next_step_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/quicksand_bold"
+        android:textColor="@color/black"
+        android:textSize="@dimen/entourage_font_medium"
+        android:maxLines="2"
+        android:ellipsize="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_next_step_header"
+        tools:text="Papotage solidaire Belleville" />
+
+    <!-- Reason text -->
+    <TextView
+        android:id="@+id/tv_next_step_reason"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textColor="@color/grey_dark"
+        android:textSize="@dimen/entourage_font_small"
+        android:maxLines="2"
+        android:ellipsize="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_next_step_text"
+        tools:text="Il y a un événement proche de chez vous" />
+
+    <!-- Primary CTA -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_next_step_action"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/nunitosans_bold"
+        android:textSize="@dimen/entourage_font_small"
+        app:backgroundTint="@color/orange"
+        app:cornerRadius="8dp"
+        tools:text="Rejoindre l'événement"
+        app:layout_constraintEnd_toStartOf="@id/btn_next_step_dismiss"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_next_step_reason" />
+
+    <!-- Dismiss button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_next_step_dismiss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textSize="@dimen/entourage_font_small"
+        android:text="@string/suggestion_dismiss"
+        android:textColor="@color/grey_dark"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_next_step_reason"
+        app:layout_constraintBaseline_toBaselineOf="@id/btn_next_step_action" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

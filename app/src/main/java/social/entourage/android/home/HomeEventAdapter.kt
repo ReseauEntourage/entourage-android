@@ -13,9 +13,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import social.entourage.android.R
-import social.entourage.android.api.model.EventUtils
 import social.entourage.android.api.model.Events
-import social.entourage.android.api.model.Interest
+import social.entourage.android.api.model.GroupMember
 import social.entourage.android.databinding.HomeV2EventItemLayoutBinding
 import social.entourage.android.events.EventsFragment
 import social.entourage.android.events.details.feed.EventFeedActivity
@@ -58,30 +57,21 @@ class HomeEventAdapter(
         return EventViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return events.size
-    }
+    override fun getItemCount(): Int = events.size
 
-    override fun getItemViewType(position: Int): Int {
-        return 20
-        return R.layout.home_v2_event_item_layout
-    }
+    override fun getItemViewType(position: Int): Int = 20
 
-    fun getEventIds(): Set<Int> {
-        return events.mapNotNull { it.id }.toSet()
-    }
+    fun getEventIds(): Set<Int> = events.mapNotNull { it.id }.toSet()
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         val event = events[position]
 
-        // Vérification de la langue
         val isArabic = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             holder.binding.root.resources.configuration.locales[0].language == "ar"
         } else {
             holder.binding.root.resources.configuration.locale.language == "ar"
         }
 
-        // Appliquer les propriétés en fonction de la langue pour les TextView
         if (isArabic) {
             holder.binding.tvTitleEventItem.layoutDirection = View.LAYOUT_DIRECTION_RTL
             holder.binding.tvTitleEventItem.gravity = Gravity.END
@@ -97,11 +87,6 @@ class HomeEventAdapter(
             holder.binding.tvDateHomeV2EventItem.gravity = Gravity.END
             holder.binding.tvDateHomeV2EventItem.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
             holder.binding.tvDateHomeV2EventItem.textDirection = View.TEXT_DIRECTION_RTL
-
-            holder.binding.tvTagHomeV2EventItem.layoutDirection = View.LAYOUT_DIRECTION_RTL
-            holder.binding.tvTagHomeV2EventItem.gravity = Gravity.END
-            holder.binding.tvTagHomeV2EventItem.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
-            holder.binding.tvTagHomeV2EventItem.textDirection = View.TEXT_DIRECTION_RTL
         } else {
             holder.binding.tvTitleEventItem.layoutDirection = View.LAYOUT_DIRECTION_LTR
             holder.binding.tvTitleEventItem.gravity = Gravity.START
@@ -117,88 +102,92 @@ class HomeEventAdapter(
             holder.binding.tvDateHomeV2EventItem.gravity = Gravity.START
             holder.binding.tvDateHomeV2EventItem.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
             holder.binding.tvDateHomeV2EventItem.textDirection = View.TEXT_DIRECTION_LTR
-
-            holder.binding.tvTagHomeV2EventItem.layoutDirection = View.LAYOUT_DIRECTION_LTR
-            holder.binding.tvTagHomeV2EventItem.gravity = Gravity.START
-            holder.binding.tvTagHomeV2EventItem.textAlignment = View.TEXT_ALIGNMENT_VIEW_START
-            holder.binding.tvTagHomeV2EventItem.textDirection = View.TEXT_DIRECTION_LTR
         }
+
         holder.binding.layoutItemHomeEvent.setOnClickListener { view ->
             EventsFragment.isFromDetails = true
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Event_Detail)
             EventFeedActivity.isFromMyEvent = true
             (view.context as? Activity)?.startActivityForResult(
-                Intent(
-                    view.context,
-                    EventFeedActivity::class.java
-                ).putExtra(
-                    Const.EVENT_ID,
-                    event.id
-                ), 0
+                Intent(view.context, EventFeedActivity::class.java)
+                    .putExtra(Const.EVENT_ID, event.id), 0
             )
-        }
-        if (event.metadata?.reserved_female == true) {
-            holder.binding.ivEntourageLogo.setImageResource(R.drawable.ic_entoutou_logo_woman)
-            holder.binding.ivEntourageLogo.visibility = View.VISIBLE
-        } else if (event.author?.communityRoles != null) {
-            if (event.author?.communityRoles?.contains("Équipe Entourage") == true || event.author?.communityRoles?.contains("Animateur Entourage") == true) {
-                holder.binding.ivEntourageLogo.setImageResource(R.drawable.ic_entourage_little)
-                holder.binding.ivEntourageLogo.visibility = View.VISIBLE
-            } else {
-                holder.binding.ivEntourageLogo.visibility = View.GONE
-            }
-        } else {
-            holder.binding.ivEntourageLogo.visibility = View.GONE
         }
 
         event.metadata?.landscapeUrl?.let {
             Glide.with(holder.binding.root.context)
-                .load(Uri.parse(event.metadata.landscapeUrl))
+                .load(Uri.parse(it))
                 .placeholder(R.drawable.ic_event_placeholder)
-                .transform(CenterCrop(), GranularRoundedCorners(45F, 45F, 0F, 0F))
+                .transform(CenterCrop())
                 .error(R.drawable.ic_event_placeholder)
                 .into(holder.binding.ivEventItem)
         } ?: run {
             Glide.with(holder.binding.root.context)
                 .load(R.drawable.ic_event_placeholder)
-                .transform(CenterCrop(), GranularRoundedCorners(45F, 45F, 0F, 0F))
+                .transform(CenterCrop())
                 .into(holder.binding.ivEventItem)
         }
-        event.title.let {
-            holder.binding.tvTitleEventItem.text = it
-        }
-        event.metadata?.displayAddress.let {
-            val addressCondensed = it?.split(",")
-            holder.binding.tvPlaceHomeV2EventItem.text = addressCondensed?.lastOrNull() ?: it
+
+        holder.binding.tvTitleEventItem.text = event.title
+
+        event.metadata?.displayAddress?.let {
+            holder.binding.tvPlaceHomeV2EventItem.text = it.split(",").lastOrNull()?.trim() ?: it
         }
 
         event.metadata?.startsAt?.let {
             holder.binding.tvDateHomeV2EventItem.text = Utils.formatEventDateWithTime(it, context)
         }
-        event.interests.let {
-            if (it.isNotEmpty()) {
-                val context = holder.binding.root.context
-                holder.binding.tvTagHomeV2EventItem.text = EventUtils.showTagTranslated(context, it[0]).replaceFirstChar { char -> char.uppercaseChar() }
-                holder.binding.homeV2ItemEventLayoutTag.visibility = View.VISIBLE
-                if (it[0] == "other") {
-                    holder.binding.tvTagHomeV2EventItem.text = context.getString(R.string.tag_other)
-                }
-                when (it[0]) {
-                    Interest.animals -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_animals))
-                    Interest.wellBeing -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_wellbeing))
-                    Interest.cooking -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_cooking))
-                    Interest.culture -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_art))
-                    Interest.games -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_games))
-                    Interest.nature -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_nature))
-                    Interest.sport -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_sport))
-                    Interest.activities -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_drawing))
-                    Interest.marauding -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_encounters))
-                    else -> holder.binding.ivTagHomeV2EventItem.setImageDrawable(context.getDrawable(R.drawable.new_others))
-                }
+
+        val placeLimit = event.metadata?.placeLimit
+        val membersCount = event.membersCount
+        if (placeLimit != null && placeLimit > 0 && membersCount != null) {
+            val remaining = placeLimit - membersCount
+            if (remaining in 1..5) {
+                holder.binding.tvUrgencyHomeEvent.text =
+                    if (remaining == 1) "Plus qu'une place" else "Plus que $remaining places"
+                holder.binding.tvUrgencyHomeEvent.visibility = View.VISIBLE
             } else {
-                holder.binding.homeV2ItemEventLayoutTag.visibility = View.GONE
+                holder.binding.tvUrgencyHomeEvent.visibility = View.GONE
+            }
+        } else {
+            holder.binding.tvUrgencyHomeEvent.visibility = View.GONE
+        }
+
+        val isReservedFemale = event.metadata?.reserved_female == true
+        val isEntourageEvent = event.author?.communityRoles?.let {
+            it.contains("Équipe Entourage") || it.contains("Animateur Entourage")
+        } == true
+
+        holder.binding.tvTagFemaleHome.visibility = if (isReservedFemale) View.VISIBLE else View.GONE
+        holder.binding.tvTagEntourageHome.visibility =
+            if (!isReservedFemale && isEntourageEvent) View.VISIBLE else View.GONE
+
+        bindParticipants(event, holder.binding)
+    }
+
+    private fun bindParticipants(event: Events, binding: HomeV2EventItemLayoutBinding) {
+        val members = event.members ?: emptyList()
+        val totalCount = event.membersCount ?: 0
+
+        val avatarViews = listOf(binding.ivMember1Home, binding.ivMember2Home, binding.ivMember3Home)
+        for (i in avatarViews.indices) {
+            val member = members.getOrNull(i)
+            if (member != null) {
+                avatarViews[i].visibility = View.VISIBLE
+                Glide.with(binding.root.context)
+                    .load(member.avatarUrl)
+                    .placeholder(R.drawable.placeholder_user)
+                    .error(R.drawable.placeholder_user)
+                    .circleCrop()
+                    .into(avatarViews[i])
+            } else {
+                avatarViews[i].visibility = View.GONE
             }
         }
+
+        binding.tvParticipantsCountHome.text = binding.root.context.resources.getQuantityString(
+            R.plurals.number_of_people, totalCount, totalCount
+        )
     }
 
     class EventViewHolder(val binding: HomeV2EventItemLayoutBinding) : RecyclerView.ViewHolder(binding.root)

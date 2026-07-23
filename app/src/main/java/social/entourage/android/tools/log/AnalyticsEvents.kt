@@ -824,6 +824,27 @@ object AnalyticsEvents {
     // SmallTalk - Visio
     const val CLIC__SMALLTALK__VISIO_ICON = "smalltalk_click_visio_icon_chat_screen"
 
+    // Badges
+    const val VIEW__BADGES__INTRO = "View__Badges__Intro"
+    const val ACTION__BADGES__INTRO__DISCOVER = "Action__Badges__Intro__Discover"
+    const val ACTION__BADGES__INTRO__LATER = "Action__Badges__Intro__Later"
+    const val VIEW__BADGES__PROFILE_SECTION = "View__Badges__ProfileSection"
+    const val ACTION__BADGES__PROFILE__SEE_ALL = "Action__Badges__Profile__SeeAll"
+    const val ACTION__BADGES__PROFILE__CARD_CLICK = "Action__Badges__Profile__CardClick"
+    const val VIEW__BADGES__LIST = "View__Badges__List"
+    const val ACTION__BADGES__LIST__BACK = "Action__Badges__List__Back"
+    const val ACTION__BADGES__LIST__FAQ = "Action__Badges__List__FAQ"
+    const val ACTION__BADGES__LIST__BADGE_CLICK = "Action__Badges__List__BadgeClick"
+    const val ACTION__BADGES__LIST__START = "Action__Badges__List__Start"
+    const val VIEW__BADGES__DETAIL = "View__Badges__Detail"
+    const val ACTION__BADGES__DETAIL__CLOSE = "Action__Badges__Detail__Close"
+    const val ACTION__BADGES__DETAIL__SEE_ALL = "Action__Badges__Detail__SeeAll"
+    const val ACTION__BADGES__DETAIL__CTA = "Action__Badges__Detail__CTA"
+    const val VIEW__BADGES__UNLOCKED = "View__Badges__Unlocked"
+    const val ACTION__BADGES__UNLOCKED__CLOSE = "Action__Badges__Unlocked__Close"
+    const val ACTION__BADGES__UNLOCKED__SEE_BADGES = "Action__Badges__Unlocked__SeeBadges"
+    const val ACTION__BADGES__UNLOCKED__CONTINUE = "Action__Badges__Unlocked__Continue"
+
     val TAG: String? = AnalyticsEvents::class.java.simpleName
 
     fun logEvent(event: String) {

@@ -25,7 +25,7 @@ android {
 
     // App versions
     val versionMajor = 14
-    val versionMinor = 1
+    val versionMinor = 2
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -250,6 +250,7 @@ dependencies {
     implementation(libs.maps.utils.ktx)
     implementation(libs.material)
     implementation(libs.glide)
+    implementation(libs.androidsvg)
     implementation(libs.shortcut.badger)
     implementation(libs.keyboard.visibility.event)
     ksp(libs.glide.ksp)

@@ -8,6 +8,7 @@ import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityLoginChangePhoneBinding
 import social.entourage.android.tools.hideKeyboard
+import social.entourage.android.tools.hideKeyboardOnDone
 import social.entourage.android.tools.isValidEmail
 import timber.log.Timber
 
@@ -30,6 +31,10 @@ class LoginChangePhoneActivity : BaseActivity() {
             view.performClick()
             true
         }
+
+        binding.uiChangeCodeEtOldPhone.hideKeyboardOnDone()
+        binding.uiChangeCodeEtNewPhone.hideKeyboardOnDone()
+        binding.uiChangeCodeEtEmail.hideKeyboardOnDone()
 
         binding.uiChangeCodeBtValidate.setOnClickListener {
             val oldPhone = binding.uiChangeCodeEtOldPhone.text.toString()

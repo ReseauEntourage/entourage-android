@@ -10,6 +10,9 @@ import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.core.content.edit
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import social.entourage.android.EntourageApplication
@@ -22,6 +25,7 @@ import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityLoginBinding
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
 import social.entourage.android.tools.hideKeyboard
+import social.entourage.android.tools.hideKeyboardOnDone
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.CustomAlertDialog
@@ -48,7 +52,12 @@ class LoginActivity : BaseActivity() {
         setupViews()
         setContentView(binding.root)
 
-        //binding.layoutHeader?.let { updatePaddingTopForEdgeToEdge(it) }
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { view, windowInsets ->
+            val imeHeight = windowInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            val navHeight = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
+            view.updatePadding(bottom = maxOf(imeHeight, navHeight))
+            windowInsets
+        }
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_LOGIN_LOGIN)
     }
 
@@ -97,6 +106,8 @@ class LoginActivity : BaseActivity() {
 
     private fun setupViews() {
         setEditTextAlignmentBasedOnLocale()
+        binding.uiLoginPhoneEtPhone.hideKeyboardOnDone()
+        binding.uiLoginEtCode.hideKeyboardOnDone()
 
         binding.uiLoginPhoneCcpCode.countryCodePickerListener = object : social.entourage.android.tools.view.countrycodepicker.CountryCodePickerListener {
             override fun updatedCountry(country: social.entourage.android.tools.view.countrycodepicker.Country) {

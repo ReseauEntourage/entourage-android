@@ -131,56 +131,131 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/comments"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:clipToPadding="false"
                 android:paddingHorizontal="28dp"
                 android:paddingTop="21dp"
                 />
 
-        </LinearLayout>
+            <!-- 2) Vue "empty_state" (conversation vide avec chips de suggestion) -->
+            <LinearLayout
+                android:id="@+id/empty_state"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@color/light_beige"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingHorizontal="28dp"
+                android:visibility="gone">
 
-        <!-- 2) Vue "empty_state" (message vide) -->
-        <LinearLayout
-            android:id="@+id/empty_state"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginBottom="80dp"
-            android:background="@color/white"
-            android:gravity="center"
-            android:orientation="vertical"
+            <!-- Icône bulle dans un cercle beige -->
+            <FrameLayout
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@drawable/bg_circle_beige_light"
+                android:layout_marginBottom="20dp">
 
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_lucide_messages"
+                    app:tint="@color/orange" />
+            </FrameLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/conv_empty_title"
+                android:textSize="17sp"
+                android:fontFamily="@font/quicksand_bold"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/conv_empty_subtitle"
+                android:textSize="13sp"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textColor="@color/grey"
+                android:gravity="center"
+                android:lineSpacingMultiplier="1.4"
+                android:layout_marginBottom="28dp" />
+
+            <!-- Chips — row 1 -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="bottom">
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="8dp">
 
-                <ImageView
-                    android:id="@+id/emptyStateLeft"
+                <TextView
+                    android:id="@+id/chip_hello"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="13dp"
-                    android:src="@drawable/new_empty_state_comments_left" />
+                    android:text="@string/conv_chip_hello"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/nunitosans_semibold"
+                    android:textColor="@color/black"
+                    android:background="@drawable/bg_chip_conversation_suggestion"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="9dp"
+                    android:layout_marginEnd="8dp" />
 
-                <ImageView
-                    android:id="@+id/emptyStateRight"
+                <TextView
+                    android:id="@+id/chip_help"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="23dp"
-                    android:src="@drawable/new_empty_state_comments_right" />
+                    android:text="@string/conv_chip_help"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/nunitosans_semibold"
+                    android:textColor="@color/black"
+                    android:background="@drawable/bg_chip_conversation_suggestion"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="9dp" />
+
             </LinearLayout>
 
-            <TextView
-                style="@style/left_courant_bold_black"
+            <!-- Chips — row 2 -->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="26dp"
-                android:text="@string/empty_state_comments" />
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/chip_question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/conv_chip_question"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/nunitosans_semibold"
+                    android:textColor="@color/black"
+                    android:background="@drawable/bg_chip_conversation_suggestion"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="9dp"
+                    android:layout_marginEnd="8dp" />
+
+                <TextView
+                    android:id="@+id/chip_event"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/conv_chip_event"
+                    android:textSize="13sp"
+                    android:fontFamily="@font/nunitosans_semibold"
+                    android:textColor="@color/black"
+                    android:background="@drawable/bg_chip_conversation_suggestion"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="9dp" />
+
+            </LinearLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -238,7 +313,8 @@
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="10dp"
-            android:paddingBottom="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             android:weightSum="1"
             app:layout_constraintBottom_toTopOf="@+id/layout_option">
 

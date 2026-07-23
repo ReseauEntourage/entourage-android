@@ -3,6 +3,32 @@
 
     <string name="app_name" translatable="false">Entourage</string>
     <string name="full_app_name">Entourage</string>
+
+    <!-- API Error BottomSheet -->
+    <string name="api_error_badge_label">Erreur</string>
+    <string name="api_error_button_close">Fermer</string>
+    <string name="api_error_button_go_home">Retour à l\'accueil</string>
+    <string name="api_error_button_dismiss">Fermer cette page</string>
+    <string name="api_error_title_400">Requête invalide</string>
+    <string name="api_error_desc_400">Votre demande n\'a pas pu être traitée. Veuillez réessayer.</string>
+    <string name="api_error_title_403">Accès refusé</string>
+    <string name="api_error_desc_403">Vous n\'avez pas les droits pour effectuer cette action.</string>
+    <string name="api_error_title_404">On s\'est perdus en chemin !</string>
+    <string name="api_error_desc_404">Cette page n\'existe pas ou a été déplacée. La communauté Entourage est toujours là pour vous.</string>
+    <string name="api_error_title_408">Délai dépassé</string>
+    <string name="api_error_desc_408">La requête a pris trop de temps. Vérifiez votre connexion et réessayez.</string>
+    <string name="api_error_title_409">Conflit</string>
+    <string name="api_error_desc_409">Une action similaire est déjà en cours. Veuillez réessayer.</string>
+    <string name="api_error_title_422">Données invalides</string>
+    <string name="api_error_desc_422">Les informations envoyées sont incorrectes. Veuillez vérifier et réessayer.</string>
+    <string name="api_error_title_429">Trop de requêtes</string>
+    <string name="api_error_desc_429">Vous avez effectué trop d\'actions. Patientez un moment avant de réessayer.</string>
+    <string name="api_error_title_500">Erreur serveur</string>
+    <string name="api_error_desc_500">Un problème est survenu de notre côté. Nos équipes sont sur le coup !</string>
+    <string name="api_error_title_503">Service indisponible</string>
+    <string name="api_error_desc_503">Le service est temporairement indisponible. Réessayez dans quelques instants.</string>
+    <string name="api_error_title_default">Quelque chose s\'est mal passé</string>
+    <string name="api_error_desc_default">Une erreur inattendue s\'est produite. Veuillez réessayer.</string>
     <string name="button_loading">Chargement…</string>
     <string name="title_welcome_webinar">Prochaines visios</string>
     <string name="title_welcome_papotages">Prochains papotages</string>
@@ -307,6 +333,37 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="old_publications">Anciennes publications</string>
     <string name="new_publications">Nouvelles publications</string>
     <string name="empty_state_comments">Pas encore de message</string>
+    <string name="conv_empty_title">C\'est le début de votre échange</string>
+    <string name="conv_empty_subtitle">Pas sûr de quoi dire ?\nChoisissez un sujet pour démarrer.</string>
+    <string name="conv_chip_hello">Dire bonjour 👋</string>
+    <string name="conv_chip_help">Proposer un coup de main 🤝</string>
+    <string name="conv_chip_question">Poser une question 💬</string>
+    <string name="conv_chip_event">Parler d\'un événement 📅</string>
+    <string name="conv_draft_hello">Bonjour ! Je voulais juste me présenter et prendre contact 😊</string>
+    <string name="conv_draft_help">Bonjour, je peux vous donner un coup de main si vous en avez besoin. N\'hésitez pas à me dire !</string>
+    <string name="conv_draft_question">Bonjour, j\'aurais une petite question à vous poser si vous avez un moment ?</string>
+    <string name="conv_draft_event">Bonjour, je vous ai croisé à un événement et je voulais juste échanger un peu avec vous !</string>
+
+    <!-- Chips d\'inspiration pour la création de post dans un groupe -->
+    <string name="create_post_inspiration_label">Besoin d\'inspiration ?</string>
+    <!-- Groupe généraliste -->
+    <string name="post_chip_neighborhood">Info de quartier 📢</string>
+    <string name="post_chip_activity">Proposer une activité 🎉</string>
+    <string name="post_chip_help">Demander un coup de main 🤝</string>
+    <string name="post_chip_hello">Dire bonjour 👋</string>
+    <string name="post_draft_neighborhood">Je voulais partager une info qui concerne notre quartier : </string>
+    <string name="post_draft_activity">J\'organise une petite activité et j\'aimerais vous inviter ! </string>
+    <string name="post_draft_help">Bonjour à tous, j\'aurais besoin d\'un petit coup de main pour </string>
+    <string name="post_draft_hello">Bonjour à tous ! Je voulais juste prendre contact avec le groupe 😊</string>
+    <!-- Groupe thématique (national) -->
+    <string name="post_chip_share">Partager un contenu 🎵</string>
+    <string name="post_chip_question">Poser une question ❓</string>
+    <string name="post_chip_exchange">Proposer un échange 💬</string>
+    <string name="post_chip_meetup">Organiser une rencontre 📅</string>
+    <string name="post_draft_share">J\'ai trouvé quelque chose d\'intéressant à partager avec vous : </string>
+    <string name="post_draft_question">Bonjour, j\'aurais une question pour le groupe : </string>
+    <string name="post_draft_exchange">J\'aimerais qu\'on échange sur ce sujet ensemble : </string>
+    <string name="post_draft_meetup">Et si on se retrouvait prochainement ? Je propose </string>
     <string name="retry_comment">Erreur de publication, réessayez</string>
     <string name="join_group_to_comment">* Pour commenter cette publication, rejoignez le groupe « %s » !</string>
     <string name="report_sent">Votre demande a bien été envoyée. Elle sera traitée au plus vite par notre équipe.</string>
@@ -3307,4 +3364,124 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="download_image_description">Téléchargement en cours...</string>
     <string name="download_started">Téléchargement lancé</string>
     <string name="download_error">Erreur lors du téléchargement</string>
-<string name="ajouter_des_participants">Ajouter des participants</string><string name="question_isoles">Combien de personnes isolées supplémentaires ont rejoint l\'événement ?</string><string name="question_riverains">Combien de riverains supplémentaires ont rejoint l\'événement ?</string><string name="question_femmes_isolees">Parmi ces %1$d personnes isolées, combien sont des femmes ?</string><string name="participants_ajoutes_sur_place">PARTICIPANTS AJOUTÉS SUR PLACE</string><string name="personnes_isolees">%1$d personnes isolées</string><string name="personne_isolee">%1$d personne isolée</string><string name="riverains">%1$d riverains</string><string name="riverain">%1$d riverain</string><string name="femmes_isolees">%1$d femmes isolées</string><string name="femme_isolee">%1$d femme isolée</string><string name="ajoutes_sur_place">Ajoutés sur place</string><string name="ajoute_sur_place">Ajouté sur place</string></resources>
+    <string name="suggestion_connection_title">Nouvelle connexion</string>
+    <string name="suggestion_connection_cta">Dire bonjour</string>
+    <string name="suggestion_dismiss">Pas maintenant</string>
+    <string name="suggestion_next_step_title">Ton prochain pas</string>
+    <string name="suggestion_next_step_cta_join_event">Rejoindre l\'événement</string>
+    <string name="suggestion_next_step_cta_join_group">Rejoindre le groupe</string>
+    <string name="suggestion_next_step_cta_write_group">Écrire au groupe</string>
+    <string name="suggestion_next_step_cta_say_hello">Dire bonjour</string>
+    <string name="suggestion_next_step_cta_create_action">Créer une action</string>
+    <string name="suggestion_next_step_cta_welcome_member">Accueillir le membre</string>
+    <string name="suggestion_next_step_cta_create_event">Créer un événement</string>
+<string name="ajouter_des_participants">Ajouter des participants</string><string name="question_isoles">Combien de personnes isolées supplémentaires ont rejoint l\'événement ?</string><string name="question_riverains">Combien de riverains supplémentaires ont rejoint l\'événement ?</string><string name="question_femmes_isolees">Parmi ces %1$d personnes isolées, combien sont des femmes ?</string><string name="participants_ajoutes_sur_place">PARTICIPANTS AJOUTÉS SUR PLACE</string><string name="personnes_isolees">%1$d personnes isolées</string><string name="personne_isolee">%1$d personne isolée</string><string name="riverains">%1$d riverains</string><string name="riverain">%1$d riverain</string><string name="femmes_isolees">%1$d femmes isolées</string><string name="femme_isolee">%1$d femme isolée</string><string name="ajoutes_sur_place">Ajoutés sur place</string><string name="ajoute_sur_place">Ajouté sur place</string>
+
+    <!-- Badges section -->
+    <string name="badges_section_title">Ses badges</string>
+    <string name="badges_section_title_me">Mes badges</string>
+    <string name="badges_see_all">Tout voir</string>
+    <string name="badges_screen_title">Mes badges</string>
+    <string name="badge_detail_screen_title">Détail du badge</string>
+    <string name="badges_screen_subtitle">%1$d obtenus, %2$d en cours, %3$d à découvrir. Chaque badge récompense une action concrète dans votre communauté.</string>
+    <string name="badges_section_obtained">Obtenus %1$d/%2$d</string>
+    <string name="badges_section_in_progress">En cours %1$d/%2$d</string>
+    <string name="badges_section_not_started">Non commencés %1$d/%2$d</string>
+    <string name="badges_all_title">Tous les badges %1$d/%2$d</string>
+    <string name="badges_empty_title">Vos badges Entourage</string>
+    <string name="badges_empty_subtitle">Chaque badge valorise une action concrète qui crée du lien dans la communauté. À vous de jouer !</string>
+    <string name="badges_empty_start_label">COMMENCEZ PAR</string>
+    <string name="badges_empty_start_badge">Le badge %1$s</string>
+    <string name="badges_empty_start_description">Complétez votre profil (envies d\'agir, centres d\'intérêt, catégories d\'entraides préférées, disponibilités) et réalisez votre première action sur l\'app</string>
+    <string name="badges_empty_cta">Je me lance</string>
+    <string name="badges_faq_link">Comment fonctionnent les badges ?</string>
+    <string name="badge_obtained_on">Obtenu le %1$s</string>
+    <string name="badge_cta_see_my_badges">Voir mes badges</string>
+    <string name="badge_not_yet_obtained">Pas encore obtenu</string>
+    <string name="badge_status_obtained">Obtenu</string>
+    <string name="badge_status_not_obtained">Non obtenu</string>
+    <string name="badge_how_it_works_title">COMMENT ÇA MARCHE</string>
+    <string name="badge_mechanism_title">MÉCANIQUE</string>
+    <string name="badge_what_it_means_title">CE QUE ÇA REPRÉSENTE</string>
+    <string name="badge_mechanism_irreversible">Irréversible — une fois obtenu, c\'est pour toujours.</string>
+    <string name="badge_mechanism_reversible">Réversible — à renouveler tous les 90 jours.</string>
+    <string name="badge_see_all_mine">Voir tous mes badges</string>
+    <string name="badge_progress_label">Votre progression</string>
+    <string name="badges_debug_switch_label">Mode démo badges</string>
+
+    <!-- Badge: Premier pas -->
+    <string name="badge_premier_pas_title">Premier pas</string>
+    <string name="badge_premier_pas_description_short">Complétez votre profil (envies d\'agir, centres d\'intérêt, catégories d\'entraides préférées, disponibilités) et réalisez votre première action sur l\'app</string>
+    <string name="badge_premier_pas_how_it_works">Complétez votre profil (envies d\'agir, centres d\'intérêt, catégories d\'entraides préférées, disponibilités) et réalisez votre première action sur l\'app</string>
+    <string name="badge_premier_pas_what_it_means">Ce badge célèbre votre arrivée dans la communauté. Il marque votre premier geste — celui qui transforme un compte créé en une réelle intention.</string>
+    <string name="badge_premier_pas_cta">Faire une première action</string>
+
+    <!-- Badge: Premier lien -->
+    <string name="badge_premier_lien_title">Premier lien</string>
+    <string name="badge_premier_lien_description_short">Échangez un premier message en privé avec un autre membre</string>
+    <string name="badge_premier_lien_how_it_works">Échangez votre premier message en privé avec un autre membre. Il faut un message de chacun pour que le lien soit comptabilisé.</string>
+    <string name="badge_premier_lien_what_it_means">Le premier message direct avec un autre membre marque un cap important : le passage du collectif à la relation. C\'est souvent là que le lien devient réel.</string>
+    <string name="badge_premier_lien_cta">Discuter avec quelqu\'un</string>
+
+    <!-- Badge: Diffuseur de liens -->
+    <string name="badge_diffuseur_liens_title">Créateur de rencontres</string>
+    <string name="badge_diffuseur_liens_description_short">Créez 3 événements sur 90 jours</string>
+    <string name="badge_diffuseur_liens_how_it_works">Créez ou co-animez au moins 3 événements (physiques ou en ligne) sur les 90 derniers jours. Aucun seuil de participants requis.</string>
+    <string name="badge_diffuseur_liens_what_it_means">Organiser des rencontres demande du temps et de l\'énergie. Ce badge valorise celles et ceux qui font bouger la communauté Entourage en proposant des moments de rencontre.</string>
+    <string name="badge_diffuseur_liens_cta">Créer un événement</string>
+
+    <!-- Badge: As du papotage -->
+    <string name="badge_as_papotage_title">As du papotage</string>
+    <string name="badge_as_papotage_description_short">Participez à 3 Papotages solidaires sur 90 jours</string>
+    <string name="badge_as_papotage_how_it_works">Participez à au moins 3 Papotages solidaires sur les 90 derniers jours.</string>
+    <string name="badge_as_papotage_what_it_means">Les Papotages sont le cœur battant de la communauté en ligne. Être présent régulièrement, c\'est contribuer à maintenir un espace de parole vivant et chaleureux.</string>
+    <string name="badge_as_papotage_cta">Rejoindre un papotage</string>
+
+    <!-- Badge: Tisseur de liens -->
+    <string name="badge_tisseur_liens_title">Tisseur de liens</string>
+    <string name="badge_tisseur_liens_description_short">Soyez actif dans vos groupes (en postant, commentant, réagissant) au moins 3 semaines par mois</string>
+    <string name="badge_tisseur_liens_how_it_works">Soyez actif dans vos groupes (en postant, commentant, réagissant) au moins 3 semaines par mois.</string>
+    <string name="badge_tisseur_liens_what_it_means">La régularité crée la confiance. Ce badge honore ceux qui sont là semaine après semaine, qui animent la vie locale et maintiennent le lien dans leur quartier.</string>
+    <string name="badge_tisseur_liens_cta">Aller dans mes groupes</string>
+
+    <!-- Badge intro bottom sheet -->
+    <string name="badge_intro_title">Chaque geste compte</string>
+    <string name="badge_intro_subtitle">Vos actions tissent des liens.\nVos badges en gardent la mémoire.</string>
+    <string name="badge_intro_feature1_title">Agissez à votre rythme</string>
+    <string name="badge_intro_feature1_desc">Pas de pression : chaque geste dans la communauté compte.</string>
+    <string name="badge_intro_feature2_title">Chaque action laisse une trace</string>
+    <string name="badge_intro_feature2_desc">Au fil de vos échanges et participations, des badges viennent marquer les étapes.</string>
+    <string name="badge_intro_feature3_title">Votre parcours est visible</string>
+    <string name="badge_intro_feature3_desc">Vos badges s\'affichent sur votre profil et racontent votre histoire dans la communauté.</string>
+    <string name="badge_intro_cta">Découvrir mes badges</string>
+    <string name="badge_intro_later">Plus tard</string>
+
+    <!-- Badge unlocked popup -->
+    <string name="badge_unlocked_bravo">Bravo %s !</string>
+    <string name="badge_unlocked_subtitle">Vous venez de débloquer le badge</string>
+    <string name="badge_unlocked_cta">Voir mes badges</string>
+    <string name="badge_unlocked_continue">Continuer</string>
+    <string name="badge_premier_pas_unlocked_message">Vous venez de faire votre premier pas dans la communauté Entourage. Votre présence compte déjà, bienvenue parmi nous.</string>
+    <string name="badge_premier_lien_unlocked_message">Vous venez d\'échanger votre premier message avec un autre membre. Chaque lien tissé fait vivre la communauté.</string>
+    <string name="badge_diffuseur_liens_unlocked_message">Vous avez organisé 3 événements sur les 90 derniers jours. Vous faites bouger la communauté Entourage, un grand bravo !</string>
+    <string name="badge_as_papotage_unlocked_message">3 Papotages solidaires en 1 mois et demi, votre présence régulière crée du lien et fait du bien autour de vous. Merci pour votre engagement constant.</string>
+    <string name="badge_tisseur_liens_unlocked_message">3 semaines d\'activité sur 4 — vous faites battre le cœur des groupes de voisins. Merci pour votre engagement constant.</string>
+    <string name="badge_premier_pas_progress_hint">Une seule action pour obtenir ce badge : rejoindre un événement, envoyer un message à un membre ou partager une entraide.</string>
+    <string name="badge_premier_lien_progress_hint">Un échange avec un autre membre de la communauté vous permet d\'obtenir ce badge.</string>
+    <string name="badge_diffuseur_liens_progress_hint">Créez ou co-animez des événements sur les 90 derniers jours pour obtenir ce badge.</string>
+    <string name="badge_as_papotage_progress_hint">Participez à des Papotages solidaires sur les 90 derniers jours pour obtenir ce badge.</string>
+    <string name="badge_tisseur_liens_progress_hint">Soyez actif dans vos groupes au moins 3 semaines sur les 4 dernières pour obtenir ce badge.</string>
+    <plurals name="badge_diffuseur_liens_progress_hint_remaining">
+        <item quantity="one">Plus qu\'1 événement à créer ou co-animer pour obtenir ce badge.</item>
+        <item quantity="other">Encore %d événements à créer ou co-animer pour obtenir ce badge.</item>
+    </plurals>
+    <plurals name="badge_as_papotage_progress_hint_remaining">
+        <item quantity="one">Plus qu\'1 Papotage solidaire pour obtenir ce badge.</item>
+        <item quantity="other">Encore %d Papotages solidaires pour obtenir ce badge.</item>
+    </plurals>
+    <plurals name="badge_tisseur_liens_progress_hint_remaining">
+        <item quantity="one">Plus qu\'1 semaine d\'activité pour obtenir ce badge.</item>
+        <item quantity="other">Encore %d semaines d\'activité pour obtenir ce badge.</item>
+    </plurals>
+
+</resources>

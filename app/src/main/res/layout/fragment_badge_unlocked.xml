@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <!-- Drag handle -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_rounded_button_grey_stroke_slim" />
+
+    <!-- Close button -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="8dp">
+
+        <ImageButton
+            android:id="@+id/btn_close"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_close_black_24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Fermer" />
+    </FrameLayout>
+
+    <!-- Beige zone with animation + emoji -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@color/beige"
+        android:layout_marginTop="8dp">
+
+        <social.entourage.android.badges.DotsAnimationView
+            android:id="@+id/dots_animation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/iv_badge_icon"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_gravity="center"
+            android:contentDescription="@null" />
+
+    </FrameLayout>
+
+    <!-- Text zone -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="24dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="32dp">
+
+        <TextView
+            android:id="@+id/tv_bravo_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:fontFamily="@font/quicksand_bold"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            tools:text="Bravo Gwenaelle !" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:fontFamily="@font/nunitosans_regular"
+            android:textSize="15sp"
+            android:textColor="@color/grey"
+            android:layout_marginTop="4dp"
+            android:text="@string/badge_unlocked_subtitle" />
+
+        <TextView
+            android:id="@+id/tv_badge_name_highlight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:fontFamily="@font/nunitosans_bold"
+            android:textSize="18sp"
+            android:textColor="@color/orange"
+            android:layout_marginTop="2dp"
+            tools:text="Premier pas" />
+
+        <TextView
+            android:id="@+id/tv_unlocked_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:fontFamily="@font/nunitosans_regular"
+            android:textSize="14sp"
+            android:textColor="@color/grey"
+            android:layout_marginTop="16dp"
+            tools:text="Vous venez de faire votre premier pas dans la communauté Entourage." />
+
+        <Button
+            android:id="@+id/btn_see_badges"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/bg_button_accent_rounded_large_radius"
+            android:text="@string/badge_unlocked_cta"
+            android:textColor="@color/white"
+            android:fontFamily="@font/nunitosans_bold"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:paddingVertical="14dp" />
+
+        <TextView
+            android:id="@+id/tv_continue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:fontFamily="@font/nunitosans_semibold"
+            android:textSize="14sp"
+            android:textColor="@color/grey"
+            android:layout_marginTop="16dp"
+            android:paddingBottom="8dp"
+            android:text="@string/badge_unlocked_continue" />
+
+    </LinearLayout>
+
+</LinearLayout>

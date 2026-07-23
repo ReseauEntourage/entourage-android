@@ -54,7 +54,7 @@ import social.entourage.android.events.details.SettingsModalFragment
 import social.entourage.android.groups.details.feed.CallbackReportFragment
 import social.entourage.android.groups.details.feed.GroupMembersPhotosAdapter
 import social.entourage.android.groups.details.members.MembersType
-import social.entourage.android.home.HomeFragment
+import social.entourage.android.home.HomeState
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.members.MembersActivity
 import social.entourage.android.profile.association.AssociationProfileActivity
@@ -464,7 +464,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
         binding.iconSettings.setOnClickListener {
             // droits : organisateur / animateur (selon tes règles existantes)
-            val canManageParticipants = HomeFragment.signablePermission && event?.signable == true
+            val canManageParticipants = HomeState.signablePermission && event?.signable == true
 
             // infos d’entête pour la sheet
             val title = event?.title
@@ -683,7 +683,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 // Passage des arguments nécessaires
                 putExtra("ID", eventId) // Assure-toi que 'groupId' est un Int
                 putExtra("TYPE", MembersType.EVENT.code) // Utilise 'code' pour passer l'enum comme un Int
-                putExtra("ROLE", (signable && HomeFragment.signablePermission))
+                putExtra("ROLE", (signable && HomeState.signablePermission))
             }
             startActivity(intent)
             requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)

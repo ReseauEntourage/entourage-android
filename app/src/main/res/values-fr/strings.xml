@@ -2748,4 +2748,23 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_small_talk_matching">+%1$d en cours de matching</string>
     <string name="home_small_talk_launch_new">+ Lancer une nouvelle rencontre (%1$d/3)</string>
     <string name="home_small_talk_subtitle_waiting">%1$d discussion en cours de matching</string>
+
+    <!-- Chips d'inspiration pour la création de post dans un groupe -->
+    <string name="create_post_inspiration_label">Besoin d\'inspiration ?</string>
+    <string name="post_chip_neighborhood">Info de quartier 📢</string>
+    <string name="post_chip_activity">Proposer une activité 🎉</string>
+    <string name="post_chip_help">Demander un coup de main 🤝</string>
+    <string name="post_chip_hello">Dire bonjour 👋</string>
+    <string name="post_draft_neighborhood">Je voulais partager une info qui concerne notre quartier : </string>
+    <string name="post_draft_activity">J\'organise une petite activité et j\'aimerais vous inviter ! </string>
+    <string name="post_draft_help">Bonjour à tous, j\'aurais besoin d\'un petit coup de main pour </string>
+    <string name="post_draft_hello">Bonjour à tous ! Je voulais juste prendre contact avec le groupe 😊</string>
+    <string name="post_chip_share">Partager un contenu 🎵</string>
+    <string name="post_chip_question">Poser une question ❓</string>
+    <string name="post_chip_exchange">Proposer un échange 💬</string>
+    <string name="post_chip_meetup">Organiser une rencontre 📅</string>
+    <string name="post_draft_share">J\'ai trouvé quelque chose d\'intéressant à partager avec vous : </string>
+    <string name="post_draft_question">Bonjour, j\'aurais une question pour le groupe : </string>
+    <string name="post_draft_exchange">J\'aimerais qu\'on échange sur ce sujet ensemble : </string>
+    <string name="post_draft_meetup">Et si on se retrouvait prochainement ? Je propose </string>
     </resources>

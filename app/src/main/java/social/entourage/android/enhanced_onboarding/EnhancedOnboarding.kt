@@ -20,7 +20,6 @@ import social.entourage.android.enhanced_onboarding.fragments.OnboardingCongrats
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingDisponibilityFragment
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestFragment
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingPresentationFragment
-import social.entourage.android.home.HomeFragment // Si besoin d'accès à la constante, sinon chaîne en dur
 
 class EnhancedOnboarding : BaseActivity() {
     private lateinit var binding: ActivityEnhancedOnboardingLayoutBinding

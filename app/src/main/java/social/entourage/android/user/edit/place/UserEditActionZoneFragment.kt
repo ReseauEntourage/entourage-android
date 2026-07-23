@@ -13,7 +13,7 @@ import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
 import social.entourage.android.groups.create.CommunicationHandlerViewModel
-import social.entourage.android.home.OnHomeChangeLocationUpdate
+import social.entourage.android.home.OnHomeChangeLocationUpdate // moved to HomeState.kt
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import java.io.IOException
