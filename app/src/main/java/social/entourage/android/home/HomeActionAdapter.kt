@@ -27,6 +27,12 @@ class HomeActionAdapter(private var isContrib:Boolean): RecyclerView.Adapter<Hom
     fun getIsContrib():Boolean{
         return isContrib
     }
+
+    fun setContrib(isContrib: Boolean) {
+        this.isContrib = isContrib
+        notifyDataSetChanged()
+    }
+
     fun resetData(actions:MutableList<Action>){
         this.actions.clear()
         this.actions.addAll(actions)

@@ -4,12 +4,12 @@ import android.content.Context
 import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.notifications.PushNotificationManager
+import social.entourage.android.test.BuildConfig
 
 object MockNotificationGenerator {
 
-    const val message_conversation = "Vous avez un nouveau message dans la conversation"
-
-    fun createContributionNotification(context: Context) {
+    fun createContributionNotification(context: Context): Int {
+        val title = "Nouvelle contribution à l'événement"
         val contributionContent = """
         {
             "extra": {
@@ -21,21 +21,24 @@ object MockNotificationGenerator {
                 "instance_id": 1,
                 "tracking": "contribution_on_create"
             },
-            "message": "Nouvelle contribution à l'événement"
+            "message": "$title"
         }
         """.trimIndent()
-
+        val pushNotificationId = 1
         val contributionNotification = PushNotificationMessage(
             author = "System",
             msgObject = "Contribution",
             content = contributionContent,
-            pushNotificationId = 1,
+            pushNotificationId = pushNotificationId,
             pushNotificationTag = "contribution"
         )
         PushNotificationManager.handlePushNotification(contributionNotification, context)
+        return pushNotificationId
     }
 
-    fun createConversationNotification(context: Context) {
+    fun createConversationNotification(context: Context): Int {
+        val messageConversation = "Vous avez un nouveau message dans la conversation"
+
         val conversationContent = """
         {
             "extra": {
@@ -47,21 +50,24 @@ object MockNotificationGenerator {
                 "instance_id": 2,
                 "tracking": "private_chat_message_on_create"
             },
-            "message": "$message_conversation"
+            "message": "$messageConversation"
         }
         """.trimIndent()
 
+        val pushNotificationId = 2
         val conversationNotification = PushNotificationMessage(
             author = "System",
             msgObject = "Conversation",
             content = conversationContent,
-            pushNotificationId = 2,
+            pushNotificationId = pushNotificationId,
             pushNotificationTag = "conversation"
         )
         PushNotificationManager.handlePushNotification(conversationNotification, context)
+        return pushNotificationId
     }
 
-    fun createOutingNotification(context: Context) {
+    fun createOutingNotification(context: Context): Int {
+        val title = "Un nouvel événement a été créé"
         val outingContent = """
         {
             "extra": {
@@ -73,21 +79,24 @@ object MockNotificationGenerator {
                 "instance_id": 3,
                 "tracking": "outing_on_create"
             },
-            "message": "Un nouvel événement a été créé"
+            "message": "$title"
         }
         """.trimIndent()
 
+        val pushNotificationId = 3
         val outingNotification = PushNotificationMessage(
             author = "System",
             msgObject = "Outing",
             content = outingContent,
-            pushNotificationId = 3,
+            pushNotificationId = pushNotificationId,
             pushNotificationTag = "outing"
         )
         PushNotificationManager.handlePushNotification(outingNotification, context)
+        return pushNotificationId
     }
 
-    fun createJoinRequestNotification(context: Context) {
+    fun createJoinRequestNotification(context: Context): Int {
+        val title ="Nouvelle demande pour rejoindre l'événement"
         val joinRequestContent = """
         {
             "extra": {
@@ -99,21 +108,23 @@ object MockNotificationGenerator {
                 "instance_id": 4,
                 "tracking": "join_request_on_create"
             },
-            "message": "Nouvelle demande pour rejoindre l'événement"
+            "message": "$title"
         }
         """.trimIndent()
-
+        val pushNotificationId = 4
         val joinRequestNotification = PushNotificationMessage(
             author = "System",
             msgObject = "Join Request",
             content = joinRequestContent,
-            pushNotificationId = 4,
+            pushNotificationId = pushNotificationId,
             pushNotificationTag = "join_request"
         )
         PushNotificationManager.handlePushNotification(joinRequestNotification, context)
+        return pushNotificationId
     }
 
-    fun createInvitationNotification(context: Context) {
+    fun createInvitationNotification(context: Context): Int {
+        val title = "Vous avez été invité à rejoindre l'entourage"
         val invitationContent = """
         {
             "extra": {
@@ -125,21 +136,23 @@ object MockNotificationGenerator {
                 "instance_id": 5,
                 "tracking": "invitation_on_create"
             },
-            "message": "Vous avez été invité à rejoindre l'entourage"
+            "message": "$title"
         }
         """.trimIndent()
-
+        val pushNotificationId = 5
         val invitationNotification = PushNotificationMessage(
             author = "System",
             msgObject = "Invitation",
             content = invitationContent,
-            pushNotificationId = 5,
+            pushNotificationId = pushNotificationId,
             pushNotificationTag = "invitation"
         )
         PushNotificationManager.handlePushNotification(invitationNotification, context)
+        return pushNotificationId
     }
 
-    fun createJoinRequestAcceptedNotification(context: Context) {
+    fun createJoinRequestAcceptedNotification(context: Context): Int {
+        val title = "Votre demande pour rejoindre l'entourage a été acceptée"
         val joinRequestAcceptedContent = """
         {
             "extra": {
@@ -151,21 +164,23 @@ object MockNotificationGenerator {
                 "instance_id": 6,
                 "tracking": "join_request_accepted"
             },
-            "message": "Votre demande pour rejoindre l'entourage a été acceptée"
+            "message": "$title"
         }
         """.trimIndent()
-
+        val pushNotificationId = 6
         val joinRequestAcceptedNotification = PushNotificationMessage(
             author = "System",
             msgObject = "Join Request Accepted",
             content = joinRequestAcceptedContent,
-            pushNotificationId = 6,
+            pushNotificationId = pushNotificationId,
             pushNotificationTag = "join_request_accepted"
         )
         PushNotificationManager.handlePushNotification(joinRequestAcceptedNotification, context)
+        return pushNotificationId
     }
 
-    fun createSolicitationNotification(context: Context) {
+    fun createSolicitationNotification(context: Context): Int {
+        val title = "Nouvelle sollicitation reçue"
         val solicitationContent = """
         {
             "extra": {
@@ -177,21 +192,23 @@ object MockNotificationGenerator {
                 "instance_id": 7,
                 "tracking": "solicitation_on_create"
             },
-            "message": "Nouvelle sollicitation reçue"
+            "message": "$title"
         }
         """.trimIndent()
-
+        val pushNotificationId = 7
         val solicitationNotification = PushNotificationMessage(
             author = "System",
             msgObject = "Solicitation",
             content = solicitationContent,
-            pushNotificationId = 7,
+            pushNotificationId = pushNotificationId,
             pushNotificationTag = "solicitation"
         )
         PushNotificationManager.handlePushNotification(solicitationNotification, context)
+        return pushNotificationId
     }
 
-    fun createNeighborhoodPostNotification(context: Context) {
+    fun createNeighborhoodPostNotification(context: Context): Int {
+        val title = "Nouveau post dans le quartier"
         val neighborhoodPostContent = """
         {
             "extra": {
@@ -203,21 +220,23 @@ object MockNotificationGenerator {
                 "instance_id": 8,
                 "tracking": "post_on_create_to_neighborhood"
             },
-            "message": "Nouveau post dans le quartier"
+            "message": "$title"
         }
         """.trimIndent()
-
+        val pushNotificationId = 8
         val neighborhoodPostNotification = PushNotificationMessage(
             author = "System",
             msgObject = "Neighborhood Post",
             content = neighborhoodPostContent,
-            pushNotificationId = 8,
+            pushNotificationId = pushNotificationId,
             pushNotificationTag = "neighborhood_post"
         )
         PushNotificationManager.handlePushNotification(neighborhoodPostNotification, context)
+        return pushNotificationId
     }
 
-    fun createOutingPostNotification(context: Context) {
+    fun createOutingPostNotification(context: Context): Int {
+        val title = "Nouveau post dans l'événement"
         val outingPostContent = """
         {
             "extra": {
@@ -229,21 +248,23 @@ object MockNotificationGenerator {
                 "instance_id": 9,
                 "tracking": "post_on_create_to_outing"
             },
-            "message": "Nouveau post dans l'événement"
+            "message": "$title"
         }
         """.trimIndent()
-
+        val pushNotificationId = 9
         val outingPostNotification = PushNotificationMessage(
             author = "System",
             msgObject = "Outing Post",
             content = outingPostContent,
-            pushNotificationId = 9,
+            pushNotificationId = pushNotificationId,
             pushNotificationTag = "outing_post"
         )
         PushNotificationManager.handlePushNotification(outingPostNotification, context)
+        return pushNotificationId
     }
 
-    fun createWelcomeNotification(context: Context, stage: String, pushNotificationId: Int) {
+    fun createWelcomeNotification(context: Context, stage: String, pushNotificationId: Int): Int {
+        val title = "Bienvenue au Jour $stage"
         val welcomeContent = """
         {
             "extra": {
@@ -256,7 +277,7 @@ object MockNotificationGenerator {
                 "tracking": "",
                 "stage": "$stage"
             },
-            "message": "Bienvenue au Jour $stage"
+            "message": "$title"
         }
         """.trimIndent()
 
@@ -268,6 +289,16 @@ object MockNotificationGenerator {
             pushNotificationTag = "welcome_day$stage"
         )
         PushNotificationManager.handlePushNotification(welcomeNotification, context)
+        return pushNotificationId
+    }
+
+    fun createFCMNotification(context: Context): Int {
+        PushNotificationManager.displayFCMPushNotification(
+            BuildConfig.DEEP_LINKS_SCHEME + "://profile",
+            "InApp vers Profil",
+            "Doit ouvrir le profil",
+            context)
+        return PushNotificationMessage.Companion.PushNotificationIds.FCM
     }
 
     fun createAllMockNotifications(context: Context) {
@@ -285,5 +316,6 @@ object MockNotificationGenerator {
         createWelcomeNotification(context, "j5", 12)
         createWelcomeNotification(context, "j8", 13)
         createWelcomeNotification(context, "j11", 14)
+        createFCMNotification(context)
     }
 }

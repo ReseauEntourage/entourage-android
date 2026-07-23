@@ -20,12 +20,12 @@ fun String.runCommand(currentWorkingDir: File = file("./")): String {
 
 android {
 // Java versions
-    val sourceCompatibilityVersion = JavaVersion.VERSION_11
-    val targetCompatibilityVersion = JavaVersion.VERSION_11
+    val sourceCompatibilityVersion = JavaVersion.VERSION_17
+    val targetCompatibilityVersion = JavaVersion.VERSION_17
 
     // App versions
     val versionMajor = 13
-    val versionMinor = 1
+    val versionMinor = 2
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -41,7 +41,7 @@ android {
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 
@@ -57,7 +57,7 @@ android {
     }
 
     compileSdk = 36
-    buildToolsVersion = "36.0.0"
+    buildToolsVersion = "36.1.0"
 
     val localTestAccountLogin = System.getenv("TEST_ACCOUNT_LOGIN")?.let { login -> "\""+ login+ "\"" }
         ?: findProperty("entourageTestLogin") as String?
@@ -70,6 +70,9 @@ android {
 
     androidResources{
         localeFilters.addAll(listOf("en", "fr", "de", "pl", "es","uk", "ro", "ar"))
+    }
+    base {
+        archivesName.set("$appBundleName-$versionNameProd")
     }
 
     defaultConfig {
@@ -90,7 +93,6 @@ android {
 
         buildConfigField("String", "VERSION_FULL_NAME", "\"" + versionNameProd + "\"")
         buildConfigField("String", "VERSION_DISPLAY_BRANCH_NAME", "\"" + versionBranchName + "\"")
-        setProperty("archivesBaseName", "$appBundleName-$versionNameProd")
         multiDexEnabled = true
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -102,19 +104,17 @@ android {
 
     signingConfigs {
         create("googleplay") {
-            val keystorePass= System.getenv("KEYSTORE_PASS") ?: findProperty("entourageKeystorePassword") as String
+            val keystorePass= System.getenv("KEYSTORE_PASS") ?: findProperty("entourageKeystorePassword") as String? ?: ""
             keyAlias = "googleplay"
 
             keyPassword = keystorePass
             storeFile = file("../keystore/googleplay-keystore.jks")
             storePassword = keystorePass
         }
-
         getByName("debug") {
             storeFile = file("../keystore/debug.keystore")
         }
     }
-
     flavorDimensions += listOf("app", "env")
 
     productFlavors {
@@ -126,6 +126,7 @@ android {
             buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "15")
             buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "37")
             buildConfigField("int", "PEDAGO_ACTION_SECTION_ID", "34")
+            buildConfigField("String", "PEDAGO_GUIDE_ID", "\"eOB7jU8NNODY\"")
         }
         create("staging") {
             manifestPlaceholders += mapOf(
@@ -140,6 +141,7 @@ android {
             buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "32")
             buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "33")
             buildConfigField("int", "PEDAGO_ACTION_SECTION_ID", "33")
+            buildConfigField("String", "PEDAGO_GUIDE_ID", "\"eyck8DuIn3cI\"")
 
         }
          create("entourage") {
@@ -246,7 +248,6 @@ dependencies {
     implementation(libs.glide)
     implementation(libs.shortcut.badger)
     implementation(libs.keyboard.visibility.event)
-    implementation(libs.espresso.core)
     kapt(libs.glide.compiler)
 
     //entourageImplementation facebookDependencies.values()
@@ -255,7 +256,7 @@ dependencies {
     compileOnly(libs.javax.annotation)
 
     // Instrumentation tests
-
+    androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.androidx.test.runner)
@@ -274,20 +275,13 @@ dependencies {
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.inline)
     testImplementation(libs.mockito.kotlin)
-
-
     implementation(libs.flexbox)
-    // Kotlin
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
     implementation(libs.sectioned.recyclerview)
-
     implementation(libs.lottie)
-
-    //photoview to click and zoom
     implementation(libs.photoview)
-    implementation(libs.transition) // Remplacez 'x.x.x' par la dernière version disponible.
-
+    implementation(libs.transition)
     implementation(libs.play.app.update.ktx)
     implementation(libs.play.asset.delivery)
     implementation(libs.play.asset.delivery.ktx)
@@ -297,12 +291,10 @@ dependencies {
     implementation(libs.play.review.ktx)
     implementation(libs.speed.dial)
     implementation(libs.firebase.database)
-
     implementation(libs.bundles.ktor)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.play.services.auth.api.phone)
     //UNCOMMENT FOR VIDEO CALL FEATURE
     //implementation("com.dafruits:webrtc:123.0.0")
-
     implementation(libs.bundles.oss)
 }

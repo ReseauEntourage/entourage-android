@@ -131,8 +131,19 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                     }
                     (context as Activity).startActivity(intent)
                 }
+                pathSegments.contains("good-waves") -> {
+                    val intent = Intent(context, social.entourage.android.small_talks.SmallTalkIntroActivity::class.java)
+                    context.startActivity(intent)
+                }
                 pathSegments.contains("outings") -> {
-                    if (pathSegments.size > 3) {
+                    if (pathSegments.contains("papotages")) {
+                        presenter.getEventSmallTalk()
+                    } else if (pathSegments.contains("new")) {
+                        val intent = Intent(context, social.entourage.android.events.create.CreateEventActivity::class.java)
+                        (context as? MainActivity)?.startActivityForResult(intent, 0)
+                    } else if (pathSegments.contains("webinar")) {
+                        presenter.getEventSensibilisation()
+                    } else if (pathSegments.size > 3) {
                         val outingId = pathSegments[2]
                         EventFeedFragment.shouldAddToAgenda = true
                         presenter.getEvent(outingId)

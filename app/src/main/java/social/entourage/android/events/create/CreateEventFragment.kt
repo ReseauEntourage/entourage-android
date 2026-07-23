@@ -109,7 +109,7 @@ class CreateEventFragment : Fragment() {
                             if (CommunicationHandler.eventEdited != null) {
                                 R.string.edit
                             } else R.string.create
-                        } else R.string.new_next
+                        } else R.string.next
                     )
             }
         })

@@ -10,14 +10,14 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import social.entourage.android.R
 import social.entourage.android.api.model.MetadataActionLocation
-import social.entourage.android.databinding.NewFragmentCreateActionStepThreeBinding
+import social.entourage.android.databinding.FragmentCreateActionStepLocationBinding
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.user.edit.place.UserEditActionZoneFragment
 
-class CreateActionStepThreeFragment : Fragment(), UserEditActionZoneFragment.FragmentListener {
+class CreateActionStepLocationFragment : Fragment(), UserEditActionZoneFragment.FragmentListener {
 
-    private var _binding: NewFragmentCreateActionStepThreeBinding? = null
-    val binding: NewFragmentCreateActionStepThreeBinding get() = _binding!!
+    private var _binding: FragmentCreateActionStepLocationBinding? = null
+    val binding: FragmentCreateActionStepLocationBinding get() = _binding!!
 
     private val viewModel: CommunicationActionHandlerViewModel by activityViewModels()
 
@@ -27,7 +27,7 @@ class CreateActionStepThreeFragment : Fragment(), UserEditActionZoneFragment.Fra
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentCreateActionStepThreeBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateActionStepLocationBinding.inflate(inflater, container, false)
         return binding.root
     }
 

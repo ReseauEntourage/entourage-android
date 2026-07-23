@@ -16,7 +16,7 @@
     <string name="send">Надіслати</string>
     <string name="register">зберегти</string>
     <string name="ignore">Ігнорувати</string>
-    <string name="next">Продовжити</string>
+    <string name="continue_string">Продовжити</string>
     <string name="close">Закрити</string>
     <string name="edit">Щоб змінити</string>
     <string name="activate">Увімкнути</string>
@@ -71,7 +71,7 @@
     <string name="home_help_button_1">Зробіть фінансову пожертву \nEntourage</string>
     <string name="home_help_button_2">Devenir reporter pour\nEntourage</string>
     <string name="home_help_button_3">Розмова про Entourage</string>
-    <string name="home_help_button_4">Стань амбасадором</string>
+    <string name="home_help_button_4">Стань Animateur Entourage</string>
     <string name="home_help_button_5">Програма LinkedOut</string>
     <string name="home_button_help_title">Я допомагаю Entourage іншим способом</string>
     <string name="home_button_change_zone">Я зміню свою сферу діяльності</string>
@@ -159,7 +159,7 @@
     <string name="edit_interests">Змінити мої інтереси</string>
     <string name="follow">S\підписатися</string>
     <string name="following">Абонент</string>
-    <string name="ambassador">посол</string>
+    <string name="ambassador">Animateur Entourage</string>
 
     <string name="group_name">Назва групи</string>
     <string name="event_name">Назва події \</string>
@@ -186,7 +186,7 @@
     <string name="report_comment">Повідомити про коментар</string>
     <string name="report_eventt">Повідомити про подію</string>
     <string name="why_reporting">Повідомте нам причину вашого повідомлення</string>
-    <string name="new_next">Слідую</string>
+    <string name="next">Слідую</string>
     <string name="back">Назад</string>
     <string name="cancel_event_continue">Продовжити</string>
     <string name="previous">Попередній</string>
@@ -1524,7 +1524,6 @@
 
     <string name="create_action_wizard_p3_title">ОСТАННЄ ПИТАННЯ</string>
     <string name="create_action_wizard_p3_description">Щоб транслювати свою акцію солідарності в мережі, необхідна згода.\n\nНаразі вашу дію призупинено. Модератор дуже швидко відповість, щоб допомогти вам.</string>
-    <string name="create_action_wizard_p3_option1">@string/next</string>
 
     <string name="create_action_wizard_disclaimer">У &lt;a href=\'%1$s\'&gt;Хартії етики Entourage&lt;/a&gt; пояснюється, чому згода є важливою.</string>
 
@@ -1788,7 +1787,7 @@
     <string name="menu_info_first_guide">Наш посібник, як наважитися на зустріч</string>
     <string name="menu_info_second_gift">Пожертвуйте Entourage</string>
     <string name="menu_info_second_help">Допомога з реінтеграцією</string>
-    <string name="menu_info_second_ambassador">Стань волонтерським амбасадором</string>
+    <string name="menu_info_second_ambassador">Стань волонтерським Animateur Entourage</string>
     <string name="menu_info_second_good">Створюйте посилання з Good Waves</string>
     <string name="menu_info_second_title">❤️ ПРИЄДНУЙТЕСЯ</string>
     <string name="menu_info_third_info">Як поговорити про це з ізольованими людьми?</string>
@@ -2047,8 +2046,8 @@
     <string name="partner_remove_ok">Бейдж видалено</string>
 
     <string name="member_type_organization">Мародер</string>
-    <string name="role_ambassador">посол</string>
-    <string name="role_admin">посол</string>
+    <string name="role_ambassador">Animateur Entourage</string>
+    <string name="role_admin">Animateur Entourage</string>
 
     <string name="user_profile_display_title">ПРОФІЛЬ</string>
     <string name="user_button_confirm_changes">Підтвердити</string>
@@ -2185,7 +2184,6 @@
     <string name="cult_sport_asso">Культурні та спортивні ініціативи</string>
     <string name="serv_pub_asso">Державна служба</string>
     <string name="autre_asso">інші</string>
-    <string name="next_">Слідую</string>
 
     <string name="title_association">Асоціація</string>
     <string name="title_asso_donation">Приймайте пожертви</string>
@@ -2647,4 +2645,5 @@
     <string name="onboard_sms_wait_title">Ви ще не отримали код для входу?</string>
     <string name="onboard_sms_wait_countdown">Ви зможете запросити новий код через %1$s</string>
 
+    <string name="guide_help_orientation_button">Допомога та орієнтація</string>
 </resources>

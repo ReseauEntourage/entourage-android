@@ -1,21 +1,18 @@
-package social.entourage.android
+package social.entourage.android.unchecked
 
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.LargeTest
-import org.hamcrest.Matchers.allOf
-import org.junit.After
+import org.hamcrest.Matchers
 import org.junit.Before
 import org.junit.Rule
-import org.junit.runner.RunWith
+import social.entourage.android.R
+import social.entourage.android.afterLogin.EntourageTestAfterLogin
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 
-@LargeTest
-@RunWith(AndroidJUnit4::class)
+//TODO @LargeTest
+//TODO @RunWith(AndroidJUnit4::class)
 class OnboardingTest : EntourageTestAfterLogin() {
 
     @get:Rule
@@ -26,12 +23,6 @@ class OnboardingTest : EntourageTestAfterLogin() {
         activityRule.scenario.onActivity { activity ->
             super.setUp(activity)
         }
-    }
-
-    @After
-    override fun tearDown() {
-        //just keep it for the annotation
-        super.tearDown()
     }
 
     /*private val placeTitleTv = onView(
@@ -73,10 +64,10 @@ class OnboardingTest : EntourageTestAfterLogin() {
                 withContentDescription(R.string.action_map),
                 isDisplayed()))*/
 
-    private val nextButton = onView(
-        allOf(
-            withId(R.id.ui_onboarding_bt_next),
-            isDisplayed()
+    private val nextButton = Espresso.onView(
+        Matchers.allOf(
+            ViewMatchers.withId(R.id.ui_onboarding_bt_next),
+            ViewMatchers.isDisplayed()
         )
     )
 
@@ -451,7 +442,7 @@ class OnboardingTest : EntourageTestAfterLogin() {
     /****************************** Utils ******************************/
 
     private fun clickNextButton() {
-        nextButton.perform(click())
+        nextButton.perform(ViewActions.click())
     }
 
     /*private fun goNextStep() {

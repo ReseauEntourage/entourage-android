@@ -50,7 +50,7 @@ object PushNotificationManager {
     private const val PREFERENCE_LAST_NOTIFICATION_ID = "PREFERENCE_LAST_NOTIFICATION_ID"
     private const val KEY_SENDER = "sender"
     private const val KEY_OBJECT = "object"
-    private const val KEY_CONTENT = "content"
+    const val KEY_CONTENT = "content"
 
     // ----------------------------------
     // ATTRIBUTES
@@ -351,7 +351,7 @@ object PushNotificationManager {
         val notification = builder.build()
         notification.defaults = NotificationCompat.DEFAULT_LIGHTS
         notification.flags = NotificationCompat.FLAG_AUTO_CANCEL or NotificationCompat.FLAG_SHOW_LIGHTS
-        NotificationManagerCompat.from(context).notify(0, notification)
+        NotificationManagerCompat.from(context).notify(PushNotificationMessage.Companion.PushNotificationIds.FCM, notification)
     }
 
     /**
@@ -500,8 +500,6 @@ object PushNotificationManager {
         pushNotificationMessage.pushNotificationTag = pushNotificationMessage.content?.notificationTag ?: ""
         return pushNotificationMessage
     }
-
-
 
     /**
      * Returns a unique notification id for the pushNotificationMessage.<br></br>

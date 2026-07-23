@@ -45,12 +45,6 @@ class OnboardingCongratsFragment: Fragment() {
         binding.lottieAnimation.playAnimation()
         binding.buttonStart.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_end_browse_events_clic)
-            if(MainActivity.isFromProfile) {
-                MainActivity.shouldLaunchEvent = false
-                MainActivity.shouldLaunchWelcomeGroup = false
-                MainActivity.shouldLaunchQuizz = false
-                MainActivity.shouldLaunchActionCreation = false
-            }
             AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_end_congrats_clic_on_ + category)
             viewModel.registerAndQuit(category)
         }

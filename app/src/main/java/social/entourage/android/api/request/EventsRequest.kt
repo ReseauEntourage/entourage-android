@@ -17,8 +17,16 @@ class EventsListWrapper(@field:SerializedName("outings") val allEvents: MutableL
 
 class CreateEventWrapper(@field:SerializedName("outing") val event: CreateEvent)
 class EventWrapper(@field:SerializedName("outing") val event: Events)
+class EventWeekAverageResponse(@field:SerializedName("average") val average: Float)
 
 interface EventsRequest {
+    @GET("outings/week_average")
+    fun getEventsWeekAverage(
+        @Query("latitude") latitude: Double,
+        @Query("longitude") longitude: Double,
+        @Query("travel_distance") travelDistance: Int
+    ): Call<EventWeekAverageResponse>
+
     @GET("entourage_images")
     fun getEventsImages(): Call<EventsImagesResponse>
 
@@ -103,6 +111,9 @@ interface EventsRequest {
 
     @GET("outings/smalltalk")
     fun getEventSmallTalk(): Call<EventWrapper>
+
+    @GET("outings/sensibilisation")
+    fun getEventSensibilisation(): Call<EventWrapper>
 
     @POST("outings/{event_id}/users")
     fun participate(

@@ -97,10 +97,10 @@ class MyProfileFullActivity : BaseSecuredActivity() {
 
     override fun onResume() {
         super.onResume()
+        userPresenter.getUser(id)
         if (user == null) {
             binding.progressBar.visibility = View.VISIBLE
             Timber.e("user is null in resume Profile Screen")
-            userPresenter.getUser(id)
         }
         EnhancedOnboarding.isFromSettingsWishes = false
         EnhancedOnboarding.isFromSettingsDisponibility = false
@@ -174,12 +174,8 @@ class MyProfileFullActivity : BaseSecuredActivity() {
     private fun updateUser(user: User) {
         notifSubTitle = ""
         notifBlocked = ""
-        val forceInit = this.user?.id != user.id
         this.user = user
-        if (forceInit) {
-            Timber.e("user reinit")
-            initUserInfo()
-        }
+        initUserInfo()
     }
 
     private fun setPartnerClickListener() {
@@ -252,94 +248,119 @@ class MyProfileFullActivity : BaseSecuredActivity() {
                 )
             )
 
+            val isAsso = user.partner != null && (user.roles?.contains("Association") == true || user.roles?.contains("Équipe Entourage") == true)
+
             val actionTitleRes = if (isMe) {
                 R.string.preferences_action_title
             } else {
                 R.string.preferences_action_title_others
             }
-            val involvementsText = if (user.involvements.isNotEmpty()) {
-                user.involvements.joinToString(", ") { involvement ->
-                    when (involvement.lowercase()) {
-                        "outings" -> getString(R.string.onboarding_action_wish_event)
-                        "both_actions" -> getString(R.string.onboarding_action_wish_services)
-                        "neighborhoods" -> getString(R.string.onboarding_action_wish_network)
-                        "resources" -> getString(R.string.onboarding_action_wish_pedago)
-                        else -> getString(R.string.interest_other)
-                    }
-                }
-            } else {
-                getString(R.string.no_data_available)
-            }
-            items.add(
-                ProfileSectionItem.Item(
-                    iconRes = R.drawable.ic_profile_action,
-                    title = getString(actionTitleRes),
-                    subtitle = involvementsText
-                )
-            )
 
-            val categoriesTitleRes = if (isMe) {
-                R.string.preferences_action_categories_title
-            } else {
-                R.string.preferences_action_categories_title_others
-            }
-            val categoriesMap = mapOf(
-                "sharing_time" to getString(R.string.onboarding_category_sharing_time),
-                "material_donations" to getString(R.string.onboarding_category_donation),
-                "services" to getString(R.string.onboarding_category_services)
-            )
-            val categoriesText = if (user.concerns.isNotEmpty()) {
-                user.concerns.joinToString(", ") { concern ->
-                    categoriesMap[concern] ?: getString(R.string.interest_other)
-                }
-            } else {
-                getString(R.string.no_data_available)
-            }
-            items.add(
-                ProfileSectionItem.Item(
-                    iconRes = R.drawable.ic_name_don_materiel,
-                    title = getString(categoriesTitleRes),
-                    subtitle = categoriesText
-                )
-            )
-
-            val availabilityTitleRes = if (isMe) {
-                R.string.preferences_availability_title
-            } else {
-                R.string.preferences_availability_title_others
-            }
-            val daysMap = mapOf(
-                "1" to getString(R.string.enhanced_onboarding_time_disponibility_day_monday),
-                "2" to getString(R.string.enhanced_onboarding_time_disponibility_day_tuesday),
-                "3" to getString(R.string.enhanced_onboarding_time_disponibility_day_wednesday),
-                "4" to getString(R.string.enhanced_onboarding_time_disponibility_day_thursday),
-                "5" to getString(R.string.enhanced_onboarding_time_disponibility_day_friday),
-                "6" to getString(R.string.enhanced_onboarding_time_disponibility_day_saturday),
-                "7" to getString(R.string.enhanced_onboarding_time_disponibility_day_sunday)
-            )
-            val timeSlotsMap = mapOf(
-                "09:00-12:00" to getString(R.string.enhanced_onboarding_time_disponibility_time_morning),
-                "14:00-18:00" to getString(R.string.enhanced_onboarding_time_disponibility_time_afternoon),
-                "18:00-21:00" to getString(R.string.enhanced_onboarding_time_disponibility_time_evening)
-            )
-            val availabilityText = if (user.availability.isNotEmpty()) {
-                user.availability.entries.joinToString(" ; ") { (day, times) ->
-                    val dayName = daysMap[day] ?: day
-                    val timeSlots = times.joinToString(", ") { time ->
-                        timeSlotsMap[time] ?: time
+            if (isAsso) {
+                val orientationsText = if (user.orientations.isNotEmpty()) {
+                    user.orientations.joinToString(", ") { orientation ->
+                        when (orientation) {
+                            "share" -> getString(R.string.enhanced_onboarding_asso_wish_outings)
+                            "guide" -> getString(R.string.enhanced_onboarding_asso_wish_neighborhoods)
+                            "help" -> getString(R.string.enhanced_onboarding_asso_wish_both_actions)
+                            else -> getString(R.string.interest_other)
+                        }
                     }
-                    "$dayName : $timeSlots"
+                } else {
+                    getString(R.string.no_data_available)
                 }
-            } else {
-                getString(R.string.no_data_available)
-            }
-            items.add(
-                ProfileSectionItem.Item(
-                    iconRes = R.drawable.ic_profile_availability,
-                    title = getString(availabilityTitleRes),
-                    subtitle = availabilityText
+                items.add(
+                    ProfileSectionItem.Item(
+                        iconRes = R.drawable.ic_profile_action,
+                        title = getString(actionTitleRes),
+                        subtitle = orientationsText
+                    )
                 )
-            )
+            } else {
+                val involvementsText = if (user.involvements.isNotEmpty()) {
+                    user.involvements.joinToString(", ") { involvement ->
+                        when (involvement.lowercase()) {
+                            "outings" -> getString(R.string.onboarding_action_wish_event)
+                            "both_actions" -> getString(R.string.onboarding_action_wish_services)
+                            "neighborhoods" -> getString(R.string.onboarding_action_wish_network)
+                            "resources" -> getString(R.string.onboarding_action_wish_pedago)
+                            else -> getString(R.string.interest_other)
+                        }
+                    }
+                } else {
+                    getString(R.string.no_data_available)
+                }
+                items.add(
+                    ProfileSectionItem.Item(
+                        iconRes = R.drawable.ic_profile_action,
+                        title = getString(actionTitleRes),
+                        subtitle = involvementsText
+                    )
+                )
+
+                val categoriesTitleRes = if (isMe) {
+                    R.string.preferences_action_categories_title
+                } else {
+                    R.string.preferences_action_categories_title_others
+                }
+                val categoriesMap = mapOf(
+                    "sharing_time" to getString(R.string.onboarding_category_sharing_time),
+                    "material_donations" to getString(R.string.onboarding_category_donation),
+                    "services" to getString(R.string.onboarding_category_services)
+                )
+                val categoriesText = if (user.concerns.isNotEmpty()) {
+                    user.concerns.joinToString(", ") { concern ->
+                        categoriesMap[concern] ?: getString(R.string.interest_other)
+                    }
+                } else {
+                    getString(R.string.no_data_available)
+                }
+                items.add(
+                    ProfileSectionItem.Item(
+                        iconRes = R.drawable.ic_name_don_materiel,
+                        title = getString(categoriesTitleRes),
+                        subtitle = categoriesText
+                    )
+                )
+
+                val availabilityTitleRes = if (isMe) {
+                    R.string.preferences_availability_title
+                } else {
+                    R.string.preferences_availability_title_others
+                }
+                val daysMap = mapOf(
+                    "1" to getString(R.string.enhanced_onboarding_time_disponibility_day_monday),
+                    "2" to getString(R.string.enhanced_onboarding_time_disponibility_day_tuesday),
+                    "3" to getString(R.string.enhanced_onboarding_time_disponibility_day_wednesday),
+                    "4" to getString(R.string.enhanced_onboarding_time_disponibility_day_thursday),
+                    "5" to getString(R.string.enhanced_onboarding_time_disponibility_day_friday),
+                    "6" to getString(R.string.enhanced_onboarding_time_disponibility_day_saturday),
+                    "7" to getString(R.string.enhanced_onboarding_time_disponibility_day_sunday)
+                )
+                val timeSlotsMap = mapOf(
+                    "09:00-12:00" to getString(R.string.enhanced_onboarding_time_disponibility_time_morning),
+                    "14:00-18:00" to getString(R.string.enhanced_onboarding_time_disponibility_time_afternoon),
+                    "18:00-21:00" to getString(R.string.enhanced_onboarding_time_disponibility_time_evening)
+                )
+                val availabilityText = if (user.availability.isNotEmpty()) {
+                    user.availability.entries.joinToString(" ; ") { (day, times) ->
+                        val dayName = daysMap[day] ?: day
+                        val timeSlots = times.joinToString(", ") { time ->
+                            timeSlotsMap[time] ?: time
+                        }
+                        "$dayName : $timeSlots"
+                    }
+                } else {
+                    getString(R.string.no_data_available)
+                }
+                items.add(
+                    ProfileSectionItem.Item(
+                        iconRes = R.drawable.ic_profile_availability,
+                        title = getString(availabilityTitleRes),
+                        subtitle = availabilityText
+                    )
+                )
+            }
 
             if (isMe) {
                 items.add(ProfileSectionItem.Separator(getString(R.string.settings_section_title)))
@@ -449,7 +470,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
 
             user.roles?.let { roles ->
                 binding.tagUser.visibility =
-                    if (roles.contains("Ambassadeur") || roles.contains("Équipe Entourage") || roles.contains(
+                    if (roles.contains("Animateur Entourage") || roles.contains("Équipe Entourage") || roles.contains(
                             "Association"
                         )
                     ) {
@@ -463,7 +484,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
                     } else {
                         View.GONE
                     }
-                if (roles.contains("Ambassadeur")) {
+                if (roles.contains("Animateur Entourage")) {
                     binding.tvTagHomeV2EventItem.text = getString(R.string.ambassador)
                     binding.ivAssoBadge.visibility = View.GONE
                 } else if (roles.contains("Équipe Entourage")) {
@@ -524,23 +545,28 @@ class MyProfileFullActivity : BaseSecuredActivity() {
                 getString(R.string.app_name),
                 BuildConfig.VERSION_FULL_NAME
             )
-        binding.appVersion.setOnLongClickListener {
+        binding.appVersion.setOnLongClickListener { 
+            // Copier le FIID dans le presse-papiers
             val clipboard =
-                getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                it.context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
             val clip = android.content.ClipData.newPlainText(
                 "FIId", EntourageApplication.get().sharedPreferences.getString(
                     EntourageApplication.KEY_REGISTRATION_ID,
                     null
                 )
             )
-            clipboard.setPrimaryClip(clip)
-
-            val snackbar = EntSnackbar.make(
-                binding.root,
-                R.string.copied_text,
-                Snackbar.LENGTH_SHORT
-            )
-            snackbar.show()
+            try {
+                clipboard.setPrimaryClip(clip)
+                // Afficher un message de confirmation
+                val snackbar = EntSnackbar.make(
+                    binding.root,
+                    R.string.copied_text,
+                    Snackbar.LENGTH_SHORT
+                )
+                snackbar.show()
+            } catch (e: Exception) {
+                Timber.d(clip.toString())
+            }
             true
         }
         if (!BuildConfig.DEBUG) {
@@ -777,10 +803,10 @@ class ProfileFullActivity : BaseSecuredActivity() {
 
     override fun onResume() {
         super.onResume()
+        userPresenter.getUser(id)
         if (user == null) {
             binding.progressBar.visibility = View.VISIBLE
             Timber.e("user is null in resume Profile Screen")
-            userPresenter.getUser(id)
         }
         EnhancedOnboarding.isFromSettingsWishes = false
         EnhancedOnboarding.isFromSettingsDisponibility = false
@@ -854,12 +880,8 @@ class ProfileFullActivity : BaseSecuredActivity() {
     private fun updateUser(user: User) {
         notifSubTitle = ""
         notifBlocked = ""
-        val forceInit = this.user?.id != user.id
         this.user = user
-        if (forceInit) {
-            Timber.e("user reinit")
-            initUserInfo()
-        }
+        initUserInfo()
     }
 
     private fun setScrollEffects(isMe: Boolean) {
@@ -919,94 +941,119 @@ class ProfileFullActivity : BaseSecuredActivity() {
                 )
             )
 
+            val isAsso = user.partner != null && (user.roles?.contains("Association") == true || user.roles?.contains("Équipe Entourage") == true)
+
             val actionTitleRes = if (isMe) {
                 R.string.preferences_action_title
             } else {
                 R.string.preferences_action_title_others
             }
-            val involvementsText = if (user.involvements.isNotEmpty()) {
-                user.involvements.joinToString(", ") { involvement ->
-                    when (involvement.lowercase()) {
-                        "outings" -> getString(R.string.onboarding_action_wish_event)
-                        "both_actions" -> getString(R.string.onboarding_action_wish_services)
-                        "neighborhoods" -> getString(R.string.onboarding_action_wish_network)
-                        "resources" -> getString(R.string.onboarding_action_wish_pedago)
-                        else -> getString(R.string.interest_other)
-                    }
-                }
-            } else {
-                getString(R.string.no_data_available)
-            }
-            items.add(
-                ProfileSectionItem.Item(
-                    iconRes = R.drawable.ic_profile_action,
-                    title = getString(actionTitleRes),
-                    subtitle = involvementsText
-                )
-            )
 
-            val categoriesTitleRes = if (isMe) {
-                R.string.preferences_action_categories_title
-            } else {
-                R.string.preferences_action_categories_title_others
-            }
-            val categoriesMap = mapOf(
-                "sharing_time" to getString(R.string.onboarding_category_sharing_time),
-                "material_donations" to getString(R.string.onboarding_category_donation),
-                "services" to getString(R.string.onboarding_category_services)
-            )
-            val categoriesText = if (user.concerns.isNotEmpty()) {
-                user.concerns.joinToString(", ") { concern ->
-                    categoriesMap[concern] ?: getString(R.string.interest_other)
-                }
-            } else {
-                getString(R.string.no_data_available)
-            }
-            items.add(
-                ProfileSectionItem.Item(
-                    iconRes = R.drawable.ic_name_don_materiel,
-                    title = getString(categoriesTitleRes),
-                    subtitle = categoriesText
-                )
-            )
-
-            val availabilityTitleRes = if (isMe) {
-                R.string.preferences_availability_title
-            } else {
-                R.string.preferences_availability_title_others
-            }
-            val daysMap = mapOf(
-                "1" to getString(R.string.enhanced_onboarding_time_disponibility_day_monday),
-                "2" to getString(R.string.enhanced_onboarding_time_disponibility_day_tuesday),
-                "3" to getString(R.string.enhanced_onboarding_time_disponibility_day_wednesday),
-                "4" to getString(R.string.enhanced_onboarding_time_disponibility_day_thursday),
-                "5" to getString(R.string.enhanced_onboarding_time_disponibility_day_friday),
-                "6" to getString(R.string.enhanced_onboarding_time_disponibility_day_saturday),
-                "7" to getString(R.string.enhanced_onboarding_time_disponibility_day_sunday)
-            )
-            val timeSlotsMap = mapOf(
-                "09:00-12:00" to getString(R.string.enhanced_onboarding_time_disponibility_time_morning),
-                "14:00-18:00" to getString(R.string.enhanced_onboarding_time_disponibility_time_afternoon),
-                "18:00-21:00" to getString(R.string.enhanced_onboarding_time_disponibility_time_evening)
-            )
-            val availabilityText = if (user.availability.isNotEmpty()) {
-                user.availability.entries.joinToString(" ; ") { (day, times) ->
-                    val dayName = daysMap[day] ?: day
-                    val timeSlots = times.joinToString(", ") { time ->
-                        timeSlotsMap[time] ?: time
+            if (isAsso) {
+                val orientationsText = if (user.orientations.isNotEmpty()) {
+                    user.orientations.joinToString(", ") { orientation ->
+                        when (orientation) {
+                            "share" -> getString(R.string.enhanced_onboarding_asso_wish_outings)
+                            "guide" -> getString(R.string.enhanced_onboarding_asso_wish_neighborhoods)
+                            "help" -> getString(R.string.enhanced_onboarding_asso_wish_both_actions)
+                            else -> getString(R.string.interest_other)
+                        }
                     }
-                    "$dayName : $timeSlots"
+                } else {
+                    getString(R.string.no_data_available)
                 }
-            } else {
-                getString(R.string.no_data_available)
-            }
-            items.add(
-                ProfileSectionItem.Item(
-                    iconRes = R.drawable.ic_profile_availability,
-                    title = getString(availabilityTitleRes),
-                    subtitle = availabilityText
+                items.add(
+                    ProfileSectionItem.Item(
+                        iconRes = R.drawable.ic_profile_action,
+                        title = getString(actionTitleRes),
+                        subtitle = orientationsText
+                    )
                 )
-            )
+            } else {
+                val involvementsText = if (user.involvements.isNotEmpty()) {
+                    user.involvements.joinToString(", ") { involvement ->
+                        when (involvement.lowercase()) {
+                            "outings" -> getString(R.string.onboarding_action_wish_event)
+                            "both_actions" -> getString(R.string.onboarding_action_wish_services)
+                            "neighborhoods" -> getString(R.string.onboarding_action_wish_network)
+                            "resources" -> getString(R.string.onboarding_action_wish_pedago)
+                            else -> getString(R.string.interest_other)
+                        }
+                    }
+                } else {
+                    getString(R.string.no_data_available)
+                }
+                items.add(
+                    ProfileSectionItem.Item(
+                        iconRes = R.drawable.ic_profile_action,
+                        title = getString(actionTitleRes),
+                        subtitle = involvementsText
+                    )
+                )
+
+                val categoriesTitleRes = if (isMe) {
+                    R.string.preferences_action_categories_title
+                } else {
+                    R.string.preferences_action_categories_title_others
+                }
+                val categoriesMap = mapOf(
+                    "sharing_time" to getString(R.string.onboarding_category_sharing_time),
+                    "material_donations" to getString(R.string.onboarding_category_donation),
+                    "services" to getString(R.string.onboarding_category_services)
+                )
+                val categoriesText = if (user.concerns.isNotEmpty()) {
+                    user.concerns.joinToString(", ") { concern ->
+                        categoriesMap[concern] ?: getString(R.string.interest_other)
+                    }
+                } else {
+                    getString(R.string.no_data_available)
+                }
+                items.add(
+                    ProfileSectionItem.Item(
+                        iconRes = R.drawable.ic_name_don_materiel,
+                        title = getString(categoriesTitleRes),
+                        subtitle = categoriesText
+                    )
+                )
+
+                val availabilityTitleRes = if (isMe) {
+                    R.string.preferences_availability_title
+                } else {
+                    R.string.preferences_availability_title_others
+                }
+                val daysMap = mapOf(
+                    "1" to getString(R.string.enhanced_onboarding_time_disponibility_day_monday),
+                    "2" to getString(R.string.enhanced_onboarding_time_disponibility_day_tuesday),
+                    "3" to getString(R.string.enhanced_onboarding_time_disponibility_day_wednesday),
+                    "4" to getString(R.string.enhanced_onboarding_time_disponibility_day_thursday),
+                    "5" to getString(R.string.enhanced_onboarding_time_disponibility_day_friday),
+                    "6" to getString(R.string.enhanced_onboarding_time_disponibility_day_saturday),
+                    "7" to getString(R.string.enhanced_onboarding_time_disponibility_day_sunday)
+                )
+                val timeSlotsMap = mapOf(
+                    "09:00-12:00" to getString(R.string.enhanced_onboarding_time_disponibility_time_morning),
+                    "14:00-18:00" to getString(R.string.enhanced_onboarding_time_disponibility_time_afternoon),
+                    "18:00-21:00" to getString(R.string.enhanced_onboarding_time_disponibility_time_evening)
+                )
+                val availabilityText = if (user.availability.isNotEmpty()) {
+                    user.availability.entries.joinToString(" ; ") { (day, times) ->
+                        val dayName = daysMap[day] ?: day
+                        val timeSlots = times.joinToString(", ") { time ->
+                            timeSlotsMap[time] ?: time
+                        }
+                        "$dayName : $timeSlots"
+                    }
+                } else {
+                    getString(R.string.no_data_available)
+                }
+                items.add(
+                    ProfileSectionItem.Item(
+                        iconRes = R.drawable.ic_profile_availability,
+                        title = getString(availabilityTitleRes),
+                        subtitle = availabilityText
+                    )
+                )
+            }
 
             if (isMe) {
                 items.add(ProfileSectionItem.Separator(getString(R.string.settings_section_title)))
@@ -1116,7 +1163,7 @@ class ProfileFullActivity : BaseSecuredActivity() {
 
             user.roles?.let { roles ->
                 binding.tagUser.visibility =
-                    if (roles.contains("Ambassadeur") || roles.contains("Équipe Entourage") || roles.contains(
+                    if (roles.contains("Animateur Entourage") || roles.contains("Équipe Entourage") || roles.contains(
                             "Association"
                         )
                     ) {
@@ -1130,7 +1177,7 @@ class ProfileFullActivity : BaseSecuredActivity() {
                     } else {
                         View.GONE
                     }
-                if (roles.contains("Ambassadeur")) {
+                if (roles.contains("Animateur Entourage")) {
                     binding.tvTagHomeV2EventItem.text = getString(R.string.ambassador)
                     binding.ivAssoBadge.visibility = View.GONE
                 } else if (roles.contains("Équipe Entourage")) {

@@ -153,6 +153,52 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
                 }
             })
     }
+
+    fun getEventSmallTalk() {
+        EntourageApplication.get().apiModule.eventsRequest.getEventSmallTalk()
+            .enqueue(object : Callback<EventWrapper> {
+                override fun onResponse(
+                    call: Call<EventWrapper>,
+                    response: Response<EventWrapper>
+                ) {
+                    if (response.isSuccessful) {
+                        response.body()?.let { eventWrapper ->
+                            callback.onRetrievedEvent(eventWrapper.event)
+                        }
+                    }
+                    if(response.code() >= 400){
+                        callback.onErrorRetrievedEvent()
+                    }
+                }
+
+                override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
+                    callback.onErrorRetrievedEvent()
+                }
+            })
+    }
+
+    fun getEventSensibilisation() {
+        EntourageApplication.get().apiModule.eventsRequest.getEventSensibilisation()
+            .enqueue(object : Callback<EventWrapper> {
+                override fun onResponse(
+                    call: Call<EventWrapper>,
+                    response: Response<EventWrapper>
+                ) {
+                    if (response.isSuccessful) {
+                        response.body()?.let { eventWrapper ->
+                            callback.onRetrievedEvent(eventWrapper.event)
+                        }
+                    }
+                    if(response.code() >= 400){
+                        callback.onErrorRetrievedEvent()
+                    }
+                }
+
+                override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
+                    callback.onErrorRetrievedEvent()
+                }
+            })
+    }
 }
 
 interface UniversalLinksPresenterCallback{

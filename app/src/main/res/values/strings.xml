@@ -16,7 +16,7 @@
     <string name="send">Envoyer</string>
     <string name="register">Enregistrer</string>
     <string name="ignore">Ignorer</string>
-    <string name="next">Continuer</string>
+    <string name="continue_string">Continuer</string>
     <string name="close">Fermer</string>
     <string name="edit">Modifier</string>
     <string name="activate">Activer</string>
@@ -71,7 +71,7 @@
     <string name="home_help_button_1">Faire un don financier à\nEntourage</string>
     <string name="home_help_button_2">Devenir reporter pour\nEntourage</string>
     <string name="home_help_button_3">Parler d’Entourage</string>
-    <string name="home_help_button_4">Devenir Ambassadeur</string>
+    <string name="home_help_button_4">Devenir Animateur Entourage</string>
     <string name="home_help_button_5">Programme LinkedOut</string>
     <string name="home_button_help_title">J’aide Entourage autrement</string>
     <string name="home_button_change_zone">Je modifie ma zone d’action</string>
@@ -160,7 +160,7 @@ Découvrez les initiatives de votre quartier et tissez des liens avec vos voisin
     <string name="edit_interests">Modifier mes centres d’interêts</string>
     <string name="follow">S\'abonner</string>
     <string name="following">Abonné</string>
-    <string name="ambassador">Ambassadeur</string>
+    <string name="ambassador">Animateur Entourage</string>
 
     <string name="group_name">Nom du groupe</string>
     <string name="event_name">Nom de l\'événement</string>
@@ -187,7 +187,7 @@ Découvrez les initiatives de votre quartier et tissez des liens avec vos voisin
     <string name="report_comment">Signaler le message</string>
     <string name="report_eventt">Signaler l’événement</string>
     <string name="why_reporting">Dites-nous la raison de votre signalement</string>
-    <string name="new_next">Suivant</string>
+    <string name="next">Suivant</string>
     <string name="btn_end">Terminer</string>
     <string name="back">Retour</string>
     <string name="cancel_event_continue">Continuer</string>
@@ -1746,7 +1746,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="create_action_wizard_p3_title">DERNIÈRE QUESTION</string>
     <string name="create_action_wizard_p3_description">Le consentement est indispensable pour pouvoir diffuser votre action solidaire sur le réseau.\n\nVotre action est actuellement en suspens. Un modérateur va vous répondre très rapidement pour vous aider.</string>
-    <string name="create_action_wizard_p3_option1">@string/next</string>
 
     <string name="create_action_wizard_disclaimer">La &lt;a href=\'%1$s\'>Charte éthique d’Entourage&lt;/a> vous explique pourquoi le consentement est indispensable.</string>
 
@@ -2011,7 +2010,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="menu_info_first_guide">Notre guide pour oser la rencontre</string>
     <string name="menu_info_second_gift">Faire un don à Entourage</string>
     <string name="menu_info_second_help">Aider à la réinsertion</string>
-    <string name="menu_info_second_ambassador">Devenir Ambassadeur bénévole</string>
+    <string name="menu_info_second_ambassador">Devenir Animateur Entourage bénévole</string>
     <string name="menu_info_second_good">Créer des liens avec les Bonnes Ondes</string>
     <string name="menu_info_second_title">❤️  S’ENGAGER</string>
     <string name="menu_info_third_info">Comment en parler aux personnes isolées ?</string>
@@ -2253,8 +2252,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="partner_remove_ok">Badge enlevé</string>
 
     <string name="member_type_organization">Maraudeur</string>
-    <string name="role_ambassador">Ambassadeur</string>
-    <string name="role_admin">Ambassadeur</string>
+    <string name="role_ambassador">Animateur Entourage</string>
+    <string name="role_admin">Animateur Entourage</string>
     <string name="disclaimer_link_public" translatable="false">https://www.entourage.social/blog/charte-ethique-entourage-local</string>
     <string name="ambassadeur_link_public" translatable="false">https://www.entourage.social/agir-avec-nous/par-action/devenir-benevole</string>
     <string name="faq_link_public" translatable="false">https://www.entourage.social/blog/lantiseche-tout-savoir-pour-bien-commencer-sur-lapp-entourage</string>
@@ -2381,7 +2380,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="user_action_zone_disclaimer">Cette information est strictement confidentielle et n’est partagée à personne. Vous pouvez la modifier dans vos réglages.</string>
     <string name="user_action_zone_hint">1 avenue Jean Jaurès…</string>
     <string name="user_action_zone_no_address_error">Veuillez ajouter une adresse</string>
-    <string name="user_action_zone_send_ok">Adresse enregistrée</string>
+    <string name="user_action_zone_send_ok">Votre profil a été mis à jour</string>
     <string name="user_action_zone_send_failed">L\'adresse n\'a pas été enregistrée</string>
 
     <!-- Edit profile -->
@@ -2417,7 +2416,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="cult_sport_asso">Initiatives culturelles et sportives</string>
     <string name="serv_pub_asso">Service Public</string>
     <string name="autre_asso">Autres</string>
-    <string name="next_">Suivant</string>
 
     <string name="title_association">Association</string>
     <string name="title_asso_donation">Accepte les dons</string>
@@ -3135,7 +3133,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_welcome_placeholder_birthdate">JJ/MM/AAAA</string>
     <string name="onboard_welcome_gender_female">Femme</string>
     <string name="onboard_welcome_gender_male">Homme</string>
-    <string name="onboard_welcome_gender_other">Autre</string>
+    <string name="onboard_welcome_gender_other">Non renseigné</string>
     <string name="onboard_welcome_placeholder_firstname_new">Ex. : Marie</string>
     <string name="onboard_welcome_placeholder_lastname_new">Ex. : Dupont</string>
     <string name="onboard_welcome_placeholder_phone_new">06 XX XX XX XX</string>
@@ -3155,6 +3153,13 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboarding_zone_radius_label">Dans un rayon de</string>
     <string name="onboarding_zone_home_pin">Domicile</string>
     <string name="km_suffix">%1$d km</string>
+    <string name="onboarding_zone_events_count_plural">
+    <![CDATA[<font color="#FC8D24"><b>%1$d évènements potentiels par semaine</b></font>, dans ce périmètre.]]>
+</string>
+
+    <string name="onboarding_zone_events_count_singular">
+    <![CDATA[<font color="#FC8D24"><b>%1$d évènement potentiel par semaine</b></font>, dans ce périmètre.]]>
+</string>
 
     <string name="onboard_retry_link">Recevoir un nouveau code par SMS</string>
     <string name="onboard_help_title">Besoin d’aide ?</string>
@@ -3232,4 +3237,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="enhanced_onboarding_asso_btn_later">Plus tard</string>
     <string name="enhanced_onboarding_asso_btn_finish">Terminer</string>
 
+    <string name="birthday_title">Joyeux\nanniversaire !</string>
+    <string name="birthday_subtitle">Aujourd’hui, c’est votre jour.\nOn est heureux de vous compter parmi nous. Que cette journée soit pleine de chaleur humaine, d’échanges et de joie ✨</string>
+    <string name="birthday_button">Revenir à la page d\'accueil</string>
+
+    <string name="guide_help_orientation_button">Aide &amp; orientation</string>
 </resources>

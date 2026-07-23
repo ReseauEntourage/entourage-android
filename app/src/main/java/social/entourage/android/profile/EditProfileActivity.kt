@@ -44,6 +44,8 @@ import social.entourage.android.user.AvatarUploadRepository
 import social.entourage.android.user.AvatarUploadView
 import social.entourage.android.user.languechoose.ActivityChooseLanguage
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
 
 class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
@@ -59,8 +61,15 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     private val progressLimit = 96
     private var descriptionRegistered = ""
     private var savedLocation: PlaceDetails? = null
+    private var selectedGender: String? = null
 
-    // Mémorisation des prédictions pour l'autocomplete
+    // ----------------------------------------------------------------------
+    // CONFIGURATION DATE
+    // ----------------------------------------------------------------------
+    private val dateFormatString = "dd/MM/yyyy"
+    private val apiDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.FRANCE)
+    private val uiDateFormat = SimpleDateFormat(dateFormatString, Locale.FRANCE)
+
     private var autocompletePredictions: List<AutocompletePrediction> = listOf()
     private var autocompleteAdapter: ArrayAdapter<String>? = null
 
@@ -76,11 +85,6 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
         adjustPaddingForKeyboard()
 
         editProfilePresenter.isUserUpdated.observe(this, ::hasUserBeenUpdated)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // Eventuellement recharger des infos si besoin
     }
 
     // --------------------------
@@ -106,11 +110,12 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
         setupEditImageButton()
         setupLanguageButton()
+        setupGender()
         setupInterestsButtons()
         setupActionZoneAutocomplete()
 
         setBackButton()
-        setAddressFromCurrentUser() // Récupérer l'adresse utilisateur enregistrée
+        setAddressFromCurrentUser()
         setupValidateButton()
     }
 
@@ -180,7 +185,6 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     }
 
     private fun setupLanguageButton() {
-        // Bouton langues désactivé pour l'instant
         binding.language.peciLayout.setOnClickListener {
             val intent = Intent(this, ActivityChooseLanguage::class.java)
             startActivity(intent)
@@ -189,15 +193,33 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
         binding.language.peciLayout.visibility = View.GONE
     }
 
+    private fun setupGender() {
+        binding.gender.peciLayout.setOnClickListener {
+            // CORRECTION ICI : Label "Non renseigné" et Clé "secret"
+            val genderOptions = arrayOf(
+                getString(R.string.onboard_welcome_gender_female),
+                getString(R.string.onboard_welcome_gender_male),
+                "Non renseigné"
+            )
+            val genderKeys = arrayOf("female", "male", "secret")
+
+            val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+            builder.setTitle(getString(R.string.onboard_welcome_title_gender))
+            builder.setItems(genderOptions) { _, which ->
+                binding.gender.peciContent.text = genderOptions[which]
+                selectedGender = genderKeys[which]
+            }
+            builder.show()
+        }
+    }
+
     private fun setupInterestsButtons() {
-        // Ouvrir l'écran d'onboarding amélioré pour l'édition des intérêts
         binding.interests.profileSettingsItemLayout.setOnClickListener {
             EnhancedOnboarding.isFromSettingsinterest = true
             startActivity(Intent(this, EnhancedOnboarding::class.java))
             finish()
         }
 
-        // Personnaliser le onboarding
         binding.personnalize.profileSettingsItemLayout.setOnClickListener {
             MainActivity.isFromProfile = true
             startActivity(Intent(this, EnhancedOnboarding::class.java))
@@ -205,52 +227,34 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
         }
     }
 
-    /**
-     * Configure la zone d'action pour l'autocomplete d'adresses.
-     * - Ajoute un TextWatcher qui fetch des prédictions Google Places si le champ a du texte
-     * - Au clic sur une suggestion, on set la valeur, on enlève le focus et on ferme le clavier
-     */
     private fun setupActionZoneAutocomplete() {
         val autoCompleteTextView = binding.cityAction
 
-        // 1) Créer un Adapter vide au départ
         autocompleteAdapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line)
         autoCompleteTextView.setAdapter(autocompleteAdapter)
         autoCompleteTextView.threshold = 1
 
-        // 2) Listener sur la sélection d'un item (clic suggestion)
-        autoCompleteTextView.setOnItemClickListener { parent, _, position, _ ->
+        autoCompleteTextView.setOnItemClickListener { _, _, position, _ ->
             val selectedPrediction = autocompletePredictions[position]
             fetchPlaceDetails(selectedPrediction.placeId)
-
-            // On ferme la liste de suggestions
             autoCompleteTextView.dismissDropDown()
-
-            // Retire le focus
             autoCompleteTextView.clearFocus()
-
-            // Ferme le clavier
             val imm = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
             imm?.hideSoftInputFromWindow(autoCompleteTextView.windowToken, 0)
         }
 
-        // 3) TextWatcher pour déclencher la recherche quand l'utilisateur tape
         autoCompleteTextView.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                // Ne fetch que si on a le focus + du texte
                 if (!autoCompleteTextView.hasFocus()) {
-                    // Champ plus focus => on ferme la dropDown si besoin
                     autoCompleteTextView.dismissDropDown()
                     return
                 }
                 val query = s?.toString()?.trim()
                 if (query.isNullOrEmpty()) {
-                    // Si vide, on ferme la dropdown
                     autoCompleteTextView.dismissDropDown()
                 } else {
-                    // Sinon, on fetch les prédictions
                     fetchAutocompletePredictions(query)
                 }
             }
@@ -282,12 +286,12 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
         }
 
         with(binding) {
-            // Configuration RTL si nécessaire
             configureTextDirection(isArabic, firstname.peeiContent)
             configureTextDirection(isArabic, lastname.peeiContent)
             configureTextDirection(isArabic, description.peiContent)
             configureTextDirection(isArabic, birthday.peeiContent)
             configureTextDirection(isArabic, phone.peciContent)
+            configureTextDirection(isArabic, gender.peciContent)
             configureTextDirection(isArabic, email.peeiContent)
             configureTextDirection(isArabic, cityAction)
 
@@ -300,11 +304,31 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
                 description.peiContent.setText(descriptionRegistered)
             }
 
+            user.gender?.let {
+                selectedGender = it
+                binding.gender.peciContent.text = when (it) {
+                    "female" -> getString(R.string.onboard_welcome_gender_female)
+                    "male" -> getString(R.string.onboard_welcome_gender_male)
+                    "secret" -> "Non renseigné" // CORRECTION ICI
+                    else -> ""
+                }
+            }
+
             birthday.peeiContent.transformIntoDatePicker(
                 this@EditProfileActivity,
-                getString(R.string.birthday_date_format)
+                dateFormatString
             )
-            birthday.peeiContent.setText(user.birthday)
+
+            user.birthday?.let { apiDateStr ->
+                try {
+                    val date = apiDateFormat.parse(apiDateStr)
+                    if (date != null) {
+                        birthday.peeiContent.setText(uiDateFormat.format(date))
+                    }
+                } catch (e: Exception) {
+                    birthday.peeiContent.setText(apiDateStr)
+                }
+            }
 
             phone.peciContent.setText(user.phone)
             phone.peciContent.setTextColor(ContextCompat.getColor(this@EditProfileActivity, R.color.dark_grey_opacity_40))
@@ -349,7 +373,7 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     private fun fetchAutocompletePredictions(query: String) {
         val request = FindAutocompletePredictionsRequest.builder()
             .setQuery(query)
-            .setCountries("FR") // Limite à la France
+            .setCountries("FR")
             .build()
 
         placesClient.findAutocompletePredictions(request)
@@ -369,7 +393,6 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
             autocompleteAdapter?.addAll(suggestions)
             autocompleteAdapter?.notifyDataSetChanged()
 
-            // Montre le menu déroulant SEULEMENT si le champ a encore le focus
             if (binding.cityAction.hasFocus()) {
                 binding.cityAction.showDropDown()
             }
@@ -382,7 +405,6 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
         placesClient.fetchPlace(request).addOnSuccessListener { response ->
             val place = response.place
-            // setText(...) avec "filter = false" => pour ne pas relancer la filtration automatique
             binding.cityAction.setText(place.name ?: "", false)
 
             savedLocation = place.latLng?.let {
@@ -403,21 +425,36 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
     private fun onSaveProfile() {
         if(checkEmail() && checkLastName()){
-            val firstname = binding.firstname.peeiContent.text.trimEnd()
-            val lastname = binding.lastname.peeiContent.text.trimEnd()
-            val about = binding.description.peiContent.text?.trimEnd()
-            val email = binding.email.peeiContent.text.trimEnd()
-            val birthday = binding.birthday.peeiContent.text.trimEnd()
+            val firstname = binding.firstname.peeiContent.text.toString().trimEnd()
+            val lastname = binding.lastname.peeiContent.text.toString().trimEnd()
+            val about = binding.description.peiContent.text.toString().trimEnd()
+            val email = binding.email.peeiContent.text.toString().trimEnd()
             val travelDistance = binding.seekBarLayout.seekbar.progress
-            val editedUser: ArrayMap<String, Any> = ArrayMap()
-            editedUser["first_name"] = firstname
-            editedUser["about"] = about
-            editedUser["email"] = email
-            editedUser["last_name"] = lastname
 
-            editedUser["birthdate"] = birthday
-            editedUser["travel_distance"] = travelDistance
-            editProfilePresenter.updateUser(editedUser)
+            val userParams: ArrayMap<String, Any> = ArrayMap()
+            userParams["first_name"] = firstname
+            userParams["last_name"] = lastname
+            userParams["about"] = about
+            userParams["email"] = email
+            userParams["travel_distance"] = travelDistance
+            selectedGender?.let { userParams["gender"] = it }
+
+            val birthdayUI = binding.birthday.peeiContent.text.toString().trim()
+            if (birthdayUI.isNotEmpty()) {
+                try {
+                    val date = uiDateFormat.parse(birthdayUI)
+                    if (date != null) {
+                        userParams["birthdate"] = apiDateFormat.format(date)
+                    }
+                } catch (e: Exception) {
+                    Timber.e("Erreur parsing date onSave: $e")
+                }
+            }
+
+            val finalWrapper: ArrayMap<String, Any> = ArrayMap()
+            finalWrapper["user"] = userParams
+
+            editProfilePresenter.updateUser(finalWrapper)
         }
     }
 
@@ -479,15 +516,10 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
         }
     }
 
-    // --------------------------
-    // Vérification des champs
-    // --------------------------
-
     private fun checkError(): Boolean {
         val isLastnameCorrect = binding.lastname.peeiContent.text.trimEnd().length > 2
         val isEmailCorrect = binding.email.peeiContent.text.trimEnd().isValidEmail()
 
-        // Gestion de l'affichage des erreurs
         updateErrorUI(binding.lastname, isLastnameCorrect, getString(R.string.error_lastname))
         updateErrorUI(binding.email, isEmailCorrect, getString(R.string.error_email))
 
@@ -507,10 +539,6 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
         )
     }
 
-    // --------------------------
-    // Gestion du clavier et du padding
-    // --------------------------
-
     private fun adjustPaddingForKeyboard() {
         val rootView = binding.root
         rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
@@ -521,19 +549,13 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
                 val keypadHeight = screenHeight - rect.bottom
 
                 if (keypadHeight > screenHeight * 0.15) {
-                    // Clavier visible
                     binding.scrollView.setPadding(0, 0, 0, keypadHeight)
                 } else {
-                    // Clavier fermé
                     binding.scrollView.setPadding(0, 0, 0, 0)
                 }
             }
         })
     }
-
-    // --------------------------
-    // AvatarUploadView Impl
-    // --------------------------
 
     override fun onUploadError() {
         Timber.e("Error uploading photo")

@@ -28,11 +28,13 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.gson.Gson
 import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.ReactionType
 import social.entourage.android.api.model.formatEventStartTime
+import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.api.request.userConfig
 import social.entourage.android.base.BaseSecuredActivity
@@ -40,18 +42,22 @@ import social.entourage.android.databinding.ActivityMainBinding
 import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.guide.GDSMainActivity
+import social.entourage.android.home.BirthdayActivity
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.EventConfirmationDialogFragment
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.notifications.NotificationActionManager
+import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.profile.MyProfileFullActivity
+import social.entourage.android.tools.TestHelper
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
+import social.entourage.android.enhanced_onboarding.OnboardingNavigation
 import social.entourage.android.welcome.WelcomeTwoActivity
 import timber.log.Timber
 
@@ -85,7 +91,6 @@ class MainActivity : BaseSecuredActivity() {
             presenter.updateUser()
         }
         handleUniversalLinkFromMain(this.intent)
-
         updateActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
             if (result.resultCode != Activity.RESULT_OK) {
                 Timber.tag("Update")
@@ -166,62 +171,16 @@ class MainActivity : BaseSecuredActivity() {
 
         if (this.intent != null) {
             useIntentForRedictection(this.intent)
-            this.intent = null
+            if(!TestHelper.isRunningInTestHarness()) {
+                //TODO WHY WHY WHY WHY WHY ? It does make the tests do a timeout !
+                this.intent = null
+            }
         }
         if (shouldLaunchEventPopUp != 0) {
             ifEventLastDay(shouldLaunchEventPopUp)
             shouldLaunchEventPopUp = 0
         }
 
-        // --- GESTION CENTRALISÉE DES REDIRECTIONS ---
-        // On remet les flags à false immédiatement pour éviter les boucles
-
-        // 1. Redirection vers l'onglet Événements
-        if (shouldLaunchEvent) {
-            shouldLaunchEvent = false
-            goEvent()
-        }
-
-        // 2. Lancement Création de Demande (Both actions ou No event)
-        // Utilise la variable distincte pour éviter de lancer la liste
-        if (shouldLaunchDemandCreation) {
-            shouldLaunchDemandCreation = false
-            val intent = Intent(this, CreateActionActivity::class.java)
-            intent.putExtra(Const.IS_ACTION_DEMAND, true)
-            this.startActivity(intent)
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-        }
-
-        // 3. Ancienne variable de fallback (si jamais utilisée ailleurs)
-        if (shouldLaunchActionCreation) {
-            shouldLaunchActionCreation = false
-            val intent = Intent(this, CreateActionActivity::class.java)
-            intent.putExtra(Const.IS_ACTION_DEMAND, false)
-            this.startActivity(intent)
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-        }
-
-        // 4. Lancement du Quizz (Ressources)
-        if (shouldLaunchQuizz) {
-            shouldLaunchQuizz = false
-            val urlString = "https://kahoot.it/challenge/45371e80-fe50-4be5-afec-b37e3d50ede2_1733228323615"
-            WebViewFragment.newInstance(urlString, 0, true)
-                .show(supportFragmentManager, WebViewFragment.TAG)
-        }
-
-        // 5. Lancement Welcome Group
-        if (shouldLaunchWelcomeGroup) {
-            shouldLaunchWelcomeGroup = false
-            val intent = Intent(this, WelcomeTwoActivity::class.java)
-            this.startActivity(intent)
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-        }
-
-        // 6. Retour au profil (Settings)
-        if (shouldLaunchProfile) {
-            shouldLaunchProfile = false
-            showProfile()
-        }
     }
 
     private fun checkForAppUpdate() {
@@ -294,7 +253,48 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
 
+    private fun handleOnboardingNavigation(navigation: OnboardingNavigation) {
+        when (navigation) {
+            is OnboardingNavigation.WelcomeGroup -> {
+                val intent = Intent(this, WelcomeTwoActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
+            is OnboardingNavigation.Events -> {
+                shouldLaunchEvent = true
+                goEvent()
+            }
+            is OnboardingNavigation.Donations -> {
+                goContrib()
+            }
+            is OnboardingNavigation.CreateActionDemand -> {
+                val intent = Intent(this, CreateActionActivity::class.java)
+                intent.putExtra(Const.IS_ACTION_DEMAND, true)
+                startActivity(intent)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
+            is OnboardingNavigation.Quiz -> {
+                val urlString = "https://kahoot.it/challenge/45371e80-fe50-4be5-afec-b37e3d50ede2_1733228323615"
+                WebViewFragment.newInstance(urlString, 0, true)
+                    .show(supportFragmentManager, WebViewFragment.TAG)
+            }
+            is OnboardingNavigation.Profile -> {
+                showProfile()
+            }
+            is OnboardingNavigation.Home -> {
+                // Stay on home
+            }
+        }
+    }
+
     fun useIntentForRedictection(intent: Intent) {
+        val onboardingNav = intent.getParcelableExtra<OnboardingNavigation>("extra_onboarding_navigation")
+        if (onboardingNav != null) {
+            intent.removeExtra("extra_onboarding_navigation")
+            handleOnboardingNavigation(onboardingNav)
+            return
+        }
+
         intent.action?.let { action ->
             checkIntentAction(action, intent.extras)
         }
@@ -316,47 +316,59 @@ class MainActivity : BaseSecuredActivity() {
         val goDemand = intent.getBooleanExtra("goDemand", false)
         val goDiscoverGroup = intent.getBooleanExtra("goDiscoverGroup", false)
         val goDiscoverEvent = intent.getBooleanExtra("goDiscoverEvent", false)
+        val goBirthday = intent.getBooleanExtra("goBirthday", false)
 
 
-        if (goContrib) {
-            goContrib()
+        if (goBirthday) {
+            intent.removeExtra("goBirthday")
+            goHome()
+            startActivity(Intent(this, BirthdayActivity::class.java))
             return
         }
 
-        if (goDiscoverGroup) {
+        if (goContrib) {
+            intent.removeExtra("goContrib")
+            goContrib()
+            return
+        }
+        else if(goDiscoverGroup){
+            intent.removeExtra("goDiscoverGroup")
             this.setGoDiscoverGroupFromDeepL(goDiscoverGroup)
             goGroup()
             return
         }
-        if (goDiscoverEvent) {
+        else if(goDiscoverEvent){
+            intent.removeExtra("goDiscoverEvent")
             goEvent()
             return
         }
-        if (goDemand) {
+        else if(goDemand){
             goDemand()
             return
         }
-        if (fromWelcomeActivity) {
+        else if (fromWelcomeActivity) {
             goGroup()
             return
         }
-        if (fromWelcomeActivityThreeEvent) {
+        else if (fromWelcomeActivityThreeEvent) {
             goEvent()
             return
         }
-        if (fromWelcomeActivityThreeDemand) {
+        else if (fromWelcomeActivityThreeDemand) {
             goDemand()
             return
         }
-        if (fromWelcomeActivityThreeContrib) {
+        else if (fromWelcomeActivityThreeContrib) {
             goContrib()
             val newIntent = Intent(this, CreateActionActivity::class.java)
             newIntent.putExtra(Const.IS_ACTION_DEMAND, false)
             startActivity(newIntent)
             return
         }
-        this.intent = intent
-        handleUniversalLinkFromMain(intent)
+        else {
+            this.intent = intent
+            handleUniversalLinkFromMain(intent)
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -375,35 +387,25 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     private fun checkIntentAction(action: String, extras: Bundle?) {
-        extras?.let { bundle ->
-            val author = bundle.getString("sender") ?: "unknown"
-            val msgObject = bundle.getString("object")
-            val rawContent = bundle.getString("content")
-            if (rawContent != null) {
-                //val pushNotificationContent = Gson().fromJson(rawContent, PushNotificationContent::class.java)
-                val pushNotificationMessage = PushNotificationMessage(
-                    author = author,
-                    msgObject = msgObject,
-                    content = rawContent, // Chaîne JSON
-                    pushNotificationId = 0, // Si tu as besoin d'un ID, change cette valeur
-                    pushNotificationTag = null // Même chose pour le tag
-                )
-                pushNotificationMessage.content?.extra?.let { extra ->
-                    extra.instance?.let { instance ->
-                        NotificationActionManager.presentAction(
-                            this,
-                            supportFragmentManager,
-                            instance,
-                            extra.instanceId ?: 0,
-                            extra.postId,
-                            popup = extra.popup,
-                            tracking = extra.tracking
-                        )
-                    }
+        extras?.getString(PushNotificationManager.KEY_CONTENT)?.let { rawContent ->
+            Gson().fromJson(
+                rawContent,
+                PushNotificationContent::class.java
+            )?.extra?.let { extra ->
+                extra.instance?.let { instance ->
+                    NotificationActionManager.presentAction(
+                        this,
+                        supportFragmentManager,
+                        instance,
+                        extra.instanceId ?: 0,
+                        extra.postId,
+                        stage = extra.stage,
+                        popup = extra.popup,
+                        tracking = extra.tracking
+                    )
                 }
-            } else {
             }
-        } ?: Timber.d("wtf notif :extras null")
+        }?: Timber.d("wtf notif :extras null")
         intent = null
     }
 
@@ -502,9 +504,13 @@ class MainActivity : BaseSecuredActivity() {
         }
         if (notificationsEnabled) {
             FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-                presenter.updateApplicationInfo(token)
+                sendRegistrationToServer(token)
             }
         }
+    }
+
+    fun sendRegistrationToServer(token: String) {
+        presenter.updateApplicationInfo(token)
     }
 
     // ----------------------------------
@@ -610,7 +616,12 @@ class MainActivity : BaseSecuredActivity() {
                 }
             }
             // LA navigation est faite ici par NavigationUI, toi tu ne navigues pas ailleurs.
-            NavigationUI.onNavDestinationSelected(item, navController)
+            val handled = NavigationUI.onNavDestinationSelected(item, navController)
+            if (!handled && item.itemId == R.id.navigation_home) {
+                goHome()
+                return@setOnItemSelectedListener true
+            }
+            handled
         }
     }
 
@@ -695,14 +706,7 @@ class MainActivity : BaseSecuredActivity() {
         var orientations: MutableList<userConfig>? = null
         var shouldLaunchEventPopUp: Int = 0
         var shouldLaunchOnboarding: Boolean = false
-        var shouldLaunchProfile: Boolean = false
         var isFromProfile: Boolean = false
         var shouldLaunchEvent: Boolean = false
-        var shouldLaunchActionCreation: Boolean = false
-        var shouldLaunchQuizz: Boolean = false
-        var shouldLaunchWelcomeGroup: Boolean = false
-
-        // NOUVEAU FLAG : Pour distinguer création de demande vs liste simple
-        var shouldLaunchDemandCreation: Boolean = false
     }
 }

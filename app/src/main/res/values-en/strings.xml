@@ -15,7 +15,7 @@
     <string name="send">Send</string>
     <string name="register">Save</string>
     <string name="ignore">Ignore</string>
-    <string name="next">Continue</string>
+    <string name="continue_string">Continue</string>
     <string name="close">Close</string>
     <string name="edit">Edit</string>
     <string name="activate">Activate</string>
@@ -56,7 +56,7 @@
     <string name="home_help_button_1">Make a financial donation to Entourage</string>
     <string name="home_help_button_2">Become a reporter for\nEntourage</string>
     <string name="home_help_button_3">Talk about Entourage</string>
-    <string name="home_help_button_4">Become an Ambassador</string>
+    <string name="home_help_button_4">Become an Animateur Entourage</string>
     <string name="home_help_button_5">LinkedOut program</string>
     <string name="home_button_help_title">I help Entourage in a different way</string>
     <string name="home_button_change_zone">I change my action zone</string>
@@ -135,7 +135,7 @@
     <string name="edit_interests">Edit my hobbies</string>
     <string name="follow">Subscribe</string>
     <string name="following">Subscriber</string>
-    <string name="ambassador">Ambassador</string>
+    <string name="ambassador">Animateur Entourage</string>
     <string name="group_name">Group name</string>
     <string name="event_name">Event name</string>
     <string name="group_name_hint">Neighbors in Paris 18</string>
@@ -161,7 +161,7 @@
     <string name="report_comment">Report comment</string>
     <string name="report_eventt">Report the event</string>
     <string name="why_reporting">Tell us the reason for your report</string>
-    <string name="new_next">Continue</string>
+    <string name="next">Continue</string>
     <string name="back">Back</string>
     <string name="cancel_event_continue">Continue</string>
     <string name="previous">Previous</string>
@@ -810,7 +810,6 @@
     <string name="create_action_wizard_p2_option2">No not yet</string>
     <string name="create_action_wizard_p3_title">LAST QUESTION</string>
     <string name="create_action_wizard_p3_description">Consent is essential to be able to broadcast your solidarity action on the network.\n\nYour action is currently on hold. A moderator will respond very quickly to help you.</string>
-    <string name="create_action_wizard_p3_option1">@string/next</string>
     <string name="create_action_wizard_disclaimer">The &amp;lt;a href</string>
     <string name="action_report_explanation">You will report this solidarity action to our administrators.</string>
     <string name="action_report_reason">Please specify why\nyou are reporting this solidarity action:</string>
@@ -1003,7 +1002,7 @@
     <string name="menu_info_first_guide">Our guide to daring to meet</string>
     <string name="menu_info_second_gift">Donate to Entourage</string>
     <string name="menu_info_second_help">Help with reintegration</string>
-    <string name="menu_info_second_ambassador">Become a Volunteer Ambassador</string>
+    <string name="menu_info_second_ambassador">Become a Volunteer Animateur Entourage</string>
     <string name="menu_info_second_good">Create links with Good Waves</string>
     <string name="menu_info_second_title">❤️ GET INVOLVED</string>
     <string name="menu_info_third_info">How to talk to isolated people about it?</string>
@@ -1204,8 +1203,8 @@
     <string name="partner_add_ok">Badge added</string>
     <string name="partner_remove_ok">Badge removed</string>
     <string name="member_type_organization">Marauder</string>
-    <string name="role_ambassador">Ambassador</string>
-    <string name="role_admin">Ambassador</string>
+    <string name="role_ambassador">Animateur Entourage</string>
+    <string name="role_admin">Animateur Entourage</string>
     <string name="user_profile_display_title">Profile</string>
     <string name="user_button_confirm_changes">Confirm</string>
     <string name="user_text_update_ok">Profile updated</string>
@@ -1289,7 +1288,7 @@
     <string name="user_action_zone_disclaimer">This information is strictly confidential and is not shared with anyone. You can change it in your settings.</string>
     <string name="user_action_zone_hint">1 avenue Jean Jaurès…</string>
     <string name="user_action_zone_no_address_error">Please add an address</string>
-    <string name="user_action_zone_send_ok">Address registered</string>
+    <string name="user_action_zone_send_ok">Profil updated</string>
     <string name="user_action_zone_send_failed">The address has not been registered</string>
     <string name="profile_edit_zone_title">Where do you want to act?</string>
     <string name="profile_edit_zone_description">Entourage is a social network!\nDiscover the solidarity initiatives in your neighborhood and build links with your neighbors</string>
@@ -1318,7 +1317,7 @@
     <string name="cult_sport_asso">Cultural and sporting initiatives</string>
     <string name="serv_pub_asso">Public service</string>
     <string name="autre_asso">Others</string>
-    <string name="next_">Continue</string>
+
     <string name="title_association">Association</string>
     <string name="title_asso_donation">Accept donations</string>
     <string name="title_asso_volunteer">Looking for volunteers</string>
@@ -1817,7 +1816,7 @@
     <string name="onboard_welcome_placeholder_birthdate">DD/MM/YYYY</string>
     <string name="onboard_welcome_gender_female">Female</string>
     <string name="onboard_welcome_gender_male">Male</string>
-    <string name="onboard_welcome_gender_other">Other</string>
+    <string name="onboard_welcome_gender_other">Not specified</string>
     <string name="onboard_welcome_placeholder_firstname_new">e.g.: Mary</string>
     <string name="onboard_welcome_placeholder_lastname_new">e.g.: Doe</string>
     <string name="onboard_welcome_placeholder_phone_new">06 XX XX XX XX</string>
@@ -1861,4 +1860,5 @@
 
 
 
+    <string name="guide_help_orientation_button">Help &amp; orientation</string>
 </resources>

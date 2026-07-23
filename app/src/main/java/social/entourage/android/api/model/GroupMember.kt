@@ -10,6 +10,8 @@ data class GroupMember(
     var displayName: String? = null,
     @SerializedName("avatar_url")
     var avatarUrl: String? = null,
+    @SerializedName("is_birthday")
+    var isBirthday: Boolean = false,
 ) : Serializable {
     override fun toString(): String {
         return "GroupMember(id=$id, displayName=$displayName, avatarUrl=$avatarUrl)"
