@@ -6,13 +6,14 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextWatcher
 import android.text.style.StyleSpan
-import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.CreateSurveyActivityBinding
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 
@@ -26,6 +27,7 @@ class CreateSurveyActivity: BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = CreateSurveyActivityBinding.inflate(layoutInflater)
         initView()
         surveyPresenter = SurveyPresenter()
@@ -33,6 +35,7 @@ class CreateSurveyActivity: BaseActivity() {
         groupId = intent.getIntExtra(Const.GROUP_ID, 0) // Utilise 0 comme valeur par défaut si GROUP_ID n'est pas fourni
         eventId = intent.getIntExtra(Const.EVENT_ID, 0) // Utilise 0 comme valeur par défaut si GROUP_ID n'est pas fourni
         setContentView(binding.root)
+        updatePaddingForEdgeToEdge(binding.root)
     }
 
     private fun setObserver(){

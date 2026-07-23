@@ -8,7 +8,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.CalendarContract
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,7 +49,6 @@ import social.entourage.android.comment.SurveyInteractionListener
 import social.entourage.android.databinding.FragmentFeedEventBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.events.EventsPresenter
-import social.entourage.android.events.details.SettingsModalFragment
 import social.entourage.android.groups.details.feed.CallbackReportFragment
 import social.entourage.android.groups.details.feed.GroupMembersPhotosAdapter
 import social.entourage.android.groups.details.members.MembersType
@@ -58,11 +56,11 @@ import social.entourage.android.home.HomeState
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.members.MembersActivity
 import social.entourage.android.profile.association.AssociationProfileActivity
-import social.entourage.android.profile.association.AssociationProfileFragment
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.survey.ResponseSurveyActivity
 import social.entourage.android.survey.SurveyPresenter
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
@@ -76,8 +74,6 @@ import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import kotlin.math.abs
-import kotlin.math.sign
-import social.entourage.android.user.partner.PartnerFragment
 
 class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     SurveyInteractionListener, OnMapReadyCallback {
@@ -106,6 +102,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     ): View {
         _binding = FragmentFeedEventBinding.inflate(inflater, container, false)
         updatePaddingTopForEdgeToEdge(binding.header)
+        updatePaddingBottomForEdgeToEdge(binding.layoutJoin)
         reduceButtonSizeImage()
         return binding.root
     }

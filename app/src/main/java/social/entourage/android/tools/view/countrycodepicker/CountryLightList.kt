@@ -57,6 +57,18 @@ internal object CountryLightList {
                 context.getString(R.string.country_morocco_name),
                 context.getString(R.string.country_morocco_flag))
         )
+        newCountries.add(
+            Country(context.getString(R.string.country_germany_code),
+                context.getString(R.string.country_germany_number),
+                context.getString(R.string.country_germany_name),
+                context.getString(R.string.country_germany_flag))
+        )
+        newCountries.add(
+            Country(context.getString(R.string.country_switzerland_code),
+                context.getString(R.string.country_switzerland_number),
+                context.getString(R.string.country_switzerland_name),
+                context.getString(R.string.country_switzerland_flag))
+        )
         newCountries.sortWith { o1: Country, o2: Country -> o1.name.compareTo(o2.name) }
         countries = newCountries
         return newCountries

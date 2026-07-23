@@ -5,8 +5,9 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
+import androidx.core.content.edit
 import androidx.lifecycle.ViewModelProvider
-import androidx.core.content.edit // Important pour .edit { }
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
@@ -20,6 +21,7 @@ import social.entourage.android.enhanced_onboarding.fragments.OnboardingCongrats
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingDisponibilityFragment
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestFragment
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingPresentationFragment
+import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 
 class EnhancedOnboarding : BaseActivity() {
     private lateinit var binding: ActivityEnhancedOnboardingLayoutBinding
@@ -28,6 +30,7 @@ class EnhancedOnboarding : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         // Permet au layout de se redimensionner quand le clavier apparaît
         window.setSoftInputMode(
@@ -63,6 +66,8 @@ class EnhancedOnboarding : BaseActivity() {
             }
         }
         onBackPressedDispatcher.addCallback(this, backCallback!!)
+
+        updatePaddingBottomForEdgeToEdge(binding.fragmentContainer)
     }
 
     private fun setupObservers() {

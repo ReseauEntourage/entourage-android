@@ -1104,6 +1104,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="country_germany_name">Allemagne</string>
     <string name="country_germany_code">de</string>
     <string name="country_germany_number" translatable="false">49</string>
+    <string name="country_germany_flag" translatable="false">🇩🇪</string>
 
     <string name="country_ghana_name">Ghana</string>
     <string name="country_ghana_code">gh</string>
@@ -1507,6 +1508,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="country_switzerland_name">Suisse</string>
     <string name="country_switzerland_code">ch</string>
     <string name="country_switzerland_number" translatable="false">41</string>
+    <string name="country_switzerland_flag" translatable="false">🇨🇭</string>
 
     <string name="country_syrian_arab_republic_name">Syrie</string>
     <string name="country_syrian_arab_republic_code">sy</string>
@@ -3397,6 +3399,15 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="badges_empty_title">Vos badges Entourage</string>
     <string name="badges_empty_subtitle">Chaque badge valorise une action concrète qui crée du lien dans la communauté. À vous de jouer !</string>
     <string name="badges_empty_start_label">COMMENCEZ PAR</string>
+
+    <!-- Ambassador resources section -->
+    <string name="ambassador_resources_title">Mes ressources bénévoles</string>
+    <string name="ambassador_resource_toolbox">Boîte à outils du bénévole</string>
+    <string name="ambassador_resource_charter">Charte des événements</string>
+    <string name="ambassador_resource_whatsapp">Whatsapp des Entoureurs</string>
+    <string name="ambassador_referent_title">Mon référent</string>
+    <string name="ambassador_referent_role">Responsable engagement citoyen</string>
+    <string name="ambassador_referent_cta">Envoyer un message</string>
     <string name="badges_empty_start_badge">Le badge %1$s</string>
     <string name="badges_empty_start_description">Complétez votre profil (envies d\'agir, centres d\'intérêt, catégories d\'entraides préférées, disponibilités) et réalisez votre première action sur l\'app</string>
     <string name="badges_empty_cta">Je me lance</string>

@@ -7,19 +7,17 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.style.StyleSpan
-import android.text.style.TypefaceSpan
+import androidx.activity.enableEdgeToEdge
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModelProvider
-import com.google.gson.Gson
 import social.entourage.android.R
 import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.SmallTalkIntroActivityBinding
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.CustomTypefaceSpan
 import social.entourage.android.tools.utils.Utils.showToast
-import timber.log.Timber
 
 class SmallTalkIntroActivity : BaseActivity() {
 
@@ -28,6 +26,7 @@ class SmallTalkIntroActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = SmallTalkIntroActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__SMALLTALK__PRESENTATION)
@@ -87,6 +86,8 @@ class SmallTalkIntroActivity : BaseActivity() {
 
         // Déclenche initialement le chargement
         viewModel.listUserRequests()
+
+        updatePaddingForEdgeToEdge(binding.root)
     }
 
     private fun applyFormattedIntroText() {

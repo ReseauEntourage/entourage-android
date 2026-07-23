@@ -102,10 +102,10 @@ class NotificationDemandActivity : BaseActivity() {
                     comeFromSettings = false
                     MainActivity.shouldLaunchOnboarding = false
                 }
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
             }
         }
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 
     companion object {

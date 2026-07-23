@@ -17,7 +17,7 @@ import social.entourage.android.databinding.FragmentCreateGroupBinding
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.feed.CreatePostGroupActivity
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.nextPage
@@ -39,7 +39,7 @@ class CreateGroupFragment : Fragment() {
     ): View {
         _binding = FragmentCreateGroupBinding.inflate(inflater, container, false)
 
-        updatePaddingTopForEdgeToEdge(binding.header.layout)
+        updatePaddingForEdgeToEdge(binding.root)
         return binding.root
     }
 

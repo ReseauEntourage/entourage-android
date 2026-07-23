@@ -1,10 +1,12 @@
 package social.entourage.android.home
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import social.entourage.android.EntourageApplication
 import social.entourage.android.databinding.ActivityBirthdayBinding
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import java.util.Calendar
 
 class BirthdayActivity : AppCompatActivity() {
@@ -13,8 +15,10 @@ class BirthdayActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityBirthdayBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        updatePaddingForEdgeToEdge(binding.root)
 
         binding.btnHome.setOnClickListener {
             finish()
