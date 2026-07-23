@@ -92,6 +92,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
     handleBackButton()
     setSettingsIcon()
     val postLang = comment?.contentTranslations?.fromLang ?: ""
+    binding.layoutStaffBanner.visibility = View.GONE
 
     handleSendButtonState()
 

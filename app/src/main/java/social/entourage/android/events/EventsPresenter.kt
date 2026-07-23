@@ -34,6 +34,8 @@ import java.io.IOException
 class EventsPresenter : ViewModel() {
     val MEMBERS_PER_PAGE = 30
 
+    var unsubscribedParticipantsUpdated = MutableLiveData<Boolean>()
+
     var getAllMyEvents = MutableLiveData<MutableList<Events>>()
     var getAllEvents = MutableLiveData<MutableList<Events>>()
     var getFilteredEvents = MutableLiveData<MutableList<Events>>()
@@ -1037,12 +1039,29 @@ class EventsPresenter : ViewModel() {
             })
     }
 
+
+
+
+
+
+
+    fun updateUnsubscribedParticipants(eventId: Int, offerHelp: Int, askForHelp: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.updateUnsubscribedParticipants(eventId, offerHelp, askForHelp)
+            .enqueue(object : Callback<EventWrapper> {
+                override fun onResponse(
+                    call: Call<EventWrapper>,
+                    response: Response<EventWrapper>
+                ) {
+                    if (response.isSuccessful) {
+                        unsubscribedParticipantsUpdated.value = true
+                    } else {
+                        unsubscribedParticipantsUpdated.value = false
+                    }
+                }
+
+                override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
+                    unsubscribedParticipantsUpdated.value = false
+                }
+            })
+    }
 }
-
-
-
-
-data class JoinRoleBody(
-    @field:SerializedName("role")
-    val role: String
-)

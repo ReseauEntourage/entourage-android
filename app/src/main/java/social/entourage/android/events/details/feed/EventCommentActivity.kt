@@ -40,6 +40,7 @@ class EventCommentActivity : CommentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding.layoutStaffBanner.visibility = View.GONE
 
         // Observe la liste de commentaires
         eventPresenter.getAllComments.observe(this, ::handleGetPostComments)

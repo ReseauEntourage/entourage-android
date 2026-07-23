@@ -57,3 +57,4 @@ app/.classpath
 #DS STORE
 .DS_Store
 .kotlin
+.aider*

@@ -25,7 +25,7 @@ android {
 
     // App versions
     val versionMajor = 13
-    val versionMinor = 5
+    val versionMinor = 7
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -56,7 +56,7 @@ android {
         }
     }
 
-    compileSdk = 36
+    compileSdk = 37
     buildToolsVersion = "36.1.0"
 
     val localTestAccountLogin = System.getenv("TEST_ACCOUNT_LOGIN")?.let { login -> "\""+ login+ "\"" }
@@ -83,7 +83,7 @@ android {
         applicationId = "social.entourage.android"
 
         minSdk = 23 /*November 2015: Android 6.0, MarshMallow*/
-        targetSdk = 36
+        targetSdk = 37
 
         // Making either of these two values dynamic in the defaultConfig will
         // require a full APK build and reinstallation because the AndroidManifest.xml

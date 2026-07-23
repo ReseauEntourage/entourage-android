@@ -44,6 +44,9 @@ enum class FilterMode {
 
 class DiscussionsMainFragment : Fragment() {
 
+    private val eventsPresenter: social.entourage.android.events.EventsPresenter by lazy { social.entourage.android.events.EventsPresenter() }
+    private val groupPresenter: social.entourage.android.groups.GroupPresenter by lazy { social.entourage.android.groups.GroupPresenter() }
+
     private var _binding: FragmentMessagesBinding? = null
     private val binding get() = _binding!!
     private var isFromDetail = false
@@ -74,11 +77,20 @@ class DiscussionsMainFragment : Fragment() {
         initializeSearchBar()
         initializeRecyclerView()
         handleSwipeRefresh()
+        binding.btnValidate.visibility = View.GONE
+        binding.btnValidate.setOnClickListener {
+            discussionsAdapter.isDeletionMode = false
+            binding.btnValidate.visibility = View.GONE
+        }
 
         discussionsPresenter.getAllMessages.observe(viewLifecycleOwner, ::handleResponseGetDiscussions)
         discussionsPresenter.unreadMessages.observe(requireActivity(), ::updateUnreadCount)
         smallTalkViewModel.smallTalks.observe(viewLifecycleOwner, ::handleResponseGetSmallTalks)
         discussionsPresenter.memberships.observe(viewLifecycleOwner, ::handleResponseGetMemberships)
+        discussionsPresenter.hasUserLeftConversation.observe(viewLifecycleOwner, ::handleConversationLeft)
+        eventsPresenter.hasUserLeftEvent.observe(viewLifecycleOwner, ::handleConversationLeft)
+        groupPresenter.hasUserLeftGroup.observe(viewLifecycleOwner, ::handleConversationLeft)
+        smallTalkViewModel.shouldLeave.observe(viewLifecycleOwner, ::handleConversationLeft)
 
         handleImageViewAnimation()
 
@@ -139,7 +151,16 @@ class DiscussionsMainFragment : Fragment() {
         discussionsAdapter = DiscussionsListAdapter(messagesList).apply {
             setOnItemClickListener(object : DiscussionsListAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int, conversation: Conversation) {
-                    showDetail(position) // Appel existant (compatibilité)
+                    if (discussionsAdapter.isDeletionMode) {
+                        deleteConversation(conversation)
+                    } else {
+                        showDetail(position)
+                    }
+                }
+                override fun onItemLongClick(position: Int, conversation: Conversation): Boolean {
+                    //discussionsAdapter.isDeletionMode = true
+                    //binding.btnValidate.visibility = View.VISIBLE
+                    return true
                 }
             })
         }
@@ -421,5 +442,26 @@ class DiscussionsMainFragment : Fragment() {
             numberUnreadMessages = m.numberOfUnreadMessages ?: 0,
             memberCount = m.numberOfPeople ?: 0
         )
+    }
+
+    private fun handleConversationLeft(hasLeft: Boolean) {
+        if (hasLeft) {
+            reloadFromStart()
+        }
+    }
+
+    private fun deleteConversation(conversation: Conversation) {
+        val position = messagesList.indexOf(conversation)
+        if (position != -1) {
+            messagesList.removeAt(position)
+            discussionsAdapter.notifyItemRemoved(position)
+        }
+        val id = conversation.id ?: return
+        when (conversation.type) {
+            "small_talk" -> smallTalkViewModel.leaveSmallTalk(id.toString())
+            "outing" -> eventsPresenter.leaveEvent(id)
+            "private", "group" -> discussionsPresenter.leaveConverstion(id)
+            else -> discussionsPresenter.leaveConverstion(id)
+        }
     }
 }

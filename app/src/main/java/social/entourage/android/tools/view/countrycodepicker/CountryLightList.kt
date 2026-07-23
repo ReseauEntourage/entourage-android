@@ -36,6 +36,27 @@ internal object CountryLightList {
                 context.getString(R.string.country_belgium_number),
                 context.getString(R.string.country_belgium_name),context.getString(R.string.country_belgium_flag))
         )
+        newCountries.add(
+            Country(context.getString(R.string.country_guadeloupe_code),
+                context.getString(R.string.country_guadeloupe_number),
+                context.getString(R.string.country_guadeloupe_name),context.getString(R.string.country_guadeloupe_flag))
+        )
+        newCountries.add(
+            Country(context.getString(R.string.country_martinique_code),
+                context.getString(R.string.country_martinique_number),
+                context.getString(R.string.country_martinique_name),context.getString(R.string.country_martinique_flag))
+        )
+        newCountries.add(
+            Country(context.getString(R.string.country_reunion_code),
+                context.getString(R.string.country_reunion_number),
+                context.getString(R.string.country_reunion_name),context.getString(R.string.country_reunion_flag))
+        )
+        newCountries.add(
+            Country(context.getString(R.string.country_morocco_code),
+                context.getString(R.string.country_morocco_number),
+                context.getString(R.string.country_morocco_name),
+                context.getString(R.string.country_morocco_flag))
+        )
         newCountries.sortWith { o1: Country, o2: Country -> o1.name.compareTo(o2.name) }
         countries = newCountries
         return newCountries
@@ -99,7 +120,7 @@ internal object CountryLightList {
     /**
      * Search a country which matches @param nameCode.
      *
-     * @param nameCode country name code. i.e US or us or Au. See countries.xml for all code names.
+     * @param nameCode country name code. i.i US or us or Au. See countries.xml for all code names.
      * @return Country that has phone code as @param code.
      * or returns null if no country matches given code.
      */

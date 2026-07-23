@@ -145,7 +145,6 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                     }else{
                         val intent = Intent(context, MainActivity::class.java)
                             .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                        intent.putExtra("fromWelcomeActivity", true)
                         intent.putExtra("goDiscoverGroup", true)
                         context.startActivity(intent)
                         (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
@@ -262,7 +261,6 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
         } else {
             val intent = Intent(context, MainActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-            //intent.putExtra("fromWelcomeActivityThreeEvent", true)
             intent.putExtra("goDiscoverEvent", true)
             context.startActivity(intent)
             (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)

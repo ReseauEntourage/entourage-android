@@ -591,8 +591,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="info_action_private">Action privée</string>
     <string name="info_event_private">Événement privé</string>
     <string name="info_pop_message_private">Votre demande de participation est en attente de validation.</string>
-    <string name="info_pop_private_message_action">Pour participer à cette action privée, le créateur de cette action doit valider votre participation.\n\nUne fois votre demande acceptée, vous pourrez accéder à la conversation de groupe.</string>
-    <string name="info_pop_private_message_event">Pour participer à cet événement privé, le créateur de cet événement doit valider votre participation.\n\nUne fois votre demande acceptée, vous pourrez accéder à la conversation de groupe.</string>
+    <string name="info_pop_private_message_action">Pour participer à cette action privée, le créateur de cette action doit valider votre participation.\n\nUne fois votre demande acceptée, vous pourrez accéder à la discussion de groupe.</string>
+    <string name="info_pop_private_message_event">Pour participer à cet événement privé, le créateur de cet événement doit valider votre participation.\n\nUne fois votre demande acceptée, vous pourrez accéder à la discussion de groupe.</string>
     <string name="info_pop_private_title">Demande de participation</string>
     <string name="info_pop_private_bt_ok">Confirmer</string>
     <string name="info_pop_private_bt_cancel">Annuler</string>
@@ -1187,7 +1187,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="country_qatar_name">Qatar</string>
     <string name="country_qatar_code">qa</string>
 
-    <string name="country_reunion_name">Réunion</string>
+    <string name="country_reunion_name">La Réunion</string>
     <string name="country_reunion_code">re</string>
 
     <string name="country_romania_name">Roumanie</string>
@@ -1444,7 +1444,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="entourage_join_request_message_sent">Message envoyé</string>
     <string name="entourage_join_request_message_error">Erreur d\'envoi du message</string>
     <string name="entourage_join_request_ok_title">Votre demande est transmise</string>
-    <string name="entourage_join_request_ok_description_entourage">Merci pour votre chaleur humaine !\nVous pouvez envoyer un message aux participants, qui apparaîtra dans la conversation de groupe.</string>
+    <string name="entourage_join_request_ok_description_entourage">Merci pour votre chaleur humaine !\nVous pouvez envoyer un message aux participants, qui apparaîtra dans la discussion de groupe.</string>
     <string name="entourage_join_request_ok_description_outing">@string/entourage_join_request_ok_description_entourage</string>
     <string name="entourage_join_request_ok_message_hint">Votre message…</string>
     <string name="entourage_join_request_rejected">Requête envoyée</string>
@@ -1528,7 +1528,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <!-- Entourage Mini Card -->
 
     <!-- My Entourages -->
-    <string name="myentourages_no_items_details">Demandez à rejoindre des actions, contactez des membres et vous retrouverez vos conversations avec les membres du réseau ici</string>
+    <string name="myentourages_no_items_details">Demandez à rejoindre des actions, contactez des membres et vous retrouverez vos discussions avec les membres du réseau ici</string>
 
     <!-- Create Action Wizard -->
     <string name="create_action_wizard_p1_title">DERNIÈRE QUESTION</string>
@@ -2232,7 +2232,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="custom_dialog_action_two_button_demand">Voir les demandes</string>
 
     <string name="discussion_main_title">Discussions</string>
-    <string name="discussion_settings_title">Paramètres de la conversation</string>
+    <string name="discussion_settings_title">Paramètres de la discussion</string>
     <string name="discussion_settings_signal">Signaler</string>
     <string name="discussion_choose_signal">Signaler cette publication à l\'équipe Entourage</string>
     <string name="discussion_entraide_signal">Signaler cette entraide à l\'équipe Entourage</string>
@@ -2246,23 +2246,23 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="title_param_message">Paramètres d\'un message</string>
     <string name="title_param_comment">Paramètres d\'un message</string>
     <string name="discussion_ask_supress">Souhaitez-vous supprimer cette publication ?</string>
-    <string name="discussion_ask_supress_message">Souhaitez-vous supprimer ce message de la conversation ?</string>
+    <string name="discussion_ask_supress_message">Souhaitez-vous supprimer ce message de la discussion ?</string>
     <string name="discussion_ask_supress_comment">Souhaitez-vous supprimer ce message ?</string>
     <string name="discussion_button_supress">Supprimer</string>
-    <string name="discussion_settings_signal_sub">Signalez cette conversation à l\'équipe Entourage.</string>
+    <string name="discussion_settings_signal_sub">Signalez cette discussion à l\'équipe Entourage.</string>
     <string name="discussion_settings_profil">Voir le profil</string>
-    <string name="discussion_settings_members">Membres de la conversation</string>
-    <string name="discussion_settings_quit">Quitter la conversation</string>
+    <string name="discussion_settings_members">Membres de la discussion</string>
+    <string name="discussion_settings_quit">Supprimer la discussion</string>
 
-    <string name="discussion_settings_search">Rechercher un membre de la conversation</string>
+    <string name="discussion_settings_search">Rechercher un membre de la discussion</string>
     <string name="discussion_settings_search_empty">Oups, aucun résultat ne correspond à votre recherche ! </string>
-    <string name="discussion_report_conversation">Signaler la conversation</string>
+    <string name="discussion_report_discussion">Signaler la discussion</string>
 
-    <string name="leave_conversation">Quitter la conversation</string>
-    <string name="leave_conversation_dialog_content">Souhaitez-vous quitter la conversation ?</string>
+    <string name="leave_discussion">Supprimer la discussion</string>
+    <string name="leave_discussion_dialog_content">Souhaitez-vous supprimer la discussion ?</string>
 
-    <string name="discussion_pop_new_message_title">Nouvelle conversation</string>
-    <string name="discussion_pop_new_message_subtitle">Vous n’avez pas encore échangé avec cet utilisateur. En cas de problème, vous pouvez signaler la conversation dans les paramètres.</string>
+    <string name="discussion_pop_new_message_title">Nouvelle discussion</string>
+    <string name="discussion_pop_new_message_subtitle">Vous n’avez pas encore échangé avec cet utilisateur. En cas de problème, vous pouvez signaler la discussion dans les paramètres.</string>
 
     <string name="discussion_block_title">Bloquer</string>
     <string name="discussion_block_subtitle">%s ne pourra plus vous écrire.</string>
@@ -2278,7 +2278,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="message_user_blocked_by_me_list">Vous avez bloqué ce contact</string>
     <string name="message_user_blocked_by_me">Vous avez bloqué %s . Vous ne pouvez plus lui envoyer de message.</string>
-    <string name="message_user_blocked_by_other">Vous ne pouvez plus envoyer de message à %s . Cette conversation a été bloquée.</string>
+    <string name="message_user_blocked_by_other">Vous ne pouvez plus envoyer de message à %s . Cette discussion a été bloquée.</string>
 
     <string name="params_unblock_users_title">Débloquer des contacts</string>
 
@@ -2676,8 +2676,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="enable_notifications">Activez-les pour ne rien manquer</string>
 
     <string name="add_to_agenda">Ajouter à l\'agenda</string>
-    <string name="share_and_join_event">Participer et rejoindre la conversation</string>
-    <string name="see_conversation_event">Voir la conversation</string>
+    <string name="share_and_join_event">Participer et rejoindre la discussion</string>
+    <string name="see_discussion_event">Voir la discussion</string>
     <string name="child_rules">Normes de protection des enfants</string>
     <string name="filter_all">Toutes</string>
     <string name="filter_discussions">Discussions</string>
@@ -2735,5 +2735,11 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="welcome_papotages_list_subtitle">Discussions libres en sous-groupes de 2 à 3 personnes, animées par un bénévole formé ou un membre de l\'équipe. Vous restez le temps que vous voulez. Tous les mardis à 18h.</string>
     <string name="welcome_webinar_list_title">Sensibilisations Entourage</string>
     <string name="welcome_webinar_list_subtitle">L\'équipe Entourage vous donne les clefs pour appréhender le monde de la rue et les solutions d\'aide existantes lors d\'un atelier en ligne de 1h.</string>
+    <string name="message_action_title">Actions du message</string>
+    <string name="message_action_copy">Copier le texte</string>
+    <string name="message_action_report">Signaler le message</string>
+    <string name="message_action_delete">Supprimer mon message</string>
+
+    <string name="event_settings_see_photos">Voir les photos</string>
 </resources>
 

@@ -354,7 +354,8 @@ internal object CountryList {
         newCountries.add(
             Country(context.getString(R.string.country_guadeloupe_code),
                 context.getString(R.string.country_guadeloupe_number),
-                context.getString(R.string.country_guadeloupe_name))
+                context.getString(R.string.country_guadeloupe_name),
+                context.getString(R.string.country_guadeloupe_flag))
         )
         newCountries.add(
             Country(context.getString(R.string.country_guatemala_code),
@@ -609,7 +610,8 @@ internal object CountryList {
         newCountries.add(
             Country(context.getString(R.string.country_morocco_code),
                 context.getString(R.string.country_morocco_number),
-                context.getString(R.string.country_morocco_name))
+                context.getString(R.string.country_morocco_name),
+                context.getString(R.string.country_morocco_flag))
         )
         newCountries.add(
             Country(context.getString(R.string.country_mozambique_code),
@@ -719,7 +721,8 @@ internal object CountryList {
         newCountries.add(
             Country(context.getString(R.string.country_reunion_code),
                 context.getString(R.string.country_reunion_number),
-                context.getString(R.string.country_reunion_name))
+                context.getString(R.string.country_reunion_name),
+                context.getString(R.string.country_reunion_flag))
         )
         newCountries.add(
             Country(context.getString(R.string.country_romania_code),
