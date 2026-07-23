@@ -62,6 +62,11 @@ class EntourageApplication : MultiDexApplication() {
     fun me(): User? {
         return authenticationController.me
     }
+    fun saveUser (user: User) {
+        authenticationController.saveUser(user)
+    }
+
+
 
     fun onActivityCreated(activity: BaseActivity) {
         activities.add(activity)
@@ -222,5 +227,6 @@ class EntourageApplication : MultiDexApplication() {
         fun me(context: Context?): User? {
             return get(context).me()
         }
+
     }
 }

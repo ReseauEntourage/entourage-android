@@ -59,7 +59,7 @@ class MainActivity : BaseSecuredActivity() {
     private lateinit var navController: NavController
     private val presenter: MainPresenter = MainPresenter(this)
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
-    private lateinit var eventPresenter:EventsPresenter
+    private lateinit var eventPresenter: EventsPresenter
 
     private lateinit var viewModel: CommunicationHandlerBadgeViewModel
     private val universalLinkManager = UniversalLinkManager(this)
@@ -75,8 +75,9 @@ class MainActivity : BaseSecuredActivity() {
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[CommunicationHandlerBadgeViewModel::class.java]
         eventPresenter = ViewModelProvider(this).get(EventsPresenter::class.java)
-        viewModel.badgeCount.observe(this,::handleUpdateBadgeResponse)
+        viewModel.badgeCount.observe(this, ::handleUpdateBadgeResponse)
         userPresenter.isGetUserSuccess.observe(this, ::handleResponse)
+        userPresenter.user.observe(this, handleUserResponse)
         eventPresenter.getEvent.observe(this, ::handleEventResponse)
         initializeNavBar()
         if (authenticationController.isAuthenticated) {
@@ -100,16 +101,17 @@ class MainActivity : BaseSecuredActivity() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
         bottomNavigationView.visibility = View.GONE
     }
+
     fun showBottomBar() {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
         bottomNavigationView.visibility = View.VISIBLE
     }
 
-    fun setGoDiscoverGroupFromDeepL(bool:Boolean){
+    fun setGoDiscoverGroupFromDeepL(bool: Boolean) {
         this.fromDeepLinkGoDiscoverGroup = bool
     }
 
-    fun getFromDeepLGoDiscoverGroup():Boolean{
+    fun getFromDeepLGoDiscoverGroup(): Boolean {
         return this.fromDeepLinkGoDiscoverGroup
     }
 
@@ -118,7 +120,7 @@ class MainActivity : BaseSecuredActivity() {
         super.onStart()
     }
 
-    fun handleUniversalLinkFromMain(intent: Intent){
+    fun handleUniversalLinkFromMain(intent: Intent) {
         val uri = intent.data
         if (uri != null) {
             universalLinkManager.handleUniversalLink(uri)
@@ -159,44 +161,67 @@ class MainActivity : BaseSecuredActivity() {
         initializeMetaData()
         if (authenticationController.isAuthenticated) {
             //initialize the push notifications
-            //TODO reset this if NotificationDemandActivity is disabled initializePushNotifications()
             updateAnalyticsInfo()
-            //TODO authenticationController.me?.unreadCount?.let { bottomBar?.updateBadgeCountForUser(it) }
         }
-        //TODO bottomBar?.refreshBadgeCount()
 
-        if(this.intent != null){
+        if (this.intent != null) {
             useIntentForRedictection(this.intent)
             this.intent = null
         }
-        if(shouldLaunchEventPopUp != 0){
+        if (shouldLaunchEventPopUp != 0) {
             ifEventLastDay(shouldLaunchEventPopUp)
             shouldLaunchEventPopUp = 0
         }
-        if(shouldLaunchEvent){
+
+        // --- GESTION CENTRALISÉE DES REDIRECTIONS ---
+        // On remet les flags à false immédiatement pour éviter les boucles
+
+        // 1. Redirection vers l'onglet Événements
+        if (shouldLaunchEvent) {
+            shouldLaunchEvent = false
             goEvent()
         }
-        if(shouldLaunchActionCreation){
+
+        // 2. Lancement Création de Demande (Both actions ou No event)
+        // Utilise la variable distincte pour éviter de lancer la liste
+        if (shouldLaunchDemandCreation) {
+            shouldLaunchDemandCreation = false
+            val intent = Intent(this, CreateActionActivity::class.java)
+            intent.putExtra(Const.IS_ACTION_DEMAND, true)
+            this.startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        }
+
+        // 3. Ancienne variable de fallback (si jamais utilisée ailleurs)
+        if (shouldLaunchActionCreation) {
             shouldLaunchActionCreation = false
             val intent = Intent(this, CreateActionActivity::class.java)
             intent.putExtra(Const.IS_ACTION_DEMAND, false)
             this.startActivity(intent)
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
-        if(shouldLaunchQuizz){
+
+        // 4. Lancement du Quizz (Ressources)
+        if (shouldLaunchQuizz) {
             shouldLaunchQuizz = false
-            //TODO replace with with an alias on our site
             val urlString = "https://kahoot.it/challenge/45371e80-fe50-4be5-afec-b37e3d50ede2_1733228323615"
             WebViewFragment.newInstance(urlString, 0, true)
                 .show(supportFragmentManager, WebViewFragment.TAG)
         }
-        if(shouldLaunchWelcomeGroup){
+
+        // 5. Lancement Welcome Group
+        if (shouldLaunchWelcomeGroup) {
             shouldLaunchWelcomeGroup = false
             val intent = Intent(this, WelcomeTwoActivity::class.java)
             this.startActivity(intent)
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
+        // 6. Retour au profil (Settings)
+        if (shouldLaunchProfile) {
+            shouldLaunchProfile = false
+            showProfile()
+        }
     }
 
     private fun checkForAppUpdate() {
@@ -205,10 +230,11 @@ class MainActivity : BaseSecuredActivity() {
 
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            ) {
                 try {
                     AnalyticsEvents.logEvent(AnalyticsEvents.view_update_version)
-                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateManager.startUpdateFlowForResult(
                         appUpdateInfo,
                         AppUpdateType.IMMEDIATE,
                         this, // Ton Activity.
@@ -220,6 +246,7 @@ class MainActivity : BaseSecuredActivity() {
             }
         }
     }
+
     @Deprecated("Deprecated in kt 1.9.0")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -228,39 +255,46 @@ class MainActivity : BaseSecuredActivity() {
                 AnalyticsEvents.logEvent(AnalyticsEvents.clic_update_version_cancel)
                 Timber.tag("Update")
                     .e("La mise à jour a échoué ou a été annulée par l'utilisateur.")
-            }else{
+            } else {
                 AnalyticsEvents.logEvent(AnalyticsEvents.clic_update_version_validate)
             }
         }
     }
-     fun updateMainLanguage(){
+
+    fun updateMainLanguage() {
         updateLanguage()
         val id = EntourageApplication.me(this)?.id
-         if (id != null) {
-             userPresenter.getUser(id)
-         }
-        if(id != null){
+        if (id != null) {
+            userPresenter.getUser(id)
+        }
+        if (id != null) {
             userPresenter.updateLanguage(id, LanguageManager.loadLanguageFromPreferences(this))
             LanguageManager.setLocale(this, LanguageManager.loadLanguageFromPreferences(this))
         }
-         val sharedPrefs = EntourageApplication.get().sharedPreferences
-         if(!sharedPrefs.contains("translatedByDefault")){
-             val editor = sharedPrefs.edit()
-             editor.putBoolean("translatedByDefault", true)
-             editor.apply()
-         }
-     }
+        val sharedPrefs = EntourageApplication.get().sharedPreferences
+        if (!sharedPrefs.contains("translatedByDefault")) {
+            val editor = sharedPrefs.edit()
+            editor.putBoolean("translatedByDefault", true)
+            editor.apply()
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()
         instance = null
     }
 
-    fun handleResponse(success: Boolean){
+    fun handleResponse(success: Boolean) {
 
     }
 
-    fun useIntentForRedictection(intent: Intent){
+    private val handleUserResponse: (social.entourage.android.api.model.User?) -> Unit = { user ->
+        user?.let {
+            EntourageApplication.get().saveUser(user)
+        }
+    }
+
+    fun useIntentForRedictection(intent: Intent) {
         intent.action?.let { action ->
             checkIntentAction(action, intent.extras)
         }
@@ -272,29 +306,33 @@ class MainActivity : BaseSecuredActivity() {
             return
         }
         val fromWelcomeActivity = intent.getBooleanExtra("fromWelcomeActivity", false)
-        val fromWelcomeActivityThreeEvent = intent.getBooleanExtra("fromWelcomeActivityThreeEvent", false)
-        val fromWelcomeActivityThreeDemand = intent.getBooleanExtra("fromWelcomeActivityThreeDemand", false)
-        val fromWelcomeActivityThreeContrib = intent.getBooleanExtra("fromWelcomeActivityThreeContrib", false)
+        val fromWelcomeActivityThreeEvent =
+            intent.getBooleanExtra("fromWelcomeActivityThreeEvent", false)
+        val fromWelcomeActivityThreeDemand =
+            intent.getBooleanExtra("fromWelcomeActivityThreeDemand", false)
+        val fromWelcomeActivityThreeContrib =
+            intent.getBooleanExtra("fromWelcomeActivityThreeContrib", false)
         val goContrib = intent.getBooleanExtra("goContrib", false)
         val goDemand = intent.getBooleanExtra("goDemand", false)
         val goDiscoverGroup = intent.getBooleanExtra("goDiscoverGroup", false)
         val goDiscoverEvent = intent.getBooleanExtra("goDiscoverEvent", false)
 
 
-        if(goContrib){
+        if (goContrib) {
             goContrib()
             return
         }
-        if(goDiscoverGroup){
+
+        if (goDiscoverGroup) {
             this.setGoDiscoverGroupFromDeepL(goDiscoverGroup)
             goGroup()
             return
         }
-        if(goDiscoverEvent){
+        if (goDiscoverEvent) {
             goEvent()
             return
         }
-        if(goDemand){
+        if (goDemand) {
             goDemand()
             return
         }
@@ -353,7 +391,13 @@ class MainActivity : BaseSecuredActivity() {
                 pushNotificationMessage.content?.extra?.let { extra ->
                     extra.instance?.let { instance ->
                         NotificationActionManager.presentAction(
-                            this, supportFragmentManager, instance, extra.instanceId ?:0 , extra.postId, popup = extra.popup, tracking = extra.tracking
+                            this,
+                            supportFragmentManager,
+                            instance,
+                            extra.instanceId ?: 0,
+                            extra.postId,
+                            popup = extra.popup,
+                            tracking = extra.tracking
                         )
                     }
                 }
@@ -363,7 +407,7 @@ class MainActivity : BaseSecuredActivity() {
         intent = null
     }
 
-    fun ifEventLastDay(eventId:Int){
+    fun ifEventLastDay(eventId: Int) {
         eventPresenter.getEvent(eventId.toString())
     }
 
@@ -371,32 +415,50 @@ class MainActivity : BaseSecuredActivity() {
         event?.let {
             AnalyticsEvents.logEvent(AnalyticsEvents.popup_event_last_day_view)
 
-            val context = this // Assure-toi que `this` est un Context, sinon utilise `getApplicationContext()` ou un autre contexte valide.
+            val context =
+                this // Assure-toi que `this` est un Context, sinon utilise `getApplicationContext()` ou un autre contexte valide.
             val titleEvent = it.title?.take(30) ?: "Titre par défaut"
             val placeName = it.metadata?.displayAddress ?: "Lieu par défaut"
             val startTime = it.formatEventStartTime() + "h"
 
-            val title = context.getString(R.string.popup_event_confirm_title, titleEvent, placeName, startTime)
+            val title = context.getString(
+                R.string.popup_event_confirm_title,
+                titleEvent,
+                placeName,
+                startTime
+            )
             val description = context.getString(R.string.popup_event_confirm_content)
 
-            val eventConfirmationDialogFragment = EventConfirmationDialogFragment.newInstance(title, description).apply {
-                listener = object : EventConfirmationDialogFragment.EventConfirmationListener {
-                    override fun onConfirmParticipation() {
-                        AnalyticsEvents.logEvent(AnalyticsEvents.popup_event_last_day_accept)
-                        eventPresenter.confirmParticipation(it.id ?: 0)
-                        Toast.makeText(context, "Merci d’avoir répondu, à bientôt !", Toast.LENGTH_LONG).show()
-                    }
+            val eventConfirmationDialogFragment =
+                EventConfirmationDialogFragment.newInstance(title, description).apply {
+                    listener = object : EventConfirmationDialogFragment.EventConfirmationListener {
+                        override fun onConfirmParticipation() {
+                            AnalyticsEvents.logEvent(AnalyticsEvents.popup_event_last_day_accept)
+                            eventPresenter.confirmParticipation(it.id ?: 0)
+                            Toast.makeText(
+                                context,
+                                "Merci d’avoir répondu, à bientôt !",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
 
-                    override fun onDeclineParticipation() {
-                        AnalyticsEvents.logEvent(AnalyticsEvents.popup_event_last_day_decline)
-                        eventPresenter.leaveEvent(it.id ?: 0)
-                        Toast.makeText(context, "Merci d’avoir répondu, à bientôt !", Toast.LENGTH_LONG).show()
+                        override fun onDeclineParticipation() {
+                            AnalyticsEvents.logEvent(AnalyticsEvents.popup_event_last_day_decline)
+                            eventPresenter.leaveEvent(it.id ?: 0)
+                            Toast.makeText(
+                                context,
+                                "Merci d’avoir répondu, à bientôt !",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
                 }
-            }
 
             // Affichage du fragment
-            eventConfirmationDialogFragment.show((context as AppCompatActivity).supportFragmentManager, "eventconfirmtag")
+            eventConfirmationDialogFragment.show(
+                (context as AppCompatActivity).supportFragmentManager,
+                "eventconfirmtag"
+            )
         }
     }
 
@@ -424,6 +486,7 @@ class MainActivity : BaseSecuredActivity() {
             storePushNotificationPermision()
         }
     }
+
     private fun storePushNotificationPermision() {
         val sharedPref = EntourageApplication.get().sharedPreferences
         var notificationsEnabled = sharedPref.getBoolean(
@@ -431,7 +494,7 @@ class MainActivity : BaseSecuredActivity() {
             true
         )
         val areNotificationEnabled = NotificationManagerCompat.from(this).areNotificationsEnabled()
-        if(notificationsEnabled!=areNotificationEnabled) {
+        if (notificationsEnabled != areNotificationEnabled) {
             notificationsEnabled = areNotificationEnabled
             sharedPref.edit()
                 .putBoolean(EntourageApplication.KEY_NOTIFICATIONS_ENABLED, areNotificationEnabled)
@@ -462,55 +525,59 @@ class MainActivity : BaseSecuredActivity() {
         if (MetaDataRepository.eventsImages.value == null) MetaDataRepository.getEventsImages()
     }
 
-    fun DisplayErrorFromAppLinks(errorNumber:Int){
+    fun DisplayErrorFromAppLinks(errorNumber: Int) {
         //0 : EVENT
         //1 : GROUP
         //2 : ACTION
         //3 : DISCUSSION
-        if(errorNumber == 0){
+        if (errorNumber == 0) {
             Toast.makeText(this, getString(R.string.error_get_event), Toast.LENGTH_LONG).show()
         }
-        if(errorNumber == 1){
+        if (errorNumber == 1) {
             Toast.makeText(this, getString(R.string.error_get_group), Toast.LENGTH_LONG).show()
 
         }
-        if(errorNumber == 2){
+        if (errorNumber == 2) {
             Toast.makeText(this, getString(R.string.error_get_action), Toast.LENGTH_LONG).show()
 
         }
-        if(errorNumber == 3){
-            Toast.makeText(this, getString(R.string.error_get_discussion), Toast.LENGTH_LONG).show()
+        if (errorNumber == 3) {
+            Toast.makeText(this, getString(R.string.error_get_discussion), Toast.LENGTH_LONG)
+                .show()
 
         }
     }
 
-    fun goHome(){
+    fun goHome() {
         navController.navigate(R.id.navigation_home)
     }
 
-    fun goGroup(){
+    fun goGroup() {
         navController.navigate(R.id.navigation_groups)
 
     }
 
-    fun goEvent(){
+    fun goEvent() {
         navController.navigate(R.id.navigation_events)
-        if(shouldLaunchEvent == false){
+        if (shouldLaunchEvent == false) {
             MainFilterActivity.resetAllFilters(this)
         }
     }
 
-    fun goConv(){
+    fun goConv() {
         navController.navigate(R.id.navigation_messages)
     }
 
-    fun goContrib(){
-        val bundle = bundleOf("isActionDemand" to false) // Mettez ici la valeur souhaitée pour "isActionDemand"
+    fun goContrib() {
+        val bundle =
+            bundleOf("isActionDemand" to false) // Mettez ici la valeur souhaitée pour "isActionDemand"
         navController.navigate(R.id.navigation_donations, bundle)
 
     }
-    fun goDemand(){
-        val bundle = bundleOf("isActionDemand" to true) // Mettez ici la valeur souhaitée pour "isActionDemand"
+
+    fun goDemand() {
+        val bundle =
+            bundleOf("isActionDemand" to true) // Mettez ici la valeur souhaitée pour "isActionDemand"
         navController.navigate(R.id.navigation_donations, bundle)
     }
 
@@ -536,6 +603,7 @@ class MainActivity : BaseSecuredActivity() {
                     AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_groups)
                     MainFilterActivity.resetAllFilters(this)
                 }
+
                 R.id.navigation_events -> {
                     AnalyticsEvents.logEvent(AnalyticsEvents.Action_Tabbar_events)
                     MainFilterActivity.resetAllFilters(this)
@@ -547,11 +615,12 @@ class MainActivity : BaseSecuredActivity() {
     }
 
 
-    private fun addBadge(count : Int) {
+    private fun addBadge(count: Int) {
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
         val badge: BadgeDrawable = bottomNavigationView.getOrCreateBadge(
-            R.id.navigation_messages)
+            R.id.navigation_messages
+        )
         badge.number = count
         badge.isVisible = true
         badge.maxCharacterCount = 2
@@ -562,10 +631,12 @@ class MainActivity : BaseSecuredActivity() {
             bottomNavigationView.removeBadge(R.id.navigation_messages)
         }
     }
-    private fun addGroupBadge(count : Int) {
+
+    private fun addGroupBadge(count: Int) {
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
         val badge: BadgeDrawable = bottomNavigationView.getOrCreateBadge(
-            R.id.navigation_groups)
+            R.id.navigation_groups
+        )
         badge.number = count
         badge.isVisible = true
         badge.maxCharacterCount = 2
@@ -610,9 +681,10 @@ class MainActivity : BaseSecuredActivity() {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
-    fun deleteApplicationInfo(listener:() -> Unit) {
+    fun deleteApplicationInfo(listener: () -> Unit) {
         presenter.deleteApplicationInfo(listener)
     }
+
     companion object {
         var instance: MainActivity? = null
         const val UPDATE_REQUEST_CODE = 1001 // Ou tout autre numéro que tu souhaites.
@@ -620,14 +692,17 @@ class MainActivity : BaseSecuredActivity() {
         var interest: MutableList<userConfig>? = null
         var concerns: MutableList<userConfig>? = null
         var involvements: MutableList<userConfig>? = null
-        var shouldLaunchEventPopUp:Int = 0
-        var shouldLaunchOnboarding:Boolean = false
-        var shouldLaunchProfile:Boolean = false
-        var isFromProfile:Boolean = false
-        var shouldLaunchEvent:Boolean = false
-        var shouldLaunchActionCreation:Boolean = false
-        var shouldLaunchQuizz:Boolean = false
-        var shouldLaunchWelcomeGroup:Boolean = false
+        var orientations: MutableList<userConfig>? = null
+        var shouldLaunchEventPopUp: Int = 0
+        var shouldLaunchOnboarding: Boolean = false
+        var shouldLaunchProfile: Boolean = false
+        var isFromProfile: Boolean = false
+        var shouldLaunchEvent: Boolean = false
+        var shouldLaunchActionCreation: Boolean = false
+        var shouldLaunchQuizz: Boolean = false
+        var shouldLaunchWelcomeGroup: Boolean = false
 
+        // NOUVEAU FLAG : Pour distinguer création de demande vs liste simple
+        var shouldLaunchDemandCreation: Boolean = false
     }
 }

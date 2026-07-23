@@ -100,6 +100,8 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     }
     private var isRequestLoaded = false
     private var currentRequests: List<UserSmallTalkRequest> = emptyList()
+
+    // Gère uniquement le cycle de vie du fragment pour ne pas lancer plusieurs popups en même temps
     private var hasRunEntryGating = false
 
     private val userObserver = Observer<User> {
@@ -142,7 +144,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
                     intent.putExtra(Const.ID, pedagogicalContent.id)
                     PedagoDetailActivity.setPedagoId(pedagogicalContent.id)
                     requireActivity().startActivity(intent)
-                    requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    requireActivity().overridePendingTransition(
+                        R.anim.slide_in_right,
+                        R.anim.slide_out_left
+                    )
                 }
             }
         })
@@ -153,7 +158,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
                     intent.putExtra(Const.ID, pedagogicalContent.id)
                     PedagoDetailActivity.setPedagoId(pedagogicalContent.id)
                     requireActivity().startActivity(intent)
-                    requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    requireActivity().overridePendingTransition(
+                        R.anim.slide_in_right,
+                        R.anim.slide_out_left
+                    )
                 }
             }
         })
@@ -169,12 +177,17 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
                 startActivity(intent)
             },
             onMatchingClick = {
-                Toast.makeText(requireContext(), getString(R.string.small_talk_subtitle_waiting), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.small_talk_subtitle_waiting),
+                    Toast.LENGTH_SHORT
+                ).show()
             },
             requireContext()
         )
 
-        binding.rvHomeSmallTalk.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvHomeSmallTalk.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvHomeSmallTalk.adapter = homeSmallTalkAdapter
 
         AnalyticsEvents.logEvent(AnalyticsEvents.View__Home)
@@ -215,15 +228,9 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         updateAvatar()
         userPresenter.user.observe(viewLifecycleOwner, userObserver)
 
-        val hasSkippedEnhancedOnboarding = EntourageApplication.get().sharedPreferences
-            .getBoolean(PREF_ENHANCED_ONBOARDING_SKIPPED, false)
-
-        if (MainActivity.shouldLaunchOnboarding && !hasSkippedEnhancedOnboarding) {
-            MainActivity.shouldLaunchOnboarding = false
-            val intent = Intent(requireActivity(), EnhancedOnboarding::class.java)
-            startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-        } else if (MainActivity.shouldLaunchOnboarding) {
+        // Gestion manuelle de l'enhanced onboarding si lancé depuis MainActivity
+        // (La logique principale est maintenant dans runHomeEntryGatingIfNeeded)
+        if (MainActivity.shouldLaunchOnboarding) {
             MainActivity.shouldLaunchOnboarding = false
         }
     }
@@ -234,11 +241,9 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         resetFilter()
         callToInitHome()
         actionsPresenter.getUnreadCount()
-        if (MainActivity.shouldLaunchProfile) {
-            MainActivity.shouldLaunchProfile = false
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Tab__Profil)
-            startActivityForResult(Intent(context, MyProfileFullActivity::class.java), 0)
-        }
+
+        // SUPPRESSION DE LA REDIRECTION PROFIL ICI (Géré par MainActivity pour éviter le conflit)
+
         testNotifDemandePage()
         sendUserDiscussionStatus()
         loadSmallTalkItems()
@@ -260,9 +265,11 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         when {
             matchedItems.size >= 3 -> {
             }
+
             hasUnmatchedRequest -> {
                 items.add(HomeSmallTalkItem.Waiting)
             }
+
             else -> {
                 items.add(HomeSmallTalkItem.MatchPossible)
             }
@@ -274,19 +281,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         binding.ivLogoHome.setOnLongClickListener {
             val intent = Intent(requireContext(), SmallTalkIntroActivity::class.java)
             startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-            true
-        }
-    }
-
-    private fun testToken() {
-        binding.ivLogoHome.setOnLongClickListener {
-            FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
-                val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                val clip = ClipData.newPlainText("FCM Token", token)
-                clipboard.setPrimaryClip(clip)
-                Toast.makeText(requireContext(), "Token copié dans le presse-papiers", Toast.LENGTH_LONG).show()
-            }
+            requireActivity().overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
             true
         }
     }
@@ -311,74 +309,74 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         userPresenter.user.removeObserver(userObserver)
     }
 
+    /**
+     * Logique de Gating simplifiée et persistante via SharedPreferences.
+     * Chaque popup ne s'affiche qu'une seule fois dans la vie de l'app (cookies dédiés).
+     */
     private fun runHomeEntryGatingIfNeeded() {
+        // 1. Vérifications de base (Fragment attaché, déjà exécuté lors de cette instance de vue)
         if (!isAdded) return
         if (hasRunEntryGating) return
 
         val currentUser = user ?: return
+        val prefs = EntourageApplication.get().sharedPreferences
 
-        if (HomeEntryGatingSession.didPresentCriticalThisSession ||
-            HomeEntryGatingSession.didPresentNotifThisSession ||
-            HomeEntryGatingSession.didPresentEnhancedThisSession
-        ) {
-            hasRunEntryGating = true
-            return
-        }
+        // -------------------------------------------------------------------------------------
+        // STEP 1 : Gating ZONE / GOAL
+        // -------------------------------------------------------------------------------------
+        val isZonePopupAlreadyShown = prefs.getBoolean(PREF_GATING_ZONE_SHOWN, false)
 
-        val missingGoal = isUserMissingRole(currentUser)
-        val missingZone = isUserMissingZone(currentUser)
+        if (!isZonePopupAlreadyShown) {
+            // Si jamais montré, on vérifie si l'utilisateur en a besoin
+            val missingGoal = isUserMissingRole(currentUser)
+            val missingZone = isUserMissingZone(currentUser)
 
-        Timber.wtf("wtf gating missingGoal=$missingGoal missingZone=$missingZone goal=${currentUser.goal} zone a1=${Gson().toJson(currentUser.address)} a2=${Gson().toJson(currentUser.addressSecondary)}")
-
-        if (missingGoal || missingZone) {
-            HomeEntryGatingSession.didPresentCriticalThisSession = true
-            presentCriticalOnboarding(currentUser, missingGoal, missingZone)
-            hasRunEntryGating = true
-            return
-        }
-
-        val notifAllowed = NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
-        updateTokenForNotificationState(notifAllowed)
-
-        if (!notifAllowed) {
-            val shared = EntourageApplication.get().sharedPreferences
-            val shouldShowNow = shared.getBoolean(PREF_NOTIF_SHOULD_SHOW_NEXT, false)
-            if (shouldShowNow) {
-                shared.edit { putBoolean(PREF_NOTIF_SHOULD_SHOW_NEXT, false) }
-                HomeEntryGatingSession.didPresentNotifThisSession = true
-                presentNotificationDemand()
-                hasRunEntryGating = true
+            if (missingGoal || missingZone) {
+                // On marque immédiatement comme montré pour ne plus jamais redemander
+                prefs.edit { putBoolean(PREF_GATING_ZONE_SHOWN, true) }
+                hasRunEntryGating = true // Stop le flux pour cette vue
+                presentCriticalOnboarding(currentUser, missingGoal, missingZone)
                 return
-            } else {
-                val reachedThreshold = incrementAndCheckNotificationDemand()
-                if (reachedThreshold) {
-                    shared.edit { putBoolean(PREF_NOTIF_SHOULD_SHOW_NEXT, true) }
-                }
             }
-        } else {
-            resetNotificationDemandCounter()
-            EntourageApplication.get().sharedPreferences.edit { putBoolean(PREF_NOTIF_SHOULD_SHOW_NEXT, false) }
         }
 
-        val sp = EntourageApplication.get().sharedPreferences
-        val needsEnhanced = userNeedsEnhancedOnboarding(currentUser)
-        val hasSkippedEnhanced = sp.getBoolean(PREF_ENHANCED_ONBOARDING_SKIPPED, false)
-        val alreadyLaunchedEnhanced = sp.getBoolean(PREF_ENHANCED_ONBOARDING_LAUNCHED, false)
+        // -------------------------------------------------------------------------------------
+        // STEP 2 : Gating NOTIFICATIONS
+        // -------------------------------------------------------------------------------------
+        val isNotifPopupAlreadyShown = prefs.getBoolean(PREF_GATING_NOTIF_SHOWN, false)
+        val areNotificationsEnabled =
+            NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
 
-        Timber.wtf("wtf enhanced needs=$needsEnhanced skipped=$hasSkippedEnhanced launched=$alreadyLaunchedEnhanced")
+        // Mise à jour technique du token si activé
+        updateTokenForNotificationState(areNotificationsEnabled)
 
-        if (!hasSkippedEnhanced && !alreadyLaunchedEnhanced && needsEnhanced) {
-            sp.edit { putBoolean(PREF_ENHANCED_ONBOARDING_LAUNCHED, true) }
-            HomeEntryGatingSession.didPresentEnhancedThisSession = true
-            presentEnhancedOnboardingIntro()
+        if (!isNotifPopupAlreadyShown) {
+            // Si jamais montré ET que les notifications système sont désactivées
+            if (!areNotificationsEnabled) {
+                // On marque immédiatement comme montré pour ne plus jamais redemander
+                prefs.edit { putBoolean(PREF_GATING_NOTIF_SHOWN, true) }
+                hasRunEntryGating = true
+                presentNotificationDemand()
+                return
+            }
+        }
+
+        // -------------------------------------------------------------------------------------
+        // STEP 3 : Gating ENHANCED ONBOARDING
+        // -------------------------------------------------------------------------------------
+        val isEnhancedPopupAlreadyShown =
+            prefs.getBoolean(PREF_GATING_ENHANCED_ONBOARDING_SHOWN, false)
+        val hasCompletedEnhanced = prefs.getBoolean(PREF_ENHANCED_ONBOARDING_COMPLETED, false)
+
+        if (!isEnhancedPopupAlreadyShown && !hasCompletedEnhanced) {
+            // On marque immédiatement comme montré pour ne plus jamais redemander
+            prefs.edit { putBoolean(PREF_GATING_ENHANCED_ONBOARDING_SHOWN, true) }
             hasRunEntryGating = true
+            presentEnhancedOnboardingIntro()
             return
         }
 
-        if (MainActivity.shouldLaunchOnboarding) {
-            MainActivity.shouldLaunchOnboarding = false
-        }
-
+        // Fin de la chaîne
         hasRunEntryGating = true
     }
 
@@ -386,7 +384,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         if (missingGoal) {
             OnboardingStartActivity.FRAGMENT_NUMBER = 3
             startActivity(Intent(requireActivity(), OnboardingStartActivity::class.java))
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
             return
         }
 
@@ -398,7 +399,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
                 else -> OnboardingZoneChoiceActivity.UserType.ENTOUR
             }
             startActivity(OnboardingZoneChoiceActivity.newIntent(requireContext(), typeForZone))
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
             return
         }
     }
@@ -413,7 +417,7 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         val a2 = user.addressSecondary
         val ok1 = isAddressValid(a1)
         val ok2 = isAddressValid(a2)
-        Timber.wtf("wtf zone a1=${Gson().toJson(a1)} a2=${Gson().toJson(a2)} ok1=$ok1 ok2=$ok2")
+        // Timber.wtf("wtf zone a1=${Gson().toJson(a1)} a2=${Gson().toJson(a2)} ok1=$ok1 ok2=$ok2")
         return !(ok1 || ok2)
     }
 
@@ -423,13 +427,6 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         val hasLabel = address.displayAddress.isNotBlank()
         val hasPlaceId = !address.googlePlaceId.isNullOrBlank()
         return hasCoords || hasLabel || hasPlaceId
-    }
-
-    private fun userNeedsEnhancedOnboarding(user: User): Boolean {
-        val interestsEmpty = user.interests.isEmpty()
-        val involvementsEmpty = user.involvements.isEmpty()
-        val concernsEmpty = user.concerns.isEmpty()
-        return interestsEmpty && involvementsEmpty && concernsEmpty
     }
 
     private fun presentNotificationDemand() {
@@ -453,21 +450,9 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         }
     }
 
-    private fun incrementAndCheckNotificationDemand(): Boolean {
-        val sharedPreferences = EntourageApplication.get().sharedPreferences
-        var connectionCount = sharedPreferences.getInt(PREF_NOTIFICATION_CONNECTION_COUNT, 0)
-        connectionCount++
-        sharedPreferences.edit { putInt(PREF_NOTIFICATION_CONNECTION_COUNT, connectionCount) }
-        return connectionCount == 2 || connectionCount == 5 || connectionCount == 10
-    }
-
-    private fun resetNotificationDemandCounter() {
-        val sharedPreferences = EntourageApplication.get().sharedPreferences
-        sharedPreferences.edit { putInt(PREF_NOTIFICATION_CONNECTION_COUNT, 0) }
-    }
-
     private fun checkNotificationStatus() {
-        val areNotificationsEnabled = NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
+        val areNotificationsEnabled =
+            NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
         if (areNotificationsEnabled) {
             AnalyticsEvents.logEvent(AnalyticsEvents.has_user_activated_notif)
             FirebaseMessaging.getInstance().token.addOnSuccessListener { _ ->
@@ -551,7 +536,8 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             }
         }
         binding.itemHz.buttonHzItem.setOnClickListener {
-            val urlString = "https://reseauentourage.notion.site/Buffet-du-lien-social-69c20e089dbd483cb093e90ae2953a54"
+            val urlString =
+                "https://reseauentourage.notion.site/Buffet-du-lien-social-69c20e089dbd483cb093e90ae2953a54"
             WebViewFragment.newInstance(urlString, 0, true)
                 .show(requireActivity().supportFragmentManager, WebViewFragment.TAG)
         }
@@ -593,7 +579,8 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     }
 
     private fun setRecyclerViews() {
-        val settingGrouplayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val settingGrouplayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         val offsetInPixels = resources.getDimensionPixelSize(R.dimen.horizontal_offset_home)
 
         binding.rvHomeGroup.adapter = homeGroupAdapter
@@ -601,25 +588,30 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         binding.rvHomeGroup.setPadding(offsetInPixels, 0, 0, 0)
         binding.rvHomeGroup.clipToPadding = false
 
-        val settingEventlayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val settingEventlayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvHomeEvent.adapter = homeEventAdapter
         binding.rvHomeEvent.layoutManager = settingEventlayoutManager
         binding.rvHomeEvent.setPadding(offsetInPixels, 0, 0, 0)
         binding.rvHomeEvent.clipToPadding = false
 
-        val settingActionlayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        val settingActionlayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvHomeAction.adapter = homeActionAdapter
         binding.rvHomeAction.layoutManager = settingActionlayoutManager
 
-        val settingPedagolayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        val settingPedagolayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvHomePedago.adapter = homePedagoAdapter
         binding.rvHomePedago.layoutManager = settingPedagolayoutManager
 
         binding.rvHomeSensibilisation.adapter = homeInitialPedagoAdapter
-        binding.rvHomeSensibilisation.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rvHomeSensibilisation.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvHomeSensibilisation.setPadding(offsetInPixels, 0, 0, 0)
 
-        val settingHelplayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        val settingHelplayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rvHomeHelp.adapter = homeHelpAdapter
         binding.rvHomeHelp.layoutManager = settingHelplayoutManager
     }
@@ -643,7 +635,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Pedago)
             val intent = Intent(requireActivity(), PedagoListActivity::class.java)
             requireContext().startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
         }
     }
 
@@ -815,6 +810,12 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
 
     private fun updateContributionsView(summary: Summary) {
         if (!isAdded) return
+
+        val isAssociationFromSummary = summary.association == true
+        EntourageApplication.get().sharedPreferences.edit {
+            putBoolean(PREF_IS_ASSOCIATION_FROM_SUMMARY, isAssociationFromSummary)
+        }
+        EnhancedOnboarding.isAssociationFromSummary = isAssociationFromSummary
         EnhancedOnboarding.preference = summary.preference ?: ""
         onActionUnclosed(summary)
         handleHelps(summary)
@@ -853,7 +854,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
     private fun handleHelps(summary: Summary) {
         if (isAdded) {
             doTotalchecksumToDisplayHomeFirstTime()
-            val formattedString = requireContext().getString(R.string.home_help_title_three, summary.moderator?.displayName)
+            val formattedString = requireContext().getString(
+                R.string.home_help_title_three,
+                summary.moderator?.displayName
+            )
             val help3 = Help(formattedString, R.drawable.first_help_item_illu)
             val helps: MutableList<Help> = mutableListOf()
             helps.add(help3)
@@ -922,7 +926,8 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
 
     private fun setNestedScrollViewAnimation() {
         binding.homeNestedScrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
-            val layoutParamsHomeHeader = binding.homeHeader.layoutParams as ViewGroup.MarginLayoutParams
+            val layoutParamsHomeHeader =
+                binding.homeHeader.layoutParams as ViewGroup.MarginLayoutParams
 
             if (isAnimating) {
                 return@OnScrollChangeListener
@@ -943,7 +948,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         })
     }
 
-    private fun startAnimation(layoutParamsHomeHeader: ViewGroup.MarginLayoutParams, titleVisibility: Int) {
+    private fun startAnimation(
+        layoutParamsHomeHeader: ViewGroup.MarginLayoutParams,
+        titleVisibility: Int
+    ) {
         val animator = ValueAnimator.ofInt(
             layoutParamsHomeHeader.topMargin,
             if (titleVisibility == View.GONE) NEW_MARGIN else DEFAULT_MARGIN
@@ -970,7 +978,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             PedagoDetailActivity.setPedagoId(pedagoItemForCreateGroup?.id!!)
             PedagoDetailActivity.setHtmlContent(pedagoItemForCreateGroup?.html!!)
             requireActivity().startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
         }
         if (position == 1) {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_CreateEvent)
@@ -979,7 +990,10 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
             PedagoDetailActivity.setPedagoId(pedagoItemForCreateEvent?.id!!)
             PedagoDetailActivity.setHtmlContent(pedagoItemForCreateEvent?.html!!)
             requireActivity().startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overridePendingTransition(
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
+            )
         }
         if (position == 0) {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Moderator)
@@ -1082,16 +1096,14 @@ class HomeFragment : Fragment(), OnHomeHelpItemClickListener, OnHomeChangeLocati
         var isContribProfile = false
         var signablePermission = false
 
-        private const val PREF_NOTIFICATION_CONNECTION_COUNT = "connectionCount"
-        private const val PREF_ENHANCED_ONBOARDING_LAUNCHED = "PREF_ENHANCED_ONBOARDING_LAUNCHED"
-        private const val PREF_ENHANCED_ONBOARDING_SKIPPED = "PREF_ENHANCED_ONBOARDING_SKIPPED"
-        private const val PREF_NOTIF_SHOULD_SHOW_NEXT = "PREF_NOTIF_SHOULD_SHOW_NEXT"
-    }
+        // NOUVEAUX COOKIES POUR LE GATING PERSISTANT
+        private const val PREF_GATING_ZONE_SHOWN = "PREF_GATING_ZONE_SHOWN"
+        private const val PREF_GATING_NOTIF_SHOWN = "PREF_GATING_NOTIF_SHOWN"
+        private const val PREF_GATING_ENHANCED_ONBOARDING_SHOWN =
+            "PREF_GATING_ENHANCED_ONBOARDING_SHOWN"
 
-    private object HomeEntryGatingSession {
-        var didPresentCriticalThisSession: Boolean = false
-        var didPresentNotifThisSession: Boolean = false
-        var didPresentEnhancedThisSession: Boolean = false
+        const val PREF_ENHANCED_ONBOARDING_COMPLETED = "PREF_ENHANCED_ONBOARDING_COMPLETED"
+        private const val PREF_IS_ASSOCIATION_FROM_SUMMARY = "PREF_IS_ASSOCIATION_FROM_SUMMARY"
     }
 }
 

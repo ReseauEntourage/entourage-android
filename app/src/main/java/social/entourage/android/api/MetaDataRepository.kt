@@ -13,6 +13,7 @@ import social.entourage.android.api.model.Tags
 import social.entourage.android.api.request.EventsImagesResponse
 import social.entourage.android.api.request.GroupImagesResponse
 import social.entourage.android.api.request.MetaDataResponse
+import timber.log.Timber
 
 object MetaDataRepository {
     var metaData: MutableLiveData<Tags> = MutableLiveData()
@@ -32,10 +33,10 @@ object MetaDataRepository {
                     MainActivity.interest = response.body()?.interests
                     MainActivity.concerns = response.body()?.concerns
                     MainActivity.involvements = response.body()?.involvements
-
+                    MainActivity.orientations = response.body()?.orientations
+                    Timber.wtf("wtf orientations ${Gson().toJson(MainActivity.orientations)}")
                 }
             }
-
             override fun onFailure(call: Call<MetaDataResponse>, t: Throwable) {
 
             }

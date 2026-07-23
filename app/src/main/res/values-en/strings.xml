@@ -1856,6 +1856,8 @@
 
     <string name="onboard_sms_wait_title">Haven\'t received your login code?</string>
     <string name="onboard_sms_wait_countdown">You can request a new code in %1$s</string>
+    <string name="login_forgot_title">Forgot your code ?</string>
+    <string name="login_change_phone_question">Changed your phone number ?</string>
 
 
 

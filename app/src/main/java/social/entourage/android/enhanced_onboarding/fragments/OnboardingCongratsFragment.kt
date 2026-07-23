@@ -30,11 +30,7 @@ class OnboardingCongratsFragment: Fragment() {
     private lateinit var eventsPresenter: EventsPresenter
     private var currentFilters = EventActionLocationFilters()
     var haveEvent = false
-
-
     var category: String? = "both_actions"
-
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentOnboardingCongratsFragmentBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(requireActivity()).get(OnboardingViewModel::class.java)
@@ -95,12 +91,13 @@ class OnboardingCongratsFragment: Fragment() {
         var titleRes = R.string.onboarding_congrats_title
         var contentRes = R.string.onboarding_congrats_content
         var buttonTextRes = R.string.onboarding_congrats_leave
-        // Condition par défaut : si la liste est vide ou que la préférence n'est pas "contribution"
+
+        // Condition par défaut : si la liste est vide ou que la préférence est "contribution"
         if (categoriesList.isEmpty() || EnhancedOnboarding.preference == "contribution") {
             binding.tvTitle.setText(titleRes)
             binding.tvDescription.setText(contentRes)
             binding.buttonStart.setText(buttonTextRes)
-            category = "event"
+            category = "contribution"
         }
         // Priorité 1 : Présence de "both_actions" dans la liste
         else if (categoriesList.contains("both_actions")) {
@@ -138,7 +135,7 @@ class OnboardingCongratsFragment: Fragment() {
             binding.tvDescription.setText(contentRes)
             binding.buttonStart.setText(buttonTextRes)
             category = "resources"
-         }
+        }
         // Priorité 4 : Présence de "neighborhoods" dans la liste
         else if (categoriesList.contains("neighborhoods")) {
             titleRes = R.string.onboarding_ready_action_title
@@ -150,4 +147,5 @@ class OnboardingCongratsFragment: Fragment() {
             category = "neighborhoods"
         }
     }
+
 }

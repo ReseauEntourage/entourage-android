@@ -9,12 +9,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
+import social.entourage.android.api.model.Event
 import social.entourage.android.api.model.Partner
 import social.entourage.android.api.model.PartnerCreateBody
 import social.entourage.android.api.model.PartnerCreateWrapper
 import social.entourage.android.api.model.PartnerResponse
-import social.entourage.android.api.request.Event
-import social.entourage.android.api.request.PartnersWrapper
+import social.entourage.android.api.model.PartnersWrapper
+
 import social.entourage.android.api.request.UserRequest
 
 class AssociationViewModel : ViewModel() {
