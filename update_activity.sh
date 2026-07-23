@@ -1,3 +1,4 @@
+cat << 'INNER_EOF' > app/src/main/java/social/entourage/android/comment/ImageZoomActivity.kt
 package social.entourage.android.comment
 
 import android.app.DownloadManager
@@ -5,7 +6,6 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.webkit.MimeTypeMap
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import social.entourage.android.R
@@ -49,26 +49,12 @@ class ImageZoomActivity : BaseActivity() {
         try {
             val request = DownloadManager.Request(Uri.parse(url))
             val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-
-            // 1. On récupère l'extension du fichier depuis l'URL (ex: "jpg", "png")
-            val fileExtension = MimeTypeMap.getFileExtensionFromUrl(url)
-
-            // 2. On cherche le type MIME correspondant (ex: "image/jpeg").
-            // Si l'URL n'a pas d'extension claire, on met "image/jpeg" par défaut.
-            val mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension) ?: "image/jpeg"
-
-            // 3. On applique l'extension dynamiquement au nom du fichier
-            val finalExtension = if (fileExtension.isNotEmpty()) fileExtension else "jpg"
-            val fileName = "Entourage_${timeStamp}.${finalExtension}"
+            val fileName = "Entourage_$timeStamp.jpg"
 
             request.setTitle(getString(R.string.download_image_title))
             request.setDescription(getString(R.string.download_image_description))
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
-
-            // C'est cette ligne qui indique au système Android avec quelles applications ouvrir le fichier
-            request.setMimeType(mimeType)
-
             request.setAllowedOverMetered(true)
             request.setAllowedOverRoaming(true)
 
@@ -81,3 +67,4 @@ class ImageZoomActivity : BaseActivity() {
         }
     }
 }
+INNER_EOF

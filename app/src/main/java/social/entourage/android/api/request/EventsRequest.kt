@@ -23,7 +23,8 @@ interface EventsRequest {
     fun updateUnsubscribedParticipants(
         @Path("id") eventId: Int,
         @Query("offer_help") offerHelp: Int,
-        @Query("ask_for_help") askForHelp: Int
+        @Query("ask_for_help") askForHelp: Int,
+        @Query("female") female: Int
     ): Call<EventWrapper>
     @GET("outings/week_average")
     fun getEventsWeekAverage(
@@ -177,6 +178,11 @@ interface EventsRequest {
         @Path("event_id") eventId: Int,
         @Body params: RequestContent
     ): Call<PrepareAddPostResponse>
+
+    @POST("outings/presigned_upload")
+    fun prepareImageUpload(
+        @Body params: social.entourage.android.events.create.PrepareEventImageUploadRepository.Request
+    ): Call<social.entourage.android.events.create.PrepareEventImageUploadRepository.Response>
 
     @GET("outings/{event_id}/chat_messages/{post_id}/comments")
     fun getPostComments(

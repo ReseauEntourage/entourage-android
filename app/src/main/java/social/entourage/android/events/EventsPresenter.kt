@@ -1045,8 +1045,8 @@ class EventsPresenter : ViewModel() {
 
 
 
-    fun updateUnsubscribedParticipants(eventId: Int, offerHelp: Int, askForHelp: Int) {
-        EntourageApplication.get().apiModule.eventsRequest.updateUnsubscribedParticipants(eventId, offerHelp, askForHelp)
+    fun updateUnsubscribedParticipants(eventId: Int, offerHelp: Int, askForHelp: Int, female: Int) {
+        EntourageApplication.get().apiModule.eventsRequest.updateUnsubscribedParticipants(eventId, offerHelp, askForHelp, female)
             .enqueue(object : Callback<EventWrapper> {
                 override fun onResponse(
                     call: Call<EventWrapper>,

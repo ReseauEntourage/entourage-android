@@ -84,6 +84,7 @@ class ApiModule {
     fun providesOkHttpClient(): OkHttpClient {
         val builder = OkHttpClient.Builder()
         builder.addInterceptor(AuthenticationInterceptor)
+            .addInterceptor(HmacInterceptor())
             .readTimeout(Const.READ_CONNECT_WRITE_TIMEOUT, TimeUnit.SECONDS)
             .connectTimeout(Const.READ_CONNECT_WRITE_TIMEOUT, TimeUnit.SECONDS)
             .writeTimeout(Const.READ_CONNECT_WRITE_TIMEOUT, TimeUnit.SECONDS)

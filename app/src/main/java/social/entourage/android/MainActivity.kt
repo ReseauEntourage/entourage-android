@@ -69,6 +69,7 @@ class MainActivity : BaseSecuredActivity() {
     private lateinit var viewModel: CommunicationHandlerBadgeViewModel
     private val universalLinkManager = UniversalLinkManager(this)
     private var fromDeepLinkGoDiscoverGroup = false
+    private var fromDeepLinkGoWelcomeVideo = false
     private lateinit var updateActivityResultLauncher: ActivityResultLauncher<IntentSenderRequest>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -117,6 +118,14 @@ class MainActivity : BaseSecuredActivity() {
 
     fun getFromDeepLGoDiscoverGroup(): Boolean {
         return this.fromDeepLinkGoDiscoverGroup
+    }
+
+    fun setGoWelcomeVideoFromDeepL(bool: Boolean) {
+        this.fromDeepLinkGoWelcomeVideo = bool
+    }
+
+    fun getFromDeepLGoWelcomeVideo(): Boolean {
+        return this.fromDeepLinkGoWelcomeVideo
     }
 
     override fun onStart() {
@@ -308,12 +317,20 @@ class MainActivity : BaseSecuredActivity() {
         val goDiscoverGroup = intent.getBooleanExtra("goDiscoverGroup", false)
         val goDiscoverEvent = intent.getBooleanExtra("goDiscoverEvent", false)
         val goBirthday = intent.getBooleanExtra("goBirthday", false)
+        val goWelcomeVideo = intent.getBooleanExtra("goWelcomeVideo", false)
 
 
         if (goBirthday) {
             intent.removeExtra("goBirthday")
             goHome()
             startActivity(Intent(this, BirthdayActivity::class.java))
+            return
+        }
+
+        if (goWelcomeVideo) {
+            intent.removeExtra("goWelcomeVideo")
+            this.setGoWelcomeVideoFromDeepL(true)
+            goHome()
             return
         }
 
@@ -552,9 +569,14 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
 
-    fun goConv() {
-        if (navController.currentDestination?.id == R.id.navigation_messages) return
-        navController.navigate(R.id.navigation_messages)
+    fun goConv(isSmallTalkFilter: Boolean = false) {
+        if (navController.currentDestination?.id == R.id.navigation_messages) {
+            // Already in messages, if small talk filter is required, we should inform the fragment,
+            // but for now let's navigate to ensure bundle is passed or handle it properly.
+            // Simple approach: re-navigate with bundle
+        }
+        val bundle = if (isSmallTalkFilter) bundleOf("isSmallTalkFilter" to true) else null
+        navController.navigate(R.id.navigation_messages, bundle)
     }
 
     fun goContrib() {

@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.kotlin.serialization)
-    kotlin("kapt")
+    alias(libs.plugins.ksp)
     alias(libs.plugins.navigation.safeargs)
     alias(libs.plugins.google.services)
     alias(libs.plugins.aboutlibraries)
@@ -24,8 +24,8 @@ android {
     val targetCompatibilityVersion = JavaVersion.VERSION_17
 
     // App versions
-    val versionMajor = 13
-    val versionMinor = 7
+    val versionMajor = 14
+    val versionMinor = 0
     val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
     val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
@@ -146,6 +146,10 @@ android {
         create("entourage") {
             dimension = "app"
             buildConfigField("String", "API_KEY", "\"4a7373f3e7dd45fc391a2f19\"")
+            val hmacSecret = (System.getenv("HMAC_SECRET_ANDROID")
+                ?: findProperty("entourageHmacSecret") as String?
+                ?: "")
+            buildConfigField("String", "HMAC_SECRET", "\"$hmacSecret\"")
         }
     }
 
@@ -242,12 +246,13 @@ dependencies {
     implementation(libs.material.datetime.picker)
     implementation(libs.fab)
     implementation(libs.cropme)
+    implementation(libs.ucrop)
     implementation(libs.maps.utils.ktx)
     implementation(libs.material)
     implementation(libs.glide)
     implementation(libs.shortcut.badger)
     implementation(libs.keyboard.visibility.event)
-    kapt(libs.glide.compiler)
+    ksp(libs.glide.ksp)
 
     //entourageImplementation facebookDependencies.values()
     implementation(libs.facebook.android.sdk)
@@ -294,7 +299,7 @@ dependencies {
     implementation(libs.bundles.oss)
 
     // Ajout du dictionnaire de rétrocompatibilité (Desugaring)
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }
 
 tasks.register<Exec>("clearSnapshots") {

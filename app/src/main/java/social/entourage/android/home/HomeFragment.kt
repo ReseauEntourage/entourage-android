@@ -119,7 +119,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     // Small Talk
     private lateinit var smallTalkHeaderAdapter: HomeSectionHeaderAdapter
     private lateinit var homeSmallTalkAdapter: HomeSmallTalkAdapter
-    private lateinit var smallTalkWrapperAdapter: HomeHorizontalWrapperAdapter
+    // private lateinit var smallTalkWrapperAdapter: HomeHorizontalWrapperAdapter
 
     // Actions
     private lateinit var actionHeaderAdapter: HomeSectionHeaderAdapter
@@ -247,21 +247,18 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         }
     }
 
-    private fun showVideoModal() {
+    fun showVideoModal() {
         if (!isAdded) return
         val bottomSheetDialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme)
         val view = layoutInflater.inflate(R.layout.dialog_welcome_video, null)
         bottomSheetDialog.setContentView(view)
 
-        // --- AJOUT IMPORTANT ICI ---
-        // On force la BottomSheet à s'étendre au maximum de son contenu dès l'ouverture
         val bottomSheet = bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
         bottomSheet?.let {
             val behavior = com.google.android.material.bottomsheet.BottomSheetBehavior.from(it)
             behavior.skipCollapsed = true
             behavior.state = com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
         }
-        // ---------------------------
 
         val btnContinue = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.btn_continue)
         val webView = view.findViewById<android.webkit.WebView>(R.id.webview_video)
@@ -444,13 +441,12 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         smallTalkHeaderAdapter = HomeSectionHeaderAdapter()
         homeSmallTalkAdapter = HomeSmallTalkAdapter(
             onStartClick = {
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_BONNES_ONDES_START_DISCUSSION)
                 startActivity(Intent(requireContext(), SmallTalkIntroActivity::class.java))
             },
-            onConversationClick = { conversation ->
-                val intent = Intent(requireContext(), DetailConversationActivity::class.java)
-                DetailConversationActivity.isSmallTalkMode = true
-                DetailConversationActivity.smallTalkId = conversation.smalltalkId.toString()
-                startActivity(intent)
+            onViewClick = {
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_BONNES_ONDES_VIEW_MESSAGES)
+                (requireActivity() as? MainActivity)?.goConv(isSmallTalkFilter = true)
             },
             onMatchingClick = {
                 Toast.makeText(
@@ -459,9 +455,12 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                     Toast.LENGTH_SHORT
                 ).show()
             },
+            onLaunchNewClick = {
+                startActivity(Intent(requireContext(), SmallTalkIntroActivity::class.java))
+            },
             requireContext()
         )
-        smallTalkWrapperAdapter = HomeHorizontalWrapperAdapter(homeSmallTalkAdapter, viewPool)
+        // smallTalkWrapperAdapter = HomeHorizontalWrapperAdapter(homeSmallTalkAdapter, viewPool)
 
         // 3. Actions
         actionHeaderAdapter = HomeSectionHeaderAdapter()
@@ -604,6 +603,12 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         actionsPresenter.getUnreadCount()
         sendUserDiscussionStatus()
         loadSmallTalkItems()
+
+        val mainActivity = requireActivity() as? MainActivity
+        if (mainActivity?.getFromDeepLGoWelcomeVideo() == true) {
+            mainActivity.setGoWelcomeVideoFromDeepL(false)
+            showVideoModal()
+        }
     }
 
     private fun loadSmallTalkItems() {
@@ -614,27 +619,27 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private fun composeSmallTalkItemsSimplified() {
         val items = mutableListOf<HomeSmallTalkItem>()
         val matchedRequests = currentRequests.filter { it.smalltalkId != null }
-        val matchedItems = matchedRequests.map { userRequest ->
-            HomeSmallTalkItem.ConversationItem(userRequest)
+        val unmatchedRequestsCount = currentRequests.count { it.smalltalkId == null }
+
+        if (currentRequests.isEmpty()) {
+            items.add(HomeSmallTalkItem.MatchPossible)
+        } else if (matchedRequests.isEmpty() && unmatchedRequestsCount > 0) {
+            items.add(HomeSmallTalkItem.Waiting)
+        } else if (matchedRequests.isNotEmpty()) {
+            items.add(
+                HomeSmallTalkItem.Active(
+                    activeRequests = matchedRequests,
+                    waitingCount = unmatchedRequestsCount,
+                    totalCount = currentRequests.size
+                )
+            )
         }
-        items.addAll(matchedItems)
-        val hasUnmatchedRequest = currentRequests.any { it.smalltalkId == null }
-        when {
-            matchedItems.size >= 3 -> {}
-            hasUnmatchedRequest -> {
-                items.add(HomeSmallTalkItem.Waiting)
-            }
-            else -> {
-                items.add(HomeSmallTalkItem.MatchPossible)
-            }
-        }
+
         homeSmallTalkAdapter.submitList(items)
 
         val hasItems = items.isNotEmpty()
-        smallTalkHeaderAdapter.update(getString(R.string.home_title_small_talk), null, hasItems)
-        smallTalkWrapperAdapter.setVisible(hasItems)
+        smallTalkHeaderAdapter.update("", null, false)
     }
-
 
 
     override fun onDestroyView() {
@@ -862,7 +867,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 concatAdapter.addAdapter(groupButtonAdapter)
                 concatAdapter.addAdapter(horsZoneAdapter)
                 concatAdapter.addAdapter(smallTalkHeaderAdapter)
-                concatAdapter.addAdapter(smallTalkWrapperAdapter)
+                concatAdapter.addAdapter(homeSmallTalkAdapter)
                 concatAdapter.addAdapter(homeToolsAdapter)
                 concatAdapter.addAdapter(homePedagoAdapter)
                 binding.rvHome.scheduleLayoutAnimation()

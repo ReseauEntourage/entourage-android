@@ -67,6 +67,51 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_question_femmes_isolees"
+        style="@style/h4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="@string/question_femmes_isolees"
+        android:textColor="@color/black" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/btn_minus_femmes_isolees"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/new_circle_orange_button_fill"
+            android:padding="8dp"
+            android:src="@drawable/new_minus"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/tv_count_femmes_isolees"
+            style="@style/h2"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/black" />
+
+        <ImageView
+            android:id="@+id/btn_plus_femmes_isolees"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/new_circle_orange_button_fill"
+            android:padding="8dp"
+            android:src="@drawable/new_fab_plus"
+            app:tint="@color/white" />
+    </LinearLayout>
+
+    <TextView
         style="@style/h4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

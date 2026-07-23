@@ -7,8 +7,8 @@
     android:fitsSystemWindows="true">
 
     <ImageButton
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:id="@+id/btn_close"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -17,7 +17,7 @@
         android:background="@drawable/white_round_imagebutton"
         android:layout_marginEnd="25dp"
         android:layout_marginTop="25dp"
-        android:padding="10dp"
+        android:padding="4dp"
         android:elevation="10dp"/>
     <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/photo_view"
