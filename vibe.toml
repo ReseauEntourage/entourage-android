@@ -1,0 +1,112 @@
+# Vibe Configuration for Entourage Android Project
+# This file configures Mistral Vibe for optimal Android development workflow
+
+[project]
+name = "Entourage Android"
+root = "."
+language = "kotlin"
+platform = "android"
+
+[paths]
+# Main source directories
+app_source = "app/src/main"
+res_layouts = "app/src/main/res/layout"
+res_values = "app/src/main/res/values"
+kotlin_source = "app/src/main/java"
+
+# Test directories
+test_source = "app/src/test"
+android_test_source = "app/src/androidTest"
+
+# Build files
+gradle_root = "build.gradle"
+gradle_app = "app/build.gradle"
+
+[analysis]
+# Layout analysis rules
+layout_margin_reference = "16dp"
+layout_margin_attributes = [
+    "layout_marginLeft",
+    "layout_marginRight", 
+    "layout_marginStart",
+    "layout_marginEnd"
+]
+
+# Code quality thresholds
+max_function_length = 50
+max_file_length = 500
+complexity_threshold = 10
+
+[tools]
+# Preferred tools for common tasks
+layout_analyzer = "grep"
+code_search = "rg"
+build_system = "gradle"
+
+[conventions]
+# Naming conventions
+layout_prefix = "item_"
+fragment_prefix = "fragment_"
+activity_prefix = "activity_"
+dimen_prefix = "entourage_"
+
+# Style preferences
+indent_size = 4
+use_spaces = true
+max_line_length = 120
+
+[features]
+# Enable/disable Vibe features
+auto_layout_analysis = true
+code_search_optimization = true
+gradle_build_assistance = true
+test_coverage_analysis = false
+
+[ignore]
+# Files/directories to ignore in analysis
+patterns = [
+    "build/",
+    ".gradle/",
+    ".idea/",
+    "*.iml",
+    "local.properties",
+    "*.apk",
+    "*.aar"
+]
+
+[android]
+# Android-specific configuration
+min_sdk = 21
+target_sdk = 34
+compile_sdk = 34
+
+# Common dimensions
+standard_margin = "16dp"
+small_margin = "8dp"
+micro_margin = "4dp"
+
+[workflows]
+# Predefined workflows
+layout_audit = [
+    "Check all layout files for margin consistency",
+    "Verify dimension references",
+    "Report views with non-standard margins"
+]
+
+code_review = [
+    "Analyze Kotlin files for complexity",
+    "Check for hardcoded strings",
+    "Verify resource usage"
+]
+
+build_optimization = [
+    "Analyze Gradle dependencies",
+    "Check for unused resources",
+    "Verify ProGuard rules"
+]
+
+[metadata]
+created = "2026-06-02"
+version = "1.0"
+author = "Mistral Vibe"
+description = "Configuration file for Entourage Android project analysis and development assistance"

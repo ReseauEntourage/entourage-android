@@ -350,6 +350,8 @@ class PostAdapter(
         // Long click sur "j'aime" => affiche la liste des réactions
         surveyHolder.binding.btnILike.setOnLongClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Clic_Post_List_Reactions)
+            // Assurer que le layout des réactions est toujours visible, même lorsque postCommentsNumberLayout est masqué
+            surveyHolder.binding.postCommentsNumberLayout.visibility = View.VISIBLE
             val isVisible = (surveyHolder.binding.layoutReactions.visibility == View.VISIBLE)
             surveyHolder.binding.layoutReactions.visibility =
                 if (isVisible) View.GONE else View.VISIBLE
@@ -453,6 +455,8 @@ class PostAdapter(
             } else {
                 surveyHolder.binding.postCommentsNumberLayout.visibility = View.VISIBLE
             }
+            // Assurer que le layout des réactions est toujours visible, même lorsque postCommentsNumberLayout est masqué
+            surveyHolder.binding.layoutReactions.visibility = View.GONE
             surveyHolder.binding.btnIComment.setOnClickListener {
                 surveyHolder.binding.layoutReactions.visibility = View.GONE
                 onClick(this, true)
@@ -590,6 +594,8 @@ class PostAdapter(
         // Long click sur "j'aime" => affiche la liste des réactions
         binding.btnILike.setOnLongClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Clic_Post_List_Reactions)
+            // Assurer que le layout des réactions est toujours visible, même lorsque postCommentsNumberLayout est masqué
+            binding.postCommentsNumberLayout.visibility = View.VISIBLE
             if (binding.layoutReactions.visibility != View.VISIBLE) {
                 binding.layoutReactions.visibility = View.VISIBLE
                 animateReactionLayout(
@@ -693,6 +699,8 @@ class PostAdapter(
         } else {
             binding.postCommentsNumberLayout.visibility = View.VISIBLE
         }
+        // Assurer que le layout des réactions est toujours visible, même lorsque postCommentsNumberLayout est masqué
+        binding.layoutReactions.visibility = View.GONE
 
         binding.btnIComment.setOnClickListener {
             binding.layoutReactions.visibility = View.GONE

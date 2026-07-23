@@ -579,6 +579,10 @@ class MainActivity : BaseSecuredActivity() {
         navController.navigate(R.id.navigation_messages, bundle)
     }
 
+    fun navigateToGroupsTab() {
+        navController.navigate(R.id.navigation_groups)
+    }
+
     fun goContrib() {
         val bundle =
             bundleOf("isActionDemand" to false) // Mettez ici la valeur souhaitée pour "isActionDemand"

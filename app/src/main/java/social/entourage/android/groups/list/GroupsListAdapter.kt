@@ -64,7 +64,7 @@ class GroupsListAdapter(
                         ), 0
                     )
                 }
-                group.unreadPostsCount.let {
+                group.unreadPostsCount?.let {
                     if (it > 0) {
                         var numberOfPost = ""
                         if (it > 9) {

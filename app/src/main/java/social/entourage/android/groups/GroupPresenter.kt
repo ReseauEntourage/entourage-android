@@ -295,6 +295,42 @@ class GroupPresenter: ViewModel() {
             })
     }
 
+    fun getNationalGroups() {
+        EntourageApplication.get().apiModule.groupRequest.getNationalGroups()
+            .enqueue(object : Callback<GroupsListWrapper> {
+                override fun onResponse(
+                    call: Call<GroupsListWrapper>,
+                    response: Response<GroupsListWrapper>
+                ) {
+                    if (response.isSuccessful) {
+                        response.body()?.let { groupsWrapper ->
+                            // Conserver la liste actuelle et mettre à jour les statuts
+                            val currentGroups = getAllGroups.value ?: mutableListOf()
+                            
+                            // Mettre à jour les statuts des groupes existants
+                            groupsWrapper.allGroups.forEach { newGroup ->
+                                val existingIndex = currentGroups.indexOfFirst { it.id == newGroup.id }
+                                if (existingIndex >= 0) {
+                                    // Mettre à jour le statut member du groupe existant
+                                    currentGroups[existingIndex].member = newGroup.member
+                                } else {
+                                    // Ajouter les nouveaux groupes
+                                    currentGroups.add(newGroup)
+                                }
+                            }
+                            
+                            // Notifier les observateurs avec la liste mise à jour
+                            getAllGroups.value = currentGroups
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<GroupsListWrapper>, t: Throwable) {
+                    Timber.e(t, "Failed to get national groups")
+                }
+            })
+    }
+
     fun getGroupsSearch(searchTxt: String) {
         EntourageApplication.get().apiModule.groupRequest.getGroupsSearch(searchTxt)
             .enqueue(object : Callback<GroupsListWrapper> {

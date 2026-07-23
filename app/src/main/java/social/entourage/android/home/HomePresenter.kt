@@ -8,6 +8,7 @@ import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.Events
+import social.entourage.android.api.model.Group
 import social.entourage.android.api.request.*
 import social.entourage.android.api.model.notification.InAppNotification
 import social.entourage.android.api.model.notification.InAppNotificationPermission
@@ -94,6 +95,8 @@ class HomePresenter: ViewModel() {
             })
     }
 
+    var getNationalGroups = MutableLiveData<MutableList<Group>>()
+
     fun getAllDemands(page: Int, per: Int,distance:Int?,latitude:Double?,longitude:Double?,sections: String?) {
         EntourageApplication.get().apiModule.actionsRequest.getAllActionsDemandWithoutMine(page,per,sections,distance,latitude,longitude, true)
             .enqueue(object : Callback<DemandsListWrapper> {
@@ -107,6 +110,23 @@ class HomePresenter: ViewModel() {
                     }
                 }
                 override fun onFailure(call: Call<DemandsListWrapper>, t: Throwable) {}
+            })
+    }
+
+    fun getNationalGroups() {
+        EntourageApplication.get().apiModule.groupRequest.getNationalGroups()
+            .enqueue(object : Callback<GroupsListWrapper> {
+                override fun onResponse(
+                    call: Call<GroupsListWrapper>,
+                    response: Response<GroupsListWrapper>
+                ) {
+                    response.body()?.let { groupsWrapper ->
+                        getNationalGroups.value = groupsWrapper.allGroups
+                    }
+                }
+
+                override fun onFailure(call: Call<GroupsListWrapper>, t: Throwable) {
+                }
             })
     }
 

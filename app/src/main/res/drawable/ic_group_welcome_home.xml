@@ -1,0 +1,24 @@
+<!--
+  ~ Copyright (C) 2026 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="960"
+    android:viewportHeight="960">
+  <path
+      android:pathData="M160,800v-280,280ZM800,800v-280,280ZM760,320q17,0 28.5,-11.5T800,280q0,-17 -11.5,-28.5T760,240q-17,0 -28.5,11.5T720,280q0,17 11.5,28.5T760,320ZM760,400q-51,0 -85.5,-34.5T640,280q0,-50 34.5,-85t85.5,-35q50,0 85,35t35,85q0,51 -35,85.5T760,400ZM480,280q25,0 42.5,-17t17.5,-43q0,-25 -17.5,-42.5T480,160q-26,0 -43,17.5T420,220q0,26 17,43t43,17ZM480,360q-59,0 -99.5,-40.5T340,220q0,-58 40.5,-99t99.5,-41q58,0 99,41t41,99q0,59 -41,99.5T480,360ZM320,535q0,30 32,70t128,127q94,-85 127,-125t33,-72q0,-23 -15,-39t-37,-16q-14,0 -26.5,6T541,503l-48,57h-27l-48,-57q-8,-11 -20.5,-17t-25.5,-6q-23,0 -37.5,16T320,535ZM240,535q0,-53 36,-94t96,-41q31,0 59.5,14t48.5,38q20,-24 48,-38t60,-14q60,0 96,41.5t36,93.5q0,53 -38.5,104.5T524,800l-44,40 -44,-40Q315,690 277.5,639T240,535ZM200,320q17,0 28.5,-11.5T240,280q0,-17 -11.5,-28.5T200,240q-17,0 -28.5,11.5T160,280q0,17 11.5,28.5T200,320ZM483,880v-80h317v-280L682,520v-80h118q33,0 56.5,23.5T880,520v360L483,880ZM160,800h323v80L80,880v-360q0,-33 23,-56.5t57,-23.5h118v80L160,520v280ZM200,400q-51,0 -85.5,-34.5T80,280q0,-50 34.5,-85t85.5,-35q50,0 85,35t35,85q0,51 -35,85.5T200,400ZM480,220ZM200,280ZM760,280Z"
+      android:fillColor="#e3e3e3"/>
+</vector>

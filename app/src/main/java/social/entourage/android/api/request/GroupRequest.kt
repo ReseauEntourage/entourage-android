@@ -60,6 +60,9 @@ interface GroupRequest {
         @Query("per") per: Int
     ): Call<GroupsListWrapper>
 
+    @GET("neighborhoods/national")
+    fun getNationalGroups(): Call<GroupsListWrapper>
+
     @GET("neighborhoods/{neighborhood_id}/users")
     fun searchGroupMembers(
         @Path("neighborhood_id") groupId: Int,
