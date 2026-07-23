@@ -364,13 +364,15 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     }
 
     private fun updateAutocompleteSuggestions(suggestions: List<String>) {
-        autocompleteAdapter?.clear()
-        autocompleteAdapter?.addAll(suggestions)
-        autocompleteAdapter?.notifyDataSetChanged()
+        if (!isFinishing && !isDestroyed) {
+            autocompleteAdapter?.clear()
+            autocompleteAdapter?.addAll(suggestions)
+            autocompleteAdapter?.notifyDataSetChanged()
 
-        // Montre le menu déroulant SEULEMENT si le champ a encore le focus
-        if (binding.cityAction.hasFocus()) {
-            binding.cityAction.showDropDown()
+            // Montre le menu déroulant SEULEMENT si le champ a encore le focus
+            if (binding.cityAction.hasFocus()) {
+                binding.cityAction.showDropDown()
+            }
         }
     }
 

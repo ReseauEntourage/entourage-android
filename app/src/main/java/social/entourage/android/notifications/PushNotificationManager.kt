@@ -11,9 +11,9 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.edit
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.os.bundleOf
 import androidx.preference.PreferenceManager
@@ -22,15 +22,18 @@ import com.google.gson.Gson
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
-import social.entourage.android.api.model.notification.PushNotificationMessage
-import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.api.model.TimestampedObject
 import social.entourage.android.api.model.feed.FeedItem
+import social.entourage.android.api.model.notification.PushNotificationContent
+import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.discussions.DetailConversationActivity
-import social.entourage.android.notifications.NotificationActionReceiver.Companion.ACTION_CLICKED
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
-import social.entourage.android.welcome.*
+import social.entourage.android.welcome.WelcomeFiveActivity
+import social.entourage.android.welcome.WelcomeFourActivity
+import social.entourage.android.welcome.WelcomeOneActivity
+import social.entourage.android.welcome.WelcomeThreeActivity
+import social.entourage.android.welcome.WelcomeTwoActivity
 import timber.log.Timber
 
 /**
@@ -512,7 +515,7 @@ object PushNotificationManager {
         if (id == Int.MAX_VALUE) {
             id = MIN_NOTIFICATION_ID
         }
-        sharedPreferences.edit().putInt(PREFERENCE_LAST_NOTIFICATION_ID, id).apply()
+        sharedPreferences.edit { putInt(PREFERENCE_LAST_NOTIFICATION_ID, id) }
         return id
     }
 

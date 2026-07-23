@@ -29,7 +29,6 @@
     <string name="server_error">Nous avons un petit problème…\nIl sera très vite corrigé ;)</string>
     <string name="no_browser_error">Aucun navigateur n\'est installé</string>
 
-    <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
     <string name="action_overlay_close">Fermer le menu Actions</string>
     <string name="plus_image_subtitle">L’essentiel, c’est la rencontre !</string>
 
@@ -129,7 +128,6 @@
     <string name="cgu">Conditions générales d’utilisation</string>
     <string name="confidentiality">Politique de Confidentialité</string>
     <string name="child_rules">Normes de protection des enfants</string>
-    <string name="licence">Licence open-source</string>
     <string name="cancel">Annuler</string>
     <string name="delete">Supprimer</string>
     <string name="signing_out">Déconnexion</string>
@@ -2257,8 +2255,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="member_type_organization">Maraudeur</string>
     <string name="role_ambassador">Ambassadeur</string>
     <string name="role_admin">Ambassadeur</string>
-
-    <string name="disclaimer_link_public" translatable="false">https://www.entourage.social/charte-ethique-grand-public</string>
+    <string name="disclaimer_link_public" translatable="false">https://www.entourage.social/blog/charte-ethique-entourage-local</string>
     <string name="ambassadeur_link_public" translatable="false">https://www.entourage.social/agir-avec-nous/par-action/devenir-benevole</string>
     <string name="faq_link_public" translatable="false">https://www.entourage.social/blog/lantiseche-tout-savoir-pour-bien-commencer-sur-lapp-entourage</string>
 
@@ -3148,8 +3145,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboard_welcome_placeholder_email_new">Ex. : marie.dupont@email.com</string>
 
     <string name="image_option_title">Photos de la conversation</string>
-    <string name="delete_event">Supprimer l’événement</string>
-    <string name="delete_event_title">Supprimer l’événement ?</string>
+    <string name="delete_event">Annuler l’événement</string>
+    <string name="delete_event_title">Annuler l’événement ?</string>
     <string name="delete_event_confirmation">Cette action est irréversible. Les participants seront informés.</string>
 
     <string name="onboarding_zone_title">Votre localisation</string>
@@ -3203,6 +3200,19 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <!-- Divers (déjà présents chez toi normalement) -->
     <string name="contact_email">contact@entourage.social</string>
+
     <string name="error_no_email">Aucune application e-mail trouvée</string>
     <string name="terms_and_conditions_html"><![CDATA[En vous inscrivant, vous acceptez nos<a href="https://www.entourage.social/conditions-generales-dutilisation">Conditions Générales d’Utilisation</a>et notre<a href="https://www.entourage.social/politique-de-confidentialite">Politique de confidentialité</a>.]]></string>
+    <string name="onboarding_partner_title">Sélectionnez votre association</string>
+    <string name="onboarding_partner_subtitle">Nom de votre association</string>
+    <string name="onboarding_partner_spinner_hint">Sélectionner dans la liste</string>
+    <string name="onboarding_partner_other_option">Autre</string>
+    <string name="onboarding_partner_warning_title">Votre association ne figure pas dans la liste.</string>
+    <string name="onboarding_partner_warning_subtitle">Créez-en une nouvelle.</string>
+    <string name="onboarding_partner_custom_hint">Ex. : Utopia 56 ou Femmes solidaires</string>
+    <string name="onboarding_partner_error_select">Merci de sélectionner une association.</string>
+    <string name="onboarding_partner_error_custom_name">Merci de saisir le nom de votre association.</string>
+    <string name="user_action_asso_send_failed">Impossible d’enregistrer votre association.</string>
+    <string name="onboarding_partner_error_missing_location">Pas d\'adresse renseignée.</string>
+
 </resources>

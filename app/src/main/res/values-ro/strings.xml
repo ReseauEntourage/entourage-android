@@ -30,7 +30,6 @@
 
     <string name="empty_description"></string>
 
-    <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
     <string name="action_overlay_close">Închideți meniul Acțiuni</string>
     <string name="plus_image_subtitle">Principalul lucru este întâlnirea!</string>
 
@@ -128,7 +127,6 @@
     <string name="feedback">Evaluează aplicația în magazine</string>
     <string name="cgu">Termenii serviciului</string>
     <string name="confidentiality">Politica de confidențialitate</string>
-    <string name="licence">Licență open source</string>
     <string name="cancel">Anulare</string>
     <string name="delete">ȘTERGE</string>
     <string name="signing_out">Deconectat</string>

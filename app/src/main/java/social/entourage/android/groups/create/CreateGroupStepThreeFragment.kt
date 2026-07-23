@@ -94,8 +94,8 @@ class CreateGroupStepThreeFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         binding.layout.egs3Error.root.visibility = View.GONE
+        super.onDestroy()
     }
 
     private fun onFragmentResult() {

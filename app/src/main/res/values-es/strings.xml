@@ -30,7 +30,6 @@
 
     <string name="empty_description"></string>
 
-    <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
     <string name="action_overlay_close">Cerrar el menú Acciones</string>
     <string name="plus_image_subtitle">¡Lo principal es el encuentro!</string>
 
@@ -128,7 +127,6 @@
     <string name="feedback">Califica la aplicación en las tiendas.</string>
     <string name="cgu">Términos de servicio</string>
     <string name="confidentiality">Política de confidencialidad</string>
-    <string name="licence">Licencia de código abierto</string>
     <string name="cancel">anular</string>
     <string name="delete">BORRAR</string>
     <string name="signing_out">Desconectar</string>

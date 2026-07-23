@@ -3,7 +3,6 @@ package social.entourage.android.api
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.collection.ArrayMap
-import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.ResponseBody
@@ -13,6 +12,9 @@ import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
+import social.entourage.android.api.model.PartnerCreateBody
+import social.entourage.android.api.model.PartnerCreateWrapper
+import social.entourage.android.api.model.PartnerResponse
 import social.entourage.android.api.model.User
 import social.entourage.android.api.request.*
 import social.entourage.android.authentication.AuthenticationController
@@ -26,18 +28,23 @@ import kotlin.collections.set
  */
 class OnboardingAPI {
 
-    private val authenticationController:AuthenticationController = EntourageApplication.get().authenticationController
+    private val authenticationController: AuthenticationController =
+        EntourageApplication.get().authenticationController
 
-    private val onboardingService : UserRequest
-        get() =  EntourageApplication.get().apiModule.userRequest //service ?: retrofit!!.create(UserRequest::class.java)
+    private val onboardingService: UserRequest
+        get() = EntourageApplication.get().apiModule.userRequest
 
-    private val loginService : LoginRequest
-        get() = EntourageApplication.get().apiModule.loginRequest //retrofit!!.create(LoginRequest::class.java)
+    private val loginService: LoginRequest
+        get() = EntourageApplication.get().apiModule.loginRequest
 
     /**********************
      * Create user
      */
-    fun createUser(tempUser: User, hasConsent: Boolean, listener: (isOK: Boolean, error: String?) -> Unit) {
+    fun createUser(
+        tempUser: User,
+        hasConsent: Boolean,
+        listener: (isOK: Boolean, error: String?) -> Unit
+    ) {
         val user: MutableMap<String, Any> = ArrayMap()
         user["phone"] = tempUser.phone ?: ""
         user["first_name"] = tempUser.firstName ?: ""
@@ -53,7 +60,10 @@ class OnboardingAPI {
 
         val call = onboardingService.registerUser(request)
         call.enqueue(object : Callback<UserResponse> {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+            override fun onResponse(
+                call: Call<UserResponse>,
+                response: Response<UserResponse>
+            ) {
                 if (response.isSuccessful) {
                     Timber.d("Response ok create user ?")
                     listener(true, null)
@@ -63,43 +73,56 @@ class OnboardingAPI {
                     listener(false, errorString)
                 }
             }
+
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 listener(false, null)
             }
         })
     }
 
-
     /**********************
      * Login
      */
-    fun login(phoneNumber: String, smsCode: String, listener: (isOK: Boolean, loginResponse: LoginResponse?, error: String?) -> Unit) {
+    fun login(
+        phoneNumber: String,
+        smsCode: String,
+        listener: (isOK: Boolean, loginResponse: LoginResponse?, error: String?) -> Unit
+    ) {
         loginService.login(LoginWrapper(phoneNumber, smsCode))
-                .enqueue(object : Callback<LoginResponse> {
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                if (response.isSuccessful) {
-                    response.body()?.user?.let {
-                        authenticationController.saveUser(it)
-                        authenticationController.saveUserPhoneAndCode(phoneNumber, smsCode)
+            .enqueue(object : Callback<LoginResponse> {
+                override fun onResponse(
+                    call: Call<LoginResponse>,
+                    response: Response<LoginResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        response.body()?.user?.let {
+                            authenticationController.saveUser(it)
+                            authenticationController.saveUserPhoneAndCode(
+                                phoneNumber,
+                                smsCode
+                            )
+                        }
+
+                        listener(true, response.body(), null)
+                    } else {
+                        val errorString = response.errorBody()?.string()
+                        listener(false, null, errorString)
                     }
-
-                    listener(true,response.body(),null)
-                } else {
-                    val errorString = response.errorBody()?.string()
-                    listener(false,null,errorString)
                 }
-            }
 
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                listener(false,null,null)
-            }
-        })
+                override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                    listener(false, null, null)
+                }
+            })
     }
 
     /**********************
      * Send code
      */
-    fun requestNewCode(phone:String,listener:(isOK:Boolean, loginResponse: UserResponse?, error:String?) -> Unit) {
+    fun requestNewCode(
+        phone: String,
+        listener: (isOK: Boolean, loginResponse: UserResponse?, error: String?) -> Unit
+    ) {
         val user: MutableMap<String, String> = ArrayMap()
         user["phone"] = phone
 
@@ -112,17 +135,20 @@ class OnboardingAPI {
 
         val call: Call<UserResponse> = onboardingService.regenerateSecretCode(request)
         call.enqueue(object : Callback<UserResponse> {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+            override fun onResponse(
+                call: Call<UserResponse>,
+                response: Response<UserResponse>
+            ) {
                 if (response.isSuccessful) {
-                    listener(true,response.body(),null)
+                    listener(true, response.body(), null)
                 } else {
                     val error = ApiError.fromResponse(response)
-                    listener(false,null,error.code)
+                    listener(false, null, error.code)
                 }
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                listener(false,null,null)
+                listener(false, null, null)
             }
         })
     }
@@ -130,50 +156,57 @@ class OnboardingAPI {
     /**********************
      * user
      */
-    fun updateAddress(userAddress: User.Address, isSecondary:Boolean, listener:(isOK:Boolean,userResponse: UserResponse?) -> Unit) {
+    fun updateAddress(
+        userAddress: User.Address,
+        isSecondary: Boolean,
+        listener: (isOK: Boolean, userResponse: UserResponse?) -> Unit
+    ) {
 
         val address: MutableMap<String, Any> = ArrayMap()
         if (userAddress.googlePlaceId.isNullOrEmpty()) {
             address["latitude"] = userAddress.latitude
             address["longitude"] = userAddress.longitude
             address["place_name"] = userAddress.displayAddress
-        }
-        else {
+        } else {
             userAddress.googlePlaceId?.let { address["google_place_id"] = it }
         }
         val request = ArrayMap<String, Any>()
         request["address"] = address
 
-        val call:Call<UserResponse> = if (!isSecondary) {
+        val call: Call<UserResponse> = if (!isSecondary) {
             onboardingService.updatePrimaryAddressLocation(request)
-        }
-        else {
+        } else {
             onboardingService.updateSecondaryAddressLocation(request)
         }
 
         call.enqueue(object : Callback<UserResponse> {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+            override fun onResponse(
+                call: Call<UserResponse>,
+                response: Response<UserResponse>
+            ) {
                 if (response.isSuccessful) {
-                    listener(true,response.body())
+                    listener(true, response.body())
                 } else {
-                    listener(false,null)
+                    listener(false, null)
                 }
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                listener(false,null)
+                listener(false, null)
             }
         })
     }
 
-    fun updateUser(email:String?, listener:(isOK:Boolean, userResponse: UserResponse?) -> Unit) {
+    fun updateUser(
+        email: String?,
+        listener: (isOK: Boolean, userResponse: UserResponse?) -> Unit
+    ) {
 
         val user = ArrayMap<String, Any>()
         if (email != null) {
             user["email"] = email
-        }
-        else {
-            listener(false,null)
+        } else {
+            listener(false, null)
             return
         }
 
@@ -181,17 +214,19 @@ class OnboardingAPI {
         request["user"] = user
         val call = onboardingService.updateUser(request)
         call.enqueue(object : Callback<UserResponse> {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+            override fun onResponse(
+                call: Call<UserResponse>,
+                response: Response<UserResponse>
+            ) {
                 if (response.isSuccessful) {
-                    listener(true,response.body())
-                }
-                else {
-                    listener(false,null)
+                    listener(true, response.body())
+                } else {
+                    listener(false, null)
                 }
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                listener(false,null)
+                listener(false, null)
             }
         })
     }
@@ -213,31 +248,38 @@ class OnboardingAPI {
         hasConsent?.let { user["newsletter_subscription"] = it }
         email?.takeIf { it.isNotEmpty() }?.let { user["email"] = it }
         gender?.takeIf { it.isNotEmpty() }?.let { user["gender"] = it }
-        birthday?.takeIf { it.isNotEmpty() }?.let { user["birthdate"] = it } // ✅ birthdate
+        birthday?.takeIf { it.isNotEmpty() }?.let { user["birthdate"] = it }
 
         discoverySource?.takeIf { it.isNotEmpty() }?.let { user["discovery_source"] = it }
-        companyId?.takeIf { it.isNotBlank() }?.let { user["company"] = it } // ✅ IDs
-        eventId?.takeIf { it.isNotBlank() }?.let { user["event"] = it }     // ✅ IDs
+        companyId?.takeIf { it.isNotBlank() }?.let { user["sf_entreprise_id"] = it }
+        eventId?.takeIf { it.isNotBlank() }?.let { user["sf_campaign_id"] = it }
 
         val request = ArrayMap<String, Any>()
         request["user"] = user
 
         val call = onboardingService.updateUser(request)
         call.enqueue(object : Callback<UserResponse> {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+            override fun onResponse(
+                call: Call<UserResponse>,
+                response: Response<UserResponse>
+            ) {
                 if (response.isSuccessful) {
                     listener(true, response.body())
                 } else {
                     listener(false, null)
                 }
             }
+
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 listener(false, null)
             }
         })
     }
 
-    fun updateTravelDistance(distance: Int, listener:(isOK:Boolean, userResponse: UserResponse?) -> Unit) {
+    fun updateTravelDistance(
+        distance: Int,
+        listener: (isOK: Boolean, userResponse: UserResponse?) -> Unit
+    ) {
         val user = ArrayMap<String, Any>()
         user["travel_distance"] = distance
 
@@ -246,21 +288,27 @@ class OnboardingAPI {
 
         val call = onboardingService.updateUser(request)
         call.enqueue(object : Callback<UserResponse> {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+            override fun onResponse(
+                call: Call<UserResponse>,
+                response: Response<UserResponse>
+            ) {
                 if (response.isSuccessful) {
                     listener(true, response.body())
                 } else {
                     listener(false, null)
                 }
             }
+
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 listener(false, null)
             }
         })
     }
 
-
-    fun updateUserPhoto(avatarKey:String, listener: (isOK: Boolean, userResponse: UserResponse?) -> Unit) {
+    fun updateUserPhoto(
+        avatarKey: String,
+        listener: (isOK: Boolean, userResponse: UserResponse?) -> Unit
+    ) {
         val user = ArrayMap<String, Any>()
         user["avatar_key"] = avatarKey
         val request = ArrayMap<String, Any>()
@@ -268,21 +316,28 @@ class OnboardingAPI {
 
         val call = onboardingService.updateUser(request)
         call.enqueue(object : Callback<UserResponse> {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+            override fun onResponse(
+                call: Call<UserResponse>,
+                response: Response<UserResponse>
+            ) {
                 if (response.isSuccessful) {
-                    listener(true,response.body())
+                    listener(true, response.body())
                 } else {
-                    listener(false,null)
+                    listener(false, null)
                 }
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                listener(false,null)
+                listener(false, null)
             }
         })
     }
 
-    fun updateUserNames(firstname:String,lastname:String, listener:(isOK:Boolean, userResponse: UserResponse?) -> Unit) {
+    fun updateUserNames(
+        firstname: String,
+        lastname: String,
+        listener: (isOK: Boolean, userResponse: UserResponse?) -> Unit
+    ) {
         val user = ArrayMap<String, Any>()
         user["first_name"] = firstname
         user["last_name"] = lastname
@@ -291,35 +346,43 @@ class OnboardingAPI {
         request["user"] = user
         val call = onboardingService.updateUser(request)
         call.enqueue(object : Callback<UserResponse> {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+            override fun onResponse(
+                call: Call<UserResponse>,
+                response: Response<UserResponse>
+            ) {
                 if (response.isSuccessful) {
-                    listener(true,response.body())
-                }
-                else {
-                    listener(false,null)
+                    listener(true, response.body())
+                } else {
+                    listener(false, null)
                 }
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                listener(false,null)
+                listener(false, null)
             }
         })
     }
 
-    fun getUser(userId:Int, listener:(isOK:Boolean,userResponse: UserResponse?) -> Unit) {
+    fun getUser(
+        userId: Int,
+        listener: (isOK: Boolean, userResponse: UserResponse?) -> Unit
+    ) {
 
         val call = onboardingService.getUser(userId.toString())
         call.enqueue(object : Callback<UserResponse> {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+            override fun onResponse(
+                call: Call<UserResponse>,
+                response: Response<UserResponse>
+            ) {
                 if (response.isSuccessful) {
-                    listener(true,response.body())
+                    listener(true, response.body())
                 } else {
-                    listener(false,null)
+                    listener(false, null)
                 }
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                listener(false,null)
+                listener(false, null)
             }
         })
     }
@@ -327,27 +390,41 @@ class OnboardingAPI {
     /**********************
      * Upload Photo
      */
-    fun uploadPhotoFile(presignedUrl: String,file:File,listener: (isOk:Boolean) -> Unit) {
+    fun uploadPhotoFile(
+        presignedUrl: String,
+        file: File,
+        listener: (isOk: Boolean) -> Unit
+    ) {
         val requestBody = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
         val request = okhttp3.Request.Builder()
-                .url(presignedUrl)
-                .put(requestBody)
-                .build()
+            .url(presignedUrl)
+            .put(requestBody)
+            .build()
 
-        EntourageApplication.get().apiModule.okHttpClient.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: okhttp3.Call, e: IOException) {
-                listener(false)
-            }
-            override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
-                listener(true)
-            }
-        })
+        EntourageApplication.get().apiModule.okHttpClient.newCall(request)
+            .enqueue(object : okhttp3.Callback {
+                override fun onFailure(call: okhttp3.Call, e: IOException) {
+                    listener(false)
+                }
+
+                override fun onResponse(
+                    call: okhttp3.Call,
+                    response: okhttp3.Response
+                ) {
+                    listener(true)
+                }
+            })
     }
 
     /***********
      * Change phone
      */
-    fun changePhone(oldPhone:String, newPhone:String,email:String,listener:(isOK:Int) -> Unit) {
+    fun changePhone(
+        oldPhone: String,
+        newPhone: String,
+        email: String,
+        listener: (isOK: Int) -> Unit
+    ) {
 
         val user: MutableMap<String, String> = ArrayMap()
         user["current_phone"] = oldPhone
@@ -358,29 +435,35 @@ class OnboardingAPI {
         request["user"] = user
 
         onboardingService.changePhone(request)
-                .enqueue(object : Callback<ResponseBody>{
-                    override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                        if (response.isSuccessful) {
-                            listener(R.string.login_change_phone_send_ok)
-                        }
-                        else {
-                            checkPhoneChangeError(response.errorBody()?.string() ?:"", listener)
-                        }
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    if (response.isSuccessful) {
+                        listener(R.string.login_change_phone_send_ok)
+                    } else {
+                        checkPhoneChangeError(response.errorBody()?.string() ?: "", listener)
                     }
+                }
 
-                    override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        checkPhoneChangeError("", listener)
-                    }
-                })
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    checkPhoneChangeError("", listener)
+                }
+            })
     }
 
-    private fun checkPhoneChangeError(errorBody: String,listener:(isOK:Int) -> Unit) {
-        listener(when {
-            errorBody.contains("USER_NOT_FOUND") -> R.string.login_change_error_number_not_found
-            errorBody.contains("USER_DELETED")  -> R.string.login_change_error_number_deleted
-            errorBody.contains("USER_BLOCKED")  -> R.string.login_change_error_number_blocked
-            errorBody.contains("IDENTICAL_PHONES")  -> R.string.login_change_error_identical_number
-            else -> R.string.login_change_error_generic
+    private fun checkPhoneChangeError(
+        errorBody: String,
+        listener: (isOK: Int) -> Unit
+    ) {
+        listener(
+            when {
+                errorBody.contains("USER_NOT_FOUND") -> R.string.login_change_error_number_not_found
+                errorBody.contains("USER_DELETED") -> R.string.login_change_error_number_deleted
+                errorBody.contains("USER_BLOCKED") -> R.string.login_change_error_number_blocked
+                errorBody.contains("IDENTICAL_PHONES") -> R.string.login_change_error_identical_number
+                else -> R.string.login_change_error_generic
             }
         )
     }
@@ -388,43 +471,70 @@ class OnboardingAPI {
     /**********************
      * Onboarding Asso
      */
-    fun updateAssoInfos(asso: Partner?, listener:(isOK:Boolean, response:ResponseBody?) -> Unit) {
-
+    fun updateAssoInfos(
+        asso: Partner?,
+        listener: (isOK: Boolean, response: ResponseBody?) -> Unit
+    ) {
         if (asso == null) {
-            listener(false,null)
+            listener(false, null)
             return
         }
 
         val request = ArrayMap<String, Any>()
+
+        // 1) Partner id (obligatoire pour join_request avec une asso existante)
         if (asso.id > 0) {
-            request["partner_id"] =asso.id
+            request["partner_id"] = asso.id
         }
 
+        // 2) Nom d'une nouvelle asso si c'est un cas "création via join_request"
         if (asso.isCreation) {
-            request["new_partner_name"] = asso.name
+            asso.name?.takeIf { it.isNotBlank() }?.let { name ->
+                request["new_partner_name"] = name
+            }
         }
 
-        request["postal_code"] = asso.postalCode
-        request["partner_role_title"] = asso.userRoleTitle
+        // 3) Code postal : on l'envoie seulement s'il est non vide
+        asso.postalCode
+            ?.takeIf { it.isNotBlank() }
+            ?.let { postalCode ->
+                request["postal_code"] = postalCode
+            }
 
+        // 4) Partner role title : ***OBLIGATOIRE***
+        //    - on prend d'abord la valeur fournie par le modèle
+        //    - si vide, on met un fallback "Membre" pour satisfaire l'API
+        val roleTitle = asso.userRoleTitle
+            ?.takeIf { it.isNotBlank() }
+            ?: "Membre"
+
+        request["partner_role_title"] = roleTitle
+
+        // 5) Appel API
         val call = onboardingService.updateAssoInfos(request)
-
         call.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
                 if (response.isSuccessful) {
-                    listener(true,response.body())
-                }
-                else {
-                    listener(false,null)
+                    listener(true, response.body())
+                } else {
+                    listener(false, null)
                 }
             }
+
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                listener(false,null)
+                listener(false, null)
             }
         })
     }
 
-    fun updateUserInterests(interest:ArrayList<String>, listener:(isOK:Boolean, userResponse: UserResponse?) -> Unit) {
+
+    fun updateUserInterests(
+        interest: ArrayList<String>,
+        listener: (isOK: Boolean, userResponse: UserResponse?) -> Unit
+    ) {
 
         val user = ArrayMap<String, Any>()
         user["interests"] = interest
@@ -433,37 +543,83 @@ class OnboardingAPI {
         request["user"] = user
         val call = onboardingService.updateUser(request)
         call.enqueue(object : Callback<UserResponse> {
-            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+            override fun onResponse(
+                call: Call<UserResponse>,
+                response: Response<UserResponse>
+            ) {
                 if (response.isSuccessful) {
-                    listener(true,response.body())
-                }
-                else {
-                    listener(false,null)
+                    listener(true, response.body())
+                } else {
+                    listener(false, null)
                 }
             }
 
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
-                listener(false,null)
+                listener(false, null)
             }
         })
     }
 
-    fun getAssociationsList(listener:(arrayAssociations:ArrayList<Partner>?) -> Unit) {
+    fun getAssociationsList(
+        listener: (arrayAssociations: ArrayList<Partner>?) -> Unit
+    ) {
         val request = EntourageApplication.get().apiModule.partnerRequest
         request.allPartners.enqueue(object : Callback<PartnersResponse> {
-            override fun onResponse(call: Call<PartnersResponse>, response: Response<PartnersResponse>) {
+            override fun onResponse(
+                call: Call<PartnersResponse>,
+                response: Response<PartnersResponse>
+            ) {
                 if (response.isSuccessful) {
                     val arrayPartners = ArrayList<Partner>()
-                    response.body()?.partners?.let { arrayPartners.addAll(it)}
+                    response.body()?.partners?.let { arrayPartners.addAll(it) }
                     listener(arrayPartners)
-                }
-                else {
+                } else {
                     listener(null)
                 }
             }
-            override fun onFailure(call: Call<PartnersResponse>, t: Throwable) { listener(null) }
+
+            override fun onFailure(call: Call<PartnersResponse>, t: Throwable) {
+                listener(null)
+            }
         })
     }
+
+    fun createPartner(
+        name: String,
+        address: String?,
+        latitude: Double?,
+        longitude: Double?,
+        listener: (isOK: Boolean, partner: Partner?) -> Unit
+    ) {
+        val body = PartnerCreateBody(
+            name = name,
+            description = name, // tu peux raffiner plus tard
+            address = address,
+            latitude = latitude,
+            longitude = longitude,
+            staff = true
+        )
+        val wrapper = PartnerCreateWrapper(body)
+
+        val request = EntourageApplication.get().apiModule.partnerRequest
+        request.createPartner(wrapper).enqueue(object : Callback<PartnerResponse> {
+            override fun onResponse(
+                call: Call<PartnerResponse>,
+                response: Response<PartnerResponse>
+            ) {
+                if (response.isSuccessful) {
+                    listener(true, response.body()?.partner)
+                } else {
+                    listener(false, null)
+                }
+            }
+
+            override fun onFailure(call: Call<PartnerResponse>, t: Throwable) {
+                listener(false, null)
+            }
+        })
+    }
+
 
     companion object {
         @SuppressLint("StaticFieldLeak")
@@ -471,7 +627,7 @@ class OnboardingAPI {
 
         @Synchronized
         fun getInstance(): OnboardingAPI {
-            return instance ?: OnboardingAPI().also { instance = it}
+            return instance ?: OnboardingAPI().also { instance = it }
         }
     }
 }

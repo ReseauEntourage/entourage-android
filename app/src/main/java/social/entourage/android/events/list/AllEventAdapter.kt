@@ -67,6 +67,7 @@ class AllEventAdapter(var userId: Int?, var context: Context) :
             val event = events[position]
             holder.binding.layout.setOnClickListener { view ->
                 EventsFragment.isFromDetails = true
+                EventFeedActivity.isFromMyEvent = false
                 (view.context as? Activity)?.startActivityForResult(
                     Intent(
                         view.context,

@@ -50,6 +50,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
     private var lastDisplayAddress: String? = null
     private var suppressAutocomplete = false
     private var queryGen = 0
+    private var lastPostalCode: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,44 +102,52 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setupButtons() {
         binding.buttonConfigureLater.setOnClickListener {
-            this.onBackPressed()
+            onBackPressed()
         }
 
         binding.buttonStart.setOnClickListener {
-/*            if (selectedUserType == UserType.ASSO) {
-                Toast.makeText(this, R.string.onboard_asso_todo, Toast.LENGTH_SHORT).show()
+            val latLng = currentLatLng
+            if (latLng == null) {
+                Toast.makeText(this, R.string.onboarding_zone_pick_location_first, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
-            }*/
+            }
+
+            val label = lastDisplayAddress
+                ?.takeIf { it.isNotBlank() }
+                ?: binding.autoCompleteCityName.text?.toString()?.takeIf { it.isNotBlank() }
+                ?: ""
 
             val addr = buildPrimaryAddress() ?: run {
-                Toast.makeText(
-                    this,
-                    R.string.onboarding_zone_pick_location_first,
-                    Toast.LENGTH_SHORT
-                ).show()
+                Toast.makeText(this, R.string.onboarding_zone_pick_location_first, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             OnboardingAPI.getInstance().updateTravelDistance(radiusKm) { okDist, _ ->
                 if (!okDist) {
-                    Toast.makeText(
-                        this,
-                        R.string.user_action_zone_send_failed,
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this, R.string.user_action_zone_send_failed, Toast.LENGTH_SHORT).show()
                     return@updateTravelDistance
                 }
 
                 OnboardingAPI.getInstance().updateAddress(addr, false) { isOK, _ ->
-                    if (isOK) {
-                        startActivity(Intent(this, OnboardingEndActivity::class.java))
+                    if (!isOK) {
+                        Toast.makeText(this, R.string.user_action_zone_send_failed, Toast.LENGTH_SHORT).show()
+                        return@updateAddress
+                    }
+
+                    if (selectedUserType == UserType.ASSO) {
+                        startActivity(
+                            OnboardingAssociationChoiceActivity.newIntent(
+                                context = this,
+                                address = label,
+                                lat = latLng.latitude,
+                                lng = latLng.longitude,
+                                postalCode = lastPostalCode
+                            )
+                        )
                         finish()
                     } else {
-                        Toast.makeText(
-                            this,
-                            R.string.user_action_zone_send_failed,
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        startActivity(Intent(this, OnboardingEndActivity::class.java))
+                        finish()
                     }
                 }
             }
@@ -154,6 +163,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
                 updateRadiusLabel()
                 updateCircleRadius()
             }
+
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
@@ -166,7 +176,11 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun setupAutocomplete() {
         val actv = binding.autoCompleteCityName as AutoCompleteTextView
         actv.threshold = 1
-        val baseAdapter = ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, mutableListOf())
+        val baseAdapter = ArrayAdapter<String>(
+            this,
+            android.R.layout.simple_dropdown_item_1line,
+            mutableListOf()
+        )
         actv.setAdapter(baseAdapter)
 
         actv.setOnItemClickListener { _, _, position, _ ->
@@ -219,11 +233,10 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (suppressAutocomplete || !actv.hasFocus() || myGen != queryGen) return@addOnSuccessListener
                 predictions = response.autocompletePredictions
                 val suggestions = predictions.map { it.getFullText(null).toString() }
-                val adapter: ArrayAdapter<String> =
-                    (actv.adapter as? ArrayAdapter<String>)
-                        ?: ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, mutableListOf()).also {
-                            actv.setAdapter(it)
-                        }
+                val adapter = (actv.adapter as? ArrayAdapter<String>)
+                    ?: ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, mutableListOf()).also {
+                        actv.setAdapter(it)
+                    }
 
                 adapter.clear()
                 adapter.addAll(suggestions)
@@ -236,7 +249,13 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun fetchPlaceDetails(placeId: String) {
-        val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
+        val fields = listOf(
+            Place.Field.ID,
+            Place.Field.NAME,
+            Place.Field.LAT_LNG,
+            Place.Field.ADDRESS,
+            Place.Field.ADDRESS_COMPONENTS
+        )
         val request = FetchPlaceRequest.builder(placeId, fields).build()
 
         placesClient.fetchPlace(request)
@@ -246,6 +265,14 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
                 val label = place.name ?: place.address ?: ""
                 lastPlaceId = place.id
                 lastDisplayAddress = label
+
+                lastPostalCode = place.addressComponents
+                    ?.asList()
+                    ?.firstOrNull { it.types.contains("postal_code") }
+                    ?.name
+                    ?.trim()
+                    ?.takeIf { it.isNotEmpty() }
+
                 binding.autoCompleteCityName.setText(label, false)
                 binding.autoCompleteCityName.setSelection(label.length)
                 placeMarkerAndCircle(latLng, label)
@@ -263,6 +290,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
             marker?.position = position
             marker?.title = title
         }
+
         val radiusMeters = (radiusKm * 1000).toDouble()
         if (circle == null) {
             circle = m.addCircle(
@@ -276,6 +304,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
             circle?.center = position
             circle?.radius = radiusMeters
         }
+
         currentLatLng = position
         lastDisplayAddress = title ?: lastDisplayAddress
         zoomToCircle(position, radiusMeters)

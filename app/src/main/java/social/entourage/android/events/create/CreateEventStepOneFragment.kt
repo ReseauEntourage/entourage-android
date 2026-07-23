@@ -19,9 +19,9 @@ import social.entourage.android.api.model.Image
 import social.entourage.android.databinding.NewFragmentCreateEventStepOneBinding
 import social.entourage.android.groups.choosePhoto.ChooseGalleryPhotoModalFragment
 import social.entourage.android.groups.choosePhoto.ImagesType
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
-import social.entourage.android.tools.log.AnalyticsEvents
 
 class CreateEventStepOneFragment : Fragment() {
 
@@ -140,8 +140,8 @@ class CreateEventStepOneFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         binding.layout.error.root.visibility = View.GONE
+        super.onDestroy()
     }
 
     private fun handleNextButtonState() {

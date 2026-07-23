@@ -22,6 +22,7 @@ import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.view.CustomProgressDialog
 import social.entourage.android.tools.view.countrycodepicker.Country
 import timber.log.Timber
+import androidx.core.content.edit
 
 class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
     private lateinit var binding: ActivityOnboardingStartBinding
@@ -139,9 +140,9 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
                         HashSet()
                     ) as HashSet<String>?)?.let { loggedNumbers ->
                         loggedNumbers.add(phoneNumber)
-                        sharedPreferences.edit()
-                            .putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers)
-                            .apply()
+                        sharedPreferences.edit {
+                            putStringSet(EntourageApplication.KEY_TUTORIAL_DONE, loggedNumbers)
+                        }
                     }
                     alertDialog.dismiss()
                     goNextStep()

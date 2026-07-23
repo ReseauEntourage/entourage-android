@@ -30,7 +30,6 @@
 
     <string name="empty_description"></string>
 
-    <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
     <string name="action_overlay_close">Schließen Sie das Menü Aktionen“.</string>
     <string name="plus_image_subtitle">Hauptsache das Treffen!</string>
 
@@ -126,7 +125,6 @@
     <string name="feedback">Bewerten Sie die App in den Stores</string>
     <string name="cgu">Nutzungsbedingungen</string>
     <string name="confidentiality">Datenschutzrichtlinie</string>
-    <string name="licence">Open-Source-Lizenz</string>
     <string name="cancel">Stornieren</string>
     <string name="delete">LÖSCHEN</string>
     <string name="signing_out">Trennen</string>

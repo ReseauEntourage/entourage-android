@@ -5,11 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import com.google.android.material.snackbar.Snackbar
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityHelpAboutBinding
+import social.entourage.android.profile.oss.OSSLibsActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 
@@ -23,19 +23,13 @@ class HelpAboutActivity : BaseActivity() {
         setContentView(binding.root)
 
         initializeView()
-        populate()
-        handleCloseButton()
     }
 
     private fun initializeView() {
-        binding.licence.divider.visibility = View.GONE
-    }
-
-    private fun populate() {
         with(binding) {
+            header.headerHelpIconCross.setOnClickListener { finish() }
             cgu.layout.setOnClickListener { onTermsClicked() }
             confidentiality.layout.setOnClickListener { onPrivacyClicked() }
-            licence.layout.setOnClickListener { onOSSLicensesClicked() }
             feedback.layout.setOnClickListener { onRateUsClicked() }
             faq.layout.setOnClickListener { onFAQClicked() }
             donation.layout.setOnClickListener { onDonate() }
@@ -43,6 +37,7 @@ class HelpAboutActivity : BaseActivity() {
             ethic.layout.setOnClickListener { onEthicChartClicked() }
             partner.layout.setOnClickListener { onPartnerClicked() }
             childRules.layout.setOnClickListener { onChildRuleClicked()}
+            oss.layout.setOnClickListener { onOSSLicensesClicked() }
         }
     }
 
@@ -50,12 +45,7 @@ class HelpAboutActivity : BaseActivity() {
     // BUTTON HANDLING
     // ----------------------------------
     private fun onTermsClicked() {
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.terms_url)))
-        try {
-            startActivity(browserIntent)
-        } catch (ex: ActivityNotFoundException) {
-            showNoBrowserError()
-        }
+        openLink(getString(R.string.terms_url))
     }
 
     private fun onPrivacyClicked() {
@@ -69,7 +59,7 @@ class HelpAboutActivity : BaseActivity() {
     }
 
     private fun onOSSLicensesClicked() {
-        //startActivity(Intent(this, OssLicensesMenuActivity::class.java))
+        startActivity(Intent(this, OSSLibsActivity::class.java))
     }
 
     private fun onRateUsClicked() {
@@ -83,12 +73,7 @@ class HelpAboutActivity : BaseActivity() {
         try {
             startActivity(goToMarket)
         } catch (e: ActivityNotFoundException) {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(getString(R.string.playstore_url, packageName))
-                )
-            )
+            openLink(getString(R.string.playstore_url, packageName))
         }
     }
 
@@ -134,12 +119,6 @@ class HelpAboutActivity : BaseActivity() {
             R.string.no_browser_error,
             Snackbar.LENGTH_SHORT
         ).show()
-    }
-
-    private fun handleCloseButton() {
-        binding.header.headerHelpIconCross.setOnClickListener {
-            finish()
-        }
     }
 
     companion object {

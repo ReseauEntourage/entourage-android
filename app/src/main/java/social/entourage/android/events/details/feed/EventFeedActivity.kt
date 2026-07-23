@@ -21,4 +21,8 @@ class EventFeedActivity : BaseActivity() {
             bundle
         )
     }
+
+    companion object {
+        var isFromMyEvent = false
+    }
 }

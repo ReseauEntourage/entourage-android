@@ -30,7 +30,6 @@
 
     <string name="empty_description"></string>
 
-    <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
     <string name="action_overlay_close">Закрийте меню Дії</string>
     <string name="plus_image_subtitle">Головне - зустріч!</string>
 
@@ -128,7 +127,6 @@
     <string name="feedback">Оцініть програму в магазинах</string>
     <string name="cgu">Умови використання</string>
     <string name="confidentiality">Політика конфіденційності</string>
-    <string name="licence">Ліцензія з відкритим кодом</string>
     <string name="cancel">Скасувати</string>
     <string name="delete">ВИДАЛИТИ</string>
     <string name="signing_out">Відключити</string>

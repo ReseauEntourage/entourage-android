@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
+import social.entourage.android.api.model.PartnerResponse
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserReportWrapper
 import social.entourage.android.home.UnreadMessages
@@ -57,7 +58,7 @@ interface UserRequest {
     fun deleteSecondaryAddressLocation(): Call<ResponseBody>
 
     //Onboarding Asso
-    @POST("partners/join_request")
+    @POST("partners/join")
     fun updateAssoInfos(@Body asso: ArrayMap<String, Any>): Call<ResponseBody>
 
     //Get Asso detail

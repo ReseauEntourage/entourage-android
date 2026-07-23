@@ -144,8 +144,6 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         /* ▶️ Profil (1-1) ou liste des membres (groupe) */
         binding.profile.profileSettingsItemLayout.setOnClickListener {
             if (isOneToOne) {
-                ProfileFullActivity.isMe = false
-                ProfileFullActivity.userId = userId.toString()
                 startActivity(
                     Intent(requireContext(), ProfileFullActivity::class.java)
                         .putExtra(Const.USER_ID, userId)

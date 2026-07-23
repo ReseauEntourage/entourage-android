@@ -38,7 +38,6 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.utils.px
-import timber.log.Timber
 import java.text.SimpleDateFormat
 
 interface SurveyInteractionListener {
@@ -73,10 +72,9 @@ class PostAdapter(
     }
 
     fun initiateList() {
-        val translatedByDefault = context.getSharedPreferences(
-            context.getString(R.string.preference_file_key),
-            Context.MODE_PRIVATE
-        ).getBoolean("translatedByDefault", false)
+        val translatedByDefault = EntourageApplication.get()
+            .sharedPreferences
+            .getBoolean("translatedByDefault", false)
 
         if (translatedByDefault) {
             postsList.forEach {
@@ -1067,9 +1065,7 @@ class PostAdapter(
     }
 
     private fun showUserDetail(context: Context, userId: Int?) {
-        ProfileFullActivity.isMe = false
         userId?.let {
-            ProfileFullActivity.userId = it.toString()
             (context as? Activity)?.startActivity(
                 Intent(context, ProfileFullActivity::class.java)
                     .putExtra(Const.USER_ID, it)

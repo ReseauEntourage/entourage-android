@@ -18,8 +18,8 @@ import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
+import social.entourage.android.api.model.PartnerResponse
 import social.entourage.android.api.model.User
-import social.entourage.android.api.request.PartnerResponse
 import social.entourage.android.api.request.PartnerWrapper
 import social.entourage.android.api.request.PartnersResponse
 import social.entourage.android.base.BaseDialogFragment

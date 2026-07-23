@@ -24,7 +24,6 @@
     <string name="technical_error">We have a small problem…It will be fixed soon ;)</string>
     <string name="server_error">We have a small problem…It will be fixed very quickly ;)</string>
     <string name="no_browser_error">No browser is installed</string>
-    <string name="preference_file_key">ENTOURAGE_GCM_DATA</string>
     <string name="action_overlay_close">Close the actions menu</string>
     <string name="plus_image_subtitle">It\'s all about meeting people!</string>
     <string name="agir_help_button_title_alone">See our tips</string>
@@ -109,7 +108,6 @@
     <string name="feedback">Rate the app on stores</string>
     <string name="cgu">Terms of service</string>
     <string name="confidentiality">Privacy Policy</string>
-    <string name="licence">Open source license</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="signing_out">Log out</string>

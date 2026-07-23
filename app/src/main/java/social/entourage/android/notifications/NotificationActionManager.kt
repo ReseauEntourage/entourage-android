@@ -1,7 +1,6 @@
 package social.entourage.android.notifications
 
 import android.app.Activity
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.util.Log
@@ -10,24 +9,21 @@ import androidx.fragment.app.FragmentManager
 import social.entourage.android.MainActivity
 import social.entourage.android.Navigation
 import social.entourage.android.R
-import social.entourage.android.api.model.guide.Poi
-import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.actions.detail.ActionDetailActivity
-import social.entourage.android.user.partner.PartnerDetailActivity
-import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.api.model.ActionSummary
 import social.entourage.android.api.model.HomeActionParams
 import social.entourage.android.api.model.HomeType
-import social.entourage.android.profile.ProfileFullActivity
+import social.entourage.android.api.model.guide.Poi
+import social.entourage.android.discussions.DetailConversationActivity
+import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.small_talks.SmallTalkListOtherBands
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.user.partner.PartnerDetailActivity
 import social.entourage.android.welcome.WelcomeFiveActivity
 import social.entourage.android.welcome.WelcomeFourActivity
 import social.entourage.android.welcome.WelcomeOneActivity
 import social.entourage.android.welcome.WelcomeThreeActivity
 import social.entourage.android.welcome.WelcomeTwoActivity
-import timber.log.Timber
 
 /**
  * Created by Me on 26/09/2022.
@@ -253,13 +249,12 @@ object NotificationActionManager {
 
     private fun showUser(context:Context,supportFragmentManager: FragmentManager, id: Int) {
         val params = HomeActionParams()
-        ProfileFullActivity.userId = id.toString()
-        ProfileFullActivity.isMe = false
         params.id = id
         Navigation.navigate(context,supportFragmentManager,
             HomeType.USER,
             ActionSummary.SHOW, params)
     }
+
     private fun showPartner(context:Context, id: Int) {
         context.startActivity(
             Intent(context, PartnerDetailActivity::class.java)

@@ -8,7 +8,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.Partner
-import social.entourage.android.api.request.PartnerResponse
+import social.entourage.android.api.model.PartnerResponse
 
 class AssociationPresenter {
     var getPartnerSuccess = MutableLiveData<Boolean>()

@@ -452,34 +452,39 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
         binding.iconSettings.setOnClickListener {
             // droits : organisateur / animateur (selon tes règles existantes)
-            val canManage = HomeFragment.signablePermission && event?.signable == true
+            val canManageParticipants = HomeFragment.signablePermission && event?.signable == true
 
             // infos d’entête pour la sheet
             val title = event?.title
             val participants = event?.membersCount ?: 0
             val address = event?.metadata?.displayAddress
 
-            // Si l’objet Events est dispo → édition sûre (EVENT_UI)
+            // NEW : droit de modification envoyé par le back
+            val canEditEvent = event?.manageableByCurrentUser == true
+
+            // Si l’objet Events est dispo → édition directe via EVENT_UI
             val sheet = event?.let { ev ->
                 ActionSheetFragment.newEvent(
                     event = ev,
                     conversationId = 0,
-                    canManageParticipants = canManage,
+                    canManageParticipants = canManageParticipants,
                     fromEventFeed = true,
-                    isEventCreator = iAmOrganiser
+                    isEventCreator = iAmOrganiser,
+                    canEditEvent = canEditEvent
                 )
             } ?: run {
-                // Sinon, on force l’affichage du bouton (fallback en passant EVENT_ID au clic)
+                // Sinon, fallback avec l’ID et forceShowEdit
                 ActionSheetFragment.newEvent(
                     eventId = eventId,
                     conversationId = 0,
-                    canManageParticipants = canManage,
+                    canManageParticipants = canManageParticipants,
                     eventTitle = title,
                     participantsCount = participants,
                     eventAddress = address,
                     forceShowEdit = true,
                     fromEventFeed = true,
-                    isEventCreator = iAmOrganiser
+                    isEventCreator = iAmOrganiser,
+                    canEditEvent = canEditEvent
                 )
             }
 
@@ -831,8 +836,8 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         binding.mapView.onDestroy()
+        super.onDestroy()
     }
 
     override fun onLowMemory() {

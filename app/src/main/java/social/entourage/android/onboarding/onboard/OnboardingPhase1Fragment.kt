@@ -20,6 +20,7 @@ import social.entourage.android.api.model.SalesforceEnterprise
 import social.entourage.android.api.model.SalesforceEvent
 import social.entourage.android.databinding.FragmentOnboardingPhase1Binding
 import social.entourage.android.tools.isValidEmail
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.countrycodepicker.Country
 import social.entourage.android.tools.view.countrycodepicker.CountryCodePickerListener
 import timber.log.Timber
@@ -127,7 +128,7 @@ class OnboardingPhase1Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupViews()
-
+        AnalyticsEvents.logEvent(AnalyticsEvents.Onboard_name)
         // Charge les métadonnées et la liste d'entreprises
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {

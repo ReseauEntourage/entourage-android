@@ -19,7 +19,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentPartnerBinding
 import social.entourage.android.api.model.Partner
-import social.entourage.android.api.request.PartnerResponse
+import social.entourage.android.api.model.PartnerResponse
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.deeplinks.DeepLinksManager
 import timber.log.Timber
