@@ -27,7 +27,7 @@ android {
     val isRelease = project.gradle.startParameter.taskNames.any { it.contains("release", ignoreCase = true) }
 
     val versionMajor = 14
-    val versionMinor = 4
+    val versionMinor = 5
 
     // Use a fixed version for debug builds to speed up configuration and enable caching
     val versionPatch = if (isRelease) {
