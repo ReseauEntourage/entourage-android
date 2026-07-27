@@ -24,10 +24,23 @@ android {
     val targetCompatibilityVersion = JavaVersion.VERSION_17
 
     // App versions
+    val isRelease = project.gradle.startParameter.taskNames.any { it.contains("release", ignoreCase = true) }
+
     val versionMajor = 14
     val versionMinor = 4
-    val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
-    val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
+
+    // Use a fixed version for debug builds to speed up configuration and enable caching
+    val versionPatch = if (isRelease) {
+        "git rev-list HEAD --count".runCommand().toIntOrNull() ?: 0
+    } else {
+        1000
+    }
+
+    val versionBranchName = if (isRelease) {
+        "git rev-parse --abbrev-ref HEAD".runCommand()
+    } else {
+        "debug"
+    }
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
     val versionNameProd = "${versionMajor}.${versionMinor}.${versionPatch}"
     val appBundleName = System.getenv("APPBUNDLE_NAME") ?: "app"
