@@ -11,7 +11,8 @@ import social.entourage.android.language.LanguageAdapter
 import social.entourage.android.language.LanguageItem
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.language.OnLanguageClicked
-import social.entourage.android.tools.updatePaddingForEdgeToEdge
+import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import java.util.Locale
 
 class PreOnboardingLanguage:BaseActivity(), OnLanguageClicked {
@@ -33,7 +34,8 @@ class PreOnboardingLanguage:BaseActivity(), OnLanguageClicked {
         binding.rvLangue.adapter = adapter
         setContentView(binding.root)
 
-        updatePaddingForEdgeToEdge(binding.root)
+        updatePaddingTopForEdgeToEdge(binding.homeHeader)
+        updatePaddingBottomForEdgeToEdge(binding.validate)
     }
 
     private fun fillArray() {
