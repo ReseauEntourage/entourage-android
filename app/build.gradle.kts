@@ -1,8 +1,5 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
@@ -51,12 +48,6 @@ android {
     val deepLinksSchemeStaging = "entourage-staging"
     val deepLinksURLProd = "www.entourage.social"
     val deepLinksURLStaging = "preprod.entourage.social"
-
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
-    }
 
     buildFeatures {
         viewBinding = true
@@ -179,7 +170,7 @@ android {
             applicationIdSuffix = ".debug"
             //firebaseCrashlytics.mappingFileUploadEnabled = false
             //optimizing build speed
-            aaptOptions.cruncherEnabled = false
+            //aaptOptions.cruncherEnabled = false
             /*FirebasePerformance {
                 // Set this flag to "false" to disable @AddTrace annotation processing and
                 // automatic monitoring of HTTP/S network requests
