@@ -141,6 +141,7 @@ android {
             buildConfigField("String", "PEDAGO_GUIDE_ID", "\"eOB7jU8NNODY\"")
         }
         create("staging") {
+            isDefault = true
             manifestPlaceholders += mapOf(
                 "deepLinksHostName" to deepLinksURLStaging,
                 "deepLinksScheme" to deepLinksSchemeStaging
@@ -173,6 +174,7 @@ android {
         }
 
         debug {
+            isDefault = true
             signingConfig = signingConfigs.getAt("debug")
             applicationIdSuffix = ".debug"
             //firebaseCrashlytics.mappingFileUploadEnabled = false
