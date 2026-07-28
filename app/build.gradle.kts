@@ -162,6 +162,9 @@ android {
         release {
             signingConfig = signingConfigs.getAt("googleplay")
             isDebuggable = false
+            ndk {
+                debugSymbolLevel = "FULL"
+            }
         }
 
         debug {
