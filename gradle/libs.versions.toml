@@ -56,12 +56,11 @@ review = "2.0.2"
 speed-dial = "3.3.0"
 ktor = "3.5.1"
 aboutlibraries = "14.2.1"
-android-application = "9.3.0"
+android-application = "9.3.1"
 ksp = "2.3.8"
 google-services = "4.5.0"
 firebase-crashlytics = "3.0.7"
 kotlin-plugin-serialization = "2.4.10"
-kotlin-android = "2.4.10"
 navigation-safeargs = "2.9.8"
 kotlinx-serialization-json = "1.11.0"
 play-services-auth-api-phone = "18.3.1"
@@ -175,7 +174,6 @@ android-application = { id = "com.android.application", version.ref = "android-a
 google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-plugin-serialization" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-android" }
 navigation-safeargs = { id = "androidx.navigation.safeargs", version.ref = "navigation-safeargs" }
 aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutlibraries" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
