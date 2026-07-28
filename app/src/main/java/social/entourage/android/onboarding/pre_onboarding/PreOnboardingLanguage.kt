@@ -35,7 +35,7 @@ class PreOnboardingLanguage:BaseActivity(), OnLanguageClicked {
         setContentView(binding.root)
 
         updatePaddingTopForEdgeToEdge(binding.homeHeader)
-        updatePaddingBottomForEdgeToEdge(binding.validate)
+        updatePaddingBottomForEdgeToEdge(binding.root)
     }
 
     private fun fillArray() {
