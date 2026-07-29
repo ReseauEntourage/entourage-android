@@ -2257,10 +2257,10 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="discussion_settings_search">Rechercher un membre de la discussion</string>
     <string name="discussion_settings_search_empty">Oups, aucun résultat ne correspond à votre recherche ! </string>
-    <string name="discussion_report_discussion">Signaler la discussion</string>
+    <string name="discussion_report_conversation">Signaler la discussion</string>
 
-    <string name="leave_discussion">Supprimer la discussion</string>
-    <string name="leave_discussion_dialog_content">Souhaitez-vous supprimer la discussion ?</string>
+    <string name="leave_conversation">Supprimer la discussion</string>
+    <string name="leave_conversation_dialog_content">Souhaitez-vous supprimer la discussion ?</string>
 
     <string name="discussion_pop_new_message_title">Nouvelle discussion</string>
     <string name="discussion_pop_new_message_subtitle">Vous n’avez pas encore échangé avec cet utilisateur. En cas de problème, vous pouvez signaler la discussion dans les paramètres.</string>
@@ -2678,7 +2678,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="add_to_agenda">Ajouter à l\'agenda</string>
     <string name="share_and_join_event">Participer et rejoindre la discussion</string>
-    <string name="see_discussion_event">Voir la discussion</string>
+    <string name="see_conversation_event">Voir la discussion</string>
     <string name="child_rules">Normes de protection des enfants</string>
     <string name="filter_all">Toutes</string>
     <string name="filter_discussions">Discussions</string>

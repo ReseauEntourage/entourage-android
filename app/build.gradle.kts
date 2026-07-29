@@ -200,6 +200,9 @@ android {
         abortOnError = false
         disable += listOf("InvalidPackage")
     }
+    aboutLibraries {
+        offlineMode.set(true)
+    }
     namespace = "social.entourage.android"
 }
 
