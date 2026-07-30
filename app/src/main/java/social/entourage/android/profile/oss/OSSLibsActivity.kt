@@ -202,7 +202,7 @@ fun OSSLibsHeader(onBack: () -> Unit) {
                     .size(25.dp)
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.new_back),
+                    painter = painterResource(id = R.drawable.ic_back_round),
                     contentDescription = null,
                     tint = Color.Unspecified
                 )
