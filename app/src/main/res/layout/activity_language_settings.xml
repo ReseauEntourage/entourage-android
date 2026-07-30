@@ -14,7 +14,7 @@
         android:layout_marginTop="@dimen/entourage_margin_section"
         android:layout_marginEnd="@dimen/entourage_marginstart"
         android:layout_marginStart="@dimen/entourage_marginstart"
-        android:src="@drawable/new_back"
+        android:src="@drawable/ic_back_round"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
