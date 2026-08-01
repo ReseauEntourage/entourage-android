@@ -65,6 +65,7 @@ import social.entourage.android.survey.ResponseSurveyActivity
 import social.entourage.android.survey.SurveyPresenter
 import social.entourage.android.tools.image_viewer.ImageViewerActivity
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
@@ -114,6 +115,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         _binding = FragmentFeedGroupBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_GROUP_FEED_SHOW)
         updatePaddingTopForEdgeToEdge(binding.toolbarHeader)
+        updatePaddingBottomForEdgeToEdge(binding.postsOldRecyclerview)
         return binding.root
     }
 
