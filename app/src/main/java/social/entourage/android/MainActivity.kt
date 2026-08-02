@@ -586,30 +586,40 @@ class MainActivity : BaseSecuredActivity() {
 
     private fun singleTopNavOptions() = NavOptions.Builder()
         .setLaunchSingleTop(true)
+        .setRestoreState(true)
+        .setPopUpTo(navController.graph.startDestinationId, inclusive = false, saveState = true)
         .build()
 
     fun goHome() {
-        navController.navigate(R.id.navigation_home, null, singleTopNavOptions())
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+        bottomNavigationView.selectedItemId = R.id.navigation_home
     }
 
     fun goGroup() {
-        navController.navigate(R.id.navigation_groups, null, singleTopNavOptions())
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+        bottomNavigationView.selectedItemId = R.id.navigation_groups
     }
 
     fun goEvent() {
-        navController.navigate(R.id.navigation_events, null, singleTopNavOptions())
         if (shouldLaunchEvent == false) {
             MainFilterActivity.resetAllFilters(this)
         }
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+        bottomNavigationView.selectedItemId = R.id.navigation_events
     }
 
     fun goConv(isSmallTalkFilter: Boolean = false) {
-        val bundle = if (isSmallTalkFilter) bundleOf("isSmallTalkFilter" to true) else null
-        navController.navigate(R.id.navigation_messages, bundle, singleTopNavOptions())
+        if (isSmallTalkFilter) {
+            val bundle = bundleOf("isSmallTalkFilter" to true)
+            navController.navigate(R.id.navigation_messages, bundle, singleTopNavOptions())
+        } else {
+            val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+            bottomNavigationView.selectedItemId = R.id.navigation_messages
+        }
     }
 
     fun navigateToGroupsTab() {
-        navController.navigate(R.id.navigation_groups, null, singleTopNavOptions())
+        goGroup()
     }
 
     fun goContrib() {
@@ -650,13 +660,8 @@ class MainActivity : BaseSecuredActivity() {
                     MainFilterActivity.resetAllFilters(this)
                 }
             }
-            // LA navigation est faite ici par NavigationUI, toi tu ne navigues pas ailleurs.
-            val handled = NavigationUI.onNavDestinationSelected(item, navController)
-            if (!handled && item.itemId == R.id.navigation_home) {
-                goHome()
-                return@setOnItemSelectedListener true
-            }
-            handled
+            // LA navigation est faite ici par NavigationUI
+            NavigationUI.onNavDestinationSelected(item, navController)
         }
     }
 
