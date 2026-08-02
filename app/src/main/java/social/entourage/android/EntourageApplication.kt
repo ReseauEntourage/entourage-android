@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import com.google.firebase.analytics.FirebaseAnalytics
 import social.entourage.android.api.ApiModule
@@ -26,7 +25,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
 /**
- * Application setup for Analytics, JodaTime and Dagger
+ * Application setup for Analytics, Timber and API modules
  */
 class EntourageApplication : Application() {
     private val activities: ArrayList<BaseActivity> = ArrayList()
@@ -47,7 +46,6 @@ class EntourageApplication : Application() {
         complexPreferences = ComplexPreferences(this, "userPref", Context.MODE_PRIVATE)
         authenticationController = AuthenticationController()
         apiModule = ApiModule()
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         librariesSupport = LibrariesSupport()
         librariesSupport.setupLibraries(this)
     }
