@@ -119,36 +119,9 @@ android {
             storeFile = file("../keystore/debug.keystore")
         }
     }
-    flavorDimensions += listOf("app", "env")
+    flavorDimensions += listOf("app")
 
     productFlavors {
-        create("prod") {
-            dimension = "env"
-            buildConfigField("String", "ENTOURAGE_URL", "\"${entourageURLProd}\"")
-            buildConfigField("String", "DEEP_LINKS_SCHEME", "\"${deepLinksSchemeProd}\"")
-            buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLProd}\"")
-            buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "15")
-            buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "37")
-            buildConfigField("int", "PEDAGO_ACTION_SECTION_ID", "34")
-            buildConfigField("String", "PEDAGO_GUIDE_ID", "\"eOB7jU8NNODY\"")
-        }
-        create("staging") {
-            isDefault = true
-            manifestPlaceholders += mapOf(
-                "deepLinksHostName" to deepLinksURLStaging,
-                "deepLinksScheme" to deepLinksSchemeStaging
-            )
-            dimension = "env"
-            applicationIdSuffix = ".preprod"
-            buildConfigField("String", "ENTOURAGE_URL", "\"${entourageURLStaging}\"")
-            buildConfigField("String", "DEEP_LINKS_SCHEME", "\"${deepLinksSchemeStaging}\"")
-            buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLStaging}\"")
-            buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "32")
-            buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "33")
-            buildConfigField("int", "PEDAGO_ACTION_SECTION_ID", "33")
-            buildConfigField("String", "PEDAGO_GUIDE_ID", "\"eyck8DuIn3cI\"")
-
-        }
         create("entourage") {
             dimension = "app"
             buildConfigField("String", "API_KEY", "\"4a7373f3e7dd45fc391a2f19\"")
@@ -166,21 +139,47 @@ android {
             ndk {
                 debugSymbolLevel = "FULL"
             }
+            buildConfigField("String", "ENTOURAGE_URL", "\"${entourageURLProd}\"")
+            buildConfigField("String", "DEEP_LINKS_SCHEME", "\"${deepLinksSchemeProd}\"")
+            buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLProd}\"")
+            buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "15")
+            buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "37")
+            buildConfigField("int", "PEDAGO_ACTION_SECTION_ID", "34")
+            buildConfigField("String", "PEDAGO_GUIDE_ID", "\"eOB7jU8NNODY\"")
+        }
+
+        create("preprod") {
+            signingConfig = signingConfigs.getAt("googleplay")
+            isDebuggable = false
+            applicationIdSuffix = ".preprod"
+            manifestPlaceholders += mapOf(
+                "deepLinksHostName" to deepLinksURLStaging,
+                "deepLinksScheme" to deepLinksSchemeStaging
+            )
+            buildConfigField("String", "ENTOURAGE_URL", "\"${entourageURLStaging}\"")
+            buildConfigField("String", "DEEP_LINKS_SCHEME", "\"${deepLinksSchemeStaging}\"")
+            buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLStaging}\"")
+            buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "32")
+            buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "33")
+            buildConfigField("int", "PEDAGO_ACTION_SECTION_ID", "33")
+            buildConfigField("String", "PEDAGO_GUIDE_ID", "\"eyck8DuIn3cI\"")
         }
 
         debug {
             isDefault = true
             signingConfig = signingConfigs.getAt("debug")
             applicationIdSuffix = ".debug"
-            //firebaseCrashlytics.mappingFileUploadEnabled = false
-            //optimizing build speed
-            //aaptOptions.cruncherEnabled = false
-            /*FirebasePerformance {
-                // Set this flag to "false" to disable @AddTrace annotation processing and
-                // automatic monitoring of HTTP/S network requests
-                // for a specific build variant at compile time.
-                instrumentationEnabled = false
-            }*/
+            manifestPlaceholders += mapOf(
+                "deepLinksHostName" to deepLinksURLStaging,
+                "deepLinksScheme" to deepLinksSchemeStaging
+            )
+            buildConfigField("String", "ENTOURAGE_URL", "\"${entourageURLStaging}\"")
+            buildConfigField("String", "DEEP_LINKS_SCHEME", "\"${deepLinksSchemeStaging}\"")
+            buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLStaging}\"")
+            buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "32")
+            buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "33")
+            buildConfigField("int", "PEDAGO_ACTION_SECTION_ID", "33")
+            buildConfigField("String", "PEDAGO_GUIDE_ID", "\"eyck8DuIn3cI\"")
         }
     }
 

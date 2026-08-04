@@ -36,7 +36,7 @@ class PushNotificationTest : EntourageTestAfterLogin() {
         Manifest.permission.POST_NOTIFICATIONS
     )
 
-    private val entourageID = if (BuildConfig.FLAVOR_env == "prod") "46569" else "2300"
+    private val entourageID = if (BuildConfig.BUILD_TYPE == "release") "46569" else "2300"
 
     private fun checkNotifEnabled(activity: Context) {
         if (!NotificationManagerCompat.from(activity).areNotificationsEnabled()) {

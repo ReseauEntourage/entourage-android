@@ -33,7 +33,7 @@ workflows:
     before_run:
       - prepare_workflow
     envs:
-      - GRADLE_TASK: compileEntourageStagingReleaseSources
+      - GRADLE_TASK: compileEntouragePreprodSources
         opts:
           is_expand: false
     steps:
@@ -70,7 +70,7 @@ workflows:
     before_run:
       - prepare_workflow
     envs:
-      - GRADLE_TASK: assembleEntourageStagingRelease
+      - GRADLE_TASK: assembleEntouragePreprod
         opts:
           is_expand: false
     steps:
@@ -173,7 +173,7 @@ workflows:
     before_run:
       - prepare_workflow
     envs:
-      - GRADLE_TASK: bundleEntourageProdRelease
+      - GRADLE_TASK: bundleEntourageRelease
         opts:
           is_expand: false
       - PLAYSTORE_APP_NAME: social.entourage.android
