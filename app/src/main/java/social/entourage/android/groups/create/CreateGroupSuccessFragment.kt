@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import social.entourage.android.R
 import social.entourage.android.RefreshController
-import social.entourage.android.databinding.NewFragmentCreateGroupSuccessBinding
+import social.entourage.android.databinding.FragmentCreateGroupSuccessBinding
 import social.entourage.android.groups.details.feed.CreatePostGroupActivity
 import social.entourage.android.groups.details.feed.GroupFeedActivity
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -18,8 +18,8 @@ import social.entourage.android.tools.utils.Const
 
 class CreateGroupSuccessFragment : Fragment() {
 
-    private var _binding: NewFragmentCreateGroupSuccessBinding? = null
-    val binding: NewFragmentCreateGroupSuccessBinding get() = _binding!!
+    private var _binding: FragmentCreateGroupSuccessBinding? = null
+    val binding: FragmentCreateGroupSuccessBinding get() = _binding!!
 
     private val args: CreateGroupSuccessFragmentArgs by navArgs()
 
@@ -33,12 +33,12 @@ class CreateGroupSuccessFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentCreateGroupSuccessBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateGroupSuccessBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(
             AnalyticsEvents.VIEW_NEW_GROUP_CONFIRMATION
         )
 
-        updatePaddingTopForEdgeToEdge(binding.pass)
+        updatePaddingTopForEdgeToEdge(binding.root)
         return binding.root
     }
 

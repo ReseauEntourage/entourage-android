@@ -34,23 +34,32 @@
             android:src="@drawable/new_round_group_success_left"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/pass"
-            style="@style/h2_orange"
-            android:layout_width="0dp"
+       <LinearLayout
+           android:id="@+id/passZone"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="30dp"
-            android:layout_weight="0.3"
-            android:background="@drawable/new_bg_rounded_button_orange_stroke_transparent"
-            android:drawableEnd="@drawable/new_arrow_orange"
-            android:drawablePadding="@dimen/entourage_padding_10"
-            android:paddingHorizontal="15dp"
-            android:text="@string/pass"
-            android:textAllCaps="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <Button
+                android:id="@+id/pass"
+                style="@style/h2_orange"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="30dp"
+                android:layout_weight="0.3"
+                android:background="@drawable/new_bg_rounded_button_orange_stroke_transparent"
+                android:drawableEnd="@drawable/new_arrow_orange"
+                android:drawablePadding="@dimen/entourage_padding_10"
+                android:paddingHorizontal="15dp"
+                android:text="@string/pass"
+                android:textAllCaps="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/post"
