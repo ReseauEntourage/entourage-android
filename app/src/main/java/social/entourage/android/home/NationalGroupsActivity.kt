@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,6 +32,13 @@ class NationalGroupsActivity : AppCompatActivity() {
         setupObservers()
         // Load data after observers are set up
         loadNationalGroups()
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish()
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
+        })
     }
 
     private fun setupToolbar() {
@@ -38,7 +46,7 @@ class NationalGroupsActivity : AppCompatActivity() {
 
         binding.btnBack.setOnClickListener {
             Timber.wtf("wtf clicked")
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
     }
 
@@ -111,14 +119,10 @@ class NationalGroupsActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) {
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
             return true
         }
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-    }
 }

@@ -145,7 +145,7 @@ class PedagoListFragment : Fragment() {
 
     private fun handleBackButton() {
         binding.header.headerIconBack.setOnClickListener {
-            requireActivity().onBackPressed()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 

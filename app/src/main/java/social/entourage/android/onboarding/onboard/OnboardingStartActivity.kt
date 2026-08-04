@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -16,15 +18,11 @@ import social.entourage.android.api.model.User
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.databinding.ActivityOnboardingStartBinding
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
-import social.entourage.android.tools.disable
-import social.entourage.android.tools.enable
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.view.CustomProgressDialog
 import social.entourage.android.tools.view.countrycodepicker.Country
 import timber.log.Timber
-import androidx.core.content.edit
-import social.entourage.android.tools.updatePaddingForEdgeToEdge
 
 class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
     private lateinit var binding: ActivityOnboardingStartBinding
@@ -77,13 +75,13 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
         }
         setupViews()
         updatePaddingForEdgeToEdge(binding.layoutOnboardingActivity)
-    }
 
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        if (currentFragmentPosition >= numberOfSteps) return
-        goPrevious()
-        super.onBackPressed()
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (currentFragmentPosition >= numberOfSteps) return
+                goPrevious()
+            }
+        })
     }
 
     /********
