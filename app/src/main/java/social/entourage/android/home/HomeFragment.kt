@@ -40,6 +40,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Pedago
 import social.entourage.android.api.model.Summary
+import social.entourage.android.api.model.SummaryAction
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.databinding.FragmentHomeBinding
@@ -452,13 +453,26 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private fun setupAdapters() {
         val viewPool = RecyclerView.RecycledViewPool()
 
-        // 0. Welcome Journey
+        setupWelcomeJourneyAdapter()
+        setupInitialPedagoAdapter(viewPool)
+        setupSmallTalkAdapter()
+        setupActionAdapter(viewPool)
+        setupEventAdapter(viewPool)
+        setupGroupAdapter(viewPool)
+        setupHorsZoneAdapter()
+        setupToolsAdapter()
+        setupPedagoAdapter()
+        setupSuggestionsAdapters()
+        setupModeratorAdapter()
+    }
+
+    private fun setupWelcomeJourneyAdapter() {
         welcomeJourneyAdapter = HomeWelcomeJourneyAdapter(requireContext()) { stepIndex ->
             handleWelcomeJourneyClick(stepIndex)
         }
+    }
 
-
-        // 1. Initial Pedago
+    private fun setupInitialPedagoAdapter(viewPool: RecyclerView.RecycledViewPool) {
         initialPedagoHeaderAdapter = HomeSectionHeaderAdapter()
         homeInitialPedagoAdapter = HomeInitialPedagoAdapter(object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
@@ -475,8 +489,9 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             }
         })
         initialPedagoWrapperAdapter = HomeHorizontalWrapperAdapter(homeInitialPedagoAdapter, viewPool)
+    }
 
-        // 2. Small Talk
+    private fun setupSmallTalkAdapter() {
         smallTalkHeaderAdapter = HomeSectionHeaderAdapter()
         homeSmallTalkAdapter = HomeSmallTalkAdapter(
             onStartClick = {
@@ -499,18 +514,19 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             },
             requireContext()
         )
-        // smallTalkWrapperAdapter = HomeHorizontalWrapperAdapter(homeSmallTalkAdapter, viewPool)
+    }
 
-        // 3. Actions
+    private fun setupActionAdapter(viewPool: RecyclerView.RecycledViewPool) {
         actionHeaderAdapter = HomeSectionHeaderAdapter()
         homeActionAdapter = HomeActionAdapter(false)
-        actionWrapperAdapter = HomeHorizontalWrapperAdapter(homeActionAdapter, viewPool) // NOUVEAU
+        actionWrapperAdapter = HomeHorizontalWrapperAdapter(homeActionAdapter, viewPool)
         actionButtonAdapter = HomeSectionButtonAdapter {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Demand_All)
             (requireActivity() as? MainActivity)?.goDemand()
         }
+    }
 
-        // 4. Events
+    private fun setupEventAdapter(viewPool: RecyclerView.RecycledViewPool) {
         eventHeaderAdapter = HomeSectionHeaderAdapter()
         homeEventAdapter = HomeEventAdapter(requireContext())
         eventWrapperAdapter = HomeHorizontalWrapperAdapter(homeEventAdapter, viewPool)
@@ -518,8 +534,9 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Event_All)
             (requireActivity() as? MainActivity)?.goEvent()
         }
+    }
 
-        // 5. Groups
+    private fun setupGroupAdapter(viewPool: RecyclerView.RecycledViewPool) {
         groupHeaderAdapter = HomeSectionHeaderAdapter()
         homeGroupAdapter = HomeGroupAdapter()
         groupWrapperAdapter = HomeHorizontalWrapperAdapter(homeGroupAdapter, viewPool)
@@ -529,8 +546,9 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             mainActivity?.setGoDiscoverGroupFromDeepL(true)
             mainActivity?.goGroup()
         }
+    }
 
-        // 6. Map & Hors Zone
+    private fun setupHorsZoneAdapter() {
         horsZoneAdapter = HomeSingleLayoutAdapter(R.layout.home_hors_zone) { view ->
             val button = view.findViewById<View>(R.id.button_hz_item)
             button.setOnClickListener {
@@ -542,8 +560,9 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             }
         }
         horsZoneAdapter.setVisible(false)
+    }
 
-        // 7. Tools
+    private fun setupToolsAdapter() {
         homeToolsAdapter = HomeToolsAdapter(requireContext(),
             onMapClick = {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Map)
@@ -561,7 +580,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 )
             },
             onCharterClick = {
-                // Sélection de l'URL selon l'environnement (DEBUG = preprod / RELEASE = prod)
                 val urlString = if (BuildConfig.DEBUG) {
                     "https://preprod.entourage.social/app/resources/87203debda8b"
                 } else {
@@ -571,10 +589,8 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 try {
                     val uri = android.net.Uri.parse(urlString)
                     val intent = Intent(Intent.ACTION_VIEW, uri)
-
                     startActivity(intent)
                 } catch (e: Exception) {
-
                 }
             },
             onClimateMapClick = {
@@ -584,10 +600,10 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 startActivityForResult(intent, 0)
             }
         )
+    }
 
-        // 8. Pedago
+    private fun setupPedagoAdapter() {
         pedagoHeaderAdapter = HomeSectionHeaderAdapter()
-
         homePedagoAdapter = HomePedagoAdapter(object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
                 if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
@@ -602,8 +618,9 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 }
             }
         })
+    }
 
-        // 9. Suggestions
+    private fun setupSuggestionsAdapters() {
         homeSuggestionConnectionAdapter = HomeSuggestionConnectionAdapter(
             onActionClicked = { suggestion ->
                 suggestion.suggestedUserInfo?.id?.let { userId ->
@@ -622,7 +639,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             onActionClicked = { suggestion ->
                 homePresenter.dismissSuggestion(suggestion.id, "actioned")
                 homeSuggestionNextStepAdapter.setSuggestion(null)
-                // Navigate based on action type
                 suggestion.suggestedEntourageInfo?.id?.let { entourageId ->
                     when (suggestion.suggestedAction) {
                         "join_event" -> {
@@ -630,7 +646,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                                 Intent(
                                     requireContext(),
                                     social.entourage.android.events.details.feed.EventFeedActivity::class.java
-                                ).putExtra(social.entourage.android.tools.utils.Const.EVENT_ID, entourageId)
+                                ).putExtra(Const.EVENT_ID, entourageId)
                             )
                         }
                         else -> {}
@@ -642,13 +658,15 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 homeSuggestionNextStepAdapter.setSuggestion(null)
             }
         )
+    }
 
-        // 10. Moderator
+    private fun setupModeratorAdapter() {
         homeModeratorAdapter = HomeModeratorAdapter { moderatorId ->
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Moderator)
             discussionsPresenter.createOrGetConversation(moderatorId.toString())
         }
     }
+
 
     private fun setupRecyclerView() {
         val config = ConcatAdapter.Config.Builder()
@@ -1106,6 +1124,11 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     }
 
     private fun setObservations() {
+        setupPresenterObservers()
+        setupDiscussionObservers()
+    }
+
+    private fun setupPresenterObservers() {
         homePresenter.summary.observe(viewLifecycleOwner) { updateContributionsView(it) }
         homePresenter.getAllEvents.observe(viewLifecycleOwner) { handleEvent(it) }
         homePresenter.getAllActions.observe(viewLifecycleOwner) { handleAction(it) }
@@ -1116,7 +1139,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             welcomeVideoUrl = pedago.url
             welcomeVideoHtml = pedago.html
 
-            // On injecte le contenu vidéo dès qu'il est reçu (uniquement si la modale est ouverte)
             currentVideoWebView?.let { webView ->
                 if (!welcomeVideoUrl.isNullOrBlank()) {
                     loadCleanVideo(webView, welcomeVideoUrl!!)
@@ -1128,6 +1150,9 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             homeSuggestionNextStepAdapter.setSuggestion(response?.nextStep)
         }
         actionsPresenter.unreadMessages.observe(viewLifecycleOwner) { updateUnreadCount(it) }
+    }
+
+    private fun setupDiscussionObservers() {
         discussionsPresenter.newConversation.observe(viewLifecycleOwner) { conversation ->
             conversation?.let {
                 startActivity(
@@ -1143,6 +1168,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             }
         }
     }
+
 
     fun handleGroup(allGroup: MutableList<Group>?) {
         if (allGroup == null) return
@@ -1400,9 +1426,13 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
                 if (scrollY == 0) {
                     isAnimating = false
-                    layoutParamsHomeHeader.topMargin = DEFAULT_MARGIN
-                    binding.homeHeader.layoutParams = layoutParamsHomeHeader
-                    binding.homeTitle.visibility = View.VISIBLE
+                    if (layoutParamsHomeHeader.topMargin != DEFAULT_MARGIN) {
+                        layoutParamsHomeHeader.topMargin = DEFAULT_MARGIN
+                        binding.homeHeader.layoutParams = layoutParamsHomeHeader
+                    }
+                    if (binding.homeTitle.visibility != View.VISIBLE) {
+                        binding.homeTitle.visibility = View.VISIBLE
+                    }
                 } else if (scrollY > 50 && dy > 0 && binding.homeTitle.visibility == View.VISIBLE) {
                     isAnimating = true
                     startAnimation(layoutParamsHomeHeader, View.GONE)
@@ -1425,9 +1455,13 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             duration = 100
             addUpdateListener { animation ->
                 val animatedValue = animation.animatedValue as Int
-                layoutParamsHomeHeader.topMargin = animatedValue
-                binding.homeHeader.layoutParams = layoutParamsHomeHeader
-                binding.homeTitle.visibility = titleVisibility
+                if (layoutParamsHomeHeader.topMargin != animatedValue) {
+                    layoutParamsHomeHeader.topMargin = animatedValue
+                    binding.homeHeader.layoutParams = layoutParamsHomeHeader
+                }
+                if (binding.homeTitle.visibility != titleVisibility) {
+                    binding.homeTitle.visibility = titleVisibility
+                }
             }
             doOnEnd {
                 isAnimating = false
@@ -1440,83 +1474,92 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private fun onActionUnclosed(summary: Summary) {
         summary.unclosedAction?.let { unclosedAction ->
             if (unclosedAction.actionType == "solicitation") {
-                AnalyticsEvents.logEvent(AnalyticsEvents.View__StateDemandPop__Day10)
-                unclosedAction.title?.let { contentText ->
-                    CustomAlertDialog.showForLastActionOneDemand(
-                        requireContext(),
-                        getString(R.string.custom_dialog_action_title_one_demand),
-                        contentText,
-                        getString(R.string.custom_dialog_action_content_one_demande),
-                        getString(R.string.yes),
-                        onNo = {
-                            AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateDemandPop__No__Day10)
-                            AnalyticsEvents.logEvent(AnalyticsEvents.View__StateDemandPop__No__Day10)
-                            CustomAlertDialog.showForLastActionTwo(
-                                requireContext(),
-                                getString(R.string.custom_dialog_action_title_two),
-                                getString(R.string.custom_dialog_action_content_two_demande),
-                                getString(R.string.custom_dialog_action_two_button_contrib),
-                                onYes = {
-                                    (requireActivity() as? MainActivity)?.goDemand()
-                                    AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeDemand__Day10)
-                                }
-                            )
-                        },
-                        onYes = {
-                            AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateDemandPop__Yes__Day10)
-                            AnalyticsEvents.logEvent(AnalyticsEvents.View__DeleteDemandPop__Day10)
-                            unclosedAction.id?.let { id ->
-                                actionsPresenter.cancelAction(id, true, true, "")
-                                CustomAlertDialog.showForLastActionThree(
-                                    requireContext(),
-                                    getString(R.string.custom_dialog_action_title_three),
-                                    getString(R.string.custom_dialog_action_content_three_demande)
-                                )
-                            }
-                        }
-                    )
-                }
+                handleSolicitationAction(unclosedAction)
             }
             if (unclosedAction.actionType == "contribution") {
-                AnalyticsEvents.logEvent(AnalyticsEvents.View__StateContribPop__Day10)
-                unclosedAction.title?.let { contentText ->
-                    CustomAlertDialog.showForLastActionOneContrib(
-                        requireContext(),
-                        getString(R.string.custom_dialog_action_title_one_contrib),
-                        contentText,
-                        getString(R.string.custom_dialog_action_content_one_contrib),
-                        getString(R.string.yes),
-                        onNo = {
-                            AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateContribPop__No__Day10)
-                            AnalyticsEvents.logEvent(AnalyticsEvents.View__StateContribPop__No__Day10)
-                            CustomAlertDialog.showForLastActionTwo(
-                                requireContext(),
-                                getString(R.string.custom_dialog_action_title_two),
-                                getString(R.string.custom_dialog_action_content_two_contrib),
-                                getString(R.string.custom_dialog_action_two_button_demand),
-                                onYes = {
-                                    (requireActivity() as? MainActivity)?.goDemand()
-                                    AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeContrib__Day10)
-                                }
-                            )
-                        },
-                        onYes = {
-                            AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateContribPop__Yes__Day10)
-                            AnalyticsEvents.logEvent(AnalyticsEvents.View__DeleteContribPop__Day10)
-                            unclosedAction.id?.let { id ->
-                                actionsPresenter.cancelAction(id, false, true, "")
-                                CustomAlertDialog.showForLastActionThree(
-                                    requireContext(),
-                                    getString(R.string.custom_dialog_action_title_three),
-                                    getString(R.string.custom_dialog_action_content_three_contrib)
-                                )
-                            }
-                        }
-                    )
-                }
+                handleContributionAction(unclosedAction)
             }
         }
     }
+
+    private fun handleSolicitationAction(unclosedAction: SummaryAction) {
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__StateDemandPop__Day10)
+        unclosedAction.title?.let { contentText ->
+            CustomAlertDialog.showForLastActionOneDemand(
+                requireContext(),
+                getString(R.string.custom_dialog_action_title_one_demand),
+                contentText,
+                getString(R.string.custom_dialog_action_content_one_demande),
+                getString(R.string.yes),
+                onNo = {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateDemandPop__No__Day10)
+                    AnalyticsEvents.logEvent(AnalyticsEvents.View__StateDemandPop__No__Day10)
+                    CustomAlertDialog.showForLastActionTwo(
+                        requireContext(),
+                        getString(R.string.custom_dialog_action_title_two),
+                        getString(R.string.custom_dialog_action_content_two_demande),
+                        getString(R.string.custom_dialog_action_two_button_contrib),
+                        onYes = {
+                            (requireActivity() as? MainActivity)?.goDemand()
+                            AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeDemand__Day10)
+                        }
+                    )
+                },
+                onYes = {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateDemandPop__Yes__Day10)
+                    AnalyticsEvents.logEvent(AnalyticsEvents.View__DeleteDemandPop__Day10)
+                    unclosedAction.id?.let { id ->
+                        actionsPresenter.cancelAction(id, true, true, "")
+                        CustomAlertDialog.showForLastActionThree(
+                            requireContext(),
+                            getString(R.string.custom_dialog_action_title_three),
+                            getString(R.string.custom_dialog_action_content_three_demande)
+                        )
+                    }
+                }
+            )
+        }
+    }
+
+    private fun handleContributionAction(unclosedAction: SummaryAction) {
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__StateContribPop__Day10)
+        unclosedAction.title?.let { contentText ->
+            CustomAlertDialog.showForLastActionOneContrib(
+                requireContext(),
+                getString(R.string.custom_dialog_action_title_one_contrib),
+                contentText,
+                getString(R.string.custom_dialog_action_content_one_contrib),
+                getString(R.string.yes),
+                onNo = {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateContribPop__No__Day10)
+                    AnalyticsEvents.logEvent(AnalyticsEvents.View__StateContribPop__No__Day10)
+                    CustomAlertDialog.showForLastActionTwo(
+                        requireContext(),
+                        getString(R.string.custom_dialog_action_title_two),
+                        getString(R.string.custom_dialog_action_content_two_contrib),
+                        getString(R.string.custom_dialog_action_two_button_demand),
+                        onYes = {
+                            (requireActivity() as? MainActivity)?.goDemand()
+                            AnalyticsEvents.logEvent(AnalyticsEvents.Clic__SeeContrib__Day10)
+                        }
+                    )
+                },
+                onYes = {
+                    AnalyticsEvents.logEvent(AnalyticsEvents.Clic__StateContribPop__Yes__Day10)
+                    AnalyticsEvents.logEvent(AnalyticsEvents.View__DeleteContribPop__Day10)
+                    unclosedAction.id?.let { id ->
+                        actionsPresenter.cancelAction(id, false, true, "")
+                        CustomAlertDialog.showForLastActionThree(
+                            requireContext(),
+                            getString(R.string.custom_dialog_action_title_three),
+                            getString(R.string.custom_dialog_action_content_three_contrib)
+                        )
+                    }
+                }
+            )
+        }
+    }
+
 
     override fun onHomeChangeLocationUpdateClearFragment() {
         binding.frameLayoutChangeLocation.visibility = View.GONE

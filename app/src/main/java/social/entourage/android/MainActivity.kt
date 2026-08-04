@@ -74,8 +74,8 @@ class MainActivity : BaseSecuredActivity() {
     private lateinit var updateActivityResultLauncher: ActivityResultLauncher<IntentSenderRequest>
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        updateMainLanguage()
         super.onCreate(savedInstanceState)
+        updateMainLanguage()
         enableEdgeToEdge()
 
         instance = this
