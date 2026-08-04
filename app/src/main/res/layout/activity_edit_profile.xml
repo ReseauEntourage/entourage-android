@@ -12,6 +12,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginBottom="60dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -153,7 +154,7 @@
 
                     <include
                         android:id="@+id/seek_bar_layout"
-                        layout="@layout/new_seek_bar_layout"
+                        layout="@layout/layout_seek_bar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
