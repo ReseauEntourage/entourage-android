@@ -106,20 +106,31 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private var heartHandler: android.os.Handler? = null
     private val heartRunnable = object : Runnable {
         override fun run() {
+            if (!isAdded) return
+            val handler = heartHandler ?: return
             val heart = binding.bouncingHeart
+            if (heart.visibility != View.VISIBLE) return
+
             val parent = heart.parent as? android.view.View ?: return
             val maxX = parent.width - heart.width.coerceAtLeast(1)
             val maxY = parent.height - heart.height.coerceAtLeast(1)
-            if (maxX <= 0 || maxY <= 0) { heartHandler?.postDelayed(this, 16); return }
+
+            if (maxX <= 0 || maxY <= 0) {
+                handler.postDelayed(this, 100)
+                return
+            }
+
             heartX += heartVx
             heartY += heartVy
+
             if (heartX <= 0f) { heartX = 0f; heartVx = -heartVx }
             if (heartX >= maxX) { heartX = maxX.toFloat(); heartVx = -heartVx }
             if (heartY <= 0f) { heartY = 0f; heartVy = -heartVy }
             if (heartY >= maxY) { heartY = maxY.toFloat(); heartVy = -heartVy }
+
             heart.x = heartX
             heart.y = heartY
-            heartHandler?.postDelayed(this, 16)
+            handler.postDelayed(this, 16)
         }
     }
 
@@ -720,18 +731,26 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
 
     override fun onDestroyView() {
-        super.onDestroyView()
-        userPresenter.user.removeObserver(userObserver)
         heartHandler?.removeCallbacks(heartRunnable)
         heartHandler = null
+        userPresenter.user.removeObserver(userObserver)
+        super.onDestroyView()
     }
 
     private fun startBouncingHeart() {
+        if (!isAdded) return
         val heart = binding.bouncingHeart
         val parent = heart.parent as? android.view.View ?: return
+
+        heartHandler?.removeCallbacks(heartRunnable)
+        if (heartHandler == null) {
+            heartHandler = android.os.Handler(android.os.Looper.getMainLooper())
+        }
+
         heartX = (parent.width / 2).toFloat()
         heartY = (parent.height / 3).toFloat()
-        heartHandler = android.os.Handler(android.os.Looper.getMainLooper())
+
+        heart.visibility = View.VISIBLE
         heart.setOnClickListener { explodeHeart(it) }
         heartHandler?.post(heartRunnable)
     }
@@ -793,7 +812,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             CourageMessage("On croit en toi, continue comme ça !", "Julien"),
             CourageMessage("Tu fais un super boulot, vraiment.", "Sophie"),
             CourageMessage("Petit mot pour se souhaiter du courage !", "Lucas"),
-            CourageMessage("T'es génial·e, et on est fier·e de toi.", "Emma"),
+            CourageMessage("T'es fantastique, et on est fier de toi.", "Emma"),
             CourageMessage("Bonne journée, on est tous avec toi !", "Thomas"),
             CourageMessage("Tu illumines la journée des gens autour de toi.", "Camille")
         )
