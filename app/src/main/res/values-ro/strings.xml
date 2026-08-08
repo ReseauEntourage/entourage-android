@@ -2502,6 +2502,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="onboarding_congrats_title">Experiența voastră personalizată este gata!</string>
     <string name="onboarding_congrats_content">Pe baza preferințelor și disponibilităților voastre, am pregătit o selecție de evenimente care vă reprezintă. Este timpul să acționați!</string>
     <string name="onboarding_congrats_leave">Explorați evenimentele</string>
+    <string name="onboarding_congrats_skip">Mai târziu</string>
     <string name="onboarding_congrats_temporary_title">Experiența voastră personalizată este (aproape) gata!</string>
     <string name="onboarding_congrats_temporary_content">Vă mulțumim că ne-ați împărtășit dorințele de a acționa și interesele voastre. Suntem nerăbdători să vă oferim în curând evenimente personalizate care vă corespund. \nRămâneți conectați!</string>
     <string name="notif_ask_page_title">Activați notificările pentru a nu pierde nimic</string>

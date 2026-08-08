@@ -2494,6 +2494,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="onboarding_congrats_title">Ihr maßgeschneidertes Erlebnis ist bereit!</string>
     <string name="onboarding_congrats_content">Basierend auf Ihren Vorlieben und Ihrer Verfügbarkeit haben wir eine Auswahl von Veranstaltungen für Sie zusammengestellt. Es ist Zeit zu handeln!</string>
     <string name="onboarding_congrats_leave">Veranstaltungen durchsuchen</string>
+    <string name="onboarding_congrats_skip">Später</string>
     <string name="onboarding_congrats_temporary_title">Ihr maßgeschneidertes Erlebnis ist (fast) bereit!</string>
     <string name="onboarding_congrats_temporary_content">Danke, dass Sie uns Ihre Handlungswünsche und Interessen mitgeteilt haben. Wir freuen uns darauf, Ihnen bald maßgeschneiderte Veranstaltungen anzubieten. \nBleiben Sie verbunden!</string>
     <string name="notif_ask_page_title">Aktivieren Sie Benachrichtigungen, um nichts zu verpassen</string>
