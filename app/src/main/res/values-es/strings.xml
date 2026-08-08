@@ -2490,6 +2490,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="onboarding_congrats_title">¡Tu experiencia personalizada está lista!</string>
     <string name="onboarding_congrats_content">Según tus preferencias y disponibilidad, hemos preparado una selección de eventos que te representan. ¡Es hora de actuar!</string>
     <string name="onboarding_congrats_leave">Explorar eventos</string>
+    <string name="onboarding_congrats_skip">Más tarde</string>
     <string name="onboarding_congrats_temporary_title">¡Tu experiencia personalizada está (casi) lista!</string>
     <string name="onboarding_congrats_temporary_content">Gracias por compartir tus deseos de actuar y tus intereses. Estamos ansiosos por ofrecerte pronto eventos personalizados que te correspondan. \n¡Mantente conectado!</string>
     <string name="notif_ask_page_title">Activa las notificaciones para no perderte nada</string>
