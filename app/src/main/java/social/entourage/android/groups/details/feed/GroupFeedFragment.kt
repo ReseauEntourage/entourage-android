@@ -354,54 +354,61 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
                 binding.progressBar.visibility = View.GONE
                 isLoading = false
 
-                allPosts?.let {
-                    allPostsList.addAll(allPosts)
-
-                    it.forEach { post ->
-                        if (post.read == true || post.read == null) {
-                            oldPostsList.add(post)
-                        } else {
-                            newPostsList.add(post)
-                        }
-                    }
-                }
-
-                // Filtrer les posts supprimés
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    newPostsList.removeIf { post -> post.status == "deleted" }
-                    oldPostsList.removeIf { post -> post.status == "deleted" }
-                }
-
-                if (newPostsList.isEmpty() && oldPostsList.isEmpty()) {
-                    binding.postsLayoutEmptyState.visibility = View.VISIBLE
-                    binding.postsNewRecyclerview.visibility = View.GONE
-                    binding.postsOldRecyclerview.visibility = View.GONE
-                }
-                if (newPostsList.isNotEmpty()) {
-                    binding.postsNew.root.visibility = View.VISIBLE
-                    binding.postsNewRecyclerview.visibility = View.VISIBLE
-                    binding.postsLayoutEmptyState.visibility = View.GONE
-                    binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
-                } else {
-                    binding.postsNew.root.visibility = View.GONE
-                    binding.postsNewRecyclerview.visibility = View.GONE
-                }
-
-                if (oldPostsList.isNotEmpty()) {
-                    // Si on a des newPosts, on affiche le bloc « Anciens messages »
-                    if (newPostsList.isNotEmpty()) binding.postsOld.root.visibility = View.VISIBLE
-                    else binding.postsOld.root.visibility = View.GONE
-
-                    binding.postsOldRecyclerview.visibility = View.VISIBLE
-                    binding.postsLayoutEmptyState.visibility = View.GONE
-                    binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
-                } else {
-                    binding.postsOldRecyclerview.visibility = View.GONE
-                }
+                processPostsData(allPosts)
+                updatePostsVisibility()
 
             } catch (e: NullPointerException) {
                 Timber.e("Error in coroutine handleResponseGetGroupPosts")
             }
+        }
+    }
+
+    private fun processPostsData(allPosts: MutableList<Post>?) {
+        allPosts?.let {
+            allPostsList.addAll(allPosts)
+
+            it.forEach { post ->
+                if (post.read == true || post.read == null) {
+                    oldPostsList.add(post)
+                } else {
+                    newPostsList.add(post)
+                }
+            }
+        }
+
+        // Filtrer les posts supprimés
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            newPostsList.removeIf { post -> post.status == "deleted" }
+            oldPostsList.removeIf { post -> post.status == "deleted" }
+        }
+    }
+
+    private fun updatePostsVisibility() {
+        if (newPostsList.isEmpty() && oldPostsList.isEmpty()) {
+            binding.postsLayoutEmptyState.visibility = View.VISIBLE
+            binding.postsNewRecyclerview.visibility = View.GONE
+            binding.postsOldRecyclerview.visibility = View.GONE
+        }
+        if (newPostsList.isNotEmpty()) {
+            binding.postsNew.root.visibility = View.VISIBLE
+            binding.postsNewRecyclerview.visibility = View.VISIBLE
+            binding.postsLayoutEmptyState.visibility = View.GONE
+            binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
+        } else {
+            binding.postsNew.root.visibility = View.GONE
+            binding.postsNewRecyclerview.visibility = View.GONE
+        }
+
+        if (oldPostsList.isNotEmpty()) {
+            // Si on a des newPosts, on affiche le bloc « Anciens messages »
+            if (newPostsList.isNotEmpty()) binding.postsOld.root.visibility = View.VISIBLE
+            else binding.postsOld.root.visibility = View.GONE
+
+            binding.postsOldRecyclerview.visibility = View.VISIBLE
+            binding.postsLayoutEmptyState.visibility = View.GONE
+            binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
+        } else {
+            binding.postsOldRecyclerview.visibility = View.GONE
         }
     }
 
@@ -846,7 +853,16 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
 
     private fun updateView() {
         MetaDataRepository.metaData.observe(viewLifecycleOwner, ::handleMetaData)
+        setupHeader()
+        setupGroupEvents()
+        setupImages()
+        setupVisibility()
+        updateButtonJoin()
+        initializePosts()
+        handleCreatePostButton()
+    }
 
+    private fun setupHeader() {
         with(binding) {
             groupDescription.enableCopyOnLongClick(requireContext())
             groupName.text = group?.name
@@ -856,19 +872,12 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
                 group?.address?.displayAddress
             )
             initializeMembersPhotos()
-            more.visibility = View.VISIBLE
-            btnShare.visibility = View.VISIBLE
-            join.visibility = View.GONE
-            VibrationUtil.vibrate(requireContext())
-            toKnow.visibility = View.GONE
-            groupDescription.visibility = View.GONE
+            setupMoreTextView()
+        }
+    }
 
-            if (group?.member == true) {
-                join.visibility = View.GONE
-            } else {
-                join.visibility = View.VISIBLE
-            }
-
+    private fun setupGroupEvents() {
+        with(binding) {
             if (group?.futureEvents?.isEmpty() == true) {
                 eventsLayoutEmptyState.visibility = View.VISIBLE
                 eventsRecyclerview.visibility = View.GONE
@@ -880,7 +889,11 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
 
             seeMoreEvents.isVisible = group?.futureEvents?.isNotEmpty() == true
             arrowEvents.isVisible = group?.futureEvents?.isNotEmpty() == true
+        }
+    }
 
+    private fun setupImages() {
+        with(binding) {
             Glide.with(requireActivity())
                 .load(group?.imageUrl)
                 .error(R.drawable.new_group_illu)
@@ -893,13 +906,23 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
                 .error(R.drawable.new_group_illu)
                 .transform(CenterCrop(), RoundedCorners(8.px))
                 .into(groupImageToolbar)
-
-            setupMoreTextView()
         }
+    }
 
-        updateButtonJoin()
-        initializePosts()
-        handleCreatePostButton()
+    private fun setupVisibility() {
+        with(binding) {
+            more.visibility = View.VISIBLE
+            btnShare.visibility = View.VISIBLE
+            VibrationUtil.vibrate(requireContext())
+            toKnow.visibility = View.GONE
+            groupDescription.visibility = View.GONE
+
+            if (group?.member == true) {
+                join.visibility = View.GONE
+            } else {
+                join.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun updateButtonJoin() {
@@ -946,36 +969,46 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
     // ============================
 
     private fun createPost() {
+        setupSpeedDialMenu()
+        setupSpeedDialActions()
+    }
+
+    private fun setupSpeedDialMenu() {
         val speedDialView: SpeedDialView = binding.createPost
+        val orange = ContextCompat.getColor(requireContext(), R.color.orange)
+        val white = ContextCompat.getColor(requireContext(), R.color.white)
 
         speedDialView.addActionItem(
             SpeedDialActionItem.Builder(R.id.fab_create_event, R.drawable.ic_group_feed_two)
-                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
-                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setFabBackgroundColor(orange)
+                .setFabImageTintColor(white)
                 .setLabel(getString(R.string.create_event))
-                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.white))
-                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setLabelColor(white)
+                .setLabelBackgroundColor(orange)
                 .create()
         )
         speedDialView.addActionItem(
             SpeedDialActionItem.Builder(R.id.fab_create_post, R.drawable.ic_group_feed_one)
-                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
-                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setFabBackgroundColor(orange)
+                .setFabImageTintColor(white)
                 .setLabel(getString(R.string.create_post))
-                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.white))
-                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setLabelColor(white)
+                .setLabelBackgroundColor(orange)
                 .create()
         )
         speedDialView.addActionItem(
             SpeedDialActionItem.Builder(R.id.fab_create_survey, R.drawable.ic_survey_creation)
-                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
-                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setFabBackgroundColor(orange)
+                .setFabImageTintColor(white)
                 .setLabel(getString(R.string.create_survey))
-                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.white))
-                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setLabelColor(white)
+                .setLabelBackgroundColor(orange)
                 .create()
         )
+    }
 
+    private fun setupSpeedDialActions() {
+        val speedDialView: SpeedDialView = binding.createPost
         speedDialView.setOnActionSelectedListener { actionItem ->
             // Vérifier qu'on est encore attaché
             if (!isAdded || requireActivity().isFinishing) return@setOnActionSelectedListener false

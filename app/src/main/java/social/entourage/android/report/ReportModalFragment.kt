@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -217,18 +218,33 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     }
 
     fun setStartView() {
-        // Renseigne les flags UI (sûr, pas d'unresolved ref)
+        setupReportFlags()
+        setupCopyOption()
+        setupTranslateOption()
+
+        if (shouldAutoTransitionToReportDetails()) {
+            transitionToReportDetails()
+            return
+        }
+
+        setupDeleteOption()
+        setupReportInteraction()
+    }
+
+    private fun setupReportFlags() {
         getIsFromMe()
         getIsNotTranslatable()
         getContentCopied()
         getIsMyLanguage()
         getIsFromConv()
         getIsOneToOne()
+    }
 
-        // Copier
+    private fun setupCopyOption() {
         if (contentCopied.isNullOrEmpty()) {
             binding.layoutChooseCopy.visibility = View.GONE
         } else {
+            binding.layoutChooseCopy.visibility = View.VISIBLE
             binding.layoutChooseCopy.setOnClickListener {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Clic_CopyPaste_Settings)
                 val clipboard = context?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -240,109 +256,16 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                 dismiss()
             }
         }
+    }
 
-        // Traduire (pertinent seulement pour un message/comm)
-        binding.layoutChooseTranslate.visibility = View.VISIBLE
-        val isCommentType =
-            reportType == ReportTypes.REPORT_COMMENT.code || reportType == ReportTypes.REPORT_POST_EVENT.code
-        binding.layoutChooseTranslate.visibility =
-            if (isCommentType &&
+    private fun setupTranslateOption() {
+        val isCommentType = reportType == ReportTypes.REPORT_COMMENT.code || reportType == ReportTypes.REPORT_POST_EVENT.code
+        val canTranslate = isCommentType &&
                 DataLanguageStock.postLanguage != DataLanguageStock.userLanguage &&
                 isFromMe != true &&
                 isNotTranslatable != true
-            ) View.VISIBLE else View.GONE
 
-        // Les types conversation / group / event ouvrent direct la 2e vue
-        if (reportType == ReportTypes.REPORT_GROUP.code ||
-            reportType == ReportTypes.REPORT_EVENT.code ||
-            reportType == ReportTypes.REPORT_CONVERSATION.code
-        ) {
-            setAfterChoose()
-            setView()
-            return
-        }
-
-        if (isFromMe == false) {
-            binding.layoutChooseSuppress.visibility = View.GONE
-            binding.layoutChooseSignal.visibility = View.VISIBLE
-            binding.next.visibility = View.GONE
-        } else {
-            binding.layoutChooseSuppress.visibility = View.VISIBLE
-            binding.layoutChooseSignal.visibility = View.GONE
-            binding.next.visibility = View.GONE
-        }
-
-        var logEventTitleView = AnalyticsEvents.POST_SUPPRESSED
-        var logEventTitleClick = AnalyticsEvents.SUPPRESS_CLICK
-        binding.header.title = getString(R.string.title_param_post)
-
-        if (isFromConv == true) {
-            binding.header.title = if (isOneToOne == true) {
-                logEventTitleView = AnalyticsEvents.Delete_mess
-                logEventTitleClick = AnalyticsEvents.Click_delete_mess
-                getString(R.string.title_param_message)
-            } else {
-                logEventTitleView = AnalyticsEvents.Delete_comm
-                logEventTitleClick = AnalyticsEvents.Click_delete_comm
-                getString(R.string.title_param_comment)
-            }
-        }
-
-        if (this.isFromConv == true) {
-            binding.titleSupressPost.text = if (isOneToOne == true)
-                getString(R.string.discussion_choose_supress_message)
-            else
-                getString(R.string.discussion_choose_supress_commentary)
-        }
-
-        binding.layoutChooseSuppress.setOnClickListener {
-            AnalyticsEvents.logEvent(logEventTitleView)
-            if (this.isFromConv == true) {
-                val (title, message, btn) =
-                    if (isOneToOne == true)
-                        Triple(getString(R.string.discussion_supress_the_message),
-                            getString(R.string.discussion_ask_supress_message),
-                            getString(R.string.discussion_button_supress))
-                    else
-                        Triple(getString(R.string.discussion_supress_the_comment),
-                            getString(R.string.discussion_ask_supress_comment),
-                            getString(R.string.discussion_button_supress))
-
-                CustomAlertDialog.showWithCancelFirst(
-                    requireContext(),
-                    title, message, btn,
-                    onNo = { /* cancel */ },
-                    onYes = {
-                        AnalyticsEvents.logEvent(logEventTitleClick)
-                        deleteMessage()
-                        dismissCallback?.reloadView()
-                        onClose()
-                        dismiss()
-                    }
-                )
-            } else {
-                CustomAlertDialog.showWithCancelFirst(
-                    requireContext(),
-                    getString(R.string.discussion_supress_the_post),
-                    getString(R.string.discussion_ask_supress),
-                    getString(R.string.discussion_button_supress),
-                    onNo = { /* cancel */ },
-                    onYes = {
-                        AnalyticsEvents.logEvent(logEventTitleClick)
-                        deleteMessage()
-                        dismissCallback?.reloadView()
-                    }
-                )
-            }
-        }
-
-        if (reportType == ReportTypes.REPORT_DEMAND.code || reportType == ReportTypes.REPORT_CONTRIB.code) {
-            binding.tvChooseSignal.text = getString(R.string.discussion_entraide_signal)
-        }
-        binding.layoutChooseSignal.setOnClickListener {
-            setAfterChoose()
-            setView()
-        }
+        binding.layoutChooseTranslate.visibility = if (canTranslate) View.VISIBLE else View.GONE
         binding.layoutChooseTranslate.setOnClickListener {
             reportedId?.let { id ->
                 dismissCallback?.translateView(id)
@@ -350,6 +273,75 @@ class ReportModalFragment : BottomSheetDialogFragment() {
             }
             onClose()
             dismiss()
+        }
+    }
+
+    private fun shouldAutoTransitionToReportDetails(): Boolean {
+        return reportType == ReportTypes.REPORT_GROUP.code ||
+                reportType == ReportTypes.REPORT_EVENT.code ||
+                reportType == ReportTypes.REPORT_CONVERSATION.code
+    }
+
+    private fun transitionToReportDetails() {
+        setAfterChoose()
+        setView()
+    }
+
+    private fun setupDeleteOption() {
+        val suppressVisible = isFromMe != false
+        binding.layoutChooseSuppress.isVisible = suppressVisible
+        binding.layoutChooseSignal.isVisible = !suppressVisible
+        binding.next.visibility = View.GONE
+
+        val (titleRes, logView, logClick) = when {
+            isFromConv == true && isOneToOne == true -> Triple(R.string.title_param_message, AnalyticsEvents.Delete_mess, AnalyticsEvents.Click_delete_mess)
+            isFromConv == true -> Triple(R.string.title_param_comment, AnalyticsEvents.Delete_comm, AnalyticsEvents.Click_delete_comm)
+            else -> Triple(R.string.title_param_post, AnalyticsEvents.POST_SUPPRESSED, AnalyticsEvents.SUPPRESS_CLICK)
+        }
+
+        binding.header.title = getString(titleRes)
+
+        if (isFromConv == true) {
+            binding.titleSupressPost.text = getString(if (isOneToOne == true) R.string.discussion_choose_supress_message else R.string.discussion_choose_supress_commentary)
+        }
+
+        binding.layoutChooseSuppress.setOnClickListener {
+            handleDeleteClick(logView, logClick)
+        }
+    }
+
+    private fun handleDeleteClick(logView: String, logClick: String) {
+        AnalyticsEvents.logEvent(logView)
+        if (isFromConv == true) {
+            val (title, message, btn) = if (isOneToOne == true) {
+                Triple(getString(R.string.discussion_supress_the_message), getString(R.string.discussion_ask_supress_message), getString(R.string.discussion_button_supress))
+            } else {
+                Triple(getString(R.string.discussion_supress_the_comment), getString(R.string.discussion_ask_supress_comment), getString(R.string.discussion_button_supress))
+            }
+
+            CustomAlertDialog.showWithCancelFirst(requireContext(), title, message, btn, onNo = { }, onYes = {
+                AnalyticsEvents.logEvent(logClick)
+                deleteMessage()
+                dismissCallback?.reloadView()
+                onClose()
+                dismiss()
+            })
+        } else {
+            CustomAlertDialog.showWithCancelFirst(requireContext(), getString(R.string.discussion_supress_the_post), getString(R.string.discussion_ask_supress), getString(R.string.discussion_button_supress), onNo = { }, onYes = {
+                AnalyticsEvents.logEvent(logClick)
+                deleteMessage()
+                dismissCallback?.reloadView()
+            })
+        }
+    }
+
+    private fun setupReportInteraction() {
+        if (reportType == ReportTypes.REPORT_DEMAND.code || reportType == ReportTypes.REPORT_CONTRIB.code) {
+            binding.tvChooseSignal.text = getString(R.string.discussion_entraide_signal)
+        }
+        binding.layoutChooseSignal.setOnClickListener {
+            setAfterChoose()
+            setView()
         }
     }
 
