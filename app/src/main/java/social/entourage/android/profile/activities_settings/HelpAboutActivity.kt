@@ -192,7 +192,7 @@ fun HelpAboutScreen(
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_back_round),
-                        contentDescription = null,
+                        contentDescription = stringResource(id = R.string.back),
                         tint = Color.Unspecified
                     )
                 }
