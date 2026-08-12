@@ -58,3 +58,5 @@ app/.classpath
 .DS_Store
 .kotlin
 .aider*
+
+.artifacts
