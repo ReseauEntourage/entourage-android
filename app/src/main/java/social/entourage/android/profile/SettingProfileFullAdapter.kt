@@ -103,6 +103,8 @@ class SettingProfileFullAdapter(
             if(!isMe){
                 binding.ivArrowUserSection.visibility = android.view.View.GONE
             }
+            binding.viewDividerUserSection.visibility =
+                if (bindingAdapterPosition == items.size - 1) android.view.View.GONE else android.view.View.VISIBLE
             // Handle Clicks
             binding.root.setOnClickListener {
 

@@ -14,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:textSize="18sp"
         android:text="@string/ambassador_resources_title" />
 
     <LinearLayout
@@ -33,12 +34,10 @@
             android:orientation="vertical"
             android:padding="12dp">
 
-            <TextView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:textSize="24sp"
-                android:text="📚" />
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_toolbox" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -63,12 +62,11 @@
             android:orientation="vertical"
             android:padding="12dp">
 
-            <TextView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:textSize="24sp"
-                android:text="📝" />
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_chartes_rules"
+                app:tint="@color/orange" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -93,12 +91,10 @@
             android:orientation="vertical"
             android:padding="12dp">
 
-            <TextView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:textSize="24sp"
-                android:text="💬" />
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:src="@drawable/ic_whatsapp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -121,6 +117,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:textSize="18sp"
         android:text="@string/ambassador_referent_title" />
 
     <androidx.cardview.widget.CardView

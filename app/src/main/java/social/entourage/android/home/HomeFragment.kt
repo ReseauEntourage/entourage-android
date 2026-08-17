@@ -679,8 +679,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         if (MainActivity.shouldLaunchOnboarding) {
             MainActivity.shouldLaunchOnboarding = false
         }
-
-        view.post { startBouncingHeart() }
     }
 
     override fun onResume() {
