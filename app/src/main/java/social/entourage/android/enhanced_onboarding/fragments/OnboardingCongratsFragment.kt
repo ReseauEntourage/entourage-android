@@ -1,27 +1,22 @@
 package social.entourage.android.enhanced_onboarding.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.coroutines.MainScope
-import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.api.model.Events
 import social.entourage.android.databinding.FragmentOnboardingCongratsFragmentBinding
-import social.entourage.android.databinding.FragmentOnboardingInterestsLayoutBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.list.EVENTS_PER_PAGE
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
 
 class OnboardingCongratsFragment: Fragment() {
 
@@ -46,6 +41,10 @@ class OnboardingCongratsFragment: Fragment() {
         binding.buttonStart.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_end_browse_events_clic)
             AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_end_congrats_clic_on_ + category)
+            viewModel.registerAndQuit(category)
+        }
+        binding.buttonSkip.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_end_skip_clic)
             viewModel.registerAndQuit(category)
         }
         eventsPresenter = ViewModelProvider(this).get(EventsPresenter::class.java)

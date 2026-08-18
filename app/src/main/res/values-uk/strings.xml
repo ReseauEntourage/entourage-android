@@ -2716,6 +2716,7 @@
     <string name="badge_intro_feature3_desc">Ваші значки відображаються у вашому профілі та розповідають вашу історію у спільноті.</string>
     <string name="badge_intro_cta">Відкрити мої значки</string>
     <string name="badge_intro_later">Пізніше</string>
+    <string name="onboarding_congrats_skip">Пізніше</string>
 
     <!-- Badge unlocked popup -->
     <string name="badge_unlocked_bravo">Браво %s!</string>

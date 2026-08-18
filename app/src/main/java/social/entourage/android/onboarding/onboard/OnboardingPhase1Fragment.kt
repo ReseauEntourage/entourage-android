@@ -148,31 +148,44 @@ class OnboardingPhase1Fragment : Fragment() {
     }
 
     private fun setupViews() {
-        setEditTextAlignmentBasedOnLocale()
-        binding.uiOnboardNamesEtFirstname.hideKeyboardOnDone()
-        binding.uiOnboardNamesEtLastname.hideKeyboardOnDone()
-        binding.uiOnboardPhoneEtPhone.hideKeyboardOnDone()
-        binding.uiOnboardEmail.hideKeyboardOnDone()
+        setupInputFields()
+        setupListeners()
+        setupInitialData()
+        updateButtonNext()
+    }
 
-        // Country picker listener
+    private fun setupInputFields() {
+        setEditTextAlignmentBasedOnLocale()
+        with(binding) {
+            uiOnboardNamesEtFirstname.hideKeyboardOnDone()
+            uiOnboardNamesEtLastname.hideKeyboardOnDone()
+            uiOnboardPhoneEtPhone.hideKeyboardOnDone()
+            uiOnboardEmail.hideKeyboardOnDone()
+
+            uiOnboardBirthdate.apply {
+                keyListener = null
+                try { showSoftInputOnFocus = false } catch (_: Throwable) {}
+                isCursorVisible = false
+                isLongClickable = false
+                setTextIsSelectable(false)
+                isFocusable = false
+                isFocusableInTouchMode = false
+                setOnClickListener { showDatePicker() }
+            }
+
+            tilCompany.isVisible = false
+            tilEvent.isVisible = false
+        }
+        setupFixedGenderDropdown()
+    }
+
+    private fun setupListeners() {
         binding.uiOnboardPhoneCcpCode.countryCodePickerListener = object : CountryCodePickerListener {
             override fun updatedCountry(newCountry: Country) {
                 country = newCountry
                 updatePlaceholder(newCountry.phoneCode)
                 updateButtonNext()
             }
-        }
-
-        // Champ date : non éditable au clavier
-        binding.uiOnboardBirthdate.apply {
-            keyListener = null
-            try { showSoftInputOnFocus = false } catch (_: Throwable) {}
-            isCursorVisible = false
-            isLongClickable = false
-            setTextIsSelectable(false)
-            isFocusable = false
-            isFocusableInTouchMode = false
-            setOnClickListener { showDatePicker() }
         }
 
         activity?.let { act ->
@@ -183,17 +196,7 @@ class OnboardingPhase1Fragment : Fragment() {
         }
 
         binding.uiOnboardConsentCheck.setOnCheckedChangeListener { _, _ -> updateButtonNext() }
-        binding.uiOnboardConsentCheck.isChecked = hasConsent
 
-        // Préremplissage
-        binding.uiOnboardEmail.setText(email)
-        binding.uiOnboardPhoneCcpCode.selectedCountry = country
-        binding.uiOnboardPhoneEtPhone.setText(phone)
-        binding.uiOnboardNamesEtLastname.setText(lastname)
-        binding.uiOnboardNamesEtFirstname.setText(firstname)
-        binding.uiOnboardBirthdate.setText(birthdate)
-
-        // Email change → notifie l'activité si présente
         binding.uiOnboardEmail.addTextChangedListener(object : android.text.TextWatcher {
             override fun afterTextChanged(s: android.text.Editable?) {
                 (activity as? OnboardingStartActivity)?.setEmail(s?.toString().orEmpty())
@@ -201,18 +204,21 @@ class OnboardingPhase1Fragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
+    }
 
-        // On force l'update du placeholder initialement
-        val initialCountryCode = binding.uiOnboardPhoneCcpCode.selectedCountry?.phoneCode ?: "33"
-        updatePlaceholder(initialCountryCode)
+    private fun setupInitialData() {
+        with(binding) {
+            uiOnboardConsentCheck.isChecked = hasConsent
+            uiOnboardEmail.setText(email)
+            uiOnboardPhoneCcpCode.selectedCountry = country
+            uiOnboardPhoneEtPhone.setText(phone)
+            uiOnboardNamesEtLastname.setText(lastname)
+            uiOnboardNamesEtFirstname.setText(firstname)
+            uiOnboardBirthdate.setText(birthdate)
 
-        // Cachés au départ
-        binding.tilCompany.isVisible = false
-        binding.tilEvent.isVisible = false
-
-        setupFixedGenderDropdown()
-
-        updateButtonNext()
+            val initialCountryCode = uiOnboardPhoneCcpCode.selectedCountry?.phoneCode ?: "33"
+            updatePlaceholder(initialCountryCode)
+        }
     }
 
     private fun setEditTextAlignmentBasedOnLocale() {

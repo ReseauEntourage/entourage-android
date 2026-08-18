@@ -33,7 +33,7 @@ workflows:
     before_run:
       - prepare_workflow
     envs:
-      - GRADLE_TASK: compileEntourageStagingReleaseSources
+      - GRADLE_TASK: compileEntouragePreprodSources
         opts:
           is_expand: false
     steps:
@@ -70,7 +70,7 @@ workflows:
     before_run:
       - prepare_workflow
     envs:
-      - GRADLE_TASK: assembleEntourageStagingRelease
+      - GRADLE_TASK: assembleEntouragePreprod
         opts:
           is_expand: false
     steps:
@@ -113,7 +113,7 @@ workflows:
     steps:
       - set-java-version:
           inputs:
-            - set_java_version: '17'
+            - set_java_version: '21'
       - activate-ssh-key:
           run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
       - git-clone@8:
@@ -173,7 +173,7 @@ workflows:
     before_run:
       - prepare_workflow
     envs:
-      - GRADLE_TASK: bundleEntourageProdRelease
+      - GRADLE_TASK: bundleEntourageRelease
         opts:
           is_expand: false
       - PLAYSTORE_APP_NAME: social.entourage.android
@@ -187,7 +187,7 @@ workflows:
             - app_file_exclude_filter: |
                 *.apk
                 *intermediary_bundle*.aab
-            - mapping_file_include_filter: ''
+            - mapping_file_include_filter: "*/mapping.txt"
             - gradle_options: "--stacktrace"
             - gradle_task: "$GRADLE_TASK"
       - deploy-to-bitrise-io:
@@ -198,6 +198,7 @@ workflows:
           inputs:
             - package_name: "$PLAYSTORE_APP_NAME"
             - app_path: "$BITRISE_AAB_PATH"
+            - mapping_path: "$BITRISE_MAPPING_PATH"
             - service_account_json_key_path: "$BITRISEIO_BITRISEIO_SERVICE_ACCOUNT_JSON_KEY_URL_URL"
             - retry_without_sending_to_review: "true"
       - slack:

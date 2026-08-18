@@ -21,6 +21,10 @@ class ComplexPreferences(context: Context, namePreferences: String, mode: Int) {
         editor.commit()
     }
 
+    fun apply() {
+        editor.apply()
+    }
+
     fun <T> getObject(key: String, a: Class<T>?): T? {
         val gson = preferences.getString(key, null) ?: return null
         return try {

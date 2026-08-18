@@ -1,10 +1,8 @@
 package social.entourage.android.groups
 
-import android.util.Log
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -14,17 +12,28 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.request.*
 import social.entourage.android.RefreshController
+import social.entourage.android.api.model.CompleteReactionsResponse
 import social.entourage.android.api.model.EntourageUser
-import social.entourage.android.groups.list.groupPerPage
-import social.entourage.android.home.UnreadMessages
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Post
-import social.entourage.android.api.model.CompleteReactionsResponse
 import social.entourage.android.api.model.ReactionWrapper
+import social.entourage.android.api.request.EntourageUserResponse
+import social.entourage.android.api.request.EventsListWrapper
+import social.entourage.android.api.request.GroupWrapper
+import social.entourage.android.api.request.GroupsListWrapper
+import social.entourage.android.api.request.MembersWrapper
+import social.entourage.android.api.request.PostListWrapper
+import social.entourage.android.api.request.PostWrapper
+import social.entourage.android.api.request.PrepareAddPostResponse
+import social.entourage.android.api.request.Report
+import social.entourage.android.api.request.ReportWrapper
+import social.entourage.android.api.request.RequestContent
+import social.entourage.android.api.request.UnreadCountWrapper
 import social.entourage.android.groups.details.feed.CreatePostGroupActivity
+import social.entourage.android.groups.list.groupPerPage
+import social.entourage.android.home.UnreadMessages
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
@@ -125,7 +134,7 @@ class GroupPresenter: ViewModel() {
                 }
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("GroupPresenter", "onFailure: $t")
+                Timber.tag("GroupPresenter").d("onFailure: $t")
             }
         })
     }
@@ -175,7 +184,7 @@ class GroupPresenter: ViewModel() {
                 }
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("GroupPresenter", "onFailure: $t")
+                Timber.tag("GroupPresenter").d("onFailure: $t")
             }
         })
     }
@@ -439,7 +448,7 @@ class GroupPresenter: ViewModel() {
                 }
 
                 override fun onFailure(call: Call<PostListWrapper>, t: Throwable) {
-                    Log.wtf("wtf", "error $t")
+                    Timber.tag("wtf").wtf("error $t")
 
                 }
             })
