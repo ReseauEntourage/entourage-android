@@ -15,6 +15,7 @@ import social.entourage.android.onboarding.login.LoginActivity
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingForEdgeToEdge
+import timber.log.Timber
 
 class PreOnboardingChoiceActivity : BaseActivity() {
 
