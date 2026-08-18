@@ -9,13 +9,23 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
-import social.entourage.android.api.request.*
-import social.entourage.android.api.model.notification.InAppNotification
-import social.entourage.android.api.model.notification.InAppNotificationPermission
 import social.entourage.android.api.model.Pedago
-import social.entourage.android.api.model.Suggestion
 import social.entourage.android.api.model.SuggestionResponse
 import social.entourage.android.api.model.Summary
+import social.entourage.android.api.model.notification.InAppNotification
+import social.entourage.android.api.model.notification.InAppNotificationPermission
+import social.entourage.android.api.request.ContribsListWrapper
+import social.entourage.android.api.request.DemandsListWrapper
+import social.entourage.android.api.request.EventsListWrapper
+import social.entourage.android.api.request.GroupsListWrapper
+import social.entourage.android.api.request.NotificationInAppResponse
+import social.entourage.android.api.request.NotificationPermissionsResponse
+import social.entourage.android.api.request.NotificationsCountResponse
+import social.entourage.android.api.request.NotificationsInAppResponse
+import social.entourage.android.api.request.PedagogicResponse
+import social.entourage.android.api.request.PedagogicSingleResponse
+import social.entourage.android.api.request.SummaryResponse
+import social.entourage.android.api.request.UnreadCountWrapper
 import social.entourage.android.events.list.EVENTS_PER_PAGE
 
 class HomePresenter: ViewModel() {
@@ -164,7 +174,7 @@ class HomePresenter: ViewModel() {
 
     fun getPedagogicalResources() {
         EntourageApplication.get().apiModule.homeRequest
-            .getPedagogicalResources(true)
+            .getPedagogicalResources(false)
             .enqueue(object : Callback<PedagogicResponse> {
                 override fun onResponse(
                     call: Call<PedagogicResponse>,
