@@ -103,32 +103,31 @@ class EntourageApplication : Application() {
     fun logOut() {
         authenticationController.me?.let { me ->
             //remove user phone
-            mainActivity?.deleteApplicationInfo(){
-                authenticationController.logOutUser()
-                //val sharedPreferences = sharedPreferences
-                sharedPreferences.edit {
-                    (sharedPreferences.getStringSet(
-                        KEY_TUTORIAL_DONE,
-                        HashSet()
-                    ) as HashSet<String?>?)?.let {
-                        val loggedNumbers = HashSet(it)
-                        loggedNumbers.remove(me.phone)
-                        putStringSet(KEY_TUTORIAL_DONE, loggedNumbers)
-                    }
-                    remove(KEY_REGISTRATION_ID)
-                    remove(KEY_NOTIFICATIONS_ENABLED)
-                    remove(KEY_GEOLOCATION_ENABLED)
-                    remove(KEY_NO_MORE_DEMAND)
-                    remove(isFirstTimeHome)
-                    putInt(KEY_NB_OF_LAUNCH, 0)
-                    putBoolean("translatedByDefault", true)
+            mainActivity?.deleteApplicationInfo {}
+            authenticationController.logOutUser()
+            //val sharedPreferences = sharedPreferences
+            sharedPreferences.edit {
+                (sharedPreferences.getStringSet(
+                    KEY_TUTORIAL_DONE,
+                    HashSet()
+                ) as HashSet<String?>?)?.let {
+                    val loggedNumbers = HashSet(it)
+                    loggedNumbers.remove(me.phone)
+                    putStringSet(KEY_TUTORIAL_DONE, loggedNumbers)
                 }
-                removeAllPushNotifications()
-                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_LOGOUT)
-                mainActivity?.let {
-                    startActivity(Intent(this, PreOnboardingStartActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-                    it.finish()
-                }
+                remove(KEY_REGISTRATION_ID)
+                remove(KEY_NOTIFICATIONS_ENABLED)
+                remove(KEY_GEOLOCATION_ENABLED)
+                remove(KEY_NO_MORE_DEMAND)
+                remove(isFirstTimeHome)
+                putInt(KEY_NB_OF_LAUNCH, 0)
+                putBoolean("translatedByDefault", true)
+            }
+            removeAllPushNotifications()
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_LOGOUT)
+            mainActivity?.let {
+                startActivity(Intent(this, PreOnboardingStartActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                it.finish()
             }
         } ?: run {
             Timber.d("not needed to logout")
