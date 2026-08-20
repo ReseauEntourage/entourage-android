@@ -36,6 +36,186 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tv_subtitle_event_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/main_filter_subtitle_event_type"
+            android:textSize="15sp"
+            android:fontFamily="@font/quicksand_bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            android:textColor="@color/black"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"/>
+
+        <LinearLayout
+            android:id="@+id/layout_event_type_chips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/tv_subtitle_event_type"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="16dp">
+
+            <LinearLayout
+                android:id="@+id/chip_event_entourage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="@drawable/shape_chip_pill_grey_border"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp">
+
+                <ImageView
+                    android:id="@+id/iv_chip_entourage_icon"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_entourage_logo_orange" />
+
+                <TextView
+                    android:id="@+id/tv_chip_entourage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="@string/main_filter_chip_entourage"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="1dp" />
+
+            <LinearLayout
+                android:id="@+id/chip_event_reserved_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="@drawable/shape_chip_pill_grey_border"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp">
+
+                <ImageView
+                    android:id="@+id/iv_chip_reserved_female_icon"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_entourage_logo_purple" />
+
+                <TextView
+                    android:id="@+id/tv_chip_reserved_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="@string/main_filter_chip_reserved_female"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:textSize="13sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_subtitle_format"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/main_filter_subtitle_format"
+            android:textSize="15sp"
+            android:fontFamily="@font/quicksand_bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_event_type_chips"
+            android:textColor="@color/black"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="16dp"/>
+
+        <LinearLayout
+            android:id="@+id/layout_format_chips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/tv_subtitle_format"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="16dp">
+
+            <LinearLayout
+                android:id="@+id/chip_format_presentiel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="@drawable/shape_chip_pill_grey_border"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp">
+
+                <RadioButton
+                    android:id="@+id/rb_format_presentiel"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:clickable="false"
+                    android:padding="0dp"
+                    android:button="@android:drawable/btn_radio" />
+
+                <TextView
+                    android:id="@+id/tv_chip_presentiel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="@string/main_filter_chip_presentiel"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="8dp"
+                android:layout_height="1dp" />
+
+            <LinearLayout
+                android:id="@+id/chip_format_visio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="@drawable/shape_chip_pill_grey_border"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="8dp">
+
+                <RadioButton
+                    android:id="@+id/rb_format_visio"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:clickable="false"
+                    android:padding="0dp"
+                    android:button="@android:drawable/btn_radio" />
+
+                <TextView
+                    android:id="@+id/tv_chip_visio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="@string/main_filter_chip_visio"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:textSize="13sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
             android:id="@+id/tv_subtitle_items"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,9 +223,9 @@
             android:textSize="15sp"
             android:fontFamily="@font/quicksand_bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            app:layout_constraintTop_toBottomOf="@+id/layout_format_chips"
             android:textColor="@color/black"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:layout_marginStart="16dp"/>
 
         <LinearLayout

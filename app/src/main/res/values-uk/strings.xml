@@ -2747,4 +2747,11 @@
     <string name="post_draft_exchange">Хотів/хотіла б, щоб ми разом обговорили цю тему: </string>
     <string name="post_draft_meetup">А що, якби ми незабаром зустрілися? Пропоную </string>
 
+    <string name="main_filter_subtitle_event_type">Тип події</string>
+    <string name="main_filter_chip_entourage">Події Entourage</string>
+    <string name="main_filter_chip_reserved_female">Тільки для жінок</string>
+    <string name="main_filter_subtitle_format">Формат</string>
+    <string name="main_filter_chip_presentiel">Особисто</string>
+    <string name="main_filter_chip_visio">Відеодзвінок</string>
+
 </resources>

@@ -2503,6 +2503,12 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="main_filter_subtitle_action">Por categoría</string>
     <string name="main_filter_title_location">Por ubicación</string>
     <string name="main_filter_title_radius">Dentro de un radio de</string>
+    <string name="main_filter_subtitle_event_type">Tipo de evento</string>
+    <string name="main_filter_chip_entourage">Eventos Entourage</string>
+    <string name="main_filter_chip_reserved_female">Reservado a mujeres</string>
+    <string name="main_filter_subtitle_format">Formato</string>
+    <string name="main_filter_chip_presentiel">Presencial</string>
+    <string name="main_filter_chip_visio">Videollamada</string>
     <string name="sharing_time_title">Tiempo de compartir</string>
     <string name="sharing_time_subtitle">café, actividad...</string>
     <string name="services_title">Servicio</string>

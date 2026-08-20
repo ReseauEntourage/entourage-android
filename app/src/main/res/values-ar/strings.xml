@@ -2545,6 +2545,12 @@
     <string name="main_filter_subtitle_action">حسب الفئة</string>
     <string name="main_filter_title_location">حسب الموقع</string>
     <string name="main_filter_title_radius">في نطاق</string>
+    <string name="main_filter_subtitle_event_type">نوع الفعالية</string>
+    <string name="main_filter_chip_entourage">فعاليات Entourage</string>
+    <string name="main_filter_chip_reserved_female">مخصص للنساء</string>
+    <string name="main_filter_subtitle_format">الصيغة</string>
+    <string name="main_filter_chip_presentiel">حضوري</string>
+    <string name="main_filter_chip_visio">عبر الفيديو</string>
     <string name="sharing_time_title">وقت المشاركة</string>
     <string name="sharing_time_subtitle">قهوة، نشاط...</string>
     <string name="services_title">خدمة</string>

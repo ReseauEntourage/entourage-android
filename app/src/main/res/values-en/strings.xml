@@ -1645,6 +1645,12 @@
     <string name="main_filter_subtitle_action">By category</string>
     <string name="main_filter_title_location">By location</string>
     <string name="main_filter_title_radius">Within</string>
+    <string name="main_filter_subtitle_event_type">Event type</string>
+    <string name="main_filter_chip_entourage">Entourage Events</string>
+    <string name="main_filter_chip_reserved_female">Women only</string>
+    <string name="main_filter_subtitle_format">Format</string>
+    <string name="main_filter_chip_presentiel">In person</string>
+    <string name="main_filter_chip_visio">Video call</string>
     <string name="sharing_time_title">Sharing time</string>
     <string name="sharing_time_subtitle">coffee, activity...</string>
     <string name="services_title">Service</string>

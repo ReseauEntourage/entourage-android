@@ -2520,6 +2520,12 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="main_filter_subtitle_action">Według kategorii</string>
     <string name="main_filter_title_location">Według lokalizacji</string>
     <string name="main_filter_title_radius">W promieniu</string>
+    <string name="main_filter_subtitle_event_type">Typ wydarzenia</string>
+    <string name="main_filter_chip_entourage">Wydarzenia Entourage</string>
+    <string name="main_filter_chip_reserved_female">Tylko dla kobiet</string>
+    <string name="main_filter_subtitle_format">Format</string>
+    <string name="main_filter_chip_presentiel">Stacjonarnie</string>
+    <string name="main_filter_chip_visio">Wideorozmowa</string>
     <string name="sharing_time_title">Czas dzielenia się</string>
     <string name="sharing_time_subtitle">kawa, aktywność...</string>
     <string name="services_title">Usługa</string>

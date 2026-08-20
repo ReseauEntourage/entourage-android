@@ -2515,6 +2515,12 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="main_filter_subtitle_action">Pe categorie</string>
     <string name="main_filter_title_location">Pe locație</string>
     <string name="main_filter_title_radius">Într-un rază de</string>
+    <string name="main_filter_subtitle_event_type">Tip de eveniment</string>
+    <string name="main_filter_chip_entourage">Evenimente Entourage</string>
+    <string name="main_filter_chip_reserved_female">Rezervat femeilor</string>
+    <string name="main_filter_subtitle_format">Format</string>
+    <string name="main_filter_chip_presentiel">Față în față</string>
+    <string name="main_filter_chip_visio">Apel video</string>
     <string name="sharing_time_title">Timp de partajare</string>
     <string name="sharing_time_subtitle">cafea, activitate...</string>
     <string name="services_title">Serviciu</string>

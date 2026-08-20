@@ -2507,6 +2507,12 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="main_filter_subtitle_action">Nach Kategorie</string>
     <string name="main_filter_title_location">Nach Standort</string>
     <string name="main_filter_title_radius">Innerhalb eines Radius von</string>
+    <string name="main_filter_subtitle_event_type">Veranstaltungstyp</string>
+    <string name="main_filter_chip_entourage">Entourage-Veranstaltungen</string>
+    <string name="main_filter_chip_reserved_female">Nur für Frauen</string>
+    <string name="main_filter_subtitle_format">Format</string>
+    <string name="main_filter_chip_presentiel">Vor Ort</string>
+    <string name="main_filter_chip_visio">Videoanruf</string>
     <string name="sharing_time_title">Teilnahmezeit</string>
     <string name="sharing_time_subtitle">Kaffee, Aktivität...</string>
     <string name="services_title">Dienstleistung</string>

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
@@ -15,8 +16,13 @@ import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RadioButton
 import android.widget.ScrollView
 import android.widget.SeekBar
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.libraries.places.api.Places
@@ -47,16 +53,26 @@ class MainFilterActivity : BaseActivity() {
         var savedGroupInterests = mutableListOf<String>()
         var savedActionInterests = mutableListOf<String>()
         var savedGroupInterestsFromOnboarding = mutableListOf<String>()
+        var savedEventTypes = mutableListOf<String>()
+        var savedEventFormat: String? = null
         var savedRadius = 0
         var savedLocation: PlaceDetails? = null
         var mod: MainFilterMode = MainFilterMode.GROUP
         var hasToReloadAction = false
         var hasFilter = false
         data class PlaceDetails(val name: String, val lat: Double, val lng: Double)
+
+        const val EVENT_TYPE_ENTOURAGE = "entourage"
+        const val EVENT_TYPE_RESERVED_FEMALE = "reserved_female"
+        const val EVENT_FORMAT_PRESENTIAL = "presential"
+        const val EVENT_FORMAT_REMOTE = "remote"
+
         fun resetAllFilters(context: Context) {
             val user = EntourageApplication.me(context)
             savedGroupInterests.clear()
             savedActionInterests.clear()
+            savedEventTypes.clear()
+            savedEventFormat = null
             savedRadius = user?.travelDistance ?: 0
             savedLocation = user?.address?.let { PlaceDetails(it.displayAddress, it.latitude, it.longitude) }
             hasFilter = false
@@ -64,6 +80,8 @@ class MainFilterActivity : BaseActivity() {
     }
 
     private var selectedInterests = mutableListOf<String>()
+    private var selectedEventTypes = mutableListOf<String>()
+    private var selectedFormat: String? = null
     private var selectedRadius = 0
     private var selectedLocation = ""
 
@@ -83,7 +101,8 @@ class MainFilterActivity : BaseActivity() {
         setupSeekBar()
         setupLocationAutoComplete()
         setupButtons()
-        updateFilterCount(selectedInterests.size) // Initialiser le compteur avec le nombre d'intérêts sélectionnés
+        setupEventTypeAndFormatChips()
+        updateFilterCount(totalFilterCount()) // Initialiser le compteur avec le nombre de filtres sélectionnés
 
         // Ajouter un listener pour détecter les changements de layout (comme l'ouverture du clavier)
         addKeyboardListener()
@@ -135,6 +154,13 @@ class MainFilterActivity : BaseActivity() {
         } else if (mod == MainFilterMode.ACTION && savedActionInterests.isNotEmpty()) {
             selectedInterests = savedActionInterests.toMutableList()
             hasFilter = true
+        }
+
+        if (mod == MainFilterMode.EVENT) {
+            selectedEventTypes = savedEventTypes.toMutableList()
+            if (selectedEventTypes.isNotEmpty()) hasFilter = true
+            selectedFormat = savedEventFormat
+            if (selectedFormat != null) hasFilter = true
         }
 
         if (savedRadius != 0) {
@@ -203,10 +229,14 @@ class MainFilterActivity : BaseActivity() {
             } else {
                 selectedInterests.remove(interest.id)
             }
-            updateFilterCount(selectedInterests.size) // Mettre à jour le compteur chaque fois qu'un intérêt est sélectionné ou désélectionné
+            updateFilterCount(totalFilterCount()) // Mettre à jour le compteur chaque fois qu'un intérêt est sélectionné ou désélectionné
         }
         binding.rvMainFilter.layoutManager = LinearLayoutManager(this)
         binding.rvMainFilter.adapter = interestsAdapter
+    }
+
+    private fun totalFilterCount(): Int {
+        return selectedInterests.size + selectedEventTypes.size + (if (selectedFormat != null) 1 else 0)
     }
 
     private fun updateFilterCount(count: Int) {
@@ -214,6 +244,77 @@ class MainFilterActivity : BaseActivity() {
         if(count > 0){
             hasFilter = true
         }
+    }
+
+    private fun setupEventTypeAndFormatChips() {
+        val isEventMode = mod == MainFilterMode.EVENT
+        binding.tvSubtitleEventType.visibility = if (isEventMode) View.VISIBLE else View.GONE
+        binding.layoutEventTypeChips.visibility = if (isEventMode) View.VISIBLE else View.GONE
+        binding.tvSubtitleFormat.visibility = if (isEventMode) View.VISIBLE else View.GONE
+        binding.layoutFormatChips.visibility = if (isEventMode) View.VISIBLE else View.GONE
+
+        if (!isEventMode) return
+
+        val isFemale = EntourageApplication.me(this)?.gender == "female"
+        binding.chipEventReservedFemale.visibility = if (isFemale) View.VISIBLE else View.GONE
+
+        binding.chipEventEntourage.setOnClickListener { toggleEventType(EVENT_TYPE_ENTOURAGE) }
+        binding.chipEventReservedFemale.setOnClickListener { toggleEventType(EVENT_TYPE_RESERVED_FEMALE) }
+        binding.chipFormatPresentiel.setOnClickListener { toggleFormat(EVENT_FORMAT_PRESENTIAL) }
+        binding.chipFormatVisio.setOnClickListener { toggleFormat(EVENT_FORMAT_REMOTE) }
+
+        refreshEventTypeAndFormatStyles()
+    }
+
+    private fun toggleEventType(type: String) {
+        if (selectedEventTypes.contains(type)) {
+            selectedEventTypes.remove(type)
+        } else {
+            selectedEventTypes.add(type)
+            AnalyticsEvents.logEvent("event_" + AnalyticsEvents.filter_tag_item_ + type)
+        }
+        refreshEventTypeAndFormatStyles()
+        updateFilterCount(totalFilterCount())
+    }
+
+    private fun toggleFormat(format: String) {
+        selectedFormat = if (selectedFormat == format) null else format
+        if (selectedFormat != null) {
+            AnalyticsEvents.logEvent("event_" + AnalyticsEvents.filter_tag_item_ + selectedFormat)
+        }
+        refreshEventTypeAndFormatStyles()
+        updateFilterCount(totalFilterCount())
+    }
+
+    private fun refreshEventTypeAndFormatStyles() {
+        updateChipToggleStyle(
+            binding.chipEventEntourage, binding.ivChipEntourageIcon, binding.tvChipEntourage,
+            selectedEventTypes.contains(EVENT_TYPE_ENTOURAGE)
+        )
+        updateChipToggleStyle(
+            binding.chipEventReservedFemale, binding.ivChipReservedFemaleIcon, binding.tvChipReservedFemale,
+            selectedEventTypes.contains(EVENT_TYPE_RESERVED_FEMALE)
+        )
+        updateFormatChipStyle(binding.chipFormatPresentiel, binding.rbFormatPresentiel, selectedFormat == EVENT_FORMAT_PRESENTIAL)
+        updateFormatChipStyle(binding.chipFormatVisio, binding.rbFormatVisio, selectedFormat == EVENT_FORMAT_REMOTE)
+    }
+
+    private fun updateChipToggleStyle(container: LinearLayout, icon: ImageView, text: TextView, isSelected: Boolean) {
+        container.setBackgroundResource(if (isSelected) R.drawable.shape_chip_pill_orange_filled else R.drawable.shape_chip_pill_grey_border)
+        text.setTextColor(ContextCompat.getColor(this, if (isSelected) R.color.white else R.color.black))
+        if (isSelected) {
+            icon.setColorFilter(ContextCompat.getColor(this, R.color.white))
+        } else {
+            icon.clearColorFilter()
+        }
+    }
+
+    private fun updateFormatChipStyle(container: LinearLayout, radioButton: RadioButton, isSelected: Boolean) {
+        container.setBackgroundResource(if (isSelected) R.drawable.shape_chip_pill_orange_border else R.drawable.shape_chip_pill_grey_border)
+        radioButton.isChecked = isSelected
+        radioButton.buttonTintList = ColorStateList.valueOf(
+            ContextCompat.getColor(this, if (isSelected) R.color.orange else R.color.grey_onboarding_item_border)
+        )
     }
 
     private fun setupSeekBar() {
@@ -312,6 +413,8 @@ class MainFilterActivity : BaseActivity() {
     fun resetFilters() {
         val user = EntourageApplication.me(this)
         selectedInterests.clear()
+        selectedEventTypes.clear()
+        selectedFormat = null
         savedLocation = user?.address?.let { PlaceDetails(it.displayAddress, it.latitude, it.longitude) }
         selectedRadius = user?.travelDistance ?: 0
         selectedLocation = user?.address?.displayAddress ?: ""
@@ -320,6 +423,9 @@ class MainFilterActivity : BaseActivity() {
         binding.seekbar.progress = user?.travelDistance ?: 0
         binding.tvRadius.text = user?.travelDistance.toString() ?: "0 km"
         binding.autoCompleteCityName.setText(user?.address?.displayAddress?: "")
+        if (mod == MainFilterMode.EVENT) {
+            refreshEventTypeAndFormatStyles()
+        }
         updateFilterCount(0)
         if (mod == MainFilterMode.GROUP || mod == MainFilterMode.EVENT) {
             savedGroupInterests.clear()
@@ -328,6 +434,9 @@ class MainFilterActivity : BaseActivity() {
         }
         savedRadius = 0
         savedLocation = null
+        savedEventTypes.clear()
+        savedEventFormat = null
+        hasFilter = false
     }
 
     private fun applyFilters() {
@@ -348,6 +457,10 @@ class MainFilterActivity : BaseActivity() {
             savedActionInterests = selectedInterests
         }
         savedRadius = selectedRadius
+        if (mod == MainFilterMode.EVENT) {
+            savedEventTypes = selectedEventTypes
+            savedEventFormat = selectedFormat
+        }
         finish()
     }
 

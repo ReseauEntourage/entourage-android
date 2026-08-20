@@ -54,7 +54,8 @@ interface EventsRequest {
         @Query("travel_distance") travelDistance: Int?,
         @Query("latitude") latitude: Double?,
         @Query("longitude") longitude: Double?,
-        @Query("period") period: String
+        @Query("period") period: String,
+        @Query("type") type: String? = null
     ): Call<EventsListWrapper>
     @GET("outings")
     fun getAllEvents(
@@ -73,7 +74,8 @@ interface EventsRequest {
         @Query("travel_distance") travelDistance: Int?,
         @Query("latitude") latitude: Double?,
         @Query("longitude") longitude: Double?,
-        @Query("period") period:String
+        @Query("period") period:String,
+        @Query("type") type: String? = null
     ): Call<EventsListWrapper>
 
     @POST("outings")

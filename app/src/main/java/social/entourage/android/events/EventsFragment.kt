@@ -112,9 +112,12 @@ class EventsFragment : Fragment() {
             RefreshController.shouldRefreshEventFragment = false
         }
         initView()
-        if (MainFilterActivity.savedGroupInterests.size > 0) {
+        val activeFilterCount = MainFilterActivity.savedGroupInterests.size +
+            MainFilterActivity.savedEventTypes.size +
+            (if (MainFilterActivity.savedEventFormat != null) 1 else 0)
+        if (activeFilterCount > 0) {
             binding.cardFilterNumber.visibility = View.VISIBLE
-            binding.tvNumberOfFilter.text = MainFilterActivity.savedGroupInterests.size.toString()
+            binding.tvNumberOfFilter.text = activeFilterCount.toString()
 
         } else {
             binding.cardFilterNumber.visibility = View.GONE

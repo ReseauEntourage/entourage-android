@@ -165,6 +165,7 @@ class DiscoverEventsListFragment : Fragment() {
         eventsPresenter.isLastPage = false
         eventsPresenter.isLastPageMyEvent = false
         if (MainFilterActivity.savedGroupInterests.isNotEmpty() ||
+            MainFilterActivity.savedEventTypes.isNotEmpty() ||
             MainFilterActivity.savedRadius != 0 ||
             MainFilterActivity.savedLocation != null) {
             applyFilters()
@@ -362,10 +363,11 @@ class DiscoverEventsListFragment : Fragment() {
                 val radius = MainFilterActivity.savedRadius.takeIf { it != 0 } ?: currentFilters.travel_distance()
                 val latitude = MainFilterActivity.savedLocation?.lat ?: currentFilters.latitude()
                 val longitude = MainFilterActivity.savedLocation?.lng ?: currentFilters.longitude()
+                val type = MainFilterActivity.savedEventTypes.joinToString(",").takeIf { it.isNotEmpty() }
                 eventsPresenter.getAllEventsWithFilter(
                     page, EVENTS_PER_PAGE,
                     MainFilterActivity.savedGroupInterests.joinToString(","),
-                    radius, latitude, longitude, "future"
+                    radius, latitude, longitude, "future", type
                 )
             }
         }
@@ -391,11 +393,12 @@ class DiscoverEventsListFragment : Fragment() {
                 val radius = MainFilterActivity.savedRadius.takeIf { it != 0 } ?: currentFilters.travel_distance()
                 val latitude = MainFilterActivity.savedLocation?.lat ?: currentFilters.latitude()
                 val longitude = MainFilterActivity.savedLocation?.lng ?: currentFilters.longitude()
+                val type = MainFilterActivity.savedEventTypes.joinToString(",").takeIf { it.isNotEmpty() }
                 eventsPresenter.getMyEventsWithFilter(
                     myId!!,
                     pageMyEvent, EVENTS_PER_PAGE,
                     MainFilterActivity.savedGroupInterests.joinToString(","),
-                    radius, latitude, longitude, "future"
+                    radius, latitude, longitude, "future", type
                 )
             }
         }
