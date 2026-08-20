@@ -79,6 +79,11 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (currentFragmentPosition >= numberOfSteps) return
+                if (currentFragmentPosition <= 1) {
+                    startActivity(Intent(this@OnboardingStartActivity, PreOnboardingChoiceActivity::class.java))
+                    finish()
+                    return
+                }
                 goPrevious()
             }
         })
