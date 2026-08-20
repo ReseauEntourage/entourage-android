@@ -141,6 +141,10 @@ class EnhancedOnboarding : BaseActivity() {
             .getBoolean(PREF_IS_ASSOCIATION_FROM_SUMMARY, false)
     }
 
+    private fun isIsolatedPersonMode(): Boolean {
+        return viewModel.user?.isUserTypeAlone == true
+    }
+
     private fun handleOnboardingFirstStep(value: Boolean) {
         if (value) replaceFragment(OnboardingPresentationFragment())
     }
@@ -165,7 +169,7 @@ class EnhancedOnboarding : BaseActivity() {
 
     private fun handleOnboardingDisponibilityStep(value: Boolean) {
         if (value) {
-            if (isAssociationMode()) {
+            if (isAssociationMode() || (isIsolatedPersonMode() && !isFromSettingsDisponibility)) {
                 viewModel.setOnboardingFifthStep(true)
             } else {
                 replaceFragment(OnboardingDisponibilityFragment())

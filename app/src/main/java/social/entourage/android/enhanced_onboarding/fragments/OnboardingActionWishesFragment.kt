@@ -79,6 +79,10 @@ class OnboardingActionWishesFragment : Fragment() {
         return goal != null && goal.equals(User.USER_GOAL_ASSO, ignoreCase = true)
     }
 
+    private fun isIsolatedPersonMode(): Boolean {
+        return viewModel.user?.isUserTypeAlone == true
+    }
+
     private fun setupRecyclerView() {
         adapter = OnboardingInterestsAdapter(
             isFromInterest = false,
@@ -142,7 +146,7 @@ class OnboardingActionWishesFragment : Fragment() {
             // --- MODE PARTICULIER ---
             // On vérifie la présence des clés dans 'userInvolvements'
             buildList {
-                if (EnhancedOnboarding.preference == "contribution") {
+                if (EnhancedOnboarding.preference == "contribution" || isIsolatedPersonMode()) {
                     // Ordre spécifique : Contribution
                     add(InterestForAdapter(
                         icon = getIconForActionWish("outings"),
