@@ -139,11 +139,15 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
 
                 s?.let {
                     searchHandler.removeCallbacksAndMessages(null)
-                    searchHandler.postDelayed({
-                        if (it.toString().isNotBlank()) {
-                            performRemoteSearch(it.toString())
-                        }
-                    }, SEARCH_DELAY)
+                    if (it.toString().isBlank()) {
+                        clearSearchResults()
+                    } else {
+                        searchHandler.postDelayed({
+                            if (it.toString().isNotBlank()) {
+                                performRemoteSearch(it.toString())
+                            }
+                        }, SEARCH_DELAY)
+                    }
                 }
             }
 
@@ -348,6 +352,14 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
     private fun exitSearchMode() {
         binding.searchRecyclerView.visibility = View.GONE
         updateEmptyState(membersList.isEmpty())
+    }
+
+    private fun clearSearchResults() {
+        searchHandler.removeCallbacksAndMessages(null)
+        membersListSearch.clear()
+        binding.searchRecyclerView.adapter?.notifyDataSetChanged()
+        binding.emptyStateLayout.visibility = View.GONE
+        binding.searchRecyclerView.visibility = View.VISIBLE
     }
 
     private fun openConversation(conv: Conversation?) {
