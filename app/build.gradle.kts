@@ -283,7 +283,6 @@ dependencies {
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
     implementation(libs.lottie)
-    implementation(libs.photoview)
     implementation(libs.transition)
     implementation(libs.play.app.update.ktx)
     implementation(libs.play.asset.delivery)
