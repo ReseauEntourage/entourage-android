@@ -653,7 +653,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
             requestInAppReview(requireContext())
             val meUser = EntourageApplication.me(activity)
-            if(meUser?.roles?.contains("Ambassadeur") == true){
+            if(meUser?.roles?.contains("Animateur Entourage") == true){
                 CustomAlertDialog.showAmbassadorWithTwoButton(requireContext(),
                     onNo = {
                         if (event?.member==false){
