@@ -282,7 +282,6 @@ dependencies {
     implementation(libs.flexbox)
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
-    implementation(libs.sectioned.recyclerview)
     implementation(libs.lottie)
     implementation(libs.photoview)
     implementation(libs.transition)

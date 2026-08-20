@@ -45,7 +45,6 @@ mockito-inline = "5.2.0"
 mockito-kotlin = "6.2.3"
 flexbox = "3.0.0"
 navigation = "2.9.7"
-sectioned-recyclerview = "2.1.1"
 lottie = "6.7.1"
 photoview = "2.3.0"
 androidsvg = "1.4"
@@ -120,7 +119,6 @@ mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "
 flexbox = { module = "com.google.android.flexbox:flexbox", version.ref = "flexbox" }
 navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
 navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
-sectioned-recyclerview = { module = "com.github.IntruderShanky:Sectioned-RecyclerView", version.ref = "sectioned-recyclerview" }
 lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
 photoview = { module = "com.github.chrisbanes:PhotoView", version.ref = "photoview" }
 androidsvg = { module = "com.caverock:androidsvg-aar", version.ref = "androidsvg" }
