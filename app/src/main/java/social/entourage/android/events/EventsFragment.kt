@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.doOnLayout
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -141,22 +142,31 @@ class EventsFragment : Fragment() {
         val bubbleButton = bubbleView.findViewById<TextView>(R.id.bubbleButton)
         bubbleButton.paintFlags = bubbleButton.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
-        // Mesurer le bubbleView
-        bubbleView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        // showBubbleCase() est appelé depuis onViewCreated, donc avant le premier passage de
+        // layout : targetView.getLocationOnScreen()/height renverraient encore 0 si on les lisait
+        // maintenant, plaçant la bulle collée en haut de l'écran. On attend que le bouton filtre
+        // soit réellement mis en page pour calculer sa position.
+        targetView.doOnLayout {
+            val location = IntArray(2)
+            targetView.getLocationOnScreen(location)
+            val rootLocation = IntArray(2)
+            rootLayout.getLocationOnScreen(rootLocation)
+            val targetTopInOverlay = (location[1] - rootLocation[1]).toFloat()
 
-        // Obtenir la position de 'targetView'
-        val location = IntArray(2)
-        targetView.getLocationOnScreen(location)
+            val horizontalMargin = 3.dpToPx(activity)
+            val verticalGap = 8.dpToPx(activity)
 
-        // Positionner le bubbleView
-        bubbleView.x = 0f
-        bubbleView.y = 150f
+            bubbleView.x = horizontalMargin.toFloat()
+            bubbleView.y = targetTopInOverlay + targetView.height + verticalGap
 
-        // Ajouter le bubbleView à l'overlay
-        overlayView.addView(bubbleView)
+            // Ajouter le bubbleView à l'overlay
+            overlayView.addView(bubbleView)
 
-        // Ajouter l'overlay à la racine
-        rootLayout.addView(overlayView)
+            // Ajouter l'overlay à la racine, en plein écran : sans ça overlayView se dimensionne en
+            // WRAP_CONTENT (taille par défaut d'un FrameLayout) et clippe tout ce qui est translaté
+            // hors de cette petite zone, y compris le bubbleView positionné ci-dessus
+            rootLayout.addView(overlayView, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+        }
 
         // Gérer le clic sur l'overlay pour le retirer
         overlayView.setOnClickListener {
