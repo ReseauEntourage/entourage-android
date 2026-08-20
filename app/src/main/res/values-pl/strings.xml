@@ -2507,6 +2507,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="onboarding_congrats_title">Twoje spersonalizowane doświadczenie jest gotowe!</string>
     <string name="onboarding_congrats_content">Na podstawie twoich preferencji i dostępności przygotowaliśmy dla ciebie wybór wydarzeń, które odpowiadają twojemu profilowi. Czas działać!</string>
     <string name="onboarding_congrats_leave">Przeglądaj wydarzenia</string>
+    <string name="onboarding_congrats_skip">Później</string>
     <string name="onboarding_congrats_temporary_title">Twoje spersonalizowane doświadczenie jest (prawie) gotowe!</string>
     <string name="onboarding_congrats_temporary_content">Dziękujemy za podzielenie się swoimi pragnieniami i zainteresowaniami. Nie możemy się doczekać, aby wkrótce zaoferować ci spersonalizowane wydarzenia, które ci odpowiadają. \nBądź na bieżąco!</string>
     <string name="notif_ask_page_title">Włącz powiadomienia, aby niczego nie przegapić</string>

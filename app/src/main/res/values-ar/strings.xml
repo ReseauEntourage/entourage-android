@@ -2532,6 +2532,7 @@
     <string name="onboarding_congrats_title">تجربتك المخصصة جاهزة!</string>
     <string name="onboarding_congrats_content">استنادًا إلى تفضيلاتك وتوافرك، قمنا بإعداد مجموعة من الفعاليات التي تناسب ملفك الشخصي. حان الوقت للعمل!</string>
     <string name="onboarding_congrats_leave">استكشاف الفعاليات</string>
+    <string name="onboarding_congrats_skip">لاحقاً</string>
     <string name="onboarding_congrats_temporary_title">تجربتك المخصصة (تقريبًا) جاهزة!</string>
     <string name="onboarding_congrats_temporary_content">شكرًا لمشاركة رغباتك في العمل واهتماماتك. نحن متحمسون لتقديم فعاليات مخصصة لك قريبًا. \nابقَ متصلاً!</string>
     <string name="notif_ask_page_title">تفعيل الإشعارات لتجنب فقدان أي شيء</string>

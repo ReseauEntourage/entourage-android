@@ -731,6 +731,7 @@ object AnalyticsEvents {
 
     // Écran de fin
     const val onboarding_end_browse_events_clic = "onboarding_end_browse_events_clic"
+    const val onboarding_end_skip_clic = "onboarding_end_skip_clic"
     const val onboarding_end_congrats_clic_on_ = "onboarding_end_congrats_clic_on_"
 
 

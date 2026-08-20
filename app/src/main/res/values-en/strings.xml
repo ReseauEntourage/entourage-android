@@ -1632,6 +1632,7 @@
     <string name="onboarding_congrats_title">Your personalized experience is ready!</string>
     <string name="onboarding_congrats_content">Based on your preferences and availability, we have prepared a selection of events that match your profile. Take action now on our app!</string>
     <string name="onboarding_congrats_leave">Browse events</string>
+    <string name="onboarding_congrats_skip">Later</string>
     <string name="onboarding_congrats_temporary_title">Your personalized experience is (almost) ready!</string>
     <string name="onboarding_congrats_temporary_content">Thank you for sharing your enthusiasm and interests. We look forward to offering you personalized events soon.\nStay tuned!</string>
     <string name="notif_ask_page_title">Enable notifications to stay updated on everything</string>
