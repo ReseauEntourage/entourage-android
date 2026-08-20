@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
@@ -18,7 +17,6 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.RadioButton
 import android.widget.ScrollView
 import android.widget.SeekBar
 import android.widget.TextView
@@ -293,28 +291,23 @@ class MainFilterActivity : BaseActivity() {
         )
         updateChipToggleStyle(
             binding.chipEventReservedFemale, binding.ivChipReservedFemaleIcon, binding.tvChipReservedFemale,
-            selectedEventTypes.contains(EVENT_TYPE_RESERVED_FEMALE)
+            selectedEventTypes.contains(EVENT_TYPE_RESERVED_FEMALE), R.drawable.shape_chip_pill_purple_filled
         )
-        updateFormatChipStyle(binding.chipFormatPresentiel, binding.rbFormatPresentiel, selectedFormat == EVENT_FORMAT_PRESENTIAL)
-        updateFormatChipStyle(binding.chipFormatVisio, binding.rbFormatVisio, selectedFormat == EVENT_FORMAT_REMOTE)
+        updateChipToggleStyle(binding.chipFormatPresentiel, null, binding.tvChipPresentiel, selectedFormat == EVENT_FORMAT_PRESENTIAL)
+        updateChipToggleStyle(binding.chipFormatVisio, null, binding.tvChipVisio, selectedFormat == EVENT_FORMAT_REMOTE)
     }
 
-    private fun updateChipToggleStyle(container: LinearLayout, icon: ImageView, text: TextView, isSelected: Boolean) {
-        container.setBackgroundResource(if (isSelected) R.drawable.shape_chip_pill_orange_filled else R.drawable.shape_chip_pill_grey_border)
+    private fun updateChipToggleStyle(
+        container: LinearLayout, icon: ImageView?, text: TextView, isSelected: Boolean,
+        selectedBackgroundRes: Int = R.drawable.shape_chip_pill_orange_filled
+    ) {
+        container.setBackgroundResource(if (isSelected) selectedBackgroundRes else R.drawable.shape_chip_pill_grey_border)
         text.setTextColor(ContextCompat.getColor(this, if (isSelected) R.color.white else R.color.black))
         if (isSelected) {
-            icon.setColorFilter(ContextCompat.getColor(this, R.color.white))
+            icon?.setColorFilter(ContextCompat.getColor(this, R.color.white))
         } else {
-            icon.clearColorFilter()
+            icon?.clearColorFilter()
         }
-    }
-
-    private fun updateFormatChipStyle(container: LinearLayout, radioButton: RadioButton, isSelected: Boolean) {
-        container.setBackgroundResource(if (isSelected) R.drawable.shape_chip_pill_orange_border else R.drawable.shape_chip_pill_grey_border)
-        radioButton.isChecked = isSelected
-        radioButton.buttonTintList = ColorStateList.valueOf(
-            ContextCompat.getColor(this, if (isSelected) R.color.orange else R.color.grey_onboarding_item_border)
-        )
     }
 
     private fun setupSeekBar() {

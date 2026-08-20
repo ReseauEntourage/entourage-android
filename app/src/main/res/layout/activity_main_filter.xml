@@ -160,19 +160,10 @@
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp">
 
-                <RadioButton
-                    android:id="@+id/rb_format_presentiel"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:clickable="false"
-                    android:padding="0dp"
-                    android:button="@android:drawable/btn_radio" />
-
                 <TextView
                     android:id="@+id/tv_chip_presentiel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
                     android:text="@string/main_filter_chip_presentiel"
                     android:textColor="@color/black"
                     android:fontFamily="@font/nunitosans_regular"
@@ -195,19 +186,10 @@
                 android:paddingHorizontal="14dp"
                 android:paddingVertical="8dp">
 
-                <RadioButton
-                    android:id="@+id/rb_format_visio"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:clickable="false"
-                    android:padding="0dp"
-                    android:button="@android:drawable/btn_radio" />
-
                 <TextView
                     android:id="@+id/tv_chip_visio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
                     android:text="@string/main_filter_chip_visio"
                     android:textColor="@color/black"
                     android:fontFamily="@font/nunitosans_regular"
