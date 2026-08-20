@@ -4,27 +4,28 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Build commands
 
-Two flavor dimensions: `app` (`entourage`) × `env` (`staging`, `prod`). The active variant for day-to-day dev is `EntourageStagingDebug`.
+Single flavor (`entourage`) × 3 build types: `debug` (default, staging API, debuggable), `preprod` (staging API, release-signed, used for QA/Bitrise builds), `release` (prod API). The active variant for day-to-day dev is `EntourageDebug`.
 
 ```bash
 # Compile check (fastest)
-./gradlew :app:compileEntourageStagingDebugKotlin
+./gradlew :app:compileEntourageDebugKotlin
 
 # Check resources
-./gradlew :app:mergeEntourageStagingDebugResources
+./gradlew :app:mergeEntourageDebugResources
 
 # Build APK
-./gradlew assembleEntourageStagingDebug
-./gradlew assembleEntourageProdRelease
+./gradlew assembleEntourageDebug
+./gradlew assembleEntouragePreprod
+./gradlew assembleEntourageRelease
 
 # Run unit tests
-./gradlew :app:testEntourageStagingDebugUnitTest
+./gradlew :app:testEntourageDebugUnitTest
 
 # Run a single test class
-./gradlew :app:testEntourageStagingDebugUnitTest --tests "social.entourage.android.SomeTest"
+./gradlew :app:testEntourageDebugUnitTest --tests "social.entourage.android.SomeTest"
 ```
 
-Never use bare `compileDebugKotlin` — the task name is ambiguous due to the flavor matrix.
+Never use bare `compileDebugKotlin` — always prefix with the `entourage` flavor (`compileEntourageDebugKotlin`).
 
 ## Architecture
 
@@ -82,14 +83,15 @@ app/src/main/java/social/entourage/android/
 
 **Strings**: French is the source language (`values/strings.xml`). Run `./add_strings.sh` to add a new string and propagate stubs to other locale files. Do not add strings only in `values-en/` or other locales directly.
 
-## Environment / flavors
+## Environment / build types
 
 | Variant | API base | App ID suffix | Deep link scheme |
 |---|---|---|---|
-| `entourageStagingDebug` | `api-preprod.entourage.social` | `.preprod.debug` | `entourage-staging://` |
-| `entourageProdRelease` | `api.entourage.social` | _(none)_ | `entourage://` |
+| `entourageDebug` (default) | `api-preprod.entourage.social` | `.debug` | `entourage-staging://` |
+| `entouragePreprod` | `api-preprod.entourage.social` | `.preprod` | `entourage-staging://` |
+| `entourageRelease` | `api.entourage.social` | _(none)_ | `entourage://` |
 
-`BuildConfig.PEDAGO_CREATE_EVENT_ID`, `PEDAGO_CREATE_GROUP_ID`, etc. differ between staging and prod — never hardcode those IDs.
+`BuildConfig.PEDAGO_CREATE_EVENT_ID`, `PEDAGO_CREATE_GROUP_ID`, etc. differ between `debug`/`preprod` and `release` — never hardcode those IDs.
 
 ## What to avoid
 

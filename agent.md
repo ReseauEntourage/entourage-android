@@ -16,10 +16,10 @@ Ce fichier contient la synthèse des connaissances accumulées sur le projet Ent
 ## 2. Build & Environnement
 - **Build System :** Gradle Kotlin DSL (`.gradle.kts`).
 - **Kotlin Integration :** Migré vers le support natif d'AGP 9.0+ (plugin `kotlin-android` supprimé au profit de l'intégration intégrée).
-- **Flavors :** `entourage` (prod) vs `entourageStaging`. 
-  - Cible de dev principale : `EntourageStagingDebug`.
-  - Commande de compilation recommandée : `./gradlew :app:compileEntourageStagingDebugKotlin`
-- **Variables d'environnement :** `ENTOURAGE_URL`, `PEDAGO_CREATE_EVENT_ID`, etc., varient selon le flavor. Ne jamais les hardcoder.
+- **Flavors :** un seul flavor `entourage`, décliné en 3 build types : `debug` (défaut, API staging, débuggable), `preprod` (API staging, signé release), `release` (API prod).
+  - Cible de dev principale : `EntourageDebug`.
+  - Commande de compilation recommandée : `./gradlew :app:compileEntourageDebugKotlin`
+- **Variables d'environnement :** `ENTOURAGE_URL`, `PEDAGO_CREATE_EVENT_ID`, etc., varient selon le build type. Ne jamais les hardcoder.
 
 ## 3. UI & Ressources
 - **ViewBinding :** Obligatoire. Pas de `findViewById`.
