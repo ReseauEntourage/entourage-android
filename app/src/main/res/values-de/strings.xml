@@ -2737,6 +2737,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <!-- Badges section -->
     <string name="badges_section_title">SEINE ABZEICHEN</string>
     <string name="badges_see_all">Alle anzeigen</string>
+    <string name="badges_section_title_me">Meine Abzeichen</string>
     <string name="badges_screen_title">Meine Abzeichen</string>
     <string name="badges_screen_subtitle">%1$d erhalten, %2$d in Bearbeitung, %3$d zu entdecken. Jedes Abzeichen belohnt eine konkrete Aktion in Ihrer Gemeinschaft.</string>
     <string name="badges_section_obtained">Erhalten %1$d/%2$d</string>
@@ -2752,12 +2753,15 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="badges_faq_link">Wie funktionieren Abzeichen?</string>
     <string name="badge_obtained_on">Erhalten am %1$s</string>
     <string name="badge_not_yet_obtained">Noch nicht erhalten</string>
+    <string name="badge_status_obtained">Erhalten</string>
+    <string name="badge_status_not_obtained">Nicht erhalten</string>
     <string name="badge_how_it_works_title">WIE ES FUNKTIONIERT</string>
     <string name="badge_mechanism_title">MECHANISMUS</string>
     <string name="badge_what_it_means_title">WAS ES BEDEUTET</string>
     <string name="badge_mechanism_irreversible">Irreversibel — einmal erhalten, für immer.</string>
     <string name="badge_mechanism_reversible">Reversibel — wird alle 90 Tage erneuert.</string>
     <string name="badge_see_all_mine">Alle meine Abzeichen anzeigen</string>
+    <string name="badge_cta_see_my_badges">Meine Abzeichen anzeigen</string>
     <string name="badge_progress_label">Ihr Fortschritt</string>
     <string name="badges_debug_switch_label">Abzeichen-Demo-Modus</string>
     <string name="badge_premier_pas_title">Erster Schritt</string>
@@ -2808,6 +2812,21 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="badge_diffuseur_liens_unlocked_message">Du hast in den letzten 90 Tagen 3 Veranstaltungen organisiert. Du bringst die Entourage-Gemeinschaft in Bewegung, großartig!</string>
     <string name="badge_as_papotage_unlocked_message">3 solidarische Papotages in eineinhalb Monaten — deine regelmäßige Anwesenheit schafft Verbindungen und tut dir gut. Danke für dein konstantes Engagement.</string>
     <string name="badge_tisseur_liens_unlocked_message">3 aktive Wochen von 4 — du lässt das Herz der Nachbarschaftsgruppen schlagen. Danke für dein konstantes Engagement.</string>
+    <string name="badge_diffuseur_liens_progress_hint">Erstellen oder moderieren Sie Veranstaltungen in den letzten 90 Tagen, um dieses Abzeichen zu erhalten.</string>
+    <string name="badge_as_papotage_progress_hint">Nehmen Sie in den letzten 90 Tagen an solidarischen Papotages teil, um dieses Abzeichen zu erhalten.</string>
+    <string name="badge_tisseur_liens_progress_hint">Seien Sie mindestens 3 der letzten 4 Wochen in Ihren Gruppen aktiv, um dieses Abzeichen zu erhalten.</string>
+    <plurals name="badge_diffuseur_liens_progress_hint_remaining">
+        <item quantity="one">Nur noch 1 Veranstaltung zu erstellen oder zu moderieren, um dieses Abzeichen zu erhalten.</item>
+        <item quantity="other">Noch %d Veranstaltungen zu erstellen oder zu moderieren, um dieses Abzeichen zu erhalten.</item>
+    </plurals>
+    <plurals name="badge_as_papotage_progress_hint_remaining">
+        <item quantity="one">Nur noch 1 solidarisches Papotage, um dieses Abzeichen zu erhalten.</item>
+        <item quantity="other">Noch %d solidarische Papotages, um dieses Abzeichen zu erhalten.</item>
+    </plurals>
+    <plurals name="badge_tisseur_liens_progress_hint_remaining">
+        <item quantity="one">Nur noch 1 aktive Woche, um dieses Abzeichen zu erhalten.</item>
+        <item quantity="other">Noch %d aktive Wochen, um dieses Abzeichen zu erhalten.</item>
+    </plurals>
 
     <!-- Inspirations-Chips für die Erstellung von Beiträgen in Gruppen -->
     <string name="create_post_inspiration_label">Brauchst du Inspiration?</string>

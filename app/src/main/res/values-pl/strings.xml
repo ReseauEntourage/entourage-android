@@ -2753,6 +2753,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <!-- Badges section -->
     <string name="badges_section_title">JEGO ODZNAKI</string>
     <string name="badges_see_all">Zobacz wszystkie</string>
+    <string name="badges_section_title_me">Moje odznaki</string>
     <string name="badges_screen_title">Moje odznaki</string>
     <string name="badges_screen_subtitle">%1$d zdobytych, %2$d w toku, %3$d do odkrycia. Każda odznaka nagradza konkretne działanie w Twojej społeczności.</string>
     <string name="badges_section_obtained">Zdobyte %1$d/%2$d</string>
@@ -2768,12 +2769,15 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="badges_faq_link">Jak działają odznaki?</string>
     <string name="badge_obtained_on">Zdobyta %1$s</string>
     <string name="badge_not_yet_obtained">Jeszcze nie zdobyta</string>
+    <string name="badge_status_obtained">Zdobyta</string>
+    <string name="badge_status_not_obtained">Niezdobyta</string>
     <string name="badge_how_it_works_title">JAK TO DZIAŁA</string>
     <string name="badge_mechanism_title">MECHANIZM</string>
     <string name="badge_what_it_means_title">CO TO OZNACZA</string>
     <string name="badge_mechanism_irreversible">Nieodwracalna — raz zdobyta, zostaje na zawsze.</string>
     <string name="badge_mechanism_reversible">Odwracalna — odnawiana co 90 dni.</string>
     <string name="badge_see_all_mine">Zobacz wszystkie moje odznaki</string>
+    <string name="badge_cta_see_my_badges">Zobacz moje odznaki</string>
     <string name="badge_progress_label">Twój postęp</string>
     <string name="badges_debug_switch_label">Tryb demo odznak</string>
     <string name="badge_premier_pas_title">Pierwszy krok</string>
@@ -2824,6 +2828,27 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="badge_diffuseur_liens_unlocked_message">Zorganizowałeś 3 wydarzenia w ciągu ostatnich 90 dni. Wprawiasz społeczność Entourage w ruch, brawo!</string>
     <string name="badge_as_papotage_unlocked_message">3 solidarne Papotages w ciągu półtora miesiąca — Twoja regularna obecność tworzy więzi i dobrze wpływa na otoczenie. Dziękujemy za stałe zaangażowanie.</string>
     <string name="badge_tisseur_liens_unlocked_message">3 aktywne tygodnie na 4 — sprawiasz, że serce grup sąsiedzkich bije mocniej. Dziękujemy za stałe zaangażowanie.</string>
+    <string name="badge_diffuseur_liens_progress_hint">Stwórz lub współprowadź wydarzenia w ciągu ostatnich 90 dni, aby zdobyć tę odznakę.</string>
+    <string name="badge_as_papotage_progress_hint">Weź udział w solidarnościowych Papotages w ciągu ostatnich 90 dni, aby zdobyć tę odznakę.</string>
+    <string name="badge_tisseur_liens_progress_hint">Bądź aktywny/a w swoich grupach przez co najmniej 3 z ostatnich 4 tygodni, aby zdobyć tę odznakę.</string>
+    <plurals name="badge_diffuseur_liens_progress_hint_remaining">
+        <item quantity="one">Jeszcze 1 wydarzenie do stworzenia lub współprowadzenia, aby zdobyć tę odznakę.</item>
+        <item quantity="few">Jeszcze %d wydarzenia do stworzenia lub współprowadzenia, aby zdobyć tę odznakę.</item>
+        <item quantity="many">Jeszcze %d wydarzeń do stworzenia lub współprowadzenia, aby zdobyć tę odznakę.</item>
+        <item quantity="other">Jeszcze %d wydarzenia do stworzenia lub współprowadzenia, aby zdobyć tę odznakę.</item>
+    </plurals>
+    <plurals name="badge_as_papotage_progress_hint_remaining">
+        <item quantity="one">Jeszcze 1 Papotage solidarnościowe, aby zdobyć tę odznakę.</item>
+        <item quantity="few">Jeszcze %d Papotages solidarnościowe, aby zdobyć tę odznakę.</item>
+        <item quantity="many">Jeszcze %d Papotages solidarnościowych, aby zdobyć tę odznakę.</item>
+        <item quantity="other">Jeszcze %d Papotages solidarnościowego, aby zdobyć tę odznakę.</item>
+    </plurals>
+    <plurals name="badge_tisseur_liens_progress_hint_remaining">
+        <item quantity="one">Jeszcze 1 tydzień aktywności, aby zdobyć tę odznakę.</item>
+        <item quantity="few">Jeszcze %d tygodnie aktywności, aby zdobyć tę odznakę.</item>
+        <item quantity="many">Jeszcze %d tygodni aktywności, aby zdobyć tę odznakę.</item>
+        <item quantity="other">Jeszcze %d tygodnia aktywności, aby zdobyć tę odznakę.</item>
+    </plurals>
 
     <!-- Chipy inspiracji do tworzenia postów w grupach -->
     <string name="create_post_inspiration_label">Potrzebujesz inspiracji?</string>

@@ -2750,6 +2750,7 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <!-- Badges section -->
     <string name="badges_section_title">INSIGNELE SALE</string>
     <string name="badges_see_all">Vezi tot</string>
+    <string name="badges_section_title_me">Insignele mele</string>
     <string name="badges_screen_title">Insignele mele</string>
     <string name="badges_screen_subtitle">%1$d obținute, %2$d în curs, %3$d de descoperit. Fiecare insignă recompensează o acțiune concretă în comunitatea ta.</string>
     <string name="badges_section_obtained">Obținute %1$d/%2$d</string>
@@ -2765,12 +2766,15 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="badges_faq_link">Cum funcționează insignele?</string>
     <string name="badge_obtained_on">Obținută pe %1$s</string>
     <string name="badge_not_yet_obtained">Încă neobținută</string>
+    <string name="badge_status_obtained">Obținută</string>
+    <string name="badge_status_not_obtained">Neobținută</string>
     <string name="badge_how_it_works_title">CUM FUNCȚIONEAZĂ</string>
     <string name="badge_mechanism_title">MECANISM</string>
     <string name="badge_what_it_means_title">CE REPREZINTĂ</string>
     <string name="badge_mechanism_irreversible">Ireversibilă — odată obținută, este pentru totdeauna.</string>
     <string name="badge_mechanism_reversible">Reversibilă — se reînnoiește la fiecare 90 de zile.</string>
     <string name="badge_see_all_mine">Vezi toate insignele mele</string>
+    <string name="badge_cta_see_my_badges">Vezi insignele mele</string>
     <string name="badge_progress_label">Progresul tău</string>
     <string name="badges_debug_switch_label">Mod demo insigne</string>
     <string name="badge_premier_pas_title">Primul pas</string>
@@ -2821,6 +2825,24 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="badge_diffuseur_liens_unlocked_message">Ai organizat 3 evenimente în ultimele 90 de zile. Faci comunitatea Entourage să se miște, bravo!</string>
     <string name="badge_as_papotage_unlocked_message">3 Papotages solidare într-o lună și jumătate — prezența ta regulată creează legături și face bine în jurul tău. Mulțumim pentru angajamentul constant.</string>
     <string name="badge_tisseur_liens_unlocked_message">3 săptămâni active din 4 — faci inima grupurilor de vecini să bată. Mulțumim pentru angajamentul constant.</string>
+    <string name="badge_diffuseur_liens_progress_hint">Creează sau co-organizează evenimente în ultimele 90 de zile pentru a obține această insignă.</string>
+    <string name="badge_as_papotage_progress_hint">Participă la Papotage-uri solidare în ultimele 90 de zile pentru a obține această insignă.</string>
+    <string name="badge_tisseur_liens_progress_hint">Fii activ/ă în grupurile tale cel puțin 3 din ultimele 4 săptămâni pentru a obține această insignă.</string>
+    <plurals name="badge_diffuseur_liens_progress_hint_remaining">
+        <item quantity="one">Mai ai nevoie de doar 1 eveniment de creat sau co-organizat pentru a obține această insignă.</item>
+        <item quantity="few">Mai ai nevoie de %d evenimente de creat sau co-organizat pentru a obține această insignă.</item>
+        <item quantity="other">Mai ai nevoie de %d de evenimente de creat sau co-organizat pentru a obține această insignă.</item>
+    </plurals>
+    <plurals name="badge_as_papotage_progress_hint_remaining">
+        <item quantity="one">Mai ai nevoie de doar 1 Papotage solidar pentru a obține această insignă.</item>
+        <item quantity="few">Mai ai nevoie de %d Papotage-uri solidare pentru a obține această insignă.</item>
+        <item quantity="other">Mai ai nevoie de %d de Papotage-uri solidare pentru a obține această insignă.</item>
+    </plurals>
+    <plurals name="badge_tisseur_liens_progress_hint_remaining">
+        <item quantity="one">Mai ai nevoie de doar 1 săptămână activă pentru a obține această insignă.</item>
+        <item quantity="few">Mai ai nevoie de %d săptămâni active pentru a obține această insignă.</item>
+        <item quantity="other">Mai ai nevoie de %d de săptămâni active pentru a obține această insignă.</item>
+    </plurals>
 
     <!-- Cipuri de inspirație pentru crearea de postări în grupuri -->
     <string name="create_post_inspiration_label">Ai nevoie de inspirație?</string>

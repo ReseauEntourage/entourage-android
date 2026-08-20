@@ -2656,6 +2656,7 @@
     <!-- Badges section -->
     <string name="badges_section_title">ЙОГО ЗНАЧКИ</string>
     <string name="badges_see_all">Переглянути все</string>
+    <string name="badges_section_title_me">Мої значки</string>
     <string name="badges_screen_title">Мої значки</string>
     <string name="badges_screen_subtitle">%1$d отримано, %2$d в процесі, %3$d для відкриття. Кожен значок винагороджує конкретну дію у вашій спільноті.</string>
     <string name="badges_section_obtained">Отримано %1$d/%2$d</string>
@@ -2671,12 +2672,15 @@
     <string name="badges_faq_link">Як працюють значки?</string>
     <string name="badge_obtained_on">Отримано %1$s</string>
     <string name="badge_not_yet_obtained">Ще не отримано</string>
+    <string name="badge_status_obtained">Отримано</string>
+    <string name="badge_status_not_obtained">Не отримано</string>
     <string name="badge_how_it_works_title">ЯК ЦЕ ПРАЦЮЄ</string>
     <string name="badge_mechanism_title">МЕХАНІЗМ</string>
     <string name="badge_what_it_means_title">ЩО ЦЕ ОЗНАЧАЄ</string>
     <string name="badge_mechanism_irreversible">Незворотний — отримавши, залишається назавжди.</string>
     <string name="badge_mechanism_reversible">Зворотний — оновлюється кожні 90 днів.</string>
     <string name="badge_see_all_mine">Переглянути всі мої значки</string>
+    <string name="badge_cta_see_my_badges">Переглянути мої значки</string>
     <string name="badge_progress_label">Ваш прогрес</string>
     <string name="badges_debug_switch_label">Демо-режим значків</string>
     <string name="badge_premier_pas_title">Перший крок</string>
@@ -2727,6 +2731,27 @@
     <string name="badge_diffuseur_liens_unlocked_message">Ви організували 3 заходи за останні 90 днів. Ви рухаєте спільноту Entourage вперед, браво!</string>
     <string name="badge_as_papotage_unlocked_message">3 солідарних Папотажа за півтора місяця — ваша регулярна присутність створює зв\'язки та робить добро навколо вас. Дякуємо за постійну участь.</string>
     <string name="badge_tisseur_liens_unlocked_message">3 активних тижні з 4 — ви змушуєте серце сусідських груп битися. Дякуємо за постійну участь.</string>
+    <string name="badge_diffuseur_liens_progress_hint">Створюйте або співорганізовуйте заходи за останні 90 днів, щоб отримати цей значок.</string>
+    <string name="badge_as_papotage_progress_hint">Беріть участь у солідарних Папотажах за останні 90 днів, щоб отримати цей значок.</string>
+    <string name="badge_tisseur_liens_progress_hint">Будьте активними у своїх групах щонайменше 3 з останніх 4 тижнів, щоб отримати цей значок.</string>
+    <plurals name="badge_diffuseur_liens_progress_hint_remaining">
+        <item quantity="one">Залишився 1 захід, щоб створити або співорганізувати для отримання цього значка.</item>
+        <item quantity="few">Залишилося %d заходи, щоб створити або співорганізувати для отримання цього значка.</item>
+        <item quantity="many">Залишилося %d заходів, щоб створити або співорганізувати для отримання цього значка.</item>
+        <item quantity="other">Залишилося %d заходу, щоб створити або співорганізувати для отримання цього значка.</item>
+    </plurals>
+    <plurals name="badge_as_papotage_progress_hint_remaining">
+        <item quantity="one">Залишився 1 солідарний Папотаж для отримання цього значка.</item>
+        <item quantity="few">Залишилося %d солідарні Папотажі для отримання цього значка.</item>
+        <item quantity="many">Залишилося %d солідарних Папотажів для отримання цього значка.</item>
+        <item quantity="other">Залишилося %d солідарного Папотажу для отримання цього значка.</item>
+    </plurals>
+    <plurals name="badge_tisseur_liens_progress_hint_remaining">
+        <item quantity="one">Залишився 1 активний тиждень для отримання цього значка.</item>
+        <item quantity="few">Залишилося %d активні тижні для отримання цього значка.</item>
+        <item quantity="many">Залишилося %d активних тижнів для отримання цього значка.</item>
+        <item quantity="other">Залишилося %d активного тижня для отримання цього значка.</item>
+    </plurals>
 
     <!-- Чіпи натхнення для створення публікацій у групах -->
     <string name="create_post_inspiration_label">Потрібне натхнення?</string>

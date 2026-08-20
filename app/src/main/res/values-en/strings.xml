@@ -1891,6 +1891,7 @@
     <!-- Badges section -->
     <string name="badges_section_title">THEIR BADGES</string>
     <string name="badges_see_all">See all</string>
+    <string name="badges_section_title_me">My badges</string>
     <string name="badges_screen_title">My badges</string>
     <string name="badge_detail_screen_title">Badge detail</string>
     <string name="badges_screen_subtitle">%1$d earned, %2$d in progress, %3$d to discover. Each badge rewards a concrete action in your community.</string>
@@ -1907,12 +1908,15 @@
     <string name="badges_faq_link">How do badges work?</string>
     <string name="badge_obtained_on">Earned on %1$s</string>
     <string name="badge_not_yet_obtained">Not yet earned</string>
+    <string name="badge_status_obtained">Earned</string>
+    <string name="badge_status_not_obtained">Not earned</string>
     <string name="badge_how_it_works_title">HOW IT WORKS</string>
     <string name="badge_mechanism_title">MECHANISM</string>
     <string name="badge_what_it_means_title">WHAT IT REPRESENTS</string>
     <string name="badge_mechanism_irreversible">Irreversible — once earned, it\'s yours forever.</string>
     <string name="badge_mechanism_reversible">Reversible — renewed every 90 days.</string>
     <string name="badge_see_all_mine">See all my badges</string>
+    <string name="badge_cta_see_my_badges">See my badges</string>
     <string name="badge_progress_label">Your progress</string>
     <string name="badges_debug_switch_label">Badge demo mode</string>
     <string name="badge_premier_pas_title">First step</string>
@@ -1968,6 +1972,18 @@
     <string name="badge_diffuseur_liens_progress_hint">Create or co-host events over the past 90 days to earn this badge.</string>
     <string name="badge_as_papotage_progress_hint">Participate in solidarity Papotages over the past 90 days to earn this badge.</string>
     <string name="badge_tisseur_liens_progress_hint">Be active in your groups at least 3 weeks out of the last 4 to earn this badge.</string>
+    <plurals name="badge_diffuseur_liens_progress_hint_remaining">
+        <item quantity="one">Just 1 more event to create or co-host to earn this badge.</item>
+        <item quantity="other">%d more events to create or co-host to earn this badge.</item>
+    </plurals>
+    <plurals name="badge_as_papotage_progress_hint_remaining">
+        <item quantity="one">Just 1 more solidarity Papotage to earn this badge.</item>
+        <item quantity="other">%d more solidarity Papotages to earn this badge.</item>
+    </plurals>
+    <plurals name="badge_tisseur_liens_progress_hint_remaining">
+        <item quantity="one">Just 1 more active week to earn this badge.</item>
+        <item quantity="other">%d more active weeks to earn this badge.</item>
+    </plurals>
 
     <!-- Inspiration chips for group post creation -->
     <string name="create_post_inspiration_label">Need some inspiration?</string>

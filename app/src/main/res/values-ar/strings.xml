@@ -2776,6 +2776,7 @@
     <!-- Badges section -->
     <string name="badges_section_title">شاراته</string>
     <string name="badges_see_all">عرض الكل</string>
+    <string name="badges_section_title_me">شاراتي</string>
     <string name="badges_screen_title">شاراتي</string>
     <string name="badges_screen_subtitle">%1$d محصولة، %2$d جارية، %3$d لاكتشافها. كل شارة تكافئ عملاً ملموساً في مجتمعك.</string>
     <string name="badges_section_obtained">محصولة %1$d/%2$d</string>
@@ -2791,12 +2792,15 @@
     <string name="badges_faq_link">كيف تعمل الشارات؟</string>
     <string name="badge_obtained_on">تم الحصول عليها في %1$s</string>
     <string name="badge_not_yet_obtained">لم تُحصل بعد</string>
+    <string name="badge_status_obtained">محصولة</string>
+    <string name="badge_status_not_obtained">غير محصولة</string>
     <string name="badge_how_it_works_title">كيف يعمل</string>
     <string name="badge_mechanism_title">الآلية</string>
     <string name="badge_what_it_means_title">ما الذي يمثله</string>
     <string name="badge_mechanism_irreversible">لا رجعة فيه — بمجرد الحصول عليه، يكون ملكك للأبد.</string>
     <string name="badge_mechanism_reversible">قابل للعكس — يتجدد كل 90 يوماً.</string>
     <string name="badge_see_all_mine">عرض جميع شاراتي</string>
+    <string name="badge_cta_see_my_badges">عرض شاراتي</string>
     <string name="badge_progress_label">تقدمك</string>
     <string name="badges_debug_switch_label">وضع عرض الشارات</string>
     <string name="badge_premier_pas_title">الخطوة الأولى</string>
@@ -2847,6 +2851,33 @@
     <string name="badge_diffuseur_liens_unlocked_message">لقد نظّمت 3 فعاليات خلال آخر 90 يوماً. أنت تُحرّك مجتمع Entourage، أحسنت!</string>
     <string name="badge_as_papotage_unlocked_message">3 جلسات Papotage تضامنية في شهر ونصف، حضورك المنتظم يخلق روابط ويُفيد المحيطين بك. شكراً على التزامك الدائم.</string>
     <string name="badge_tisseur_liens_unlocked_message">3 أسابيع نشطة من أصل 4 — أنت تُحرّك قلب مجموعات الجيران. شكراً على التزامك الدائم.</string>
+    <string name="badge_diffuseur_liens_progress_hint">أنشئ فعاليات أو شارك في تنظيمها خلال آخر 90 يوماً للحصول على هذه الشارة.</string>
+    <string name="badge_as_papotage_progress_hint">شارك في جلسات Papotage تضامنية خلال آخر 90 يوماً للحصول على هذه الشارة.</string>
+    <string name="badge_tisseur_liens_progress_hint">كن نشيطاً في مجموعاتك 3 أسابيع على الأقل من آخر 4 أسابيع للحصول على هذه الشارة.</string>
+    <plurals name="badge_diffuseur_liens_progress_hint_remaining">
+        <item quantity="zero">لا فعاليات متبقية لإنشائها أو المشاركة في تنظيمها للحصول على هذه الشارة.</item>
+        <item quantity="one">فعالية واحدة فقط متبقية لإنشائها أو المشاركة في تنظيمها للحصول على هذه الشارة.</item>
+        <item quantity="two">فعاليتان فقط متبقيتان لإنشائهما أو المشاركة في تنظيمهما للحصول على هذه الشارة.</item>
+        <item quantity="few">%d فعاليات متبقية لإنشائها أو المشاركة في تنظيمها للحصول على هذه الشارة.</item>
+        <item quantity="many">%d فعالية متبقية لإنشائها أو المشاركة في تنظيمها للحصول على هذه الشارة.</item>
+        <item quantity="other">%d فعالية متبقية لإنشائها أو المشاركة في تنظيمها للحصول على هذه الشارة.</item>
+    </plurals>
+    <plurals name="badge_as_papotage_progress_hint_remaining">
+        <item quantity="zero">لا توجد جلسات Papotage متبقية للحصول على هذه الشارة.</item>
+        <item quantity="one">جلسة Papotage واحدة فقط متبقية للحصول على هذه الشارة.</item>
+        <item quantity="two">جلستا Papotage فقط متبقيتان للحصول على هذه الشارة.</item>
+        <item quantity="few">%d جلسات Papotage متبقية للحصول على هذه الشارة.</item>
+        <item quantity="many">%d جلسة Papotage متبقية للحصول على هذه الشارة.</item>
+        <item quantity="other">%d جلسة Papotage متبقية للحصول على هذه الشارة.</item>
+    </plurals>
+    <plurals name="badge_tisseur_liens_progress_hint_remaining">
+        <item quantity="zero">لا أسابيع نشطة متبقية للحصول على هذه الشارة.</item>
+        <item quantity="one">أسبوع نشاط واحد فقط متبقٍ للحصول على هذه الشارة.</item>
+        <item quantity="two">أسبوعا نشاط فقط متبقيان للحصول على هذه الشارة.</item>
+        <item quantity="few">%d أسابيع نشاط متبقية للحصول على هذه الشارة.</item>
+        <item quantity="many">%d أسبوع نشاط متبقٍ للحصول على هذه الشارة.</item>
+        <item quantity="other">%d أسبوع نشاط متبقٍ للحصول على هذه الشارة.</item>
+    </plurals>
 
     <!-- شرائح الإلهام لإنشاء منشور في المجموعات -->
     <string name="create_post_inspiration_label">هل تحتاج إلهامًا؟</string>
