@@ -115,7 +115,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         _binding = FragmentFeedGroupBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_GROUP_FEED_SHOW)
         updatePaddingTopForEdgeToEdge(binding.toolbarHeader)
-        updatePaddingBottomForEdgeToEdge(binding.postsOldRecyclerview)
+        updatePaddingBottomForEdgeToEdge(binding.feedContent)
         return binding.root
     }
 

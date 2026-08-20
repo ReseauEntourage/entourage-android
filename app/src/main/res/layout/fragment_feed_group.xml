@@ -114,6 +114,7 @@
                 android:id="@+id/nest_sv_feed_fragment">
 
                 <LinearLayout
+                    android:id="@+id/feed_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
