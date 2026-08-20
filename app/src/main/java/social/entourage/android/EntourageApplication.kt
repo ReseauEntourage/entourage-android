@@ -1,9 +1,11 @@
 package social.entourage.android
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.core.content.edit
@@ -21,6 +23,7 @@ import social.entourage.android.onboarding.login.LoginActivity
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 import social.entourage.android.profile.settings.SettingsPresenter
 import social.entourage.android.tools.LibrariesSupport
+import social.entourage.android.tools.SafeTouchWindowCallback
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
@@ -48,6 +51,17 @@ class EntourageApplication : Application() {
         apiModule = ApiModule()
         librariesSupport = LibrariesSupport()
         librariesSupport.setupLibraries(this)
+        registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
+            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+                activity.window.callback = SafeTouchWindowCallback(activity.window.callback)
+            }
+            override fun onActivityStarted(activity: Activity) {}
+            override fun onActivityResumed(activity: Activity) {}
+            override fun onActivityPaused(activity: Activity) {}
+            override fun onActivityStopped(activity: Activity) {}
+            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
+            override fun onActivityDestroyed(activity: Activity) {}
+        })
     }
 
     val sharedPreferences: SharedPreferences
