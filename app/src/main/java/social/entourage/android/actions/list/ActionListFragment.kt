@@ -39,6 +39,9 @@ class ActionListFragment : Fragment() {
 //    private var currentSectionsFilters = MainFilterActivity.savedActionInterests
     var query = ""
 
+    private var listSkeletonShownAt: Long = 0L
+    private var hasCompletedInitialLoad = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,6 +59,21 @@ class ActionListFragment : Fragment() {
         initializeSwipeRefresh()
         observeQuery()
         observeActions()
+
+        // Skeleton pour le tout premier chargement de cet onglet uniquement (pas les reload
+        // suivants au retour sur l'onglet, sinon on flashe le skeleton à chaque swipe de tab)
+        binding.listSkeletonOverlay.visibility = View.VISIBLE
+        listSkeletonShownAt = System.currentTimeMillis()
+    }
+
+    private fun hideListSkeletonOnce() {
+        if (hasCompletedInitialLoad) return
+        hasCompletedInitialLoad = true
+        val elapsed = System.currentTimeMillis() - listSkeletonShownAt
+        val remaining = (MIN_SKELETON_DURATION_MS - elapsed).coerceAtLeast(0)
+        binding.listSkeletonOverlay.postDelayed({
+            if (isAdded) binding.listSkeletonOverlay.visibility = View.GONE
+        }, remaining)
     }
 
     override fun onResume() {
@@ -151,6 +169,7 @@ class ActionListFragment : Fragment() {
             if (error) {
                 actionsPresenter.isLoading = false
                 binding.progressBar.visibility = View.GONE
+                hideListSkeletonOnce()
                 CustomAlertDialog.showWithoutActions(requireContext(), getString(R.string.error_generic), getString(R.string.network_error))
                 actionsPresenter.errorLoadingActions.value = false
             }
@@ -175,11 +194,13 @@ class ActionListFragment : Fragment() {
         this.demandeActions.addAll(actions)
         actionAdapter.resetData(demandeActions, actionsPresenter.isContrib)
         binding.progressBar.visibility = View.GONE
+        hideListSkeletonOnce()
     }
 
     companion object {
         const val EVENTS_PER_PAGE: Int = 20
         const val IS_CONTRIB = "isContrib"
+        private const val MIN_SKELETON_DURATION_MS = 1000L
         fun newInstance(isContrib: Boolean, ismine: Boolean): ActionListFragment {
             val fragment = ActionListFragment()
             val args = Bundle()
