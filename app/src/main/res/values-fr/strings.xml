@@ -2768,4 +2768,5 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="post_draft_question">Bonjour, j\'aurais une question pour le groupe : </string>
     <string name="post_draft_exchange">J\'aimerais qu\'on échange sur ce sujet ensemble : </string>
     <string name="post_draft_meetup">Et si on se retrouvait prochainement ? Je propose </string>
+    <string name="group_feed_post_unavailable">Cette publication n\'existe plus.</string>
     </resources>

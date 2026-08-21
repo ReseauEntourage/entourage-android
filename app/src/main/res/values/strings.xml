@@ -3508,4 +3508,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
         <item quantity="other">Encore %d semaines d\'activité pour obtenir ce badge.</item>
     </plurals>
 
+    <string name="group_feed_post_unavailable">Cette publication n\'existe plus.</string>
+
 </resources>

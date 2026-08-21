@@ -2870,4 +2870,6 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="post_draft_exchange">Chciałbym/chciałabym, żebyśmy razem porozmawiali na ten temat: </string>
     <string name="post_draft_meetup">A może spotkamy się wkrótce? Proponuję </string>
 
+    <string name="group_feed_post_unavailable">Cette publication n\'existe plus.</string>
+
 </resources>

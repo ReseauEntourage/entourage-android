@@ -2714,4 +2714,5 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_small_talk_matching">+%1$d en cours de matching</string>
     <string name="home_small_talk_launch_new">+ Lancer une nouvelle rencontre (%1$d/3)</string>
     <string name="home_small_talk_subtitle_waiting">%1$d discussion en cours de matching</string>
+    <string name="group_feed_post_unavailable">Cette publication n\'existe plus.</string>
     </resources>

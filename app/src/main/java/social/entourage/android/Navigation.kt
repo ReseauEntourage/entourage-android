@@ -76,10 +76,9 @@ object Navigation {
             }
             HomeType.NEIGHBORHOOD -> when (action) {
                 ActionSummary.SHOW ->
-                    return Intent(context, GroupFeedActivity::class.java).putExtra(
-                        Const.GROUP_ID,
-                        params.id
-                    )
+                    return Intent(context, GroupFeedActivity::class.java)
+                        .putExtra(Const.GROUP_ID, params.id)
+                        .putExtra(Const.POST_ID, params.postId)
                 ActionSummary.INDEX -> {
                     ViewPagerDefaultPageController.shouldSelectDiscoverGroups = true
                     val bottomNavigationView =

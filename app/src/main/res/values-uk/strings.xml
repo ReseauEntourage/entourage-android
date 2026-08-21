@@ -2780,4 +2780,6 @@
     <string name="main_filter_chip_presentiel">Особисто</string>
     <string name="main_filter_chip_visio">Відеодзвінок</string>
 
+    <string name="group_feed_post_unavailable">Cette publication n\'existe plus.</string>
+
 </resources>

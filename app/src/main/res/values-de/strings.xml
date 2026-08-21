@@ -2848,4 +2848,6 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="post_draft_exchange">Ich würde gerne gemeinsam über dieses Thema diskutieren: </string>
     <string name="post_draft_meetup">Was wäre, wenn wir uns bald treffen würden? Ich schlage vor </string>
 
+    <string name="group_feed_post_unavailable">Cette publication n\'existe plus.</string>
+
 </resources>

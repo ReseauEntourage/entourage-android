@@ -12,6 +12,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -72,7 +73,9 @@ import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.CustomTypefaceSpan
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.VibrationUtil
+import social.entourage.android.tools.utils.flashHighlight
 import social.entourage.android.tools.utils.px
+import social.entourage.android.tools.utils.smoothScrollToView
 import timber.log.Timber
 import kotlin.math.abs
 import kotlin.math.max
@@ -93,6 +96,10 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
     private var isLoading = false
     private var page: Int = 0
     private var hasShownWelcomeMessage = false
+
+    // Provient d'une notification "nouveau post" : id du post à retrouver et sur lequel scroller
+    private var targetPostId: Int = Const.DEFAULT_VALUE
+    private var isSearchingTargetPost = false
     private var surveyPresenter: SurveyPresenter = SurveyPresenter()
 
     private var newPostsList: MutableList<Post> = ArrayList()
@@ -128,6 +135,8 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         groupId = args.groupID
+        targetPostId = args.postID
+        isSearchingTargetPost = targetPostId != Const.DEFAULT_VALUE
         myId = EntourageApplication.me(activity)?.id
 
         getPrincipalMember()
@@ -351,16 +360,74 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 binding.swipeRefresh.isRefreshing = false
-                binding.progressBar.visibility = View.GONE
                 isLoading = false
 
                 processPostsData(allPosts)
                 updatePostsVisibility()
 
+                if (isSearchingTargetPost) {
+                    continueTargetPostSearch(allPosts)
+                } else {
+                    binding.progressBar.visibility = View.GONE
+                }
+
             } catch (e: NullPointerException) {
                 Timber.e("Error in coroutine handleResponseGetGroupPosts")
             }
         }
+    }
+
+    // ============================
+    //   PARTIE NOTIF -> SCROLL TO POST
+    // ============================
+
+    private fun continueTargetPostSearch(lastFetchedPage: MutableList<Post>?) {
+        val isTargetVisible = newPostsList.any { it.id == targetPostId } ||
+            oldPostsList.any { it.id == targetPostId }
+
+        when {
+            isTargetVisible -> {
+                isSearchingTargetPost = false
+                binding.progressBar.visibility = View.GONE
+                scrollToTargetPost(targetPostId)
+            }
+            lastFetchedPage.isNullOrEmpty() || page >= MAX_TARGET_POST_SEARCH_PAGES -> {
+                isSearchingTargetPost = false
+                binding.progressBar.visibility = View.GONE
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_NOTIF_POST_NOT_FOUND)
+                showToast(getString(R.string.group_feed_post_unavailable))
+            }
+            else -> {
+                isLoading = true
+                binding.progressBar.visibility = View.VISIBLE
+                loadPosts()
+            }
+        }
+    }
+
+    private fun scrollToTargetPost(postId: Int) {
+        val isNew = newPostsList.any { it.id == postId }
+        val recyclerView = if (isNew) binding.postsNewRecyclerview else binding.postsOldRecyclerview
+        val index = (if (isNew) newPostsList else oldPostsList).indexOfFirst { it.id == postId }
+        if (index == -1 || !isAdded) return
+
+        val holder = recyclerView.findViewHolderForAdapterPosition(index)
+        if (holder != null) {
+            binding.nestSvFeedFragment.smoothScrollToView(holder.itemView)
+            holder.itemView.flashHighlight()
+            return
+        }
+
+        recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                val readyHolder = recyclerView.findViewHolderForAdapterPosition(index) ?: return
+                recyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                if (!isAdded) return
+                binding.nestSvFeedFragment.smoothScrollToView(readyHolder.itemView)
+                readyHolder.itemView.flashHighlight()
+            }
+        })
     }
 
     private fun processPostsData(allPosts: MutableList<Post>?) {
@@ -1103,6 +1170,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
     companion object {
         var isFromCreation = false
         private const val ITEM_PER_PAGE = 10
+        private const val MAX_TARGET_POST_SEARCH_PAGES = 30
     }
 }
 

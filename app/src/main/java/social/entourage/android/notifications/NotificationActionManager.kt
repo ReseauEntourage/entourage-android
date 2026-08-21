@@ -90,6 +90,15 @@ object NotificationActionManager {
             return
         }
 
+        // Notification de groupe (instance générique, pas "neighborhood_post") qui référence
+        // un post précis : on ouvre le feed du groupe, scrollé jusqu'au post.
+        // Note : on ne se base pas sur tracking/notifContext ici, ces valeurs se sont révélées
+        // peu fiables (ex: "chat_message_created" côté in-app plutôt que la valeur attendue).
+        if ((instance == "neighborhoods" || instance == "neighborhood") && postId != null) {
+            showGroupPostInFeed(context, supportFragmentManager, id, postId)
+            return
+        }
+
         when(getInstanceTypeFromName(instance)) {
             InstanceType.POIS -> showPoi(supportFragmentManager,id)
             InstanceType.USERS -> showUser(context,supportFragmentManager,id)
@@ -279,6 +288,15 @@ object NotificationActionManager {
         params.postId = postID
         Navigation.navigate(context,supportFragmentManager,
             HomeType.NEIGHBORHOOD_POST,
+            ActionSummary.SHOW, params)
+    }
+
+    private fun showGroupPostInFeed(context:Context,supportFragmentManager: FragmentManager, instanceId: Int , postID:Int) {
+        val params = HomeActionParams()
+        params.id = instanceId
+        params.postId = postID
+        Navigation.navigate(context,supportFragmentManager,
+            HomeType.NEIGHBORHOOD,
             ActionSummary.SHOW, params)
     }
 

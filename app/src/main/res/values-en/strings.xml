@@ -2005,4 +2005,6 @@
     <string name="post_draft_exchange">I\'d love for us to discuss this topic together: </string>
     <string name="post_draft_meetup">What if we got together soon? I suggest </string>
 
+    <string name="group_feed_post_unavailable">This post no longer exists.</string>
+
 </resources>
