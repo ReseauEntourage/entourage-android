@@ -73,9 +73,8 @@ import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.CustomTypefaceSpan
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.VibrationUtil
-import social.entourage.android.tools.utils.flashHighlight
 import social.entourage.android.tools.utils.px
-import social.entourage.android.tools.utils.smoothScrollToView
+import social.entourage.android.tools.utils.scrollToView
 import timber.log.Timber
 import kotlin.math.abs
 import kotlin.math.max
@@ -100,6 +99,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
     // Provient d'une notification "nouveau post" : id du post à retrouver et sur lequel scroller
     private var targetPostId: Int = Const.DEFAULT_VALUE
     private var isSearchingTargetPost = false
+    private var feedSkeletonShownAt: Long = 0L
     private var surveyPresenter: SurveyPresenter = SurveyPresenter()
 
     private var newPostsList: MutableList<Post> = ArrayList()
@@ -137,6 +137,9 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         groupId = args.groupID
         targetPostId = args.postID
         isSearchingTargetPost = targetPostId != Const.DEFAULT_VALUE
+        // Skeleton pour tout premier chargement du feed, pas seulement le cas notif -> post
+        binding.feedSkeletonOverlay.visibility = View.VISIBLE
+        feedSkeletonShownAt = System.currentTimeMillis()
         myId = EntourageApplication.me(activity)?.id
 
         getPrincipalMember()
@@ -369,6 +372,9 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
                     continueTargetPostSearch(allPosts)
                 } else {
                     binding.progressBar.visibility = View.GONE
+                    if (page == 1) {
+                        hideFeedSkeleton()
+                    }
                 }
 
             } catch (e: NullPointerException) {
@@ -388,18 +394,18 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         when {
             isTargetVisible -> {
                 isSearchingTargetPost = false
-                binding.progressBar.visibility = View.GONE
                 scrollToTargetPost(targetPostId)
             }
             lastFetchedPage.isNullOrEmpty() || page >= MAX_TARGET_POST_SEARCH_PAGES -> {
                 isSearchingTargetPost = false
-                binding.progressBar.visibility = View.GONE
+                hideFeedSkeleton()
                 AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_NOTIF_POST_NOT_FOUND)
                 showToast(getString(R.string.group_feed_post_unavailable))
             }
             else -> {
+                // Le skeleton reste affiché depuis le premier chargement : rien à faire de plus,
+                // on continue juste de paginer en tâche de fond.
                 isLoading = true
-                binding.progressBar.visibility = View.VISIBLE
                 loadPosts()
             }
         }
@@ -409,25 +415,46 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         val isNew = newPostsList.any { it.id == postId }
         val recyclerView = if (isNew) binding.postsNewRecyclerview else binding.postsOldRecyclerview
         val index = (if (isNew) newPostsList else oldPostsList).indexOfFirst { it.id == postId }
-        if (index == -1 || !isAdded) return
+        if (index == -1 || !isAdded) {
+            hideFeedSkeleton()
+            return
+        }
 
         val holder = recyclerView.findViewHolderForAdapterPosition(index)
         if (holder != null) {
-            binding.nestSvFeedFragment.smoothScrollToView(holder.itemView)
-            holder.itemView.flashHighlight()
+            revealTargetPost(holder.itemView)
             return
         }
 
         recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
-                val readyHolder = recyclerView.findViewHolderForAdapterPosition(index) ?: return
+                val readyHolder = recyclerView.findViewHolderForAdapterPosition(index)
                 recyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                if (!isAdded) return
-                binding.nestSvFeedFragment.smoothScrollToView(readyHolder.itemView)
-                readyHolder.itemView.flashHighlight()
+                if (readyHolder == null || !isAdded) {
+                    hideFeedSkeleton()
+                    return
+                }
+                revealTargetPost(readyHolder.itemView)
             }
         })
+    }
+
+    // Positionne le post cible avant de retirer le skeleton, pour qu'il soit déjà visible au
+    // bon endroit dès la disparition du skeleton (pas de scroll à vue).
+    private fun revealTargetPost(postView: View) {
+        binding.nestSvFeedFragment.scrollToView(postView)
+        hideFeedSkeleton()
+    }
+
+    // Le shimmer doit rester visible au moins MIN_SKELETON_DURATION_MS : sinon, quand la première
+    // page (ou le post cible) arrive tout de suite, le skeleton disparaît avant qu'on ait pu le voir.
+    private fun hideFeedSkeleton() {
+        val elapsed = System.currentTimeMillis() - feedSkeletonShownAt
+        val remaining = (MIN_SKELETON_DURATION_MS - elapsed).coerceAtLeast(0)
+        binding.feedSkeletonOverlay.postDelayed({
+            if (isAdded) binding.feedSkeletonOverlay.visibility = View.GONE
+        }, remaining)
     }
 
     private fun processPostsData(allPosts: MutableList<Post>?) {
@@ -1171,6 +1198,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         var isFromCreation = false
         private const val ITEM_PER_PAGE = 10
         private const val MAX_TARGET_POST_SEARCH_PAGES = 30
+        private const val MIN_SKELETON_DURATION_MS = 1000L
     }
 }
 
