@@ -57,6 +57,10 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
     private var lastFiltersHash: Int? = null
     private var isSearching = false
 
+    private var listSkeletonShownAt: Long = 0L
+    private var hasCompletedInitialGroupsLoad = false
+    private var hasCompletedInitialMyGroupsLoad = false
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentGroupsBinding.bind(view)
@@ -370,6 +374,8 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
 
     private fun initView() {
         binding.progressBar.visibility = View.VISIBLE
+        binding.listSkeletonOverlay.visibility = View.VISIBLE
+        listSkeletonShownAt = System.currentTimeMillis()
         binding.searchEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
         groupsList.clear()
         myGroupsList.clear()
@@ -381,10 +387,26 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
         }
     }
 
+    // Le skeleton couvre les deux listes (groupes + mes groupes), chargées indépendamment :
+    // on ne le retire qu'une fois les deux premières réponses arrivées, et pas avant
+    // MIN_SKELETON_DURATION_MS pour laisser le temps de voir l'anim.
+    private fun hideListSkeletonIfBothLoaded() {
+        if (!hasCompletedInitialGroupsLoad || !hasCompletedInitialMyGroupsLoad) return
+        val elapsed = System.currentTimeMillis() - listSkeletonShownAt
+        val remaining = (MIN_SKELETON_DURATION_MS - elapsed).coerceAtLeast(0)
+        binding.listSkeletonOverlay.postDelayed({
+            if (isAdded) binding.listSkeletonOverlay.visibility = View.GONE
+        }, remaining)
+    }
+
     private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
         if (allGroups == null || allGroups.isEmpty()) {
             isLoading = false
             binding.progressBar.visibility = View.GONE
+            if (!hasCompletedInitialGroupsLoad) {
+                hasCompletedInitialGroupsLoad = true
+                hideListSkeletonIfBothLoaded()
+            }
             return
         }
 
@@ -405,12 +427,20 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
         checkingSumForEmptyView()
         isLoading = false
         binding.progressBar.visibility = View.GONE
+        if (!hasCompletedInitialGroupsLoad) {
+            hasCompletedInitialGroupsLoad = true
+            hideListSkeletonIfBothLoaded()
+        }
     }
-    
+
     private fun handleResponseMyGetGroups(allGroups: MutableList<Group>?) {
         if (allGroups == null || allGroups.isEmpty()) {
             isLoading = false
             binding.progressBar.visibility = View.GONE
+            if (!hasCompletedInitialMyGroupsLoad) {
+                hasCompletedInitialMyGroupsLoad = true
+                hideListSkeletonIfBothLoaded()
+            }
             return
         }
         allGroups.let {
@@ -430,6 +460,10 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
         checkingSumForEmptyView()
         isLoading = false
         binding.progressBar.visibility = View.GONE
+        if (!hasCompletedInitialMyGroupsLoad) {
+            hasCompletedInitialMyGroupsLoad = true
+            hideListSkeletonIfBothLoaded()
+        }
     }
 
     private fun updateSearchResults(searchResults: MutableList<Group>?) {
@@ -565,5 +599,9 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
 
     override fun updateGroup() {
         binding.progressBar.visibility = View.GONE
+    }
+
+    companion object {
+        private const val MIN_SKELETON_DURATION_MS = 1000L
     }
 }
