@@ -54,6 +54,7 @@ import social.entourage.android.home.pedago.OnItemClick
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.notifications.InAppNotificationsActivity
+import social.entourage.android.notifications.NotificationActionManager
 import social.entourage.android.notifications.NotificationDemandActivity
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 import social.entourage.android.onboarding.onboard.OnboardingZoneChoiceActivity
@@ -693,6 +694,21 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         user = EntourageApplication.me(activity)
         updateAvatar()
         userPresenter.user.observe(viewLifecycleOwner, userObserver)
+
+        if (BuildConfig.DEBUG) {
+            // Simule le clic sur la notif "Test pour click" (groupe 286, post 54621) pour
+            // vérifier le scroll+highlight du deep link, faute de pouvoir déclencher une vraie
+            // notif avec post_id renseigné depuis le back pour l'instant.
+            binding.ivLogoHome.setOnClickListener {
+                NotificationActionManager.presentAction(
+                    requireActivity(),
+                    parentFragmentManager,
+                    "neighborhood",
+                    286,
+                    54621
+                )
+            }
+        }
 
         if (MainActivity.shouldLaunchOnboarding) {
             MainActivity.shouldLaunchOnboarding = false
