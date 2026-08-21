@@ -59,8 +59,13 @@ class DiscoverEventsListFragment : Fragment() {
     private var isLoadMoreSearchResults = false
     private var searchResultsList: MutableList<Events> = mutableListOf()
 
+    private var listSkeletonShownAt: Long = 0L
+    private var hasCompletedInitialEventsLoad = false
+    private var hasCompletedInitialMyEventsLoad = false
+
     companion object {
         var isFirstResumeWithFilters = true
+        private const val MIN_SKELETON_DURATION_MS = 1000L
     }
 
     override fun onAttach(context: Context) {
@@ -178,6 +183,8 @@ class DiscoverEventsListFragment : Fragment() {
     fun initView() {
         isLoading = false
         binding.progressBar.visibility = View.VISIBLE
+        binding.listSkeletonOverlay.visibility = View.VISIBLE
+        listSkeletonShownAt = System.currentTimeMillis()
         binding.searchEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
         eventsAdapter.clearList()
         myeventsAdapter.clearList()
@@ -186,6 +193,18 @@ class DiscoverEventsListFragment : Fragment() {
         page = 0
         pageMyEvent = 0
 
+    }
+
+    // Le skeleton doit couvrir les deux listes (events + my events), chargées indépendamment :
+    // on ne le retire qu'une fois les deux premières réponses arrivées, et pas avant
+    // MIN_SKELETON_DURATION_MS pour laisser le temps de voir l'anim.
+    private fun hideListSkeletonIfBothLoaded() {
+        if (!hasCompletedInitialEventsLoad || !hasCompletedInitialMyEventsLoad) return
+        val elapsed = System.currentTimeMillis() - listSkeletonShownAt
+        val remaining = (MIN_SKELETON_DURATION_MS - elapsed).coerceAtLeast(0)
+        binding.listSkeletonOverlay.postDelayed({
+            if (isAdded) binding.listSkeletonOverlay.visibility = View.GONE
+        }, remaining)
     }
 
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
@@ -204,6 +223,10 @@ class DiscoverEventsListFragment : Fragment() {
         }
         isLoading = false
         binding.progressBar.visibility = View.GONE
+        if (!hasCompletedInitialEventsLoad) {
+            hasCompletedInitialEventsLoad = true
+            hideListSkeletonIfBothLoaded()
+        }
     }
 
     private fun handleResponseGetMYEvents(myEvents: MutableList<Events>?) {
@@ -222,6 +245,10 @@ class DiscoverEventsListFragment : Fragment() {
         }
         isLoading = false
         binding.progressBar.visibility = View.GONE
+        if (!hasCompletedInitialMyEventsLoad) {
+            hasCompletedInitialMyEventsLoad = true
+            hideListSkeletonIfBothLoaded()
+        }
     }
 
     private fun handleResponseSearchEvents(allEvents: MutableList<Events>?) {
