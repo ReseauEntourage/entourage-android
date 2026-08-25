@@ -13,11 +13,17 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.Reaction
+import social.entourage.android.api.model.ReactionType
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityCommentsBinding
 import social.entourage.android.deeplinks.UniversalLinkManager
@@ -29,6 +35,7 @@ import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.report.onDissmissFragment
 import social.entourage.android.small_talks.SmallTalkViewModel
+import social.entourage.android.sockets.ConversationSocketManager
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -57,6 +64,18 @@ var isGroup = false
 var isSmallTalk = false
 lateinit var viewModel: DiscussionsPresenter
 var haveReloadFromDelete = false
+protected var editingMessageId: Int? = null
+
+// Vrai uniquement pour l'écran de discussion (DetailConversationActivity) : c'est le
+// seul contexte où on a un endpoint PATCH confirmé pour éditer un message.
+protected open val allowsMessageEdit: Boolean get() = false
+
+// Vrai pour tout écran où les réactions sur message sont proposées (discussion +
+// commentaires de publication).
+protected open val allowsMessageReactions: Boolean get() = false
+
+private var socketEventsJob: Job? = null
+protected var hasUnseenNewMessages = false
 
 
 protected var isOne2One = false
@@ -100,7 +119,44 @@ override fun onCreate(savedInstanceState: Bundle?) {
     handleSendButtonState()
     setupConversationChips()
     setupWindowInsets()
+    binding.btnCancelEditMessage.setOnClickListener { cancelEditingMessage() }
+    binding.tvNewMessagesBanner.setOnClickListener {
+        hideNewMessagesBanner()
+        scrollAfterLayout()
+    }
 }
+
+/**
+ * Met le message dans le champ de saisie du bas et bascule le bouton d'envoi en mode
+ * "modifier" : le prochain envoi fera un PATCH (via [updateComment]) au lieu de créer
+ * un nouveau message.
+ */
+fun startEditingMessage(messageId: Int, messageHtml: String?) {
+    if (messageId == 0) return
+    editingMessageId = messageId
+    val html = messageHtml ?: ""
+    val spanned = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY)
+    } else {
+        @Suppress("DEPRECATION") Html.fromHtml(html)
+    }
+    binding.commentMessage.setText(spanned)
+    binding.commentMessage.setSelection(binding.commentMessage.text?.length ?: 0)
+    binding.layoutEditingMessage.visibility = View.VISIBLE
+    binding.commentMessage.requestFocus()
+    val imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as? android.view.inputmethod.InputMethodManager
+    imm?.showSoftInput(binding.commentMessage, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT)
+}
+
+fun cancelEditingMessage() {
+    editingMessageId = null
+    binding.commentMessage.text?.clear()
+    binding.layoutEditingMessage.visibility = View.GONE
+    Utils.hideKeyboard(this)
+}
+
+/** Overridden by DetailConversationActivity to PATCH the edited message. */
+abstract fun updateComment(messageId: Int, newContentHtml: String)
 
 fun setIsEventTrue(){
     this.isEvent = true
@@ -290,9 +346,14 @@ private fun setupConversationChips() {
                     override fun onMessageLongPress(comment: Post, isMe: Boolean) {
                         showMessageOptions(comment, isMe)
                     }
+
+                    override fun onMessageReaction(comment: Post, reactionType: ReactionType) {
+                        onMessageReactionClicked(comment, reactionType)
+                    }
                 }
             )
             (adapter as? CommentsListAdapter)?.initiateList()
+            (adapter as? CommentsListAdapter)?.allowsReactions = allowsMessageReactions
         }
     }
 
@@ -300,6 +361,7 @@ private fun setupConversationChips() {
         val conversationId = if (isConversation) id else 0
         val groupId = if (isGroup) id else 0
         val eventId = if (isEvent) id else 0
+        val canEdit = allowsMessageEdit && isMe && comment.status !in listOf("deleted", "offensive", "offensible")
 
         val sheet = ActionSheetFragment.newMessageActions(
             conversationId = conversationId,
@@ -309,9 +371,130 @@ private fun setupConversationChips() {
             messageHtml = comment.content ?: comment.contentHtml,
             isMyMessage = isMe,
             isEventContext = isEvent,
-            isGroupContext = isGroup
+            isGroupContext = isGroup,
+            canEditMessage = canEdit
         )
         sheet.show(supportFragmentManager, "MessageActionsSheet")
+    }
+
+    /** Overridden by subclasses to actually send/remove the reaction. */
+    protected open fun onMessageReactionClicked(comment: Post, reactionType: ReactionType) {}
+
+    // ==================================================================================
+    // Websocket temps réel (ConversationChannel) — partagé entre DetailConversationActivity
+    // et GroupCommentActivity : connexion/déconnexion, fusion des messages entrants sans
+    // voler le scroll, bandeau "nouveaux messages", et mise à jour optimiste des réactions.
+    // ==================================================================================
+
+    /** [belongsToThisScreen] filtre les événements reçus (utile quand la souscription
+     * est plus large que l'écran affiché, ex. tout un groupe alors qu'on ne regarde que
+     * les commentaires d'un post précis). */
+    protected fun connectChatSocket(
+        instanceType: String,
+        instanceId: Int,
+        belongsToThisScreen: (Post) -> Boolean = { true }
+    ) {
+        ConversationSocketManager.connect(instanceType, instanceId)
+        socketEventsJob?.cancel()
+        socketEventsJob = lifecycleScope.launch {
+            ConversationSocketManager.events.collect { event -> onChatSocketEvent(event, belongsToThisScreen) }
+        }
+    }
+
+    protected fun disconnectChatSocket() {
+        socketEventsJob?.cancel()
+        socketEventsJob = null
+        ConversationSocketManager.disconnect()
+    }
+
+    private fun onChatSocketEvent(event: ConversationSocketManager.ChatEvent, belongsToThisScreen: (Post) -> Boolean) {
+        when (event) {
+            is ConversationSocketManager.ChatEvent.MessageCreated ->
+                if (belongsToThisScreen(event.message)) mergeIncomingMessage(event.message)
+            is ConversationSocketManager.ChatEvent.MessageUpdated ->
+                if (belongsToThisScreen(event.message)) updateExistingMessageInPlace(event.message)
+            is ConversationSocketManager.ChatEvent.ReactionCreated ->
+                applyReactionCreated(event.chatMessageId, event.reactionId)
+        }
+    }
+
+    /** Décalage d'index dû au "post parent" affiché en position 0 (commentaires de publication). */
+    private fun parentPostOffset(): Int = if (currentParentPost != null) 1 else 0
+
+    protected fun isAtBottomOfComments(): Boolean {
+        val lm = binding.comments.layoutManager as? LinearLayoutManager ?: return true
+        val last = lm.findLastCompletelyVisibleItemPosition()
+        return last >= lm.itemCount - 2
+    }
+
+    protected fun showNewMessagesBanner() {
+        hasUnseenNewMessages = true
+        binding.tvNewMessagesBanner.visibility = View.VISIBLE
+    }
+
+    protected fun hideNewMessagesBanner() {
+        hasUnseenNewMessages = false
+        binding.tvNewMessagesBanner.visibility = View.GONE
+    }
+
+    /**
+     * Insère ou met à jour un message reçu (confirmation d'envoi du serveur, ou message
+     * poussé par le websocket). Ne force le scroll que si on était déjà en bas de la
+     * liste (ou si c'est notre propre message) : sinon on affiche juste le bandeau
+     * "nouveaux messages", comme sur Messenger.
+     */
+    protected open fun mergeIncomingMessage(post: Post, forceScrollIfMine: Boolean = true) {
+        val existingIdx = if (post.id != null) commentsList.indexOfFirst { it.id == post.id } else -1
+        if (existingIdx >= 0) {
+            commentsList[existingIdx] = post
+            binding.comments.adapter?.notifyItemChanged(existingIdx + parentPostOffset())
+            return
+        }
+        val wasAtBottom = isAtBottomOfComments()
+        val insertPos = commentsList.size
+        commentsList.add(post)
+        binding.comments.adapter?.notifyItemInserted(insertPos + parentPostOffset())
+        val isMine = post.user?.userId == EntourageApplication.get().me()?.id
+        if (wasAtBottom || (isMine && forceScrollIfMine)) {
+            scrollAfterLayout()
+            hideNewMessagesBanner()
+        } else {
+            showNewMessagesBanner()
+        }
+        binding.progressBar.visibility = View.GONE
+        updateView(commentsList.isEmpty())
+    }
+
+    private fun updateExistingMessageInPlace(post: Post) {
+        val idx = commentsList.indexOfFirst { it.id != null && it.id == post.id }
+        if (idx >= 0) {
+            commentsList[idx] = post
+            binding.comments.adapter?.notifyItemChanged(idx + parentPostOffset())
+        }
+    }
+
+    private fun applyReactionCreated(chatMessageId: Int, reactionId: Int) {
+        val idx = commentsList.indexOfFirst { it.id == chatMessageId }
+        if (idx >= 0) {
+            addOrUpdateReactionBucket(commentsList[idx], reactionId)
+            binding.comments.adapter?.notifyItemChanged(idx + parentPostOffset())
+        }
+    }
+
+    protected fun addOrUpdateReactionBucket(post: Post, reactionId: Int) {
+        val bucket = post.reactions?.firstOrNull { it.reactionId == reactionId }
+        if (bucket != null) {
+            bucket.reactionsCount += 1
+        } else {
+            val list = post.reactions ?: mutableListOf<Reaction>().also { post.reactions = it }
+            list.add(Reaction().apply { this.reactionId = reactionId; this.reactionsCount = 1 })
+        }
+    }
+
+    protected fun removeReactionBucket(post: Post, reactionId: Int) {
+        val bucket = post.reactions?.firstOrNull { it.reactionId == reactionId } ?: return
+        if (bucket.reactionsCount <= 1) post.reactions?.remove(bucket)
+        else bucket.reactionsCount -= 1
     }
 
 
@@ -332,6 +515,15 @@ private fun setupConversationChips() {
                 @Suppress("DEPRECATION")
                 Html.toHtml(binding.commentMessage.text)
             }
+        }
+
+        val messageIdBeingEdited = editingMessageId
+        if (messageIdBeingEdited != null) {
+            if (message.isNotBlank()) {
+                updateComment(messageIdBeingEdited, message)
+            }
+            cancelEditingMessage()
+            return@setOnClickListener
         }
 
         if (message.isNotBlank() || photoUri != null) {

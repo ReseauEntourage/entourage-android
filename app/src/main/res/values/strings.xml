@@ -3371,6 +3371,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="message_action_copy">Copier le texte</string>
     <string name="message_action_report">Signaler le message</string>
     <string name="message_action_delete">Supprimer mon message</string>
+    <string name="message_action_edit">Modifier</string>
+    <string name="message_action_edit_in_progress">Modification du message en cours…</string>
+    <string name="new_messages_banner">Nouveaux messages ↓</string>
 
     <string name="event_settings_see_photos">Voir les photos</string>
     <string name="discussion_de_groupe">Discussion de groupe</string>

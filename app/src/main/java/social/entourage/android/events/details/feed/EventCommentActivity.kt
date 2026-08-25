@@ -115,6 +115,10 @@ class EventCommentActivity : CommentActivity() {
     }
 
 
+    // Édition de message non proposée sur les commentaires de publication (pas de
+    // "Modifier" dans le menu ici, cf. CommentActivity.isDiscussionScreen).
+    override fun updateComment(messageId: Int, newContentHtml: String) {}
+
     // ---------------------------------------------------------------------------
     // Publication du commentaire
     // ---------------------------------------------------------------------------

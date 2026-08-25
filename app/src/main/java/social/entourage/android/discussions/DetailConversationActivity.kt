@@ -36,11 +36,13 @@ import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.GroupMember
+import social.entourage.android.api.model.ReactionType
 import social.entourage.android.api.model.toUser
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.SmallTalk
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.toGroupMember
+import social.entourage.android.sockets.ConversationSocketManager
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.MentionAdapter
@@ -107,10 +109,8 @@ class DetailConversationActivity : CommentActivity() {
 
     private var event: Events? = null
 
-    // Refresh (page 1 -> append en bas)
-    private val refreshHandler = Handler(Looper.getMainLooper())
-    private val refreshIntervalMs = 1_500L
-    private var refreshRunnable: Runnable? = null
+    override val allowsMessageEdit: Boolean get() = true
+    override val allowsMessageReactions: Boolean get() = true
 
     // Clé stable pour les items
     private fun Post.diffKey(): String =
@@ -151,7 +151,7 @@ class DetailConversationActivity : CommentActivity() {
             smallTalkViewModel.smallTalkDetail.observe(this) { handleSmallTalkDetail(it) }
             smallTalkViewModel.messages.observe(this) { handleSmallTalkMessages(it) }
             smallTalkViewModel.participants.observe(this) { handleParticipants(it) }
-            smallTalkViewModel.createdMessage.observe(this) { scrollAfterLayout() }
+            smallTalkViewModel.createdMessage.observe(this) { it?.let { post -> mergeIncomingMessage(post) } }
 
             smallTalkViewModel.getSmallTalk(smallTalkId)
             smallTalkViewModel.loadInitialMessages(smallTalkId) // page 1 initiale
@@ -171,7 +171,8 @@ class DetailConversationActivity : CommentActivity() {
         } else {
             discussionsPresenter.getDetailConversation(id)
             discussionsPresenter.getAllComments.observe(this) { handleGetPostComments(it) }
-            discussionsPresenter.commentPosted.observe(this) { scrollAfterLayout() }
+            discussionsPresenter.commentPosted.observe(this) { it?.let { post -> mergeIncomingMessage(post) } }
+            discussionsPresenter.messageUpdated.observe(this) { it?.let { post -> mergeIncomingMessage(post, forceScrollIfMine = false) } }
             discussionsPresenter.loadInitialComments(id) // page 1 initiale
         }
 
@@ -205,20 +206,34 @@ class DetailConversationActivity : CommentActivity() {
         binding.header.headerIconSettings.setOnClickListener {
             buildAndShowActionSheet()
         }
-
-
     }
 
-    // ===== Refresh page 1 (append en bas) =====
+    // ===== Websocket temps réel =====
     override fun onResume() {
         super.onResume()
         AnalyticsEvents.logEvent(AnalyticsEvents.Message_view_detail)
-        startRefreshing()
+        connectSocketIfPossible()
     }
 
     override fun onPause() {
         super.onPause()
-        stopRefreshing()
+        disconnectChatSocket()
+    }
+
+    private fun connectSocketIfPossible() {
+        if (isSmallTalkMode) {
+            val smallTalkNumericId = smallTalkId.toIntOrNull() ?: return
+            connectChatSocket("SMALLTALK", smallTalkNumericId)
+        } else {
+            val convId = detailConversation?.id ?: return
+            val instanceType = ConversationSocketManager.mapConversationTypeToInstanceType(detailConversation?.type)
+            connectChatSocket(instanceType, convId)
+        }
+    }
+
+    override fun mergeIncomingMessage(post: Post, forceScrollIfMine: Boolean) {
+        if (isLoadingOlder) return
+        super.mergeIncomingMessage(post, forceScrollIfMine)
     }
 
     private fun buildAndShowActionSheet() {
@@ -311,35 +326,6 @@ class DetailConversationActivity : CommentActivity() {
         return !isSmallTalkMode && detailConversation?.type != "outing"
     }
 
-    private fun startRefreshing() {
-        if (refreshRunnable != null) return
-        refreshRunnable = object : Runnable {
-            override fun run() {
-                if (!isLoadingOlder) {
-                    if (isSmallTalkMode) {
-                        smallTalkViewModel.listChatMessages(smallTalkId, page = 1)
-                    } else {
-                        discussionsPresenter.getPostComments(id) // page 1
-                    }
-                    // Ajoutez un délai pour laisser le temps à la liste de se mettre à jour
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        if (isAtBottom()) {
-                            scrollAfterLayout()
-                        }
-                    }, 300) // Délai court pour laisser le temps à la liste de se recharger
-                }
-                refreshHandler.postDelayed(this, refreshIntervalMs)
-            }
-        }
-        refreshHandler.postDelayed(refreshRunnable!!, refreshIntervalMs)
-    }
-
-
-    private fun stopRefreshing() {
-        refreshRunnable?.let { refreshHandler.removeCallbacks(it) }
-        refreshRunnable = null
-    }
-
     // ===== API héritée =====
     override fun reloadView() {
         shouldOpenKeyboard = false
@@ -371,12 +357,7 @@ class DetailConversationActivity : CommentActivity() {
         }
     }
 
-    private fun isAtBottom(): Boolean {
-        val lm = binding.comments.layoutManager as? LinearLayoutManager ?: return true
-        val last = lm.findLastCompletelyVisibleItemPosition()
-        val total = lm.itemCount
-        return last >= total - 2
-    }
+    private fun isAtBottom(): Boolean = isAtBottomOfComments()
 
     private fun setupOptionMenu() {
         var isOptionsVisible = false
@@ -452,6 +433,9 @@ class DetailConversationActivity : CommentActivity() {
     private fun setupScrollPagination() {
         binding.comments.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
+                if (hasUnseenNewMessages && isAtBottom()) {
+                    hideNewMessagesBanner()
+                }
                 if (dy < 0 && !rv.canScrollVertically(-1) && !isLoadingOlder) {
                     val lm = rv.layoutManager as LinearLayoutManager
                     val firstPos = lm.findFirstVisibleItemPosition()
@@ -510,6 +494,7 @@ class DetailConversationActivity : CommentActivity() {
         smallTalkId = smallTalk?.id.toString()
         this.smallTalk = smallTalk
         setCameraIcon()
+        connectSocketIfPossible()
     }
 
     private fun handleSmallTalkMessages(messages: List<Post>?) {
@@ -729,6 +714,8 @@ class DetailConversationActivity : CommentActivity() {
 
         // Banner Staff Out-of-Office check
         checkStaffBannerDisplay(conversation)
+
+        connectSocketIfPossible()
     }
 
     private fun checkStaffBannerDisplay(conversation: Conversation) {
@@ -920,6 +907,47 @@ class DetailConversationActivity : CommentActivity() {
         scrollAfterLayout()
     }
 
+    // ===== Édition d'un message =====
+    override fun updateComment(messageId: Int, newContentHtml: String) {
+        if (isSmallTalkMode) {
+            smallTalkViewModel.updateChatMessage(smallTalkId, messageId.toString(), newContentHtml)
+        } else {
+            val convId = detailConversation?.id ?: id
+            discussionsPresenter.updateMessage(convId, messageId, newContentHtml)
+        }
+    }
+
+    // ===== Réactions sur message =====
+    override fun onMessageReactionClicked(comment: Post, reactionType: ReactionType) {
+        val messageId = comment.id ?: return
+        VibrationUtil.vibrate(this)
+        val convId = detailConversation?.id ?: id
+        val currentReactionId = comment.reactionId ?: 0
+        val idx = commentsList.indexOfFirst { it.id == messageId }
+
+        if (currentReactionId == reactionType.id) {
+            removeReactionBucket(comment, currentReactionId)
+            comment.reactionId = 0
+            sendDeleteReaction(convId, messageId)
+        } else {
+            if (currentReactionId != 0) removeReactionBucket(comment, currentReactionId)
+            addOrUpdateReactionBucket(comment, reactionType.id)
+            comment.reactionId = reactionType.id
+            if (currentReactionId != 0) sendDeleteReaction(convId, messageId)
+            sendAddReaction(convId, messageId, reactionType.id)
+        }
+        if (idx >= 0) binding.comments.adapter?.notifyItemChanged(idx)
+    }
+
+    private fun sendAddReaction(convId: Int, messageId: Int, reactionId: Int) {
+        if (isSmallTalkMode) smallTalkViewModel.reactToChatMessage(smallTalkId, messageId.toString(), reactionId)
+        else discussionsPresenter.reactToMessage(convId, messageId, reactionId)
+    }
+
+    private fun sendDeleteReaction(convId: Int, messageId: Int) {
+        if (isSmallTalkMode) smallTalkViewModel.deleteReactionChatMessage(smallTalkId, messageId.toString())
+        else discussionsPresenter.deleteReactionMessage(convId, messageId)
+    }
 
     // ===== Réception des messages =====
     override fun handleGetPostComments(allComments: MutableList<Post>?) {
@@ -1139,7 +1167,7 @@ class DetailConversationActivity : CommentActivity() {
         isSmallTalkMode = false
         MembersConversationFragment.isFromDiscussion = false
         smallTalkId = ""
-        stopRefreshing()
+        disconnectChatSocket()
         mentionSearchJob?.cancel()
     }
 }

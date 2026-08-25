@@ -16,6 +16,7 @@ import social.entourage.android.api.model.ConversationMembership
 import social.entourage.android.api.model.ConversationMembershipsWrapper
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.ReactionWrapper
 import social.entourage.android.api.model.UserBlockedUser
 import social.entourage.android.api.request.DiscussionDetailWrapper
 import social.entourage.android.api.request.PostListWrapper
@@ -48,6 +49,8 @@ class DiscussionsPresenter : ViewModel() {
 
     var getAllComments = MutableLiveData<MutableList<Post>?>()
     var commentPosted = MutableLiveData<Post?>()
+    var messageUpdated = MutableLiveData<Post?>()
+    var reactionResult = MutableLiveData<Boolean>()
 
     var unreadMessages = MutableLiveData<UnreadMessages?>()
 
@@ -179,6 +182,48 @@ class DiscussionsPresenter : ViewModel() {
                 isMessageDeleted.value = response.isSuccessful
             }
         })
+    }
+
+    fun updateMessage(conversationId: Int, messageId: Int, newContent: String) {
+        val params = ArrayMap<String, Any>()
+        params["content"] = newContent
+        EntourageApplication.get().apiModule.discussionsRequest.updateMessage(conversationId, messageId, params)
+            .enqueue(object : Callback<PostWrapper> {
+                override fun onResponse(call: Call<PostWrapper>, response: Response<PostWrapper>) {
+                    messageUpdated.value = response.body()?.post
+                }
+
+                override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
+                    messageUpdated.value = null
+                }
+            })
+    }
+
+    fun reactToMessage(conversationId: Int, messageId: Int, reactionId: Int) {
+        val wrapper = ReactionWrapper().apply { this.reactionId = reactionId }
+        EntourageApplication.get().apiModule.discussionsRequest.postReactionMessage(conversationId, messageId, wrapper)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    reactionResult.value = response.isSuccessful
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    reactionResult.value = false
+                }
+            })
+    }
+
+    fun deleteReactionMessage(conversationId: Int, messageId: Int) {
+        EntourageApplication.get().apiModule.discussionsRequest.deleteReactionMessage(conversationId, messageId)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    reactionResult.value = response.isSuccessful
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    reactionResult.value = false
+                }
+            })
     }
 
     fun getUnreadCount() {

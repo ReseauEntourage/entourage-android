@@ -16,11 +16,13 @@ import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.ReactionType
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.MentionAdapter
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.tools.utils.Utils
+import social.entourage.android.tools.utils.VibrationUtil
 import timber.log.Timber
 import java.util.UUID
 
@@ -30,6 +32,8 @@ class GroupCommentActivity : CommentActivity() {
 
     // Retient l'index du dernier '@' tapé. -1 => pas de mention en cours
     private var lastMentionStartIndex = -1
+
+    override val allowsMessageReactions: Boolean get() = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,11 +76,56 @@ class GroupCommentActivity : CommentActivity() {
     override fun onResume() {
         super.onResume()
         this.isGroup = true
+        // Le canal des posts du groupe diffuse tous ses chat_messages (posts ET
+        // commentaires) ; on ne garde que ceux qui répondent au post actuellement
+        // affiché. instance_id = id du groupe (à confirmer : peut-être l'id du post ?).
+        connectChatSocket("NEIGHBORHOODS_POSTS", id) { post -> post.postId == postId }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        disconnectChatSocket()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disconnectChatSocket()
     }
 
     // ---------------------------------------------------------------------------
     // Publication du commentaire
     // ---------------------------------------------------------------------------
+    // Édition de message non proposée sur les commentaires de publication : pas de
+    // PATCH confirmé côté back pour ce endpoint (cf. CommentActivity.allowsMessageEdit).
+    override fun updateComment(messageId: Int, newContentHtml: String) {}
+
+    // ---------------------------------------------------------------------------
+    // Réactions sur un commentaire (réutilise les endpoints déjà existants pour les
+    // posts de groupe : chat_messages/{id}/reactions marche pour tout chat_message,
+    // post ou commentaire).
+    // ---------------------------------------------------------------------------
+    override fun onMessageReactionClicked(comment: Post, reactionType: ReactionType) {
+        val commentId = comment.id ?: return
+        VibrationUtil.vibrate(this)
+        val currentReactionId = comment.reactionId ?: 0
+        val idx = commentsList.indexOfFirst { it.id == commentId }
+
+        if (currentReactionId == reactionType.id) {
+            removeReactionBucket(comment, currentReactionId)
+            comment.reactionId = 0
+            groupPresenter.deleteReactToPost(id, commentId)
+        } else {
+            if (currentReactionId != 0) {
+                removeReactionBucket(comment, currentReactionId)
+                groupPresenter.deleteReactToPost(id, commentId)
+            }
+            addOrUpdateReactionBucket(comment, reactionType.id)
+            comment.reactionId = reactionType.id
+            groupPresenter.reactToPost(id, commentId, reactionType.id)
+        }
+        if (idx >= 0) (binding.comments.adapter)?.notifyItemChanged(idx + (if (currentParentPost != null) 1 else 0))
+    }
+
     /**
      * On convertit le Spanned en HTML si on détecte <a href="...">,
      * sinon on envoie du texte brut.

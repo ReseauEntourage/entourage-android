@@ -69,6 +69,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
     private var isMyMessage: Boolean = false
     private var isEventContext: Boolean = false
     private var isGroupContext: Boolean = false
+    private var canEditMessage: Boolean = false
     private var headerFromEventFeed: Boolean = false
 
     // Pour “Modifier l’événement”
@@ -97,6 +98,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             isMyMessage = getBoolean(ARG_IS_MY_MESSAGE, false)
             isEventContext = getBoolean(ARG_IS_EVENT_CONTEXT, false)
             isGroupContext = getBoolean(ARG_IS_GROUP_CONTEXT, false)
+            canEditMessage = getBoolean(ARG_CAN_EDIT_MESSAGE, false)
             headerFromEventFeed = getBoolean(ARG_HEADER_FROM_EVENT_FEED, false)
             isEventCreator = getBoolean(ARG_IS_EVENT_CREATOR, false)
             canEditEvent = getBoolean(ARG_CAN_EDIT_EVENT, false)
@@ -302,7 +304,10 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.eventInfo.isVisible = false
                 binding.rules.profileSettingsItemLayout.isVisible = false
                 binding.photos.profileSettingsItemLayout.isVisible = false
-                binding.edit.profileSettingsItemLayout.isVisible = false
+                binding.edit.profileSettingsItemLayout.isVisible = canEditMessage
+                if (canEditMessage) {
+                    binding.edit.setLabel(getString(R.string.message_action_edit))
+                }
             }
         }
 
@@ -386,6 +391,11 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         }
 
         binding.edit.profileSettingsItemLayout.setOnClickListener {
+            if (mode == SheetMode.MESSAGE_ACTIONS) {
+                (activity as? DetailConversationActivity)?.startEditingMessage(messageId, messageHtml)
+                dismiss()
+                return@setOnClickListener
+            }
             eventObj?.let { ev ->
                 startActivity(
                     Intent(requireContext(), CreateEventActivity::class.java)
@@ -641,6 +651,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         private const val ARG_IS_MY_MESSAGE = "isMyMessage"
         private const val ARG_IS_EVENT_CONTEXT = "isEventContext"
         private const val ARG_IS_GROUP_CONTEXT = "isGroupContext"
+        private const val ARG_CAN_EDIT_MESSAGE = "canEditMessage"
         private const val ARG_FORCE_SHOW_EDIT = "forceShowEdit"
         private const val ARG_HEADER_FROM_EVENT_FEED = "headerFromEventFeed"
         private const val ARG_IS_EVENT_CREATOR = "isEventCreator"
@@ -665,7 +676,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             messageHtml: String?,
             isMyMessage: Boolean,
             isEventContext: Boolean,
-            isGroupContext: Boolean
+            isGroupContext: Boolean,
+            canEditMessage: Boolean = false
         ) = ActionSheetFragment().apply {
             arguments = Bundle().apply {
                 putString(ARG_MODE, SheetMode.MESSAGE_ACTIONS.name)
@@ -677,6 +689,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 putBoolean(ARG_IS_MY_MESSAGE, isMyMessage)
                 putBoolean(ARG_IS_EVENT_CONTEXT, isEventContext)
                 putBoolean(ARG_IS_GROUP_CONTEXT, isGroupContext)
+                putBoolean(ARG_CAN_EDIT_MESSAGE, canEditMessage)
             }
         }
 

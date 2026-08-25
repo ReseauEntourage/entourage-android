@@ -47,6 +47,7 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
     val almostMatches = MutableLiveData<List<UserSmallTalkRequestWithMatchData>>()
     val shouldLeave = MutableLiveData<Boolean>()
     val messageDeleteResult = MutableLiveData<Boolean>()
+    val reactionResult = MutableLiveData<Boolean>()
     private var currentPage = 1
     private val messagesPerPage = 50
     private var isLoading = false
@@ -379,6 +380,29 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 // En cas d'échec, on renvoie false et l'ID du message
                 messageDeleteResult.postValue(false)
+            }
+        })
+    }
+
+    fun reactToChatMessage(smallTalkId: String, messageId: String, reactionId: Int) {
+        val wrapper = ReactionWrapper().apply { this.reactionId = reactionId }
+        request.postReactionChatMessage(smallTalkId, messageId, wrapper).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                reactionResult.value = response.isSuccessful
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                reactionResult.value = false
+            }
+        })
+    }
+
+    fun deleteReactionChatMessage(smallTalkId: String, messageId: String) {
+        request.deleteReactionChatMessage(smallTalkId, messageId).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                reactionResult.value = response.isSuccessful
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                reactionResult.value = false
             }
         })
     }

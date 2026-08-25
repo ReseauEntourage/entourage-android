@@ -305,6 +305,61 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+        <!-- Bandeau "nouveaux messages" (façon Messenger) : flotte au-dessus de la
+             barre de saisie quand un message arrive alors qu'on a remonté dans
+             l'historique ; tap pour redescendre. -->
+        <TextView
+            android:id="@+id/tv_new_messages_banner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_chip_conversation_suggestion_selected"
+            android:text="@string/new_messages_banner"
+            android:textColor="@color/white"
+            android:fontFamily="@font/quicksand_bold"
+            android:textSize="13sp"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:elevation="6dp"
+            android:visibility="gone"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/post_comment"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:visibility="visible" />
+
+        <!-- Bandeau "modification en cours" : affiché quand on édite un message via
+             le menu long press, au-dessus de la barre de saisie. -->
+        <LinearLayout
+            android:id="@+id/layout_editing_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/beige"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/layout_staff_banner"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/tv_editing_message_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/left_courant_black"
+                android:textSize="13sp"
+                android:text="@string/message_action_edit_in_progress" />
+
+            <ImageView
+                android:id="@+id/btn_cancel_edit_message"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:padding="2dp"
+                android:src="@drawable/icon_cross"
+                app:tint="@color/orange" />
+        </LinearLayout>
+
         <LinearLayout
             android:id="@+id/post_comment"
             android:layout_width="match_parent"

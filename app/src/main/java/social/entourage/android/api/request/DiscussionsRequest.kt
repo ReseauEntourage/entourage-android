@@ -8,14 +8,17 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HTTP
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
+import social.entourage.android.api.model.CompleteReactionsResponse
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.ConversationImageSingleWrapper
 import social.entourage.android.api.model.ConversationImagesWrapper
 import social.entourage.android.api.model.ConversationMembershipsWrapper
 import social.entourage.android.api.model.GroupMember
+import social.entourage.android.api.model.ReactionWrapper
 import social.entourage.android.api.model.UserBlockedUser
 
 /**
@@ -65,6 +68,32 @@ interface DiscussionsRequest {
 
     @DELETE("conversations/{conversation_id}/chat_messages/{chat_message_id}")
     fun deleteMessage(
+        @Path("conversation_id") conversationId: Int,
+        @Path("chat_message_id") chatMessageId: Int
+    ): Call<ResponseBody>
+
+    @PATCH("conversations/{conversation_id}/chat_messages/{chat_message_id}")
+    fun updateMessage(
+        @Path("conversation_id") conversationId: Int,
+        @Path("chat_message_id") chatMessageId: Int,
+        @Body params: ArrayMap<String, Any>
+    ): Call<PostWrapper>
+
+    @GET("conversations/{conversation_id}/chat_messages/{chat_message_id}/reactions/users")
+    fun getDetailsReactionMessage(
+        @Path("conversation_id") conversationId: Int,
+        @Path("chat_message_id") chatMessageId: Int
+    ): Call<CompleteReactionsResponse>
+
+    @POST("conversations/{conversation_id}/chat_messages/{chat_message_id}/reactions")
+    fun postReactionMessage(
+        @Path("conversation_id") conversationId: Int,
+        @Path("chat_message_id") chatMessageId: Int,
+        @Body reactionWrapper: ReactionWrapper
+    ): Call<ResponseBody>
+
+    @DELETE("conversations/{conversation_id}/chat_messages/{chat_message_id}/reactions")
+    fun deleteReactionMessage(
         @Path("conversation_id") conversationId: Int,
         @Path("chat_message_id") chatMessageId: Int
     ): Call<ResponseBody>
