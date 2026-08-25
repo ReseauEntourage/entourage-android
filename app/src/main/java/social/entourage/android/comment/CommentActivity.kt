@@ -336,11 +336,18 @@ private fun setupConversationChips() {
                     }
 
                     override fun onShowWeb(url: String) {
-                        WebViewFragment.newInstance(
-                            if (!url.startsWith("http")) "https://$url" else url,
-                            0,
-                            true
-                        ).show(supportFragmentManager, WebViewFragment.TAG)
+                        val fullUrl = if (!url.startsWith("http")) "https://$url" else url
+                        val uri = Uri.parse(fullUrl)
+                        // Les mentions @ sont insérées sous forme de lien universel
+                        // (https://<DEEP_LINKS_URL>/app/users/<id>), cf.
+                        // DetailConversationActivity.insertMentionIntoEditText : on les route
+                        // vers l'écran in-app plutôt que de les ouvrir dans la WebView.
+                        if (uri.host == universalLinkManager.prodURL || uri.host == universalLinkManager.stagingURL) {
+                            universalLinkManager.handleUniversalLink(uri)
+                            return
+                        }
+                        WebViewFragment.newInstance(fullUrl, 0, true)
+                            .show(supportFragmentManager, WebViewFragment.TAG)
                     }
 
                     override fun onMessageLongPress(comment: Post, isMe: Boolean) {

@@ -7,6 +7,7 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.URLSpan
+import android.text.util.Linkify
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.compose.foundation.Image
@@ -388,10 +389,7 @@ private fun HtmlMessageText(
             }
         },
         update = { tv ->
-            // HtmlCompat gère elle-même le fallback pré-API 24 (minSdk 23 ici), pas besoin
-            // de brancher sur Build.VERSION.SDK_INT nous-même.
-            val spanned = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_LEGACY)
-            tv.text = makeLinksClickable(spanned, onLinkClick)
+            tv.text = buildMessageSpannable(html, onLinkClick)
             // Long-press posé nativement sur la View (pas via un Modifier Compose ambiant)
             // pour ne pas interférer avec le clic sur les ClickableSpan (liens/mentions).
             tv.setOnLongClickListener {
@@ -468,20 +466,38 @@ private fun GlideMessageImage(
 }
 
 /**
- * Convertit les URLSpan d'un Spanned HTML en ClickableSpan appelant [onLinkClick], pour
- * gérer nous-même les clics (deeplink in-app) plutôt que de laisser le système ouvrir un
+ * Rend cliquable tout ce qui doit l'être dans le corps d'un message : les balises <a> du
+ * HTML (dont les mentions @) et les URL écrites en texte brut.
+ *
+ * L'ordre compte : [Linkify.addLinks] commence par supprimer tous les URLSpan présents, donc
+ * on convertit d'abord les liens du HTML en ClickableSpan (que Linkify ne touche pas), et on
+ * ne linkifie le texte brut qu'ensuite. C'est l'équivalent de l'ancien
+ * android:autoLink="web" des layouts XML de commentaires, disparu avec le passage en Compose.
+ */
+private fun buildMessageSpannable(html: String, onLinkClick: (String) -> Unit): Spannable {
+    // HtmlCompat gère elle-même le fallback pré-API 24 (minSdk 23 ici).
+    val spanned = HtmlCompat.fromHtml(html, HtmlCompat.FROM_HTML_MODE_LEGACY)
+    val sb = makeLinksClickable(spanned, onLinkClick)
+    Linkify.addLinks(sb, Linkify.WEB_URLS)
+    return makeLinksClickable(sb, onLinkClick)
+}
+
+/**
+ * Convertit les URLSpan d'un Spanned en ClickableSpan appelant [onLinkClick], pour gérer
+ * nous-même les clics (deeplink in-app) plutôt que de laisser le système ouvrir un
  * navigateur. Copie de la logique historique de CommentsListAdapter.makeLinksClickable.
  */
-private fun makeLinksClickable(spanned: Spanned, onLinkClick: (String) -> Unit): Spannable {
-    val urlSpans = spanned.getSpans(0, spanned.length, URLSpan::class.java)
-    if (urlSpans.isEmpty()) return spanned as? Spannable ?: SpannableStringBuilder(spanned)
+private fun makeLinksClickable(spanned: Spanned, onLinkClick: (String) -> Unit): SpannableStringBuilder {
     val sb = SpannableStringBuilder(spanned)
-    for (span in urlSpans) {
+    for (span in sb.getSpans(0, sb.length, URLSpan::class.java)) {
         val start = sb.getSpanStart(span)
         val end = sb.getSpanEnd(span)
         val flags = sb.getSpanFlags(span)
         val url = span.url
         sb.removeSpan(span)
+        // Un ClickableSpan déjà posé sur la même portion vient du HTML : c'est la cible
+        // explicite (une mention, par ex.), qu'une détection Linkify ne doit pas écraser.
+        if (sb.getSpans(start, end, ClickableSpan::class.java).isNotEmpty()) continue
         sb.setSpan(object : ClickableSpan() {
             override fun onClick(widget: android.view.View) {
                 onLinkClick(url)
