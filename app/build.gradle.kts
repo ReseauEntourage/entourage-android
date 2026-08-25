@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.aboutlibraries)
@@ -323,10 +325,29 @@ dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 }
 
+// Résout le chemin complet vers adb : Gradle n'hérite pas toujours du PATH du shell interactif,
+// donc un simple "adb" échoue parfois ("A problem occurred starting process 'command 'adb''")
+// même quand adb fonctionne très bien en ligne de commande.
+fun adbExecutable(): String {
+    val sdkDir = System.getenv("ANDROID_HOME")
+        ?: System.getenv("ANDROID_SDK_ROOT")
+        ?: run {
+            val localPropsFile = rootProject.file("local.properties")
+            if (localPropsFile.exists()) {
+                val props = Properties()
+                localPropsFile.inputStream().use { props.load(it) }
+                props.getProperty("sdk.dir")
+            } else null
+        }
+    val isWindows = System.getProperty("os.name").contains("Windows", ignoreCase = true)
+    val adbName = if (isWindows) "adb.exe" else "adb"
+    return sdkDir?.let { File(it, "platform-tools/$adbName").absolutePath } ?: adbName
+}
+
 tasks.register<Exec>("clearSnapshots") {
     group = "verification"
     description = "Vider les snapshots sur le device"
-    commandLine("adb", "shell", "rm", "-rf", "/sdcard/Download/entourage_snapshots/*")
+    commandLine(adbExecutable(), "shell", "rm", "-rf", "/sdcard/Download/entourage_snapshots/*")
     isIgnoreExitValue = true
 }
 
@@ -339,8 +360,30 @@ tasks.register<Exec>("pullSnapshots") {
         if (!localDir.exists()) localDir.mkdirs()
     }
 
-    commandLine("adb", "pull", "/sdcard/Download/entourage_snapshots/.", localDir.absolutePath)
+    commandLine(adbExecutable(), "pull", "/sdcard/Download/entourage_snapshots/.", localDir.absolutePath)
 
     isIgnoreExitValue = true
     finalizedBy("clearSnapshots")
+}
+
+tasks.register<Exec>("clearE2EScreenshots") {
+    group = "verification"
+    description = "Vider les screenshots des scénarios E2E sur le device"
+    commandLine(adbExecutable(), "shell", "rm", "-rf", "/sdcard/Download/test_screenshot/*")
+    isIgnoreExitValue = true
+}
+
+tasks.register<Exec>("pullE2EScreenshots") {
+    group = "verification"
+    description = "Transférer les screenshots des scénarios E2E vers test_screenshot/ à la racine du projet"
+
+    val localDir = File(rootDir, "test_screenshot")
+    doFirst {
+        if (!localDir.exists()) localDir.mkdirs()
+    }
+
+    commandLine(adbExecutable(), "pull", "/sdcard/Download/test_screenshot/.", localDir.absolutePath)
+
+    isIgnoreExitValue = true
+    finalizedBy("clearE2EScreenshots")
 }
