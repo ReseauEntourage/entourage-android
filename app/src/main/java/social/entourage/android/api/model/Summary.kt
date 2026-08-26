@@ -48,6 +48,9 @@ class Summary : Serializable {
     @SerializedName("moderator")
     var moderator: HomeModerator? = null
 
+    @SerializedName("referent_benevole")
+    var referentBenevole: HomeModerator? = null
+
     @SerializedName("congratulations")
     var congratulations: MutableList<HomeAction>? = null
 
