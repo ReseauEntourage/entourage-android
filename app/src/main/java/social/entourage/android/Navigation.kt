@@ -214,7 +214,6 @@ object Navigation {
                 val intent = Intent(context, GroupCommentActivity::class.java)
                 intent.putExtra(Const.ID, params.id)
                 intent.putExtra(Const.POST_ID, params.postId)
-                intent.putExtra(Const.CHAT_MESSAGE_ID, params.chatMessageId)
                 intent.putExtra(Const.IS_FROM_NOTIF, true)
                 return intent
             }
@@ -223,7 +222,6 @@ object Navigation {
                 val intent = Intent(context, EventCommentActivity::class.java)
                 intent.putExtra(Const.ID, params.id)
                 intent.putExtra(Const.POST_ID, params.postId)
-                intent.putExtra(Const.CHAT_MESSAGE_ID, params.chatMessageId)
                 intent.putExtra(Const.IS_FROM_NOTIF, true)
                 return intent
             }

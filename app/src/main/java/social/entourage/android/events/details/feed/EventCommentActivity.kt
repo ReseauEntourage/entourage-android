@@ -195,7 +195,7 @@ class EventCommentActivity : CommentActivity() {
         this.currentParentPost = currentPost
         binding.progressBar.visibility = View.GONE
         (binding.comments.adapter as? CommentsListAdapter)?.updateData(this.currentParentPost)
-        scrollAndHighlightIfNeeded()
+        scrollAfterLayout()
         updateView(commentsList.isEmpty())
     }
 
@@ -209,7 +209,7 @@ class EventCommentActivity : CommentActivity() {
             return
         }
         binding.progressBar.visibility = View.GONE
-        scrollAndHighlightIfNeeded()
+        scrollAfterLayout()
     }
 
     // ---------------------------------------------------------------------------

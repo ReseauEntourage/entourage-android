@@ -29,7 +29,7 @@ import timber.log.Timber
 object NotificationActionManager {
 
     /**/
-    fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int = 0, postId:Int?, stage:String? = "", popup:String? = "" , notifContext:String? = "", tracking:String? = "", chatMessageId:Int? = null){
+    fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int = 0, postId:Int?, stage:String? = "", popup:String? = "" , notifContext:String? = "", tracking:String? = ""){
 
         if(popup.equals("outing_on_day_before")){
             if(context is MainActivity){
@@ -94,12 +94,8 @@ object NotificationActionManager {
         // un post précis : on ouvre le feed du groupe, scrollé jusqu'au post.
         // Note : on ne se base pas sur tracking/notifContext ici, ces valeurs se sont révélées
         // peu fiables (ex: "chat_message_created" côté in-app plutôt que la valeur attendue).
-        // Le fil principal d'un quartier est lui-même une liste de chat_messages (Post.id ==
-        // chat_message_id) : quand post_id est absent (cas du chat de quartier, par opposition
-        // à une publication), chat_message_id sert de cible de scroll au même titre.
-        val neighborhoodFeedTargetId = postId ?: chatMessageId
-        if ((instance == "neighborhoods" || instance == "neighborhood") && neighborhoodFeedTargetId != null) {
-            showGroupPostInFeed(context, supportFragmentManager, id, neighborhoodFeedTargetId)
+        if ((instance == "neighborhoods" || instance == "neighborhood") && postId != null) {
+            showGroupPostInFeed(context, supportFragmentManager, id, postId)
             return
         }
 
@@ -122,11 +118,11 @@ object NotificationActionManager {
             else -> {
                 if(getInstanceTypeFromName(instance) == InstanceType.OUTING_POSTS){
                     if (postId != null) {
-                        showEventPost(context,supportFragmentManager,id,postId,chatMessageId)
+                        showEventPost(context,supportFragmentManager,id,postId)
                     }
                 } else if(getInstanceTypeFromName(instance) == InstanceType.NEIGHBORHOODS_POSTS){
                     if (postId != null) {
-                        showGroupPost(context,supportFragmentManager,id,postId,chatMessageId)
+                        showGroupPost(context,supportFragmentManager,id,postId)
                     }
                 }
             }
@@ -276,22 +272,20 @@ object NotificationActionManager {
             ActionSummary.SHOW, params)
     }
 
-    private fun showEventPost(context:Context,supportFragmentManager: FragmentManager, instanceId: Int , postID:Int, chatMessageId: Int? = null) {
+    private fun showEventPost(context:Context,supportFragmentManager: FragmentManager, instanceId: Int , postID:Int) {
         val params = HomeActionParams()
         params.id = instanceId
         params.postId = postID
-        params.chatMessageId = chatMessageId
         Navigation.navigate(context,supportFragmentManager,
             HomeType.OUTING_POST,
             ActionSummary.SHOW, params)
     }
 
-    private fun showGroupPost(context:Context,supportFragmentManager: FragmentManager, instanceId: Int , postID:Int, chatMessageId: Int? = null) {
+    private fun showGroupPost(context:Context,supportFragmentManager: FragmentManager, instanceId: Int , postID:Int) {
 
         val params = HomeActionParams()
         params.id = instanceId
         params.postId = postID
-        params.chatMessageId = chatMessageId
         Navigation.navigate(context,supportFragmentManager,
             HomeType.NEIGHBORHOOD_POST,
             ActionSummary.SHOW, params)

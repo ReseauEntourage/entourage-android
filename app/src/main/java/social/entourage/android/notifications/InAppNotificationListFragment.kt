@@ -154,7 +154,6 @@ class InAppNotificationListFragment : Fragment() {
                     val stage = notif.context
                     val notifContext = notif.context
                     val postId:Int? = notif.postId
-                    val chatMessageId:Int? = notif.chatMessageId
                     if (notif.completedAt == null) {
                         itemSelected = position
                         notif.id?.let { homePresenter.markReadNotification(notif.id) }
@@ -171,7 +170,7 @@ class InAppNotificationListFragment : Fragment() {
                     }
 
                     if(instance != null) {
-                        NotificationActionManager.presentAction(requireContext(),parentFragmentManager,instance,instanceId,postId,stage, notifContext = notifContext, chatMessageId = chatMessageId )
+                        NotificationActionManager.presentAction(requireContext(),parentFragmentManager,instance,instanceId,postId,stage, notifContext = notifContext )
                     } else{
                         NotificationActionManager.presentWelcomeAction(requireContext(), stage)
                     }
