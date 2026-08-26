@@ -390,11 +390,11 @@ class DiscoverEventsListFragment : Fragment() {
                 val radius = MainFilterActivity.savedRadius.takeIf { it != 0 } ?: currentFilters.travel_distance()
                 val latitude = MainFilterActivity.savedLocation?.lat ?: currentFilters.latitude()
                 val longitude = MainFilterActivity.savedLocation?.lng ?: currentFilters.longitude()
-                val type = MainFilterActivity.savedEventTypes.joinToString(",").takeIf { it.isNotEmpty() }
                 eventsPresenter.getAllEventsWithFilter(
                     page, EVENTS_PER_PAGE,
                     MainFilterActivity.savedGroupInterests.joinToString(","),
-                    radius, latitude, longitude, "future", type
+                    radius, latitude, longitude, "future",
+                    reservedFemaleFilter(), formatFilter(), entourageOnlyFilter()
                 )
             }
         }
@@ -420,15 +420,27 @@ class DiscoverEventsListFragment : Fragment() {
                 val radius = MainFilterActivity.savedRadius.takeIf { it != 0 } ?: currentFilters.travel_distance()
                 val latitude = MainFilterActivity.savedLocation?.lat ?: currentFilters.latitude()
                 val longitude = MainFilterActivity.savedLocation?.lng ?: currentFilters.longitude()
-                val type = MainFilterActivity.savedEventTypes.joinToString(",").takeIf { it.isNotEmpty() }
                 eventsPresenter.getMyEventsWithFilter(
                     myId!!,
                     pageMyEvent, EVENTS_PER_PAGE,
                     MainFilterActivity.savedGroupInterests.joinToString(","),
-                    radius, latitude, longitude, "future", type
+                    radius, latitude, longitude, "future",
+                    reservedFemaleFilter(), formatFilter(), entourageOnlyFilter()
                 )
             }
         }
+    }
+
+    private fun reservedFemaleFilter(): Boolean? =
+        MainFilterActivity.savedEventTypes.contains(MainFilterActivity.EVENT_TYPE_RESERVED_FEMALE).takeIf { it }
+
+    private fun entourageOnlyFilter(): Boolean? =
+        MainFilterActivity.savedEventTypes.contains(MainFilterActivity.EVENT_TYPE_ENTOURAGE).takeIf { it }
+
+    private fun formatFilter(): String? = when (MainFilterActivity.savedEventFormat) {
+        MainFilterActivity.EVENT_FORMAT_PRESENTIAL -> "in_person"
+        MainFilterActivity.EVENT_FORMAT_REMOTE -> "online"
+        else -> null
     }
 
 

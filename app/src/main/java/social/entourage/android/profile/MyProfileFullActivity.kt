@@ -216,7 +216,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
         }
 
         // Referent card
-        val moderator = summary?.moderator
+        val moderator = summary?.referentBenevole
         if (moderator != null) {
             resourcesBinding.tvReferentName.text = moderator.displayName ?: ""
             resourcesBinding.tvReferentRole.text = getString(R.string.ambassador_referent_role)
