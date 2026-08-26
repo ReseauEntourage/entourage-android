@@ -373,25 +373,3 @@ tasks.register<Exec>("pullSnapshots") {
     isIgnoreExitValue = true
     finalizedBy("clearSnapshots")
 }
-
-tasks.register<Exec>("clearE2EScreenshots") {
-    group = "verification"
-    description = "Vider les screenshots des scénarios E2E sur le device"
-    commandLine(adbExecutable(), "shell", "rm", "-rf", "/sdcard/Download/test_screenshot/*")
-    isIgnoreExitValue = true
-}
-
-tasks.register<Exec>("pullE2EScreenshots") {
-    group = "verification"
-    description = "Transférer les screenshots des scénarios E2E vers test_screenshot/ à la racine du projet"
-
-    val localDir = File(rootDir, "test_screenshot")
-    doFirst {
-        if (!localDir.exists()) localDir.mkdirs()
-    }
-
-    commandLine(adbExecutable(), "pull", "/sdcard/Download/test_screenshot/.", localDir.absolutePath)
-
-    isIgnoreExitValue = true
-    finalizedBy("clearE2EScreenshots")
-}
