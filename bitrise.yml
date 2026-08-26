@@ -70,7 +70,7 @@ workflows:
     before_run:
       - prepare_workflow
     envs:
-      - GRADLE_TASK: assembleEntouragePreprod
+      - GRADLE_TASK: assemblePreprod
         opts:
           is_expand: false
     steps:

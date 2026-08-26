@@ -22,19 +22,19 @@ android {
     val targetCompatibilityVersion = JavaVersion.VERSION_21
 
     // App versions
-    val isRelease = project.gradle.startParameter.taskNames.any { it.contains("release", ignoreCase = true) }
+    val isReleaseOrPreprod = project.gradle.startParameter.taskNames.any { it.contains("release", ignoreCase = true)||it.contains("preprod", ignoreCase = true) }
 
     val versionMajor = 14
     val versionMinor = 5
 
     // Use a fixed version for debug builds to speed up configuration and enable caching
-    val versionPatch = if (isRelease) {
+    val versionPatch = if (isReleaseOrPreprod) {
         "git rev-list HEAD --count".runCommand().toIntOrNull() ?: 0
     } else {
         1000
     }
 
-    val versionBranchName = if (isRelease) {
+    val versionBranchName = if (isReleaseOrPreprod) {
         "git rev-parse --abbrev-ref HEAD".runCommand()
     } else {
         "debug"
@@ -206,13 +206,21 @@ android {
     }
 
     lint {
+        checkReleaseBuilds = isReleaseOrPreprod
         abortOnError = false
         disable += listOf("InvalidPackage")
+        ignoreTestSources = true
+        checkDependencies = false
     }
     aboutLibraries {
         offlineMode.set(true)
     }
     namespace = "social.entourage.android"
+}
+
+configurations.all {
+    exclude(group = "com.google.android.play", module = "core")
+    exclude(group = "com.google.android.play", module = "core-ktx")
 }
 
 aboutLibraries {
