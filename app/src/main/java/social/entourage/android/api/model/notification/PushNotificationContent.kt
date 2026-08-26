@@ -81,6 +81,9 @@ class PushNotificationContent : Serializable {
         @SerializedName("post_id")
         var postId:Int? = null
 
+        @SerializedName("chat_message_id")
+        var chatMessageId:Int? = null
+
         @SerializedName("welcome")
         val welcome: Boolean? = false
         //value = h1, j2, j8, j11

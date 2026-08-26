@@ -431,7 +431,8 @@ class MainActivity : BaseSecuredActivity() {
                         extra.postId,
                         stage = extra.stage,
                         popup = extra.popup,
-                        tracking = extra.tracking
+                        tracking = extra.tracking,
+                        chatMessageId = extra.chatMessageId
                     )
                 }
             }

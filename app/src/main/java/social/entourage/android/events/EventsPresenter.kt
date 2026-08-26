@@ -250,10 +250,12 @@ class EventsPresenter : ViewModel() {
 
     fun getMyEventsWithFilter(
         userId: Int, page: Int, per: Int, interests: String, travelDistance: Int?,
-        latitude: Double?, longitude: Double?, period: String, type: String? = null
+        latitude: Double?, longitude: Double?, period: String,
+        reservedFemale: Boolean? = null, format: String? = null, entourageOnly: Boolean? = null
     ) {
         EntourageApplication.get().apiModule.eventsRequest.getMyEventsWithFilter(
-            userId, page, per, interests, travelDistance, latitude, longitude, period, type
+            userId, page, per, interests, travelDistance, latitude, longitude, period,
+            reservedFemale, format, entourageOnly
         ).enqueue(object : Callback<EventsListWrapper> {
             override fun onResponse(
                 call: Call<EventsListWrapper>,
@@ -299,10 +301,12 @@ class EventsPresenter : ViewModel() {
 
     fun getAllEventsWithFilter(
         page: Int, per: Int, interests: String, travelDistance: Int?,
-        latitude: Double?, longitude: Double?, period: String, type: String? = null
+        latitude: Double?, longitude: Double?, period: String,
+        reservedFemale: Boolean? = null, format: String? = null, entourageOnly: Boolean? = null
     ) {
         EntourageApplication.get().apiModule.eventsRequest.getAllEventsWithFilter(
-            page, per, interests, travelDistance, latitude, longitude, period, type
+            page, per, interests, travelDistance, latitude, longitude, period,
+            reservedFemale, format, entourageOnly
         ).enqueue(object : Callback<EventsListWrapper> {
             override fun onResponse(
                 call: Call<EventsListWrapper>,
