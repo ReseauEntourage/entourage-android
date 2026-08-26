@@ -55,7 +55,9 @@ interface EventsRequest {
         @Query("latitude") latitude: Double?,
         @Query("longitude") longitude: Double?,
         @Query("period") period: String,
-        @Query("type") type: String? = null
+        @Query("reserved_female") reservedFemale: Boolean? = null,
+        @Query("format") format: String? = null,
+        @Query("entourage_only") entourageOnly: Boolean? = null
     ): Call<EventsListWrapper>
     @GET("outings")
     fun getAllEvents(
@@ -75,7 +77,9 @@ interface EventsRequest {
         @Query("latitude") latitude: Double?,
         @Query("longitude") longitude: Double?,
         @Query("period") period:String,
-        @Query("type") type: String? = null
+        @Query("reserved_female") reservedFemale: Boolean? = null,
+        @Query("format") format: String? = null,
+        @Query("entourage_only") entourageOnly: Boolean? = null
     ): Call<EventsListWrapper>
 
     @POST("outings")
