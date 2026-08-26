@@ -97,6 +97,9 @@ class HomeActionParams : Serializable {
     @SerializedName("post_id")
     var postId: Int? = null
 
+    @SerializedName("chat_message_id")
+    var chatMessageId: Int? = null
+
 }
 
 class HomeModerator : Serializable {

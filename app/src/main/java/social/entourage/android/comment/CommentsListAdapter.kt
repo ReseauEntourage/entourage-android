@@ -56,6 +56,11 @@ class CommentsListAdapter(
     var isForGroup: Boolean = false
     var allowsReactions: Boolean = false
 
+    // Id du message ciblé par un deep link de notification, à mettre brièvement en évidence
+    // une fois scrollé en vue (cf. CommentActivity.highlightCommentAt). Remis à null par
+    // l'activité une fois l'effet de mise en évidence terminé.
+    var highlightedMessageId: Int? = null
+
     // Pour savoir si l'utilisateur veut la version traduite ou originale.
     // On inverse si l'ID est dans translationExceptions.
     private val translationExceptions = mutableSetOf<Int>()
@@ -169,6 +174,7 @@ class CommentsListAdapter(
             comment = comment,
             isMe = isMe,
             isConversation = isConversation,
+            isHighlighted = comment.id != null && comment.id == highlightedMessageId,
             allowsReactions = allowsReactions,
             displayName = if (isMe) "" else (comment.user?.displayName ?: ""),
             contentHtml = contentToShow,

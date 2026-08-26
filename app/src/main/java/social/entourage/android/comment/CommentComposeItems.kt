@@ -10,6 +10,8 @@ import android.text.style.URLSpan
 import android.text.util.Linkify
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,12 +30,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -69,6 +73,7 @@ fun MessageBubbleItem(
     comment: Post,
     isMe: Boolean,
     isConversation: Boolean,
+    isHighlighted: Boolean = false,
     allowsReactions: Boolean,
     displayName: String,
     contentHtml: String,
@@ -92,9 +97,23 @@ fun MessageBubbleItem(
     // RecyclerView reçoit un item différent (sinon le picker resterait ouvert par erreur).
     var pickerVisible by remember(comment.id) { mutableStateOf(false) }
 
+    // Flash de mise en évidence pour le message ciblé par un deep link de notification :
+    // apparaît immédiatement (pas de fade-in) puis s'estompe. key(comment.id) évite qu'une
+    // ComposeView recyclée par le RecyclerView n'hérite de l'animation en cours de l'item
+    // précédent qu'elle affichait.
+    val highlightColor = colorResource(R.color.light_orange_opacity_50)
+    val backgroundColor by key(comment.id) {
+        animateColorAsState(
+            targetValue = if (isHighlighted) highlightColor else Color.Transparent,
+            animationSpec = tween(durationMillis = 600),
+            label = "messageHighlight"
+        )
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .background(backgroundColor)
             .padding(vertical = 4.dp),
         horizontalArrangement = if (isMe) Arrangement.End else Arrangement.Start,
         verticalAlignment = Alignment.Top

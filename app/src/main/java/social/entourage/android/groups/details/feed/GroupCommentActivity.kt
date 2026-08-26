@@ -202,7 +202,7 @@ class GroupCommentActivity : CommentActivity() {
         this.currentParentPost = currentPost
         binding.progressBar.visibility = View.GONE
         (binding.comments.adapter as? CommentsListAdapter)?.updateData(this.currentParentPost)
-        scrollAfterLayout()
+        scrollAndHighlightIfNeeded()
         updateView(commentsList.isEmpty())
     }
 
@@ -219,7 +219,7 @@ class GroupCommentActivity : CommentActivity() {
             return
         }
         binding.progressBar.visibility = View.GONE
-        scrollAfterLayout()
+        scrollAndHighlightIfNeeded()
     }
 
     // ---------------------------------------------------------------------------

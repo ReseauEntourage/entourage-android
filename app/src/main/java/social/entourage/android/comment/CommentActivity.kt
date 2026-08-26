@@ -66,6 +66,10 @@ lateinit var viewModel: DiscussionsPresenter
 var haveReloadFromDelete = false
 protected var editingMessageId: Int? = null
 
+// chat_message_id ciblé par une notification (deep link vers un commentaire précis dans ce
+// fil) : consommé une seule fois par scrollAndHighlightIfNeeded(), puis remis à null.
+private var targetChatMessageId: Int? = null
+
 // Vrai uniquement pour l'écran de discussion (DetailConversationActivity) : c'est le
 // seul contexte où on a un endpoint PATCH confirmé pour éditer un message.
 protected open val allowsMessageEdit: Boolean get() = false
@@ -100,6 +104,9 @@ override fun onCreate(savedInstanceState: Bundle?) {
     viewModel = ViewModelProvider(this).get(DiscussionsPresenter::class.java)
     id = intent.getIntExtra(Const.ID, Const.DEFAULT_VALUE)
     postId = intent.getIntExtra(Const.POST_ID, Const.DEFAULT_VALUE)
+    intent.getIntExtra(Const.CHAT_MESSAGE_ID, Const.DEFAULT_VALUE).let {
+        targetChatMessageId = if (it != Const.DEFAULT_VALUE) it else null
+    }
     postAuthorID = intent.getIntExtra(Const.POST_AUTHOR_ID, Const.DEFAULT_VALUE)
     isMember = intent.getBooleanExtra(Const.IS_MEMBER, false)
     titleName = intent.getStringExtra(Const.NAME)
@@ -182,6 +189,56 @@ protected fun scrollAfterLayout() {
                     binding.comments.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 }
             })
+}
+
+/**
+ * Variante de [scrollAfterLayout] qui scrolle et met en évidence [targetChatMessageId] s'il
+ * y en a un en attente (deep link notif vers un commentaire précis), sinon se comporte comme
+ * [scrollAfterLayout] (scroll vers le dernier message). Le fil de commentaires n'étant pas
+ * paginé côté client (chargé en un seul appel), pas besoin d'aller chercher une page
+ * supplémentaire : si le message ciblé existe dans ce fil, il est déjà en mémoire.
+ */
+protected fun scrollAndHighlightIfNeeded() {
+    val targetId = targetChatMessageId
+    if (targetId == null) {
+        scrollAfterLayout()
+        return
+    }
+    targetChatMessageId = null
+
+    val commentIndex = commentsList.indexOfFirst { it.id == targetId }
+    val isParentPost = commentIndex == -1 && currentParentPost?.id == targetId
+    if (commentIndex == -1 && !isParentPost) {
+        // Message ciblé introuvable dans ce fil (racine ou commentaire) : comportement par défaut.
+        scrollAfterLayout()
+        return
+    }
+
+    val adapterIndex = if (isParentPost) 0 else commentIndex + parentPostOffset()
+    binding.comments.viewTreeObserver.addOnGlobalLayoutListener(
+        object : OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                binding.comments.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                binding.comments.scrollToPosition(adapterIndex)
+                if (!isParentPost) highlightCommentAt(adapterIndex, targetId)
+            }
+        })
+}
+
+private fun highlightCommentAt(adapterIndex: Int, targetId: Int) {
+    val adapter = binding.comments.adapter as? CommentsListAdapter ?: return
+    adapter.highlightedMessageId = targetId
+    adapter.notifyItemChanged(adapterIndex)
+    binding.comments.postDelayed({
+        if (adapter.highlightedMessageId == targetId) {
+            adapter.highlightedMessageId = null
+            adapter.notifyItemChanged(adapterIndex)
+        }
+    }, HIGHLIGHT_DURATION_MS)
+}
+
+companion object {
+    private const val HIGHLIGHT_DURATION_MS = 1200L
 }
 
 private fun handleMessageDeleted(isMessageDeleted:Boolean){
