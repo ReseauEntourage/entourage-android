@@ -63,3 +63,6 @@ app/.classpath
 
 # Heap dumps générés par la JVM/Gradle
 *.hprof
+
+# Identifiants du compte utilisé pour les scénarios E2E
+/E2E_TEST_ACCOUNT.md
