@@ -75,6 +75,26 @@ class EventCommentActivity : CommentActivity() {
     override fun onResume() {
         super.onResume()
         this.isEvent = true
+        // Le canal de la sortie (instance_type "Outing", instance_id = id de la sortie)
+        // diffuse tous ses chat_messages (posts ET commentaires) ; on ne garde que ceux
+        // qui répondent au post actuellement affiché.
+        Timber.tag("ConvSocket").d("EventCommentActivity.onResume(): eventId=%d postId=%d", id, postId)
+        connectChatSocket(
+            "Outing",
+            id,
+            belongsToThisScreen = { post -> post.postId == postId },
+            onReconnected = { eventPresenter.getPostComments(id, postId) }
+        )
+    }
+
+    override fun onPause() {
+        super.onPause()
+        disconnectChatSocket()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disconnectChatSocket()
     }
 
     private fun animateMentionSuggestions(show: Boolean) {

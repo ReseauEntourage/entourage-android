@@ -11,7 +11,6 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
-import social.entourage.android.api.model.ReactionType
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.ProfileFullActivity
@@ -32,7 +31,6 @@ interface OnItemClickListener {
     fun onCommentReport(commentId: Int?, isForEvent: Boolean, isForGroup: Boolean, isMe: Boolean, commentLang: String)
     fun onShowWeb(url: String) // si tu veux ouvrir un navigateur ou gérer autrement
     fun onMessageLongPress(comment: Post, isMe: Boolean)
-    fun onMessageReaction(comment: Post, reactionType: ReactionType)
 }
 
 /**
@@ -192,11 +190,8 @@ class CommentsListAdapter(
             },
             onLinkClick = { url -> onItemClick.onShowWeb(url) },
             onRetryClick = { onItemClick.onItemClick(comment) },
-            onQuickReact = { onQuickReact(comment) },
+            reactions = comment.reactions ?: emptyList(),
             reactionTypes = MainActivity.reactionsList ?: emptyList(),
-            onReactionPicked = { type -> onItemClick.onMessageReaction(comment, type) },
-            myReactionId = comment.reactionId ?: 0,
-            reactionsTotalCount = comment.reactions?.sumOf { it.reactionsCount } ?: 0,
         )
     }
 
@@ -211,19 +206,6 @@ class CommentsListAdapter(
         context.startActivity(
             Intent(context, ImageZoomActivity::class.java).putExtra("image_url", comment.imageUrl)
         )
-    }
-
-    private fun onQuickReact(comment: Post) {
-        val types = MainActivity.reactionsList
-        val currentReactionId = comment.reactionId ?: 0
-        // Un reclic sur la bulle enlève la réaction en cours, quelle qu'elle soit
-        // (comme sur les publications) ; sinon on applique la réaction par défaut.
-        val targetType = if (currentReactionId != 0) {
-            types?.firstOrNull { it.id == currentReactionId } ?: types?.firstOrNull()
-        } else {
-            types?.firstOrNull()
-        } ?: return
-        onItemClick.onMessageReaction(comment, targetType)
     }
 
     fun updateData(currentParentPost: Post?) {

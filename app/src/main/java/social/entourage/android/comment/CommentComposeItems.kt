@@ -15,7 +15,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,9 +30,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -54,6 +50,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.Reaction
 import social.entourage.android.api.model.ReactionType
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
@@ -87,16 +84,9 @@ fun MessageBubbleItem(
     onReportClick: () -> Unit,
     onLinkClick: (String) -> Unit,
     onRetryClick: () -> Unit,
-    onQuickReact: () -> Unit,
+    reactions: List<Reaction>,
     reactionTypes: List<ReactionType>,
-    onReactionPicked: (ReactionType) -> Unit,
-    myReactionId: Int,
-    reactionsTotalCount: Int,
 ) {
-    // Clé sur comment.id : réinitialise l'état quand cette ComposeView recyclée par le
-    // RecyclerView reçoit un item différent (sinon le picker resterait ouvert par erreur).
-    var pickerVisible by remember(comment.id) { mutableStateOf(false) }
-
     // Flash de mise en évidence pour le message ciblé par un deep link de notification :
     // apparaît immédiatement (pas de fade-in) puis s'estompe. key(comment.id) évite qu'une
     // ComposeView recyclée par le RecyclerView n'hérite de l'animation en cours de l'item
@@ -176,24 +166,12 @@ fun MessageBubbleItem(
                 }
             }
 
-            if (allowsReactions && !isMe && comment.id != null) {
+            // Affichage passif des réactions déjà posées sur ce message — pas de bouton
+            // "ajouter une réaction" ici. Pour réagir : appui long sur la bulle, qui ouvre
+            // ActionSheetFragment avec la barre de réactions en haut (comme Messenger/WhatsApp).
+            if (allowsReactions && comment.id != null) {
                 Spacer(Modifier.padding(top = 2.dp))
-                if (pickerVisible) {
-                    ReactionPickerRow(
-                        types = reactionTypes,
-                        onPicked = {
-                            pickerVisible = false
-                            onReactionPicked(it)
-                        },
-                    )
-                }
-                ReactionSummaryBubble(
-                    myReactionId = myReactionId,
-                    totalCount = reactionsTotalCount,
-                    reactionTypes = reactionTypes,
-                    onClick = onQuickReact,
-                    onLongClick = { pickerVisible = !pickerVisible },
-                )
+                ReactionsBadgeRow(reactions = reactions, reactionTypes = reactionTypes)
             }
         }
 
@@ -283,61 +261,70 @@ private fun ReportIcon(onClick: () -> Unit, modifier: Modifier = Modifier) {
     )
 }
 
+/**
+ * Une pastille par type de réaction déjà posé sur le message (icône + nombre), lecture
+ * seule — pour réagir, voir [ReactionPickerRow] (appui long sur la bulle -> ActionSheetFragment).
+ */
 @Composable
-private fun ReactionSummaryBubble(
-    myReactionId: Int,
-    totalCount: Int,
-    reactionTypes: List<ReactionType>,
-    onClick: () -> Unit,
-    onLongClick: () -> Unit,
-) {
-    val defaultTypeId = reactionTypes.firstOrNull()?.id
+private fun ReactionsBadgeRow(reactions: List<Reaction>, reactionTypes: List<ReactionType>) {
+    val buckets = reactions.filter { it.reactionsCount > 0 }
+    if (buckets.isEmpty()) return
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .clip(RoundedCornerShape(15.dp))
-            .background(colorResource(R.color.white))
-            .combinedClickable(onClick = onClick, onLongClick = onLongClick)
-            .padding(horizontal = 6.dp, vertical = 3.dp)
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        when {
-            myReactionId == 0 -> Image(painterResource(R.drawable.ic_pouce_grey), null, modifier = Modifier.size(16.dp))
-            myReactionId == defaultTypeId -> Image(painterResource(R.drawable.ic_pouce_orange), null, modifier = Modifier.size(16.dp))
-            else -> {
-                val chosen = reactionTypes.firstOrNull { it.id == myReactionId }
-                if (chosen?.imageUrl != null) {
-                    GlideIcon(url = chosen.imageUrl, size = 16.dp)
+        buckets.forEach { bucket ->
+            val type = reactionTypes.firstOrNull { it.id == bucket.reactionId }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(15.dp))
+                    .background(colorResource(R.color.white))
+                    .padding(horizontal = 6.dp, vertical = 3.dp)
+            ) {
+                if (type?.imageUrl != null) {
+                    GlideIcon(url = type.imageUrl, size = 16.dp)
                 } else {
                     Image(painterResource(R.drawable.ic_pouce_orange), null, modifier = Modifier.size(16.dp))
                 }
+                Text(
+                    text = bucket.reactionsCount.toString(),
+                    style = EntourageComposeStyles.groupMemberSubtitleBlack,
+                    modifier = Modifier.padding(start = 4.dp)
+                )
             }
-        }
-        if (totalCount > 0) {
-            Text(
-                text = totalCount.toString(),
-                style = EntourageComposeStyles.groupMemberSubtitleBlack,
-                modifier = Modifier.padding(start = 4.dp)
-            )
         }
     }
 }
 
+/**
+ * Barre de sélection d'une réaction, façon Messenger/WhatsApp : affichée en haut du sheet
+ * d'actions sur un message ([social.entourage.android.ui.ActionSheetFragment]). [selectedTypeId]
+ * (la réaction actuelle de l'utilisateur, 0 si aucune) est mis en évidence — la retaper
+ * l'enlève (même toggle que [social.entourage.android.comment.CommentActivity.onMessageReactionClicked]).
+ */
 @Composable
-private fun ReactionPickerRow(types: List<ReactionType>, onPicked: (ReactionType) -> Unit) {
+fun ReactionPickerRow(types: List<ReactionType>, selectedTypeId: Int, onPicked: (ReactionType) -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(24.dp))
             .background(colorResource(R.color.grey_deleted_cell))
-            .padding(horizontal = 8.dp, vertical = 6.dp)
+            .padding(horizontal = 10.dp, vertical = 8.dp)
     ) {
         types.take(5).forEachIndexed { index, type ->
-            if (index > 0) Spacer(Modifier.padding(start = 6.dp))
-            GlideIcon(
-                url = type.imageUrl,
-                size = 22.dp,
-                modifier = Modifier.clickable { onPicked(type) }
-            )
+            if (index > 0) Spacer(Modifier.padding(start = 10.dp))
+            val isSelected = selectedTypeId != 0 && type.id == selectedTypeId
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .clip(CircleShape)
+                    .background(if (isSelected) colorResource(R.color.light_orange_opacity_50) else Color.Transparent)
+                    .clickable { onPicked(type) }
+                    .padding(6.dp)
+            ) {
+                GlideIcon(url = type.imageUrl, size = 26.dp)
+            }
         }
     }
 }

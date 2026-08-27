@@ -222,12 +222,26 @@ class DetailConversationActivity : CommentActivity() {
 
     private fun connectSocketIfPossible() {
         if (isSmallTalkMode) {
-            val smallTalkNumericId = smallTalkId.toIntOrNull() ?: return
-            connectChatSocket("SMALLTALK", smallTalkNumericId)
+            val smallTalkNumericId = smallTalkId.toIntOrNull()
+            if (smallTalkNumericId == null) {
+                Timber.tag("ConvSocket").w("connectSocketIfPossible(): smallTalkId '%s' not parseable, skipping socket connect", smallTalkId)
+                return
+            }
+            Timber.tag("ConvSocket").d("connectSocketIfPossible(): smalltalk id=%d", smallTalkNumericId)
+            connectChatSocket("Smalltalk", smallTalkNumericId, onReconnected = {
+                smallTalkViewModel.loadInitialMessages(smallTalkId)
+            })
         } else {
-            val convId = detailConversation?.id ?: return
+            val convId = detailConversation?.id
+            if (convId == null) {
+                Timber.tag("ConvSocket").w("connectSocketIfPossible(): detailConversation not loaded yet (id=%d), skipping socket connect", id)
+                return
+            }
             val instanceType = ConversationSocketManager.mapConversationTypeToInstanceType(detailConversation?.type)
-            connectChatSocket(instanceType, convId)
+            Timber.tag("ConvSocket").d("connectSocketIfPossible(): type=%s (raw='%s') convId=%d", instanceType, detailConversation?.type, convId)
+            connectChatSocket(instanceType, convId, onReconnected = {
+                discussionsPresenter.loadInitialComments(id)
+            })
         }
     }
 

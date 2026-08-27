@@ -410,10 +410,6 @@ private fun setupConversationChips() {
                     override fun onMessageLongPress(comment: Post, isMe: Boolean) {
                         showMessageOptions(comment, isMe)
                     }
-
-                    override fun onMessageReaction(comment: Post, reactionType: ReactionType) {
-                        onMessageReactionClicked(comment, reactionType)
-                    }
                 }
             )
             (adapter as? CommentsListAdapter)?.initiateList()
@@ -436,13 +432,24 @@ private fun setupConversationChips() {
             isMyMessage = isMe,
             isEventContext = isEvent,
             isGroupContext = isGroup,
-            canEditMessage = canEdit
+            canEditMessage = canEdit,
+            // Pas de réaction sur son propre message, ni là où l'écran ne les propose pas
+            // (ex. commentaires de sortie) — même règle que l'ancien bouton sous la bulle.
+            allowsReactions = allowsMessageReactions && !isMe,
+            myReactionId = comment.reactionId ?: 0
         )
         sheet.show(supportFragmentManager, "MessageActionsSheet")
     }
 
     /** Overridden by subclasses to actually send/remove the reaction. */
     protected open fun onMessageReactionClicked(comment: Post, reactionType: ReactionType) {}
+
+    /** Appelé par ActionSheetFragment (barre de réactions en haut du sheet d'actions) quand
+     * l'utilisateur choisit/retape une réaction pour [messageId]. */
+    fun applyReactionFromMessageActions(messageId: Int, reactionType: ReactionType) {
+        val comment = commentsList.firstOrNull { it.id == messageId } ?: return
+        onMessageReactionClicked(comment, reactionType)
+    }
 
     // ==================================================================================
     // Websocket temps réel (ConversationChannel) — partagé entre DetailConversationActivity
@@ -452,16 +459,19 @@ private fun setupConversationChips() {
 
     /** [belongsToThisScreen] filtre les événements reçus (utile quand la souscription
      * est plus large que l'écran affiché, ex. tout un groupe alors qu'on ne regarde que
-     * les commentaires d'un post précis). */
+     * les commentaires d'un post précis). [onReconnected] est appelé quand la souscription
+     * est reconfirmée après une coupure (voir ChatEvent.Reconnected) : aucun historique
+     * n'étant rejoué par le serveur, l'écran doit recharger via REST pour combler le trou. */
     protected fun connectChatSocket(
         instanceType: String,
         instanceId: Int,
-        belongsToThisScreen: (Post) -> Boolean = { true }
+        belongsToThisScreen: (Post) -> Boolean = { true },
+        onReconnected: () -> Unit = {}
     ) {
         ConversationSocketManager.connect(instanceType, instanceId)
         socketEventsJob?.cancel()
         socketEventsJob = lifecycleScope.launch {
-            ConversationSocketManager.events.collect { event -> onChatSocketEvent(event, belongsToThisScreen) }
+            ConversationSocketManager.events.collect { event -> onChatSocketEvent(event, belongsToThisScreen, onReconnected) }
         }
     }
 
@@ -471,14 +481,21 @@ private fun setupConversationChips() {
         ConversationSocketManager.disconnect()
     }
 
-    private fun onChatSocketEvent(event: ConversationSocketManager.ChatEvent, belongsToThisScreen: (Post) -> Boolean) {
+    private fun onChatSocketEvent(
+        event: ConversationSocketManager.ChatEvent,
+        belongsToThisScreen: (Post) -> Boolean,
+        onReconnected: () -> Unit
+    ) {
         when (event) {
             is ConversationSocketManager.ChatEvent.MessageCreated ->
                 if (belongsToThisScreen(event.message)) mergeIncomingMessage(event.message)
             is ConversationSocketManager.ChatEvent.MessageUpdated ->
                 if (belongsToThisScreen(event.message)) updateExistingMessageInPlace(event.message)
-            is ConversationSocketManager.ChatEvent.ReactionCreated ->
-                applyReactionCreated(event.chatMessageId, event.reactionId)
+            is ConversationSocketManager.ChatEvent.ReactionAdded ->
+                applyReactionAdded(event.chatMessageId, event.reactionId)
+            is ConversationSocketManager.ChatEvent.ReactionRemoved ->
+                applyReactionRemoved(event.chatMessageId, event.reactionId)
+            is ConversationSocketManager.ChatEvent.Reconnected -> onReconnected()
         }
     }
 
@@ -537,10 +554,18 @@ private fun setupConversationChips() {
         }
     }
 
-    private fun applyReactionCreated(chatMessageId: Int, reactionId: Int) {
+    private fun applyReactionAdded(chatMessageId: Int, reactionId: Int) {
         val idx = commentsList.indexOfFirst { it.id == chatMessageId }
         if (idx >= 0) {
             addOrUpdateReactionBucket(commentsList[idx], reactionId)
+            binding.comments.adapter?.notifyItemChanged(idx + parentPostOffset())
+        }
+    }
+
+    private fun applyReactionRemoved(chatMessageId: Int, reactionId: Int) {
+        val idx = commentsList.indexOfFirst { it.id == chatMessageId }
+        if (idx >= 0) {
+            removeReactionBucket(commentsList[idx], reactionId)
             binding.comments.adapter?.notifyItemChanged(idx + parentPostOffset())
         }
     }

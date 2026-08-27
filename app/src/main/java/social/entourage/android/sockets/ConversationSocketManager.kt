@@ -25,7 +25,9 @@ import java.util.concurrent.TimeUnit
  * ActionCable client for the `ConversationChannel` (see backend doc: subscribes with
  * `{"channel":"ConversationChannel","instance_type":"...","instance_id":...}`).
  * Delivers chat_message_created / chat_message_updated (content edits AND soft-deletes,
- * distinguished by `data.status == "deleted"`) / user_reaction_created events.
+ * distinguished by `data.status == "deleted"`) / user_reaction_added / user_reaction_removed
+ * events. member_joined / member_left are part of the same channel but have no UI consumer
+ * yet, so they're only logged (see handleChannelMessage).
  */
 object ConversationSocketManager {
 
@@ -34,7 +36,12 @@ object ConversationSocketManager {
     sealed class ChatEvent {
         data class MessageCreated(val message: Post) : ChatEvent()
         data class MessageUpdated(val message: Post) : ChatEvent()
-        data class ReactionCreated(val chatMessageId: Int, val reactionId: Int, val userId: Int) : ChatEvent()
+        data class ReactionAdded(val chatMessageId: Int, val reactionId: Int, val userId: Int) : ChatEvent()
+        data class ReactionRemoved(val chatMessageId: Int, val reactionId: Int, val userId: Int) : ChatEvent()
+        /** Subscription re-confirmed after a drop (network loss, app backgrounded, …).
+         * No history is replayed by the server, so consumers should refetch via REST to
+         * fill whatever gap happened while disconnected. */
+        object Reconnected : ChatEvent()
     }
 
     private val gson: Gson = GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create()
@@ -51,33 +58,44 @@ object ConversationSocketManager {
     private var currentInstanceType: String? = null
     private var currentInstanceId: Int? = null
 
+    // Vrai dès la première confirm_subscription reçue pour la cible courante. Une
+    // confirm_subscription suivante (après coupure réseau / mise en veille) signale donc
+    // une vraie reconnexion : le serveur ne rejouant aucun historique, on prévient les
+    // consommateurs via ChatEvent.Reconnected pour qu'ils recomblent le trou via REST.
+    private var hasConfirmedSubscriptionOnce = false
+
     /**
      * Maps the app's own conversation "type" discriminator (`detailConversation.type`,
      * raw values "private" / "neighborhood" / "outing" / "small_talk") to the
-     * ActionCable `instance_type`. "private" is still being tuned — "CONVERSATIONS"
-     * (all caps, plural) and "Conversations" (title case, plural) both got rejected,
-     * trying "Conversation" (title case, singular) next.
+     * ActionCable `instance_type`. These must match the backend's Rails class names
+     * exactly (see doc §05 — "Entourage" / all-caps / plural forms are all rejected):
+     * Outing, Conversation, Solicitation, Contribution, Neighborhood, Smalltalk.
      */
     fun mapConversationTypeToInstanceType(rawType: String?): String {
-        return when (rawType) {
+        val resolved = when (rawType) {
             "private" -> "Conversation"
-            "neighborhood" -> "NEIGHBORHOODS"
-            "small_talk" -> "SMALLTALK"
-            "outing" -> "OUTING"
-            null -> "NEIGHBORHOODS"
+            "neighborhood" -> "Neighborhood"
+            "small_talk" -> "Smalltalk"
+            "outing" -> "Outing"
+            null -> "Neighborhood"
             else -> {
-                Timber.tag(TAG).w("Unrecognized conversation type '%s', defaulting instance_type to NEIGHBORHOODS", rawType)
-                "NEIGHBORHOODS"
+                Timber.tag(TAG).w("Unrecognized conversation type '%s', defaulting instance_type to Neighborhood", rawType)
+                "Neighborhood"
             }
         }
+        Timber.tag(TAG).d("mapConversationTypeToInstanceType('%s') -> '%s'", rawType, resolved)
+        return resolved
     }
 
     private fun buildWsUrl(): String? {
         val token = EntourageApplication.get().authenticationController.me?.token
-        if (token.isNullOrBlank()) return null
-        Timber.tag(TAG).d("using token (TEMP full log for wscat comparison, remove after debugging): %s", token)
+        if (token.isNullOrBlank()) {
+            Timber.tag(TAG).w("buildWsUrl(): no token on authenticationController.me, aborting (me=%s)", EntourageApplication.get().authenticationController.me)
+            return null
+        }
         val httpBase = BuildConfig.ENTOURAGE_URL // e.g. https://api-preprod.entourage.social/api/v1/
         val httpHost = httpBase.substringBefore("/api/") // e.g. https://api-preprod.entourage.social
+        Timber.tag(TAG).d("buildWsUrl(): ENTOURAGE_URL=%s -> host=%s (token length=%d)", httpBase, httpHost, token.length)
 
         // Build with HttpUrl (http/https only — it doesn't understand ws/wss schemes)
         // so the token gets properly percent-encoded, matching what
@@ -91,24 +109,33 @@ object ConversationSocketManager {
             .toString()
 
         // Swap the scheme back to ws(s):// for the actual WebSocket request.
-        return encodedHttpUrl
+        val wsUrl = encodedHttpUrl
             .replaceFirst("https://", "wss://")
             .replaceFirst("http://", "ws://")
+        Timber.tag(TAG).d("buildWsUrl(): resolved wsUrl=%s", wsUrl.substringBefore("?token=") + "?token=<redacted>")
+        return wsUrl
     }
 
     fun connect(instanceType: String, instanceId: Int) {
-        Timber.tag(TAG).d("connect() called for instance_type=%s instance_id=%s (already connected=%s)", instanceType, instanceId, webSocket != null)
+        Timber.tag(TAG).d(
+            "connect() called for instance_type=%s instance_id=%s (already connected=%s, current=%s/%s)",
+            instanceType, instanceId, webSocket != null, currentInstanceType, currentInstanceId
+        )
         wantsConnection = true
-        if (webSocket != null && currentInstanceType == instanceType && currentInstanceId == instanceId) return
+        if (webSocket != null && currentInstanceType == instanceType && currentInstanceId == instanceId) {
+            Timber.tag(TAG).d("connect(): already connected to this exact target, no-op")
+            return
+        }
         closeCurrentSocket()
         currentInstanceType = instanceType
         currentInstanceId = instanceId
         reconnectAttempts = 0
+        hasConfirmedSubscriptionOnce = false
         openSocket()
     }
 
     fun disconnect() {
-        Timber.tag(TAG).d("disconnect() called")
+        Timber.tag(TAG).d("disconnect() called (was connected to %s/%s)", currentInstanceType, currentInstanceId)
         wantsConnection = false
         cancelReconnect()
         closeCurrentSocket()
@@ -132,6 +159,7 @@ object ConversationSocketManager {
         cancelReconnectKeepAttempts()
         reconnectAttempts++
         val delayMs = minOf(30_000L, 2_000L * reconnectAttempts)
+        Timber.tag(TAG).d("scheduleReconnect(): attempt #%d in %dms", reconnectAttempts, delayMs)
         val runnable = Runnable { if (wantsConnection) openSocket() }
         reconnectRunnable = runnable
         mainHandler.postDelayed(runnable, delayMs)
@@ -163,7 +191,11 @@ object ConversationSocketManager {
             Timber.tag(TAG).w("No auth token available, cannot open websocket")
             return
         }
-        Timber.tag(TAG).d("opening socket: %s", url.substringBefore("?token=") + "?token=<redacted>")
+        val originHeader = "https://${BuildConfig.DEEP_LINKS_URL}"
+        Timber.tag(TAG).d(
+            "opening socket: %s (Origin=%s, target instance_type=%s instance_id=%s, reconnectAttempts=%d)",
+            url.substringBefore("?token=") + "?token=<redacted>", originHeader, currentInstanceType, currentInstanceId, reconnectAttempts
+        )
         try {
             // ActionCable rejects the upgrade with a 404 when there's no Origin header
             // (confirmed live) — OkHttp doesn't send one by default for a native client,
@@ -171,28 +203,45 @@ object ConversationSocketManager {
             // backend-side and already used elsewhere in the app (mention links).
             val request = Request.Builder()
                 .url(url)
-                .header("Origin", "https://${BuildConfig.DEEP_LINKS_URL}")
+                .header("Origin", originHeader)
                 .build()
             webSocket = webSocketClient.newWebSocket(request, object : WebSocketListener() {
                 override fun onOpen(webSocket: WebSocket, response: Response) {
-                    Timber.tag(TAG).d("socket open (HTTP %s)", response.code)
+                    Timber.tag(TAG).d(
+                        "socket OPEN (HTTP %s %s), headers=%s",
+                        response.code, response.message, response.headers
+                    )
                 }
 
                 override fun onMessage(webSocket: WebSocket, text: String) {
+                    Timber.tag(TAG).d("<< frame received: %s", text)
                     handleMessage(text)
                 }
 
                 override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
-                    Timber.tag(TAG).d("socket closing: %s", reason)
+                    Timber.tag(TAG).d("socket CLOSING: code=%d reason=%s", code, reason)
                 }
 
                 override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
-                    Timber.tag(TAG).d("socket closed: %s", reason)
+                    Timber.tag(TAG).d("socket CLOSED: code=%d reason=%s (wantsConnection=%s)", code, reason, wantsConnection)
                     if (wantsConnection) scheduleReconnect()
                 }
 
                 override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-                    Timber.tag(TAG).w(t, "socket failure (HTTP %s)", response?.code)
+                    // response is non-null when the failure happens during/after the HTTP
+                    // handshake (e.g. a plain 404/401 instead of a 101 Switching Protocols) —
+                    // that response's body is where ActionCable/nginx put the real reason.
+                    val bodySnippet = try {
+                        response?.peekBody(2048)?.string()
+                    } catch (bodyReadError: Exception) {
+                        "unavailable: ${bodyReadError.message}"
+                    }
+                    Timber.tag(TAG).e(
+                        t,
+                        "socket FAILURE: %s (HTTP %s %s), body=%s, headers=%s",
+                        t.javaClass.simpleName + ": " + t.message,
+                        response?.code, response?.message, bodySnippet, response?.headers
+                    )
                     if (wantsConnection) scheduleReconnect()
                 }
             })
@@ -202,15 +251,20 @@ object ConversationSocketManager {
     }
 
     private fun sendSubscribe() {
-        val type = currentInstanceType ?: return
-        val id = currentInstanceId ?: return
+        val type = currentInstanceType
+        val id = currentInstanceId
+        if (type == null || id == null) {
+            Timber.tag(TAG).w("sendSubscribe(): no current target (type=%s id=%s), skipping", type, id)
+            return
+        }
         val identifier = """{"channel":"ConversationChannel","instance_type":"$type","instance_id":$id}"""
         val payload = JsonObject().apply {
             addProperty("command", "subscribe")
             addProperty("identifier", identifier)
         }
-        webSocket?.send(gson.toJson(payload))
-        Timber.tag(TAG).d("subscribe sent: instance_type=%s instance_id=%s", type, id)
+        val frame = gson.toJson(payload)
+        val sent = webSocket?.send(frame)
+        Timber.tag(TAG).d(">> subscribe sent (queued=%s): %s", sent, frame)
     }
 
     private fun handleMessage(text: String) {
@@ -223,49 +277,88 @@ object ConversationSocketManager {
                     sendSubscribe()
                 }
                 "ping" -> Unit
-                "confirm_subscription" -> Timber.tag(TAG).d("subscription confirmed")
-                "reject_subscription" -> Timber.tag(TAG).w("subscription rejected for %s/%s", currentInstanceType, currentInstanceId)
-                "disconnect" -> Timber.tag(TAG).d("server requested disconnect")
+                "confirm_subscription" -> {
+                    Timber.tag(TAG).d("subscription confirmed")
+                    if (hasConfirmedSubscriptionOnce) {
+                        _events.tryEmit(ChatEvent.Reconnected)
+                    } else {
+                        hasConfirmedSubscriptionOnce = true
+                    }
+                }
+                // Pas de raison détaillée sur un rejet (type inconnu, id introuvable, ou
+                // simplement pas membre) : à traiter comme "accès refusé", pas comme une
+                // erreur réseau — donc pas de scheduleReconnect() ici.
+                "reject_subscription" -> Timber.tag(TAG).w("subscription REJECTED for %s/%s: %s", currentInstanceType, currentInstanceId, text)
+                "disconnect" -> Timber.tag(TAG).w("server requested disconnect: %s", text)
                 else -> {
-                    val messageObj = root.getAsJsonObject("message") ?: return
+                    val messageObj = root.getAsJsonObject("message")
+                    if (messageObj == null) {
+                        Timber.tag(TAG).w("frame has no top-level 'type' and no 'message' key, ignoring: %s", text)
+                        return
+                    }
                     handleChannelMessage(messageObj, text)
                 }
             }
         } catch (e: Exception) {
-            Timber.tag(TAG).e(e, "Failed to parse socket message")
+            Timber.tag(TAG).e(e, "Failed to parse socket message: %s", text)
         }
     }
 
     private fun handleChannelMessage(messageObj: JsonObject, rawText: String) {
-        val eventType = messageObj.get("type")?.asString ?: return
+        val eventType = messageObj.get("type")?.asString
+        if (eventType == null) {
+            Timber.tag(TAG).w("channel message has no 'type', ignoring: %s", rawText)
+            return
+        }
+        Timber.tag(TAG).d("channel event received: type=%s", eventType)
         val dataObj = messageObj.getAsJsonObject("data")
         when (eventType) {
             "chat_message_created" -> {
-                val post = dataObj?.let { gson.fromJson(it, Post::class.java) } ?: return
+                val post = dataObj?.let { gson.fromJson(it, Post::class.java) }
+                if (post == null) {
+                    Timber.tag(TAG).w("chat_message_created with no/unparseable data: %s", rawText)
+                    return
+                }
+                Timber.tag(TAG).d("emitting MessageCreated id=%s content=%s", post.id, post.content)
                 _events.tryEmit(ChatEvent.MessageCreated(post))
             }
             "chat_message_updated" -> {
                 // Deletion is represented as an update where data.status == "deleted".
-                val post = dataObj?.let { gson.fromJson(it, Post::class.java) } ?: return
+                val post = dataObj?.let { gson.fromJson(it, Post::class.java) }
+                if (post == null) {
+                    Timber.tag(TAG).w("chat_message_updated with no/unparseable data: %s", rawText)
+                    return
+                }
+                Timber.tag(TAG).d("emitting MessageUpdated id=%s status=%s", post.id, post.status)
                 _events.tryEmit(ChatEvent.MessageUpdated(post))
             }
-            "user_reaction_created" -> {
+            "user_reaction_added", "user_reaction_removed" -> {
                 val actingUserId = messageObj.get("user_id")?.takeIf { it.isJsonPrimitive }?.asInt
                 val currentUserId = EntourageApplication.get().me()?.id
                 if (actingUserId != null && currentUserId != null && actingUserId == currentUserId) {
-                    // Already applied optimistically on our own side, ignore the echo.
+                    Timber.tag(TAG).d("%s: echo of our own action (user_id=%d), ignoring", eventType, actingUserId)
                     return
                 }
                 val chatMessageId = dataObj?.get("chat_message_id")?.takeIf { it.isJsonPrimitive }?.asInt
                     ?: dataObj?.getAsJsonObject("chat_message")?.get("id")?.takeIf { it.isJsonPrimitive }?.asInt
                 val reactionId = dataObj?.get("reaction_id")?.takeIf { it.isJsonPrimitive }?.asInt
                 if (chatMessageId != null && reactionId != null) {
-                    _events.tryEmit(ChatEvent.ReactionCreated(chatMessageId, reactionId, actingUserId ?: 0))
+                    val event = if (eventType == "user_reaction_added") {
+                        ChatEvent.ReactionAdded(chatMessageId, reactionId, actingUserId ?: 0)
+                    } else {
+                        ChatEvent.ReactionRemoved(chatMessageId, reactionId, actingUserId ?: 0)
+                    }
+                    Timber.tag(TAG).d("emitting %s", event)
+                    _events.tryEmit(event)
                 } else {
-                    Timber.tag(TAG).w("Unrecognized user_reaction_created payload: %s", rawText)
+                    Timber.tag(TAG).w("Unrecognized %s payload: %s", eventType, rawText)
                 }
             }
-            else -> Timber.tag(TAG).d("Unhandled channel event type=%s", eventType)
+            // Diffusés quand une demande de participation devient/quitte "accepted".
+            // Pas de surface UI qui affiche une liste de membres en direct aujourd'hui
+            // (MembersConversationFragment recharge via REST) — juste tracés pour l'instant.
+            "member_joined", "member_left" -> Timber.tag(TAG).d("%s: %s", eventType, rawText)
+            else -> Timber.tag(TAG).d("Unhandled channel event type=%s, raw=%s", eventType, rawText)
         }
     }
 }

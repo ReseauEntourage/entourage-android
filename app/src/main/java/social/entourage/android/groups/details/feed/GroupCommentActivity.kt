@@ -76,10 +76,16 @@ class GroupCommentActivity : CommentActivity() {
     override fun onResume() {
         super.onResume()
         this.isGroup = true
-        // Le canal des posts du groupe diffuse tous ses chat_messages (posts ET
-        // commentaires) ; on ne garde que ceux qui répondent au post actuellement
-        // affiché. instance_id = id du groupe (à confirmer : peut-être l'id du post ?).
-        connectChatSocket("NEIGHBORHOODS_POSTS", id) { post -> post.postId == postId }
+        // Le canal du groupe (instance_type "Neighborhood", instance_id = id du groupe)
+        // diffuse tous ses chat_messages (posts ET commentaires) ; on ne garde que ceux
+        // qui répondent au post actuellement affiché.
+        Timber.tag("ConvSocket").d("GroupCommentActivity.onResume(): groupId=%d postId=%d", id, postId)
+        connectChatSocket(
+            "Neighborhood",
+            id,
+            belongsToThisScreen = { post -> post.postId == postId },
+            onReconnected = { groupPresenter.getPostComments(id, postId) }
+        )
     }
 
     override fun onPause() {
