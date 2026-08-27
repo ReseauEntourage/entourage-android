@@ -61,6 +61,9 @@ app/.classpath
 
 .artifacts
 
+# Screenshots des scénarios de test E2E (générés, voir app/build.gradle.kts pullE2EScreenshots)
+/test_screenshot/
+
 # Heap dumps générés par la JVM/Gradle
 *.hprof
 
