@@ -100,7 +100,7 @@ class MainFilterActivity : BaseActivity() {
         setupLocationAutoComplete()
         setupButtons()
         setupEventTypeAndFormatChips()
-        updateFilterCount(totalFilterCount()) // Initialiser le compteur avec le nombre de filtres sélectionnés
+        updateInterestFilterCount() // Initialiser le compteur avec le nombre d'intérêts sélectionnés
 
         // Ajouter un listener pour détecter les changements de layout (comme l'ouverture du clavier)
         addKeyboardListener()
@@ -227,7 +227,7 @@ class MainFilterActivity : BaseActivity() {
             } else {
                 selectedInterests.remove(interest.id)
             }
-            updateFilterCount(totalFilterCount()) // Mettre à jour le compteur chaque fois qu'un intérêt est sélectionné ou désélectionné
+            updateInterestFilterCount() // Mettre à jour le compteur chaque fois qu'un intérêt est sélectionné ou désélectionné
         }
         binding.rvMainFilter.layoutManager = LinearLayoutManager(this)
         binding.rvMainFilter.adapter = interestsAdapter
@@ -237,9 +237,15 @@ class MainFilterActivity : BaseActivity() {
         return selectedInterests.size + selectedEventTypes.size + (if (selectedFormat != null) 1 else 0)
     }
 
-    private fun updateFilterCount(count: Int) {
-        binding.tvNumberOfFilter.text = count.toString()
-        if(count > 0){
+    // Le badge affiché à côté de "Par thématique" ne doit compter que les intérêts,
+    // pas les filtres "Type d'événement" / "Format" qui ont leurs propres chips.
+    private fun updateInterestFilterCount() {
+        binding.tvNumberOfFilter.text = selectedInterests.size.toString()
+        updateHasFilterFlag()
+    }
+
+    private fun updateHasFilterFlag() {
+        if (totalFilterCount() > 0) {
             hasFilter = true
         }
     }
@@ -272,7 +278,7 @@ class MainFilterActivity : BaseActivity() {
             AnalyticsEvents.logEvent("event_" + AnalyticsEvents.filter_tag_item_ + type)
         }
         refreshEventTypeAndFormatStyles()
-        updateFilterCount(totalFilterCount())
+        updateHasFilterFlag()
     }
 
     private fun toggleFormat(format: String) {
@@ -281,7 +287,7 @@ class MainFilterActivity : BaseActivity() {
             AnalyticsEvents.logEvent("event_" + AnalyticsEvents.filter_tag_item_ + selectedFormat)
         }
         refreshEventTypeAndFormatStyles()
-        updateFilterCount(totalFilterCount())
+        updateHasFilterFlag()
     }
 
     private fun refreshEventTypeAndFormatStyles() {
@@ -419,7 +425,7 @@ class MainFilterActivity : BaseActivity() {
         if (mod == MainFilterMode.EVENT) {
             refreshEventTypeAndFormatStyles()
         }
-        updateFilterCount(0)
+        updateInterestFilterCount()
         if (mod == MainFilterMode.GROUP || mod == MainFilterMode.EVENT) {
             savedGroupInterests.clear()
         } else {
