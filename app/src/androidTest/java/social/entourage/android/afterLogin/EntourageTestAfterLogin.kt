@@ -30,9 +30,9 @@ open class EntourageTestAfterLogin : EntourageTestWithAPI() {
     private var isIntentsInit = false
 
 
-    protected fun checkUserIsLoggedIn() {
+    protected fun checkUserIsLoggedIn(phoneNumber: String? = null, codePwd: String? = null) {
         if (!EntourageApplication.get().authenticationController.isAuthenticated) {
-            login(login, password)
+            login(phoneNumber ?: login, codePwd ?: password)
         }
     }
 
@@ -41,9 +41,10 @@ open class EntourageTestAfterLogin : EntourageTestWithAPI() {
         val codePwd = codePwd ?: BuildConfig.TEST_ACCOUNT_PWD
         runBlocking {
             withContext(Dispatchers.IO) {
-                OnboardingAPI.getInstance().syncLogin(phoneNumber, codePwd) { isOK, _, _ ->
+                OnboardingAPI.getInstance().syncLogin(phoneNumber, codePwd) { isOK, _, error ->
                     if (!isOK) {
-                        throw Exception("Login should not fail")
+                        Timber.e("Login failed for test: $error")
+                        throw Exception("Login should not fail: $error")
                     }
                 }
             }
