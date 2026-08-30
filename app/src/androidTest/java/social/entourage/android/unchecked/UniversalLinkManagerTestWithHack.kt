@@ -1,4 +1,4 @@
-package social.entourage.android.afterLogin
+package social.entourage.android.unchecked
 
 import android.content.Intent
 import android.net.Uri
@@ -13,6 +13,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import social.entourage.android.R
+import social.entourage.android.afterLogin.OpenUniversalLinkManagerTest
 import social.entourage.android.tools.TestHelper
 
 @LargeTest

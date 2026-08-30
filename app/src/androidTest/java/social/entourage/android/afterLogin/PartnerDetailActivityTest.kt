@@ -1,4 +1,4 @@
-package social.entourage.android.afterLogin.user.partner
+package social.entourage.android.afterLogin
 
 import android.content.Intent
 import androidx.test.core.app.ApplicationProvider
@@ -15,7 +15,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import social.entourage.android.R
-import social.entourage.android.afterLogin.EntourageTestAfterLogin
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.user.partner.PartnerDetailActivity
 

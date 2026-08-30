@@ -1,11 +1,10 @@
-package social.entourage.android.afterLogin.tools.image_viewer
+package social.entourage.android.unchecked
 
 import android.content.Intent
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.Before
@@ -42,6 +41,7 @@ class ImageListActivityTest : EntourageTestAfterLogin() {
 
     @Test
     fun testSimpleIntent() {
-        onView(withText(R.string.image_option_title)).check(matches(isDisplayed()))
+        Espresso.onView(ViewMatchers.withText(R.string.image_option_title))
+            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 }

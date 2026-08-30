@@ -1,4 +1,4 @@
-package social.entourage.android.afterLogin
+package social.entourage.android.unchecked
 
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
@@ -7,6 +7,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.google.firebase.inappmessaging.FirebaseInAppMessaging
 import org.junit.Rule
 import social.entourage.android.MainActivity
+import social.entourage.android.afterLogin.EntourageTestAfterLogin
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
