@@ -230,6 +230,9 @@ android {
 }
 
 configurations.all {
+    resolutionStrategy {
+        force("com.google.protobuf:protobuf-javalite:3.25.1")
+    }
     exclude(group = "com.google.android.play", module = "core")
     exclude(group = "com.google.android.play", module = "core-ktx")
 }
@@ -308,6 +311,10 @@ dependencies {
         exclude(group = "com.google.protobuf", module = "protobuf-lite")
     }
     androidTestImplementation(libs.bundles.espresso.test)
+    androidTestImplementation(libs.barista) {
+        exclude(group = "com.google.protobuf", module = "protobuf-lite")
+        exclude(group = "org.jetbrains.kotlin")
+    }
 
     // Unit tests
     testImplementation(libs.junit)
