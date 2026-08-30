@@ -8,6 +8,7 @@ import android.content.Intent
 import android.widget.RemoteViews
 import social.entourage.android.MainActivity
 import social.entourage.android.R
+import timber.log.Timber
 
 class WidgetMainProvider : AppWidgetProvider() {
 

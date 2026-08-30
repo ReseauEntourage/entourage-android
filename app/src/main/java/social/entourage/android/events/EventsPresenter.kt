@@ -290,7 +290,7 @@ class EventsPresenter : ViewModel() {
             }
 
             override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
-                Timber.e("Failed to fetch filtered my events: ${t.message}")
+                Timber.tag("EventsPresenter").e("Failed to fetch filtered my events: ${t.message}")
             }
         })
     }
@@ -341,7 +341,7 @@ class EventsPresenter : ViewModel() {
             }
 
             override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
-                Timber.e("Failed to fetch filtered events: ${t.message}")
+                Timber.tag("EventsPresenter").e("Failed to fetch filtered events: ${t.message}")
             }
         })
     }
@@ -895,7 +895,7 @@ class EventsPresenter : ViewModel() {
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Timber.d("EventPresenter deleteReactToPost onFailure: $t")
+                Timber.tag("EventPresenter deleteReactToPost").d("onFailure: $t")
             }
         })
     }
@@ -918,7 +918,7 @@ class EventsPresenter : ViewModel() {
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Timber.d("deleteReactToPost deleteReactToPost onFailure: $t")
+                Timber.tag("deleteReactToPost deleteReactToPost").d("onFailure: $t")
             }
         })
     }
@@ -952,17 +952,18 @@ class EventsPresenter : ViewModel() {
             .enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     if (response.isSuccessful) {
-                        Timber.d("Participation confirmée avec succès.")
+                        Timber.tag("EventsPresenter").d("Participation confirmée avec succès.")
                         isUserConfirmedParticipating.value = true
                     } else {
-                        Toast.makeText(EntourageApplication.get(), "Échec de la confirmation de participation.", Toast.LENGTH_SHORT).show()
-                        Timber.d("Échec de la confirmation de participation.")
+                        Toast.makeText(EntourageApplication.get(), "Échec de la confirmation de participation.", Toast.LENGTH_SHORT)
+                            .show()
+                        Timber.tag("EventsPresenter").d("Échec de la confirmation de participation.")
                         isUserConfirmedParticipating.value = false
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Timber.e("Échec de l'appel réseau: ${t.message}")
+                    Timber.tag("EventsPresenter").e("Échec de l'appel réseau: ${t.message}")
                     isUserConfirmedParticipating.value = false
                 }
             })
