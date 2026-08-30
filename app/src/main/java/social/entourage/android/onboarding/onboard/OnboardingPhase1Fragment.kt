@@ -199,6 +199,15 @@ class OnboardingPhase1Fragment : Fragment() {
 
         binding.uiOnboardConsentCheck.setOnCheckedChangeListener { _, _ -> updateButtonNext() }
 
+        val textWatcher = object : android.text.TextWatcher {
+            override fun afterTextChanged(s: android.text.Editable?) { updateButtonNext() }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        }
+        binding.uiOnboardNamesEtFirstname.addTextChangedListener(textWatcher)
+        binding.uiOnboardNamesEtLastname.addTextChangedListener(textWatcher)
+        binding.uiOnboardPhoneEtPhone.addTextChangedListener(textWatcher)
+
         binding.uiOnboardEmail.addTextChangedListener(object : android.text.TextWatcher {
             override fun afterTextChanged(s: android.text.Editable?) {
                 (activity as? OnboardingStartActivity)?.setEmail(s?.toString().orEmpty())
