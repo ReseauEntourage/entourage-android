@@ -61,6 +61,8 @@ open class EntourageTestWithAPI {
             throw IllegalStateException("API tests should not be run on the production flavor!")
         }
 
+        disableAnimationsOnce()
+
         afM = activity.getSystemService(AutofillManager::class.java)
         afM?.disableAutofillServices()
         if (SHOULD_DISABLE_GOOGLE_PWD_MGR && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // Autofill settings are relevant
@@ -77,6 +79,7 @@ open class EntourageTestWithAPI {
         IdlingRegistry.getInstance().register(resource)
 
         enableWifiAndData(true)
+        Thread.sleep(2000) // Wait for network to stabilize
     }
 
     open fun tearDown() {
@@ -90,6 +93,7 @@ open class EntourageTestWithAPI {
             }
         }
         enableWifiAndData(true)
+        Thread.sleep(2000) // Wait for network to stabilize
     }
 
     protected fun enableWifiAndData(enable: Boolean) {
@@ -101,6 +105,21 @@ open class EntourageTestWithAPI {
             executeShellCommand("svc data $parameter")
         }
     }
+
+    private fun disableAnimationsOnce() {
+        if (animationsDisabled) return
+        try {
+            val uiAutomation = InstrumentationRegistry.getInstrumentation().uiAutomation
+            uiAutomation.executeShellCommand("settings put global window_animation_scale 0")
+            uiAutomation.executeShellCommand("settings put global transition_animation_scale 0")
+            uiAutomation.executeShellCommand("settings put global animator_duration_scale 0")
+            animationsDisabled = true
+            Timber.tag("EntourageTest").d("Animations disabled for test suite")
+        } catch (e: Exception) {
+            Timber.tag("EntourageTest").e(e, "Failed to disable animations")
+        }
+    }
+
     protected fun closeAutofill(activity: Context?) {
         if (afM == null) {
             afM = activity?.getSystemService(AutofillManager::class.java)
@@ -141,5 +160,6 @@ open class EntourageTestWithAPI {
     companion object {
         const val SHOULD_SET_WIFI_STATE = true
         const val SHOULD_DISABLE_GOOGLE_PWD_MGR = true
+        private var animationsDisabled = false
     }
 }

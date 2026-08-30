@@ -8,8 +8,12 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.hamcrest.Matchers.allOf
 import org.junit.After
+import org.junit.Before
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageTestWithAPI
@@ -23,6 +27,8 @@ open class EntourageTestAfterLogin : EntourageTestWithAPI() {
     private val login: String = BuildConfig.TEST_ACCOUNT_LOGIN
     private val password: String = BuildConfig.TEST_ACCOUNT_PWD
 
+    private var isIntentsInit = false
+
 
     protected fun checkUserIsLoggedIn() {
         if (!EntourageApplication.get().authenticationController.isAuthenticated) {
@@ -33,9 +39,13 @@ open class EntourageTestAfterLogin : EntourageTestWithAPI() {
     private fun login(phoneNumber: String? = null, codePwd: String? = null) {
         val phoneNumber = phoneNumber ?: BuildConfig.TEST_ACCOUNT_LOGIN
         val codePwd = codePwd ?: BuildConfig.TEST_ACCOUNT_PWD
-        OnboardingAPI.getInstance().syncLogin(phoneNumber, codePwd) { isOK, _, _ ->
-            if (!isOK) {
-                throw Exception("Login should not fail")
+        runBlocking {
+            withContext(Dispatchers.IO) {
+                OnboardingAPI.getInstance().syncLogin(phoneNumber, codePwd) { isOK, _, _ ->
+                    if (!isOK) {
+                        throw Exception("Login should not fail")
+                    }
+                }
             }
         }
     }
@@ -43,16 +53,27 @@ open class EntourageTestAfterLogin : EntourageTestWithAPI() {
     open fun closeAutofill() {
     }
 
+    @Before
+    fun initIntents() {
+        if (!isIntentsInit) {
+            Intents.init()
+            isIntentsInit = true
+        }
+    }
+
     override fun setUp(activity: Context) {
         super.setUp(activity)
-        Intents.init()
+        initIntents()
         checkUserIsLoggedIn()
     }
 
 
     @After
     override fun tearDown() {
-        Intents.release()
+        if (isIntentsInit) {
+            Intents.release()
+            isIntentsInit = false
+        }
         super.tearDown()
     }
 
@@ -64,6 +85,7 @@ open class EntourageTestAfterLogin : EntourageTestWithAPI() {
     }
 
     protected fun checkNoPopUpOnHome() {
+        Thread.sleep(2000) // Wait for potential popups
         checkNoOnboarding()
         checkNoActionPopUp(R.string.custom_dialog_action_title_one_contrib)
         checkNoActionPopUp(R.string.custom_dialog_action_title_one_demand)

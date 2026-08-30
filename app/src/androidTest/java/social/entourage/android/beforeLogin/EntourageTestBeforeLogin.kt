@@ -9,6 +9,7 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import org.junit.After
+import org.junit.Before
 import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageTestWithAPI
 import social.entourage.android.MainActivity
@@ -18,6 +19,8 @@ import timber.log.Timber
 open class EntourageTestBeforeLogin : EntourageTestWithAPI() {
     //TODO have a proper method to find a unused number
     val unused_phone_number = "0699990002"
+
+    private var isIntentsInit = false
 
     protected fun checkNoUserIsLoggedIn(activity: Context?) {
         activity?.let {
@@ -36,15 +39,26 @@ open class EntourageTestBeforeLogin : EntourageTestWithAPI() {
         }
     }
 
+    @Before
+    fun initIntents() {
+        if (!isIntentsInit) {
+            Intents.init()
+            isIntentsInit = true
+        }
+    }
+
     override fun setUp(activity: Context) {
         checkNoUserIsLoggedIn(activity)
         super.setUp(activity)
-        Intents.init()
+        initIntents()
     }
 
     @After
     override fun tearDown() {
-        Intents.release()
+        if (isIntentsInit) {
+            Intents.release()
+            isIntentsInit = false
+        }
         super.tearDown()
     }
 

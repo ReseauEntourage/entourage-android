@@ -1,10 +1,13 @@
 package social.entourage.android.afterLogin
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
+import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.filters.LargeTest
 import androidx.test.rule.GrantPermissionRule
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import social.entourage.android.EntourageApplication
@@ -25,6 +28,15 @@ abstract class OpenUniversalLinkManagerTest : EntourageTestAfterLogin() {
     open fun setUp() {
         //context = ApplicationProvider.getApplicationContext<EntourageApplication>()
         super.setUp(context)
+    }
+
+    protected var scenario: ActivityScenario<out Activity>? = null
+
+    @After
+    override fun tearDown() {
+        scenario?.close()
+        scenario = null
+        super.tearDown()
     }
 
     companion object {

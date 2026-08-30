@@ -10,6 +10,7 @@ import social.entourage.android.base.map.filter.MapFilter
  * Controller that managed the authenticated user and persist it on the phone
  */
 class AuthenticationController() {
+    @Volatile
     private var user: User? = null
     private var userPreferences: UserPreferences = UserPreferences()
     private var userPreferencesHashMap: MutableMap<Int, UserPreferences?> = HashMap()

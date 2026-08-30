@@ -14,6 +14,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.junit.rules.RuleChain
 import social.entourage.android.MainActivity
 import social.entourage.android.MockNotificationGenerator
 import social.entourage.android.test.BuildConfig
@@ -27,14 +28,14 @@ class PushNotificationTest : EntourageTestAfterLogin() {
 
     private val context = InstrumentationRegistry.getInstrumentation().targetContext
 
-    @get:Rule
-    var activityRule = ActivityScenarioRule(MainActivity::class.java)
-
     // This rule will grant the POST_NOTIFICATIONS permission before each test in this class
-    @get:Rule
-    var permissionRule: GrantPermissionRule = GrantPermissionRule.grant(
+    private var permissionRule: GrantPermissionRule = GrantPermissionRule.grant(
         Manifest.permission.POST_NOTIFICATIONS
     )
+
+    @get:Rule
+    val ruleChain: RuleChain = RuleChain
+        .outerRule(permissionRule)
 
     private val entourageID = if (BuildConfig.BUILD_TYPE == "release") "46569" else "2300"
 
@@ -48,11 +49,8 @@ class PushNotificationTest : EntourageTestAfterLogin() {
     }
 
     @Before
-    fun setUp() {
-        activityRule.scenario.onActivity { activity ->
-            super.setUp(activity)
-            checkNotifEnabled(activity)
-        }
+    fun customSetUp() {
+        checkNotifEnabled(context)
     }
 
     private fun startIntent(intent: Intent) {
