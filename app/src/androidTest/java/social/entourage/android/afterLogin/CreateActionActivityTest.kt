@@ -1,4 +1,4 @@
-package social.entourage.android.unchecked
+package social.entourage.android.afterLogin
 
 import android.Manifest
 import android.content.Intent
@@ -12,15 +12,17 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.rule.GrantPermissionRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.hamcrest.Matchers
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
 import social.entourage.android.R
 import social.entourage.android.actions.create.CreateActionActivity
-import social.entourage.android.afterLogin.EntourageTestAfterLogin
 import social.entourage.android.tools.utils.Const
 
-// @RunWith(AndroidJUnit4::class)
+@RunWith(AndroidJUnit4::class)
 abstract class CreateActionActivityTest(isActionDemand: Boolean) : EntourageTestAfterLogin() {
 
     @get:Rule
@@ -94,14 +96,14 @@ abstract class CreateActionActivityTest(isActionDemand: Boolean) : EntourageTest
 }
 
 class CreateContribActivityTest : CreateActionActivityTest(false) {
-    //@Test
+    @Test
     fun testCreateContribActivity() {
         testCreateContribActivity(R.string.action_create_contrib_title)
     }
 }
 
 class CreateDemandActivityTest : CreateActionActivityTest(true) {
-    //@Test
+    @Test
     fun testCreateDemandActivity() {
         testCreateContribActivity(R.string.action_create_demand_title)
     }
