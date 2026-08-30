@@ -370,7 +370,7 @@ class MainFilterActivity : BaseActivity() {
             binding.autoCompleteCityName.setAdapter(adapter)
             adapter.notifyDataSetChanged()
         }.addOnFailureListener { exception ->
-            Timber.e("PlaceAutocomplete: Error: ${exception.message}", exception)
+            Timber.tag("PlaceAutocomplete").e(exception, "Error: ${exception.message}")
         }
     }
 
@@ -390,7 +390,7 @@ class MainFilterActivity : BaseActivity() {
                 savedLocation = PlaceDetails(place.displayName ?: "", location.latitude, location.longitude)
             }
         }.addOnFailureListener { exception ->
-            Timber.e("PlaceAutocomplete: Error: ${exception.message}", exception)
+            Timber.tag("PlaceAutocomplete").e(exception, "Error: ${exception.message}")
         }
     }
 

@@ -29,6 +29,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.user.UserPresenter
+import timber.log.Timber
 
 class SmallTalkActivity : BaseActivity() {
 

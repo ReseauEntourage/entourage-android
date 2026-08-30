@@ -986,7 +986,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 AnalyticsEvents.logEvent(AnalyticsEvents.user_have_notif_and_token)
             }
             FirebaseMessaging.getInstance().token.addOnFailureListener { exception ->
-                Timber.e("FCM Token: Failed to retrieve token :%s", exception.message)
+                Timber.e(exception, "FCM Token: Failed to retrieve token")
                 AnalyticsEvents.logEvent(AnalyticsEvents.user_have_notif_and_no_token + "_" + user?.id)
             }
         } else {

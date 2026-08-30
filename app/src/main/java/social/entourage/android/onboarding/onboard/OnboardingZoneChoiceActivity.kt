@@ -256,7 +256,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (suggestions.isNotEmpty()) actv.showDropDown()
             }
             .addOnFailureListener { e ->
-                Timber.e("ZoneActivity: findAutocompletePredictions error: ${e.message}", e)
+                Timber.tag("ZoneActivity").e(e, "findAutocompletePredictions error: ${e.message}")
             }
     }
 
@@ -290,7 +290,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
                 placeMarkerAndCircle(location, label)
             }
             .addOnFailureListener { e ->
-                Timber.e("ZoneActivity: fetchPlace error: ${e.message}", e)
+                Timber.tag("ZoneActivity").e(e, "fetchPlace error: ${e.message}")
             }
     }
 

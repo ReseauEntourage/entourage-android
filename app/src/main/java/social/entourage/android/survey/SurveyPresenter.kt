@@ -25,7 +25,7 @@ class SurveyPresenter {
                 if (response.isSuccessful) {
                     // Logique de gestion de la réussite
                     isSurveyVoted.postValue(true)
-                    Timber.d("GroupPresenter: Réponse au sondage postée avec succès.")
+                    Timber.tag("GroupPresenter").d("Réponse au sondage postée avec succès.")
                 } else {
                     // Logique de gestion des erreurs
                     isSurveyVoted.postValue(false)
@@ -34,7 +34,8 @@ class SurveyPresenter {
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 // Logique de gestion de l'échec de la requête
-                Timber.e("GroupPresenter: Échec de la requête de réponse au sondage: ${t.message}")
+                Timber.tag("GroupPresenter")
+                    .e("Échec de la requête de réponse au sondage: ${t.message}")
             }
         })
     }
@@ -45,14 +46,16 @@ class SurveyPresenter {
                 if (response.isSuccessful) {
                     surveyResponseList.postValue(response.body())
                     // Ici, tu peux mettre à jour l'UI avec la liste des réponses obtenues
-                    Timber.d("SurveyPresenter: Réponses au sondage récupérées avec succès: ${response.body()?.responses}")
+                    Timber.tag("SurveyPresenter").d("Réponses au sondage récupérées avec succès: ${response.body()?.responses}")
                 } else {
-                    Timber.e("SurveyPresenter: Erreur lors de la récupération des réponses au sondage.")
+                    Timber.tag("SurveyPresenter")
+                        .e("Erreur lors de la récupération des réponses au sondage.")
                 }
             }
 
             override fun onFailure(call: Call<SurveyResponsesListWrapper>, t: Throwable) {
-                Timber.e("SurveyPresenter: Échec de la requête de récupération des réponses au sondage: ${t.message}")
+                Timber.tag("SurveyPresenter")
+                    .e("Échec de la requête de récupération des réponses au sondage: ${t.message}")
             }
         })
     }
@@ -62,13 +65,14 @@ class SurveyPresenter {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     // La réponse au sondage a été supprimée avec succès
-                    Timber.d("SurveyPresenter: Réponse au sondage supprimée avec succès.")
+                    Timber.tag("SurveyPresenter").d("Réponse au sondage supprimée avec succès.")
                 } else {
-                    Timber.e("SurveyPresenter: Erreur lors de la suppression de la réponse au sondage.")
+                    Timber.tag("SurveyPresenter").e("Erreur lors de la suppression de la réponse au sondage.")
                 }
             }
+
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Timber.e("SurveyPresenter: Échec de la requête de suppression de la réponse au sondage: ${t.message}")
+                Timber.tag("SurveyPresenter").e("Échec de la requête de suppression de la réponse au sondage: ${t.message}")
             }
         })
     }
@@ -87,7 +91,7 @@ class SurveyPresenter {
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Timber.e("SurveyPresenter: Échec de la création du sondage dans le groupe: ${t.message}")
+                Timber.tag("SurveyPresenter").e("Échec de la création du sondage dans le groupe: ${t.message}")
             }
         })
     }
@@ -102,7 +106,7 @@ class SurveyPresenter {
                 if (response.isSuccessful) {
                     // Logique de gestion de la réussite
                     isSurveyVoted.postValue(true)
-                    Timber.d("GroupPresenter: Réponse au sondage postée avec succès.")
+                    Timber.tag("GroupPresenter").d("Réponse au sondage postée avec succès.")
                 } else {
                     // Logique de gestion des erreurs
                     isSurveyVoted.postValue(false)
@@ -111,7 +115,7 @@ class SurveyPresenter {
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 // Logique de gestion de l'échec de la requête
-                Timber.e("GroupPresenter: Échec de la requête de réponse au sondage: ${t.message}")
+                Timber.tag("GroupPresenter").e("Échec de la requête de réponse au sondage: ${t.message}")
             }
         })
     }
@@ -122,14 +126,15 @@ class SurveyPresenter {
                 if (response.isSuccessful) {
                     surveyResponseList.postValue(response.body())
                     // Ici, tu peux mettre à jour l'UI avec la liste des réponses obtenues
-                    Timber.d("SurveyPresenter: Réponses au sondage récupérées avec succès: ${response.body()?.responses}")
+                    Timber.tag("SurveyPresenter")
+                        .d("Réponses au sondage récupérées avec succès: ${response.body()?.responses}")
                 } else {
-                    Timber.e("SurveyPresenter: Erreur lors de la récupération des réponses au sondage.")
+                    Timber.tag("SurveyPresenter").e("Erreur lors de la récupération des réponses au sondage.")
                 }
             }
 
             override fun onFailure(call: Call<SurveyResponsesListWrapper>, t: Throwable) {
-                Timber.e("SurveyPresenter: Échec de la requête de récupération des réponses au sondage: ${t.message}")
+                Timber.tag("SurveyPresenter").e("Échec de la requête de récupération des réponses au sondage: ${t.message}")
             }
         })
     }
@@ -138,13 +143,14 @@ class SurveyPresenter {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     // La réponse au sondage a été supprimée avec succès
-                    Timber.d("SurveyPresenter: Réponse au sondage supprimée avec succès.")
+                    Timber.tag("SurveyPresenter").d("Réponse au sondage supprimée avec succès.")
                 } else {
-                    Timber.e("SurveyPresenter: Erreur lors de la suppression de la réponse au sondage.")
+                    Timber.tag("SurveyPresenter")
+                        .e("Erreur lors de la suppression de la réponse au sondage.")
                 }
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Timber.e("SurveyPresenter: Échec de la requête de suppression de la réponse au sondage: ${t.message}")
+                Timber.tag("SurveyPresenter").e("Échec de la requête de suppression de la réponse au sondage: ${t.message}")
             }
         })
     }
@@ -163,7 +169,7 @@ class SurveyPresenter {
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Timber.e("SurveyPresenter: Échec de la création du sondage dans l'événement: ${t.message}")
+                Timber.tag("SurveyPresenter").e("Échec de la création du sondage dans l'événement: ${t.message}")
             }
         })
     }
