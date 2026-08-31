@@ -4,6 +4,8 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.api.model.*
+import social.entourage.android.tools.utils.readListCompat
+import social.entourage.android.tools.utils.readSerializableCompat
 import social.entourage.android.api.model.feed.FeedItemAuthor
 import java.util.*
 
@@ -50,12 +52,12 @@ class EventModel(
     constructor(parcel: Parcel) : this(
         parcel.readValue(Int::class.java.classLoader) as Int,
         parcel.readString(),
-        parcel.readSerializable() as FeedItemAuthor?,
+        parcel.readSerializableCompat<FeedItemAuthor>(FeedItemAuthor::class.java.classLoader),
         parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readString(),
         mutableListOf<String>().apply { parcel.readStringList(this)},
         parcel.readString(),
-        mutableListOf<GroupMember>().apply { parcel.readList(this, GroupMember::class.java.classLoader)},
+        mutableListOf<GroupMember>().apply { parcel.readListCompat(this, GroupMember::class.java.classLoader)},
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
     ) {
