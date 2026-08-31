@@ -106,7 +106,7 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
                             with(viewModel.group) {
                                 latitude = addresses.first().latitude
                                 longitude = addresses.first().longitude
-                                displayAddress = userDisplayAddress.toString()
+                                displayAddress = userDisplayAddress
                             }
                             mListener?.onUserEditActionZoneFragmentAddressSaved()
                             if (isAdded && view != null) {

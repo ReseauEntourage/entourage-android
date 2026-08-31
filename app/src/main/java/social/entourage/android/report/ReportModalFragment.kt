@@ -507,7 +507,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
                         groupPresenter.deletedGroupPost(gid, id)
                     }
                     if (DetailConversationActivity.isSmallTalkMode) {
-                        smallTalkViewModel.deleteChatMessage(DetailConversationActivity.smallTalkId.toString(), id.toString())
+                        smallTalkViewModel.deleteChatMessage(DetailConversationActivity.smallTalkId, id.toString())
                     } else {
                         discussionsPresenter.deleteMessage(gid, id)
                     }
