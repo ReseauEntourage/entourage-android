@@ -133,8 +133,8 @@ class BadgeDetailBottomSheet : BottomSheetDialogFragment() {
             binding.cardStatus.setCardBackgroundColor(
                 ContextCompat.getColor(ctx, android.R.color.white)
             )
-            (binding.cardStatus as MaterialCardView).strokeWidth = 2
-            (binding.cardStatus as MaterialCardView).strokeColor =
+            binding.cardStatus.strokeWidth = 2
+            binding.cardStatus.strokeColor =
                 ContextCompat.getColor(ctx, R.color.grey_light)
             binding.layoutObtained.visibility = View.GONE
             binding.layoutNotObtained.visibility = View.VISIBLE
