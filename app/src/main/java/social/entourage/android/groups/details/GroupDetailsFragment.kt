@@ -27,6 +27,7 @@ import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.parcelableCompat
 import social.entourage.android.tools.utils.CustomAlertDialog
 
 class GroupDetailsFragment : BottomSheetDialogFragment() {
@@ -213,7 +214,7 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
     }
 
     private fun getGroupInformation() {
-        group = arguments?.getParcelable(Const.GROUP_UI)
+        group = arguments?.parcelableCompat(Const.GROUP_UI)
     }
 
     private fun handleEditGroup() {

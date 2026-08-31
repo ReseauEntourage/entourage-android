@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.Status
 import social.entourage.android.api.model.notification.Translation
+import social.entourage.android.tools.utils.readSerializableCompat
 
 data class GroupModel(
     @SerializedName("id")
@@ -37,13 +38,13 @@ data class GroupModel(
     constructor(parcel: Parcel) : this(
         parcel.readValue(Int::class.java.classLoader) as? Int, // id
         parcel.readString(), // name
-        parcel.readParcelable(Translation::class.java.classLoader), // nameTranslations
+        parcel.readSerializableCompat<Translation>(Translation::class.java.classLoader), // nameTranslations
         parcel.readString(), // uuid_v2
         parcel.readValue(Int::class.java.classLoader) as? Int, // members_count
         parcel.readString(), // address
         mutableListOf<String>().apply { parcel.readStringList(this)}, // interests
         parcel.readString(), // description
-        parcel.readParcelable(Translation::class.java.classLoader), // descriptionTranslations
+        parcel.readSerializableCompat<Translation>(Translation::class.java.classLoader), // descriptionTranslations
         mutableListOf<GroupMember>().apply { parcel.readList(this, GroupMember::class.java.classLoader)}, // members
         parcel.readByte() != 0.toByte(), // member
         parcel.readByte() != 0.toByte(), // admin
