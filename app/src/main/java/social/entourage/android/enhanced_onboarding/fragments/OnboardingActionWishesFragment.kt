@@ -103,8 +103,8 @@ class OnboardingActionWishesFragment : Fragment() {
         }
 
         // On récupère les listes existantes pour éviter les null check répétitifs
-        val userOrientations = user.orientations ?: emptyList()
-        val userInvolvements = user.involvements ?: emptyList()
+        val userOrientations = user.orientations
+        val userInvolvements = user.involvements
 
         val actionWishes = if (isAssociationMode()) {
             // --- MODE ASSOCIATION ---

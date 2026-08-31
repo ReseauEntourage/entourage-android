@@ -168,7 +168,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
             discussionPresenter.createOrGetConversation(userId.toString())
         }
         override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean, photoAcceptance: Boolean?) {
-            val userId = user.userId ?: return
+            val userId = user.userId
             if (isChecked) {
                 if (type == MembersType.EVENT) {
                     eventPresenter.participateForUser(id, userId)
