@@ -89,7 +89,7 @@ class WebViewFragment : BaseDialogFragment() {
         get() = 0
 
     override fun dismiss() {
-        binding.webview?.stopLoading()
+        binding.webview.stopLoading()
         hideAnimation()
     }
 
@@ -117,7 +117,7 @@ class WebViewFragment : BaseDialogFragment() {
 
             override fun onAnimationRepeat(animation: Animation) {}
         })
-        binding.webviewAnimatedLayout?.startAnimation(bottomUpJumpAnimation)
+        binding.webviewAnimatedLayout.startAnimation(bottomUpJumpAnimation)
     }
 
     private fun hideAnimation() {
@@ -130,14 +130,14 @@ class WebViewFragment : BaseDialogFragment() {
 
             override fun onAnimationRepeat(animation: Animation) {}
         })
-        binding.webviewAnimatedLayout?.startAnimation(bottomDownJumpAnimation)
+        binding.webviewAnimatedLayout.startAnimation(bottomDownJumpAnimation)
     }
 
     private fun initialiseView() {
-        binding.webview?.settings?.javaScriptEnabled = true
-        binding.webview?.settings?.domStorageEnabled = true
-        binding.webview?.webViewClient = MyBrowser()
-        binding.webview?.loadUrl(requestedUrl)
+        binding.webview.settings.javaScriptEnabled = true
+        binding.webview.settings.domStorageEnabled = true
+        binding.webview.webViewClient = MyBrowser()
+        binding.webview.loadUrl(requestedUrl)
 
         // add a gesture detector to the navigation bar
         this.context?.let { context ->
@@ -150,7 +150,7 @@ class WebViewFragment : BaseDialogFragment() {
     }
 
     private fun onUp(event: MotionEvent): Boolean {
-        binding.webviewAnimatedLayout?.translationY = 0f
+        binding.webviewAnimatedLayout.translationY = 0f
         return true
     }
 
@@ -158,8 +158,8 @@ class WebViewFragment : BaseDialogFragment() {
     // Click handling
     // ----------------------------------
     private fun onBackClicked() {
-        if (binding.webview?.canGoBack() == true) {
-            binding.webview?.goBack()
+        if (binding.webview.canGoBack()) {
+            binding.webview.goBack()
         } else {
             dismiss()
         }
@@ -173,7 +173,7 @@ class WebViewFragment : BaseDialogFragment() {
     }
 
     private fun onMenuBrowserClicked() {
-        binding.webview?.url?.let {
+        binding.webview.url?.let {
             val browseIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
             try {
                 startActivity(browseIntent)
@@ -185,7 +185,7 @@ class WebViewFragment : BaseDialogFragment() {
     }
 
     private fun onMenuCopyClicked() {
-        binding.webview?.url?.let {
+        binding.webview.url?.let {
             val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText(it, it)
             clipboard.setPrimaryClip(clip)
@@ -195,7 +195,7 @@ class WebViewFragment : BaseDialogFragment() {
     }
 
     private fun onMenuShareClicked() {
-        binding.webview?.url?.let { url ->
+        binding.webview.url?.let { url ->
             val sharingIntent = getSharingIntent(requireContext(), url, shareMessageRes)
             context?.startActivity(Intent.createChooser(sharingIntent, getString(R.string.entourage_share_intent_title)))
             toggleMenu()
@@ -248,24 +248,24 @@ class WebViewFragment : BaseDialogFragment() {
 
         override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
             super.onReceivedError(view, request, error)
-            binding.webviewProgressbar?.visibility = View.GONE
+            binding.webviewProgressbar.visibility = View.GONE
         }
 
         //@SuppressWarnings("deprecation")
         @Deprecated("Deprecated in Java")
         override fun onReceivedError(view: WebView, errorCode: Int, description: String, failingUrl: String) {
             super.onReceivedError(view, errorCode, description, failingUrl)
-            binding.webviewProgressbar?.visibility = View.GONE
+            binding.webviewProgressbar.visibility = View.GONE
         }
 
         override fun onReceivedHttpError(view: WebView, request: WebResourceRequest, errorResponse: WebResourceResponse) {
             super.onReceivedHttpError(view, request, errorResponse)
-            binding.webviewProgressbar?.visibility = View.GONE
+            binding.webviewProgressbar.visibility = View.GONE
         }
 
         override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
             super.onReceivedSslError(view, handler, error)
-            binding.webviewProgressbar?.visibility = View.GONE
+            binding.webviewProgressbar.visibility = View.GONE
         }
     }
 
@@ -290,10 +290,10 @@ class WebViewFragment : BaseDialogFragment() {
         }
 
         override fun onScroll(e1: MotionEvent?, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
-            val translationY = binding.webviewAnimatedLayout?.translationY ?: return false
+            val translationY = binding.webviewAnimatedLayout.translationY
             val deltaY = e2.rawY - (e1?.rawY ?: 0.0f)
             if (deltaY > 0) {
-                binding.webviewAnimatedLayout?.translationY = deltaY
+                binding.webviewAnimatedLayout.translationY = deltaY
             }
             if (translationY > deltaY) handleFling = false
             return translationY > deltaY

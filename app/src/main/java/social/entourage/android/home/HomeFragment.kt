@@ -64,6 +64,7 @@ import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
@@ -292,7 +293,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         
         val intent = Intent(requireContext(), NationalGroupsActivity::class.java)
         startActivityForResult(intent, REQUEST_CODE_NATIONAL_GROUPS)
-        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
     }
     
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -962,13 +963,13 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private fun presentNotificationDemand() {
         val intent = Intent(requireContext(), NotificationDemandActivity::class.java)
         startActivity(intent)
-        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     private fun presentEnhancedOnboardingIntro() {
         val intent = Intent(requireActivity(), EnhancedOnboarding::class.java)
         startActivity(intent)
-        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     private fun updateTokenForNotificationState(allowed: Boolean) {
@@ -1260,7 +1261,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             }
         }
 
-        this.homePedagoAdapter?.resetData(pedagos)
+        this.homePedagoAdapter.resetData(pedagos)
         homePresenter.getSummary()
 
         val show = allPedago.isNotEmpty()

@@ -25,6 +25,7 @@ import social.entourage.android.tools.hideKeyboardOnDone
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.CustomAlertDialog
+import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.view.CustomProgressDialog
 import java.util.Locale
@@ -116,7 +117,7 @@ class LoginActivity : BaseActivity() {
         val initialCountryCode = binding.uiLoginPhoneCcpCode.selectedCountry?.phoneCode ?: "33"
         updatePlaceholder(initialCountryCode)
 
-        binding.iconBack?.setOnClickListener {
+        binding.iconBack.setOnClickListener {
             goBack()
         }
 
@@ -149,7 +150,7 @@ class LoginActivity : BaseActivity() {
         binding.uiLoginButtonChangePhone.setOnClickListener {
             val intent = Intent(this, LoginChangePhoneActivity::class.java)
             startActivity(intent)
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
     }
@@ -191,7 +192,7 @@ class LoginActivity : BaseActivity() {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         startActivity(intent)
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     private fun validateInputsAndLogin(): Boolean {
