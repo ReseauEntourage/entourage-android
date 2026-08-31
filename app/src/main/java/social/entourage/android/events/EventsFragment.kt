@@ -33,6 +33,7 @@ import social.entourage.android.main_filter.MainFilterMode
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.HighlightOverlayView
 import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.serializableExtra
