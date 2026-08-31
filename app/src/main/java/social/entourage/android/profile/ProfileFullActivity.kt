@@ -36,6 +36,7 @@ import social.entourage.android.profile.association.AssociationProfileActivity
 import social.entourage.android.profile.settings.ProfilFullViewModel
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.UserPresenter
@@ -565,7 +566,7 @@ class ProfileFullActivity : BaseSecuredActivity() {
                     putExtra(Const.PARTNER_ID, partnerId.toInt())
                 }
                 startActivity(intent)
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
             }
         }
     }

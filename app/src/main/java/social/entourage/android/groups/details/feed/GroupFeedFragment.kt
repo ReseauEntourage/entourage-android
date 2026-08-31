@@ -69,6 +69,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.CustomTypefaceSpan
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
@@ -539,7 +540,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
             ResponseSurveyActivity.question = question
         }
         startActivity(intent)
-        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     // ============================
@@ -596,7 +597,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         intent.putExtra(Const.POST_ID, postId)
         intent.putExtra(Const.GROUP_ID, this.group?.id)
         startActivity(intent)
-        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     // ============================
@@ -659,7 +660,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
             putExtra("TYPE", MembersType.GROUP.code)
         }
         startActivity(intent)
-        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
 
     }
 
@@ -784,7 +785,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
                 putExtra("TYPE", MembersType.GROUP.code)
             }
             startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
 
@@ -1127,7 +1128,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
                     isFromCreation = true
                     intent.putExtra(Const.GROUP_ID, groupId)
                     startActivity(intent)
-                    requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                     true
                 }
                 else -> false

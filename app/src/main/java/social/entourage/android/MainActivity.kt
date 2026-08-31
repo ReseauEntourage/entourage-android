@@ -57,6 +57,7 @@ import social.entourage.android.tools.TestHelper
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
 import timber.log.Timber
@@ -280,7 +281,7 @@ class MainActivity : BaseSecuredActivity() {
                 val intent = Intent(this, CreateActionActivity::class.java)
                 intent.putExtra(Const.IS_ACTION_DEMAND, true)
                 startActivity(intent)
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
             }
             is OnboardingNavigation.CreateActionContribution -> {
                 val intent = Intent(this, CreateActionActivity::class.java)
@@ -617,7 +618,7 @@ class MainActivity : BaseSecuredActivity() {
 
     fun goConv(isSmallTalkFilter: Boolean = false) {
         if (isSmallTalkFilter) {
-            val bundle = bundleOf("isSmallTalkFilter" to true)
+            val bundle = Bundle().apply { putBoolean("isSmallTalkFilter", true) }
             navController.navigate(R.id.navigation_messages, bundle, singleTopNavOptions())
         } else {
             val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
@@ -630,12 +631,12 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     fun goContrib() {
-        val bundle = bundleOf("isActionDemand" to false)
+        val bundle = Bundle().apply { putBoolean("isActionDemand", false) }
         navController.navigate(R.id.navigation_donations, bundle, singleTopNavOptions())
     }
 
     fun goDemand() {
-        val bundle = bundleOf("isActionDemand" to true)
+        val bundle = Bundle().apply { putBoolean("isActionDemand", true) }
         navController.navigate(R.id.navigation_donations, bundle, singleTopNavOptions())
     }
 
@@ -736,7 +737,7 @@ class MainActivity : BaseSecuredActivity() {
     fun showGuideMap() {
         val intent = Intent(this, GDSMainActivity::class.java)
         startActivity(intent)
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     fun deleteApplicationInfo(listener: () -> Unit) {

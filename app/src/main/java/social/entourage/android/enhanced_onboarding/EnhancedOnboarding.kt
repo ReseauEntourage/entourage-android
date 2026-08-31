@@ -22,6 +22,7 @@ import social.entourage.android.enhanced_onboarding.fragments.OnboardingDisponib
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestFragment
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingPresentationFragment
 import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
+import social.entourage.android.tools.utils.overrideTransitionCompat
 
 class EnhancedOnboarding : BaseActivity() {
     private lateinit var binding: ActivityEnhancedOnboardingLayoutBinding
@@ -234,7 +235,7 @@ class EnhancedOnboarding : BaseActivity() {
             // Nettoyage de la stack pour repartir proprement sur MainActivity
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
             finish()
         }
     }

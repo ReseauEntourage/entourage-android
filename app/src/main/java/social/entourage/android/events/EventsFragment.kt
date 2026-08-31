@@ -33,6 +33,7 @@ import social.entourage.android.main_filter.MainFilterMode
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.HighlightOverlayView
 
 const val DISCOVER_EVENTS_TAB = 1
@@ -257,7 +258,7 @@ class EventsFragment : Fragment() {
            MainFilterActivity.mod = MainFilterMode.EVENT
            val intent = Intent(activity, MainFilterActivity::class.java)
            startActivity(intent)
-           requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+           requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
 
        }
     }

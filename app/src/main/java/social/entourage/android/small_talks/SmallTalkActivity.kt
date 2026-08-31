@@ -27,6 +27,7 @@ import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterest
 import social.entourage.android.profile.editProfile.EditPhotoActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingForEdgeToEdge
+import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.user.UserPresenter
 
 class SmallTalkActivity : BaseActivity() {
@@ -158,7 +159,7 @@ class SmallTalkActivity : BaseActivity() {
                 return@setOnClickListener
             }
             if (!viewModel.isLastStep() && selectedItem != null) {
-                userSelectionsByStep[stepIndex] = selectedItem.id ?: ""
+                userSelectionsByStep[stepIndex] = selectedItem.id
             }
 
             when (stepIndex) {
@@ -233,7 +234,7 @@ class SmallTalkActivity : BaseActivity() {
             if (viewModel.isLastStep()) {
                 SmallTalkingSearchingActivity.id = SMALL_TALK_REQUEST_ID
                 startActivity(Intent(this, SmallTalkingSearchingActivity::class.java))
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                 isFinished = true
                 finish()
             }else{
