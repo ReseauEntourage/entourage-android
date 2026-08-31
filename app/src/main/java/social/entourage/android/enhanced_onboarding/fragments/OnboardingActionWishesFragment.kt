@@ -106,10 +106,6 @@ class OnboardingActionWishesFragment : Fragment() {
         val userOrientations = user.orientations
         val userInvolvements = user.involvements
 
-        android.util.Log.d("EN9530_DEBUG", "loadAndSendActionWishes: goal=${user.goal} isUserTypeAlone=${user.isUserTypeAlone} " +
-                "EnhancedOnboarding.preference=${EnhancedOnboarding.preference} isIsolatedPersonMode=${isIsolatedPersonMode()} " +
-                "userInvolvements=$userInvolvements")
-
         val actionWishes = if (isAssociationMode()) {
             // --- MODE ASSOCIATION ---
             // On vérifie la présence des clés dans 'userOrientations'
