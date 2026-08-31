@@ -181,9 +181,9 @@ class OnboardingPhase1Fragment : Fragment() {
 
     private fun setupListeners() {
         binding.uiOnboardPhoneCcpCode.countryCodePickerListener = object : CountryCodePickerListener {
-            override fun updatedCountry(newCountry: Country) {
-                country = newCountry
-                updatePlaceholder(newCountry.phoneCode)
+            override fun updatedCountry(country: Country) {
+                this@OnboardingPhase1Fragment.country = country
+                updatePlaceholder(country.phoneCode)
                 updateButtonNext()
             }
         }
@@ -348,7 +348,7 @@ class OnboardingPhase1Fragment : Fragment() {
         )
         val labels = fixed.map { it.label }
 
-        val view = binding.uiOnboardSpinnerGender as MaterialAutoCompleteTextView
+        val view = binding.uiOnboardSpinnerGender
         view.setAdapter(ArrayAdapter(ctx, android.R.layout.simple_list_item_1, labels))
 
         val pre = findPreselectIndex(fixed, genderKey)
@@ -365,7 +365,7 @@ class OnboardingPhase1Fragment : Fragment() {
         val ctx = binding.root.context
         val labels = options.map { it.label }
 
-        val view = binding.uiOnboardSpinnerHowDidYouHear as MaterialAutoCompleteTextView
+        val view = binding.uiOnboardSpinnerHowDidYouHear
         view.setAdapter(ArrayAdapter(ctx, android.R.layout.simple_list_item_1, labels))
 
         val pre = findPreselectIndex(options, howDidYouHearKey)
@@ -383,7 +383,7 @@ class OnboardingPhase1Fragment : Fragment() {
         val ctx = binding.root.context
         val names = enterpriseList.map { it.Name }
 
-        val view = binding.uiOnboardSpinnerCompany as MaterialAutoCompleteTextView
+        val view = binding.uiOnboardSpinnerCompany
         view.setAdapter(ArrayAdapter(ctx, android.R.layout.simple_list_item_1, names))
 
         // Préselect par ID (company contient un Id)
@@ -422,7 +422,7 @@ class OnboardingPhase1Fragment : Fragment() {
         val events = eventListByEnterpriseId[enterpriseId] ?: emptyList()
         val names = events.map { it.Name }
 
-        val view = binding.uiOnboardSpinnerEvent as MaterialAutoCompleteTextView
+        val view = binding.uiOnboardSpinnerEvent
         view.setAdapter(ArrayAdapter(ctx, android.R.layout.simple_list_item_1, names))
 
         // préselect par Id (event contient un Id)
@@ -449,8 +449,8 @@ class OnboardingPhase1Fragment : Fragment() {
             company = null
             event = null
             selectedEnterpriseId = null
-            clearDropdown(binding.uiOnboardSpinnerCompany as MaterialAutoCompleteTextView)
-            clearDropdown(binding.uiOnboardSpinnerEvent as MaterialAutoCompleteTextView)
+            clearDropdown(binding.uiOnboardSpinnerCompany)
+            clearDropdown(binding.uiOnboardSpinnerEvent)
         }
     }
 

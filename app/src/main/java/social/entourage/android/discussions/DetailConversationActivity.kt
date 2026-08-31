@@ -317,10 +317,6 @@ class DetailConversationActivity : CommentActivity() {
                 SheetMode.MESSAGE_ACTIONS -> {
                     ActionSheetFragment.newGroup(detailConversation?.id ?: id)
                 }
-                else -> {
-                    Timber.e("Mode non géré : $mode, fallback vers GROUP")
-                    ActionSheetFragment.newGroup(detailConversation?.id ?: id)
-                }
             }
             sheet.show(supportFragmentManager, "ActionSheetFragment")
         }
@@ -438,7 +434,7 @@ class DetailConversationActivity : CommentActivity() {
     private fun handleMembersSearch(members: List<EntourageUser>?) {
         val currentUserId = EntourageApplication.get().me()?.id
         val filtered = members
-            ?.filter { it?.id != currentUserId?.toLong() }
+            ?.filter { it.id != currentUserId?.toLong() }
             ?.map { it.toGroupMember() }
             ?: emptyList()
         showMentionSuggestions(filtered)
