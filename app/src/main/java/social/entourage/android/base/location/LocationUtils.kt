@@ -15,10 +15,9 @@ object LocationUtils {
     const val DURATION_FAST_INTERVAL_PUBLIC = 5L
 
     fun createLocationRequest(): LocationRequest {
-        return LocationRequest.create()
-            .setInterval(SECONDS.toMillis(DURATION_INTERVAL_PUBLIC))
-            .setFastestInterval(SECONDS.toMillis(DURATION_FAST_INTERVAL_PUBLIC))
-            .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
+        return LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, SECONDS.toMillis(DURATION_INTERVAL_PUBLIC))
+            .setMinUpdateIntervalMillis(SECONDS.toMillis(DURATION_FAST_INTERVAL_PUBLIC))
+            .build()
     }
 
     fun isLocationPermissionGranted() = isFineLocationPermissionGranted() || isCoarseLocationPermissionGranted()
