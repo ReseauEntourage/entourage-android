@@ -3,6 +3,7 @@ package social.entourage.android.notifications
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
@@ -33,7 +34,7 @@ object NotificationActionManager {
 
         if(popup.equals("outing_on_day_before")){
             if(context is MainActivity){
-                (context as MainActivity).ifEventLastDay(id)
+                context.ifEventLastDay(id)
                 return
             }
             else{
@@ -44,7 +45,7 @@ object NotificationActionManager {
         }
         if(notifContext.equals("outing_on_day_before")){
             if(context is MainActivity){
-                (context as MainActivity).ifEventLastDay(id)
+                context.ifEventLastDay(id)
                 return
 
             }else{
@@ -76,14 +77,14 @@ object NotificationActionManager {
             context.startActivity(
                 Intent(context, DetailConversationActivity::class.java).apply {
                     putExtras(
-                        bundleOf(
-                            Const.ID to id,
-                            Const.SHOULD_OPEN_KEYBOARD to false,
-                            Const.IS_CONVERSATION_1TO1 to true,
-                            Const.IS_MEMBER to true,
-                            Const.IS_CONVERSATION to true,
-                            Const.HAS_TO_SHOW_MESSAGE to true
-                        )
+                        Bundle().apply {
+                            putInt(Const.ID, id)
+                            putBoolean(Const.SHOULD_OPEN_KEYBOARD, false)
+                            putBoolean(Const.IS_CONVERSATION_1TO1, true)
+                            putBoolean(Const.IS_MEMBER, true)
+                            putBoolean(Const.IS_CONVERSATION, true)
+                            putBoolean(Const.HAS_TO_SHOW_MESSAGE, true)
+                        }
                     )
                 }
             )
@@ -137,7 +138,7 @@ object NotificationActionManager {
         if(!stage.isNullOrEmpty()){
             if (stage == "birthday") {
                 if (context is MainActivity) {
-                    (context as MainActivity).goHome()
+                    context.goHome()
                     context.startActivity(Intent(context, BirthdayActivity::class.java))
                 } else {
                     val intent = Intent(context, MainActivity::class.java)
@@ -197,13 +198,13 @@ object NotificationActionManager {
         context.startActivity(
             Intent(context, DetailConversationActivity::class.java)
                 .putExtras(
-                    bundleOf(
-                        Const.ID to id,
-                        Const.SHOULD_OPEN_KEYBOARD to false,
-                        Const.IS_CONVERSATION_1TO1 to true,
-                        Const.IS_MEMBER to true,
-                        Const.IS_CONVERSATION to true
-                    )
+                    Bundle().apply {
+                        putInt(Const.ID, id)
+                        putBoolean(Const.SHOULD_OPEN_KEYBOARD, false)
+                        putBoolean(Const.IS_CONVERSATION_1TO1, true)
+                        putBoolean(Const.IS_MEMBER, true)
+                        putBoolean(Const.IS_CONVERSATION, true)
+                    }
                 )
         )
     }
@@ -213,13 +214,13 @@ object NotificationActionManager {
         context.startActivity(
             Intent(context, DetailConversationActivity::class.java)
                 .putExtras(
-                    bundleOf(
-                        Const.ID to id,
-                        Const.SHOULD_OPEN_KEYBOARD to false,
-                        Const.IS_CONVERSATION_1TO1 to true,
-                        Const.IS_MEMBER to true,
-                        Const.IS_CONVERSATION to true
-                    )
+                    Bundle().apply {
+                        putInt(Const.ID, id)
+                        putBoolean(Const.SHOULD_OPEN_KEYBOARD, false)
+                        putBoolean(Const.IS_CONVERSATION_1TO1, true)
+                        putBoolean(Const.IS_MEMBER, true)
+                        putBoolean(Const.IS_CONVERSATION, true)
+                    }
                 )
         )
     }
