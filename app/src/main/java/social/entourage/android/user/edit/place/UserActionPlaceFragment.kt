@@ -105,14 +105,15 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
                 Activity.RESULT_OK -> {
                     if (this.activity == null) return
                     val place = intent?.let { Autocomplete.getPlaceFromIntent(it) }
-                    if (place == null || place.address == null) return
-                    var address = place.address.toString()
+                    val formattedAddress = place?.formattedAddress
+                    if (place == null || formattedAddress == null) return
+                    var address = formattedAddress
                     val lastCommaIndex = address.lastIndexOf(',')
                     if (lastCommaIndex > 0) {
                         // remove the last part, which is the country
                         address = address.substring(0, lastCommaIndex)
                     }
-                    updateFromPlace(place.id, address, place.latLng)
+                    updateFromPlace(place.id, address, place.location)
                 }
                 AutocompleteActivity.RESULT_ERROR -> {
                     if (this.activity == null) return
@@ -224,7 +225,7 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
     //**********//**********//**********
 
     open fun onSearchCalled() {
-        val fields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
+        val fields = listOf(Place.Field.ID, Place.Field.DISPLAY_NAME, Place.Field.LOCATION, Place.Field.FORMATTED_ADDRESS)
         val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
             .build(requireActivity())
         startActivityForResult(intent, REQUEST_LOCATION_RETURN)
