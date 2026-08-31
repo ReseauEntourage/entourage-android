@@ -132,13 +132,14 @@ open class MembersFragment : Fragment() {
     private fun handleResponseGetMembersReact(reactionsResponse: CompleteReactionsResponse) {
         membersList.clear()
         reactionList.clear()
+        val reactionsMap = MainActivity.reactionsList?.associateBy { it.id }
         reactionsResponse.user_reactions.forEach { userReaction ->
             membersList.add(userReaction.user)
-            val matchingReaction = MainActivity.reactionsList?.find { it.id == userReaction.reaction_id }
+            val matchingReaction = reactionsMap?.get(userReaction.reaction_id)
             val reaction = matchingReaction ?: ReactionType(
                 id = userReaction.reaction_id,
-                key = matchingReaction?.key,
-                imageUrl = matchingReaction?.imageUrl
+                key = null,
+                imageUrl = null
             )
             reactionList.add(reaction)
         }
