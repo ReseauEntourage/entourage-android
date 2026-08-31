@@ -17,7 +17,8 @@ import social.entourage.android.databinding.SmallTalkIntroActivityBinding
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.CustomTypefaceSpan
-import social.entourage.android.tools.utils.Utils.showToast
+import social.entourage.android.tools.utils.Utils
+import social.entourage.android.tools.utils.overrideTransitionCompat
 
 class SmallTalkIntroActivity : BaseActivity() {
 
@@ -49,7 +50,7 @@ class SmallTalkIntroActivity : BaseActivity() {
                 AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__PRESENTATION_START)
 
                 if (nbMatches >= 3 || hasPendingRequest) {
-                    showToast(this, getString(R.string.smalltalk_intro_limit))
+                    Utils.showToast(this, getString(R.string.smalltalk_intro_limit))
                     return@setOnClickListener
                 }
 
@@ -71,10 +72,10 @@ class SmallTalkIntroActivity : BaseActivity() {
                 SmallTalkActivity.SMALL_TALK_REQUEST_ID = request.id.toString()
                 val intent = Intent(this, SmallTalkActivity::class.java)
                 startActivity(intent)
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                 this.finish()
             } else {
-                showToast(this, getString(R.string.error_not_yet_implemented))
+                Utils.showToast(this, getString(R.string.error_not_yet_implemented))
             }
         }
 

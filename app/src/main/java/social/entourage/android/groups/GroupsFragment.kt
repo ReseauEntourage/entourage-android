@@ -34,6 +34,7 @@ import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.main_filter.MainFilterMode
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.utils.overrideTransitionCompat
 
 class GroupsFragment : Fragment(), UpdateGroupInter {
 
@@ -119,7 +120,7 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
             MainFilterActivity.mod = MainFilterMode.GROUP
             val intent = Intent(activity, MainFilterActivity::class.java)
             startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
         }
         setupSearchView() // Call the method to setup the search view
 

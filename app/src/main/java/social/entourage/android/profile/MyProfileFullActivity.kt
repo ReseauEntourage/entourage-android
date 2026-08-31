@@ -42,6 +42,7 @@ import social.entourage.android.profile.editProfile.EditPhotoActivity
 import social.entourage.android.profile.settings.ProfilFullViewModel
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
@@ -261,7 +262,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
                     putExtra(Const.PARTNER_ID, partnerId.toInt())
                 }
                 startActivity(intent)
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
             }
         }
     }
@@ -621,7 +622,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
             VibrationUtil.vibrate(this)
             val intent = Intent(this, EditProfileActivity::class.java)
             startActivity(intent)
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
         }
         binding.buttonModify.visibility = View.VISIBLE
         binding.buttonModify.text = getString(R.string.edit)
@@ -756,7 +757,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
         binding.btnVoirBadges.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__PROFILE__SEE_ALL)
             startActivity(android.content.Intent(this, social.entourage.android.badges.BadgesListActivity::class.java))
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
 }

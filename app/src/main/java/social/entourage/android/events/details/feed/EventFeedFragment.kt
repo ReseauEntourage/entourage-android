@@ -63,6 +63,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
@@ -253,7 +254,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                     String.format(getString(R.string.geoUri), event?.metadata?.displayAddress)
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
                 startActivity(intent)
-                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
             }
         }
     }
@@ -411,7 +412,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 }
                 startActivity(intent)
                 // Animation optionnelle pour correspondre au style de l'app
-                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
             }
         }
     }
@@ -693,7 +694,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 putExtra("ROLE", (signable && HomeState.signablePermission))
             }
             startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
 
@@ -818,7 +819,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             putExtra("TYPE", MembersType.EVENT.code) // Utilise 'code' pour passer l'enum comme un Int
         }
         startActivity(intent)
-        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     override fun deleteReaction(post: Post) {
@@ -854,7 +855,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
         }
         startActivity(intent)
-        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     companion object {

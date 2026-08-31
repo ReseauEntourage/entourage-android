@@ -26,6 +26,7 @@ import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.overrideTransitionCompat
 import timber.log.Timber
 
 class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback {
@@ -56,7 +57,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                             val intent = Intent(context, ProfileFullActivity::class.java)
                             intent.putExtra(Const.USER_ID, userId.toInt())
                             context.startActivity(intent)
-                            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                         } catch (e: NumberFormatException) {
                             Timber.e("NumberFormatException")
                         }
@@ -71,7 +72,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                             val intent = Intent(context, ProfileFullActivity::class.java)
                             intent.putExtra(Const.USER_ID, userId.toInt())
                             context.startActivity(intent)
-                            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                         } catch (e: NumberFormatException) {
                             Timber.e("NumberFormatException")
                         }
@@ -89,7 +90,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                     intent.putExtra("goWelcomeVideo", true)
                     context.startActivity(intent)
-                    (context as? Activity)?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                 }
                 pathSegments.contains("outings") && pathSegments.contains("chat_messages") -> {
                     if (pathSegments.size > 3) {
@@ -155,12 +156,12 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                     val intent = Intent(context, social.entourage.android.badges.BadgesListActivity::class.java)
                     intent.putExtra(social.entourage.android.badges.BadgesListActivity.EXTRA_OPEN_BADGE_KEY, badgeId)
                     context.startActivity(intent)
-                    (context as? Activity)?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                 }
                 pathSegments.contains("badges") -> {
                     val intent = Intent(context, social.entourage.android.badges.BadgesListActivity::class.java)
                     context.startActivity(intent)
-                    (context as? Activity)?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                 }
                 pathSegments.contains("outings") -> {
                     handleOutings(pathSegments)
@@ -168,7 +169,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 pathSegments.contains("national") -> {
                     val intent = Intent(context, social.entourage.android.home.NationalGroupsActivity::class.java)
                     context.startActivity(intent)
-                    (context as? Activity)?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                 }
                 pathSegments.contains("neighborhoods") || pathSegments.contains("groups") -> {
                     if (pathSegments.size > 2) {
@@ -179,7 +180,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                             .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                         intent.putExtra("goDiscoverGroup", true)
                         context.startActivity(intent)
-                        (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                        (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                     }
                 }
                 pathSegments.contains("solicitations") -> {
@@ -196,7 +197,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                                 .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                             intent.putExtra("goDemand", true)
                             context.startActivity(intent)
-                            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                         }
                     }
                 }
@@ -214,14 +215,14 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                                 .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                             intent.putExtra("goContrib", true)
                             context.startActivity(intent)
-                            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                         }
                     }
                 }
                 pathSegments.contains("map") -> {
                     val intent = Intent(context, GDSMainActivity::class.java)
                     context.startActivity(intent)
-                    (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                 }
                 pathSegments.contains("resources") -> {
                     val intent = when {
@@ -242,20 +243,20 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                     when (context) {
                         is MainActivity -> {
                             context.startActivity(intent)
-                            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                         }
                         is DetailConversationActivity -> {
                             context.startActivity(intent)
-                            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                         }
                         is CommentActivity -> {
                             context.startActivity(intent)
-                            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                         }
                         else -> {
                             // Logique par défaut ou gestion d'autres contextes
                             context.startActivity(intent)
-                            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
 
                         }
                     }
@@ -269,7 +270,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
             val intent = Intent(context, social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
             intent.putExtra("TYPE", "papotages")
             context.startActivity(intent)
-            (context as? Activity)?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
         } else if (pathSegments.contains("new")) {
             val intent = Intent(context, social.entourage.android.events.create.CreateEventActivity::class.java)
             (context as? MainActivity)?.startActivityForResult(intent, 0)
@@ -277,12 +278,12 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
             val intent = Intent(context, social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
             intent.putExtra("TYPE", "webinar")
             context.startActivity(intent)
-            (context as? Activity)?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
         } else if (pathSegments.contains("welcome")) {
             val intent = Intent(context, social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
             intent.putExtra("TYPE", "welcome")
             context.startActivity(intent)
-            (context as? Activity)?.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
         } else if (pathSegments.size > 3) {
             val outingId = pathSegments[2]
             EventFeedFragment.shouldAddToAgenda = true
@@ -295,7 +296,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             intent.putExtra("goDiscoverEvent", true)
             context.startActivity(intent)
-            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
 
@@ -333,7 +334,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 .putExtra(Const.IS_ACTION_DEMAND,false)
                 .putExtra(Const.IS_ACTION_MINE, action.isMine())
             context.startActivity(intent)
-            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
         }else{
             val intent = Intent(context, ActionDetailActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -342,7 +343,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 .putExtra(Const.IS_ACTION_DEMAND,true)
                 .putExtra(Const.IS_ACTION_MINE, action.isMine())
             context.startActivity(intent)
-            (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
 
@@ -370,7 +371,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                 // Si le context est DetailConversationActivity, on ajoute le flag et on lance une nouvelle activité
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                 context.startActivity(intent)
-                (context as Activity).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                 context.finish() // Fermer l'activité actuelle pour éviter l'empilement des activités
             }
             is CommentActivity -> {
@@ -387,7 +388,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
     }
 
     override fun onUserJoinedConversation() {
-        presenter.getDetailConversation(this.conversationId.toString())
+        presenter.getDetailConversation(this.conversationId)
 
     }
 
