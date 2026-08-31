@@ -334,8 +334,7 @@ open class BaseEntourage : FeedItem, Serializable {
         @Throws(JsonParseException::class)
         override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): BaseEntourage? {
             val jsonData = json.asJsonObject
-            if (jsonData !=null) {
-                try {
+            try {
                     val entourageClass = getClassFromString(
                             jsonData["group_type"]?.asString,
                             jsonData["entourage_type"]?.asString)
@@ -351,7 +350,6 @@ open class BaseEntourage : FeedItem, Serializable {
                 } catch (e: Exception) {
                     Timber.e(e)
                 }
-            }
             return null
         }
     }
