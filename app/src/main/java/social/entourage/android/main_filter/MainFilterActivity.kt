@@ -1,27 +1,23 @@
 package social.entourage.android.main_filter
 
-import android.app.Activity
-import android.app.ActivityManager
 import android.content.Context
-import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.ScrollView
 import android.widget.SeekBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.widget.NestedScrollView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompletePrediction
@@ -116,31 +112,32 @@ class MainFilterActivity : BaseActivity() {
     }
 
     private fun addKeyboardListener() {
-        val rootView = binding.root
-        rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                val rect = Rect()
-                rootView.getWindowVisibleDisplayFrame(rect)
-                val screenHeight = rootView.height
-                val keypadHeight = screenHeight - rect.bottom
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+            val statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            val navBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            val ime = insets.getInsets(WindowInsetsCompat.Type.ime())
 
-                if (keypadHeight > screenHeight * 0.15) { // si le clavier est visible
-                    val params = binding.rvMainFilter.layoutParams as ViewGroup.MarginLayoutParams
-                    params.height = screenHeight - keypadHeight - binding.autoCompleteCityName.height
-                    binding.rvMainFilter.layoutParams = params
-                    scrollToView(binding.autoCompleteCityName)
-                } else {
-                    val params = binding.rvMainFilter.layoutParams as ViewGroup.MarginLayoutParams
-                    params.height = ViewGroup.LayoutParams.MATCH_PARENT
-                    binding.rvMainFilter.layoutParams = params
+            binding.root.updatePadding(
+                top = statusBars.top,
+                bottom = maxOf(navBars.bottom, ime.bottom)
+            )
+
+            if (insets.isVisible(WindowInsetsCompat.Type.ime())) {
+                binding.scrollView.findFocus()?.let { focusedView ->
+                    scrollToView(focusedView)
                 }
             }
-        })
+
+            insets
+        }
     }
 
     private fun scrollToView(view: View) {
         binding.scrollView.post {
-            binding.scrollView.smoothScrollTo(0, view.bottom)
+            val rect = Rect()
+            view.getDrawingRect(rect)
+            binding.scrollView.offsetDescendantRectToMyCoords(view, rect)
+            binding.scrollView.scrollTo(0, rect.top)
         }
     }
 
