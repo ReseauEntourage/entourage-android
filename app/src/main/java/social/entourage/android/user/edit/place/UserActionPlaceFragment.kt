@@ -3,7 +3,6 @@ package social.entourage.android.user.edit.place
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
@@ -63,6 +62,25 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
             }
         }
 
+    private val placeAutocompleteLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                if (this.activity == null) return@registerForActivityResult
+                val place = result.data?.let { Autocomplete.getPlaceFromIntent(it) }
+                val formattedAddress = place?.formattedAddress
+                if (place == null || formattedAddress == null) return@registerForActivityResult
+                var address = formattedAddress
+                val lastCommaIndex = address.lastIndexOf(',')
+                if (lastCommaIndex > 0) {
+                    address = address.substring(0, lastCommaIndex)
+                }
+                updateFromPlace(place.id, address, place.location)
+            } else if (result.resultCode == AutocompleteActivity.RESULT_ERROR || result.resultCode == Activity.RESULT_CANCELED) {
+                if (this.activity == null) return@registerForActivityResult
+                updateFromPlace(null, null, null)
+            }
+        }
+
     //**********//**********//**********
     // Lifecycle
     //**********//**********//**********
@@ -95,35 +113,6 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
     override fun onDetach() {
         super.onDetach()
         mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-        super.onActivityResult(requestCode, resultCode, intent)
-        if (requestCode == REQUEST_LOCATION_RETURN) {
-            when (resultCode) {
-                Activity.RESULT_OK -> {
-                    if (this.activity == null) return
-                    val place = intent?.let { Autocomplete.getPlaceFromIntent(it) }
-                    val formattedAddress = place?.formattedAddress
-                    if (place == null || formattedAddress == null) return
-                    var address = formattedAddress
-                    val lastCommaIndex = address.lastIndexOf(',')
-                    if (lastCommaIndex > 0) {
-                        // remove the last part, which is the country
-                        address = address.substring(0, lastCommaIndex)
-                    }
-                    updateFromPlace(place.id, address, place.location)
-                }
-                AutocompleteActivity.RESULT_ERROR -> {
-                    if (this.activity == null) return
-                    updateFromPlace(null, null, null)
-                }
-                Activity.RESULT_CANCELED -> {
-                    updateFromPlace(null, null, null)
-                }
-            }
-        }
     }
 
     //**********//**********//**********
@@ -228,7 +217,7 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
         val fields = listOf(Place.Field.ID, Place.Field.DISPLAY_NAME, Place.Field.LOCATION, Place.Field.FORMATTED_ADDRESS)
         val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
             .build(requireActivity())
-        startActivityForResult(intent, REQUEST_LOCATION_RETURN)
+        placeAutocompleteLauncher.launch(intent)
     }
 
     private fun updateFromPlace(placeId: String?, addressName: String?, latLng: LatLng?) {
