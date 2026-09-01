@@ -18,19 +18,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.textfield.TextInputLayout
 import social.entourage.android.MainActivity
 import social.entourage.android.R
+import social.entourage.android.api.model.CompleteReactionsResponse
+import social.entourage.android.api.model.Conversation
+import social.entourage.android.api.model.EntourageUser
+import social.entourage.android.api.model.ReactionType
 import social.entourage.android.databinding.NewFragmentMembersBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.groups.GroupPresenter
-import social.entourage.android.api.model.Conversation
-import social.entourage.android.api.model.EntourageUser
-import social.entourage.android.api.model.CompleteReactionsResponse
-import social.entourage.android.api.model.ReactionType
 import social.entourage.android.home.HomeState
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
-import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.ui.ActionSheetFragment
 
 enum class MembersType(val code: Int) {
@@ -174,7 +174,7 @@ open class MembersFragment : Fragment() {
                     }
                     override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean, photoAcceptance: Boolean?) {
                         if (type == MembersType.EVENT && id != null && isChecked) {
-                            eventPresenter.participateForUser(id!!, user.userId)
+                            eventPresenter.participateForUser(id, user.userId)
                             if (photoAcceptance == false) {
                                 // TODO: Afficher la pop-up de droit à l'image (à implémenter si nécessaire dans le fragment)
                                 // Exemple : showAcceptPhotoDialog(user.userId)
@@ -203,7 +203,7 @@ open class MembersFragment : Fragment() {
                     }
                     override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean, photoAcceptance: Boolean?) {
                         if (type == MembersType.EVENT && id != null && isChecked) {
-                            eventPresenter.participateForUser(id!!, user.userId)
+                            eventPresenter.participateForUser(id, user.userId)
                             if (photoAcceptance == false) {
                                 // TODO: Afficher la pop-up de droit à l'image (à implémenter si nécessaire dans le fragment)
                                 // Exemple : showAcceptPhotoDialog(user.userId)
