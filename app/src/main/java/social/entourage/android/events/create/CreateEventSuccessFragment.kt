@@ -7,11 +7,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.google.android.play.core.review.ReviewManagerFactory
-import social.entourage.android.databinding.NewFragmentCreateEventSuccessBinding
 import social.entourage.android.RefreshController
+import social.entourage.android.databinding.NewFragmentCreateEventSuccessBinding
 import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.tools.utils.Const
 
@@ -21,6 +22,9 @@ class CreateEventSuccessFragment : Fragment() {
     val binding: NewFragmentCreateEventSuccessBinding get() = _binding!!
 
     private val args: CreateEventSuccessFragmentArgs by navArgs()
+    private val activityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,11 +41,11 @@ class CreateEventSuccessFragment : Fragment() {
 
     private fun handleSeeEventButton() {
         binding.seeEvent.setOnClickListener {
-            startActivityForResult(
+            activityResultLauncher.launch(
                 Intent(requireContext(), EventFeedActivity::class.java).putExtra(
                     Const.EVENT_ID,
                     args.eventID
-                ), 0
+                )
             )
             requireActivity().finish()
             RefreshController.shouldRefreshEventFragment = true

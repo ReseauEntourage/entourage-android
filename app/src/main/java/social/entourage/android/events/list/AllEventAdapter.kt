@@ -68,14 +68,14 @@ class AllEventAdapter(var userId: Int?, var context: Context) :
             holder.binding.layout.setOnClickListener { view ->
                 EventsFragment.isFromDetails = true
                 EventFeedActivity.isFromMyEvent = false
-                (view.context as? Activity)?.startActivityForResult(
+                view.context.startActivity(
                     Intent(
                         view.context,
                         EventFeedActivity::class.java
                     ).putExtra(
                         Const.EVENT_ID,
                         event.id
-                    ), 0
+                    )
                 )
             }
             holder.binding.eventName.text = event.title

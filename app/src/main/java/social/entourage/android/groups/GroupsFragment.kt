@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -61,6 +62,9 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
     private var listSkeletonShownAt: Long = 0L
     private var hasCompletedInitialGroupsLoad = false
     private var hasCompletedInitialMyGroupsLoad = false
+    private val createGroupLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -498,13 +502,13 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_PLUS
             )
-            startActivityForResult(Intent(context, CreateGroupActivity::class.java), 0)
+            createGroupLauncher.launch(Intent(context, CreateGroupActivity::class.java))
         }
         binding.createGroupExpanded.setOnClickListener {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_PLUS
             )
-            startActivityForResult(Intent(context, CreateGroupActivity::class.java), 0)
+            createGroupLauncher.launch(Intent(context, CreateGroupActivity::class.java))
         }
     }
 

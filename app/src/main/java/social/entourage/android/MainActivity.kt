@@ -27,6 +27,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.messaging.FirebaseMessaging
@@ -67,6 +68,9 @@ class MainActivity : BaseSecuredActivity() {
     private val presenter: MainPresenter = MainPresenter(this)
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
     private lateinit var eventPresenter: EventsPresenter
+    private val profileLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
 
     private lateinit var viewModel: CommunicationHandlerBadgeViewModel
     private val universalLinkManager = UniversalLinkManager(this)
@@ -96,8 +100,11 @@ class MainActivity : BaseSecuredActivity() {
         handleUniversalLinkFromMain(this.intent)
         updateActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
             if (result.resultCode != Activity.RESULT_OK) {
+                AnalyticsEvents.logEvent(AnalyticsEvents.clic_update_version_cancel)
                 Timber.tag("Update")
                     .e("La mise à jour a échoué ou a été annulée par l'utilisateur.")
+            } else {
+                AnalyticsEvents.logEvent(AnalyticsEvents.clic_update_version_validate)
             }
         }
         checkForAppUpdate()
@@ -207,9 +214,8 @@ class MainActivity : BaseSecuredActivity() {
                     AnalyticsEvents.logEvent(AnalyticsEvents.view_update_version)
                     appUpdateManager.startUpdateFlowForResult(
                         appUpdateInfo,
-                        AppUpdateType.IMMEDIATE,
-                        this, // Ton Activity.
-                        UPDATE_REQUEST_CODE // Un code de requête défini par toi.
+                        updateActivityResultLauncher,
+                        AppUpdateOptions.defaultOptions(AppUpdateType.IMMEDIATE)
                     )
                 } catch (e: IntentSender.SendIntentException) {
                     e.printStackTrace()
@@ -218,19 +224,7 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
 
-    @Deprecated("Deprecated in kt 1.9.0")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == UPDATE_REQUEST_CODE) {
-            if (resultCode != RESULT_OK) {
-                AnalyticsEvents.logEvent(AnalyticsEvents.clic_update_version_cancel)
-                Timber.tag("Update")
-                    .e("La mise à jour a échoué ou a été annulée par l'utilisateur.")
-            } else {
-                AnalyticsEvents.logEvent(AnalyticsEvents.clic_update_version_validate)
-            }
-        }
-    }
+
 
     fun updateMainLanguage() {
         updateLanguage()
@@ -709,7 +703,7 @@ class MainActivity : BaseSecuredActivity() {
 
     fun showProfile() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_MODPROFIL)
-        startActivityForResult(Intent(this, MyProfileFullActivity::class.java), 0)
+        profileLauncher.launch(Intent(this, MyProfileFullActivity::class.java))
     }
 
     fun showFeed() {
@@ -746,7 +740,6 @@ class MainActivity : BaseSecuredActivity() {
 
     companion object {
         var instance: MainActivity? = null
-        const val UPDATE_REQUEST_CODE = 1001 // Ou tout autre numéro que tu souhaites.
         const val EXTRA_BADGE_NAV_TAB = "badge_nav_tab"
         var reactionsList: MutableList<ReactionType>? = null
         var interest: MutableList<userConfig>? = null

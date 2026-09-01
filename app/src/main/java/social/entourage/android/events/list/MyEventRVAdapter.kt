@@ -1,6 +1,5 @@
 package social.entourage.android.events.list
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -56,14 +55,14 @@ class MyEventRVAdapter(var context: Context) :RecyclerView.Adapter<RecyclerView.
         fun bind(event: Events) {
             binding.entireCardLayoutItem.setOnClickListener { view ->
                 EventsFragment.isFromDetails = true
-                (view.context as? Activity)?.startActivityForResult(
+                view.context.startActivity(
                     Intent(
                         view.context,
                         EventFeedActivity::class.java
                     ).putExtra(
                         Const.EVENT_ID,
                         event.id
-                    ), 0
+                    )
                 )
             }
             binding.titleMyEvent.text = event.title

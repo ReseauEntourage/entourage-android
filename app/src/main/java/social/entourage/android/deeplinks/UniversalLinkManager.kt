@@ -187,7 +187,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                     if (pathSegments.contains("new")) {
                         val intent = Intent(context, CreateActionActivity::class.java)
                         intent.putExtra(Const.IS_ACTION_DEMAND, true)
-                        (context as? MainActivity)?.startActivityForResult(intent, 0)
+                        context.startActivity(intent)
                     } else {
                         if (pathSegments.size > 2) {
                             val soliciationId = pathSegments[2]
@@ -205,7 +205,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                     if (pathSegments.contains("new")) {
                         val intent = Intent(context, CreateActionActivity::class.java)
                         intent.putExtra(Const.IS_ACTION_DEMAND, false)
-                        (context as? MainActivity)?.startActivityForResult(intent, 0)
+                        context.startActivity(intent)
                     } else {
                         if (pathSegments.size > 2) {
                             val contribId = pathSegments[2]
@@ -273,7 +273,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
             (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
         } else if (pathSegments.contains("new")) {
             val intent = Intent(context, social.entourage.android.events.create.CreateEventActivity::class.java)
-            (context as? MainActivity)?.startActivityForResult(intent, 0)
+            context.startActivity(intent)
         } else if (pathSegments.contains("webinar")) {
             val intent = Intent(context, social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
             intent.putExtra("TYPE", "webinar")
@@ -365,7 +365,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
         when (context) {
             is MainActivity -> {
                 // Si le context est MainActivity, on lance l'activité normalement
-                context.startActivityForResult(intent, 0)
+                context.startActivity(intent)
             }
             is DetailConversationActivity -> {
                 // Si le context est DetailConversationActivity, on ajoute le flag et on lance une nouvelle activité

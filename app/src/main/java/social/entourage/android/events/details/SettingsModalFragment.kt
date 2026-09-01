@@ -1,18 +1,11 @@
 package social.entourage.android.events.details
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
@@ -48,6 +41,9 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     val binding: NewFragmentSettingsModalBinding get() = _binding!!
 
     private var event: Events? = null
+    private val activityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
     private val interestsList = ArrayList<String>()
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
 
@@ -168,7 +164,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         binding.rules.profileSettingsItemLayout.setOnClickListener {
             val intent = Intent(context, GroupRulesActivity::class.java)
             intent.putExtra(Const.RULES_TYPE, Const.RULES_EVENT)
-            startActivityForResult(intent, 0)
+            activityResultLauncher.launch(intent)
         }
     }
 
@@ -176,7 +172,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         binding.edit.root.setOnClickListener {
             val intent = Intent(context, CreateEventActivity::class.java)
             intent.putExtra(Const.EVENT_UI, event)
-            startActivityForResult(intent, 0)
+            activityResultLauncher.launch(intent)
             dismiss()
         }
     }
@@ -192,7 +188,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
                     )
                 )
             }
-            startActivityForResult(intent, 0)
+            activityResultLauncher.launch(intent)
             dismiss()
         }
     }

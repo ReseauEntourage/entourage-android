@@ -15,9 +15,9 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -102,6 +102,9 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
     private var isSearchingTargetPost = false
     private var feedSkeletonShownAt: Long = 0L
     private var surveyPresenter: SurveyPresenter = SurveyPresenter()
+    private val activityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
 
     private var newPostsList: MutableList<Post> = ArrayList()
     private var oldPostsList: MutableList<Post> = ArrayList()
@@ -930,7 +933,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         intent.putExtra(Const.ID, groupId)
         intent.putExtra(Const.IS_NATIONAL_GROUP, group?.zone == null)
         if (!isAdded) return
-        startActivityForResult(intent, 0)
+        activityResultLauncher.launch(intent)
     }
 
     private fun handleCreatePostButton() {
@@ -1113,7 +1116,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
                     AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_NEW_EVENT)
                     val intent = Intent(context, CreateEventActivity::class.java)
                     intent.putExtra(Const.GROUP_ID, groupId)
-                    startActivityForResult(intent, 0)
+                    activityResultLauncher.launch(intent)
                     true
                 }
                 R.id.fab_create_post -> {

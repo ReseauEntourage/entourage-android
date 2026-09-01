@@ -33,8 +33,8 @@ import social.entourage.android.main_filter.MainFilterMode
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
-import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.HighlightOverlayView
+import social.entourage.android.tools.utils.overrideTransitionCompat
 
 const val DISCOVER_EVENTS_TAB = 1
 
@@ -42,6 +42,9 @@ class EventsFragment : Fragment() {
     private var _binding: FragmentEventsBinding? = null
     private var currentFilters = EventActionLocationFilters()
     private var activityResultLauncher: ActivityResultLauncher<Intent>? = null
+    private val createEventLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
     private var isFromFilters = false
 
     //TODO title same size as
@@ -361,9 +364,8 @@ class EventsFragment : Fragment() {
     private fun handleLaunchCreateEvent(haveToLaunchCreateEvent:Boolean){
         if(haveToLaunchCreateEvent){
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Event__LocationFilter)
-            startActivityForResult(
-                Intent(context, CreateEventActivity::class.java),
-                0
+            createEventLauncher.launch(
+                Intent(context, CreateEventActivity::class.java)
             )
         }
     }
@@ -393,16 +395,14 @@ class EventsFragment : Fragment() {
     private fun createEvent() {
         binding.createEventExpanded.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Event__New)
-            startActivityForResult(
-                Intent(context, CreateEventActivity::class.java),
-                0
+            createEventLauncher.launch(
+                Intent(context, CreateEventActivity::class.java)
             )
         }
         binding.createEventRetracted.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Event__New)
-            startActivityForResult(
-                Intent(context, CreateEventActivity::class.java),
-                0
+            createEventLauncher.launch(
+                Intent(context, CreateEventActivity::class.java)
             )
         }
     }
