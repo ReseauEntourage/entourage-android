@@ -215,7 +215,8 @@ class EnhancedOnboarding : BaseActivity() {
                     "neighborhoods" -> OnboardingNavigation.WelcomeGroup
                     "event" -> OnboardingNavigation.Events
                     "contribution" -> OnboardingNavigation.Donations
-                    "both_actions" -> OnboardingNavigation.CreateActionDemand
+                    "both_actions" -> OnboardingNavigation.Donations
+                    "ask_help" -> OnboardingNavigation.CreateActionDemand
                     "resources" -> OnboardingNavigation.Quiz
                     "no_event" -> OnboardingNavigation.CreateActionDemand
                     else -> OnboardingNavigation.Home

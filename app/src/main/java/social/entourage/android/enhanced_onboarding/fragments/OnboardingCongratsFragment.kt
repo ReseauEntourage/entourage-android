@@ -85,8 +85,19 @@ class OnboardingCongratsFragment: Fragment() {
         var contentRes = R.string.onboarding_congrats_content
         var buttonTextRes = R.string.onboarding_congrats_leave
 
+        // Priorité 0 : profil "solliciter" (préférence contribution) ayant choisi le coup de pouce -> demande d'aide
+        if (EnhancedOnboarding.preference == "contribution" && categoriesList.contains("both_actions")) {
+            titleRes = R.string.onboarding_start_action_ask_title
+            contentRes = R.string.onboarding_start_action_ask_content
+            buttonTextRes = R.string.onboarding_start_action_ask_button
+            binding.tvTitle.setText(titleRes)
+            binding.tvDescription.setText(contentRes)
+            binding.buttonStart.setText(buttonTextRes)
+            binding.buttonSkip.setText(R.string.onboarding_start_action_ask_skip)
+            category = "ask_help"
+        }
         // Condition par défaut : si la liste est vide ou que la préférence est "contribution"
-        if (categoriesList.isEmpty() || EnhancedOnboarding.preference == "contribution") {
+        else if (categoriesList.isEmpty() || EnhancedOnboarding.preference == "contribution") {
             binding.tvTitle.setText(titleRes)
             binding.tvDescription.setText(contentRes)
             binding.buttonStart.setText(buttonTextRes)
