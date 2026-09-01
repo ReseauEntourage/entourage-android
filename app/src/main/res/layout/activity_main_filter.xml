@@ -1,372 +1,384 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/scrollView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fillViewport="true"
     android:fitsSystemWindows="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/main_filter_title"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/quicksand_bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/icon_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:elevation="1dp"
-            android:padding="10dp"
-            android:src="@drawable/ic_back_onboarding"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_subtitle_event_type"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:text="@string/main_filter_subtitle_event_type"
-            android:textSize="15sp"
-            android:fontFamily="@font/quicksand_bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title"
-            android:textColor="@color/black"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"/>
-
-        <LinearLayout
-            android:id="@+id/layout_event_type_chips"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/tv_subtitle_event_type"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="12dp"
-            android:layout_marginStart="16dp">
-
-            <LinearLayout
-                android:id="@+id/chip_event_entourage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="@drawable/shape_chip_pill_grey_border"
-                android:paddingHorizontal="14dp"
-                android:paddingVertical="8dp">
-
-                <ImageView
-                    android:id="@+id/iv_chip_entourage_icon"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_entourage_logo_orange" />
-
-                <TextView
-                    android:id="@+id/tv_chip_entourage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="@string/main_filter_chip_entourage"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/nunitosans_regular"
-                    android:textSize="13sp" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="8dp"
-                android:layout_height="1dp" />
-
-            <LinearLayout
-                android:id="@+id/chip_event_reserved_female"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="@drawable/shape_chip_pill_grey_border"
-                android:paddingHorizontal="14dp"
-                android:paddingVertical="8dp">
-
-                <ImageView
-                    android:id="@+id/iv_chip_reserved_female_icon"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_entourage_logo_purple" />
-
-                <TextView
-                    android:id="@+id/tv_chip_reserved_female"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:text="@string/main_filter_chip_reserved_female"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/nunitosans_regular"
-                    android:textSize="13sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_subtitle_format"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:text="@string/main_filter_subtitle_format"
-            android:textSize="15sp"
-            android:fontFamily="@font/quicksand_bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_event_type_chips"
-            android:textColor="@color/black"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="16dp"/>
-
-        <LinearLayout
-            android:id="@+id/layout_format_chips"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            app:layout_constraintTop_toBottomOf="@+id/tv_subtitle_format"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="12dp"
-            android:layout_marginStart="16dp">
-
-            <LinearLayout
-                android:id="@+id/chip_format_presentiel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="@drawable/shape_chip_pill_grey_border"
-                android:paddingHorizontal="14dp"
-                android:paddingVertical="8dp">
-
-                <TextView
-                    android:id="@+id/tv_chip_presentiel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/main_filter_chip_presentiel"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/nunitosans_regular"
-                    android:textSize="13sp" />
-            </LinearLayout>
-
-            <View
-                android:layout_width="8dp"
-                android:layout_height="1dp" />
-
-            <LinearLayout
-                android:id="@+id/chip_format_visio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:clickable="true"
-                android:focusable="true"
-                android:background="@drawable/shape_chip_pill_grey_border"
-                android:paddingHorizontal="14dp"
-                android:paddingVertical="8dp">
-
-                <TextView
-                    android:id="@+id/tv_chip_visio"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/main_filter_chip_visio"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/nunitosans_regular"
-                    android:textSize="13sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_subtitle_items"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/main_filter_subtitle_group_event"
-            android:textSize="15sp"
-            android:fontFamily="@font/quicksand_bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_format_chips"
-            android:textColor="@color/black"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="16dp"/>
-
-        <LinearLayout
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            app:layout_constraintTop_toTopOf="@+id/tv_subtitle_items"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_subtitle_items"
-            app:layout_constraintStart_toEndOf="@+id/tv_subtitle_items"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/bg_main_filter_item_number_shape">
-            <TextView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:id="@+id/tv_number_of_filter"
-                android:textAlignment="center"
-                android:textSize="15sp"
-                android:layout_marginTop="-1dp"
-                android:fontFamily="@font/quicksand_bold"
-                android:text="1"
-                android:textColor="@color/white"/>
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:id="@+id/rv_main_filter"
-            app:layout_constraintTop_toBottomOf="@+id/tv_subtitle_items"
-            android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/tv_subtitle_localisation"
-            app:layout_constraintHeight_default="wrap"
-            android:nestedScrollingEnabled="false" />
-
-        <TextView
-            android:id="@+id/tv_subtitle_localisation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/main_filter_title_location"
-            android:textSize="15sp"
-            android:fontFamily="@font/quicksand_bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_main_filter"
-            android:textColor="@color/black"
-            android:layout_marginTop="45dp"
-            android:layout_marginStart="16dp"/>
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/layout_buttons">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/layoutCityName"
-            android:background="@drawable/shape_grey_border"
-            app:layout_constraintTop_toBottomOf="@+id/tv_subtitle_localisation"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="16dp">
+            android:paddingBottom="20dp">
 
-            <AutoCompleteTextView
-                android:id="@+id/autoCompleteCityName"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="@string/main_filter_title"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/quicksand_bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/icon_back"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:elevation="1dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_back_onboarding"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_subtitle_event_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/main_filter_subtitle_event_type"
+                android:textSize="15sp"
+                android:fontFamily="@font/quicksand_bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title"
+                android:textColor="@color/black"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"/>
+
+            <LinearLayout
+                android:id="@+id/layout_event_type_chips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/tv_subtitle_event_type"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="16dp">
+
+                <LinearLayout
+                    android:id="@+id/chip_event_entourage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@drawable/shape_chip_pill_grey_border"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="8dp">
+
+                    <ImageView
+                        android:id="@+id/iv_chip_entourage_icon"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_entourage_logo_orange" />
+
+                    <TextView
+                        android:id="@+id/tv_chip_entourage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:text="@string/main_filter_chip_entourage"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/nunitosans_regular"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="8dp"
+                    android:layout_height="1dp" />
+
+                <LinearLayout
+                    android:id="@+id/chip_event_reserved_female"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@drawable/shape_chip_pill_grey_border"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="8dp">
+
+                    <ImageView
+                        android:id="@+id/iv_chip_reserved_female_icon"
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_entourage_logo_purple" />
+
+                    <TextView
+                        android:id="@+id/tv_chip_reserved_female"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:text="@string/main_filter_chip_reserved_female"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/nunitosans_regular"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_subtitle_format"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@string/main_filter_subtitle_format"
+                android:textSize="15sp"
+                android:fontFamily="@font/quicksand_bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_event_type_chips"
+                android:textColor="@color/black"
+                android:layout_marginTop="24dp"
+                android:layout_marginStart="16dp"/>
+
+            <LinearLayout
+                android:id="@+id/layout_format_chips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/tv_subtitle_format"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="16dp">
+
+                <LinearLayout
+                    android:id="@+id/chip_format_presentiel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@drawable/shape_chip_pill_grey_border"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="8dp">
+
+                    <TextView
+                        android:id="@+id/tv_chip_presentiel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/main_filter_chip_presentiel"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/nunitosans_regular"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="8dp"
+                    android:layout_height="1dp" />
+
+                <LinearLayout
+                    android:id="@+id/chip_format_visio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@drawable/shape_chip_pill_grey_border"
+                    android:paddingHorizontal="14dp"
+                    android:paddingVertical="8dp">
+
+                    <TextView
+                        android:id="@+id/tv_chip_visio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/main_filter_chip_visio"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/nunitosans_regular"
+                        android:textSize="13sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_subtitle_items"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/main_filter_subtitle_group_event"
+                android:textSize="15sp"
+                android:fontFamily="@font/quicksand_bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_format_chips"
+                android:textColor="@color/black"
+                android:layout_marginTop="24dp"
+                android:layout_marginStart="16dp"/>
+
+            <LinearLayout
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:layout_constraintTop_toTopOf="@+id/tv_subtitle_items"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_subtitle_items"
+                app:layout_constraintStart_toEndOf="@+id/tv_subtitle_items"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/bg_main_filter_item_number_shape">
+                <TextView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/tv_number_of_filter"
+                    android:textAlignment="center"
+                    android:textSize="15sp"
+                    android:layout_marginTop="-1dp"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:text="1"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:id="@+id/rv_main_filter"
+                app:layout_constraintTop_toBottomOf="@+id/tv_subtitle_items"
+                android:layout_marginTop="16dp"
+                app:layout_constraintBottom_toTopOf="@+id/tv_subtitle_localisation"
+                app:layout_constraintHeight_default="wrap"
+                android:nestedScrollingEnabled="false" />
+
+            <TextView
+                android:id="@+id/tv_subtitle_localisation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/main_filter_title_location"
+                android:textSize="15sp"
+                android:fontFamily="@font/quicksand_bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_main_filter"
+                android:textColor="@color/black"
+                android:layout_marginTop="45dp"
+                android:layout_marginStart="16dp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/layoutCityName"
+                android:background="@drawable/shape_grey_border"
+                app:layout_constraintTop_toBottomOf="@+id/tv_subtitle_localisation"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginBottom="12dp"
-                android:layout_marginEnd="10dp"
-                android:fontFamily="@font/nunitosans_regular"
-                android:textColor="@color/black"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/autoCompleteCityName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/nunitosans_regular"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:hint="Rechercher une adresse"
+                    android:background="@null"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tv_subtitle_radius"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/main_filter_title_radius"
                 android:textSize="15sp"
-                android:hint="Rechercher une adresse"
-                android:background="@null"/>
+                android:fontFamily="@font/nunitosans_regular"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutCityName"
+                android:textColor="@color/black"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp" />
+
+            <TextView
+                android:id="@+id/tv_radius"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 km"
+                android:textSize="15sp"
+                android:fontFamily="@font/quicksand_bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutCityName"
+                android:textColor="@color/black"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp" />
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:id="@+id/seekbar"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="10dp"
+                android:max="100"
+                android:min="0"
+                app:layout_constraintTop_toBottomOf="@+id/tv_subtitle_radius" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/tv_subtitle_radius"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/main_filter_title_radius"
-            android:textSize="15sp"
-            android:fontFamily="@font/nunitosans_regular"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutCityName"
-            android:textColor="@color/black"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp" />
+    </androidx.core.widget.NestedScrollView>
 
-        <TextView
-            android:id="@+id/tv_radius"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0 km"
-            android:textSize="15sp"
-            android:fontFamily="@font/quicksand_bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layoutCityName"
-            android:textColor="@color/black"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp" />
+    <LinearLayout
+        android:id="@+id/layout_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:elevation="8dp"
+        android:orientation="horizontal"
+        android:padding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <SeekBar
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:id="@+id/seekbar"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="10dp"
-            android:max="100"
-            android:min="0"
-            app:layout_constraintTop_toBottomOf="@+id/tv_subtitle_radius" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
+        <Button
+            android:id="@+id/button_configure_later"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="47dp"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_button_v9_negative"
             android:elevation="0dp"
-            android:orientation="horizontal"
-            android:padding="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/seekbar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            android:fontFamily="@font/quicksand_bold"
+            android:paddingVertical="10dp"
+            android:text="@string/main_filter_btn_reinit"
+            android:textAllCaps="false"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
 
-            <Button
-                android:id="@+id/button_configure_later"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="47dp"
-                android:layout_marginEnd="4dp"
-                android:layout_weight="1"
-                android:background="@drawable/shape_button_v9_negative"
-                android:elevation="0dp"
-                android:fontFamily="@font/quicksand_bold"
-                android:paddingVertical="10dp"
-                android:text="@string/main_filter_btn_reinit"
-                android:textAllCaps="false"
-                android:textColor="@color/black"
-                android:textSize="14sp" />
+        <Button
+            android:id="@+id/button_start"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="47dp"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/shape_button_v9_positive"
+            android:elevation="0dp"
+            android:fontFamily="@font/quicksand_bold"
+            android:paddingVertical="10dp"
+            android:text="@string/main_filter_btn_validate"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+    </LinearLayout>
 
-            <Button
-                android:id="@+id/button_start"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="0dp"
-                android:layout_height="47dp"
-                android:layout_marginStart="4dp"
-                android:layout_weight="1"
-                android:background="@drawable/shape_button_v9_positive"
-                android:elevation="0dp"
-                android:fontFamily="@font/quicksand_bold"
-                android:paddingVertical="10dp"
-                android:text="@string/main_filter_btn_validate"
-                android:textAllCaps="false"
-                android:textColor="@android:color/white"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

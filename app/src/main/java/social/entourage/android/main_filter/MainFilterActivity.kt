@@ -34,6 +34,7 @@ import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityMainFilterBinding
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 
 enum class MainFilterMode {
     ACTION,
@@ -89,6 +90,7 @@ class MainFilterActivity : BaseActivity() {
 
         binding = ActivityMainFilterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        updatePaddingForEdgeToEdge(binding.root)
 
         // Initialize Places.
         Places.initialize(applicationContext, getString(R.string.google_api_key))
@@ -238,7 +240,9 @@ class MainFilterActivity : BaseActivity() {
     }
 
     private fun updateFilterCount(count: Int) {
-        binding.tvNumberOfFilter.text = count.toString()
+        // Le badge est affiché à côté du titre "Par thématique" : il ne doit refléter
+        // que les intérêts sélectionnés, pas les chips type d'event / format.
+        binding.tvNumberOfFilter.text = selectedInterests.size.toString()
         if(count > 0){
             hasFilter = true
         }
