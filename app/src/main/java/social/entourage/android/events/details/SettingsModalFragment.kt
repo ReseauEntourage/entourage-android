@@ -181,11 +181,11 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         binding.editRecurrence.root.setOnClickListener {
             val intent = Intent(context, social.entourage.android.events.EditRecurrenceActivity::class.java).apply {
                 putExtras(
-                    bundleOf(
-                        Const.EVENT_ID to event?.id,
-                        Const.EVENT_DATE to event?.metadata?.startsAt,
-                        Const.RECURRENCE to event?.recurrence
-                    )
+                    Bundle().apply {
+                        event?.id?.let { putInt(Const.EVENT_ID, it) }
+                        event?.metadata?.startsAt?.let { putSerializable(Const.EVENT_DATE, it) }
+                        event?.recurrence?.let { putInt(Const.RECURRENCE, it) }
+                    }
                 )
             }
             activityResultLauncher.launch(intent)

@@ -69,11 +69,11 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
-import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.CustomTypefaceSpan
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.VibrationUtil
+import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.utils.scrollToView
 import timber.log.Timber
@@ -343,18 +343,17 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
     private fun openCommentPage(post: Post, shouldOpenKeyboard: Boolean) {
         // Vérifier qu'on est attaché
         if (!isAdded) return
-        startActivityForResult(
+        activityResultLauncher.launch(
             Intent(context, GroupCommentActivity::class.java).putExtras(
-                bundleOf(
-                    Const.ID to group?.id,
-                    Const.POST_ID to post.id,
-                    Const.POST_AUTHOR_ID to post.user?.userId,
-                    Const.SHOULD_OPEN_KEYBOARD to shouldOpenKeyboard,
-                    Const.IS_MEMBER to group?.member,
-                    Const.NAME to group?.name
-                )
-            ),
-            0
+                Bundle().apply {
+                    group?.id?.let { putInt(Const.ID, it) }
+                    post.id?.let { putInt(Const.POST_ID, it) }
+                    post.user?.userId?.let { putInt(Const.POST_AUTHOR_ID, it) }
+                    putBoolean(Const.SHOULD_OPEN_KEYBOARD, shouldOpenKeyboard)
+                    group?.member?.let { putBoolean(Const.IS_MEMBER, it) }
+                    putString(Const.NAME, group?.name)
+                }
+            )
         )
     }
 
