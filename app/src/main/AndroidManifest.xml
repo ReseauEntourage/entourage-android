@@ -303,7 +303,7 @@
 
          <activity
              android:name=".profile.EditProfileActivity"
-             android:windowSoftInputMode="adjustPan" />
+             android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".small_talks.SmallTalkIntroActivity"
             android:windowSoftInputMode="adjustPan"

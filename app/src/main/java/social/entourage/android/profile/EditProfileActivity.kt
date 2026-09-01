@@ -9,7 +9,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
-import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.SeekBar
@@ -19,6 +18,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import com.bumptech.glide.Glide
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompletePrediction
@@ -533,21 +535,29 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     }
 
     private fun adjustPaddingForKeyboard() {
-        val rootView = binding.root
-        rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                val rect = Rect()
-                rootView.getWindowVisibleDisplayFrame(rect)
-                val screenHeight = rootView.height
-                val keypadHeight = screenHeight - rect.bottom
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+            val statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            val navBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            val ime = insets.getInsets(WindowInsetsCompat.Type.ime())
 
-                if (keypadHeight > screenHeight * 0.15) {
-                    binding.scrollView.setPadding(0, 0, 0, keypadHeight)
-                } else {
-                    binding.scrollView.setPadding(0, 0, 0, 0)
+            binding.root.updatePadding(
+                top = statusBars.top,
+                bottom = maxOf(navBars.bottom, ime.bottom)
+            )
+
+            if (insets.isVisible(WindowInsetsCompat.Type.ime())) {
+                binding.scrollView.findFocus()?.let { focusedView ->
+                    binding.scrollView.post {
+                        val rect = Rect()
+                        focusedView.getDrawingRect(rect)
+                        binding.scrollView.offsetDescendantRectToMyCoords(focusedView, rect)
+                        binding.scrollView.scrollTo(0, rect.top)
+                    }
                 }
             }
-        })
+
+            insets
+        }
     }
 
     override fun onUploadError() {
