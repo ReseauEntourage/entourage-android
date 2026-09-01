@@ -160,6 +160,34 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 activity?.finish()
             }
         }
+        discussionPresenter.hasBlockUser.observe(viewLifecycleOwner) { showPopValidateBlockUser() }
+        discussionPresenter.hasUserUnblock.observe(viewLifecycleOwner) { showPopValidateUnblockUser() }
+    }
+
+    /** Popup de confirmation affiché après un blocage réussi. */
+    private fun showPopValidateBlockUser() {
+        CustomAlertDialog.showOnlyOneButton(
+            requireContext(),
+            getString(R.string.params_block_user_conv_pop_validate_title, username),
+            getString(R.string.params_block_user_conv_pop_validate_subtitle),
+            getString(R.string.params_block_user_conv_pop_validate_bt)
+        ) {
+            (activity as? DetailConversationActivity)?.updateDiscussion()
+            dismiss()
+        }
+    }
+
+    /** Popup de confirmation affiché après un déblocage réussi. */
+    private fun showPopValidateUnblockUser() {
+        CustomAlertDialog.showOnlyOneButton(
+            requireContext(),
+            getString(R.string.params_unblock_user_pop_validate_title, username),
+            getString(R.string.params_unblock_user_pop_validate_subtitle),
+            getString(R.string.params_unblock_user_pop_validate_bt)
+        ) {
+            (activity as? DetailConversationActivity)?.updateDiscussion()
+            dismiss()
+        }
     }
 
     private fun configureUI() {
@@ -175,9 +203,14 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.profile.setLabel(getString(R.string.discussion_settings_profil))
                 binding.profile.profileSettingsItemSubLabel.visibility = View.GONE
 
-                binding.layoutBlock.isVisible = !imBlocker
-                binding.block.text = getString(R.string.discussion_block_title)
-                binding.blockSub.text = getString(R.string.discussion_block_subtitle, username)
+                binding.layoutBlock.isVisible = true
+                if (imBlocker) {
+                    binding.block.text = getString(R.string.params_unblock_user_pop_bt_unblock)
+                    binding.blockSub.text = getString(R.string.message_user_blocked_by_me_list)
+                } else {
+                    binding.block.text = getString(R.string.discussion_block_title)
+                    binding.blockSub.text = getString(R.string.discussion_block_subtitle, username)
+                }
 
                 // Affichage du bouton "Quitter" pour le 1-to-1
                 binding.quit.profileSettingsItemLayout.isVisible = false
@@ -664,18 +697,33 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
         binding.layoutBlock.setOnClickListener {
             if (mode == SheetMode.DISCUSSION_ONE_TO_ONE) {
-                val desc =
-                    getString(R.string.params_block_user_conv_pop_message, username)
-                CustomAlertDialog.showButtonClickedWithCrossClose(
-                    requireContext(),
-                    getString(R.string.params_block_user_conv_pop_title),
-                    desc,
-                    getString(R.string.params_block_user_conv_pop_bt_cancel),
-                    getString(R.string.params_block_user_conv_pop_bt_quit),
-                    showCross = false,
-                    onNo = {},
-                    onYes = { discussionPresenter.blockUser(userId) }
-                )
+                if (imBlocker) {
+                    val desc =
+                        getString(R.string.params_unblock_user_pop_message, username)
+                    CustomAlertDialog.showButtonClickedWithCrossClose(
+                        requireContext(),
+                        getString(R.string.params_unblock_user_pop_title),
+                        desc,
+                        getString(R.string.params_unblock_user_pop_bt_cancel),
+                        getString(R.string.params_unblock_user_pop_bt_unblock),
+                        showCross = false,
+                        onNo = {},
+                        onYes = { discussionPresenter.unblockUsers(arrayListOf(userId)) }
+                    )
+                } else {
+                    val desc =
+                        getString(R.string.params_block_user_conv_pop_message, username)
+                    CustomAlertDialog.showButtonClickedWithCrossClose(
+                        requireContext(),
+                        getString(R.string.params_block_user_conv_pop_title),
+                        desc,
+                        getString(R.string.params_block_user_conv_pop_bt_cancel),
+                        getString(R.string.params_block_user_conv_pop_bt_quit),
+                        showCross = false,
+                        onNo = {},
+                        onYes = { discussionPresenter.blockUser(userId) }
+                    )
+                }
             }
         }
     }
