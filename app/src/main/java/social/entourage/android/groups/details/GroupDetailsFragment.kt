@@ -2,6 +2,7 @@ package social.entourage.android.groups.details
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,6 +38,9 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
     private var group: GroupModel? = null
     private var interestsList: ArrayList<String> = ArrayList()
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
+    private val activityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -180,7 +184,7 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
             )
             val intent = Intent(context, GroupRulesActivity::class.java)
             intent.putExtra(Const.RULES_TYPE, Const.RULES_GROUP)
-            startActivityForResult(intent, 0)
+            activityResultLauncher.launch(intent)
         }
     }
 
@@ -224,7 +228,7 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
             )
             val intent = Intent(context, EditGroupActivity::class.java)
             intent.putExtra(Const.GROUP_ID, group?.id)
-            startActivityForResult(intent, 0)
+            activityResultLauncher.launch(intent)
             dismiss()
         }
     }

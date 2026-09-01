@@ -90,6 +90,9 @@ class DetailConversationActivity : CommentActivity() {
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var galleryLauncher: ActivityResultLauncher<String>
     private lateinit var cameraPermissionLauncher: ActivityResultLauncher<String>
+    private val profileLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
 
     // State
     private var detailConversation: Conversation? = null
@@ -633,16 +636,14 @@ class DetailConversationActivity : CommentActivity() {
                 )
 
                 if(isMe) {
-                    startActivityForResult(
-                        Intent(this, MyProfileFullActivity::class.java),
-                        0
+                    profileLauncher.launch(
+                        Intent(this, MyProfileFullActivity::class.java)
                     )
                 } else {
                     //ProfileFullActivity.userId = otherUserId.toString()
-                    startActivityForResult(
+                    profileLauncher.launch(
                         Intent(this, ProfileFullActivity::class.java)
-                            .putExtra(Const.USER_ID, otherUserId),
-                        0
+                            .putExtra(Const.USER_ID, otherUserId)
                     )
                 }
             }

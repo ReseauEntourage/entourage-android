@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.animation.doOnEnd
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.edit
@@ -98,6 +99,18 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private var isRequestLoaded = false
     private var currentRequests: List<UserSmallTalkRequest> = emptyList()
     private val REQUEST_CODE_NATIONAL_GROUPS = 1001
+
+    private val nationalGroupsLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                markWelcomeJourneyStepCompleted(2)
+                showGroupsSnackbar()
+                homePresenter.getSummary()
+            }
+        }
+
+    private val activityResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { }
 
     // Bouncing heart
     private var heartX = 0f
@@ -292,7 +305,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         if (!isAdded) return
         
         val intent = Intent(requireContext(), NationalGroupsActivity::class.java)
-        startActivityForResult(intent, REQUEST_CODE_NATIONAL_GROUPS)
+        nationalGroupsLauncher.launch(intent)
         requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
     }
     
@@ -550,7 +563,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Map)
                 val intent = Intent(requireContext(), GDSMainActivity::class.java)
                 intent.putExtra(GDSMainActivity.EXTRA_AIR_CONDITIONED, false)
-                startActivityForResult(intent, 0)
+                activityResultLauncher.launch(intent)
             },
             onPedagoClick = {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Pedago)
@@ -579,7 +592,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Map)
                 val intent = Intent(requireContext(), GDSMainActivity::class.java)
                 intent.putExtra(GDSMainActivity.EXTRA_AIR_CONDITIONED, true)
-                startActivityForResult(intent, 0)
+                activityResultLauncher.launch(intent)
             }
         )
     }
@@ -1108,7 +1121,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Notif)
             val intent = Intent(requireContext(), InAppNotificationsActivity::class.java)
             intent.putExtra(Const.NOTIF_COUNT, homePresenter.notifsCount.value)
-            startActivityForResult(intent, 0)
+            activityResultLauncher.launch(intent)
         }
     }
 
@@ -1381,7 +1394,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private fun setProfileButton() {
         binding.avatar.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Tab__Profil)
-            startActivityForResult(Intent(context, MyProfileFullActivity::class.java), 0)
+            activityResultLauncher.launch(Intent(context, MyProfileFullActivity::class.java))
         }
     }
 

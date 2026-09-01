@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
@@ -63,11 +64,11 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
-import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.VibrationUtil
+import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.utils.underline
 import social.entourage.android.ui.ActionSheetFragment
@@ -93,6 +94,9 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     private var shouldShowPopUp = true
     private var mMap: GoogleMap? = null
     private var iAmOrganiser = false
+    private val activityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
     private var signable = false
 
     private var memberList: MutableList<EntourageUser> = mutableListOf()
@@ -422,7 +426,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         val geoUri =
             String.format(getString(R.string.geoUri), event?.metadata?.displayAddress)
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
-        startActivityForResult(intent, 0)
+        activityResultLauncher.launch(intent)
     }
 
     private fun openLink() {
@@ -434,7 +438,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 url?.let {
                     url = Utils.checkUrlWithHttps(it)
                     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                    startActivityForResult(browserIntent, 0)
+                    activityResultLauncher.launch(browserIntent)
                 }
             }
         }
