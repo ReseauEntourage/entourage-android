@@ -65,8 +65,8 @@ import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
-import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.CustomAlertDialog
+import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
 import timber.log.Timber
@@ -307,20 +307,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         val intent = Intent(requireContext(), NationalGroupsActivity::class.java)
         nationalGroupsLauncher.launch(intent)
         requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
-    }
-    
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_NATIONAL_GROUPS && resultCode == Activity.RESULT_OK) {
-            // Marquer l'étape comme complétée
-            markWelcomeJourneyStepCompleted(2)
-            
-            // Afficher la snackbar
-            showGroupsSnackbar()
-            
-            // Rafraîchir l'état du parcours
-            homePresenter.getSummary()
-        }
     }
 
     private fun showGroupsSnackbar() {
