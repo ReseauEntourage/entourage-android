@@ -29,14 +29,16 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginEnd="6dp"
-            android:background="@drawable/bg_card_bordered"
+            android:background="@drawable/home_v2_action_item_shape"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="12dp">
 
             <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_home_tool_icon"
+                android:padding="10dp"
                 android:src="@drawable/ic_toolbox" />
 
             <TextView
@@ -57,14 +59,16 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginHorizontal="3dp"
-            android:background="@drawable/bg_card_bordered"
+            android:background="@drawable/home_v2_action_item_shape"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="12dp">
 
             <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_home_tool_icon"
+                android:padding="10dp"
                 android:src="@drawable/ic_chartes_rules"
                 app:tint="@color/orange" />
 
@@ -86,14 +90,16 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginStart="6dp"
-            android:background="@drawable/bg_card_bordered"
+            android:background="@drawable/home_v2_action_item_shape"
             android:gravity="center"
             android:orientation="vertical"
             android:padding="12dp">
 
             <ImageView
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_home_tool_icon"
+                android:padding="10dp"
                 android:src="@drawable/ic_whatsapp" />
 
             <TextView
