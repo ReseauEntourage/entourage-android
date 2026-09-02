@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -116,7 +115,7 @@ class ChooseGalleryPhotoModalFragment : BottomSheetDialogFragment() {
         choosePhotoAdapter = ChoosePhotoAdapter(photosList, imagesType == ImagesType.EVENTS, showAddPhoto) {
             setFragmentResult(
                 Const.REQUEST_KEY_CHOOSE_PHOTO,
-                bundleOf("is_add_photo" to true)
+                Bundle().apply { putBoolean("is_add_photo", true) }
             )
             dismiss()
         }
@@ -143,7 +142,10 @@ class ChooseGalleryPhotoModalFragment : BottomSheetDialogFragment() {
             image?.let {
                 setFragmentResult(
                     Const.REQUEST_KEY_CHOOSE_PHOTO,
-                    bundleOf(Const.CHOOSE_PHOTO_PATH to it, "is_add_photo" to false)
+                    Bundle().apply {
+                        putParcelable(Const.CHOOSE_PHOTO_PATH, it)
+                        putBoolean("is_add_photo", false)
+                    }
                 )
                 dismiss()
             }

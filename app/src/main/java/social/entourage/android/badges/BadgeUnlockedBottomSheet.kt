@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.EntourageApplication
@@ -23,10 +22,10 @@ class BadgeUnlockedBottomSheet : BottomSheetDialogFragment() {
 
         fun newInstance(badgeKey: String, apiBadges: List<ApiBadge> = emptyList()): BadgeUnlockedBottomSheet {
             return BadgeUnlockedBottomSheet().apply {
-                arguments = bundleOf(
-                    ARG_BADGE_KEY to badgeKey,
-                    ARG_API_BADGES to ArrayList(apiBadges)
-                )
+                arguments = Bundle().apply {
+                    putString(ARG_BADGE_KEY, badgeKey)
+                    putParcelableArrayList(ARG_API_BADGES, ArrayList(apiBadges))
+                }
             }
         }
     }
