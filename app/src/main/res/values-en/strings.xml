@@ -795,7 +795,7 @@
     <string name="event_validate_button2">Cancel the event</string>
     <string name="entourage_share_intent_title">Share via</string>
     <string name="entourage_share_link">https://www.entourage.social</string>
-    <string name="info_share_poi_sms">Good morning ! Here is the address of %1$s which might interest you.\n%2$s\n%3$s\nFor more information on this place, and to create links between supportive neighbors, I will give you an appointment on the Entourage network %4 $s</string>
+    <string name="info_share_poi_sms">Good morning ! Here is the address of %1$s which might interest you.\n%2$s\n%3$s\nFor more information on this place, and to create links between supportive neighbors, I will give you an appointment on the Entourage network %4$s</string>
     <string name="entourage_share_text_for_entourage">%1$s.\n\nThank you very much for your solidarity!</string>
     <string name="myentourages_no_items_details">Ask to join actions, contact members and you will find your conversations with network members here</string>
     <string name="create_action_wizard_p1_title">LAST QUESTION</string>

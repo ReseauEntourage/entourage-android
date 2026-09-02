@@ -1496,7 +1496,7 @@
     <string name="entourage_share_intent_title">Поділитися через</string>
     <string name="entourage_share_link">https://www.entourage.social</string>
 
-    <string name="info_share_poi_sms">Добрий ранок ! Ось адреса %1$s, яка може вас зацікавити.\n%2$s\n%3$s\nДля отримання додаткової інформації про це місце та встановлення зв’язків між сусідами, які підтримують вас, я призначу вам зустріч у мережі Entourage %4 $ с</string>
+    <string name="info_share_poi_sms">Добрий ранок ! Ось адреса %1$s, яка може вас зацікавити.\n%2$s\n%3$s\nДля отримання додаткової інформації про це місце та встановлення зв’язків між сусідами, які підтримують вас, я призначу вам зустріч у мережі Entourage %4$s</string>
 
     <string name="entourage_share_text_for_entourage">%1$s.\n\nЩиро дякуємо за вашу солідарність!</string>
 
