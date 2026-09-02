@@ -1,20 +1,18 @@
 package social.entourage.android.profile
 
-import social.entourage.android.badges.loadBadgeSvg
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
-import android.content.Context
+import android.content.ClipboardManager
 import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -29,6 +27,7 @@ import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserBlockedUser
 import social.entourage.android.api.model.notification.InAppNotificationPermission
+import social.entourage.android.badges.loadBadgeSvg
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.databinding.ActivityLayoutProfileBinding
 import social.entourage.android.databinding.LayoutAmbassadorResourcesBinding
@@ -40,11 +39,11 @@ import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.association.AssociationProfileActivity
 import social.entourage.android.profile.editProfile.EditPhotoActivity
 import social.entourage.android.profile.settings.ProfilFullViewModel
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
-import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.VibrationUtil
-import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.UserPresenter
 import timber.log.Timber
@@ -121,10 +120,10 @@ class MyProfileFullActivity : BaseSecuredActivity() {
     }
 
     private fun handleResponseBlocked(blockedUsers: MutableList<UserBlockedUser>?) {
-        if (blockedUsers.isNullOrEmpty()) {
-            notifBlocked = getString(R.string.settings_unblock_contacts_subtitle)
+        notifBlocked = if (blockedUsers.isNullOrEmpty()) {
+            getString(R.string.settings_unblock_contacts_subtitle)
         } else {
-            notifBlocked = getString(R.string.settings_number_blocked_contacts_subtitle) + blockedUsers.size
+            getString(R.string.settings_number_blocked_contacts_subtitle) + blockedUsers.size
         }
         homePresenter.getNotificationsPermissions()
     }
@@ -135,16 +134,16 @@ class MyProfileFullActivity : BaseSecuredActivity() {
             startActivity(
                 Intent(this, DetailConversationActivity::class.java)
                     .putExtras(
-                        bundleOf(
-                            Const.ID to conversation.id,
-                            Const.POST_AUTHOR_ID to conversation.user?.id,
-                            Const.SHOULD_OPEN_KEYBOARD to false,
-                            Const.NAME to conversation.title,
-                            Const.IS_CONVERSATION_1TO1 to true,
-                            Const.IS_MEMBER to true,
-                            Const.IS_CONVERSATION to true,
-                            Const.HAS_TO_SHOW_MESSAGE to conversation.hasToShowFirstMessage()
-                        )
+                        Bundle().apply {
+                            conversation.id?.let { putInt(Const.ID, it) }
+                            conversation.user?.id?.let { putInt(Const.POST_AUTHOR_ID, it) }
+                            putBoolean(Const.SHOULD_OPEN_KEYBOARD, false)
+                            putString(Const.NAME, conversation.title)
+                            putBoolean(Const.IS_CONVERSATION_1TO1, true)
+                            putBoolean(Const.IS_MEMBER, true)
+                            putBoolean(Const.IS_CONVERSATION, true)
+                            putBoolean(Const.HAS_TO_SHOW_MESSAGE, conversation.hasToShowFirstMessage())
+                        }
                     )
             )
         }
@@ -203,7 +202,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
 
         // Resource links
         resourcesBinding.cardToolbox.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://drive.google.com/drive/folders/1H9_G4I7zgcJ7Y4DtZDws3coFPsoVnLLm")))
+            startActivity(Intent(Intent.ACTION_VIEW, "https://drive.google.com/drive/folders/1H9_G4I7zgcJ7Y4DtZDws3coFPsoVnLLm".toUri()))
         }
         resourcesBinding.cardCharter.setOnClickListener {
             startActivity(
@@ -213,7 +212,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
             )
         }
         resourcesBinding.cardWhatsapp.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://chat.whatsapp.com/IvpPJZS0aAKIJKVXmMRTr0")))
+            startActivity(Intent(Intent.ACTION_VIEW, "https://chat.whatsapp.com/IvpPJZS0aAKIJKVXmMRTr0".toUri()))
         }
 
         // Referent card
@@ -503,7 +502,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
             )
         binding.appVersion.setOnLongClickListener {
             val clipboard =
-                it.context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                it.context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             val clip = android.content.ClipData.newPlainText(
                 "FIId", EntourageApplication.get().sharedPreferences.getString(
                     EntourageApplication.KEY_REGISTRATION_ID,
@@ -518,7 +517,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
                     Snackbar.LENGTH_SHORT
                 )
                 snackbar.show()
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 Timber.d(clip.toString())
             }
             true
@@ -564,8 +563,11 @@ class MyProfileFullActivity : BaseSecuredActivity() {
 
         user?.address?.let { address ->
             if (address.displayAddress.isNotBlank() && user?.travelDistance != null) {
-                binding.tvZone.text =
-                    "${address.displayAddress} - Rayon de ${user?.travelDistance} km"
+                binding.tvZone.text = getString(
+                    R.string.profile_address_radius_format,
+                    address.displayAddress,
+                    user?.travelDistance
+                )
                 binding.tvZone.visibility = View.VISIBLE
             } else {
                 binding.tvZone.visibility = View.GONE
@@ -729,19 +731,19 @@ class MyProfileFullActivity : BaseSecuredActivity() {
             when {
                 progress.isObtained -> {
                     tvProgress.text = getString(R.string.badge_status_obtained)
-                    tvProgress.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.green))
+                    tvProgress.setTextColor(ContextCompat.getColor(this, R.color.green))
                     tvProgress.visibility = View.VISIBLE
                     cardView.alpha = 1f
                 }
                 progress.progress > 0 -> {
-                    tvProgress.text = "${progress.progress}/${progress.maxProgress}"
-                    tvProgress.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.orange))
+                    tvProgress.text = getString(R.string.progress_fraction_format, progress.progress, progress.maxProgress)
+                    tvProgress.setTextColor(ContextCompat.getColor(this, R.color.orange))
                     tvProgress.visibility = View.VISIBLE
                     cardView.alpha = 1f
                 }
                 else -> {
                     tvProgress.text = getString(R.string.badge_status_not_obtained)
-                    tvProgress.setTextColor(androidx.core.content.ContextCompat.getColor(this, R.color.grey))
+                    tvProgress.setTextColor(ContextCompat.getColor(this, R.color.grey))
                     tvProgress.visibility = View.VISIBLE
                     cardView.alpha = 0.5f
                 }
@@ -756,7 +758,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
 
         binding.btnVoirBadges.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__BADGES__PROFILE__SEE_ALL)
-            startActivity(android.content.Intent(this, social.entourage.android.badges.BadgesListActivity::class.java))
+            startActivity(Intent(this, social.entourage.android.badges.BadgesListActivity::class.java))
             overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
