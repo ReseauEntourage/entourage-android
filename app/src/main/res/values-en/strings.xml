@@ -363,8 +363,8 @@
     <string name="category">Category</string>
     <string name="associated_groups">Associated groups:</string>
     <string name="associated_group">Associated group:</string>
-    <string name="date_recurrence_event">%s . %s</string>
-    <string name="start_and_end_time_event">From %s to %s</string>
+    <string name="date_recurrence_event">%1$s . %2$s</string>
+    <string name="start_and_end_time_event">From %1$s to %2$s</string>
     <string name="limited_places">Limited number of places: %d</string>
     <string name="created_at">Created on %s</string>
     <string name="updated_at">Modified on %s</string>
@@ -564,7 +564,7 @@
     <string name="action_created_at_by">Created the %s by</string>
     <string name="action_created_by">Created %s by</string>
     <string name="action_created_by_">Created by</string>
-    <string name="atKm">%s, %s km from me</string>
+    <string name="atKm">%1$s, %2$s km from me</string>
     <string name="AtKm">TO %s km from me</string>
     <string name="action_create_demand_title">New request</string>
     <string name="action_create_contrib_title">New contribution</string>
@@ -1597,7 +1597,7 @@
     <string name="home_v2_no_adress_button">Add my location</string>
     <string name="popup_event_confirm_btn_confirm">I\'m coming</string>
     <string name="popup_event_confirm_btn_cancel">I\'m not coming</string>
-    <string name="popup_event_confirm_title">Don\'t forget: "%s" is happening tomorrow at %s at %s!</string>
+    <string name="popup_event_confirm_title">Don\'t forget: "%1$s" is happening tomorrow at %2$s at %3$s!</string>
     <string name="popup_event_confirm_content">To facilitate the organization of the event, can you tell us if you will be present tomorrow?</string>
     <string name="onboarding_presentation_title">%s, let\'s get to know each other!</string>
     <string name="onboarding_presentation_content">Before diving into our app, let\'s take a moment to get to know you better. Your interests will help us suggest activities and content that will interest you.</string>
@@ -1682,7 +1682,7 @@
     <string name="popup_ambassador_button_participant">Participant</string>
     <string name="organizer_label">- Organizer</string>
     <string name="animateur_label">- Facilitator</string>
-    <string name="share_request_group">Would you like to share your %s in your group %s?</string>
+    <string name="share_request_group">Would you like to share your %1$s in your group %2$s?</string>
     <string name="share_request_description">You have the option to share your %s in your city’s neighborhood group to increase its visibility</string>
 
 

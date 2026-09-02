@@ -391,8 +391,8 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="category">Categoría</string>
     <string name="associated_groups">Grupos asociados:</string>
     <string name="associated_group">Grupo asociado:</string>
-    <string name="date_recurrence_event">%s. %s</string>
-    <string name="start_and_end_time_event">De %s a %s</string>
+    <string name="date_recurrence_event">%1$s. %2$s</string>
+    <string name="start_and_end_time_event">De %1$s a %2$s</string>
     <string name="limited_places">Número limitado de plazas: %d</string>
     <string name="created_at">Creó el %s</string>
     <string name="updated_at">Modificó el %s</string>
@@ -639,7 +639,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="action_created_by">"Creado %s por</string>
     <string name="action_created_by_">"Creado por</string>
 
-    <string name="atKm">%s, %s km de mí</string>
+    <string name="atKm">%1$s, %2$s km de mí</string>
     <string name="AtKm">A %s km de mí</string>
 
 
@@ -2455,7 +2455,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="home_v2_no_adress_button">Agregar mi localidad</string>
     <string name="popup_event_confirm_btn_confirm">Voy</string>
     <string name="popup_event_confirm_btn_cancel">No voy</string>
-    <string name="popup_event_confirm_title">No olvides: "%s" es mañana a las %s en %s!</string>
+    <string name="popup_event_confirm_title">No olvides: "%1$s" es mañana a las %2$s en %3$s!</string>
     <string name="popup_event_confirm_content">Para facilitar la organización del evento, ¿puedes decirnos si estarás presente mañana?</string>
     <string name="onboarding_presentation_title">%s, ¡vamos a conocernos!</string>
     <string name="onboarding_presentation_content">Antes de sumergirte en nuestra aplicación, tómate un momento para conocerte mejor. Tus intereses nos ayudarán a sugerirte actividades y contenidos que te interesen.</string>
@@ -2542,7 +2542,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="popup_ambassador_button_participant">Participante</string>
     <string name="organizer_label">- Organizador</string>
     <string name="animateur_label">- Facilitador</string>
-    <string name="share_request_group">¿Desea compartir su %s en su grupo %s?</string>
+    <string name="share_request_group">¿Desea compartir su %1$s en su grupo %2$s?</string>
     <string name="share_request_description">Tiene la opción de compartir su %s en el grupo de vecinos de su ciudad para mejorar su visibilidad</string>
     <string name="demand_social_title">Ejemplo: Paseo por el parque</string>
     <string name="demand_social_description">Ejemplo: Propongo un paseo por el parque este fin de semana para charlar y relajarnos.</string>
