@@ -4,8 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import androidx.appcompat.app.AppCompatActivity
@@ -349,16 +349,16 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
 
     override fun onRetrievedDiscussion(discussion: Conversation) {
         val intent = Intent(context, DetailConversationActivity::class.java).apply {
-            putExtras(bundleOf(
-                Const.ID to discussion.id,
-                Const.POST_AUTHOR_ID to discussion.user?.id,
-                Const.SHOULD_OPEN_KEYBOARD to false,
-                Const.NAME to discussion.title,
-                Const.IS_CONVERSATION_1TO1 to true,
-                Const.IS_MEMBER to true,
-                Const.IS_CONVERSATION to true,
-                Const.HAS_TO_SHOW_MESSAGE to discussion.hasToShowFirstMessage()
-            ))
+            putExtras(Bundle().apply {
+                discussion.id?.let { putInt(Const.ID, it) }
+                discussion.user?.id?.let { putInt(Const.POST_AUTHOR_ID, it) }
+                putBoolean(Const.SHOULD_OPEN_KEYBOARD, false)
+                putString(Const.NAME, discussion.title)
+                putBoolean(Const.IS_CONVERSATION_1TO1, true)
+                putBoolean(Const.IS_MEMBER, true)
+                putBoolean(Const.IS_CONVERSATION, true)
+                putBoolean(Const.HAS_TO_SHOW_MESSAGE, discussion.hasToShowFirstMessage())
+            })
         }
 
 

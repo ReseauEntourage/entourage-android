@@ -6,7 +6,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.setFragmentResult
 import com.google.android.flexbox.FlexDirection
@@ -237,7 +236,7 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
         if (hasLeft) {
             setFragmentResult(
                 Const.REQUEST_KEY_SHOULD_REFRESH,
-                bundleOf(Const.SHOULD_REFRESH to true)
+                Bundle().apply { putBoolean(Const.SHOULD_REFRESH, true) }
             )
             dismiss()
         }

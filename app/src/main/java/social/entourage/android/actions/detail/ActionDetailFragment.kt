@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -208,21 +207,21 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun handleGetConversation(conversation: Conversation?) {
-        conversation?.let {
+        conversation?.let { 
             DetailConversationActivity.isSmallTalkMode = false
             startActivityForResult(
                 Intent(context, DetailConversationActivity::class.java)
                     .putExtras(
-                        bundleOf(
-                            Const.ID to conversation.id,
-                            Const.POST_AUTHOR_ID to conversation.user?.id,
-                            Const.SHOULD_OPEN_KEYBOARD to false,
-                            Const.NAME to conversation.title,
-                            Const.IS_CONVERSATION_1TO1 to true,
-                            Const.IS_MEMBER to true,
-                            Const.IS_CONVERSATION to true,
-                            Const.HAS_TO_SHOW_MESSAGE to conversation.hasToShowFirstMessage()
-                        )
+                        Bundle().apply {
+                            conversation.id?.let { putInt(Const.ID, it) }
+                            conversation.user?.id?.let { putInt(Const.POST_AUTHOR_ID, it) }
+                            putBoolean(Const.SHOULD_OPEN_KEYBOARD, false)
+                            putString(Const.NAME, conversation.title)
+                            putBoolean(Const.IS_CONVERSATION_1TO1, true)
+                            putBoolean(Const.IS_MEMBER, true)
+                            putBoolean(Const.IS_CONVERSATION, true)
+                            putBoolean(Const.HAS_TO_SHOW_MESSAGE, conversation.hasToShowFirstMessage())
+                        }
                     ), 0
             )
         }

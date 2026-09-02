@@ -16,7 +16,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -606,15 +605,13 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             Intent(context, DetailConversationActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 .putExtras(
-                    bundleOf(
-                        Const.ID to event?.id,
-                        Const.SHOULD_OPEN_KEYBOARD to false,
-                        Const.IS_CONVERSATION_1TO1 to true,
-                        Const.IS_CONVERSATION_1TO1 to false,
-                        Const.IS_MEMBER to true,
-                        Const.IS_CONVERSATION to true,
-
-                        )
+                    Bundle().apply {
+                        event?.id?.let { putInt(Const.ID, it) }
+                        putBoolean(Const.SHOULD_OPEN_KEYBOARD, false)
+                        putBoolean(Const.IS_CONVERSATION_1TO1, false)
+                        putBoolean(Const.IS_MEMBER, true)
+                        putBoolean(Const.IS_CONVERSATION, true)
+                    }
                 )
         )
     }
