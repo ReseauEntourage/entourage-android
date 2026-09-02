@@ -135,6 +135,8 @@
     <string name="within">Dans un rayon de :</string>
     <string name="settings">Paramètres</string>
     <string name="my_profile">Mon profil</string>
+    <string name="profile_address_radius_format">%1$s - Rayon de %2$d km</string>
+    <string name="progress_fraction_format" translatable="false">%1$d/%2$d</string>
     <string name="min_progressbar">1 km</string>
     <string name="max_progressbar">100 km</string>
     <string name="indications">* Votre zone d’action permet de définir à quelle distance vous pouvez agir et vous déplacer  </string>
