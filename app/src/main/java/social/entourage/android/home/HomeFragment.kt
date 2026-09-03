@@ -425,8 +425,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         setupRecyclerView()
 
         AnalyticsEvents.logEvent(AnalyticsEvents.View__Home)
-        if (EnhancedOnboarding.shouldNotDisplayCampain == true) {
-        } else {
+        if (EnhancedOnboarding.shouldNotDisplayCampain != true) {
             AnalyticsEvents.logEvent(AnalyticsEvents.home_activate_firebase_message)
         }
 

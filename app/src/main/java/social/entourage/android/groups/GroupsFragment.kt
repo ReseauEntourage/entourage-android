@@ -266,7 +266,7 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
         }
 
 
-        binding.searchEditText.setOnTouchListener { v, event ->
+        binding.searchEditText.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 val clearIcon = binding.searchEditText.compoundDrawables[2]
                 val backIcon = binding.searchEditText.compoundDrawables[0]
@@ -288,9 +288,7 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
         binding.searchEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val query = s.toString()
-            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
                 val query = s.toString()

@@ -74,7 +74,7 @@ class GDSSearchFragment : BaseDialogFragment(), PoiListFragment {
             rvAdapter?.notifyDataSetChanged()
         }
 
-        binding.uiEtSearch.setOnEditorActionListener { v, actionId, event ->
+        binding.uiEtSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 sendSearch()
                 return@setOnEditorActionListener true

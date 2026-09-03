@@ -35,6 +35,8 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.utils.Utils
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.Locale
 import kotlin.math.abs
 
 enum class FilterMode {
@@ -420,11 +422,11 @@ class DiscussionsMainFragment : Fragment() {
         var date:java.util.Date? = null
         m.lastChatMessageDate?.let {
             try {
-                val inputFormat = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", java.util.Locale.US)
+                val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
                 date = inputFormat.parse(it)
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 try {
-                    val inputFormat = java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", java.util.Locale.US)
+                    val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
                     date = inputFormat.parse(it)
                 } catch (e: Exception) {
                     Timber.e(e)

@@ -9,6 +9,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
@@ -20,7 +21,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
@@ -148,13 +148,12 @@ override fun onCreate(savedInstanceState: Bundle?) {
     isFromNotif = intent.getBooleanExtra(Const.IS_FROM_NOTIF, false)
     isConversation = intent.getBooleanExtra(Const.IS_CONVERSATION, false)
     shouldOpenKeyboard = intent.getBooleanExtra(Const.SHOULD_OPEN_KEYBOARD, false)
-    viewModel.isMessageDeleted.observe(this,::handleMessageDeleted)
+    viewModel.isMessageDeleted.observe(this) { handleMessageDeleted() }
     initializeComments()
     handleCommentAction()
     openEditTextKeyboard()
     handleBackButton()
     setSettingsIcon()
-    val postLang = comment?.contentTranslations?.fromLang ?: ""
     binding.layoutStaffBanner.visibility = View.GONE
 
     handleSendButtonState()
@@ -185,8 +184,8 @@ fun startEditingMessage(messageId: Int, messageHtml: String?) {
     binding.commentMessage.setSelection(binding.commentMessage.text?.length ?: 0)
     binding.layoutEditingMessage.visibility = View.VISIBLE
     binding.commentMessage.requestFocus()
-    val imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as? android.view.inputmethod.InputMethodManager
-    imm?.showSoftInput(binding.commentMessage, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT)
+    val imm = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+    imm?.showSoftInput(binding.commentMessage, InputMethodManager.SHOW_IMPLICIT)
 }
 
 fun cancelEditingMessage() {
@@ -279,7 +278,7 @@ companion object {
     private const val HIGHLIGHT_DURATION_MS = 1200L
 }
 
-private fun handleMessageDeleted(isMessageDeleted:Boolean){
+private fun handleMessageDeleted() {
 
 }
 

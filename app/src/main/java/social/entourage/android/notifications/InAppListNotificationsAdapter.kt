@@ -91,7 +91,7 @@ class InAppListNotificationsAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: InAppListNotificationsAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(notifs[position], position)
     }
 
