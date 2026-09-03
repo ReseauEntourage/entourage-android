@@ -15,6 +15,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -352,10 +354,10 @@ class PostAdapter(
             AnalyticsEvents.logEvent(AnalyticsEvents.Clic_Post_List_Reactions)
             // Assurer que le layout des réactions est toujours visible, même lorsque postCommentsNumberLayout est masqué
             surveyHolder.binding.postCommentsNumberLayout.visibility = View.VISIBLE
-            val isVisible = (surveyHolder.binding.layoutReactions.visibility == View.VISIBLE)
+            val isVisible = surveyHolder.binding.layoutReactions.isVisible
             surveyHolder.binding.layoutReactions.visibility =
                 if (isVisible) View.GONE else View.VISIBLE
-            if (surveyHolder.binding.layoutReactions.visibility == View.VISIBLE) {
+            if (surveyHolder.binding.layoutReactions.isVisible) {
                 animateReactionLayout(
                     listOf(
                         surveyHolder.binding.ivReactOne,
@@ -373,11 +375,11 @@ class PostAdapter(
         with(post) {
             if (reactionId == null || reactionId == 0) {
                 // pouce gris
-                surveyHolder.binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_grey))
+                surveyHolder.binding.ivILike.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_pouce_grey))
                 surveyHolder.binding.tvTitleILike.setTextColor(context.getColor(R.color.black))
             } else {
                 // pouce orange
-                surveyHolder.binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_orange))
+                surveyHolder.binding.ivILike.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_pouce_orange))
                 surveyHolder.binding.tvTitleILike.setTextColor(context.getColor(R.color.orange))
             }
 

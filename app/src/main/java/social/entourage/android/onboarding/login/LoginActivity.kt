@@ -211,7 +211,7 @@ class LoginActivity : BaseActivity() {
             )
         }
 
-        if (isValidate && codePwd.length != 6) {
+        if (isValidate && (codePwd.length != 6)) {
             isValidate = false
             message = getString(R.string.error_login_code_lenght)
         }

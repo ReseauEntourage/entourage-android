@@ -17,7 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.os.bundleOf
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
@@ -678,8 +678,8 @@ class MainActivity : BaseSecuredActivity() {
         badge.isVisible = true
         badge.maxCharacterCount = 2
         badge.verticalOffsetWithText = 10
-        badge.backgroundColor = resources.getColor(R.color.tomato)
-        badge.badgeTextColor = resources.getColor(R.color.white)
+        badge.backgroundColor = ContextCompat.getColor(this, R.color.tomato)
+        badge.badgeTextColor = ContextCompat.getColor(this, R.color.white)
         if (count == 0) {
             bottomNavigationView.removeBadge(R.id.navigation_messages)
         }
@@ -694,8 +694,8 @@ class MainActivity : BaseSecuredActivity() {
         badge.isVisible = true
         badge.maxCharacterCount = 2
         badge.verticalOffsetWithText = 10
-        badge.backgroundColor = resources.getColor(R.color.tomato)
-        badge.badgeTextColor = resources.getColor(R.color.white)
+        badge.backgroundColor = ContextCompat.getColor(this, R.color.tomato)
+        badge.badgeTextColor = ContextCompat.getColor(this, R.color.white)
         if (count == 0) {
             bottomNavigationView.removeBadge(R.id.navigation_groups)
         }

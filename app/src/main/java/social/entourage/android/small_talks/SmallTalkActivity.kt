@@ -3,7 +3,7 @@ package social.entourage.android.small_talks
 import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import timber.log.Timber
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -136,7 +136,7 @@ class SmallTalkActivity : BaseActivity() {
             if (shouldLeave) finish()
         }
 
-        viewModel.currentStepIndex.observe(this) { stepIndex ->
+        viewModel.currentStepIndex.observe(this) { _ ->
             binding.buttonStart.text = getString(
                 if (viewModel.isLastStep()) R.string.onboarding_btn_next
                 else R.string.onboarding_btn_next
@@ -261,14 +261,14 @@ class SmallTalkActivity : BaseActivity() {
     override fun onDestroy() {
         if(!isFinished){
             viewModel.deleteRequest()
-            Log.wtf("wtf" , "request deleted" )
+            Timber.d("request deleted")
         }
         super.onDestroy()
 
     }
 
     private fun preselectUserInterests(interests: List<InterestForAdapter>): List<InterestForAdapter> {
-        val currentUser = EntourageApplication.get(this).authenticationController.me
+        val currentUser = EntourageApplication.me(this)
         val userInterests = currentUser?.interests ?: return interests
 
         return interests.map { interest ->

@@ -109,7 +109,7 @@ object DeepLinksManager {
                     activity.showFeed()
                     activity.showWebView(url)
                 }
-            } catch (ignored: Exception) {
+            } catch (_: Exception) {
             }
         } else if (key == DeepLinksView.PROFILE.view) {
             activity.showProfile()
@@ -120,7 +120,7 @@ object DeepLinksManager {
         } else if (key == DeepLinksView.CREATE_ACTION.view) {
             activity.showActionsTab()
         } else if (key == DeepLinksView.ENTOURAGE.view || key == DeepLinksView.ENTOURAGES.view || key == DeepLinksView.APPLINK_ACTION.view) {
-            if (pathSegments != null && pathSegments.isNotEmpty()) {
+            if (!pathSegments.isNullOrEmpty()) {
                 //TODO EntBus.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, "", pathSegments[0]))
             }
             //TODO check if it is working ??

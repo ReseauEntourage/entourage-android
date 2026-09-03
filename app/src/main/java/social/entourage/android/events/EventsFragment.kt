@@ -35,6 +35,8 @@ import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.HighlightOverlayView
 import social.entourage.android.tools.utils.overrideTransitionCompat
+import social.entourage.android.tools.utils.serializableExtra
+import androidx.core.view.isVisible
 
 const val DISCOVER_EVENTS_TAB = 1
 
@@ -327,7 +329,7 @@ class EventsFragment : Fragment() {
     }
 
     private fun animateToExtendedState() {
-        if (binding.createEventExpanded.visibility == View.VISIBLE) {
+        if (binding.createEventExpanded.isVisible) {
             // Le bouton est déjà dans l'état étendu
             return
         }
@@ -341,7 +343,7 @@ class EventsFragment : Fragment() {
     }
 
     private fun animateToRetractedState() {
-        if (binding.createEventRetracted.visibility == View.VISIBLE) {
+        if (binding.createEventRetracted.isVisible) {
             // Le bouton est déjà dans l'état rétracté
             return
         }
@@ -354,9 +356,7 @@ class EventsFragment : Fragment() {
         binding.createEventExpanded.animate().scaleX(0f).alpha(0f).setDuration(200).start()
     }
 
-
-
-    private fun handlePageChange(haveChange:Boolean){
+    private fun handlePageChange(_haveChange: Boolean = false) {
         ViewPagerDefaultPageController.shouldSelectDiscoverEvents = true
         setPage()
     }

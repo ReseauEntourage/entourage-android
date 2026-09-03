@@ -30,7 +30,7 @@ class GuideHubFragment : Fragment() {
 
         val user = EntourageApplication.me(activity)
 
-        user?.let { it ->
+        user?.let {
             if (it.isUserTypeAlone) {
                 binding.uiLayoutCell3.visibility = View.GONE
                 binding.uiLayoutCell4.visibility = View.GONE
