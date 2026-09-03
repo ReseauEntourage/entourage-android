@@ -10,13 +10,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.viewModels
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.drawToBitmap
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,11 +41,7 @@ import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.report.onDissmissFragment
-import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.sockets.ConversationSocketManager
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.VibrationUtil
@@ -124,7 +122,7 @@ val universalLinkManager = UniversalLinkManager(this)
 var photoUri: Uri? = null
 private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
 private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
-private val smallTalkViewModel: SmallTalkViewModel by viewModels()
+//private val smallTalkViewModel: SmallTalkViewModel by viewModels()
 private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
 
 override fun onCreate(savedInstanceState: Bundle?) {
