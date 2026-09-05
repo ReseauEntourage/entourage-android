@@ -19,6 +19,7 @@ import androidx.core.animation.doOnEnd
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.edit
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -587,10 +588,9 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 }
 
                 try {
-                    val uri = android.net.Uri.parse(urlString)
-                    val intent = Intent(Intent.ACTION_VIEW, uri)
+                    val intent = Intent(Intent.ACTION_VIEW, urlString.toUri())
                     startActivity(intent)
-                } catch (e: Exception) {
+                } catch (_: Exception) {
                 }
             },
             onClimateMapClick = {
@@ -755,8 +755,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         }
 
         homeSmallTalkAdapter.submitList(items)
-
-        val hasItems = items.isNotEmpty()
         smallTalkHeaderAdapter.update("", null, false)
     }
 
@@ -795,9 +793,9 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             val tv = TextView(requireContext()).apply {
                 text = particles[i % particles.size]
                 textSize = 18f
-                layoutParams = android.view.ViewGroup.LayoutParams(
-                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
-                    android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
                 )
             }
             parent.addView(tv)
@@ -1305,8 +1303,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
         this.homePedagoAdapter.resetData(pedagos)
         homePresenter.getSummary()
-
-        val show = allPedago.isNotEmpty()
     }
 
     private fun updateContributionsView(summary: Summary) {
