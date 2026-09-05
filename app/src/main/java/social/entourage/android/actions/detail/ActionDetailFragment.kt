@@ -10,6 +10,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -55,6 +56,9 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var actionsPresenter: ActionsPresenter
     private val discussionPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
+    private val actionDetailLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
 
     private var actionId:Int = 0
 
@@ -209,7 +213,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     private fun handleGetConversation(conversation: Conversation?) {
         conversation?.let { 
             DetailConversationActivity.isSmallTalkMode = false
-            startActivityForResult(
+            actionDetailLauncher.launch(
                 Intent(context, DetailConversationActivity::class.java)
                     .putExtras(
                         Bundle().apply {
@@ -222,7 +226,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                             putBoolean(Const.IS_CONVERSATION, true)
                             putBoolean(Const.HAS_TO_SHOW_MESSAGE, conversation.hasToShowFirstMessage())
                         }
-                    ), 0
+                    )
             )
         }
     }
