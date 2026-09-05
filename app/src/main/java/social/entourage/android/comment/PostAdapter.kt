@@ -112,10 +112,10 @@ class PostAdapter(
         notifyItemChanged(postsList.indexOfFirst { it.id == postId })
     }
 
-    inner class ViewHolder(val binding: NewLayoutPostBinding)
+    class ViewHolder(val binding: NewLayoutPostBinding)
         : RecyclerView.ViewHolder(binding.root)
 
-    inner class SurveyViewHolder(val binding: SurveyLayoutBinding)
+    class SurveyViewHolder(val binding: SurveyLayoutBinding)
         : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
