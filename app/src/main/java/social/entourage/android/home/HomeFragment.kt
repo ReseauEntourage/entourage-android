@@ -475,7 +475,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                     intent.putExtra(Const.ID, pedagogicalContent.id)
                     PedagoDetailActivity.setPedagoId(pedagogicalContent.id)
                     requireActivity().startActivity(intent)
-                    requireActivity().overridePendingTransition(
+                    requireActivity().overrideTransitionCompat(
                         R.anim.slide_in_right,
                         R.anim.slide_out_left
                     )
