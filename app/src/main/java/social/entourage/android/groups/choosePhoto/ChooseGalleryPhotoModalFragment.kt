@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.setFragmentResult
+import social.entourage.android.tools.utils.serializableCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -100,7 +101,9 @@ class ChooseGalleryPhotoModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun getImageType() {
-        imagesType = arguments?.getSerializable(Const.IMAGES_TYPE) as ImagesType
+        arguments?.serializableCompat<ImagesType>(Const.IMAGES_TYPE)?.let {
+            imagesType = it
+        }
     }
 
     private fun hasValidRole(): Boolean {
