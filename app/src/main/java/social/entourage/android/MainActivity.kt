@@ -59,6 +59,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.overrideTransitionCompat
+import social.entourage.android.tools.utils.parcelableExtra
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
 import timber.log.Timber
@@ -298,7 +299,7 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     fun useIntentForRedictection(intent: Intent) {
-        val onboardingNav = intent.getParcelableExtra<OnboardingNavigation>("extra_onboarding_navigation")
+        val onboardingNav = intent.parcelableExtra<OnboardingNavigation>("extra_onboarding_navigation")
         if (onboardingNav != null) {
             intent.removeExtra("extra_onboarding_navigation")
             handleOnboardingNavigation(onboardingNav)

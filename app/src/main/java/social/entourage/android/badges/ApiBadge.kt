@@ -3,6 +3,7 @@ package social.entourage.android.badges
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import social.entourage.android.tools.utils.readParcelableCompat
 
 data class ApiBadge(
     @SerializedName("name") val name: String,
@@ -14,7 +15,7 @@ data class ApiBadge(
         parcel.readString() ?: "",
         parcel.readByte() != 0.toByte(),
         parcel.readString(),
-        parcel.readParcelable(ApiBadgeMetadata::class.java.classLoader)
+        parcel.readParcelableCompat<ApiBadgeMetadata>(ApiBadgeMetadata::class.java.classLoader)
     )
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)

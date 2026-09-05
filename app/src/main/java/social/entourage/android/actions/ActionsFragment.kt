@@ -44,6 +44,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.overrideTransitionCompat
+import social.entourage.android.tools.utils.serializableExtra
 
 class ActionsFragment : Fragment() {
 
@@ -64,12 +65,12 @@ class ActionsFragment : Fragment() {
         activityResultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
-            (result.data?.getSerializableExtra(LOCATION_FILTERS) as? EventActionLocationFilters)?.let {
+            result.data?.serializableExtra<EventActionLocationFilters>(LOCATION_FILTERS)?.let {
                 this.currentLocationFilters = it
                 updateFilters()
             }
 
-            (result.data?.getSerializableExtra(CATEGORIES_FILTERS) as? ActionSectionFilters)?.let {
+            result.data?.serializableExtra<ActionSectionFilters>(CATEGORIES_FILTERS)?.let {
                 this.currentCategoriesFilters = it
                 updateFilters()
             }

@@ -68,9 +68,8 @@ class EventsFragment : Fragment() {
         activityResultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult())
         { result ->
-            val filters = result.data?.getSerializableExtra(EventFiltersActivity.FILTERS) as? EventActionLocationFilters
-            filters?.let {
-                this.currentFilters = filters
+            result.data?.serializableExtra<EventActionLocationFilters>(EventFiltersActivity.FILTERS)?.let {
+                this.currentFilters = it
                 updateFilters()
             }
         }
