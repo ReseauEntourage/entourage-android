@@ -1,6 +1,7 @@
 package social.entourage.android.actions.detail
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -114,13 +115,9 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onAttach(activity: Activity) {
-        super.onAttach(activity)
-        try {
-            mCallback = activity as? OnDetailActionReceive
-        } catch (e: ClassCastException) {
-        }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mCallback = context as? OnDetailActionReceive
     }
     private fun setupTranslationButton() {
         val sharedPrefs = EntourageApplication.get(context).sharedPreferences
