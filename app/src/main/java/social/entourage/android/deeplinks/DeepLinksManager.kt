@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.util.Linkify
 import android.widget.TextView
+import androidx.core.net.toUri
 import social.entourage.android.BuildConfig
 import social.entourage.android.MainActivity
 import social.entourage.android.notifications.EntourageFirebaseMessagingService
@@ -171,8 +172,8 @@ object DeepLinksManager {
             // Save the deep link intent
             intent = newIntent
         } else if (extras != null && extras.containsKey(EntourageFirebaseMessagingService.KEY_CTA)) {
-            intent = Intent(Intent.ACTION_VIEW, Uri.parse(extras.getString(
-                EntourageFirebaseMessagingService.KEY_CTA)))
+            intent = Intent(Intent.ACTION_VIEW, extras.getString(
+                EntourageFirebaseMessagingService.KEY_CTA)?.toUri())
         }
     }
 
