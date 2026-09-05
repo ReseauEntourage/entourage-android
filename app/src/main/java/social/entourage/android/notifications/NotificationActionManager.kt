@@ -4,10 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
-import com.google.gson.Gson
 import social.entourage.android.MainActivity
 import social.entourage.android.Navigation
 import social.entourage.android.R
@@ -18,11 +15,10 @@ import social.entourage.android.api.model.HomeType
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.guide.poi.ReadPoiFragment
+import social.entourage.android.home.BirthdayActivity
 import social.entourage.android.small_talks.SmallTalkListOtherBands
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.user.partner.PartnerDetailActivity
-import social.entourage.android.home.BirthdayActivity
-import timber.log.Timber
 
 /**
  * Created by Me on 26/09/2022.
@@ -55,11 +51,6 @@ object NotificationActionManager {
             }
         }
 
-        Log.wtf("wtf", "instance from NotificationActionManager: $instance")
-        Log.wtf("wtf", "tracking: from NotificationActionManager$tracking")
-        Log.wtf("wtf", "id: from NotificationActionManager$id")
-
-
         // Cas spécifiques : si c'est un outing ET que le tracking correspond à une conversation
         val validTracking = listOf(
             "public_chat_message_on_create",
@@ -73,7 +64,6 @@ object NotificationActionManager {
         )
 
         if ((instance == "outings" || instance == "outing") && (notifContext in validTracking || tracking in validTracking)) {
-            Log.wtf("wtf", "➡️ Redirection discussion/outing via notifContext = $notifContext")
             context.startActivity(
                 Intent(context, DetailConversationActivity::class.java).apply {
                     putExtras(

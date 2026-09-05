@@ -2,7 +2,6 @@ package social.entourage.android.survey
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.api.model.Conversation

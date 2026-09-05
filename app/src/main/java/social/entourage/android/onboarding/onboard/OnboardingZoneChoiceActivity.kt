@@ -6,11 +6,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -37,6 +35,7 @@ import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.ActivityOnboardingZoneChoiceBinding
 import social.entourage.android.tools.updatePaddingForEdgeToEdge
+import timber.log.Timber
 import kotlin.math.cos
 
 class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -257,7 +256,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (suggestions.isNotEmpty()) actv.showDropDown()
             }
             .addOnFailureListener { e ->
-                Log.e("ZoneActivity", "findAutocompletePredictions error: ${e.message}", e)
+                Timber.e("ZoneActivity: findAutocompletePredictions error: ${e.message}", e)
             }
     }
 
@@ -291,7 +290,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
                 placeMarkerAndCircle(location, label)
             }
             .addOnFailureListener { e ->
-                Log.e("ZoneActivity", "fetchPlace error: ${e.message}", e)
+                Timber.e("ZoneActivity: fetchPlace error: ${e.message}", e)
             }
     }
 

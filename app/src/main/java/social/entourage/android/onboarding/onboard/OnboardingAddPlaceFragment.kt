@@ -1,6 +1,5 @@
 package social.entourage.android.onboarding.onboard
 
-import android.util.Log
 import android.view.View
 import social.entourage.android.R
 import social.entourage.android.user.edit.place.UserActionPlaceFragment
