@@ -20,6 +20,8 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.edit
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -101,7 +103,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     }
     private var isRequestLoaded = false
     private var currentRequests: List<UserSmallTalkRequest> = emptyList()
-    private val REQUEST_CODE_NATIONAL_GROUPS = 1001
 
     private val nationalGroupsLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -128,7 +129,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             val heart = binding.bouncingHeart
             if (heart.visibility != View.VISIBLE) return
 
-            val parent = heart.parent as? android.view.View ?: return
+            val parent = heart.parent as? View ?: return
             val maxX = parent.width - heart.width.coerceAtLeast(1)
             val maxY = parent.height - heart.height.coerceAtLeast(1)
 
@@ -575,7 +576,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Pedago)
                 val intent = Intent(requireActivity(), PedagoListActivity::class.java)
                 requireContext().startActivity(intent)
-                requireActivity().overridePendingTransition(
+                requireActivity().overrideTransitionCompat(
                     R.anim.slide_in_right,
                     R.anim.slide_out_left
                 )
@@ -611,7 +612,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                     intent.putExtra(Const.ID, pedagogicalContent.id)
                     PedagoDetailActivity.setPedagoId(pedagogicalContent.id)
                     requireActivity().startActivity(intent)
-                    requireActivity().overridePendingTransition(
+                    requireActivity().overrideTransitionCompat(
                         R.anim.slide_in_right,
                         R.anim.slide_out_left
                     )
@@ -769,7 +770,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private fun startBouncingHeart() {
         if (!isAdded) return
         val heart = binding.bouncingHeart
-        val parent = heart.parent as? android.view.View ?: return
+        val parent = heart.parent as? View ?: return
 
         heartHandler?.removeCallbacks(heartRunnable)
         if (heartHandler == null) {
@@ -784,8 +785,8 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         heartHandler?.post(heartRunnable)
     }
 
-    private fun explodeHeart(heart: android.view.View) {
-        val parent = heart.parent as? android.view.ViewGroup ?: return
+    private fun explodeHeart(heart: View) {
+        val parent = heart.parent as? ViewGroup ?: return
         val cx = heart.x + heart.width / 2f
         val cy = heart.y + heart.height / 2f
         val particles = listOf("❤️", "💛", "💚", "💙", "💜", "🧡", "✨", "⭐", "🌟")
@@ -848,7 +849,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         val msg = messages.random()
         val ctx = requireContext()
 
-        val sheet = com.google.android.material.bottomsheet.BottomSheetDialog(ctx)
+        val sheet = BottomSheetDialog(ctx)
         val rootView = android.widget.LinearLayout(ctx).apply {
             orientation = android.widget.LinearLayout.VERTICAL
             gravity = Gravity.CENTER_HORIZONTAL
@@ -933,7 +934,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         if (missingGoal) {
             OnboardingStartActivity.FRAGMENT_NUMBER = 3
             startActivity(Intent(requireActivity(), OnboardingStartActivity::class.java))
-            requireActivity().overridePendingTransition(
+            requireActivity().overrideTransitionCompat(
                 R.anim.slide_in_right,
                 R.anim.slide_out_left
             )
@@ -948,7 +949,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 else -> OnboardingZoneChoiceActivity.UserType.ENTOUR
             }
             startActivity(OnboardingZoneChoiceActivity.newIntent(requireContext(), typeForZone))
-            requireActivity().overridePendingTransition(
+            requireActivity().overrideTransitionCompat(
                 R.anim.slide_in_right,
                 R.anim.slide_out_left
             )
@@ -1006,7 +1007,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 AnalyticsEvents.logEvent(AnalyticsEvents.user_have_notif_and_token)
             }
             FirebaseMessaging.getInstance().token.addOnFailureListener { exception ->
-                Timber.e("FCM Token: Failed to retrieve token :%s", exception)
+                Timber.e("FCM Token: Failed to retrieve token :%s", exception.message)
                 AnalyticsEvents.logEvent(AnalyticsEvents.user_have_notif_and_no_token + "_" + user?.id)
             }
         } else {
@@ -1319,7 +1320,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         onActionUnclosed(summary)
         handleModerator(summary)
         if (summary.signablePermission != null) {
-            HomeFragment.signablePermission = summary.signablePermission!!
+            signablePermission = summary.signablePermission!!
             HomeState.signablePermission = summary.signablePermission!!
         }
 
@@ -1444,10 +1445,10 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                     if (binding.homeTitle.visibility != View.VISIBLE) {
                         binding.homeTitle.visibility = View.VISIBLE
                     }
-                } else if (scrollY > 50 && dy > 0 && binding.homeTitle.visibility == View.VISIBLE) {
+                } else if (scrollY > 50 && dy > 0 && binding.homeTitle.isVisible) {
                     isAnimating = true
                     startAnimation(layoutParamsHomeHeader, View.GONE)
-                } else if (scrollY <= 50 && dy < 0 && binding.homeTitle.visibility == View.GONE) {
+                } else if (scrollY <= 50 && dy < 0 && binding.homeTitle.isGone) {
                     isAnimating = true
                     startAnimation(layoutParamsHomeHeader, View.VISIBLE)
                 }
