@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,6 +29,9 @@ class MyActionsListFragment : Fragment() {
     private lateinit var actionAdapter: MyActionsListAdapter
     private var page: Int = 0
     private var allActions:MutableList<Action>  = ArrayList()
+    private val actionDetailLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
 
     private var isFromShowDetail = false
 
@@ -133,6 +137,6 @@ class MyActionsListFragment : Fragment() {
             .putExtra(Const.IS_ACTION_MINE, action.isMine())
 
         isFromShowDetail = true
-        startActivityForResult(intent, 0)
+        actionDetailLauncher.launch(intent)
     }
 }
