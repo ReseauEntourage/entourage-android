@@ -313,9 +313,9 @@ object PushNotificationManager {
                 .setContentText(pushNotificationMessage.getContentTextForCount(count, context))
                 .setColor(ResourcesCompat.getColor(context.resources,R.color.accent,null))
                 .setDeleteIntent(dismissedPendingIntent) // Ajoutez le PendingIntent pour l'action de suppression
+                .setDefaults(NotificationCompat.DEFAULT_LIGHTS)
 
         val notification = builder.build()
-        notification.defaults = NotificationCompat.DEFAULT_LIGHTS
         notification.flags = NotificationCompat.FLAG_AUTO_CANCEL or NotificationCompat.FLAG_SHOW_LIGHTS
         Timber.d("TAG = %s , ID = %d", pushNotificationMessage.pushNotificationTag, pushNotificationMessage.pushNotificationId)
         NotificationManagerCompat.from(context).notify(pushNotificationMessage.pushNotificationTag, pushNotificationMessage.pushNotificationId, notification)
@@ -341,9 +341,9 @@ object PushNotificationManager {
                 .setContentTitle(fcmTitle)
                 .setContentText(fcmBody)
                 .setColor(ResourcesCompat.getColor(context.resources,R.color.accent,null))
+                .setDefaults(NotificationCompat.DEFAULT_LIGHTS)
 
         val notification = builder.build()
-        notification.defaults = NotificationCompat.DEFAULT_LIGHTS
         notification.flags = NotificationCompat.FLAG_AUTO_CANCEL or NotificationCompat.FLAG_SHOW_LIGHTS
         NotificationManagerCompat.from(context).notify(PushNotificationMessage.Companion.PushNotificationIds.FCM, notification)
     }
