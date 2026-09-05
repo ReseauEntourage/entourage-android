@@ -5,11 +5,9 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SeekBar
@@ -31,6 +29,7 @@ import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityMainFilterBinding
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingForEdgeToEdge
+import timber.log.Timber
 
 enum class MainFilterMode {
     ACTION,
@@ -371,7 +370,7 @@ class MainFilterActivity : BaseActivity() {
             binding.autoCompleteCityName.setAdapter(adapter)
             adapter.notifyDataSetChanged()
         }.addOnFailureListener { exception ->
-            Log.e("PlaceAutocomplete", "Error: ${exception.message}", exception)
+            Timber.e("PlaceAutocomplete: Error: ${exception.message}", exception)
         }
     }
 
@@ -391,7 +390,7 @@ class MainFilterActivity : BaseActivity() {
                 savedLocation = PlaceDetails(place.displayName ?: "", location.latitude, location.longitude)
             }
         }.addOnFailureListener { exception ->
-            Log.e("PlaceAutocomplete", "Error: ${exception.message}", exception)
+            Timber.e("PlaceAutocomplete: Error: ${exception.message}", exception)
         }
     }
 

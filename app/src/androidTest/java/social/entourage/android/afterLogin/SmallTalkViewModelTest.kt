@@ -1,7 +1,6 @@
 package social.entourage.android.afterLogin
 
 import android.app.Application
-import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
