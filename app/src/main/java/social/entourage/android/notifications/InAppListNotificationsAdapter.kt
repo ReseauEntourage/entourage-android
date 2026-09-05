@@ -7,6 +7,7 @@ import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -81,12 +82,12 @@ class InAppListNotificationsAdapter(
             }
 
             if (notif.isRead()) {
-                binding.card.setBackgroundColor(binding.card.context.resources.getColor(R.color.white))
-                binding.separator.setBackgroundColor(binding.separator.context.resources.getColor(R.color.beige))
+                binding.card.setBackgroundColor(ContextCompat.getColor(binding.card.context, R.color.white))
+                binding.separator.setBackgroundColor(ContextCompat.getColor(binding.separator.context, R.color.beige))
             }
             else {
-                binding.card.setBackgroundColor(binding.card.context.resources.getColor(R.color.beige))
-                binding.separator.setBackgroundColor(binding.separator.context.resources.getColor(R.color.white))
+                binding.card.setBackgroundColor(ContextCompat.getColor(binding.card.context, R.color.beige))
+                binding.separator.setBackgroundColor(ContextCompat.getColor(binding.separator.context, R.color.white))
             }
         }
     }
