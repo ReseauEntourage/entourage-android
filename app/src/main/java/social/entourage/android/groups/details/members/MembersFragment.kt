@@ -148,9 +148,12 @@ open class MembersFragment : Fragment() {
     }
 
     private fun handleResponseGetMembersSearch(allMembersSearch: MutableList<EntourageUser>?) {
+        binding.progressBar.visibility = View.GONE
+        // La recherche a pu être vidée pendant que la requête était en vol : la liste
+        // complète est déjà réaffichée, on ignore cette réponse devenue obsolète.
+        if (binding.searchBar.text.isNullOrEmpty()) return
         membersListSearch.clear()
         allMembersSearch?.let { membersListSearch.addAll(it) }
-        binding.progressBar.visibility = View.GONE
         allMembersSearch?.isEmpty()?.let { updateViewSearch(it) }
         binding.searchRecyclerView.adapter?.notifyDataSetChanged()
     }
@@ -302,21 +305,27 @@ open class MembersFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 if (s.isNullOrEmpty()) {
                     binding.searchBarLayout.endIconMode = TextInputLayout.END_ICON_NONE
+                    // Champ vidé (croix ou suppression manuelle) : on remet toujours la liste complète,
+                    // que ce soit ici ou via le clic sur la croix ci-dessous.
+                    restoreFullList()
                 } else {
                     binding.searchBarLayout.endIconMode = TextInputLayout.END_ICON_CUSTOM
-                    handleCross()
                 }
             }
         })
+    }
+
+    private fun restoreFullList() {
+        binding.progressBar.visibility = View.GONE
+        binding.searchRecyclerView.visibility = View.GONE
+        binding.emptyStateLayout.visibility = View.GONE
+        updateView(membersList.isEmpty())
     }
 
     private fun handleCross() {
         binding.searchBarLayout.setEndIconOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_DELETE)
             binding.searchBar.text?.clear()
-            binding.searchRecyclerView.visibility = View.GONE
-            binding.emptyStateLayout.visibility = View.GONE
-            updateView(membersList.isEmpty())
             Utils.hideKeyboard(requireActivity())
         }
     }
