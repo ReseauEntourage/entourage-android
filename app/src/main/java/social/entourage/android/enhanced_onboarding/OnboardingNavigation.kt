@@ -21,6 +21,7 @@ sealed class OnboardingNavigation : Parcelable {
         const val TYPE_CREATE_ACTION_DEMAND = 4
         const val TYPE_QUIZ = 5
         const val TYPE_PROFILE = 6
+        const val TYPE_CREATE_ACTION_CONTRIBUTION = 7
 
         override fun createFromParcel(source: Parcel): OnboardingNavigation {
             return when (source.readInt()) {
@@ -30,6 +31,7 @@ sealed class OnboardingNavigation : Parcelable {
                 TYPE_CREATE_ACTION_DEMAND -> CreateActionDemand
                 TYPE_QUIZ -> Quiz
                 TYPE_PROFILE -> Profile
+                TYPE_CREATE_ACTION_CONTRIBUTION -> CreateActionContribution
                 else -> Home
             }
         }
@@ -57,6 +59,10 @@ sealed class OnboardingNavigation : Parcelable {
 
     object CreateActionDemand : OnboardingNavigation() {
         override fun getTypeId() = TYPE_CREATE_ACTION_DEMAND
+    }
+
+    object CreateActionContribution : OnboardingNavigation() {
+        override fun getTypeId() = TYPE_CREATE_ACTION_CONTRIBUTION
     }
 
     object Quiz : OnboardingNavigation() {

@@ -214,8 +214,8 @@ class EnhancedOnboarding : BaseActivity() {
                 when (viewModel.selectedCategory) {
                     "neighborhoods" -> OnboardingNavigation.WelcomeGroup
                     "event" -> OnboardingNavigation.Events
-                    "contribution" -> OnboardingNavigation.Donations
-                    "both_actions" -> OnboardingNavigation.Donations
+                    "contribution" -> OnboardingNavigation.CreateActionContribution
+                    "both_actions" -> OnboardingNavigation.CreateActionContribution
                     "ask_help" -> OnboardingNavigation.CreateActionDemand
                     "resources" -> OnboardingNavigation.Quiz
                     "no_event" -> OnboardingNavigation.CreateActionDemand
