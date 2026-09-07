@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.edit
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -28,6 +29,8 @@ import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.view.CustomProgressDialog
+import social.entourage.android.tools.view.countrycodepicker.Country
+import social.entourage.android.tools.view.countrycodepicker.CountryCodePickerListener
 import java.util.Locale
 
 class LoginActivity : BaseActivity() {
@@ -40,6 +43,7 @@ class LoginActivity : BaseActivity() {
     private var isLoading = false
 
     private lateinit var alertDialog: CustomProgressDialog
+    private var currentCustomAlertDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +67,11 @@ class LoginActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         cancelTimer()
+        if (::alertDialog.isInitialized) {
+            alertDialog.dismiss()
+        }
+        currentCustomAlertDialog?.dismiss()
+        currentCustomAlertDialog = null
     }
 
     private fun setEditTextAlignmentBasedOnLocale() {
@@ -108,8 +117,8 @@ class LoginActivity : BaseActivity() {
         binding.uiLoginPhoneEtPhone.hideKeyboardOnDone()
         binding.uiLoginEtCode.hideKeyboardOnDone()
 
-        binding.uiLoginPhoneCcpCode.countryCodePickerListener = object : social.entourage.android.tools.view.countrycodepicker.CountryCodePickerListener {
-            override fun updatedCountry(country: social.entourage.android.tools.view.countrycodepicker.Country) {
+        binding.uiLoginPhoneCcpCode.countryCodePickerListener = object : CountryCodePickerListener {
+            override fun updatedCountry(country: Country) {
                 updatePlaceholder(country.phoneCode)
             }
         }
@@ -123,7 +132,8 @@ class LoginActivity : BaseActivity() {
 
         binding.uiLoginButtonResendCode.setOnClickListener {
             if (isInputNotEmpty(binding.uiLoginPhoneEtPhone)) {
-                CustomAlertDialog.showWithCancelFirst(
+                currentCustomAlertDialog?.dismiss()
+                currentCustomAlertDialog = CustomAlertDialog.showWithCancelFirst(
                     this,
                     getString(R.string.login_button_resend_code),
                     String.format(
@@ -274,6 +284,7 @@ class LoginActivity : BaseActivity() {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SUBMIT)
         OnboardingAPI.getInstance().login(phone, codePwd) { isOK, loginResponse, error ->
             isLoading = false
+            if (isFinishing || isDestroyed) return@login
             if (isOK) {
                 AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_ACTION_LOGIN_SUCCESS)
                 loginResponse?.let {
@@ -313,7 +324,7 @@ class LoginActivity : BaseActivity() {
                         }
                     }
                 }
-                if (!isFinishing) {
+                if (!isFinishing && !isDestroyed) {
                     showError(
                         R.string.login_error_title,
                         getString(errorId),
@@ -341,7 +352,9 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun showError(titleId: Int, message: String, buttonTextId: Int) {
-        CustomAlertDialog.showOnlyOneButton(
+        if (isFinishing || isDestroyed) return
+        currentCustomAlertDialog?.dismiss()
+        currentCustomAlertDialog = CustomAlertDialog.showOnlyOneButton(
             this,
             getString(titleId),
             message,
