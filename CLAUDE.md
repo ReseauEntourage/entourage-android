@@ -83,6 +83,16 @@ app/src/main/java/social/entourage/android/
 
 **Strings**: French is the source language (`values/strings.xml`). Run `./add_strings.sh` to add a new string and propagate stubs to other locale files. Do not add strings only in `values-en/` or other locales directly.
 
+## Testing
+
+**Whenever you modify code for a screen/view, update or add that screen's end-to-end scenario test.** This applies even when the task itself wasn't described as a testing task — a UI/behavior change without a matching e2e update is incomplete.
+
+E2E scenarios live under `app/src/androidTest/java/social/entourage/android/e2e/`, but **not on `develop`** — they're maintained on the dedicated `end_to_end_test` branch (periodically merged into `develop` for Bitrise/QA runs, then stripped back out to keep day-to-day CI fast). To work on one:
+- `git worktree add <path> -b end_to_end_test origin/end_to_end_test` (or check out that branch directly if no conflicting local changes) rather than editing e2e test files directly on `develop`.
+- Compile with `:app:compileEntourageDebugAndroidTestKotlin` from that checkout.
+- These tests log into a real staging account and act on its real conversations/events (see `E2E_TEST_ACCOUNT.md`, gitignored) — keep scenarios self-cleaning (e.g. delete/undo what they created) and use `org.junit.Assume` to skip gracefully when a precondition (e.g. "a message from someone else exists") isn't guaranteed.
+- Message/post bubbles are rendered in Compose inside a plain `ComposeView` (no `ComposeTestRule`), so Espresso can't reach their content via `withText`/`withContentDescription` — targeting relies on fractional-position `GeneralClickAction`/`GeneralLocation` hacks (see `ConversationScenarioTest.longClickOnMessageBubble()`). Tune these against a real device/emulator; a value that merely compiles is not verified to hit the right element.
+
 ## Environment / build types
 
 | Variant | API base | App ID suffix | Deep link scheme |
