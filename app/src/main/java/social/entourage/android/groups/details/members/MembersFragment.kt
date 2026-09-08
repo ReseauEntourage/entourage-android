@@ -15,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.textfield.TextInputLayout
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.CompleteReactionsResponse
@@ -74,7 +73,6 @@ open class MembersFragment : Fragment() {
         handleSearchOnFocus()
         handleCross()
         handleCrossButton()
-        binding.searchBarLayout.endIconMode = TextInputLayout.END_ICON_NONE
         discussionPresenter.newConversation.observe(requireActivity(), ::handleGetConversation)
     }
 
@@ -198,7 +196,7 @@ open class MembersFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = MembersListAdapter(
                 requireContext(),
-                membersList,
+                membersListSearch,
                 reactionList,
                 object : OnItemShowListener {
                     override fun onShowConversation(userId: Int) {
@@ -269,32 +267,36 @@ open class MembersFragment : Fragment() {
     private fun handleEnterButton() {
         binding.searchBar.setOnEditorActionListener { _, actionId, _ ->
             var handled = false
-            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_VALIDATE)
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_VALIDATE)
                 Utils.hideKeyboard(requireActivity())
-                binding.searchRecyclerView.visibility = View.GONE
-                binding.recyclerView.visibility = View.GONE
-                binding.emptyStateLayout.visibility = View.GONE
-                binding.progressBar.visibility = View.VISIBLE
-                Utils.hideKeyboard(requireActivity())
-                id?.let {
-                    if (type == MembersType.GROUP) {
-                        groupPresenter.getGroupMembersSearch(binding.searchBar.text.toString())
-                    } else if (type == MembersType.EVENT) {
-                        eventPresenter.searchEventMembers(it, binding.searchBar.text.toString())
-                    }
-                }
                 handled = true
             }
             handled
         }
     }
 
+    private fun performSearch(query: String) {
+        binding.searchRecyclerView.visibility = View.GONE
+        binding.recyclerView.visibility = View.GONE
+        binding.emptyStateLayout.visibility = View.GONE
+        binding.progressBar.visibility = View.VISIBLE
+        id?.let {
+            if (type == MembersType.GROUP) {
+                groupPresenter.getGroupMembersSearch(query)
+            } else if (type == MembersType.EVENT) {
+                eventPresenter.searchEventMembers(it, query)
+            }
+        }
+    }
+
     private fun handleSearchOnFocus() {
-        binding.searchBar.setOnFocusChangeListener { _, _ ->
-            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_START)
-            binding.recyclerView.visibility = View.GONE
-            binding.searchRecyclerView.visibility = View.VISIBLE
+        binding.searchBar.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_START)
+                binding.recyclerView.visibility = View.GONE
+                binding.searchRecyclerView.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -303,13 +305,14 @@ open class MembersFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                if (s.isNullOrEmpty()) {
-                    binding.searchBarLayout.endIconMode = TextInputLayout.END_ICON_NONE
+                val hasText = !s.isNullOrEmpty()
+                binding.searchClearButton.visibility = if (hasText) View.VISIBLE else View.GONE
+                if (hasText) {
+                    performSearch(s.toString())
+                } else {
                     // Champ vidé (croix ou suppression manuelle) : on remet toujours la liste complète,
                     // que ce soit ici ou via le clic sur la croix ci-dessous.
                     restoreFullList()
-                } else {
-                    binding.searchBarLayout.endIconMode = TextInputLayout.END_ICON_CUSTOM
                 }
             }
         })
@@ -323,9 +326,10 @@ open class MembersFragment : Fragment() {
     }
 
     private fun handleCross() {
-        binding.searchBarLayout.setEndIconOnClickListener {
+        binding.searchClearButton.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_DELETE)
             binding.searchBar.text?.clear()
+            binding.searchBar.clearFocus()
             Utils.hideKeyboard(requireActivity())
         }
     }

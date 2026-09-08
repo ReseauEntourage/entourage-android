@@ -45,29 +45,47 @@
         android:id="@+id/layout_searchbar"
         android:layout_marginHorizontal="@dimen/padding_horizontal">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/search_bar_layout"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            app:endIconDrawable="@drawable/new_cross"
-            app:endIconMode="custom"
-            app:endIconTint="@color/orange"
-            app:hintEnabled="false">
+            android:layout_height="wrap_content">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/search_bar"
-                style="@style/input"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/search_bar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@drawable/new_bg_rounded_search_orange_stroke_transparent"
-                android:drawablePadding="8dp"
-                android:hint="@string/search_member_hint"
-                android:imeOptions="actionSearch"
-                android:inputType="textCapSentences|textMultiLine"
-                android:paddingStart="16dp"
-                app:drawableStartCompat="@drawable/new_search" />
+                app:hintEnabled="false">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/search_bar"
+                    style="@style/input"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/new_bg_rounded_search_orange_stroke_transparent"
+                    android:drawablePadding="8dp"
+                    android:hint="@string/search_member_hint"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="48dp"
+                    app:drawableStartCompat="@drawable/new_search" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Bouton indépendant du endIcon de TextInputLayout, qui perd son
+                 click listener après un premier cycle affichage/masquage. -->
+            <ImageButton
+                android:id="@+id/search_clear_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end|center_vertical"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="10dp"
+                android:src="@drawable/new_cross"
+                app:tint="@color/orange"
+                android:visibility="gone"
+                android:contentDescription="@string/button_clear_hint" />
+
+        </FrameLayout>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
