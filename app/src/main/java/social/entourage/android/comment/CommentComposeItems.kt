@@ -10,6 +10,7 @@ import android.text.style.URLSpan
 import android.text.util.Linkify
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -30,6 +31,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -84,6 +88,8 @@ fun MessageBubbleItem(
     onReportClick: () -> Unit,
     onLinkClick: (String) -> Unit,
     onRetryClick: () -> Unit,
+    onOptionsClick: () -> Unit,
+    onReactionPicked: (ReactionType) -> Unit,
     reactions: List<Reaction>,
     reactionTypes: List<ReactionType>,
 ) {
@@ -98,6 +104,20 @@ fun MessageBubbleItem(
             animationSpec = tween(durationMillis = 600),
             label = "messageHighlight"
         )
+    }
+
+    // Dans une conversation, réagir passe désormais par l'appui long (barre de réactions
+    // affichée sous la bulle, cf. plus bas) plutôt que par le sheet d'actions complet — le
+    // 3-points ouvre ce sheet pour signaler/copier/modifier/supprimer, sans les réactions.
+    // Ailleurs (commentaires de groupe/sortie), l'appui long garde son comportement d'origine.
+    var showReactionBar by remember(comment.id) { mutableStateOf(false) }
+    val canReactHere = isConversation && allowsReactions && !isMe && comment.id != null
+    val handleLongPress: () -> Unit = {
+        if (isConversation) {
+            if (canReactHere) showReactionBar = !showReactionBar
+        } else {
+            onLongPress()
+        }
     }
 
     Row(
@@ -127,10 +147,26 @@ fun MessageBubbleItem(
                 isDeletedOrOffensive = isDeletedOrOffensive,
                 deletedOrOffensiveLabel = deletedOrOffensiveLabel,
                 contentHtml = contentHtml,
-                onLongPress = onLongPress,
+                onLongPress = handleLongPress,
                 onImageClick = onImageClick,
                 onLinkClick = onLinkClick,
             )
+
+            if (canReactHere) {
+                AnimatedVisibility(visible = showReactionBar) {
+                    Column {
+                        Spacer(Modifier.padding(top = 4.dp))
+                        ReactionPickerRow(
+                            types = reactionTypes,
+                            selectedTypeId = comment.reactionId ?: 0,
+                            onPicked = { type ->
+                                onReactionPicked(type)
+                                showReactionBar = false
+                            }
+                        )
+                    }
+                }
+            }
 
             if (dateText != null) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -166,9 +202,9 @@ fun MessageBubbleItem(
                 }
             }
 
-            // Affichage passif des réactions déjà posées sur ce message — pas de bouton
-            // "ajouter une réaction" ici. Pour réagir : appui long sur la bulle, qui ouvre
-            // ActionSheetFragment avec la barre de réactions en haut (comme Messenger/WhatsApp).
+            // Affichage passif des réactions déjà posées sur ce message. Pour réagir : appui
+            // long sur la bulle, qui déploie la barre [ReactionPickerRow] juste au-dessus
+            // (conversation) ou ouvre ActionSheetFragment avec la barre en haut (groupe/sortie).
             if (allowsReactions && comment.id != null) {
                 Spacer(Modifier.padding(top = 2.dp))
                 ReactionsBadgeRow(reactions = reactions, reactionTypes = reactionTypes)
@@ -176,6 +212,9 @@ fun MessageBubbleItem(
         }
 
         if (isMe) {
+            if (isConversation) {
+                OptionsIcon(onClick = onOptionsClick, modifier = Modifier.padding(top = 8.dp, end = 4.dp))
+            }
             GlideCircleAvatar(
                 url = comment.user?.avatarURLAsString,
                 size = 25.dp,
@@ -184,6 +223,8 @@ fun MessageBubbleItem(
             )
         } else if (showReportIcon) {
             ReportIcon(onReportClick, modifier = Modifier.padding(top = 4.dp, start = 8.dp))
+        } else if (isConversation) {
+            OptionsIcon(onClick = onOptionsClick, modifier = Modifier.padding(top = 4.dp, start = 8.dp))
         }
     }
 }
@@ -262,8 +303,25 @@ private fun ReportIcon(onClick: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 /**
+ * Bouton "3 points" ouvrant le sheet d'actions d'un message (signaler/copier/modifier/
+ * supprimer — sans les réactions, qui passent par l'appui long, cf. [MessageBubbleItem]).
+ * Même logique que le "..." des publications de groupe, affiché à côté de chaque message.
+ */
+@Composable
+private fun OptionsIcon(onClick: () -> Unit, modifier: Modifier = Modifier) {
+    Image(
+        painter = painterResource(R.drawable.ic_more_3filleddots),
+        contentDescription = null,
+        colorFilter = ColorFilter.tint(colorResource(R.color.grey)),
+        modifier = modifier
+            .size(20.dp)
+            .clickable(onClick = onClick)
+    )
+}
+
+/**
  * Une pastille par type de réaction déjà posé sur le message (icône + nombre), lecture
- * seule — pour réagir, voir [ReactionPickerRow] (appui long sur la bulle -> ActionSheetFragment).
+ * seule — pour réagir, voir [ReactionPickerRow] (appui long sur la bulle).
  */
 @Composable
 private fun ReactionsBadgeRow(reactions: List<Reaction>, reactionTypes: List<ReactionType>) {
@@ -298,10 +356,12 @@ private fun ReactionsBadgeRow(reactions: List<Reaction>, reactionTypes: List<Rea
 }
 
 /**
- * Barre de sélection d'une réaction, façon Messenger/WhatsApp : affichée en haut du sheet
- * d'actions sur un message ([social.entourage.android.ui.ActionSheetFragment]). [selectedTypeId]
- * (la réaction actuelle de l'utilisateur, 0 si aucune) est mis en évidence — la retaper
- * l'enlève (même toggle que [social.entourage.android.comment.CommentActivity.onMessageReactionClicked]).
+ * Barre de sélection d'une réaction, façon Messenger/WhatsApp, déployée par un appui long
+ * sur un message : directement sous la bulle en conversation (cf. [MessageBubbleItem]), ou
+ * en haut du sheet d'actions ailleurs (groupe/sortie, cf.
+ * [social.entourage.android.ui.ActionSheetFragment]). [selectedTypeId] (la réaction actuelle
+ * de l'utilisateur, 0 si aucune) est mis en évidence — la retaper l'enlève (même toggle que
+ * [social.entourage.android.comment.CommentActivity.onMessageReactionClicked]).
  */
 @Composable
 fun ReactionPickerRow(types: List<ReactionType>, selectedTypeId: Int, onPicked: (ReactionType) -> Unit) {

@@ -11,6 +11,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.ReactionType
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.ProfileFullActivity
@@ -31,6 +32,11 @@ interface OnItemClickListener {
     fun onCommentReport(commentId: Int?, isForEvent: Boolean, isForGroup: Boolean, isMe: Boolean, commentLang: String)
     fun onShowWeb(url: String) // si tu veux ouvrir un navigateur ou gérer autrement
     fun onMessageLongPress(comment: Post, isMe: Boolean)
+    // Ces deux callbacks sont ceux du 3-points/de la barre de réactions en conversation
+    // (cf. MessageBubbleItem) : onMessageLongPress reste utilisé tel quel pour les
+    // commentaires de groupe/sortie (comportement inchangé, sheet d'actions complet).
+    fun onMessageOptionsClick(comment: Post, isMe: Boolean)
+    fun onMessageReactionPicked(comment: Post, reactionType: ReactionType)
 }
 
 /**
@@ -190,6 +196,8 @@ class CommentsListAdapter(
             },
             onLinkClick = { url -> onItemClick.onShowWeb(url) },
             onRetryClick = { onItemClick.onItemClick(comment) },
+            onOptionsClick = { onItemClick.onMessageOptionsClick(comment, isMe) },
+            onReactionPicked = { type -> onItemClick.onMessageReactionPicked(comment, type) },
             reactions = comment.reactions ?: emptyList(),
             reactionTypes = MainActivity.reactionsList ?: emptyList(),
         )

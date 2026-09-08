@@ -410,6 +410,14 @@ private fun setupConversationChips() {
                     override fun onMessageLongPress(comment: Post, isMe: Boolean) {
                         showMessageOptions(comment, isMe)
                     }
+
+                    override fun onMessageOptionsClick(comment: Post, isMe: Boolean) {
+                        showMessageOptions(comment, isMe)
+                    }
+
+                    override fun onMessageReactionPicked(comment: Post, reactionType: ReactionType) {
+                        comment.id?.let { applyReactionFromMessageActions(it, reactionType) }
+                    }
                 }
             )
             (adapter as? CommentsListAdapter)?.initiateList()
@@ -434,8 +442,12 @@ private fun setupConversationChips() {
             isGroupContext = isGroup,
             canEditMessage = canEdit,
             // Pas de réaction sur son propre message, ni là où l'écran ne les propose pas
-            // (ex. commentaires de sortie) — même règle que l'ancien bouton sous la bulle.
-            allowsReactions = allowsMessageReactions && !isMe,
+            // (ex. commentaires de sortie). En conversation, les réactions ne passent plus
+            // par ce sheet mais par la barre affichée sous la bulle via un appui long
+            // (cf. MessageBubbleItem) — le sheet ouvert par le 3-points n'affiche donc jamais
+            // les réactions là-bas. Ailleurs (commentaires de groupe/sortie), comportement
+            // inchangé : la barre de réactions reste dans ce sheet, ouvert par l'appui long.
+            allowsReactions = allowsMessageReactions && !isMe && !isConversation,
             myReactionId = comment.reactionId ?: 0
         )
         sheet.show(supportFragmentManager, "MessageActionsSheet")
