@@ -1,5 +1,7 @@
 package social.entourage.android.discussions
 
+import android.os.Build
+import android.text.Html
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,6 +19,7 @@ import social.entourage.android.api.model.ConversationMembershipsWrapper
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.ReactionWrapper
+import social.entourage.android.api.model.notification.Translation
 import social.entourage.android.api.model.UserBlockedUser
 import social.entourage.android.api.request.DiscussionDetailWrapper
 import social.entourage.android.api.request.PostListWrapper
@@ -190,13 +193,64 @@ class DiscussionsPresenter : ViewModel() {
         EntourageApplication.get().apiModule.discussionsRequest.updateMessage(conversationId, messageId, params)
             .enqueue(object : Callback<PostWrapper> {
                 override fun onResponse(call: Call<PostWrapper>, response: Response<PostWrapper>) {
-                    messageUpdated.value = response.body()?.post
+                    messageUpdated.value = withFreshEditedContent(response.body()?.post, newContent)
                 }
 
                 override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
                     messageUpdated.value = null
                 }
             })
+    }
+
+    /**
+     * Juste après une édition, le PATCH renvoie parfois content_translations/_html encore sur
+     * l'ancien texte (traduction pas encore recalculée côté back, cf. .original déjà à jour
+     * mais .translation en retard) alors que getFinalContent() (CommentsListAdapter) affiche
+     * en priorité .translation — le message édité semblait donc "ne pas se mettre à jour".
+     * On connaît le texte qu'on vient d'envoyer avec certitude : on l'impose directement aux
+     * champs affichés plutôt que de faire confiance à une traduction pas encore resynchronisée.
+     * Post n'étant pas une data class (et ses champs de contenu étant des `val`), on reconstruit
+     * l'objet plutôt que de le muter.
+     */
+    private fun withFreshEditedContent(post: Post?, newContentHtml: String): Post? {
+        post ?: return null
+        val plain = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(newContentHtml, Html.FROM_HTML_MODE_LEGACY).toString()
+        } else {
+            @Suppress("DEPRECATION") Html.fromHtml(newContentHtml).toString()
+        }
+        return Post(
+            id = post.id,
+            content = newContentHtml,
+            contentHtml = newContentHtml,
+            contentTranslations = Translation(
+                translation = plain,
+                original = plain,
+                fromLang = post.contentTranslations?.fromLang,
+                toLang = post.contentTranslations?.toLang
+            ),
+            contentTranslationsHtml = Translation(
+                translation = newContentHtml,
+                original = newContentHtml,
+                fromLang = post.contentTranslationsHtml?.fromLang,
+                toLang = post.contentTranslationsHtml?.toLang
+            ),
+            user = post.user,
+            createdTime = post.createdTime,
+            messageType = post.messageType,
+            postId = post.postId,
+            hasComments = post.hasComments,
+            commentsCount = post.commentsCount,
+            imageUrl = post.imageUrl,
+            status = post.status,
+            reactions = post.reactions,
+            read = post.read,
+            reactionId = post.reactionId,
+            idInternal = post.idInternal,
+            survey = post.survey,
+            surveyResponse = post.surveyResponse,
+            autoPostFrom = post.autoPostFrom,
+        )
     }
 
     fun reactToMessage(conversationId: Int, messageId: Int, reactionId: Int) {

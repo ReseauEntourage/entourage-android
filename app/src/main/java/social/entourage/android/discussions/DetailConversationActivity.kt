@@ -111,6 +111,7 @@ class DetailConversationActivity : CommentActivity() {
 
     override val allowsMessageEdit: Boolean get() = true
     override val allowsMessageReactions: Boolean get() = true
+    override val usesMessageOptionsMenu: Boolean get() = true
 
     // Clé stable pour les items
     private fun Post.diffKey(): String =

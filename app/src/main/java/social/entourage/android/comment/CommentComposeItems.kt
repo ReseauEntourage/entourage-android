@@ -74,6 +74,7 @@ fun MessageBubbleItem(
     comment: Post,
     isMe: Boolean,
     isConversation: Boolean,
+    usesMessageOptionsMenu: Boolean,
     isHighlighted: Boolean = false,
     allowsReactions: Boolean,
     displayName: String,
@@ -111,9 +112,9 @@ fun MessageBubbleItem(
     // 3-points ouvre ce sheet pour signaler/copier/modifier/supprimer, sans les réactions.
     // Ailleurs (commentaires de groupe/sortie), l'appui long garde son comportement d'origine.
     var showReactionBar by remember(comment.id) { mutableStateOf(false) }
-    val canReactHere = isConversation && allowsReactions && !isMe && comment.id != null
+    val canReactHere = usesMessageOptionsMenu && allowsReactions && !isMe && comment.id != null
     val handleLongPress: () -> Unit = {
-        if (isConversation) {
+        if (usesMessageOptionsMenu) {
             if (canReactHere) showReactionBar = !showReactionBar
         } else {
             onLongPress()
@@ -128,7 +129,11 @@ fun MessageBubbleItem(
         horizontalArrangement = if (isMe) Arrangement.End else Arrangement.Start,
         verticalAlignment = Alignment.Top
     ) {
-        if (!isMe) {
+        if (isMe) {
+            if (usesMessageOptionsMenu) {
+                OptionsIcon(onClick = onOptionsClick, modifier = Modifier.padding(top = 8.dp, end = 4.dp))
+            }
+        } else {
             GlideCircleAvatar(
                 url = comment.user?.avatarURLAsString,
                 size = 25.dp,
@@ -212,9 +217,6 @@ fun MessageBubbleItem(
         }
 
         if (isMe) {
-            if (isConversation) {
-                OptionsIcon(onClick = onOptionsClick, modifier = Modifier.padding(top = 8.dp, end = 4.dp))
-            }
             GlideCircleAvatar(
                 url = comment.user?.avatarURLAsString,
                 size = 25.dp,
@@ -223,7 +225,7 @@ fun MessageBubbleItem(
             )
         } else if (showReportIcon) {
             ReportIcon(onReportClick, modifier = Modifier.padding(top = 4.dp, start = 8.dp))
-        } else if (isConversation) {
+        } else if (usesMessageOptionsMenu) {
             OptionsIcon(onClick = onOptionsClick, modifier = Modifier.padding(top = 4.dp, start = 8.dp))
         }
     }

@@ -78,6 +78,15 @@ protected open val allowsMessageEdit: Boolean get() = false
 // commentaires de publication).
 protected open val allowsMessageReactions: Boolean get() = false
 
+// Vrai uniquement pour DetailConversationActivity (conversation, event/outing ET smalltalk
+// confondus) : contrôle le bouton 3-points + la barre de réactions inline sous la bulle
+// (cf. MessageBubbleItem). Volontairement indépendant de `isConversation`, qui vient de
+// l'extra d'intent Const.IS_CONVERSATION — pas systématiquement posé par tous les écrans qui
+// ouvrent DetailConversationActivity (ex. SmallTalkGroupFoundActivity/SmallTalkListOtherBands
+// ne le posent pas), alors que ce nouveau flag doit rester vrai partout où cette Activity
+// s'ouvre, quel que soit l'appelant.
+protected open val usesMessageOptionsMenu: Boolean get() = false
+
 private var socketEventsJob: Job? = null
 protected var hasUnseenNewMessages = false
 
@@ -422,6 +431,7 @@ private fun setupConversationChips() {
             )
             (adapter as? CommentsListAdapter)?.initiateList()
             (adapter as? CommentsListAdapter)?.allowsReactions = allowsMessageReactions
+            (adapter as? CommentsListAdapter)?.usesMessageOptionsMenu = usesMessageOptionsMenu
         }
     }
 
@@ -442,12 +452,12 @@ private fun setupConversationChips() {
             isGroupContext = isGroup,
             canEditMessage = canEdit,
             // Pas de réaction sur son propre message, ni là où l'écran ne les propose pas
-            // (ex. commentaires de sortie). En conversation, les réactions ne passent plus
-            // par ce sheet mais par la barre affichée sous la bulle via un appui long
-            // (cf. MessageBubbleItem) — le sheet ouvert par le 3-points n'affiche donc jamais
-            // les réactions là-bas. Ailleurs (commentaires de groupe/sortie), comportement
+            // (ex. commentaires de sortie). Là où le 3-points/la barre inline sont actifs
+            // (usesMessageOptionsMenu, cf. MessageBubbleItem), les réactions ne passent plus
+            // par ce sheet — le sheet ouvert par le 3-points n'affiche donc jamais les
+            // réactions là-bas. Ailleurs (commentaires de groupe/sortie), comportement
             // inchangé : la barre de réactions reste dans ce sheet, ouvert par l'appui long.
-            allowsReactions = allowsMessageReactions && !isMe && !isConversation,
+            allowsReactions = allowsMessageReactions && !isMe && !usesMessageOptionsMenu,
             myReactionId = comment.reactionId ?: 0
         )
         sheet.show(supportFragmentManager, "MessageActionsSheet")
@@ -561,9 +571,43 @@ private fun setupConversationChips() {
     private fun updateExistingMessageInPlace(post: Post) {
         val idx = commentsList.indexOfFirst { it.id != null && it.id == post.id }
         if (idx >= 0) {
-            commentsList[idx] = post
+            commentsList[idx] = mergeUpdatedMessageFields(commentsList[idx], post)
             binding.comments.adapter?.notifyItemChanged(idx + parentPostOffset())
         }
+    }
+
+    /**
+     * Le payload d'un chat_message_updated reçu par websocket (édition ou suppression douce,
+     * cf. ConversationSocketManager) peut être une projection plus légère que la réponse REST
+     * complète d'un Post — un remplacement intégral de l'entrée locale viderait alors des
+     * champs absents de ce payload (user, reactions...) qu'une édition/suppression ne modifie
+     * pourtant jamais. On ne reprend donc de [incoming] que ce qu'une édition/suppression peut
+     * réellement changer, et on conserve le reste de [existing].
+     */
+    private fun mergeUpdatedMessageFields(existing: Post, incoming: Post): Post = Post(
+        id = existing.id,
+        content = incoming.content ?: existing.content,
+        contentHtml = incoming.contentHtml ?: existing.contentHtml,
+        contentTranslations = incoming.contentTranslations ?: existing.contentTranslations,
+        contentTranslationsHtml = incoming.contentTranslationsHtml ?: existing.contentTranslationsHtml,
+        user = existing.user,
+        createdTime = existing.createdTime,
+        messageType = existing.messageType,
+        postId = existing.postId,
+        hasComments = existing.hasComments,
+        commentsCount = existing.commentsCount,
+        imageUrl = incoming.imageUrl ?: existing.imageUrl,
+        status = incoming.status ?: existing.status,
+        reactions = existing.reactions,
+        read = existing.read,
+        reactionId = existing.reactionId,
+        idInternal = existing.idInternal,
+        survey = existing.survey,
+        surveyResponse = existing.surveyResponse,
+        autoPostFrom = existing.autoPostFrom,
+    ).also {
+        it.datePostText = existing.datePostText
+        it.isDatePostOnly = existing.isDatePostOnly
     }
 
     private fun applyReactionAdded(chatMessageId: Int, reactionId: Int) {

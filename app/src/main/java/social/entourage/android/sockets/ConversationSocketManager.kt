@@ -323,9 +323,16 @@ object ConversationSocketManager {
                 _events.tryEmit(ChatEvent.MessageCreated(post))
             }
             "chat_message_updated" -> {
-                // Deletion is represented as an update where data.status == "deleted".
-                val post = dataObj?.let { gson.fromJson(it, Post::class.java) }
-                if (post == null) {
+                // Deletion is represented as an update where data.status == "deleted". Comme
+                // pour user_reaction_added/removed ci-dessous (chat_message_id vs
+                // chat_message.id), le backend nichait parfois les champs du message sous une
+                // clé "chat_message" au lieu de les mettre à plat sur "data" — sans ce fallback,
+                // gson.fromJson renvoie silencieusement un Post entièrement null (id inclus),
+                // qui ne matche jamais rien dans commentsList : l'édition semble alors ignorée
+                // par le websocket alors que l'event est bien reçu.
+                val postJson = dataObj?.takeIf { it.has("id") } ?: dataObj?.getAsJsonObject("chat_message")
+                val post = postJson?.let { gson.fromJson(it, Post::class.java) }
+                if (post?.id == null) {
                     Timber.tag(TAG).w("chat_message_updated with no/unparseable data: %s", rawText)
                     return
                 }

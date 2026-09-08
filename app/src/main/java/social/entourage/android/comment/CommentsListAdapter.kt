@@ -59,6 +59,7 @@ class CommentsListAdapter(
     var isForEvent: Boolean = false
     var isForGroup: Boolean = false
     var allowsReactions: Boolean = false
+    var usesMessageOptionsMenu: Boolean = false
 
     // Id du message ciblé par un deep link de notification, à mettre brièvement en évidence
     // une fois scrollé en vue (cf. CommentActivity.highlightCommentAt). Remis à null par
@@ -178,6 +179,7 @@ class CommentsListAdapter(
             comment = comment,
             isMe = isMe,
             isConversation = isConversation,
+            usesMessageOptionsMenu = usesMessageOptionsMenu,
             isHighlighted = comment.id != null && comment.id == highlightedMessageId,
             allowsReactions = allowsReactions,
             displayName = if (isMe) "" else (comment.user?.displayName ?: ""),
