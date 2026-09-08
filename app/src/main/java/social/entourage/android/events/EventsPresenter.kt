@@ -226,26 +226,34 @@ class EventsPresenter : ViewModel() {
             })
     }
 
-    fun searchEventMembers(eventId: Int, query: String) {
-        EntourageApplication.get().apiModule.eventsRequest
-            .getMembersSearch(eventId, query)
-            .enqueue(object : Callback<MembersWrapper> {
-                override fun onResponse(
-                    call: Call<MembersWrapper>,
-                    response: Response<MembersWrapper>
-                ) {
-                    if (response.isSuccessful) {
-                        val result = response.body()?.users ?: mutableListOf()
-                        getMembersSearch.value = result
-                    } else {
-                        getMembersSearch.value = mutableListOf()
-                    }
-                }
+    private var searchMembersCall: Call<MembersWrapper>? = null
 
-                override fun onFailure(call: Call<MembersWrapper>, t: Throwable) {
+    fun searchEventMembers(eventId: Int, query: String) {
+        // La recherche part à chaque lettre tapée : on annule la requête précédente pour
+        // qu'une réponse arrivée en retard n'écrase pas celle de la saisie la plus récente.
+        searchMembersCall?.cancel()
+        val call = EntourageApplication.get().apiModule.eventsRequest
+            .getMembersSearch(eventId, query)
+        searchMembersCall = call
+        call.enqueue(object : Callback<MembersWrapper> {
+            override fun onResponse(
+                call: Call<MembersWrapper>,
+                response: Response<MembersWrapper>
+            ) {
+                if (call.isCanceled) return
+                if (response.isSuccessful) {
+                    val result = response.body()?.users ?: mutableListOf()
+                    getMembersSearch.value = result
+                } else {
                     getMembersSearch.value = mutableListOf()
                 }
-            })
+            }
+
+            override fun onFailure(call: Call<MembersWrapper>, t: Throwable) {
+                if (call.isCanceled) return
+                getMembersSearch.value = mutableListOf()
+            }
+        })
     }
 
     fun getMyEventsWithFilter(
