@@ -1,6 +1,7 @@
 package social.entourage.android.enhanced_onboarding.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -79,14 +80,24 @@ class OnboardingCongratsFragment: Fragment() {
         }
     }
 
+    private fun isIsolatedPersonMode(): Boolean {
+        return viewModel.user?.isUserTypeAlone == true
+    }
+
     private fun configureOnboardingView() {
         val categoriesList = viewModel.actionsWishes.value?.filter { it.isSelected }?.map { it.id } ?: listOf()
         var titleRes = R.string.onboarding_congrats_title
         var contentRes = R.string.onboarding_congrats_content
         var buttonTextRes = R.string.onboarding_congrats_leave
 
-        // Priorité 0 : profil "solliciter" (préférence contribution) ayant choisi le coup de pouce -> demande d'aide
-        if (EnhancedOnboarding.preference == "contribution" && categoriesList.contains("both_actions")) {
+        Log.d("EN9530_DEBUG", "configureOnboardingView: goal=${viewModel.user?.goal} " +
+                "isUserTypeAlone=${viewModel.user?.isUserTypeAlone} " +
+                "EnhancedOnboarding.preference=${EnhancedOnboarding.preference} " +
+                "categoriesList=$categoriesList")
+
+        // Priorité 0 : profil "solliciter" (préférence contribution ou personne isolée) -> toujours une demande d'aide,
+        // quels que soient les souhaits sélectionnés (ce profil ne peut que solliciter, jamais contribuer)
+        if (EnhancedOnboarding.preference == "contribution" || isIsolatedPersonMode()) {
             titleRes = R.string.onboarding_start_action_ask_title
             contentRes = R.string.onboarding_start_action_ask_content
             buttonTextRes = R.string.onboarding_start_action_ask_button
@@ -96,8 +107,8 @@ class OnboardingCongratsFragment: Fragment() {
             binding.buttonSkip.setText(R.string.onboarding_start_action_ask_skip)
             category = "ask_help"
         }
-        // Condition par défaut : si la liste est vide ou que la préférence est "contribution"
-        else if (categoriesList.isEmpty() || EnhancedOnboarding.preference == "contribution") {
+        // Condition par défaut : si la liste est vide (profil riverain sans souhait sélectionné)
+        else if (categoriesList.isEmpty()) {
             binding.tvTitle.setText(titleRes)
             binding.tvDescription.setText(contentRes)
             binding.buttonStart.setText(buttonTextRes)
@@ -150,6 +161,8 @@ class OnboardingCongratsFragment: Fragment() {
             binding.buttonStart.setText(buttonTextRes)
             category = "neighborhoods"
         }
+
+        Log.d("EN9530_DEBUG", "configureOnboardingView: resolved category=$category titleRes=${resources.getResourceEntryName(titleRes)}")
     }
 
 }
