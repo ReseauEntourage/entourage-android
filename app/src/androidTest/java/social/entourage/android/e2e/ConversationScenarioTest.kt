@@ -44,11 +44,22 @@ import java.util.concurrent.TimeUnit
 
 /**
  * Scénario E2E "connecté" : liste des conversations -> ouverture de la première conversation
- * -> envoi d'un message -> appui long sur ce message pour exercer les 3 actions du menu
- * qui s'affichent pour un message qu'on a soi-même envoyé : Copier, Modifier, Supprimer.
+ * -> envoi d'un message -> 3-points sur ce message pour exercer les 3 actions du menu qui
+ * s'affichent pour un message qu'on a soi-même envoyé : Copier, Modifier, Supprimer.
  * (Le "Signaler" n'apparaît que sur les messages des autres, et n'est donc pas testé ici ;
  * l'appui long sur un item de la liste des conversations, lui, ne déclenche actuellement
  * aucun menu côté appli.)
+ *
+ * MàJ : depuis "feat(discussions): 3 points + barre de réactions inline sur les messages",
+ * l'appui long sur son propre message en conversation ne fait plus rien (il déploie la barre
+ * de réactions inline sur les messages reçus, pas sur les siens) — le menu d'actions ne
+ * s'ouvre plus que via le bouton 3-points affiché à côté de la bulle. Ce test, qui vivait sur
+ * la branche end_to_end_test (divergée avant ce commit), tapait encore l'ancien appui long ;
+ * corrigé ici pour taper le 3-points. À vérifier sur un vrai appareil : ce bouton n'a pas
+ * d'id/testTag (cf. OptionsIcon dans CommentComposeItems.kt), la coordonnée ciblée est une
+ * approximation (cf. tapOptionsIconOnOwnMessage ci-dessous) — aucun émulateur disponible
+ * dans la session qui a écrit ce correctif pour la valider visuellement.
+ *
  * Nécessite que le compte de test E2E ait déjà au moins une conversation : ce test est
  * autoentretenu puisqu'il y écrit un message à chaque exécution.
  * Un screenshot est pris à chaque vue / action pour vérifier visuellement le déroulé.
@@ -153,23 +164,24 @@ class ConversationScenarioTest : EntourageTestAfterLogin() {
     }
 
     /**
-     * Les bulles de message sont en Compose, sans id ni testTag : le centre par défaut de
-     * l'item (utilisé par longClick()) tombe souvent dans la zone vide à gauche de la bulle
-     * pour un message "à moi" (bulle + avatar alignés à droite, cf. MessageBubbleItem).
-     * On vise donc un point situé à 80% de la largeur de l'item, dans la bulle, à gauche
-     * de l'avatar (~8% de large, collé au bord droit).
+     * Cible le bouton 3-points d'un message "à moi" (bulle + avatar alignés à droite, le
+     * 3-points entre les deux, en haut de l'item — cf. MessageBubbleItem : Row(Arrangement.End)
+     * { bulle ; OptionsIcon(top=8dp) ; Avatar(25dp+padding) }). Ce bouton n'a pas d'id/testTag :
+     * coordonnée approximative, à recaler sur un vrai appareil (cf. avertissement en tête de
+     * fichier) — remplace l'ancien longClickOnMessageBubble() qui visait la bulle elle-même
+     * (obsolète depuis que l'appui long sur son propre message ne fait plus rien).
      */
-    private fun longClickOnMessageBubble(): ViewAction = GeneralClickAction(
-        Tap.LONG,
-        GeneralLocation.translate(GeneralLocation.CENTER_RIGHT, -0.20f, 0f),
+    private fun tapOptionsIconOnOwnMessage(): ViewAction = GeneralClickAction(
+        Tap.SINGLE,
+        GeneralLocation.translate(GeneralLocation.TOP_RIGHT, -0.12f, 0.15f),
         Press.FINGER,
         InputDevice.SOURCE_UNKNOWN,
         MotionEvent.BUTTON_PRIMARY
     )
 
-    private fun longClickOnOwnMessage() {
+    private fun openOwnMessageActions() {
         onView(allOf(withId(R.id.comments), isDisplayed())).perform(
-            actionOnItemAtPosition<ViewHolder>(lastMessagePosition(), longClickOnMessageBubble())
+            actionOnItemAtPosition<ViewHolder>(lastMessagePosition(), tapOptionsIconOnOwnMessage())
         )
         onIdle()
     }
@@ -197,15 +209,15 @@ class ConversationScenarioTest : EntourageTestAfterLogin() {
         onIdle()
         shoot("message_envoye")
 
-        // Appui long sur notre message -> menu d'actions -> Copier le texte
-        longClickOnOwnMessage()
+        // 3-points sur notre message -> menu d'actions -> Copier le texte
+        openOwnMessageActions()
         shoot("menu_actions_copier")
         onView(withText(R.string.message_action_copy)).perform(click())
         onIdle()
         shoot("apres_copier")
 
-        // Appui long -> menu d'actions -> Modifier
-        longClickOnOwnMessage()
+        // 3-points -> menu d'actions -> Modifier
+        openOwnMessageActions()
         shoot("menu_actions_modifier")
         onView(withText(R.string.message_action_edit)).perform(click())
         onIdle()
@@ -219,8 +231,8 @@ class ConversationScenarioTest : EntourageTestAfterLogin() {
         onIdle()
         shoot("message_modifie_envoye")
 
-        // Appui long -> menu d'actions -> Supprimer mon message
-        longClickOnOwnMessage()
+        // 3-points -> menu d'actions -> Supprimer mon message
+        openOwnMessageActions()
         shoot("menu_actions_supprimer")
         onView(withText(R.string.message_action_delete)).perform(click())
         onIdle()
