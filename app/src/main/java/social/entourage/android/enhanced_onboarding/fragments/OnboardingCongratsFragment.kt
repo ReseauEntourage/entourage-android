@@ -46,7 +46,8 @@ class OnboardingCongratsFragment: Fragment() {
         }
         binding.buttonSkip.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_end_skip_clic)
-            viewModel.registerAndQuit(category)
+            // "Plus tard" doit fermer l'onboarding vers la home, pas suivre le même CTA que le bouton principal
+            viewModel.registerAndQuit(null)
         }
         eventsPresenter = ViewModelProvider(this).get(EventsPresenter::class.java)
         eventsPresenter.getFilteredEvents.observe(requireActivity(), ::handleResponseGetEvents)
