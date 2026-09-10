@@ -1,5 +1,8 @@
 package social.entourage.android.comment
 
+import android.graphics.drawable.GradientDrawable
+import android.view.Gravity
+import android.widget.LinearLayout
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -51,6 +54,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -63,6 +68,7 @@ import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 import social.entourage.android.ui.theme.ColorBlack
 import social.entourage.android.ui.theme.ColorLightOrange
+import kotlin.math.roundToInt
 import social.entourage.android.ui.theme.EntourageComposeStyles
 
 private val BubbleCornerShape = RoundedCornerShape(24.dp)
@@ -326,37 +332,77 @@ private fun MessageActionsTriggerButton(showLabel: Boolean, onClick: () -> Unit,
 /**
  * Une pastille par type de réaction déjà posé sur le message (icône + nombre), lecture
  * seule — pour réagir, voir [ReactionPickerRow] (appui long sur la bulle).
+ *
+ * Rendu en Views Android classiques plutôt qu'en Compose pur : la ComposeView réutilisée par
+ * le RecyclerView (un item par message) ne recomposait pas de façon fiable cette pastille après
+ * plusieurs changements de réaction rapprochés sur le même message — le panneau de sélection
+ * (une composition à part, reconstruite à chaque appui long) reflétait toujours la bonne
+ * réaction, mais la pastille sous la bulle restait bloquée sur un état intermédiaire jusqu'au
+ * rechargement complet du fil. Ni une nouvelle instance de liste, ni notifyDataSetChanged(), ni
+ * ComposeView.disposeComposition() avant chaque recomposition n'ont résolu ce blocage : un
+ * ImageView/TextView mis à jour de façon impérative dans `update`, lui, se redessine de façon
+ * fiable à chaque appel.
  */
 @Composable
 private fun ReactionsBadgeRow(reactions: List<Reaction>, reactionTypes: List<ReactionType>) {
     val buckets = reactions.filter { it.reactionsCount > 0 }
     if (buckets.isEmpty()) return
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        buckets.forEach { bucket ->
-            val type = reactionTypes.firstOrNull { it.id == bucket.reactionId }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .clip(RoundedCornerShape(15.dp))
-                    .background(colorResource(R.color.white))
-                    .padding(horizontal = 6.dp, vertical = 3.dp)
-            ) {
-                if (type?.imageUrl != null) {
-                    GlideIcon(url = type.imageUrl, size = 16.dp)
-                } else {
-                    Image(painterResource(R.drawable.ic_pouce_orange), null, modifier = Modifier.size(16.dp))
+    AndroidView(
+        factory = { ctx ->
+            LinearLayout(ctx).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
+            }
+        },
+        update = { container ->
+            val ctx = container.context
+            val density = ctx.resources.displayMetrics.density
+            fun dp(value: Float) = (value * density).roundToInt()
+
+            container.removeAllViews()
+            buckets.forEachIndexed { index, bucket ->
+                val type = reactionTypes.firstOrNull { it.id == bucket.reactionId }
+                val pill = LinearLayout(ctx).apply {
+                    orientation = LinearLayout.HORIZONTAL
+                    gravity = Gravity.CENTER_VERTICAL
+                    background = GradientDrawable().apply {
+                        shape = GradientDrawable.RECTANGLE
+                        cornerRadius = dp(15f).toFloat()
+                        setColor(ContextCompat.getColor(ctx, R.color.white))
+                    }
+                    setPadding(dp(6f), dp(3f), dp(6f), dp(3f))
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        if (index > 0) marginStart = dp(4f)
+                    }
                 }
-                Text(
-                    text = bucket.reactionsCount.toString(),
-                    style = EntourageComposeStyles.groupMemberSubtitleBlack,
-                    modifier = Modifier.padding(start = 4.dp)
-                )
+                val icon = ImageView(ctx).apply {
+                    layoutParams = LinearLayout.LayoutParams(dp(16f), dp(16f))
+                    scaleType = ImageView.ScaleType.CENTER_CROP
+                }
+                if (type?.imageUrl != null) {
+                    Glide.with(icon).load(type.imageUrl).into(icon)
+                } else {
+                    icon.setImageResource(R.drawable.ic_pouce_orange)
+                }
+                pill.addView(icon)
+                val countText = TextView(ctx).apply {
+                    text = bucket.reactionsCount.toString()
+                    setTextColor(ContextCompat.getColor(ctx, R.color.black))
+                    textSize = 13f
+                    typeface = ResourcesCompat.getFont(ctx, R.font.nunitosans_regular)
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply { marginStart = dp(4f) }
+                }
+                pill.addView(countText)
+                container.addView(pill)
             }
         }
-    }
+    )
 }
 
 /**

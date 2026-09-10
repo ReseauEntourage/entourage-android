@@ -868,7 +868,7 @@ class EventsPresenter : ViewModel() {
             })
     }
 
-    fun reactToPost(eventId: Int, postId: Int, reactionId: Int) {
+    fun reactToPost(eventId: Int, postId: Int, reactionId: Int, onComplete: (Boolean) -> Unit = {}) {
         val reactionWrapper = ReactionWrapper()
         reactionWrapper.reactionId = reactionId
 
@@ -881,19 +881,22 @@ class EventsPresenter : ViewModel() {
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                    }
-                }
+                onComplete(response.isSuccessful)
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("EventPresenter deleteReactToPost", "onFailure: $t")
+                onComplete(false)
             }
         })
     }
 
-    fun deleteReactToPost(eventId: Int, postId: Int) {
+    /**
+     * [onComplete] permet à l'appelant d'enchaîner un POST juste après (changement de
+     * réaction) : le serveur refuse un ajout tant que l'ancienne réaction existe encore
+     * ("User can only react once"), donc on ne peut pas tirer delete/add en parallèle.
+     */
+    fun deleteReactToPost(eventId: Int, postId: Int, onComplete: (Boolean) -> Unit = {}) {
         EntourageApplication.get().apiModule.eventsRequest.deleteReactionAnEventPost(
             eventId,
             postId
@@ -902,14 +905,12 @@ class EventsPresenter : ViewModel() {
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                    }
-                }
+                onComplete(response.isSuccessful)
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("deleteReactToPost deleteReactToPost", "onFailure: $t")
+                onComplete(false)
             }
         })
     }

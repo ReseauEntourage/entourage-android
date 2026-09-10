@@ -138,8 +138,17 @@ class CommentsListAdapter(
                 )
             }
 
-            CommentsTypes.TYPE_LEFT.code, CommentsTypes.TYPE_RIGHT.code -> holder.composeView.setContent {
-                bindMessage(comment)
+            CommentsTypes.TYPE_LEFT.code, CommentsTypes.TYPE_RIGHT.code -> {
+                // Un rebind (notifyItemChanged/notifyDataSetChanged, ex. après une réaction)
+                // laissait parfois la composition existante afficher un état intermédiaire au
+                // lieu de la dernière valeur de comment.reactions/reactionId, quel que soit le
+                // mécanisme de diffing de RecyclerView utilisé pour déclencher ce rebind.
+                // disposeComposition() force une recomposition entièrement neuve à chaque bind
+                // plutôt que de réutiliser la composition existante.
+                holder.composeView.disposeComposition()
+                holder.composeView.setContent {
+                    bindMessage(comment)
+                }
             }
 
             CommentsTypes.TYPE_DATE.code -> holder.composeView.setContent {

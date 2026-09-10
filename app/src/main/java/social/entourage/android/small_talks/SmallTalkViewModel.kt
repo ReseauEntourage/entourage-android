@@ -384,25 +384,34 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
         })
     }
 
-    fun reactToChatMessage(smallTalkId: String, messageId: String, reactionId: Int) {
+    fun reactToChatMessage(smallTalkId: String, messageId: String, reactionId: Int, onComplete: (Boolean) -> Unit = {}) {
         val wrapper = ReactionWrapper().apply { this.reactionId = reactionId }
         request.postReactionChatMessage(smallTalkId, messageId, wrapper).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 reactionResult.value = response.isSuccessful
+                onComplete(response.isSuccessful)
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 reactionResult.value = false
+                onComplete(false)
             }
         })
     }
 
-    fun deleteReactionChatMessage(smallTalkId: String, messageId: String) {
+    /**
+     * [onComplete] permet à l'appelant d'enchaîner un POST juste après (changement de
+     * réaction) : le serveur refuse un ajout tant que l'ancienne réaction existe encore
+     * ("User can only react once"), donc on ne peut pas tirer delete/add en parallèle.
+     */
+    fun deleteReactionChatMessage(smallTalkId: String, messageId: String, onComplete: (Boolean) -> Unit = {}) {
         request.deleteReactionChatMessage(smallTalkId, messageId).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 reactionResult.value = response.isSuccessful
+                onComplete(response.isSuccessful)
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 reactionResult.value = false
+                onComplete(false)
             }
         })
     }

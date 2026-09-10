@@ -41,12 +41,12 @@ import social.entourage.android.report.ReportTypes
 import social.entourage.android.report.onDissmissFragment
 import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.sockets.ConversationSocketManager
-import timber.log.Timber
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
+import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.utils.scrollToPositionSmooth
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.ui.ActionSheetFragment
@@ -100,6 +100,20 @@ protected open val usesMessageOptionsMenu: Boolean get() = false
 
 private var socketEventsJob: Job? = null
 protected var hasUnseenNewMessages = false
+
+// chat_message_id des messages dont la réaction est en cours d'envoi (delete et/ou add pas
+// encore confirmés) — cf. toggleMessageReaction. Retaper la même bulle avant la fin de cette
+// séquence relançait un second delete/add qui pouvait s'entrelacer côté serveur avec le
+// premier (même bug que le changement de réaction non séquencé, mais entre deux appuis
+// distincts cette fois).
+private val reactionRequestsInFlight = mutableSetOf<Int>()
+
+// Dernière réaction demandée pendant qu'une requête était déjà en cours pour ce message (cf.
+// reactionRequestsInFlight), rejouée dès que celle-ci se termine. Sans ça, plusieurs appuis
+// rapprochés sur des réactions différentes (changer d'avis plusieurs fois de suite) faisaient
+// ignorer tous les appuis sauf le tout premier : l'affichage restait bloqué sur une réaction
+// intermédiaire au lieu de converger vers la dernière choisie.
+private val pendingReactionPicks = mutableMapOf<Int, ReactionType>()
 
 
 protected var isOne2One = false
@@ -649,10 +663,6 @@ private fun setupConversationChips() {
     private fun updateExistingMessageInPlace(post: Post) {
         val idx = commentsList.indexOfFirst { it.id != null && it.id == post.id }
         if (idx >= 0) {
-            Timber.tag("ReactionDebug").d(
-                "updateExistingMessageInPlace (socket chat_message_updated) messageId=%s idx=%d, reactions before=%s",
-                post.id, idx, commentsList[idx].reactions?.map { it.reactionId to it.reactionsCount }
-            )
             commentsList[idx] = mergeUpdatedMessageFields(commentsList[idx], post)
             binding.comments.adapter?.notifyItemChanged(idx + parentPostOffset())
         }
@@ -694,54 +704,136 @@ private fun setupConversationChips() {
 
     private fun applyReactionAdded(chatMessageId: Int, reactionId: Int) {
         val idx = commentsList.indexOfFirst { it.id == chatMessageId }
-        Timber.tag("ReactionDebug").d(
-            "applyReactionAdded (socket) messageId=%d reactionId=%d idx=%d", chatMessageId, reactionId, idx
-        )
         if (idx >= 0) {
             addOrUpdateReactionBucket(commentsList[idx], reactionId)
-            binding.comments.adapter?.notifyItemChanged(idx + parentPostOffset())
+            binding.comments.adapter?.notifyDataSetChanged()
         }
     }
 
     private fun applyReactionRemoved(chatMessageId: Int, reactionId: Int) {
         val idx = commentsList.indexOfFirst { it.id == chatMessageId }
-        Timber.tag("ReactionDebug").d(
-            "applyReactionRemoved (socket) messageId=%d reactionId=%d idx=%d", chatMessageId, reactionId, idx
-        )
         if (idx >= 0) {
             removeReactionBucket(commentsList[idx], reactionId)
-            binding.comments.adapter?.notifyItemChanged(idx + parentPostOffset())
+            binding.comments.adapter?.notifyDataSetChanged()
         }
     }
 
+    /**
+     * Réaffecte toujours une NOUVELLE liste à [Post.reactions] plutôt que de la muter en place :
+     * la ComposeView de la bulle, réutilisée par le RecyclerView, ne recomposait pas de façon
+     * fiable la pastille de réaction quand la même instance de liste était mutée sur place —
+     * seul le panneau de réactions (composition à part, reconstruite à chaque long-clic)
+     * reflétait alors l'état à jour. Une nouvelle référence de liste force la recomposition
+     * quel que soit le mécanisme exact de stabilité de Compose en jeu ici.
+     */
     protected fun addOrUpdateReactionBucket(post: Post, reactionId: Int) {
-        val bucket = post.reactions?.firstOrNull { it.reactionId == reactionId }
-        if (bucket != null) {
-            bucket.reactionsCount += 1
-        } else {
-            val list = post.reactions ?: mutableListOf<Reaction>().also { post.reactions = it }
-            list.add(Reaction().apply { this.reactionId = reactionId; this.reactionsCount = 1 })
+        val current = post.reactions.orEmpty()
+        val updated = current.map { bucket ->
+            if (bucket.reactionId == reactionId) {
+                Reaction().apply { this.reactionId = reactionId; this.reactionsCount = bucket.reactionsCount + 1 }
+            } else {
+                bucket
+            }
+        }.toMutableList()
+        if (current.none { it.reactionId == reactionId }) {
+            updated.add(Reaction().apply { this.reactionId = reactionId; this.reactionsCount = 1 })
         }
-        Timber.tag("ReactionDebug").d(
-            "addOrUpdateReactionBucket messageId=%s reactionId=%d -> reactions=%s",
-            post.id, reactionId, post.reactions?.map { it.reactionId to it.reactionsCount }
-        )
+        post.reactions = updated
     }
 
-    protected fun removeReactionBucket(post: Post, reactionId: Int) {
-        val bucket = post.reactions?.firstOrNull { it.reactionId == reactionId } ?: run {
-            Timber.tag("ReactionDebug").d(
-                "removeReactionBucket messageId=%s reactionId=%d -> no matching bucket, no-op (reactions=%s)",
-                post.id, reactionId, post.reactions?.map { it.reactionId to it.reactionsCount }
-            )
+    /**
+     * Bascule optimiste de la réaction locale sur [comment], puis enchaîne les appels réseau
+     * ([sendDelete]/[sendAdd], propres à l'écran : conversation/smalltalk, groupe, sortie) dans
+     * le bon ordre : sur un changement de réaction, le serveur refuse le POST tant que
+     * l'ancienne réaction existe encore ("User can only react once"), donc le DELETE doit être
+     * confirmé avant d'envoyer le POST — les tirer en parallèle est ce qui causait l'affichage
+     * incohérent après un changement/annulation de réaction. Un second appui sur la même bulle
+     * avant la fin de cette séquence ne relance pas un second delete/add en parallèle (même
+     * risque d'entrelacement côté serveur) : il est mémorisé dans [pendingReactionPicks] et
+     * rejoué dès que la séquence en cours se termine, pour que plusieurs changements d'avis
+     * rapprochés convergent vers le dernier choisi plutôt que de rester bloqués sur le premier.
+     */
+    protected fun toggleMessageReaction(
+        comment: Post,
+        reactionType: ReactionType,
+        sendAdd: (reactionId: Int, onComplete: (Boolean) -> Unit) -> Unit,
+        sendDelete: (onComplete: (Boolean) -> Unit) -> Unit,
+    ) {
+        val messageId = comment.id ?: return
+        if (!reactionRequestsInFlight.add(messageId)) {
+            pendingReactionPicks[messageId] = reactionType
             return
         }
-        if (bucket.reactionsCount <= 1) post.reactions?.remove(bucket)
-        else bucket.reactionsCount -= 1
-        Timber.tag("ReactionDebug").d(
-            "removeReactionBucket messageId=%s reactionId=%d -> reactions=%s",
-            post.id, reactionId, post.reactions?.map { it.reactionId to it.reactionsCount }
-        )
+        VibrationUtil.vibrate(this)
+
+        val previousReactionId = comment.reactionId ?: 0
+        val idx = commentsList.indexOfFirst { it.id == messageId }
+
+        fun onRequestSettled() {
+            reactionRequestsInFlight.remove(messageId)
+            val queued = pendingReactionPicks.remove(messageId) ?: return
+            toggleMessageReaction(comment, queued, sendAdd, sendDelete)
+        }
+
+        if (previousReactionId == reactionType.id) {
+            // Toggle off : on enlève la réaction existante.
+            removeReactionBucket(comment, previousReactionId)
+            comment.reactionId = 0
+            if (idx >= 0) binding.comments.adapter?.notifyDataSetChanged()
+            sendDelete { success ->
+                if (!success) revertOptimisticReaction(comment, 0, previousReactionId)
+                onRequestSettled()
+            }
+        } else {
+            // Mise à jour optimiste immédiate de l'affichage...
+            if (previousReactionId != 0) removeReactionBucket(comment, previousReactionId)
+            addOrUpdateReactionBucket(comment, reactionType.id)
+            comment.reactionId = reactionType.id
+            if (idx >= 0) binding.comments.adapter?.notifyDataSetChanged()
+
+            val newReactionId = reactionType.id
+            val finish: (Boolean) -> Unit = { success ->
+                if (!success) revertOptimisticReaction(comment, newReactionId, previousReactionId)
+                onRequestSettled()
+            }
+            // ...mais côté réseau on attend la confirmation du DELETE avant d'envoyer le POST.
+            if (previousReactionId != 0) {
+                sendDelete { deleted -> if (deleted) sendAdd(newReactionId, finish) else finish(false) }
+            } else {
+                sendAdd(newReactionId, finish)
+            }
+        }
+    }
+
+    /**
+     * Annule la mise à jour optimiste locale d'une réaction quand l'appel réseau
+     * correspondant échoue (cf. toggleMessageReaction) : sans ça, un POST/DELETE qui échoue
+     * laissait la bulle affichée avec une réaction qui ne correspond plus à rien côté serveur,
+     * jusqu'au prochain rechargement complet du fil.
+     */
+    protected fun revertOptimisticReaction(post: Post, appliedReactionId: Int, previousReactionId: Int) {
+        if (appliedReactionId != 0) removeReactionBucket(post, appliedReactionId)
+        if (previousReactionId != 0) addOrUpdateReactionBucket(post, previousReactionId)
+        post.reactionId = previousReactionId
+        val idx = commentsList.indexOfFirst { it.id == post.id }
+        if (idx >= 0) binding.comments.adapter?.notifyDataSetChanged()
+    }
+
+    /** Réaffecte toujours une nouvelle liste — cf. [addOrUpdateReactionBucket]. */
+    protected fun removeReactionBucket(post: Post, reactionId: Int) {
+        val current = post.reactions.orEmpty()
+        val bucket = current.firstOrNull { it.reactionId == reactionId } ?: return
+        post.reactions = if (bucket.reactionsCount <= 1) {
+            current.filter { it.reactionId != reactionId }.toMutableList()
+        } else {
+            current.map {
+                if (it.reactionId == reactionId) {
+                    Reaction().apply { this.reactionId = reactionId; this.reactionsCount = it.reactionsCount - 1 }
+                } else {
+                    it
+                }
+            }.toMutableList()
+        }
     }
 
 

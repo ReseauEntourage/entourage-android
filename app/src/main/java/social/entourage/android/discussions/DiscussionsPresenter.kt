@@ -253,29 +253,38 @@ class DiscussionsPresenter : ViewModel() {
         )
     }
 
-    fun reactToMessage(conversationId: Int, messageId: Int, reactionId: Int) {
+    fun reactToMessage(conversationId: Int, messageId: Int, reactionId: Int, onComplete: (Boolean) -> Unit = {}) {
         val wrapper = ReactionWrapper().apply { this.reactionId = reactionId }
         EntourageApplication.get().apiModule.discussionsRequest.postReactionMessage(conversationId, messageId, wrapper)
             .enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     reactionResult.value = response.isSuccessful
+                    onComplete(response.isSuccessful)
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     reactionResult.value = false
+                    onComplete(false)
                 }
             })
     }
 
-    fun deleteReactionMessage(conversationId: Int, messageId: Int) {
+    /**
+     * [onComplete] permet à l'appelant d'enchaîner un POST juste après (changement de
+     * réaction) : le serveur refuse un ajout tant que l'ancienne réaction existe encore
+     * ("User can only react once"), donc on ne peut pas tirer delete/add en parallèle.
+     */
+    fun deleteReactionMessage(conversationId: Int, messageId: Int, onComplete: (Boolean) -> Unit = {}) {
         EntourageApplication.get().apiModule.discussionsRequest.deleteReactionMessage(conversationId, messageId)
             .enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     reactionResult.value = response.isSuccessful
+                    onComplete(response.isSuccessful)
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     reactionResult.value = false
+                    onComplete(false)
                 }
             })
     }

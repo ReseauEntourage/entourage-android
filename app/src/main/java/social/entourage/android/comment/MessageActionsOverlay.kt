@@ -58,7 +58,10 @@ data class MessageActionsTarget(
     val bounds: Rect,
 )
 
-private val PanelWidth = 220.dp
+// 260dp : la barre de réactions (5 icônes de 26dp + 6dp de padding + 10dp d'écart + 10dp de
+// padding de rangée de chaque côté, cf. ReactionPickerRow) a besoin d'environ 250dp pour
+// afficher son 5e emoji (le cœur) sans le couper — 220dp le laissait hors du panneau.
+private val PanelWidth = 260.dp
 
 /**
  * Panneau d'actions superposé façon iMessage/Telegram : fond flouté, bulle du message reprise

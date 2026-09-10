@@ -123,7 +123,7 @@ class GroupPresenter: ViewModel() {
         this.isPageHaveToChange.postValue(isChangingPage)
     }
 
-    fun reactToPost(groupId:Int, postId:Int, reactionId:Int){
+    fun reactToPost(groupId:Int, postId:Int, reactionId:Int, onComplete: (Boolean) -> Unit = {}){
         var reactionWrapper = ReactionWrapper()
         reactionWrapper.reactionId = reactionId
 
@@ -132,13 +132,11 @@ class GroupPresenter: ViewModel() {
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                    }
-                }
+                onComplete(response.isSuccessful)
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Timber.tag("GroupPresenter").d("onFailure: $t")
+                onComplete(false)
             }
         })
     }
@@ -175,20 +173,22 @@ class GroupPresenter: ViewModel() {
             })
     }
 
-    fun deleteReactToPost(groupId: Int,postId: Int){
+    /**
+     * [onComplete] permet à l'appelant d'enchaîner un POST juste après (changement de
+     * réaction) : le serveur refuse un ajout tant que l'ancienne réaction existe encore
+     * ("User can only react once"), donc on ne peut pas tirer delete/add en parallèle.
+     */
+    fun deleteReactToPost(groupId: Int,postId: Int, onComplete: (Boolean) -> Unit = {}){
         EntourageApplication.get().apiModule.groupRequest.deleteReactionGroupPost(groupId,postId).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                if (response.isSuccessful) {
-                    response.body()?.let {
-
-                    }
-                }
+                onComplete(response.isSuccessful)
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Timber.tag("GroupPresenter").d("onFailure: $t")
+                onComplete(false)
             }
         })
     }

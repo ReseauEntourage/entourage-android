@@ -22,7 +22,6 @@ import social.entourage.android.comment.MentionAdapter
 import social.entourage.android.databinding.ActivityCommentsBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.tools.utils.Utils
-import social.entourage.android.tools.utils.VibrationUtil
 import timber.log.Timber
 import java.util.UUID
 
@@ -155,28 +154,11 @@ class EventCommentActivity : CommentActivity() {
     // ---------------------------------------------------------------------------
     override fun onMessageReactionClicked(comment: Post, reactionType: ReactionType) {
         val commentId = comment.id ?: return
-        VibrationUtil.vibrate(this)
-        val currentReactionId = comment.reactionId ?: 0
-        val idx = commentsList.indexOfFirst { it.id == commentId }
-        Timber.tag("ReactionDebug").d(
-            "EventCommentActivity.onMessageReactionClicked messageId=%d currentReactionId=%d -> tapped=%d idx=%d",
-            commentId, currentReactionId, reactionType.id, idx
+        toggleMessageReaction(
+            comment, reactionType,
+            sendAdd = { reactionId, onComplete -> eventPresenter.reactToPost(id, commentId, reactionId, onComplete) },
+            sendDelete = { onComplete -> eventPresenter.deleteReactToPost(id, commentId, onComplete) },
         )
-
-        if (currentReactionId == reactionType.id) {
-            removeReactionBucket(comment, currentReactionId)
-            comment.reactionId = 0
-            eventPresenter.deleteReactToPost(id, commentId)
-        } else {
-            if (currentReactionId != 0) {
-                removeReactionBucket(comment, currentReactionId)
-                eventPresenter.deleteReactToPost(id, commentId)
-            }
-            addOrUpdateReactionBucket(comment, reactionType.id)
-            comment.reactionId = reactionType.id
-            eventPresenter.reactToPost(id, commentId, reactionType.id)
-        }
-        if (idx >= 0) binding.comments.adapter?.notifyItemChanged(idx + (if (currentParentPost != null) 1 else 0))
     }
 
     // ---------------------------------------------------------------------------

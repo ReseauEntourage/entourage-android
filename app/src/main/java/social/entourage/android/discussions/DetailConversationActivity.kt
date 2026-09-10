@@ -934,34 +934,23 @@ class DetailConversationActivity : CommentActivity() {
 
     // ===== Réactions sur message =====
     override fun onMessageReactionClicked(comment: Post, reactionType: ReactionType) {
-        val messageId = comment.id ?: return
-        VibrationUtil.vibrate(this)
         val convId = detailConversation?.id ?: id
-        val currentReactionId = comment.reactionId ?: 0
-        val idx = commentsList.indexOfFirst { it.id == messageId }
-
-        if (currentReactionId == reactionType.id) {
-            removeReactionBucket(comment, currentReactionId)
-            comment.reactionId = 0
-            sendDeleteReaction(convId, messageId)
-        } else {
-            if (currentReactionId != 0) removeReactionBucket(comment, currentReactionId)
-            addOrUpdateReactionBucket(comment, reactionType.id)
-            comment.reactionId = reactionType.id
-            if (currentReactionId != 0) sendDeleteReaction(convId, messageId)
-            sendAddReaction(convId, messageId, reactionType.id)
-        }
-        if (idx >= 0) binding.comments.adapter?.notifyItemChanged(idx)
+        val messageId = comment.id ?: return
+        toggleMessageReaction(
+            comment, reactionType,
+            sendAdd = { reactionId, onComplete -> sendAddReaction(convId, messageId, reactionId, onComplete) },
+            sendDelete = { onComplete -> sendDeleteReaction(convId, messageId, onComplete) },
+        )
     }
 
-    private fun sendAddReaction(convId: Int, messageId: Int, reactionId: Int) {
-        if (isSmallTalkMode) smallTalkViewModel.reactToChatMessage(smallTalkId, messageId.toString(), reactionId)
-        else discussionsPresenter.reactToMessage(convId, messageId, reactionId)
+    private fun sendAddReaction(convId: Int, messageId: Int, reactionId: Int, onComplete: (Boolean) -> Unit = {}) {
+        if (isSmallTalkMode) smallTalkViewModel.reactToChatMessage(smallTalkId, messageId.toString(), reactionId, onComplete)
+        else discussionsPresenter.reactToMessage(convId, messageId, reactionId, onComplete)
     }
 
-    private fun sendDeleteReaction(convId: Int, messageId: Int) {
-        if (isSmallTalkMode) smallTalkViewModel.deleteReactionChatMessage(smallTalkId, messageId.toString())
-        else discussionsPresenter.deleteReactionMessage(convId, messageId)
+    private fun sendDeleteReaction(convId: Int, messageId: Int, onComplete: (Boolean) -> Unit = {}) {
+        if (isSmallTalkMode) smallTalkViewModel.deleteReactionChatMessage(smallTalkId, messageId.toString(), onComplete)
+        else discussionsPresenter.deleteReactionMessage(convId, messageId, onComplete)
     }
 
     // ===== Réception des messages =====
