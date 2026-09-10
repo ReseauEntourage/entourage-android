@@ -2865,5 +2865,6 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="post_draft_meetup">Ce-ar fi să ne întâlnim în curând? Propun </string>
 
     <string name="group_feed_post_unavailable">Cette publication n\'existe plus.</string>
+    <string name="message_action_react">Réagir</string>
 
 </resources>

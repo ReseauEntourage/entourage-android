@@ -2900,5 +2900,6 @@
     <string name="post_draft_meetup">ماذا لو التقينا قريبًا؟ أقترح </string>
 
     <string name="group_feed_post_unavailable">Cette publication n\'existe plus.</string>
+    <string name="message_action_react">Réagir</string>
 
 </resources>

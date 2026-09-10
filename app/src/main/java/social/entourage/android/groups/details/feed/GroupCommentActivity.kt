@@ -34,6 +34,8 @@ class GroupCommentActivity : CommentActivity() {
     private var lastMentionStartIndex = -1
 
     override val allowsMessageReactions: Boolean get() = true
+    override val allowsMessageEdit: Boolean get() = true
+    override val usesMessageOptionsMenu: Boolean get() = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +44,7 @@ class GroupCommentActivity : CommentActivity() {
         groupPresenter.getAllComments.observe(this, ::handleGetPostComments)
         groupPresenter.commentPosted.observe(this, ::handleCommentPosted)
         groupPresenter.getCurrentParentPost.observe(this, ::handleParentPost)
+        groupPresenter.messageUpdated.observe(this) { it?.let { post -> mergeIncomingMessage(post, forceScrollIfMine = false) } }
         // Observers pour la suppression de post
         groupPresenter.isPostDeleted.observe(this) { isDeleted ->
             if (isDeleted) {
@@ -99,11 +102,16 @@ class GroupCommentActivity : CommentActivity() {
     }
 
     // ---------------------------------------------------------------------------
+    // Édition d'un commentaire (PATCH neighborhoods/{id}/chat_messages/{id}, même
+    // ressource chat_message que les conversations — à confirmer en recette).
+    // ---------------------------------------------------------------------------
+    override fun updateComment(messageId: Int, newContentHtml: String) {
+        groupPresenter.updatePost(id, messageId, newContentHtml)
+    }
+
+    // ---------------------------------------------------------------------------
     // Publication du commentaire
     // ---------------------------------------------------------------------------
-    // Édition de message non proposée sur les commentaires de publication : pas de
-    // PATCH confirmé côté back pour ce endpoint (cf. CommentActivity.allowsMessageEdit).
-    override fun updateComment(messageId: Int, newContentHtml: String) {}
 
     // ---------------------------------------------------------------------------
     // Réactions sur un commentaire (réutilise les endpoints déjà existants pour les
