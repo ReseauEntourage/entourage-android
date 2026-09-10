@@ -36,12 +36,12 @@ import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.groups.GroupPresenter
-import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.report.onDissmissFragment
 import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.sockets.ConversationSocketManager
+import timber.log.Timber
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -355,46 +355,6 @@ private fun setupConversationChips() {
     }
 }
 
-    // CommentActivity.kt
-    private fun reportComment(
-        commentId: Int?,
-        isForEvent: Boolean,
-        isForGroup: Boolean,
-        isMe: Boolean,
-        commentLang: String,
-        messageHtml: String? = null
-    ) {
-        commentId ?: return
-
-        val (containerId, type) = when {
-            isForEvent -> id to ReportTypes.REPORT_POST_EVENT
-            isForGroup -> id to ReportTypes.REPORT_POST
-            else       -> id to ReportTypes.REPORT_COMMENT
-        }
-
-        val plain = when {
-            !messageHtml.isNullOrBlank() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ->
-                Html.fromHtml(messageHtml, Html.FROM_HTML_MODE_LEGACY).toString()
-            !messageHtml.isNullOrBlank() ->
-                @Suppress("DEPRECATION") Html.fromHtml(messageHtml).toString()
-            else -> ""
-        }
-        if (plain.isNotBlank()) DataLanguageStock.updateContentToCopy(plain)
-
-        ReportModalFragment.newInstance(
-            id = commentId,                       // ✅ reportedId = le message
-            groupId = containerId,                // ✅ groupId = contexte (conv/groupe/event)
-            reportType = type,
-            isFromMe = isMe,
-            isConv = !(isForEvent || isForGroup),
-            isOneToOne = (isConversation && isOne2One),
-            contentCopied = plain,
-            openDirectSignal = true               // ✅ ouvre directement le step "signalement"
-        ).show(supportFragmentManager, ReportModalFragment.TAG)
-    }
-
-
-
     private fun initializeComments() {
         binding.comments.apply {
             layoutManager = LinearLayoutManager(context)
@@ -410,17 +370,6 @@ private fun setupConversationChips() {
                     override fun onItemClick(comment: Post) {
                         addComment()
                         commentsList.remove(comment)
-                    }
-
-                    override fun onCommentReport(
-                        commentId: Int?,
-                        isForEvent: Boolean,
-                        isForGroup: Boolean,
-                        isMe: Boolean,
-                        commentLang: String
-                    ) {
-                        commentId ?: return
-                        reportComment(commentId, isForEvent, isForGroup, isMe, commentLang, null)
                     }
 
                     override fun onShowWeb(url: String) {
@@ -530,9 +479,7 @@ private fun setupConversationChips() {
     /**
      * Porté depuis l'ancien `ActionSheetFragment` (SheetMode.MESSAGE_ACTIONS, bloc
      * layoutReport) : pour un message de conversation, on signale la conversation entière
-     * (REPORT_CONVERSATION, avec résolution smalltalk) plutôt que le message individuel — ce
-     * n'est PAS la même chose que [reportComment] (raccourci de signalement rapide des
-     * commentaires de groupe/sortie, qui signale directement le commentaire).
+     * (REPORT_CONVERSATION, avec résolution smalltalk) plutôt que le message individuel.
      */
     private fun performMessageReport(comment: Post, isMe: Boolean) {
         val messageHtml = comment.content ?: comment.contentHtml
@@ -702,6 +649,10 @@ private fun setupConversationChips() {
     private fun updateExistingMessageInPlace(post: Post) {
         val idx = commentsList.indexOfFirst { it.id != null && it.id == post.id }
         if (idx >= 0) {
+            Timber.tag("ReactionDebug").d(
+                "updateExistingMessageInPlace (socket chat_message_updated) messageId=%s idx=%d, reactions before=%s",
+                post.id, idx, commentsList[idx].reactions?.map { it.reactionId to it.reactionsCount }
+            )
             commentsList[idx] = mergeUpdatedMessageFields(commentsList[idx], post)
             binding.comments.adapter?.notifyItemChanged(idx + parentPostOffset())
         }
@@ -743,6 +694,9 @@ private fun setupConversationChips() {
 
     private fun applyReactionAdded(chatMessageId: Int, reactionId: Int) {
         val idx = commentsList.indexOfFirst { it.id == chatMessageId }
+        Timber.tag("ReactionDebug").d(
+            "applyReactionAdded (socket) messageId=%d reactionId=%d idx=%d", chatMessageId, reactionId, idx
+        )
         if (idx >= 0) {
             addOrUpdateReactionBucket(commentsList[idx], reactionId)
             binding.comments.adapter?.notifyItemChanged(idx + parentPostOffset())
@@ -751,6 +705,9 @@ private fun setupConversationChips() {
 
     private fun applyReactionRemoved(chatMessageId: Int, reactionId: Int) {
         val idx = commentsList.indexOfFirst { it.id == chatMessageId }
+        Timber.tag("ReactionDebug").d(
+            "applyReactionRemoved (socket) messageId=%d reactionId=%d idx=%d", chatMessageId, reactionId, idx
+        )
         if (idx >= 0) {
             removeReactionBucket(commentsList[idx], reactionId)
             binding.comments.adapter?.notifyItemChanged(idx + parentPostOffset())
@@ -765,12 +722,26 @@ private fun setupConversationChips() {
             val list = post.reactions ?: mutableListOf<Reaction>().also { post.reactions = it }
             list.add(Reaction().apply { this.reactionId = reactionId; this.reactionsCount = 1 })
         }
+        Timber.tag("ReactionDebug").d(
+            "addOrUpdateReactionBucket messageId=%s reactionId=%d -> reactions=%s",
+            post.id, reactionId, post.reactions?.map { it.reactionId to it.reactionsCount }
+        )
     }
 
     protected fun removeReactionBucket(post: Post, reactionId: Int) {
-        val bucket = post.reactions?.firstOrNull { it.reactionId == reactionId } ?: return
+        val bucket = post.reactions?.firstOrNull { it.reactionId == reactionId } ?: run {
+            Timber.tag("ReactionDebug").d(
+                "removeReactionBucket messageId=%s reactionId=%d -> no matching bucket, no-op (reactions=%s)",
+                post.id, reactionId, post.reactions?.map { it.reactionId to it.reactionsCount }
+            )
+            return
+        }
         if (bucket.reactionsCount <= 1) post.reactions?.remove(bucket)
         else bucket.reactionsCount -= 1
+        Timber.tag("ReactionDebug").d(
+            "removeReactionBucket messageId=%s reactionId=%d -> reactions=%s",
+            post.id, reactionId, post.reactions?.map { it.reactionId to it.reactionsCount }
+        )
     }
 
 

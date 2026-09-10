@@ -158,6 +158,10 @@ class EventCommentActivity : CommentActivity() {
         VibrationUtil.vibrate(this)
         val currentReactionId = comment.reactionId ?: 0
         val idx = commentsList.indexOfFirst { it.id == commentId }
+        Timber.tag("ReactionDebug").d(
+            "EventCommentActivity.onMessageReactionClicked messageId=%d currentReactionId=%d -> tapped=%d idx=%d",
+            commentId, currentReactionId, reactionType.id, idx
+        )
 
         if (currentReactionId == reactionType.id) {
             removeReactionBucket(comment, currentReactionId)

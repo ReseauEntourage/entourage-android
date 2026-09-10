@@ -85,11 +85,9 @@ fun MessageBubbleItem(
     isDeletedOrOffensive: Boolean,
     deletedOrOffensiveLabel: String,
     dateText: String?,
-    showReportIcon: Boolean,
     onAvatarClick: () -> Unit,
     onLongPress: (Rect) -> Unit,
     onImageClick: () -> Unit,
-    onReportClick: () -> Unit,
     onLinkClick: (String) -> Unit,
     onRetryClick: () -> Unit,
     onOptionsClick: (Rect) -> Unit,
@@ -223,11 +221,6 @@ fun MessageBubbleItem(
                 onClick = onAvatarClick,
                 modifier = Modifier.padding(top = 8.dp, start = 8.dp)
             )
-        } else if (showReportIcon) {
-            // Raccourci de signalement rapide déjà existant sur les commentaires de groupe/
-            // sortie (showReportIcon), conservé tel quel — distinct du "Signaler" du panneau
-            // d'actions unifié.
-            ReportIcon(onReportClick, modifier = Modifier.padding(top = 4.dp, start = 8.dp))
         }
     }
 }
@@ -294,17 +287,6 @@ internal fun BubbleContent(
             }
         }
     }
-}
-
-@Composable
-private fun ReportIcon(onClick: () -> Unit, modifier: Modifier = Modifier) {
-    Image(
-        painter = painterResource(R.drawable.new_report_comment),
-        contentDescription = null,
-        modifier = modifier
-            .size(20.dp)
-            .clickable(onClick = onClick)
-    )
 }
 
 /**

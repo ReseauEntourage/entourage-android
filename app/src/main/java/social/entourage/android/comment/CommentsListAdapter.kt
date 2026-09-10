@@ -15,7 +15,6 @@ import social.entourage.android.api.model.ReactionType
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.ProfileFullActivity
-import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.tools.utils.Const
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -29,7 +28,6 @@ enum class CommentsTypes(val code: Int) {
 
 interface OnItemClickListener {
     fun onItemClick(comment: Post)
-    fun onCommentReport(commentId: Int?, isForEvent: Boolean, isForGroup: Boolean, isMe: Boolean, commentLang: String)
     fun onShowWeb(url: String) // si tu veux ouvrir un navigateur ou gérer autrement
     // Long-clic sur la bulle et tap sur le bouton déclencheur (cf. MessageBubbleItem) ouvrent
     // tous les deux le même panneau d'actions unifié (MessageActionsOverlay) — [target] porte
@@ -187,7 +185,6 @@ class CommentsListAdapter(
             isDeletedOrOffensive = isDeletedOrOffensive,
             deletedOrOffensiveLabel = deletedLabel,
             dateText = dateText,
-            showReportIcon = !isMe && !isConversation,
             onAvatarClick = { openProfile(comment) },
             onLongPress = { bounds ->
                 onItemClick.onMessageLongPress(
@@ -195,11 +192,6 @@ class CommentsListAdapter(
                 )
             },
             onImageClick = { openImageZoom(comment) },
-            onReportClick = {
-                val commentLang = comment.contentTranslations?.fromLang ?: ""
-                DataLanguageStock.updateContentToCopy(comment.content ?: "")
-                onItemClick.onCommentReport(comment.id, isForEvent, isForGroup, isMe, commentLang)
-            },
             onLinkClick = { url -> onItemClick.onShowWeb(url) },
             onRetryClick = { onItemClick.onItemClick(comment) },
             onOptionsClick = { bounds ->
