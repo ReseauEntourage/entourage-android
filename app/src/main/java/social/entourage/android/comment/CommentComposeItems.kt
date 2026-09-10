@@ -37,7 +37,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
@@ -194,20 +193,24 @@ fun MessageBubbleItem(
             // Sous la bulle : pastilles des réactions déjà posées (affichage passif) suivies du
             // bouton déclencheur du panneau d'actions unifié (réactions + copier/modifier/
             // signaler/supprimer, cf. MessageActionsOverlay) — long-clic sur la bulle ouvre le
-            // même panneau.
-            if (usesMessageOptionsMenu) {
+            // même panneau. Sur son propre message, pas de bouton visible : seul le long-clic
+            // ouvre le panneau (les pastilles de réactions des autres restent affichées).
+            val showBadges = allowsReactions && comment.id != null && hasReactions
+            if (usesMessageOptionsMenu && (!isMe || showBadges)) {
                 Spacer(Modifier.padding(top = 4.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    if (allowsReactions && comment.id != null) {
+                    if (showBadges) {
                         ReactionsBadgeRow(reactions = reactions, reactionTypes = reactionTypes)
-                        Spacer(Modifier.padding(start = 6.dp))
+                        if (!isMe) Spacer(Modifier.padding(start = 6.dp))
                     }
-                    MessageActionsTriggerButton(
-                        showLabel = allowsReactions && !isMe && !hasReactions,
-                        onClick = { onOptionsClick(bubbleBoundsInWindow) }
-                    )
+                    if (!isMe) {
+                        MessageActionsTriggerButton(
+                            showLabel = allowsReactions && !hasReactions,
+                            onClick = { onOptionsClick(bubbleBoundsInWindow) }
+                        )
+                    }
                 }
-            } else if (allowsReactions && comment.id != null) {
+            } else if (!usesMessageOptionsMenu && allowsReactions && comment.id != null) {
                 Spacer(Modifier.padding(top = 2.dp))
                 ReactionsBadgeRow(reactions = reactions, reactionTypes = reactionTypes)
             }
@@ -316,7 +319,6 @@ private fun MessageActionsTriggerButton(showLabel: Boolean, onClick: () -> Unit,
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .shadow(elevation = 1.dp, shape = RoundedCornerShape(20.dp))
             .clip(RoundedCornerShape(20.dp))
             .background(colorResource(R.color.white))
             .border(1.dp, colorResource(R.color.new_light_grey), RoundedCornerShape(20.dp))
@@ -376,11 +378,12 @@ private fun ReactionsBadgeRow(reactions: List<Reaction>, reactionTypes: List<Rea
 }
 
 /**
- * Barre de sélection d'une réaction, façon Messenger/WhatsApp, déployée par un appui long
- * sur un message directement sous la bulle (cf. [MessageBubbleItem]), quel que soit l'écran
- * (conversation, commentaires de groupe ou de sortie). [selectedTypeId] (la réaction actuelle
- * de l'utilisateur, 0 si aucune) est mis en évidence — la retaper l'enlève (même toggle que
- * [social.entourage.android.comment.CommentActivity.onMessageReactionClicked]).
+ * Barre de sélection d'une réaction, façon Messenger/WhatsApp, affichée dans le panneau
+ * d'actions superposé (cf. [MessageActionsOverlay]), quel que soit l'écran (conversation,
+ * commentaires de groupe ou de sortie). [selectedTypeId] (la réaction actuelle de
+ * l'utilisateur, 0 si aucune) est mis en évidence — la retaper l'enlève (même toggle que
+ * [social.entourage.android.comment.CommentActivity.onMessageReactionClicked]). Fond blanc
+ * opaque (pas gris) pour bien se détacher du fond flouté du panneau.
  */
 @Composable
 fun ReactionPickerRow(types: List<ReactionType>, selectedTypeId: Int, onPicked: (ReactionType) -> Unit) {
@@ -388,7 +391,7 @@ fun ReactionPickerRow(types: List<ReactionType>, selectedTypeId: Int, onPicked: 
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .clip(RoundedCornerShape(24.dp))
-            .background(colorResource(R.color.grey_deleted_cell))
+            .background(colorResource(R.color.white))
             .padding(horizontal = 10.dp, vertical = 8.dp)
     ) {
         types.take(5).forEachIndexed { index, type ->

@@ -741,9 +741,16 @@ class EventsPresenter : ViewModel() {
                 override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
                     // Peut être un vrai échec réseau, ou une exception de désérialisation
                     // Retrofit/Gson sur une réponse pourtant réussie (cf. le même bug déjà
-                    // repéré côté groupe : "Erreur de publication" affiché malgré un 201).
+                    // repéré côté groupe : "Erreur de publication" affiché malgré un 201, ET en
+                    // double puisque le commentaire arrive quand même par le websocket). Une
+                    // IOException est un vrai échec réseau ; toute autre exception ici ne peut
+                    // venir que de la désérialisation d'une réponse pourtant reçue — pas la
+                    // peine d'afficher l'échec, le websocket se charge d'insérer le message
+                    // confirmé.
                     Timber.e(t, "EventsPresenter.addComment: onFailure (network error OR response parsing exception)")
-                    commentPosted.value = null
+                    if (t is java.io.IOException) {
+                        commentPosted.value = null
+                    }
                 }
             })
     }

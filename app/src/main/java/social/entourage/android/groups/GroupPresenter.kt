@@ -618,9 +618,16 @@ class GroupPresenter: ViewModel() {
                 override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
                     // cf. addPost ci-dessus : peut être un vrai échec réseau, ou une exception
                     // de désérialisation Retrofit/Gson sur une réponse pourtant réussie (HTTP
-                    // 201) — auquel cas "Erreur de publication, réessayez" s'affiche à tort.
+                    // 201) — auquel cas "Erreur de publication, réessayez" s'affiche à tort, ET
+                    // en double puisque le commentaire arrive quand même par le websocket
+                    // (chat_message_created n'est pas filtré pour l'auteur). Une IOException est
+                    // un vrai échec réseau ; toute autre exception ici ne peut venir que de la
+                    // désérialisation d'une réponse pourtant reçue — pas la peine d'afficher
+                    // l'échec, le websocket se charge d'insérer le message confirmé.
                     Timber.e(t, "GroupPresenter.addComment: onFailure (network error OR response parsing exception)")
-                    commentPosted.value = null
+                    if (t is java.io.IOException) {
+                        commentPosted.value = null
+                    }
                 }
             })
     }

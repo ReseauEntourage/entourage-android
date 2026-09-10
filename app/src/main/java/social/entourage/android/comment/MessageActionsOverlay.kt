@@ -223,7 +223,7 @@ private fun MessageActionsCard(
         if (showReport) {
             ActionRowDivider()
             MessageActionRow(
-                iconRes = R.drawable.new_report_comment,
+                iconRes = R.drawable.ic_report_event_modal,
                 label = stringResource(R.string.message_action_report),
                 onClick = onReport
             )

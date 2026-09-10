@@ -205,7 +205,11 @@ protected fun scrollAfterLayout() {
         .addOnGlobalLayoutListener(
             object : OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
-                    binding.comments.scrollToPosition(commentsList.size - 1)
+                    // + parentPostOffset() : sur les commentaires de publication, l'item 0 est
+                    // le post parent (cf. getItemCount()/hasCurrentPost) — sans ce décalage on
+                    // scrollait systématiquement un cran trop court, laissant le tout dernier
+                    // message juste sous le bord visible.
+                    binding.comments.scrollToPosition(commentsList.size - 1 + parentPostOffset())
                     binding.comments.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 }
             })
@@ -649,7 +653,11 @@ private fun setupConversationChips() {
 
     protected fun isAtBottomOfComments(): Boolean {
         val lm = binding.comments.layoutManager as? LinearLayoutManager ?: return true
-        val last = lm.findLastCompletelyVisibleItemPosition()
+        // findLastVisibleItemPosition (partiellement visible) plutôt que ...Completely... : une
+        // bulle un peu haute (réactions + bouton sous le message) n'entre pas forcément en
+        // entier dans le viewport même quand on est au bas de la liste, ce qui faisait
+        // faussement croire qu'on n'était "pas en bas" et coupait l'auto-scroll à la réception.
+        val last = lm.findLastVisibleItemPosition()
         return last >= lm.itemCount - 2
     }
 
