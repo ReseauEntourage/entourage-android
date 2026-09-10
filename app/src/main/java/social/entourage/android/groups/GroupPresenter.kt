@@ -587,6 +587,12 @@ class GroupPresenter: ViewModel() {
                 }
 
                 override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
+                    // Peut être une vraie panne réseau, mais aussi une exception Retrofit/Gson
+                    // levée pendant la désérialisation d'une réponse pourtant réussie (HTTP 200)
+                    // — auquel cas l'appel a bien fonctionné côté back mais l'app le traite à
+                    // tort comme un échec. Logué en détail pour distinguer les deux cas (cf.
+                    // signalement "publication créée mais écran resté bloqué").
+                    Timber.e(t, "GroupPresenter.addPost: onFailure (network error OR response parsing exception)")
                     hasPost.value = false
                     isSendingCreatePost = false
                     CreatePostGroupActivity.idGroupForPost = null
@@ -610,6 +616,10 @@ class GroupPresenter: ViewModel() {
                 }
 
                 override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
+                    // cf. addPost ci-dessus : peut être un vrai échec réseau, ou une exception
+                    // de désérialisation Retrofit/Gson sur une réponse pourtant réussie (HTTP
+                    // 201) — auquel cas "Erreur de publication, réessayez" s'affiche à tort.
+                    Timber.e(t, "GroupPresenter.addComment: onFailure (network error OR response parsing exception)")
                     commentPosted.value = null
                 }
             })
@@ -625,6 +635,7 @@ class GroupPresenter: ViewModel() {
                 }
 
                 override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
+                    Timber.e(t, "GroupPresenter.updatePost: onFailure (network error OR response parsing exception)")
                     messageUpdated.value = null
                 }
             })

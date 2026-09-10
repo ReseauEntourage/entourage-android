@@ -739,6 +739,10 @@ class EventsPresenter : ViewModel() {
                 }
 
                 override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
+                    // Peut être un vrai échec réseau, ou une exception de désérialisation
+                    // Retrofit/Gson sur une réponse pourtant réussie (cf. le même bug déjà
+                    // repéré côté groupe : "Erreur de publication" affiché malgré un 201).
+                    Timber.e(t, "EventsPresenter.addComment: onFailure (network error OR response parsing exception)")
                     commentPosted.value = null
                 }
             })
@@ -754,6 +758,7 @@ class EventsPresenter : ViewModel() {
                 }
 
                 override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
+                    Timber.e(t, "EventsPresenter.updatePost: onFailure (network error OR response parsing exception)")
                     messageUpdated.value = null
                 }
             })
