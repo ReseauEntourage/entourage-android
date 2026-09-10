@@ -1,79 +1,64 @@
 ---
 name: ent:jira-ticket
-description: Traite un ticket Jira de bout en bout — récupération, analyse du code existant, enrichissement produit/technique posté en commentaire, implémentation, commit et passage au statut "To Merge". Invocation explicite uniquement (/ent:jira-ticket).
-argument-hint: [clé-ticket]
-allowed-tools: Bash, Read, Edit, Write, Grep, Glob, mcp__jira__jira_get_issue, mcp__jira__jira_search, mcp__jira__jira_add_comment, mcp__jira__jira_get_transitions, mcp__jira__jira_transition_issue
+description: Traite un ticket Jira de bout en bout — analyse, enrichissement produit/technique, implémentation, commit et passage en "To Merge"
 disable-model-invocation: true
+argument-hint: [clé-ticket] (ex. EN-1234)
+allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(git add:*), Bash(git commit:*), Read, Grep, Glob, Edit
 ---
 
-Tu vas traiter le ticket Jira `$ARGUMENTS` de bout en bout dans ce repo Android (entourage-android).
+Tu vas traiter le ticket Jira `$ARGUMENTS` sur ce dépôt (app Android Entourage).
 
 ## Étape 1 — Récupération
 
-Récupère le ticket avec `mcp__jira__jira_get_issue` (clé `$ARGUMENTS`) : titre, description, critères
-d'acceptation, commentaires existants. Si la clé est ambiguë ou introuvable, utilise
-`mcp__jira__jira_search` (JQL sur le résumé) avant d'abandonner.
+Récupère le ticket avec `mcp__jira__jira_get_issue` (`issue_key: $ARGUMENTS`, `include: "comments"`) :
+titre, description, critères d'acceptation, commentaires existants.
+
+Si la clé ne matche pas un format Jira valide (ex. `EN-1234`) ou que le ticket n'existe pas, arrête-toi et demande une clé valide plutôt que de deviner.
 
 ## Étape 2 — Analyse du code existant
 
-Explore le repo pour comprendre ce qui existe déjà en lien avec ce ticket : fichiers concernés,
-état actuel de l'implémentation, dépendances. Appuie-toi sur [CLAUDE.md](../../../CLAUDE.md) pour
-te repérer rapidement (layout de `app/src/main/java/social/entourage/android/`, pattern d'accès
-`EntourageApplication.get().apiModule...`, routing des deep links dans `UniversalLinkManager`,
-rôles utilisateur, etc.) plutôt que de redécouvrir l'architecture à chaque fois.
+Explore le projet pour comprendre ce qui existe déjà en lien avec le ticket (fichiers concernés, état actuel de l'implémentation, dépendances). Appuie-toi sur les conventions de [CLAUDE.md](CLAUDE.md) :
+- module/écran probable sous `app/src/main/java/social/entourage/android/...`
+- vérifie si un `*Presenter` en jeu est un `ViewModel` ou une classe liée à l'Activity/Fragment
+- repère les `*Request` Retrofit concernés dans `api/request/` si le ticket touche au réseau
+- pour un écran atteignable par deep link, vérifie `UniversalLinkManager`
 
-Si le ticket touche un écran/une vue existante, repère aussi si un scénario e2e la couvre déjà
-(ils vivent sur la branche `end_to_end_test`, pas sur `develop` — voir Étape 4).
+Pour une exploration large, utilise l'agent `Explore` plutôt que de multiplier les recherches manuelles.
 
 ## Étape 3 — Enrichissement du ticket
 
-Rédige une version enrichie de la description :
-- **Angle produit** : cas limites, impacts UX non mentionnés, questions ouvertes
-- **Angle technique** : fichiers/composants à toucher, risques, points d'attention (variantes de
-  build concernées, IDs `BuildConfig` à ne pas hardcoder, écran migré vers Compose ou non, etc.)
+Rédige une version enrichie de la description, en deux angles :
+- **Produit** : cas limites, impacts UX non mentionnés, questions ouvertes
+- **Technique** : fichiers/composants à toucher, risques, points d'attention (ex. variantes de build, rôles utilisateur, analytics à ajouter)
 
-RÈGLE STRICTE : tu n'ajoutes JAMAIS de nouvelle fonctionnalité ni de changement de périmètre. Tu
-précises et documentes ce qui est déjà spécifié, tu n'inventes rien. Si un point te semble
-ambigu, signale-le comme question plutôt que de trancher.
+RÈGLE STRICTE : n'ajoute JAMAIS de nouvelle fonctionnalité ni de changement de périmètre. Précise et documente ce qui est déjà spécifié, n'invente rien. Si un point est ambigu, signale-le comme question ouverte plutôt que de trancher à sa place.
 
-Poste cette version enrichie en **commentaire** sur le ticket via `mcp__jira__jira_add_comment`
-(ne remplace jamais la description originale).
+Poste cette version enrichie en commentaire via `mcp__jira__jira_add_comment` (`issue_key: $ARGUMENTS`) — ne remplace jamais la description originale.
 
 ## Étape 4 — Implémentation
 
-Fais le travail décrit dans le ticket, dans le respect strict des specs d'origine, et des
-conventions du repo (ViewBinding uniquement, IDs de layout en `snake_case`, logging via
-`AnalyticsEvents.logEvent()` pour toute action utilisateur significative, strings ajoutées en
-français via `./add_strings.sh` puis propagées, jamais directement dans `values-en/`).
+Fais le travail décrit dans le ticket, dans le respect strict des specs d'origine, en suivant les conventions du projet :
+- ViewBinding uniquement (pas de `findViewById`)
+- `AnalyticsEvents.logEvent(...)` pour toute action utilisateur significative
+- chaînes de caractères ajoutées en français dans `values/strings.xml` via `./add_strings.sh` (jamais directement dans `values-en/`)
+- pas de nouvelle dépendance/abstraction non nécessaire au ticket
 
-Vérifie la compilation avant de considérer l'implémentation terminée :
-```bash
-./gradlew :app:compileEntourageDebugKotlin
-```
+Vérifie la compilation avec `./gradlew :app:compileEntourageDebugKotlin` (nécessitera une confirmation, cette commande n'est pas pré-approuvée par ce skill).
 
-**Test e2e** : si tu modifies le comportement ou la vue d'un écran, le test e2e de bout en bout
-correspondant doit être ajouté/mis à jour — mais ces tests vivent sur la branche `end_to_end_test`,
-pas sur `develop`. Ne modifie pas ces fichiers directement dans ce checkout. À la place :
-- Signale explicitement dans ta synthèse finale le scénario e2e à créer/mettre à jour et le
-  fichier concerné dans `app/src/androidTest/java/social/entourage/android/e2e/`.
-- Propose à l'utilisateur de le faire dans un worktree dédié
-  (`git worktree add <path> -b end_to_end_test origin/end_to_end_test`) plutôt que de le faire
-  toi-même dans cette session, sauf s'il te le demande explicitement.
+Si le ticket modifie un écran/une vue existante : selon [CLAUDE.md](CLAUDE.md), le test e2e correspondant doit être mis à jour. Ces tests vivent sur la branche `end_to_end_test` (pas `develop`) — signale ce suivi dans le commentaire Jira de l'étape 3/5 plutôt que de le faire silencieusement en dehors du scope de ce ticket, sauf si l'utilisateur demande explicitement de traiter aussi l'e2e dans cette même passe.
 
 ## Étape 5 — Commit
 
-Commit les changements avec un message clair, dans le style conventionnel déjà utilisé dans
-l'historique (`type(scope): résumé`, ex. `fix(events): ...`, `feat(discussions): ...`), en
-référençant le ticket `$ARGUMENTS` (ex. suffixe `(ENT-1234)`).
-- `git status` et `git diff` d'abord pour vérifier ce qui part dans le commit.
-- Ajoute les fichiers un par un (pas de `git add -A`), jamais de fichier généré (`build/`,
-  `.gradle/`) ni de secret.
-- Ne commit jamais avec `--no-verify`.
+Vérifie `git status`/`git diff`, ajoute les fichiers pertinents (jamais `git add -A`/`.` à l'aveugle) et commit avec un message clair référençant le ticket, par ex. :
+
+```
+fix(<scope>): <résumé court> ($ARGUMENTS)
+```
 
 ## Étape 6 — Transition
 
-Récupère les transitions disponibles avec `mcp__jira__jira_get_transitions` sur `$ARGUMENTS`,
-trouve celle dont le nom correspond à "To Merge" (comparaison insensible à la casse), puis
-applique-la avec `mcp__jira__jira_transition_issue`. Si aucune transition de ce nom n'existe dans
-le workflow du ticket, ne force rien : liste les transitions disponibles à l'utilisateur et
-demande laquelle utiliser.
+1. Appelle `mcp__jira__jira_get_transitions` (`issue_key: $ARGUMENTS`) pour lister les transitions disponibles.
+2. Repère l'ID correspondant au statut "To Merge" (comparaison insensible à la casse).
+3. Appelle `mcp__jira__jira_transition_issue` avec cet ID.
+
+Si aucune transition "To Merge" n'existe dans la liste, arrête-toi et signale les statuts disponibles à l'utilisateur plutôt que de choisir une transition approchante.
