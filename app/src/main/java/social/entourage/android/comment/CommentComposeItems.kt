@@ -107,10 +107,11 @@ fun MessageBubbleItem(
         )
     }
 
-    // Dans une conversation, réagir passe désormais par l'appui long (barre de réactions
-    // affichée sous la bulle, cf. plus bas) plutôt que par le sheet d'actions complet — le
-    // 3-points ouvre ce sheet pour signaler/copier/modifier/supprimer, sans les réactions.
-    // Ailleurs (commentaires de groupe/sortie), l'appui long garde son comportement d'origine.
+    // Réagir passe par l'appui long (barre de réactions affichée sous la bulle, cf. plus
+    // bas) plutôt que par le sheet d'actions complet, quel que soit l'écran (conversation,
+    // commentaires de groupe ou de sortie) — le 3-points ouvre ce sheet pour
+    // signaler/copier/modifier/supprimer, sans les réactions. Sur son propre message,
+    // l'appui long ne fait rien : les actions passent uniquement par le 3-points.
     var showReactionBar by remember(comment.id) { mutableStateOf(false) }
     val canReactHere = usesMessageOptionsMenu && allowsReactions && !isMe && comment.id != null
     val handleLongPress: () -> Unit = {
@@ -208,8 +209,7 @@ fun MessageBubbleItem(
             }
 
             // Affichage passif des réactions déjà posées sur ce message. Pour réagir : appui
-            // long sur la bulle, qui déploie la barre [ReactionPickerRow] juste au-dessus
-            // (conversation) ou ouvre ActionSheetFragment avec la barre en haut (groupe/sortie).
+            // long sur la bulle, qui déploie la barre [ReactionPickerRow] juste au-dessus.
             if (allowsReactions && comment.id != null) {
                 Spacer(Modifier.padding(top = 2.dp))
                 ReactionsBadgeRow(reactions = reactions, reactionTypes = reactionTypes)
@@ -217,16 +217,29 @@ fun MessageBubbleItem(
         }
 
         if (isMe) {
+            // Le 3-points d'un message "à moi" est affiché avant la bulle, cf. le bloc
+            // symétrique en tête de Row (Modifier.padding(top = 8.dp, end = 4.dp)) — pas ici,
+            // pour ne pas le dupliquer.
             GlideCircleAvatar(
                 url = comment.user?.avatarURLAsString,
                 size = 25.dp,
                 onClick = onAvatarClick,
                 modifier = Modifier.padding(top = 8.dp, start = 8.dp)
             )
-        } else if (showReportIcon) {
-            ReportIcon(onReportClick, modifier = Modifier.padding(top = 4.dp, start = 8.dp))
-        } else if (usesMessageOptionsMenu) {
-            OptionsIcon(onClick = onOptionsClick, modifier = Modifier.padding(top = 4.dp, start = 8.dp))
+        } else {
+            // Le 3-points (sheet report/copier/supprimer) est affiché sur tout écran qui
+            // l'utilise (usesMessageOptionsMenu) ; sur les commentaires de groupe/sortie il
+            // vient s'ajouter au raccourci de signalement rapide déjà existant (showReportIcon),
+            // qu'on garde tel quel pour ne rien retirer.
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                if (showReportIcon) {
+                    ReportIcon(onReportClick, modifier = Modifier.padding(top = 4.dp, start = 8.dp))
+                    Spacer(Modifier.padding(top = 4.dp))
+                }
+                if (usesMessageOptionsMenu) {
+                    OptionsIcon(onClick = onOptionsClick, modifier = Modifier.padding(start = 8.dp))
+                }
+            }
         }
     }
 }
@@ -359,9 +372,8 @@ private fun ReactionsBadgeRow(reactions: List<Reaction>, reactionTypes: List<Rea
 
 /**
  * Barre de sélection d'une réaction, façon Messenger/WhatsApp, déployée par un appui long
- * sur un message : directement sous la bulle en conversation (cf. [MessageBubbleItem]), ou
- * en haut du sheet d'actions ailleurs (groupe/sortie, cf.
- * [social.entourage.android.ui.ActionSheetFragment]). [selectedTypeId] (la réaction actuelle
+ * sur un message directement sous la bulle (cf. [MessageBubbleItem]), quel que soit l'écran
+ * (conversation, commentaires de groupe ou de sortie). [selectedTypeId] (la réaction actuelle
  * de l'utilisateur, 0 si aucune) est mis en évidence — la retaper l'enlève (même toggle que
  * [social.entourage.android.comment.CommentActivity.onMessageReactionClicked]).
  */

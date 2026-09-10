@@ -1,5 +1,7 @@
 package social.entourage.android.groups
 
+import android.os.Build
+import android.text.Html
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,6 +21,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.ReactionWrapper
+import social.entourage.android.api.model.notification.Translation
 import social.entourage.android.api.request.EntourageUserResponse
 import social.entourage.android.api.request.EventsListWrapper
 import social.entourage.android.api.request.GroupWrapper
@@ -60,6 +63,7 @@ class GroupPresenter: ViewModel() {
     var getAllPosts = MutableLiveData<MutableList<Post>>()
     var hasPost = MutableLiveData<Boolean>()
     var commentPosted = MutableLiveData<Post?>()
+    var messageUpdated = MutableLiveData<Post?>()
     var isGroupReported = MutableLiveData<Boolean>()
     var isPostReported = MutableLiveData<Boolean>()
     var isPostDeleted = MutableLiveData<Boolean>()
@@ -609,6 +613,64 @@ class GroupPresenter: ViewModel() {
                     commentPosted.value = null
                 }
             })
+    }
+
+    fun updatePost(groupId: Int, postId: Int, newContent: String) {
+        val params = ArrayMap<String, Any>()
+        params["content"] = newContent
+        EntourageApplication.get().apiModule.groupRequest.updatePost(groupId, postId, params)
+            .enqueue(object : Callback<PostWrapper> {
+                override fun onResponse(call: Call<PostWrapper>, response: Response<PostWrapper>) {
+                    messageUpdated.value = withFreshEditedContent(response.body()?.post, newContent)
+                }
+
+                override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
+                    messageUpdated.value = null
+                }
+            })
+    }
+
+    /** cf. DiscussionsPresenter.withFreshEditedContent : même contournement du même bug
+     * (content_translations(_html) pas encore resynchronisé juste après le PATCH). */
+    private fun withFreshEditedContent(post: Post?, newContentHtml: String): Post? {
+        post ?: return null
+        val plain = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(newContentHtml, Html.FROM_HTML_MODE_LEGACY).toString()
+        } else {
+            @Suppress("DEPRECATION") Html.fromHtml(newContentHtml).toString()
+        }
+        return Post(
+            id = post.id,
+            content = newContentHtml,
+            contentHtml = newContentHtml,
+            contentTranslations = Translation(
+                translation = plain,
+                original = plain,
+                fromLang = post.contentTranslations?.fromLang,
+                toLang = post.contentTranslations?.toLang
+            ),
+            contentTranslationsHtml = Translation(
+                translation = newContentHtml,
+                original = newContentHtml,
+                fromLang = post.contentTranslationsHtml?.fromLang,
+                toLang = post.contentTranslationsHtml?.toLang
+            ),
+            user = post.user,
+            createdTime = post.createdTime,
+            messageType = post.messageType,
+            postId = post.postId,
+            hasComments = post.hasComments,
+            commentsCount = post.commentsCount,
+            imageUrl = post.imageUrl,
+            status = post.status,
+            reactions = post.reactions,
+            read = post.read,
+            reactionId = post.reactionId,
+            idInternal = post.idInternal,
+            survey = post.survey,
+            surveyResponse = post.surveyResponse,
+            autoPostFrom = post.autoPostFrom,
+        )
     }
 
     fun sendReport(

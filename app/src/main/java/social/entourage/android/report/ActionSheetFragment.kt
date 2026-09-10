@@ -471,7 +471,10 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
         binding.edit.profileSettingsItemLayout.setOnClickListener {
             if (mode == SheetMode.MESSAGE_ACTIONS) {
-                (activity as? DetailConversationActivity)?.startEditingMessage(messageId, messageHtml)
+                // CommentActivity (pas DetailConversationActivity) : ce sheet est aussi ouvert
+                // depuis GroupCommentActivity/EventCommentActivity pour les commentaires de
+                // publication, qui partagent startEditingMessage via la classe de base.
+                (activity as? CommentActivity)?.startEditingMessage(messageId, messageHtml)
                 dismiss()
                 return@setOnClickListener
             }
@@ -665,7 +668,11 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                         else ->
                             discussionPresenter.deleteMessage(conversationId, messageId)
                     }
-                    (activity as? DetailConversationActivity)?.reloadView()
+                    // Idem : CommentActivity, pas DetailConversationActivity (cf. edit ci-dessus) —
+                    // ce cast échouait silencieusement pour les commentaires de groupe/sortie,
+                    // qui avaient déjà leur propre rafraîchissement (isPostDeleted) mais pas
+                    // toujours ce reloadView() de secours.
+                    (activity as? CommentActivity)?.reloadView()
                     dismiss()
                 }
 

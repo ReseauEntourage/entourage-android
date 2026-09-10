@@ -31,10 +31,10 @@ interface OnItemClickListener {
     fun onItemClick(comment: Post)
     fun onCommentReport(commentId: Int?, isForEvent: Boolean, isForGroup: Boolean, isMe: Boolean, commentLang: String)
     fun onShowWeb(url: String) // si tu veux ouvrir un navigateur ou gérer autrement
+    // Fallback si l'appui long ne peut pas ouvrir la barre de réactions (cf.
+    // MessageBubbleItem.handleLongPress) : ouvre alors le sheet d'actions complet, comme
+    // onMessageOptionsClick (3-points).
     fun onMessageLongPress(comment: Post, isMe: Boolean)
-    // Ces deux callbacks sont ceux du 3-points/de la barre de réactions en conversation
-    // (cf. MessageBubbleItem) : onMessageLongPress reste utilisé tel quel pour les
-    // commentaires de groupe/sortie (comportement inchangé, sheet d'actions complet).
     fun onMessageOptionsClick(comment: Post, isMe: Boolean)
     fun onMessageReactionPicked(comment: Post, reactionType: ReactionType)
 }

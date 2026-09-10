@@ -70,8 +70,9 @@ protected var editingMessageId: Int? = null
 // fil) : consommé une seule fois par scrollAndHighlightIfNeeded(), puis remis à null.
 private var targetChatMessageId: Int? = null
 
-// Vrai uniquement pour l'écran de discussion (DetailConversationActivity) : c'est le
-// seul contexte où on a un endpoint PATCH confirmé pour éditer un message.
+// Vrai pour tout écran qui propose l'édition d'un message (discussion + commentaires
+// de publication). Le PATCH chat_messages/{id} de groupe/sortie n'a pas été confirmé
+// contre le back au moment de son ajout ici — à vérifier en recette avant release.
 protected open val allowsMessageEdit: Boolean get() = false
 
 // Vrai pour tout écran où les réactions sur message sont proposées (discussion +
@@ -451,12 +452,10 @@ private fun setupConversationChips() {
             isEventContext = isEvent,
             isGroupContext = isGroup,
             canEditMessage = canEdit,
-            // Pas de réaction sur son propre message, ni là où l'écran ne les propose pas
-            // (ex. commentaires de sortie). Là où le 3-points/la barre inline sont actifs
-            // (usesMessageOptionsMenu, cf. MessageBubbleItem), les réactions ne passent plus
-            // par ce sheet — le sheet ouvert par le 3-points n'affiche donc jamais les
-            // réactions là-bas. Ailleurs (commentaires de groupe/sortie), comportement
-            // inchangé : la barre de réactions reste dans ce sheet, ouvert par l'appui long.
+            // Pas de réaction sur son propre message, ni là où l'écran ne les propose pas.
+            // Là où le 3-points/la barre inline sont actifs (usesMessageOptionsMenu, cf.
+            // MessageBubbleItem — désormais vrai aussi pour les commentaires de groupe/sortie),
+            // les réactions ne passent plus par ce sheet, qui n'en affiche donc jamais.
             allowsReactions = allowsMessageReactions && !isMe && !usesMessageOptionsMenu,
             myReactionId = comment.reactionId ?: 0
         )
@@ -474,9 +473,10 @@ private fun setupConversationChips() {
     }
 
     // ==================================================================================
-    // Websocket temps réel (ConversationChannel) — partagé entre DetailConversationActivity
-    // et GroupCommentActivity : connexion/déconnexion, fusion des messages entrants sans
-    // voler le scroll, bandeau "nouveaux messages", et mise à jour optimiste des réactions.
+    // Websocket temps réel (ConversationChannel) — partagé entre DetailConversationActivity,
+    // GroupCommentActivity et EventCommentActivity : connexion/déconnexion, fusion des
+    // messages entrants sans voler le scroll, bandeau "nouveaux messages", et mise à jour
+    // optimiste des réactions.
     // ==================================================================================
 
     /** [belongsToThisScreen] filtre les événements reçus (utile quand la souscription

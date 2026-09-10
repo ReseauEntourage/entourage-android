@@ -15,18 +15,24 @@ import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.ReactionType
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.MentionAdapter
 import social.entourage.android.databinding.ActivityCommentsBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.tools.utils.Utils
+import social.entourage.android.tools.utils.VibrationUtil
 import timber.log.Timber
 import java.util.UUID
 
 class EventCommentActivity : CommentActivity() {
 
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
+
+    override val allowsMessageReactions: Boolean get() = true
+    override val allowsMessageEdit: Boolean get() = true
+    override val usesMessageOptionsMenu: Boolean get() = true
 
     // Retient l'index du dernier '@' tapé. -1 => pas de mention en cours
     private var lastMentionStartIndex = -1
@@ -46,6 +52,7 @@ class EventCommentActivity : CommentActivity() {
         eventPresenter.getAllComments.observe(this, ::handleGetPostComments)
         eventPresenter.commentPosted.observe(this, ::handleCommentPosted)
         eventPresenter.getCurrentParentPost.observe(this, ::handleParentPost)
+        eventPresenter.messageUpdated.observe(this) { it?.let { post -> mergeIncomingMessage(post, forceScrollIfMine = false) } }
 
         // Récupère les commentaires existants
         eventPresenter.getPostComments(id, postId)
@@ -135,9 +142,38 @@ class EventCommentActivity : CommentActivity() {
     }
 
 
-    // Édition de message non proposée sur les commentaires de publication (pas de
-    // "Modifier" dans le menu ici, cf. CommentActivity.isDiscussionScreen).
-    override fun updateComment(messageId: Int, newContentHtml: String) {}
+    // Édition d'un commentaire (PATCH outings/{id}/chat_messages/{id}, même ressource
+    // chat_message que les conversations — à confirmer en recette).
+    override fun updateComment(messageId: Int, newContentHtml: String) {
+        eventPresenter.updatePost(id, messageId, newContentHtml)
+    }
+
+    // ---------------------------------------------------------------------------
+    // Réactions sur un commentaire (réutilise les endpoints déjà existants pour les
+    // posts de sortie : chat_messages/{id}/reactions marche pour tout chat_message,
+    // post ou commentaire).
+    // ---------------------------------------------------------------------------
+    override fun onMessageReactionClicked(comment: Post, reactionType: ReactionType) {
+        val commentId = comment.id ?: return
+        VibrationUtil.vibrate(this)
+        val currentReactionId = comment.reactionId ?: 0
+        val idx = commentsList.indexOfFirst { it.id == commentId }
+
+        if (currentReactionId == reactionType.id) {
+            removeReactionBucket(comment, currentReactionId)
+            comment.reactionId = 0
+            eventPresenter.deleteReactToPost(id, commentId)
+        } else {
+            if (currentReactionId != 0) {
+                removeReactionBucket(comment, currentReactionId)
+                eventPresenter.deleteReactToPost(id, commentId)
+            }
+            addOrUpdateReactionBucket(comment, reactionType.id)
+            comment.reactionId = reactionType.id
+            eventPresenter.reactToPost(id, commentId, reactionType.id)
+        }
+        if (idx >= 0) binding.comments.adapter?.notifyItemChanged(idx + (if (currentParentPost != null) 1 else 0))
+    }
 
     // ---------------------------------------------------------------------------
     // Publication du commentaire
