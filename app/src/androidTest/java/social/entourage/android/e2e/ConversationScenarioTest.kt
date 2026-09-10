@@ -164,16 +164,18 @@ class ConversationScenarioTest : EntourageTestAfterLogin() {
     }
 
     /**
-     * Cible le bouton 3-points d'un message "à moi" (bulle + avatar alignés à droite, le
-     * 3-points entre les deux, en haut de l'item — cf. MessageBubbleItem : Row(Arrangement.End)
-     * { bulle ; OptionsIcon(top=8dp) ; Avatar(25dp+padding) }). Ce bouton n'a pas d'id/testTag :
-     * coordonnée approximative, à recaler sur un vrai appareil (cf. avertissement en tête de
-     * fichier) — remplace l'ancien longClickOnMessageBubble() qui visait la bulle elle-même
-     * (obsolète depuis que l'appui long sur son propre message ne fait plus rien).
+     * Cible le bouton 3-points d'un message "à moi". Depuis 6472a5c29, l'ordre en haut de
+     * l'item (Row(Arrangement.End), tout packé à droite) est : OptionsIcon, puis la bulle,
+     * puis l'avatar (25dp+padding) — le 3-points n'est donc plus collé à l'avatar mais à la
+     * largeur, variable, de la bulle avant lui. Ce bouton n'a pas d'id/testTag : coordonnée
+     * approximative (on vise assez loin de l'avatar pour laisser de la place à une bulle
+     * courte), à recaler sur un vrai appareil (cf. avertissement en tête de fichier) —
+     * remplace l'ancien longClickOnMessageBubble() qui visait la bulle elle-même (obsolète
+     * depuis que l'appui long sur son propre message ne fait plus rien).
      */
     private fun tapOptionsIconOnOwnMessage(): ViewAction = GeneralClickAction(
         Tap.SINGLE,
-        GeneralLocation.translate(GeneralLocation.TOP_RIGHT, -0.12f, 0.15f),
+        GeneralLocation.translate(GeneralLocation.TOP_RIGHT, -0.30f, 0.15f),
         Press.FINGER,
         InputDevice.SOURCE_UNKNOWN,
         MotionEvent.BUTTON_PRIMARY

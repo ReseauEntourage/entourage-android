@@ -174,14 +174,15 @@ class GroupCommentScenarioTest : EntourageTestAfterLogin() {
     }
 
     /**
-     * Cible le bouton 3-points d'un message "à moi" (bulle alignée à droite, 3-points entre
-     * la bulle et l'avatar, en haut de l'item — cf. MessageBubbleItem : Row(Arrangement.End)
-     * { bulle ; OptionsIcon(top=8dp) ; Avatar(25dp+padding) }). Approximatif : le 3-points n'a
-     * pas d'id/testTag, à recaler sur un vrai appareil (cf. avertissement en tête de fichier).
+     * Cible le bouton 3-points d'un message "à moi". Depuis 6472a5c29, l'ordre en haut de
+     * l'item (Row(Arrangement.End), tout packé à droite) est : OptionsIcon, puis la bulle,
+     * puis l'avatar (25dp+padding) — le 3-points n'est donc plus collé à l'avatar mais à la
+     * largeur, variable, de la bulle avant lui. Approximatif : ce bouton n'a pas d'id/testTag,
+     * à recaler sur un vrai appareil (cf. avertissement en tête de fichier).
      */
     private fun tapOptionsIconOnOwnMessage(): ViewAction = GeneralClickAction(
         Tap.SINGLE,
-        GeneralLocation.translate(GeneralLocation.TOP_RIGHT, -0.12f, 0.15f),
+        GeneralLocation.translate(GeneralLocation.TOP_RIGHT, -0.30f, 0.15f),
         Press.FINGER,
         InputDevice.SOURCE_UNKNOWN,
         MotionEvent.BUTTON_PRIMARY
