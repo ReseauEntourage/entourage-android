@@ -31,11 +31,11 @@ interface OnItemClickListener {
     fun onItemClick(comment: Post)
     fun onCommentReport(commentId: Int?, isForEvent: Boolean, isForGroup: Boolean, isMe: Boolean, commentLang: String)
     fun onShowWeb(url: String) // si tu veux ouvrir un navigateur ou gérer autrement
-    // Fallback si l'appui long ne peut pas ouvrir la barre de réactions (cf.
-    // MessageBubbleItem.handleLongPress) : ouvre alors le sheet d'actions complet, comme
-    // onMessageOptionsClick (3-points).
-    fun onMessageLongPress(comment: Post, isMe: Boolean)
-    fun onMessageOptionsClick(comment: Post, isMe: Boolean)
+    // Long-clic sur la bulle et tap sur le bouton déclencheur (cf. MessageBubbleItem) ouvrent
+    // tous les deux le même panneau d'actions unifié (MessageActionsOverlay) — [target] porte
+    // tout ce qu'il faut pour l'ancrer et ré-afficher la bulle nette par-dessus.
+    fun onMessageLongPress(target: MessageActionsTarget)
+    fun onMessageOptionsClick(target: MessageActionsTarget)
     fun onMessageReactionPicked(comment: Post, reactionType: ReactionType)
 }
 
@@ -189,7 +189,11 @@ class CommentsListAdapter(
             dateText = dateText,
             showReportIcon = !isMe && !isConversation,
             onAvatarClick = { openProfile(comment) },
-            onLongPress = { onItemClick.onMessageLongPress(comment, isMe) },
+            onLongPress = { bounds ->
+                onItemClick.onMessageLongPress(
+                    MessageActionsTarget(comment, isMe, contentToShow, isDeletedOrOffensive, deletedLabel, bounds)
+                )
+            },
             onImageClick = { openImageZoom(comment) },
             onReportClick = {
                 val commentLang = comment.contentTranslations?.fromLang ?: ""
@@ -198,7 +202,11 @@ class CommentsListAdapter(
             },
             onLinkClick = { url -> onItemClick.onShowWeb(url) },
             onRetryClick = { onItemClick.onItemClick(comment) },
-            onOptionsClick = { onItemClick.onMessageOptionsClick(comment, isMe) },
+            onOptionsClick = { bounds ->
+                onItemClick.onMessageOptionsClick(
+                    MessageActionsTarget(comment, isMe, contentToShow, isDeletedOrOffensive, deletedLabel, bounds)
+                )
+            },
             onReactionPicked = { type -> onItemClick.onMessageReactionPicked(comment, type) },
             reactions = comment.reactions ?: emptyList(),
             reactionTypes = MainActivity.reactionsList ?: emptyList(),

@@ -2847,5 +2847,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="post_draft_meetup">¿Y si nos reunimos pronto? Propongo </string>
 
     <string name="group_feed_post_unavailable">Cette publication n\'existe plus.</string>
+    <string name="message_action_react">Réagir</string>
 
 </resources>

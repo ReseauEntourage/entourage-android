@@ -7,10 +7,14 @@ import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.activity.viewModels
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.drawToBitmap
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +23,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Post
@@ -27,6 +32,7 @@ import social.entourage.android.api.model.ReactionType
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityCommentsBinding
 import social.entourage.android.deeplinks.UniversalLinkManager
+import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.groups.GroupPresenter
@@ -65,6 +71,10 @@ var isSmallTalk = false
 lateinit var viewModel: DiscussionsPresenter
 var haveReloadFromDelete = false
 protected var editingMessageId: Int? = null
+
+// Panneau d'actions unifié actuellement affiché (cf. showMessageActionsOverlay), le cas
+// échéant — null quand aucun n'est ouvert.
+private var messageActionsOverlayView: ComposeView? = null
 
 // chat_message_id ciblé par une notification (deep link vers un commentaire précis dans ce
 // fil) : consommé une seule fois par scrollAndHighlightIfNeeded(), puis remis à null.
@@ -255,15 +265,22 @@ private fun handleMessageDeleted(isMessageDeleted:Boolean){
 
 }
 
+/**
+ * Confirmation REST de l'envoi d'un commentaire. Sur les commentaires de groupe/sortie, le
+ * même message revient aussi par le websocket (chat_message_created n'est pas filtré pour
+ * l'auteur, contrairement aux réactions) : sans déduplication, il apparaissait deux fois
+ * selon l'ordre d'arrivée REST/socket. On passe donc par [mergeIncomingMessage], qui
+ * remplace l'entrée déjà insérée par le socket au lieu d'en ajouter une deuxième.
+ */
 protected fun handleCommentPosted(post: Post?) {
     post?.let {
-        commentsList.add(post)
+        mergeIncomingMessage(it)
     } ?: run {
         messagesFailed.add(comment)
         comment?.let { commentsList.add(it) }
+        binding.comments.scrollToPositionSmooth(commentsList.size)
+        updateView(false)
     }
-    binding.comments.scrollToPositionSmooth(commentsList.size)
-    updateView(false)
 }
 
 fun updateView(emptyState: Boolean) {
@@ -417,12 +434,12 @@ private fun setupConversationChips() {
                             .show(supportFragmentManager, WebViewFragment.TAG)
                     }
 
-                    override fun onMessageLongPress(comment: Post, isMe: Boolean) {
-                        showMessageOptions(comment, isMe)
+                    override fun onMessageLongPress(target: MessageActionsTarget) {
+                        showMessageActionsOverlay(target)
                     }
 
-                    override fun onMessageOptionsClick(comment: Post, isMe: Boolean) {
-                        showMessageOptions(comment, isMe)
+                    override fun onMessageOptionsClick(target: MessageActionsTarget) {
+                        showMessageActionsOverlay(target)
                     }
 
                     override fun onMessageReactionPicked(comment: Post, reactionType: ReactionType) {
@@ -436,30 +453,136 @@ private fun setupConversationChips() {
         }
     }
 
-    private fun showMessageOptions(comment: Post, isMe: Boolean) {
-        val conversationId = if (isConversation) id else 0
-        val groupId = if (isGroup) id else 0
-        val eventId = if (isEvent) id else 0
+    /**
+     * Panneau d'actions unifié (cf. [MessageActionsOverlay]) : remplace l'ancien
+     * `ActionSheetFragment` (SheetMode.MESSAGE_ACTIONS) qui ouvrait un bottom sheet séparé —
+     * long-clic sur la bulle et tap sur le bouton déclencheur (cf. MessageBubbleItem) ouvrent
+     * tous les deux ce même panneau, ancré à la position capturée dans [target].
+     */
+    private fun showMessageActionsOverlay(target: MessageActionsTarget) {
+        if (messageActionsOverlayView != null) return
+        val comment = target.comment
+        val isMe = target.isMe
         val canEdit = allowsMessageEdit && isMe && comment.status !in listOf("deleted", "offensive", "offensible")
+        val canReact = allowsMessageReactions && !isMe && comment.id != null
 
-        val sheet = ActionSheetFragment.newMessageActions(
-            conversationId = conversationId,
-            groupId = groupId,
-            eventId = eventId,
-            messageId = comment.id ?: 0,
-            messageHtml = comment.content ?: comment.contentHtml,
-            isMyMessage = isMe,
-            isEventContext = isEvent,
-            isGroupContext = isGroup,
-            canEditMessage = canEdit,
-            // Pas de réaction sur son propre message, ni là où l'écran ne les propose pas.
-            // Là où le 3-points/la barre inline sont actifs (usesMessageOptionsMenu, cf.
-            // MessageBubbleItem — désormais vrai aussi pour les commentaires de groupe/sortie),
-            // les réactions ne passent plus par ce sheet, qui n'en affiche donc jamais.
-            allowsReactions = allowsMessageReactions && !isMe && !usesMessageOptionsMenu,
-            myReactionId = comment.reactionId ?: 0
+        val screenshot = try {
+            window.decorView.drawToBitmap().softBlur()
+        } catch (e: Exception) {
+            null
+        }
+
+        val rootContent = findViewById<ViewGroup>(android.R.id.content)
+        val overlay = ComposeView(this).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnDetachedFromWindow)
+        }
+        rootContent.addView(
+            overlay,
+            ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         )
-        sheet.show(supportFragmentManager, "MessageActionsSheet")
+        messageActionsOverlayView = overlay
+
+        overlay.setContent {
+            MessageActionsOverlay(
+                target = target,
+                backgroundBitmap = screenshot,
+                canEdit = canEdit,
+                allowsReactions = canReact,
+                reactionTypes = MainActivity.reactionsList ?: emptyList(),
+                myReactionId = comment.reactionId ?: 0,
+                onDismiss = { dismissMessageActionsOverlay() },
+                onCopy = { performMessageCopy(comment); dismissMessageActionsOverlay() },
+                onEdit = {
+                    startEditingMessage(comment.id ?: 0, comment.content ?: comment.contentHtml)
+                    dismissMessageActionsOverlay()
+                },
+                onReport = { performMessageReport(comment, isMe); dismissMessageActionsOverlay() },
+                onDelete = { performMessageDelete(comment); dismissMessageActionsOverlay() },
+                onReactionPicked = { type ->
+                    comment.id?.let { applyReactionFromMessageActions(it, type) }
+                    dismissMessageActionsOverlay()
+                },
+            )
+        }
+    }
+
+    private fun dismissMessageActionsOverlay() {
+        val overlay = messageActionsOverlayView ?: return
+        (overlay.parent as? ViewGroup)?.removeView(overlay)
+        messageActionsOverlayView = null
+    }
+
+    private fun performMessageCopy(comment: Post) {
+        val messageHtml = comment.content ?: comment.contentHtml
+        val plain = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(messageHtml.orEmpty(), Html.FROM_HTML_MODE_LEGACY).toString()
+        } else {
+            @Suppress("DEPRECATION") Html.fromHtml(messageHtml.orEmpty()).toString()
+        }
+        val cm = getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+        cm.setPrimaryClip(android.content.ClipData.newPlainText("message", plain))
+    }
+
+    /**
+     * Porté depuis l'ancien `ActionSheetFragment` (SheetMode.MESSAGE_ACTIONS, bloc
+     * layoutReport) : pour un message de conversation, on signale la conversation entière
+     * (REPORT_CONVERSATION, avec résolution smalltalk) plutôt que le message individuel — ce
+     * n'est PAS la même chose que [reportComment] (raccourci de signalement rapide des
+     * commentaires de groupe/sortie, qui signale directement le commentaire).
+     */
+    private fun performMessageReport(comment: Post, isMe: Boolean) {
+        val messageHtml = comment.content ?: comment.contentHtml
+        val plain = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(messageHtml.orEmpty(), Html.FROM_HTML_MODE_LEGACY).toString()
+        } else {
+            @Suppress("DEPRECATION") Html.fromHtml(messageHtml.orEmpty()).toString()
+        }
+
+        if (!isEvent && !isGroup) {
+            val isSmallTalkMode = isSmallTalk || DetailConversationActivity.isSmallTalkMode
+            val convOrSmallTalkId = if (isSmallTalkMode) {
+                DetailConversationActivity.smallTalkId.toIntOrNull() ?: 0
+            } else {
+                id
+            }
+            ReportModalFragment.newInstance(
+                id = convOrSmallTalkId,
+                groupId = Const.DEFAULT_VALUE,
+                reportType = ReportTypes.REPORT_CONVERSATION,
+                isFromMe = isMe,
+                isConv = true,
+                isOneToOne = false,
+                contentCopied = plain,
+                openDirectSignal = true,
+                isSmallTalk = isSmallTalkMode
+            ).show(supportFragmentManager, ReportModalFragment.TAG)
+        } else {
+            val (containerId, reportType) = when {
+                isEvent -> id to ReportTypes.REPORT_POST_EVENT
+                isGroup -> id to ReportTypes.REPORT_POST
+                else -> 0 to ReportTypes.REPORT_POST
+            }
+            ReportModalFragment.newInstance(
+                id = comment.id ?: 0,
+                groupId = containerId,
+                reportType = reportType,
+                isFromMe = isMe,
+                isConv = false,
+                isOneToOne = false,
+                contentCopied = plain,
+                openDirectSignal = true
+            ).show(supportFragmentManager, ReportModalFragment.TAG)
+        }
+    }
+
+    private fun performMessageDelete(comment: Post) {
+        val messageId = comment.id ?: return
+        when {
+            isEvent && id != 0 -> eventPresenter.deletedEventPost(id, messageId)
+            isGroup && id != 0 -> groupPresenter.deletedGroupPost(id, messageId)
+            else -> discussionsPresenter.deleteMessage(id, messageId)
+        }
+        reloadView()
     }
 
     /** Overridden by subclasses to actually send/remove the reaction. */

@@ -2006,5 +2006,6 @@
     <string name="post_draft_meetup">What if we got together soon? I suggest </string>
 
     <string name="group_feed_post_unavailable">This post no longer exists.</string>
+    <string name="message_action_react">Réagir</string>
 
 </resources>

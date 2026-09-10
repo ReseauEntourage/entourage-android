@@ -10,11 +10,11 @@ import android.text.style.URLSpan
 import android.text.util.Linkify
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,8 +37,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
@@ -84,12 +88,12 @@ fun MessageBubbleItem(
     dateText: String?,
     showReportIcon: Boolean,
     onAvatarClick: () -> Unit,
-    onLongPress: () -> Unit,
+    onLongPress: (Rect) -> Unit,
     onImageClick: () -> Unit,
     onReportClick: () -> Unit,
     onLinkClick: (String) -> Unit,
     onRetryClick: () -> Unit,
-    onOptionsClick: () -> Unit,
+    onOptionsClick: (Rect) -> Unit,
     onReactionPicked: (ReactionType) -> Unit,
     reactions: List<Reaction>,
     reactionTypes: List<ReactionType>,
@@ -107,20 +111,13 @@ fun MessageBubbleItem(
         )
     }
 
-    // Réagir passe par l'appui long (barre de réactions affichée sous la bulle, cf. plus
-    // bas) plutôt que par le sheet d'actions complet, quel que soit l'écran (conversation,
-    // commentaires de groupe ou de sortie) — le 3-points ouvre ce sheet pour
-    // signaler/copier/modifier/supprimer, sans les réactions. Sur son propre message,
-    // l'appui long ne fait rien : les actions passent uniquement par le 3-points.
-    var showReactionBar by remember(comment.id) { mutableStateOf(false) }
-    val canReactHere = usesMessageOptionsMenu && allowsReactions && !isMe && comment.id != null
-    val handleLongPress: () -> Unit = {
-        if (usesMessageOptionsMenu) {
-            if (canReactHere) showReactionBar = !showReactionBar
-        } else {
-            onLongPress()
-        }
-    }
+    // Long-clic et bouton de déclenchement (sous la bulle) ouvrent tous les deux le même
+    // panneau superposé (cf. MessageActionsOverlay) — sur son propre message comme sur celui
+    // d'un autre. La position de la bulle est capturée en continu via onGloballyPositioned
+    // pour que le panneau puisse s'ancrer exactement dessus au moment du déclenchement.
+    var bubbleBoundsInWindow by remember(comment.id) { mutableStateOf(Rect.Zero) }
+    val hasReactions = reactions.any { it.reactionsCount > 0 }
+    val handleLongPress: () -> Unit = { onLongPress(bubbleBoundsInWindow) }
 
     Row(
         modifier = Modifier
@@ -130,11 +127,7 @@ fun MessageBubbleItem(
         horizontalArrangement = if (isMe) Arrangement.End else Arrangement.Start,
         verticalAlignment = Alignment.Top
     ) {
-        if (isMe) {
-            if (usesMessageOptionsMenu) {
-                OptionsIcon(onClick = onOptionsClick, modifier = Modifier.padding(top = 8.dp, end = 4.dp))
-            }
-        } else {
+        if (!isMe) {
             GlideCircleAvatar(
                 url = comment.user?.avatarURLAsString,
                 size = 25.dp,
@@ -147,31 +140,21 @@ fun MessageBubbleItem(
             modifier = Modifier.widthIn(max = 280.dp),
             horizontalAlignment = if (isMe) Alignment.End else Alignment.Start
         ) {
-            BubbleContent(
-                comment = comment,
-                isMe = isMe,
-                isDeletedOrOffensive = isDeletedOrOffensive,
-                deletedOrOffensiveLabel = deletedOrOffensiveLabel,
-                contentHtml = contentHtml,
-                onLongPress = handleLongPress,
-                onImageClick = onImageClick,
-                onLinkClick = onLinkClick,
-            )
-
-            if (canReactHere) {
-                AnimatedVisibility(visible = showReactionBar) {
-                    Column {
-                        Spacer(Modifier.padding(top = 4.dp))
-                        ReactionPickerRow(
-                            types = reactionTypes,
-                            selectedTypeId = comment.reactionId ?: 0,
-                            onPicked = { type ->
-                                onReactionPicked(type)
-                                showReactionBar = false
-                            }
-                        )
-                    }
+            Box(
+                modifier = Modifier.onGloballyPositioned { coordinates ->
+                    bubbleBoundsInWindow = coordinates.boundsInWindow()
                 }
+            ) {
+                BubbleContent(
+                    comment = comment,
+                    isMe = isMe,
+                    isDeletedOrOffensive = isDeletedOrOffensive,
+                    deletedOrOffensiveLabel = deletedOrOffensiveLabel,
+                    contentHtml = contentHtml,
+                    onLongPress = handleLongPress,
+                    onImageClick = onImageClick,
+                    onLinkClick = onLinkClick,
+                )
             }
 
             if (dateText != null) {
@@ -208,44 +191,48 @@ fun MessageBubbleItem(
                 }
             }
 
-            // Affichage passif des réactions déjà posées sur ce message. Pour réagir : appui
-            // long sur la bulle, qui déploie la barre [ReactionPickerRow] juste au-dessus.
-            if (allowsReactions && comment.id != null) {
+            // Sous la bulle : pastilles des réactions déjà posées (affichage passif) suivies du
+            // bouton déclencheur du panneau d'actions unifié (réactions + copier/modifier/
+            // signaler/supprimer, cf. MessageActionsOverlay) — long-clic sur la bulle ouvre le
+            // même panneau.
+            if (usesMessageOptionsMenu) {
+                Spacer(Modifier.padding(top = 4.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (allowsReactions && comment.id != null) {
+                        ReactionsBadgeRow(reactions = reactions, reactionTypes = reactionTypes)
+                        Spacer(Modifier.padding(start = 6.dp))
+                    }
+                    MessageActionsTriggerButton(
+                        showLabel = allowsReactions && !isMe && !hasReactions,
+                        onClick = { onOptionsClick(bubbleBoundsInWindow) }
+                    )
+                }
+            } else if (allowsReactions && comment.id != null) {
                 Spacer(Modifier.padding(top = 2.dp))
                 ReactionsBadgeRow(reactions = reactions, reactionTypes = reactionTypes)
             }
         }
 
         if (isMe) {
-            // Le 3-points d'un message "à moi" est affiché avant la bulle, cf. le bloc
-            // symétrique en tête de Row (Modifier.padding(top = 8.dp, end = 4.dp)) — pas ici,
-            // pour ne pas le dupliquer.
             GlideCircleAvatar(
                 url = comment.user?.avatarURLAsString,
                 size = 25.dp,
                 onClick = onAvatarClick,
                 modifier = Modifier.padding(top = 8.dp, start = 8.dp)
             )
-        } else {
-            // Le 3-points (sheet report/copier/supprimer) est affiché sur tout écran qui
-            // l'utilise (usesMessageOptionsMenu) ; sur les commentaires de groupe/sortie il
-            // vient s'ajouter au raccourci de signalement rapide déjà existant (showReportIcon),
-            // qu'on garde tel quel pour ne rien retirer.
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                if (showReportIcon) {
-                    ReportIcon(onReportClick, modifier = Modifier.padding(top = 4.dp, start = 8.dp))
-                    Spacer(Modifier.padding(top = 4.dp))
-                }
-                if (usesMessageOptionsMenu) {
-                    OptionsIcon(onClick = onOptionsClick, modifier = Modifier.padding(start = 8.dp))
-                }
-            }
+        } else if (showReportIcon) {
+            // Raccourci de signalement rapide déjà existant sur les commentaires de groupe/
+            // sortie (showReportIcon), conservé tel quel — distinct du "Signaler" du panneau
+            // d'actions unifié.
+            ReportIcon(onReportClick, modifier = Modifier.padding(top = 4.dp, start = 8.dp))
         }
     }
 }
 
+/** `internal` (pas `private`) : réutilisé tel quel par [MessageActionsOverlay] pour ré-afficher
+ * la bulle nette par-dessus le fond flouté, à sa position d'origine. */
 @Composable
-private fun BubbleContent(
+internal fun BubbleContent(
     comment: Post,
     isMe: Boolean,
     isDeletedOrOffensive: Boolean,
@@ -318,20 +305,38 @@ private fun ReportIcon(onClick: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 /**
- * Bouton "3 points" ouvrant le sheet d'actions d'un message (signaler/copier/modifier/
- * supprimer — sans les réactions, qui passent par l'appui long, cf. [MessageBubbleItem]).
- * Même logique que le "..." des publications de groupe, affiché à côté de chaque message.
+ * Bouton déclencheur du panneau d'actions unifié (réactions + copier/modifier/signaler/
+ * supprimer, cf. [MessageActionsOverlay]) — remplace l'ancien icône "3 points". Pilule avec
+ * icône + libellé "Réagir" quand le message n'a encore aucune réaction et qu'on peut y réagir
+ * ([showLabel]) ; icône seule sinon (message déjà réagi, où les pastilles de
+ * [ReactionsBadgeRow] jouent déjà ce rôle, ou son propre message, où réagir ne s'applique pas).
  */
 @Composable
-private fun OptionsIcon(onClick: () -> Unit, modifier: Modifier = Modifier) {
-    Image(
-        painter = painterResource(R.drawable.ic_more_3filleddots),
-        contentDescription = null,
-        colorFilter = ColorFilter.tint(colorResource(R.color.grey)),
+private fun MessageActionsTriggerButton(showLabel: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .size(20.dp)
+            .shadow(elevation = 1.dp, shape = RoundedCornerShape(20.dp))
+            .clip(RoundedCornerShape(20.dp))
+            .background(colorResource(R.color.white))
+            .border(1.dp, colorResource(R.color.new_light_grey), RoundedCornerShape(20.dp))
             .clickable(onClick = onClick)
-    )
+            .padding(horizontal = if (showLabel) 12.dp else 6.dp, vertical = 6.dp)
+    ) {
+        Image(
+            painter = painterResource(R.drawable.ic_reaction_smiley),
+            contentDescription = null,
+            colorFilter = ColorFilter.tint(colorResource(R.color.orange)),
+            modifier = Modifier.size(16.dp)
+        )
+        if (showLabel) {
+            Spacer(Modifier.padding(start = 4.dp))
+            Text(
+                text = stringResource(R.string.message_action_react),
+                style = EntourageComposeStyles.groupMemberSubtitleBlack
+            )
+        }
+    }
 }
 
 /**
