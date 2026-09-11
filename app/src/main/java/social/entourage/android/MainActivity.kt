@@ -190,7 +190,7 @@ class MainActivity : BaseSecuredActivity() {
         }
 
         if (this.intent != null) {
-            useIntentForRedictection(this.intent)
+            useIntentForRedirection(this.intent)
             if(!TestHelper.isRunningInTestHarness()) {
                 //TODO WHY WHY WHY WHY WHY ? It does make the tests do a timeout !
                 this.intent = null
@@ -298,7 +298,8 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
 
-    fun useIntentForRedictection(intent: Intent) {
+    fun useIntentForRedirection(intent: Intent) {
+    
         val onboardingNav = intent.parcelableExtra<OnboardingNavigation>("extra_onboarding_navigation")
         if (onboardingNav != null) {
             intent.removeExtra("extra_onboarding_navigation")
@@ -389,7 +390,7 @@ class MainActivity : BaseSecuredActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         this.intent = intent
-        useIntentForRedictection(intent)
+        useIntentForRedirection(intent)
     }
 
     private fun updateAnalyticsInfo() {
