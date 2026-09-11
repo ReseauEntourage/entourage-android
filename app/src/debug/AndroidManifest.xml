@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application>
+
+        <!-- No Facebook tracking outside release builds. Removing the SDK auto-init provider
+             also removes the Graph calls it fires at startup (app settings, gatekeepers),
+             which only produced logcat noise and consumed the app-level rate limit.
+             LibrariesSupport must not touch FacebookSdk when this provider is absent. -->
+        <provider
+            android:name="com.facebook.internal.FacebookInitProvider"
+            android:authorities="${applicationId}.FacebookInitProvider"
+            tools:node="remove" />
+
+    </application>
+
+</manifest>
