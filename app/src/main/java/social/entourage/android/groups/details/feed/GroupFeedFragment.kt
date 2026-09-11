@@ -69,7 +69,6 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
-import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.CustomTypefaceSpan
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick

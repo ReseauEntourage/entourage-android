@@ -895,7 +895,7 @@ class EventsPresenter : ViewModel() {
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Timber.tag("EventPresenter deleteReactToPost").d("onFailure: $t")
+                Timber.tag("EventPresenter").d("deleteReactToPost onFailure: $t")
             }
         })
     }
@@ -918,7 +918,7 @@ class EventsPresenter : ViewModel() {
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Timber.tag("deleteReactToPost deleteReactToPost").d("onFailure: $t")
+                Timber.tag("deleteReactToPost").d("deleteReactToPost onFailure: $t")
             }
         })
     }
