@@ -60,6 +60,7 @@ import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.fcmTokenTask
 import social.entourage.android.tools.utils.overrideTransitionCompat
+import social.entourage.android.tools.utils.parcelableExtra
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
 import timber.log.Timber
