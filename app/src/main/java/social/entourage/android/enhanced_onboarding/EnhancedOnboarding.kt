@@ -23,6 +23,7 @@ import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterest
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingPresentationFragment
 import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.utils.overrideTransitionCompat
+import timber.log.Timber
 
 class EnhancedOnboarding : BaseActivity() {
     private lateinit var binding: ActivityEnhancedOnboardingLayoutBinding
@@ -44,6 +45,11 @@ class EnhancedOnboarding : BaseActivity() {
 
         viewModel = ViewModelProvider(this).get(OnboardingViewModel::class.java)
         viewModel.user = EntourageApplication.me(this)
+
+        Timber.tag("EN9530_DEBUG").d(
+            "EnhancedOnboarding.onCreate: user.goal=${viewModel.user?.goal} " +
+                    "isUserTypeAlone=${viewModel.user?.isUserTypeAlone} EnhancedOnboarding.preference=$preference"
+        )
 
         val userGoal = viewModel.user?.goal
         val isAssoRole = viewModel.user?.partner != null && (viewModel.user?.roles?.contains("Association") == true || viewModel.user?.roles?.contains("Équipe Entourage") == true)
@@ -223,6 +229,8 @@ class EnhancedOnboarding : BaseActivity() {
                     else -> OnboardingNavigation.Home
                 }
             }
+
+            Timber.tag("EN9530_DEBUG").d("handleOnboardingShouldQuit: selectedCategory=${viewModel.selectedCategory} -> navigation=$navigation")
 
             val intent = Intent(this, MainActivity::class.java)
             intent.putExtra("extra_onboarding_navigation", navigation)
