@@ -1,6 +1,5 @@
 package social.entourage.android.groups.list
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
@@ -57,11 +56,11 @@ class GroupsListAdapter(
             with(group) {
                 binding.layout.setOnClickListener {view ->
                     handleAnalytics()
-                    (view.context as? Activity)?.startActivityForResult(
+                    view.context.startActivity(
                         Intent(view.context, GroupFeedActivity::class.java).putExtra(
                             Const.GROUP_ID,
                             groupsList[position].id
-                        ), 0
+                        )
                     )
                 }
                 group.unreadPostsCount?.let {

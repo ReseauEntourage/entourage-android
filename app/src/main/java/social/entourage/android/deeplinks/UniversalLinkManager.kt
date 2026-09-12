@@ -301,24 +301,24 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
     }
 
     override fun onRetrievedEvent(event: Events) {
-        (context as? Activity)?.startActivityForResult(
+        context.startActivity(
             Intent(
                 context,
                 social.entourage.android.events.details.feed.EventFeedActivity::class.java
             ).apply {
                 putExtra(Const.EVENT_ID, event.id)
                 addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-            }, 0
+            }
         )
     }
 
     override fun onRetrievedGroup(group: Group?) {
         group?.id?.let { groupId ->
-            (context as? Activity)?.startActivityForResult(
+            context.startActivity(
                 Intent(context, GroupFeedActivity::class.java).putExtra(
                     Const.GROUP_ID,
                     groupId
-                ), 0
+                )
             )
         } ?: run {
             Timber.e("Group or Group ID is null")

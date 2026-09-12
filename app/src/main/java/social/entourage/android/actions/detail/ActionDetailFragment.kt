@@ -1,6 +1,5 @@
 package social.entourage.android.actions.detail
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -247,14 +246,14 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         binding.uiLayoutCharte.setOnClickListener {
             val intent = Intent(context, GroupRulesActivity::class.java)
             intent.putExtra(Const.RULES_TYPE, Const.RULES_ACTION)
-            startActivityForResult(intent, 0)
+            startActivity(intent)
         }
 
         binding.layoutUser.setOnClickListener {
-            startActivityForResult(Intent(context, ProfileFullActivity::class.java).putExtra(
+            startActivity(Intent(context, ProfileFullActivity::class.java).putExtra(
                 Const.USER_ID,
                 action?.author?.userID
-            ),0)
+            ))
         }
 
         binding.uiBtModify.setOnClickListener {
@@ -267,7 +266,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                 intent.putExtra(Const.IS_ACTION_DEMAND, false)
             }
             isFromEdit = true
-            startActivityForResult(intent, 0)
+            startActivity(intent)
         }
 
         binding.uiBtDelete.setOnClickListener {
