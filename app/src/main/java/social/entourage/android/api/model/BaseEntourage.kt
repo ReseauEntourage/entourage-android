@@ -1,12 +1,13 @@
 package social.entourage.android.api.model
 
 import android.content.Context
-import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.BlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
@@ -158,7 +159,10 @@ open class BaseEntourage : FeedItem, Serializable {
         AppCompatResources.getDrawable(context, entourageCategory.iconRes)?.let { categoryIcon ->
             categoryIcon.mutate()
             categoryIcon.clearColorFilter()
-            categoryIcon.setColorFilter(ContextCompat.getColor(context, entourageCategory.typeColorRes), PorterDuff.Mode.SRC_IN)
+            categoryIcon.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                ContextCompat.getColor(context, entourageCategory.typeColorRes),
+                BlendModeCompat.SRC_IN
+            )
             return categoryIcon
         }
         return super.getIconDrawable(context)

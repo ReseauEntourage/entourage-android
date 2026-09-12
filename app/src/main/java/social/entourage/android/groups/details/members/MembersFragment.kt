@@ -177,8 +177,8 @@ open class MembersFragment : Fragment() {
                         discussionPresenter.createOrGetConversation(userId.toString())
                     }
                     override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean, photoAcceptance: Boolean?) {
-                        if (type == MembersType.EVENT && id != null && isChecked) {
-                            eventPresenter.participateForUser(id, user.userId)
+                        if (type == MembersType.EVENT && this@MembersFragment.id != null && isChecked) {
+                            eventPresenter.participateForUser(this@MembersFragment.id!!, user.userId)
                             if (photoAcceptance == false) {
                                 // TODO: Afficher la pop-up de droit à l'image (à implémenter si nécessaire dans le fragment)
                                 // Exemple : showAcceptPhotoDialog(user.userId)
@@ -206,8 +206,8 @@ open class MembersFragment : Fragment() {
                         discussionPresenter.createOrGetConversation(userId.toString())
                     }
                     override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean, photoAcceptance: Boolean?) {
-                        if (type == MembersType.EVENT && id != null && isChecked) {
-                            eventPresenter.participateForUser(id, user.userId)
+                        if (type == MembersType.EVENT && this@MembersFragment.id != null && isChecked) {
+                            eventPresenter.participateForUser(this@MembersFragment.id!!, user.userId)
                             if (photoAcceptance == false) {
                                 // TODO: Afficher la pop-up de droit à l'image (à implémenter si nécessaire dans le fragment)
                                 // Exemple : showAcceptPhotoDialog(user.userId)

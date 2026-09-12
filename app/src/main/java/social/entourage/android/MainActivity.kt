@@ -282,7 +282,7 @@ class MainActivity : BaseSecuredActivity() {
                 val intent = Intent(this, CreateActionActivity::class.java)
                 intent.putExtra(Const.IS_ACTION_DEMAND, false)
                 startActivity(intent)
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
             }
             is OnboardingNavigation.Quiz -> {
                 val urlString = "https://kahoot.it/challenge/45371e80-fe50-4be5-afec-b37e3d50ede2_1733228323615"
