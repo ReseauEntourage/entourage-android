@@ -1,6 +1,5 @@
 package social.entourage.android.comment
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.view.ViewGroup
@@ -216,8 +215,8 @@ class CommentsListAdapter(
 
     private fun openProfile(comment: Post) {
         val userId = comment.user?.userId ?: return
-        (context as? Activity)?.startActivityForResult(
-            Intent(context, ProfileFullActivity::class.java).putExtra(Const.USER_ID, userId), 0
+        context.startActivity(
+            Intent(context, ProfileFullActivity::class.java).putExtra(Const.USER_ID, userId)
         )
     }
 

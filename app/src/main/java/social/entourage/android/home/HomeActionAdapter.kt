@@ -1,6 +1,5 @@
 package social.entourage.android.home
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.view.Gravity
@@ -112,23 +111,21 @@ class HomeActionAdapter(private var isContrib: Boolean) :
         holder.binding.layout.setOnClickListener { view ->
             if (isContrib) {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Contrib_Detail)
-                (view.context as? Activity)?.startActivityForResult(
+                view.context.startActivity(
                     Intent(view.context, ActionDetailActivity::class.java)
                         .putExtra(Const.ACTION_ID, action.id)
                         .putExtra(Const.ACTION_TITLE, action.title)
                         .putExtra(Const.IS_ACTION_DEMAND, false)
-                        .putExtra(Const.IS_ACTION_MINE, action.isMine()),
-                    0
+                        .putExtra(Const.IS_ACTION_MINE, action.isMine())
                 )
             } else {
                 AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Demand_Detail)
-                (view.context as? Activity)?.startActivityForResult(
+                view.context.startActivity(
                     Intent(view.context, ActionDetailActivity::class.java)
                         .putExtra(Const.ACTION_ID, action.id)
                         .putExtra(Const.ACTION_TITLE, action.title)
                         .putExtra(Const.IS_ACTION_DEMAND, true)
-                        .putExtra(Const.IS_ACTION_MINE, action.isMine()),
-                    0
+                        .putExtra(Const.IS_ACTION_MINE, action.isMine())
                 )
             }
         }
