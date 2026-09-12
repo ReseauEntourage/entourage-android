@@ -439,7 +439,7 @@ object PushNotificationManager {
             val intent = Intent(context, DetailConversationActivity::class.java).apply {
                 putExtras(
                     Bundle().apply {
-                        pushNotificationMessage.content.joinableId?.toInt()?.let { putInt(Const.ID, it) }
+                        pushNotificationMessage.content.joinableId.toInt().let { putInt(Const.ID, it) }
                         putBoolean(Const.SHOULD_OPEN_KEYBOARD, false)
                         putBoolean(Const.IS_CONVERSATION_1TO1, true)
                         putBoolean(Const.IS_MEMBER, true)
