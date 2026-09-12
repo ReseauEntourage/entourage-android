@@ -4,6 +4,7 @@
 
     <LinearLayout
         android:id="@+id/root"
+        android:focusable="true"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="56dp"
