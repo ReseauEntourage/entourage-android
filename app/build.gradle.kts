@@ -109,6 +109,12 @@ android {
         buildConfigField("String", "TEST_ACCOUNT_PWD", localTestAccountPwd)
     }
 
+    testOptions {
+        unitTests.all {
+            it.jvmArgs("-XX:+EnableDynamicAgentLoading")
+        }
+    }
+
     signingConfigs {
         create("googleplay") {
             val keystorePass= System.getenv("KEYSTORE_PASS") ?: findProperty("entourageKeystorePassword") as String? ?: ""
