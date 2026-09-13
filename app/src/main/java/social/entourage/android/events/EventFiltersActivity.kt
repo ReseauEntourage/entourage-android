@@ -241,7 +241,7 @@ class EventFiltersActivity : AppCompatActivity() {
                 val place = data?.let { Autocomplete.getPlaceFromIntent(it) }
                 val location = place?.location
                 if (place == null || place.formattedAddress == null || location == null) return@registerForActivityResult
-                var addressStr = place.formattedAddress.toString()
+                var addressStr = place.formattedAddress!!
                 val lastCommaIndex = addressStr.lastIndexOf(',')
                 if (lastCommaIndex > 0) {
                     addressStr = addressStr.substring(0, lastCommaIndex)
