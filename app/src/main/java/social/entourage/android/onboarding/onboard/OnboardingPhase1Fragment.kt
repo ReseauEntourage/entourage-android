@@ -26,6 +26,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.countrycodepicker.Country
 import social.entourage.android.tools.view.countrycodepicker.CountryCodePickerListener
 import social.entourage.android.tools.utils.Utils
+import social.entourage.android.tools.utils.serializableCompat
 import timber.log.Timber
 import java.util.Calendar
 import java.util.Locale
@@ -97,7 +98,7 @@ class OnboardingPhase1Fragment : Fragment() {
             phone = it.getString(ARG_PHONE)
             hasConsent = it.getBoolean(ARG_CONSENT)
             email = it.getString(ARG_EMAIL)
-            country = it.getSerializable(ARG_COUNTRY) as? Country
+            country = it.serializableCompat<Country>(ARG_COUNTRY)
             howDidYouHearKey = it.getString(ARG_HOW_DID_YOU_HEAR)
             company = it.getString(ARG_COMPANY)
             event = it.getString(ARG_EVENT)
@@ -500,6 +501,8 @@ class OnboardingPhase1Fragment : Fragment() {
         // MODE CALENDRIER
         var calendarHooked = false
         try {
+            // No non-deprecated replacement exists for DatePicker#getCalendarView(); this
+            // best-effort calendar-mode hookup already tolerates its absence via the catch below.
             val cv = dp.calendarView
             if (cv != null && cv.visibility == View.VISIBLE) {
                 calendarHooked = true
