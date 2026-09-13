@@ -56,13 +56,18 @@ data class GroupModel(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(id)
         parcel.writeString(name)
+        parcel.writeSerializable(nameTranslations)
         parcel.writeValue(uuid_v2)
         parcel.writeValue(members_count)
         parcel.writeString(address)
         parcel.writeStringList(interests)
         parcel.writeString(description)
+        parcel.writeSerializable(descriptionTranslations)
         parcel.writeList(members)
         parcel.writeByte(if (member) 1 else 0)
+        parcel.writeByte(if (admin) 1 else 0)
+        parcel.writeValue(recurrence)
+        parcel.writeValue(status)
     }
 
     override fun describeContents(): Int {
