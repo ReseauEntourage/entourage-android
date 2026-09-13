@@ -33,6 +33,7 @@ import social.entourage.android.events.EventsPresenter
 import social.entourage.android.home.HomeEventAdapter
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.serializableExtra
 
 const val EVENTS_PER_PAGE = 20
 
@@ -73,7 +74,7 @@ class DiscoverEventsListFragment : Fragment() {
         activityResultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
-            val filters = result.data?.getSerializableExtra(EventFiltersActivity.FILTERS) as? EventActionLocationFilters
+            val filters = result.data?.serializableExtra<EventActionLocationFilters>(EventFiltersActivity.FILTERS)
             filters?.let {
                 this.currentFilters = filters
                 eventsPresenter.tellParentFragmentToupdateLocation(this.currentFilters)

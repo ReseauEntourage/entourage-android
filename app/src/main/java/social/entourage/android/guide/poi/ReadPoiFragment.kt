@@ -21,6 +21,7 @@ import social.entourage.android.guide.filter.GuideFilterItemAdapter
 import social.entourage.android.guide.poi.PoiRenderer.CategoryType
 import social.entourage.android.guide.poi.ReadPoiPresenter.OnPhoneClickListener
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.serializableCompat
 import social.entourage.android.tools.view.ShareMessageFragment
 
 /**
@@ -46,7 +47,7 @@ class ReadPoiFragment : BaseDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        poi = arguments?.getSerializable(BUNDLE_KEY_POI) as Poi
+        poi = arguments?.serializableCompat<Poi>(BUNDLE_KEY_POI)!!
         filtersSelectedFromMap = arguments?.getString(BUNDLE_KEY_SEARCH,"")
 
         //Actually WS return id and not uuid for entourage poi

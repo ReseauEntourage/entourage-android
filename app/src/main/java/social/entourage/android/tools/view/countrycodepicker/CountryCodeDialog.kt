@@ -1,15 +1,15 @@
 package social.entourage.android.tools.view.countrycodepicker
 
 import android.app.Dialog
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.Window
-import android.view.inputmethod.InputMethodManager
 import android.widget.RelativeLayout
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.databinding.LayoutCodePickerDialogBinding
@@ -24,7 +24,6 @@ internal class CountryCodeDialog(private val mCountryCodePicker: CountryCodePick
     private lateinit var binding: LayoutCodePickerDialogBinding
     
     private var mFilteredCountries: List<Country?>? = null
-    private var mInputMethodManager: InputMethodManager? = null
     private var mAdapter: CountryCodeAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,8 +72,6 @@ internal class CountryCodeDialog(private val mCountryCodePicker: CountryCodePick
         }
         binding.countryDialogRv.layoutManager = LinearLayoutManager(context)
         binding.countryDialogRv.adapter = mAdapter
-        mInputMethodManager = mCountryCodePicker.context
-                .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         setSearchBar()
     }
 
@@ -111,7 +108,7 @@ internal class CountryCodeDialog(private val mCountryCodePicker: CountryCodePick
             }
         })
         if (mCountryCodePicker.isKeyboardAutoPopOnSearch) {
-            mInputMethodManager?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+            window?.let { WindowCompat.getInsetsController(it, binding.searchEdt).show(WindowInsetsCompat.Type.ime()) }
         }
     }
 

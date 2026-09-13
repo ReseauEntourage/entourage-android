@@ -6,6 +6,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.ConfigurationCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -58,11 +59,8 @@ class HomeActionAdapter(private var isContrib: Boolean) :
     override fun onBindViewHolder(holder: ActionViewHolder, position: Int) {
         val action = actions[position]
         // Vérification de la langue
-        val isArabic = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            holder.binding.root.resources.configuration.locales[0].language == "ar"
-        } else {
-            holder.binding.root.resources.configuration.locale.language == "ar"
-        }
+        val isArabic = ConfigurationCompat
+            .getLocales(holder.binding.root.resources.configuration)[0]?.language == "ar"
 
         // Appliquer les propriétés en fonction de la langue pour les TextView
         if (isArabic) {

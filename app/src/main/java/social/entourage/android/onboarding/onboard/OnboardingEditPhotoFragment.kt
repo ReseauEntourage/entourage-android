@@ -2,7 +2,6 @@ package social.entourage.android.onboarding.onboard
 
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
@@ -12,12 +11,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.graphics.BlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
 import androidx.fragment.app.DialogFragment
 import com.takusemba.cropme.OnCropListener
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentOnboardingEditPhotoBinding
 import social.entourage.android.tools.rotate
 import social.entourage.android.tools.utils.Utils
+import social.entourage.android.tools.utils.parcelableCompat
 import social.entourage.android.user.edit.photo.PhotoEditInterface
 import timber.log.Timber
 import java.io.File
@@ -36,7 +38,7 @@ class OnboardingEditPhotoFragment : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            photoUri = it.getParcelable(PHOTO_PARAM)
+            photoUri = it.parcelableCompat<Uri>(PHOTO_PARAM)
             photoSource = it.getInt(PHOTO_SOURCE)
         }
     }
@@ -74,10 +76,11 @@ class OnboardingEditPhotoFragment : DialogFragment() {
 
     private fun setupViews() {
         context?.let {
-            binding.uiPhotoEditProgressBar.indeterminateDrawable?.setColorFilter(
-                ContextCompat.getColor(it, R.color.white),
-                PorterDuff.Mode.SRC_ATOP
-            )
+            binding.uiPhotoEditProgressBar.indeterminateDrawable?.colorFilter =
+                BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                    ContextCompat.getColor(it, R.color.white),
+                    BlendModeCompat.SRC_ATOP
+                )
         }
 
         try {

@@ -2,7 +2,6 @@ package social.entourage.android.actions.detail
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
@@ -12,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.ConfigurationCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -316,11 +316,8 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
     private fun updateViews() {
         action?.let {
-            val isArabic = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                resources.configuration.locales[0].language == "ar"
-            } else {
-                resources.configuration.locale.language == "ar"
-            }
+            val isArabic =
+                ConfigurationCompat.getLocales(resources.configuration)[0]?.language == "ar"
 
             if (isArabic) {
                 binding.uiUserName.layoutDirection = View.LAYOUT_DIRECTION_RTL

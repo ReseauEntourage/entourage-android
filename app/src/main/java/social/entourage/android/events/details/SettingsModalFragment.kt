@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.setFragmentResult
@@ -34,6 +33,7 @@ import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
+import social.entourage.android.tools.utils.serializableCompat
 
 class SettingsModalFragment : BottomSheetDialogFragment() {
 
@@ -77,7 +77,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun getEventInformation() {
-        event = arguments?.getSerializable(Const.EVENT_UI) as? Events
+        event = arguments?.serializableCompat<Events>(Const.EVENT_UI)
     }
 
     private fun setView() {
@@ -285,7 +285,10 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private fun onEventChanged(done: Boolean) {
         if (done) {
-            setFragmentResult(Const.REQUEST_KEY_SHOULD_REFRESH, bundleOf(Const.SHOULD_REFRESH to true))
+            setFragmentResult(
+                Const.REQUEST_KEY_SHOULD_REFRESH,
+                Bundle().apply { putBoolean(Const.SHOULD_REFRESH, true) }
+            )
             RefreshController.shouldRefreshEventFragment = true
             dismiss()
         }
@@ -293,7 +296,10 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private fun handleLeftResponse(left: Boolean) {
         if (left) {
-            setFragmentResult(Const.REQUEST_KEY_SHOULD_REFRESH, bundleOf(Const.SHOULD_REFRESH to true))
+            setFragmentResult(
+                Const.REQUEST_KEY_SHOULD_REFRESH,
+                Bundle().apply { putBoolean(Const.SHOULD_REFRESH, true) }
+            )
             dismiss()
             activity?.finish()
         }
