@@ -58,6 +58,7 @@ import social.entourage.android.tools.TestHelper
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.fcmTokenTask
 import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.parcelableExtra
 import social.entourage.android.tools.view.WebViewFragment
@@ -537,7 +538,7 @@ class MainActivity : BaseSecuredActivity() {
                 .apply()
         }
         if (notificationsEnabled) {
-            FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+            FirebaseMessaging.getInstance().fcmTokenTask.addOnSuccessListener { token ->
                 sendRegistrationToServer(token)
             }
         }

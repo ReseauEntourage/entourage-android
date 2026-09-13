@@ -69,6 +69,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
+import social.entourage.android.tools.utils.fcmTokenTask
 import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
@@ -982,10 +983,10 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             NotificationManagerCompat.from(requireContext()).areNotificationsEnabled()
         if (areNotificationsEnabled) {
             AnalyticsEvents.logEvent(AnalyticsEvents.has_user_activated_notif)
-            FirebaseMessaging.getInstance().token.addOnSuccessListener { _ ->
+            FirebaseMessaging.getInstance().fcmTokenTask.addOnSuccessListener { _ ->
                 AnalyticsEvents.logEvent(AnalyticsEvents.user_have_notif_and_token)
             }
-            FirebaseMessaging.getInstance().token.addOnFailureListener { exception ->
+            FirebaseMessaging.getInstance().fcmTokenTask.addOnFailureListener { exception ->
                 Timber.e(exception, "FCM Token: Failed to retrieve token")
                 AnalyticsEvents.logEvent(AnalyticsEvents.user_have_notif_and_no_token + "_" + user?.id)
             }
@@ -1011,7 +1012,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     }
 
     private fun sendToken() {
-        FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+        FirebaseMessaging.getInstance().fcmTokenTask.addOnSuccessListener { token ->
             (activity as? MainActivity)?.sendRegistrationToServer(token)
         }
     }

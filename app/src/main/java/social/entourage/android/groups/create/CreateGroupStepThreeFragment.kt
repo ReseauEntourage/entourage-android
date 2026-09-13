@@ -20,6 +20,7 @@ import social.entourage.android.groups.choosePhoto.ChooseGalleryPhotoModalFragme
 import social.entourage.android.groups.choosePhoto.ImagesType
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.parcelableCompat
 import social.entourage.android.tools.utils.px
 
 class CreateGroupStepThreeFragment : Fragment() {
@@ -100,7 +101,7 @@ class CreateGroupStepThreeFragment : Fragment() {
 
     private fun onFragmentResult() {
         setFragmentResultListener(Const.REQUEST_KEY_CHOOSE_PHOTO) { _, bundle ->
-            selectedImage = bundle.getParcelable(Const.CHOOSE_PHOTO_PATH)
+            selectedImage = bundle.parcelableCompat<Image>(Const.CHOOSE_PHOTO_PATH)
             viewModel.isButtonClickable.value = imageHasBeenSelected()
             viewModel.group.neighborhoodImageId(selectedImage?.id)
             selectedImage?.imageUrl.let { imageUrl ->

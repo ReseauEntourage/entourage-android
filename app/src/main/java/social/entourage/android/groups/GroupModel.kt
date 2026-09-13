@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.Status
 import social.entourage.android.api.model.notification.Translation
+import social.entourage.android.tools.utils.readListCompat
 import social.entourage.android.tools.utils.readSerializableCompat
 
 data class GroupModel(
@@ -45,11 +46,11 @@ data class GroupModel(
         mutableListOf<String>().apply { parcel.readStringList(this)}, // interests
         parcel.readString(), // description
         parcel.readSerializableCompat<Translation>(Translation::class.java.classLoader), // descriptionTranslations
-        mutableListOf<GroupMember>().apply { parcel.readList(this, GroupMember::class.java.classLoader)}, // members
+        mutableListOf<GroupMember>().apply { parcel.readListCompat(this, GroupMember::class.java.classLoader)}, // members
         parcel.readByte() != 0.toByte(), // member
         parcel.readByte() != 0.toByte(), // admin
         parcel.readValue(Int::class.java.classLoader) as? Int, // recurrence
-        parcel.readParcelable(Status::class.java.classLoader) // status
+        parcel.readValue(Status::class.java.classLoader) as? Status // status
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

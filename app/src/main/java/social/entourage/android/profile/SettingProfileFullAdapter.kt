@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.os.ConfigurationCompat
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -95,7 +96,7 @@ class SettingProfileFullAdapter(
                 binding.tvSubtitleUserSection.setTextColor(ContextCompat.getColor(context, R.color.orange))
                 binding.ivArrowUserSection.setColorFilter(ContextCompat.getColor(context, R.color.orange))
             }
-            if (context.resources.configuration.locale.language == "ar") {
+            if (ConfigurationCompat.getLocales(context.resources.configuration)[0]?.language == "ar") {
                 binding.ivArrowUserSection.scaleX = -1f // Miroir horizontal
             } else {
                 binding.ivArrowUserSection.scaleX = 1f // Orientation normale

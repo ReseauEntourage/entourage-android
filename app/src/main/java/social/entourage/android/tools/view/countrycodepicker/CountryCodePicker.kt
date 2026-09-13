@@ -380,6 +380,9 @@ class CountryCodePicker : RelativeLayout {
         }
     }
 
+    // PhoneNumberFormattingTextWatcher is deprecated with no first-party replacement (Google
+    // points to the third-party libphonenumber AsYouTypeFormatter); pulling in that dependency
+    // for this alone is out of scope here. The class remains fully functional.
     private inner class PhoneNumberWatcher : PhoneNumberFormattingTextWatcher {
         constructor() : super()
         constructor(countryCode: String?) : super(countryCode)

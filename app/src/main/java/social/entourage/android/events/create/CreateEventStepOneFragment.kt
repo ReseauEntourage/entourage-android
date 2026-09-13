@@ -25,6 +25,7 @@ import social.entourage.android.groups.choosePhoto.ChooseGalleryPhotoModalFragme
 import social.entourage.android.groups.choosePhoto.ImagesType
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.parcelableCompat
 import social.entourage.android.tools.utils.px
 import java.io.File
 
@@ -170,7 +171,7 @@ class CreateEventStepOneFragment : Fragment(), EventImageUploadView {
             if (isAddPhoto) {
                 getContent.launch("image/*")
             } else {
-                selectedImage = bundle.getParcelable(Const.CHOOSE_PHOTO_PATH)
+                selectedImage = bundle.parcelableCompat<Image>(Const.CHOOSE_PHOTO_PATH)
                 uploadedImageFile = null
                 CommunicationHandler.isButtonClickable.value = isImageValid()
                 CommunicationHandler.event.entourageImageId(selectedImage?.id)

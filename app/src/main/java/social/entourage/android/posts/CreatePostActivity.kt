@@ -32,6 +32,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
+import social.entourage.android.tools.utils.parcelableCompat
 import social.entourage.android.tools.utils.px
 import java.io.File
 
@@ -284,7 +285,7 @@ abstract class CreatePostActivity : AppCompatActivity() {
     // --------------------------------------------------------------------
     private fun getResult() {
         supportFragmentManager.setFragmentResultListener(Const.REQUEST_KEY_CHOOSE_PHOTO, this) { _, bundle ->
-            imageURI = bundle.getParcelable(Const.CHOOSE_PHOTO)
+            imageURI = bundle.parcelableCompat<Uri>(Const.CHOOSE_PHOTO)
             imageURI?.let {
                 binding.addPhotoLayout.visibility = View.GONE
                 binding.photoLayout.visibility = View.VISIBLE

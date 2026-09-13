@@ -159,7 +159,11 @@ object DeepLinksManager {
      * @param textView textview to be linkified
      */
     fun linkify(textView: TextView) {
-        Linkify.addLinks(textView, Linkify.ALL) // to add support for standard URLs, emails, phones a.s.o.
+        // Linkify.ALL is deprecated because it includes the non-functional MAP_ADDRESSES mask.
+        Linkify.addLinks(
+            textView,
+            Linkify.WEB_URLS or Linkify.EMAIL_ADDRESSES or Linkify.PHONE_NUMBERS
+        )
         /*Not working
         val pattern = Pattern.compile(BuildConfig.DEEP_LINKS_SCHEME + "://\\S+")
         Linkify.addLinks(textView, pattern, null)

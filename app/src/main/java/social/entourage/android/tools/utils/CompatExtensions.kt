@@ -9,6 +9,8 @@ import androidx.annotation.AnimRes
 import androidx.core.content.IntentCompat
 import androidx.core.os.BundleCompat
 import androidx.core.os.ParcelCompat
+import com.google.android.gms.tasks.Task
+import com.google.firebase.messaging.FirebaseMessaging
 import java.io.Serializable
 
 /**
@@ -47,3 +49,13 @@ inline fun <reified T : Serializable> Parcel.readSerializableCompat(loader: Clas
 
 inline fun <reified T> Parcel.readListCompat(list: MutableList<T>, loader: ClassLoader?) =
     ParcelCompat.readList(this, list, loader, T::class.java)
+
+/**
+ * Kept on the deprecated API on purpose.
+ * The suggested replacement (FirebaseMessaging#register()) reports the Firebase Installation ID
+ * to the backend via a separate onRegistered() callback instead of returning the FCM
+ * registration token we actually send to our own server, and requires an extra manifest
+ * opt-in. There is no drop-in replacement for retrieving the token itself.
+ */
+val FirebaseMessaging.fcmTokenTask: Task<String>
+    get() = token

@@ -252,6 +252,7 @@ object Utils {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY)
         } else {
+            @Suppress("DEPRECATION")
             Html.fromHtml(html)
         }
     }
@@ -328,8 +329,10 @@ object Utils {
     fun getBitmapFromUri(uri: Uri, contentResolver: ContentResolver): Bitmap {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
             ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, uri))
-        else
+        else {
+            @Suppress("DEPRECATION")
             MediaStore.Images.Media.getBitmap(contentResolver, uri)
+        }
     }
 
     fun saveBitmapToFile(bitmap: Bitmap, file: File?, context: Context): File {
