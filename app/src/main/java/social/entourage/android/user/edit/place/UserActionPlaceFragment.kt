@@ -26,7 +26,9 @@ import social.entourage.android.RefreshController
 import social.entourage.android.api.model.User
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.base.location.LocationUtils
+import social.entourage.android.base.location.LocationUtils.getFromLocationCompat
 import social.entourage.android.databinding.FragmentSelectPlaceBinding
+import social.entourage.android.tools.utils.serializableCompat
 import timber.log.Timber
 import java.io.IOException
 import java.util.Locale
@@ -88,7 +90,7 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            userAddress = it.getSerializable(ARG_PLACE) as? User.Address
+            userAddress = it.serializableCompat<User.Address>(ARG_PLACE)
             isSdf = it.getBoolean(ARG_SDF)
             isSecondaryAddress = it.getBoolean(ARG_2ND)
         }
@@ -186,12 +188,12 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
                 try {
                     temporaryLocation = lastLocation
                     temporaryAddressPlace = null
-                    Geocoder(activity, Locale.getDefault()).getFromLocation(
+                    Geocoder(activity, Locale.getDefault()).getFromLocationCompat(
                         it.latitude,
                         it.longitude,
                         1
-                    )?.let { address ->
-                        if (address.size > 0) {
+                    ) { address ->
+                        if (!address.isNullOrEmpty()) {
                             val street = address[0].thoroughfare
                             val city = address[0].locality
                             val cp = address[0].postalCode

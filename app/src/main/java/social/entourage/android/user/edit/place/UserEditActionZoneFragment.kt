@@ -12,6 +12,7 @@ import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
+import social.entourage.android.base.location.LocationUtils.getFromLocationNameCompat
 import social.entourage.android.groups.create.CommunicationHandlerViewModel
 import social.entourage.android.home.OnHomeChangeLocationUpdate // moved to HomeState.kt
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -101,8 +102,8 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
             try {
                 val geocoder = Geocoder(requireContext())
                 userAddress?.displayAddress?.let { userDisplayAddress->
-                    geocoder.getFromLocationName(userDisplayAddress, 1)?.let { addresses ->
-                        if (addresses.size > 0) {
+                    geocoder.getFromLocationNameCompat(userDisplayAddress, 1) { addresses ->
+                        if (!addresses.isNullOrEmpty()) {
                             with(viewModel.group) {
                                 latitude = addresses.first().latitude
                                 longitude = addresses.first().longitude

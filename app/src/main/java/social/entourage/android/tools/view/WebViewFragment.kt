@@ -10,6 +10,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Bundle
+import android.view.GestureDetector
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -29,7 +30,7 @@ import androidx.browser.customtabs.CustomTabColorSchemeParams
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.browser.customtabs.CustomTabsIntent.SHARE_STATE_ON
 import androidx.browser.customtabs.CustomTabsService.ACTION_CUSTOM_TABS_CONNECTION
-import androidx.core.view.GestureDetectorCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -49,7 +50,7 @@ class WebViewFragment : BaseDialogFragment() {
     private lateinit var binding: FragmentWebviewBinding
     private lateinit var requestedUrl: String
     @IdRes private var shareMessageRes: Int = 0
-    private var gestureDetectorCompat: GestureDetectorCompat? = null
+    private var gestureDetectorCompat: GestureDetector? = null
     var bottomUpJumpAnimation: Animation? = null
 
     private var hasToSendRead = false
@@ -62,7 +63,6 @@ class WebViewFragment : BaseDialogFragment() {
         // Inflate the layout for this fragment
         super.onCreateView(inflater, container, savedInstanceState)
         binding = FragmentWebviewBinding.inflate(inflater, container, false)
-        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -141,7 +141,7 @@ class WebViewFragment : BaseDialogFragment() {
 
         // add a gesture detector to the navigation bar
         this.context?.let { context ->
-            gestureDetectorCompat = GestureDetectorCompat(context, NavigationViewGestureListener())
+            gestureDetectorCompat = GestureDetector(context, NavigationViewGestureListener())
             binding.webviewNavigationBar.setOnTouchListener { _, event ->
                 if (gestureDetectorCompat?.onTouchEvent(event) == true || event.action != MotionEvent.ACTION_UP) true
                 else onUp(event)
@@ -248,13 +248,6 @@ class WebViewFragment : BaseDialogFragment() {
 
         override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
             super.onReceivedError(view, request, error)
-            binding.webviewProgressbar.visibility = View.GONE
-        }
-
-        //@SuppressWarnings("deprecation")
-        @Deprecated("Deprecated in Java")
-        override fun onReceivedError(view: WebView, errorCode: Int, description: String, failingUrl: String) {
-            super.onReceivedError(view, errorCode, description, failingUrl)
             binding.webviewProgressbar.visibility = View.GONE
         }
 
@@ -367,8 +360,8 @@ class WebViewFragment : BaseDialogFragment() {
             //Create a PendingIntent to your BroadCastReceiver implementation
 
             val schemeParams = CustomTabColorSchemeParams.Builder()
-                    .setToolbarColor(context.resources.getColor(R.color.accent))
-                    .setSecondaryToolbarColor(context.resources.getColor(R.color.custom_button_accent_disabled))
+                    .setToolbarColor(ContextCompat.getColor(context, R.color.accent))
+                    .setSecondaryToolbarColor(ContextCompat.getColor(context, R.color.custom_button_accent_disabled))
                     .build()
 
             val customIntent = CustomTabsIntent.Builder()

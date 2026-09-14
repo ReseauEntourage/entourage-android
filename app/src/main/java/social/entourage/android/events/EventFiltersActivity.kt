@@ -13,6 +13,7 @@ import android.widget.SeekBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.IntentCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
@@ -30,6 +31,7 @@ import social.entourage.android.api.model.Address
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.api.model.EventFilterType
 import social.entourage.android.base.location.LocationUtils
+import social.entourage.android.base.location.LocationUtils.getFromLocationCompat
 import social.entourage.android.databinding.ActivityEventFiltersBinding
 import social.entourage.android.events.list.DiscoverEventsListFragment
 import timber.log.Timber
@@ -72,7 +74,8 @@ class EventFiltersActivity : AppCompatActivity() {
         // Initialize Places.
         Places.initialize(applicationContext, getString(R.string.google_api_key))
 
-        currentFilters = intent.getSerializableExtra(FILTERS) as? EventActionLocationFilters
+        currentFilters =
+            IntentCompat.getSerializableExtra(intent, FILTERS, EventActionLocationFilters::class.java)
 
         setupLocationChoice()
         initializeSeekBar()
@@ -265,12 +268,12 @@ class EventFiltersActivity : AppCompatActivity() {
 
     private fun getCityNameFromPlace(latlng: LatLng) {
         try {
-            Geocoder(this, Locale.getDefault()).getFromLocation(
+            Geocoder(this, Locale.getDefault()).getFromLocationCompat(
                 latlng.latitude,
                 latlng.longitude,
                 1
-            )?.let { address ->
-                if (address.size > 0) {
+            ) { address ->
+                if (!address.isNullOrEmpty()) {
                     val city = address[0].locality
                     val cp = address[0].postalCode
 
@@ -307,12 +310,12 @@ class EventFiltersActivity : AppCompatActivity() {
         binding.placeName.hint = getString(R.string.onboard_place_placeholder)
         lastLocation?.let {
             try {
-                Geocoder(this, Locale.getDefault()).getFromLocation(
+                Geocoder(this, Locale.getDefault()).getFromLocationCompat(
                     it.latitude,
                     it.longitude,
                     1
-                )?.let { address ->
-                    if (address.size > 0) {
+                ) { address ->
+                    if (!address.isNullOrEmpty()) {
                         var street = address[0].thoroughfare
                         val city = address[0].locality
                         val cp = address[0].postalCode

@@ -7,6 +7,9 @@ import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.core.content.edit
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
@@ -21,7 +24,6 @@ import social.entourage.android.enhanced_onboarding.fragments.OnboardingCongrats
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingDisponibilityFragment
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterestFragment
 import social.entourage.android.enhanced_onboarding.fragments.OnboardingPresentationFragment
-import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.utils.overrideTransitionCompat
 import timber.log.Timber
 
@@ -34,11 +36,7 @@ class EnhancedOnboarding : BaseActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // Permet au layout de se redimensionner quand le clavier apparaît
-        window.setSoftInputMode(
-            WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN or
-                    WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
-        )
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
         binding = ActivityEnhancedOnboardingLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -74,7 +72,14 @@ class EnhancedOnboarding : BaseActivity() {
         }
         onBackPressedDispatcher.addCallback(this, backCallback!!)
 
-        updatePaddingBottomForEdgeToEdge(binding.fragmentContainer)
+        // Remplace SOFT_INPUT_ADJUST_RESIZE (déprécié) : le conteneur se redimensionne
+        // en suivant les insets de la barre de navigation et du clavier.
+        ViewCompat.setOnApplyWindowInsetsListener(binding.fragmentContainer) { view, windowInsets ->
+            val navBars = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            val ime = windowInsets.getInsets(WindowInsetsCompat.Type.ime())
+            view.updatePadding(bottom = maxOf(navBars.bottom, ime.bottom))
+            windowInsets
+        }
     }
 
     private fun setupObservers() {

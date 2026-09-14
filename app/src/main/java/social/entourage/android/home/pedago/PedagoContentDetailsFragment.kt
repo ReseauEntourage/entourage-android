@@ -13,6 +13,9 @@ import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import social.entourage.android.R
@@ -97,7 +100,6 @@ class PedagoContentDetailsFragment : Fragment() {
         private var customViewCallback: CustomViewCallback? = null
 
         private var originalOrientation = 0
-        private var originalSystemUiVisibility = 0
 
         override fun getDefaultVideoPoster(): Bitmap? {
             return activityRef.get()?.run {
@@ -109,7 +111,9 @@ class PedagoContentDetailsFragment : Fragment() {
             activityRef.get()?.run {
                 (window.decorView as ViewGroup).removeView(customView)
                 customView = null
-                window.decorView.systemUiVisibility = originalSystemUiVisibility
+                WindowCompat.setDecorFitsSystemWindows(window, true)
+                WindowInsetsControllerCompat(window, window.decorView)
+                    .show(WindowInsetsCompat.Type.systemBars())
                 requestedOrientation = originalOrientation
             }
             customViewCallback?.onCustomViewHidden()
@@ -123,7 +127,6 @@ class PedagoContentDetailsFragment : Fragment() {
             }
             customView = view
             activityRef.get()?.run {
-                originalSystemUiVisibility = window.decorView.systemUiVisibility
                 originalOrientation = requestedOrientation
                 customViewCallback = viewCallback
                 (window.decorView as ViewGroup).addView(
@@ -133,7 +136,11 @@ class PedagoContentDetailsFragment : Fragment() {
                         ViewGroup.LayoutParams.MATCH_PARENT
                     )
                 )
-                window.decorView.systemUiVisibility = 3846
+                WindowCompat.setDecorFitsSystemWindows(window, false)
+                WindowInsetsControllerCompat(window, window.decorView).apply {
+                    hide(WindowInsetsCompat.Type.systemBars())
+                    systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+                }
             }
         }
     }

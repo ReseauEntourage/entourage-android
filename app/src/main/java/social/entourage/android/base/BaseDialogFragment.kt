@@ -3,7 +3,11 @@ package social.entourage.android.base
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
 import androidx.annotation.StyleRes
 import androidx.fragment.app.DialogFragment
 import social.entourage.android.MainActivity

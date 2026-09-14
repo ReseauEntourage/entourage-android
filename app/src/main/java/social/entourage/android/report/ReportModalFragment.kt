@@ -138,16 +138,14 @@ class ReportModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun getWindowHeight(): Int {
-        val displayMetrics = DisplayMetrics()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            val display = requireActivity().display
-            display?.getRealMetrics(displayMetrics)
-        } else {
-            @Suppress("DEPRECATION")
-            val display = requireActivity().windowManager.defaultDisplay
-            @Suppress("DEPRECATION")
-            display.getMetrics(displayMetrics)
+            return requireActivity().windowManager.currentWindowMetrics.bounds.height()
         }
+        val displayMetrics = DisplayMetrics()
+        @Suppress("DEPRECATION")
+        val display = requireActivity().windowManager.defaultDisplay
+        @Suppress("DEPRECATION")
+        display.getMetrics(displayMetrics)
         return displayMetrics.heightPixels
     }
 

@@ -1,6 +1,7 @@
 package social.entourage.android.tools.image_viewer
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.WindowManager
@@ -49,11 +50,20 @@ class ImageViewerActivity:BaseActivity() {
     }
 
     fun setView(imageUrl:String){
-        val displayMetrics = DisplayMetrics()
-        val windowManager = this.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-        val screenWidth = displayMetrics.widthPixels
-        val screenHeight = displayMetrics.heightPixels
+        val screenWidth: Int
+        val screenHeight: Int
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val bounds = windowManager.currentWindowMetrics.bounds
+            screenWidth = bounds.width()
+            screenHeight = bounds.height()
+        } else {
+            val displayMetrics = DisplayMetrics()
+            val windowManager = this.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            @Suppress("DEPRECATION")
+            windowManager.defaultDisplay.getMetrics(displayMetrics)
+            screenWidth = displayMetrics.widthPixels
+            screenHeight = displayMetrics.heightPixels
+        }
         val params = binding.photoView.layoutParams
         params.width = screenWidth
         params.height = screenHeight
