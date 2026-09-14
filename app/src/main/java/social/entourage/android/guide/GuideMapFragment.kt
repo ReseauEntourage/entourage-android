@@ -22,6 +22,8 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -149,13 +151,18 @@ class GuideMapFragment :
     private fun onLocationPermissionGranted(isPermissionGranted: Boolean) =
         updateGeolocBanner()
 
+    @SuppressLint("MissingPermission")
     private fun updateGeolocBanner() {
         val granted = LocationUtils.isLocationPermissionGranted()
         try {
             poisAdapter.setGeolocStatusIcon(granted)
             map?.isMyLocationEnabled = granted
-            poisAdapter.lastLocation = map?.myLocation?.let {
-                LocationPoint(it.latitude, it.longitude)
+            if (granted) {
+                fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                    poisAdapter.lastLocation = location?.let { LocationPoint(it.latitude, it.longitude) }
+                }
+            } else {
+                poisAdapter.lastLocation = null
             }
         } catch (ex: SecurityException) {
             Timber.w(ex)
@@ -164,15 +171,22 @@ class GuideMapFragment :
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun onFollowGeolocation() {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_FEED_RECENTERCLICK)
         // Check if geolocation is enabled
         if (!LocationUtils.isLocationPermissionGranted()) {
             showAllowGeolocationDialog(GEOLOCATION_POPUP_GUIDE_RECENTER)
         } else {
-            map?.myLocation?.let {
-                centerMap(LatLng(it.latitude, it.longitude))
-                poisAdapter.lastLocation = LocationPoint(it.latitude, it.longitude)
+            try {
+                fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                    location?.let {
+                        centerMap(LatLng(it.latitude, it.longitude))
+                        poisAdapter.lastLocation = LocationPoint(it.latitude, it.longitude)
+                    }
+                }
+            } catch (ex: SecurityException) {
+                Timber.w(ex)
             }
         }
     }
@@ -190,6 +204,9 @@ class GuideMapFragment :
     private val poisAdapter: PoisAdapter = PoisAdapter()
     private var mapRenderer: PoiRenderer = PoiRenderer()
     private var toReturn: View? = null
+    private val fusedLocationClient: FusedLocationProviderClient by lazy {
+        LocationServices.getFusedLocationProviderClient(requireContext())
+    }
 
     // ----------------------------------
     // LIFECYCLE
