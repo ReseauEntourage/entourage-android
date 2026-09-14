@@ -61,6 +61,10 @@ Gradle properties, all referenced via `findProperty()` in `build.gradle.kts`:
 - `KEYSTORE_PASS` — keystore password for the Play Store signing config.
 - `TEST_ACCOUNT_LOGIN`, `TEST_ACCOUNT_PWD` — instrumented test credentials.
 - `APPBUNDLE_NAME` — custom app bundle name (defaults to `app`).
+- `entourageHmacSecret` — HMAC signing secret for account creation (`HmacInterceptor`), read as `System.getenv("HMAC_SECRET_ANDROID") ?: findProperty("entourageHmacSecret")`.
+- `entourageApiKey` — `X-API-KEY` header value (`AuthenticationInterceptor`, `PreonboardingApiModuleKtorClient`), read as `System.getenv("ApiKey") ?: findProperty("entourageApiKey")`.
+
+All of the above resolve `System.getenv("X") ?: findProperty("entourageX") ?: default`, so locally they're set once in `~/.gradle/gradle.properties` (outside the repo, never committed) and on CI via the matching Bitrise env var — never hardcoded in `build.gradle.kts`.
 
 Files:
 
@@ -68,4 +72,4 @@ Files:
 - `keystore/googleplay-keystore.jks` — Play Store signing key.
 - `keystore/debug.keystore` — debug signing key.
 
-CI: Bitrise env vars (Bitrise Secrets) hold the runtime values for the gradle properties above and any Crashlytics / Play Console upload tokens.
+CI: Bitrise env vars (Bitrise Secrets) hold the runtime values for the gradle properties above and any Crashlytics / Play Console upload tokens. Because `HMAC_SECRET_ANDROID` differs between preprod and prod, it isn't set directly as a Bitrise Secret — instead two secrets (`HMAC_SECRET_ANDROID_PREPROD`, `HMAC_SECRET_ANDROID_PROD`) are stored in the Bitrise vault, and each workflow in `bitrise.yml` maps the one it needs onto the plain `HMAC_SECRET_ANDROID` env that gradle reads (`dev_entourage` → `_PREPROD`, `prod_entourage` → `_PROD`).

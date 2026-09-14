@@ -126,7 +126,10 @@ android {
     productFlavors {
         create("entourage") {
             dimension = "app"
-            buildConfigField("String", "API_KEY", "\"4a7373f3e7dd45fc391a2f19\"")
+            val apiKey = (System.getenv("ApiKey")
+                ?: findProperty("entourageApiKey") as String?
+                ?: "")
+            buildConfigField("String", "API_KEY", "\"$apiKey\"")
             val hmacSecret = (System.getenv("HMAC_SECRET_ANDROID")
                 ?: findProperty("entourageHmacSecret") as String?
                 ?: "")

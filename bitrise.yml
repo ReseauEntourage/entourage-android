@@ -73,6 +73,7 @@ workflows:
       - GRADLE_TASK: assemblePreprod
         opts:
           is_expand: false
+      - HMAC_SECRET_ANDROID: "$HMAC_SECRET_ANDROID_PREPROD"
     steps:
       - gradle-runner:
           is_always_run: true
@@ -179,6 +180,7 @@ workflows:
       - PLAYSTORE_APP_NAME: social.entourage.android
         opts:
           is_expand: false
+      - HMAC_SECRET_ANDROID: "$HMAC_SECRET_ANDROID_PROD"
     steps:
       - gradle-runner:
           inputs:
