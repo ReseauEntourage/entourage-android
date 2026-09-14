@@ -155,7 +155,7 @@
         <activity
             android:name=".groups.details.feed.GroupCommentActivity"
             android:windowSoftInputMode="adjustPan"
-            android:exported="true" />
+            android:exported="false" />
         <activity
             android:name=".events.details.feed.EventFeedActivity"
             android:windowSoftInputMode="adjustPan"
