@@ -86,4 +86,16 @@ class CompatExtensionsTest {
         assertNull(intent.parcelableExtra<TestParcelable>("unknown_key"))
         assertNull(bundle.parcelableCompat<TestParcelable>("unknown_key"))
     }
+
+    @Test
+    fun testParcelReadSerializableCompatFallback() {
+        val parcel = mock(Parcel::class.java)
+        val original = TestSerializable(303, "ParcelSerializable")
+        `when`(parcel.readSerializable()).thenReturn(original)
+
+        val retrieved = parcel.readSerializableCompat<TestSerializable>(TestSerializable::class.java.classLoader)
+        assertNotNull(retrieved)
+        assertEquals(303, retrieved?.id)
+        assertEquals("ParcelSerializable", retrieved?.name)
+    }
 }
