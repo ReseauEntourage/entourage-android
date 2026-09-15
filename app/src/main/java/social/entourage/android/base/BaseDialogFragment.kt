@@ -30,17 +30,11 @@ open class BaseDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as? MainActivity)?.let {DeepLinksManager.handleCurrentDeepLink(it) }
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
         if (dialog == null) {
             //TODO should we use setShowsDialog(false) here
             showsDialog = false
         }
-        super.onActivityCreated(savedInstanceState)
-        dialog?.window?.attributes?.windowAnimations = slideStyle
+        (activity as? MainActivity)?.let {DeepLinksManager.handleCurrentDeepLink(it) }
     }
 
     override fun onStart() {
