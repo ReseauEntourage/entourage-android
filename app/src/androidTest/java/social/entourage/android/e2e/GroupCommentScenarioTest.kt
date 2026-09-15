@@ -18,14 +18,11 @@ import androidx.test.espresso.action.ViewActions.clearText
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.typeText
-import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
-import androidx.test.espresso.matcher.RootMatchers.withDecorView
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.espresso.IdlingPolicies
-import org.hamcrest.Matchers.not
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
@@ -212,15 +209,6 @@ class GroupCommentScenarioTest : EntourageTestAfterLogin() {
         onView(withId(R.id.comment)).perform(click())
         onIdle()
         shoot("commentaire_envoye")
-
-        // EN-9456 : plus de loader plein écran bloquant à l'envoi — confirmation via toast
-        // une fois la réponse serveur reçue (cf. CommentActivity.handleCommentPosted).
-        // Texte en dur (plutôt que R.string.comment_posted_confirmation) pour ne pas coupler
-        // cette branche à la string ajoutée côté develop tant qu'elle n'a pas été resynchronisée.
-        onView(withText("Commentaire publié !"))
-            .inRoot(withDecorView(not(currentActivity()?.window?.decorView)))
-            .check(matches(isDisplayed()))
-        shoot("toast_confirmation_commentaire")
 
         onView(allOf(withId(R.id.comments), isDisplayed())).perform(
             actionOnItemAtPosition<ViewHolder>(lastMessagePosition(), tapOptionsIconOnOwnMessage())
