@@ -1,7 +1,6 @@
 package social.entourage.android.afterLogin
 
 import android.app.Application
-import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -13,6 +12,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.small_talks.SmallTalkViewModel
+import timber.log.Timber
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
@@ -39,7 +39,7 @@ class SmallTalkViewModelTest {
 
         viewModel.matchResult.observeForever {
             observedValue = true
-            Log.w("SmallTalkTest", "matchRequest → result: $it")
+            Timber.w("SmallTalkTest", "matchRequest → result: $it")
             latch.countDown()
         }
 
@@ -60,7 +60,7 @@ class SmallTalkViewModelTest {
 
         viewModel.requestDeleted.observeForever {
             observedValue = it
-            Log.w("SmallTalkTest", "deleteRequest → deleted: $it")
+            Timber.w("SmallTalkTest", "deleteRequest → deleted: $it")
             latch.countDown()
         }
 
@@ -80,7 +80,7 @@ class SmallTalkViewModelTest {
 
         viewModel.userRequests.observeForever {
             observedValue = it
-            Log.w("SmallTalkTest", "listUserRequests → count: ${it?.size}")
+            Timber.w("SmallTalkTest", "listUserRequests → count: ${it?.size}")
             latch.countDown()
         }
 

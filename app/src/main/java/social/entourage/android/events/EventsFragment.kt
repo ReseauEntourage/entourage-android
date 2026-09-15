@@ -34,6 +34,9 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.HighlightOverlayView
+import social.entourage.android.tools.utils.overrideTransitionCompat
+import social.entourage.android.tools.utils.serializableExtra
+import androidx.core.view.isVisible
 
 const val DISCOVER_EVENTS_TAB = 1
 
@@ -41,6 +44,9 @@ class EventsFragment : Fragment() {
     private var _binding: FragmentEventsBinding? = null
     private var currentFilters = EventActionLocationFilters()
     private var activityResultLauncher: ActivityResultLauncher<Intent>? = null
+    private val createEventLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
     private var isFromFilters = false
 
     //TODO title same size as
@@ -62,9 +68,8 @@ class EventsFragment : Fragment() {
         activityResultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult())
         { result ->
-            val filters = result.data?.getSerializableExtra(EventFiltersActivity.FILTERS) as? EventActionLocationFilters
-            filters?.let {
-                this.currentFilters = filters
+            result.data?.serializableExtra<EventActionLocationFilters>(EventFiltersActivity.FILTERS)?.let {
+                this.currentFilters = it
                 updateFilters()
             }
         }
@@ -257,7 +262,7 @@ class EventsFragment : Fragment() {
            MainFilterActivity.mod = MainFilterMode.EVENT
            val intent = Intent(activity, MainFilterActivity::class.java)
            startActivity(intent)
-           requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+           requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
 
        }
     }
@@ -323,7 +328,7 @@ class EventsFragment : Fragment() {
     }
 
     private fun animateToExtendedState() {
-        if (binding.createEventExpanded.visibility == View.VISIBLE) {
+        if (binding.createEventExpanded.isVisible) {
             // Le bouton est déjà dans l'état étendu
             return
         }
@@ -337,7 +342,7 @@ class EventsFragment : Fragment() {
     }
 
     private fun animateToRetractedState() {
-        if (binding.createEventRetracted.visibility == View.VISIBLE) {
+        if (binding.createEventRetracted.isVisible) {
             // Le bouton est déjà dans l'état rétracté
             return
         }
@@ -350,9 +355,7 @@ class EventsFragment : Fragment() {
         binding.createEventExpanded.animate().scaleX(0f).alpha(0f).setDuration(200).start()
     }
 
-
-
-    private fun handlePageChange(haveChange:Boolean){
+    private fun handlePageChange(_haveChange: Boolean = false) {
         ViewPagerDefaultPageController.shouldSelectDiscoverEvents = true
         setPage()
     }
@@ -360,9 +363,8 @@ class EventsFragment : Fragment() {
     private fun handleLaunchCreateEvent(haveToLaunchCreateEvent:Boolean){
         if(haveToLaunchCreateEvent){
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Event__LocationFilter)
-            startActivityForResult(
-                Intent(context, CreateEventActivity::class.java),
-                0
+            createEventLauncher.launch(
+                Intent(context, CreateEventActivity::class.java)
             )
         }
     }
@@ -392,16 +394,14 @@ class EventsFragment : Fragment() {
     private fun createEvent() {
         binding.createEventExpanded.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Event__New)
-            startActivityForResult(
-                Intent(context, CreateEventActivity::class.java),
-                0
+            createEventLauncher.launch(
+                Intent(context, CreateEventActivity::class.java)
             )
         }
         binding.createEventRetracted.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Action__Event__New)
-            startActivityForResult(
-                Intent(context, CreateEventActivity::class.java),
-                0
+            createEventLauncher.launch(
+                Intent(context, CreateEventActivity::class.java)
             )
         }
     }

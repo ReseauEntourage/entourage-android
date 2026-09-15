@@ -2,7 +2,6 @@ package social.entourage.android
 
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.autofill.AutofillManager
@@ -69,7 +68,7 @@ open class EntourageTestWithAPI {
                 val instrumentation = InstrumentationRegistry.getInstrumentation()
                 instrumentation.uiAutomation.executeShellCommand("settings put secure autofill_service null")
             } catch (e: Exception) {
-                Log.e("TestSetup", "Failed to disable autofill_service via UiAutomation", e)
+                Timber.e("TestSetup", "Failed to disable autofill_service via UiAutomation", e)
             }
         }
 
@@ -87,7 +86,7 @@ open class EntourageTestWithAPI {
                 val instrumentation = InstrumentationRegistry.getInstrumentation()
                 instrumentation.uiAutomation.executeShellCommand("settings put secure autofill_service com.google.android.gms/com.google.android.gms.autofill.service.AutofillService")
             } catch (e: Exception) {
-                Log.e("TestSetup", "Failed to enable autofill_service via UiAutomation", e)
+                Timber.e("TestSetup", "Failed to enable autofill_service via UiAutomation", e)
             }
         }
         enableWifiAndData(true)

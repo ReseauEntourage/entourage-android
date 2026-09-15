@@ -1,5 +1,6 @@
 package social.entourage.android.events.create
 
+import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -9,17 +10,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
-import android.content.Intent
-import android.app.Activity
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import com.bumptech.glide.Glide
-import com.yalantis.ucrop.UCrop
-import java.io.File
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import android.widget.Toast
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.yalantis.ucrop.UCrop
 import social.entourage.android.R
 import social.entourage.android.api.model.Image
 import social.entourage.android.databinding.NewFragmentCreateEventStepOneBinding
@@ -27,7 +25,9 @@ import social.entourage.android.groups.choosePhoto.ChooseGalleryPhotoModalFragme
 import social.entourage.android.groups.choosePhoto.ImagesType
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.parcelableCompat
 import social.entourage.android.tools.utils.px
+import java.io.File
 
 class CreateEventStepOneFragment : Fragment(), EventImageUploadView {
 
@@ -37,6 +37,39 @@ class CreateEventStepOneFragment : Fragment(), EventImageUploadView {
     private var uploadedImageFile: File? = null
     private lateinit var uploadPresenter: EventImageUploadPresenter
     private var isUploading = false
+
+    private val cropLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val resultCode = result.resultCode
+            val data = result.data
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                val resultUri = UCrop.getOutput(data)
+                resultUri?.let { uri ->
+                    val file = File(uri.path!!)
+                    uploadedImageFile = file
+                    selectedImage = null // Clear previously selected default image
+                    CommunicationHandler.event.entourageImageId(null)
+
+                    binding.layout.addPhotoLayout.visibility = View.GONE
+                    binding.layout.addPhoto.visibility = View.VISIBLE
+                    Glide.with(requireActivity())
+                        .load(uri)
+                        .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
+                        .into(binding.layout.addPhoto)
+
+                    CommunicationHandler.isButtonClickable.value =
+                        isGroupNameValid() && isGroupDescriptionValid() && isImageValid()
+
+                    isUploading = true
+                    CommunicationHandler.isButtonClickable.value = false
+                    Toast.makeText(requireContext(), "Upload de l'image en cours...", Toast.LENGTH_SHORT).show()
+                    uploadPresenter.uploadPhoto(file)
+                }
+            } else if (resultCode == UCrop.RESULT_ERROR && data != null) {
+                val cropError = UCrop.getError(data)
+                cropError?.printStackTrace()
+            }
+        }
 
     private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
@@ -53,41 +86,11 @@ class CreateEventStepOneFragment : Fragment(), EventImageUploadView {
             options.setHideBottomControls(true)
             options.setFreeStyleCropEnabled(false)
 
-            UCrop.of(it, destinationUri)
+            val intent = UCrop.of(it, destinationUri)
                 .withAspectRatio(16f, 9f)
                 .withOptions(options)
-                .start(requireContext(), this)
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-            val resultUri = UCrop.getOutput(data!!)
-            resultUri?.let { uri ->
-                val file = File(uri.path!!)
-                uploadedImageFile = file
-                selectedImage = null // Clear previously selected default image
-                CommunicationHandler.event.entourageImageId(null)
-
-                binding.layout.addPhotoLayout.visibility = View.GONE
-                binding.layout.addPhoto.visibility = View.VISIBLE
-                Glide.with(requireActivity())
-                    .load(uri)
-                    .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
-                    .into(binding.layout.addPhoto)
-
-                CommunicationHandler.isButtonClickable.value =
-                    isGroupNameValid() && isGroupDescriptionValid() && isImageValid()
-
-                isUploading = true
-                CommunicationHandler.isButtonClickable.value = false
-                Toast.makeText(requireContext(), "Upload de l'image en cours...", Toast.LENGTH_SHORT).show()
-                uploadPresenter.uploadPhoto(file)
-            }
-        } else if (resultCode == UCrop.RESULT_ERROR) {
-            val cropError = UCrop.getError(data!!)
-            cropError?.printStackTrace()
+                .getIntent(requireContext())
+            cropLauncher.launch(intent)
         }
     }
 
@@ -168,7 +171,7 @@ class CreateEventStepOneFragment : Fragment(), EventImageUploadView {
             if (isAddPhoto) {
                 getContent.launch("image/*")
             } else {
-                selectedImage = bundle.getParcelable(Const.CHOOSE_PHOTO_PATH)
+                selectedImage = bundle.parcelableCompat<Image>(Const.CHOOSE_PHOTO_PATH)
                 uploadedImageFile = null
                 CommunicationHandler.isButtonClickable.value = isImageValid()
                 CommunicationHandler.event.entourageImageId(selectedImage?.id)

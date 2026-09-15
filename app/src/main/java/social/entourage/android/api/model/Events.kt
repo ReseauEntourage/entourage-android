@@ -1,7 +1,6 @@
 package social.entourage.android.api.model
 
 import android.content.Context
-import android.util.Log
 import com.google.gson.annotations.SerializedName
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -10,7 +9,8 @@ import social.entourage.android.api.model.notification.Translation
 import social.entourage.android.events.EventModel
 import java.io.Serializable
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 enum class Status(val value: String) {
     @SerializedName("open")

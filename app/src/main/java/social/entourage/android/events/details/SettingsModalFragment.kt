@@ -1,19 +1,11 @@
 package social.entourage.android.events.details
 
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
-import androidx.core.os.bundleOf
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.setFragmentResult
@@ -41,6 +33,7 @@ import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
+import social.entourage.android.tools.utils.serializableCompat
 
 class SettingsModalFragment : BottomSheetDialogFragment() {
 
@@ -48,6 +41,9 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     val binding: NewFragmentSettingsModalBinding get() = _binding!!
 
     private var event: Events? = null
+    private val activityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
     private val interestsList = ArrayList<String>()
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
 
@@ -81,7 +77,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun getEventInformation() {
-        event = arguments?.getSerializable(Const.EVENT_UI) as? Events
+        event = arguments?.serializableCompat<Events>(Const.EVENT_UI)
     }
 
     private fun setView() {
@@ -168,7 +164,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         binding.rules.profileSettingsItemLayout.setOnClickListener {
             val intent = Intent(context, GroupRulesActivity::class.java)
             intent.putExtra(Const.RULES_TYPE, Const.RULES_EVENT)
-            startActivityForResult(intent, 0)
+            activityResultLauncher.launch(intent)
         }
     }
 
@@ -176,7 +172,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         binding.edit.root.setOnClickListener {
             val intent = Intent(context, CreateEventActivity::class.java)
             intent.putExtra(Const.EVENT_UI, event)
-            startActivityForResult(intent, 0)
+            activityResultLauncher.launch(intent)
             dismiss()
         }
     }
@@ -185,14 +181,14 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         binding.editRecurrence.root.setOnClickListener {
             val intent = Intent(context, social.entourage.android.events.EditRecurrenceActivity::class.java).apply {
                 putExtras(
-                    bundleOf(
-                        Const.EVENT_ID to event?.id,
-                        Const.EVENT_DATE to event?.metadata?.startsAt,
-                        Const.RECURRENCE to event?.recurrence
-                    )
+                    Bundle().apply {
+                        event?.id?.let { putInt(Const.EVENT_ID, it) }
+                        event?.metadata?.startsAt?.let { putSerializable(Const.EVENT_DATE, it) }
+                        event?.recurrence?.let { putInt(Const.RECURRENCE, it) }
+                    }
                 )
             }
-            startActivityForResult(intent, 0)
+            activityResultLauncher.launch(intent)
             dismiss()
         }
     }
@@ -289,7 +285,10 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private fun onEventChanged(done: Boolean) {
         if (done) {
-            setFragmentResult(Const.REQUEST_KEY_SHOULD_REFRESH, bundleOf(Const.SHOULD_REFRESH to true))
+            setFragmentResult(
+                Const.REQUEST_KEY_SHOULD_REFRESH,
+                Bundle().apply { putBoolean(Const.SHOULD_REFRESH, true) }
+            )
             RefreshController.shouldRefreshEventFragment = true
             dismiss()
         }
@@ -297,7 +296,10 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
 
     private fun handleLeftResponse(left: Boolean) {
         if (left) {
-            setFragmentResult(Const.REQUEST_KEY_SHOULD_REFRESH, bundleOf(Const.SHOULD_REFRESH to true))
+            setFragmentResult(
+                Const.REQUEST_KEY_SHOULD_REFRESH,
+                Bundle().apply { putBoolean(Const.SHOULD_REFRESH, true) }
+            )
             dismiss()
             activity?.finish()
         }

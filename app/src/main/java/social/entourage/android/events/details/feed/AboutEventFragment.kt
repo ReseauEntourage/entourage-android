@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
@@ -58,6 +59,9 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
     val binding: NewFragmentAboutEventBinding get() = _binding!!
     var event: EventModel? = null
     private var interestsList: ArrayList<String> = ArrayList()
+    private val activityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
 
     private val args: AboutEventFragmentArgs by navArgs()
@@ -304,7 +308,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
         val geoUri =
             String.format(getString(R.string.geoUri), event?.metadata?.displayAddress)
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
-        startActivityForResult(intent, 0)
+        activityResultLauncher.launch(intent)
     }
 
     private fun openLink() {
@@ -316,7 +320,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                 url?.let {
                     url = Utils.checkUrlWithHttps(it)
                     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                    startActivityForResult(browserIntent, 0)
+                    activityResultLauncher.launch(browserIntent)
                 }
             }
         }

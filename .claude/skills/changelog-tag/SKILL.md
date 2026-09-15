@@ -28,7 +28,7 @@ Filter out bare merge commits (lines matching `^- Merge remote-tracking branch` 
 
 Run:
 ```
-git diff <PREV_TAG>..<TARGET_TAG> --stat
+git --no-pager diff <PREV_TAG>..<TARGET_TAG> --stat
 ```
 Group the changed files by service/directory to understand which parts of the repo were affected.
 
@@ -42,7 +42,7 @@ For each service or area that shows significant changes, inspect the actual diff
 
 Use targeted diff reads like:
 ```
-git diff <PREV_TAG>..<TARGET_TAG> -- <path> | head -120
+git --no-pager diff <PREV_TAG>..<TARGET_TAG> -- <path> | head -120
 ```
 Focus on:
 - New Lambda functions or handlers

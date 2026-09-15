@@ -14,13 +14,16 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.drawToBitmap
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
@@ -39,11 +42,7 @@ import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.report.onDissmissFragment
-import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.sockets.ConversationSocketManager
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.VibrationUtil
@@ -124,7 +123,7 @@ val universalLinkManager = UniversalLinkManager(this)
 var photoUri: Uri? = null
 private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
 private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
-private val smallTalkViewModel: SmallTalkViewModel by viewModels()
+//private val smallTalkViewModel: SmallTalkViewModel by viewModels()
 private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
 
 override fun onCreate(savedInstanceState: Bundle?) {
@@ -148,13 +147,12 @@ override fun onCreate(savedInstanceState: Bundle?) {
     isFromNotif = intent.getBooleanExtra(Const.IS_FROM_NOTIF, false)
     isConversation = intent.getBooleanExtra(Const.IS_CONVERSATION, false)
     shouldOpenKeyboard = intent.getBooleanExtra(Const.SHOULD_OPEN_KEYBOARD, false)
-    viewModel.isMessageDeleted.observe(this,::handleMessageDeleted)
+    viewModel.isMessageDeleted.observe(this) { handleMessageDeleted() }
     initializeComments()
     handleCommentAction()
     openEditTextKeyboard()
     handleBackButton()
     setSettingsIcon()
-    val postLang = comment?.contentTranslations?.fromLang ?: ""
     binding.layoutStaffBanner.visibility = View.GONE
 
     handleSendButtonState()
@@ -185,8 +183,8 @@ fun startEditingMessage(messageId: Int, messageHtml: String?) {
     binding.commentMessage.setSelection(binding.commentMessage.text?.length ?: 0)
     binding.layoutEditingMessage.visibility = View.VISIBLE
     binding.commentMessage.requestFocus()
-    val imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as? android.view.inputmethod.InputMethodManager
-    imm?.showSoftInput(binding.commentMessage, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT)
+    WindowCompat.getInsetsController(window, binding.commentMessage)
+        .show(WindowInsetsCompat.Type.ime())
 }
 
 fun cancelEditingMessage() {
@@ -279,7 +277,7 @@ companion object {
     private const val HIGHLIGHT_DURATION_MS = 1200L
 }
 
-private fun handleMessageDeleted(isMessageDeleted:Boolean){
+private fun handleMessageDeleted() {
 
 }
 

@@ -35,6 +35,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
+import social.entourage.android.tools.utils.parcelableCompat
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.utils.trimEnd
 
@@ -202,7 +203,7 @@ class EditGroupFragment : Fragment() {
 
     private fun onFragmentResult() {
         setFragmentResultListener(Const.REQUEST_KEY_CHOOSE_PHOTO) { _, bundle ->
-            selectedImage = bundle.getParcelable(Const.CHOOSE_PHOTO_PATH)
+            selectedImage = bundle.parcelableCompat<Image>(Const.CHOOSE_PHOTO_PATH)
             selectedImage?.imageUrl.let { imageUrl ->
                 binding.stepThree.egs3AddPhoto.visibility = View.VISIBLE
                 Glide.with(requireActivity())

@@ -3,7 +3,6 @@ package social.entourage.android.profile
 import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -18,6 +17,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.os.ConfigurationCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -274,11 +274,8 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
     private fun updateUserView() {
         val user = EntourageApplication.me(this) ?: return
-        val isArabic = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            resources.configuration.locales[0].language == "ar"
-        } else {
-            resources.configuration.locale.language == "ar"
-        }
+        val isArabic =
+            ConfigurationCompat.getLocales(resources.configuration)[0]?.language == "ar"
 
         with(binding) {
             configureTextDirection(isArabic, firstname.peeiContent)

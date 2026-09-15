@@ -9,7 +9,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +26,7 @@ import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.events.AcceptPhotoDialogFragment
 import social.entourage.android.events.EventsPresenter
 
+import androidx.activity.result.contract.ActivityResultContracts
 import social.entourage.android.EntourageApplication
 import social.entourage.android.groups.details.members.AddUnsubscribedParticipantsBottomSheet
 import social.entourage.android.api.model.Events
@@ -48,6 +48,9 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
     private val membersList: MutableList<EntourageUser> = mutableListOf()
     private val membersListSearch: MutableList<EntourageUser> = mutableListOf()
     private val reactionList: MutableList<ReactionType> = mutableListOf()
+    private val conversationLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
     private var id: Int = Const.DEFAULT_VALUE
 
     private var type: MembersType = MembersType.GROUP
@@ -168,7 +171,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
             discussionPresenter.createOrGetConversation(userId.toString())
         }
         override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean, photoAcceptance: Boolean?) {
-            val userId = user.userId ?: return
+            val userId = user.userId
             if (isChecked) {
                 if (type == MembersType.EVENT) {
                     eventPresenter.participateForUser(id, userId)
@@ -365,19 +368,19 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
     private fun openConversation(conv: Conversation?) {
         conv ?: return
         DetailConversationActivity.isSmallTalkMode = false
-        startActivityForResult(
+        conversationLauncher.launch(
             Intent(this, DetailConversationActivity::class.java).putExtras(
-                bundleOf(
-                    Const.ID to conv.id,
-                    Const.POST_AUTHOR_ID to conv.user?.id,
-                    Const.SHOULD_OPEN_KEYBOARD to false,
-                    Const.NAME to conv.title,
-                    Const.IS_CONVERSATION_1TO1 to true,
-                    Const.IS_MEMBER to true,
-                    Const.IS_CONVERSATION to true,
-                    Const.HAS_TO_SHOW_MESSAGE to conv.hasToShowFirstMessage()
-                )
-            ), 0
+                Bundle().apply {
+                    conv.id?.let { putInt(Const.ID, it) }
+                    conv.user?.id?.let { putInt(Const.POST_AUTHOR_ID, it) }
+                    putBoolean(Const.SHOULD_OPEN_KEYBOARD, false)
+                    putString(Const.NAME, conv.title)
+                    putBoolean(Const.IS_CONVERSATION_1TO1, true)
+                    putBoolean(Const.IS_MEMBER, true)
+                    putBoolean(Const.IS_CONVERSATION, true)
+                    putBoolean(Const.HAS_TO_SHOW_MESSAGE, conv.hasToShowFirstMessage())
+                }
+            )
         )
     }
 

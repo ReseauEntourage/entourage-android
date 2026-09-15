@@ -1,7 +1,5 @@
 package social.entourage.android.deeplinks
 
-import android.util.Log
-import androidx.collection.ArrayMap
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -11,8 +9,11 @@ import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
-import social.entourage.android.api.request.*
-import timber.log.Timber
+import social.entourage.android.api.request.ContribWrapper
+import social.entourage.android.api.request.DemandWrapper
+import social.entourage.android.api.request.DiscussionDetailWrapper
+import social.entourage.android.api.request.EventWrapper
+import social.entourage.android.api.request.GroupWrapper
 
 class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
 

@@ -3,7 +3,7 @@ package social.entourage.android
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.core.os.bundleOf
+import android.os.Bundle
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavArgument
 import androidx.navigation.fragment.findNavController
@@ -55,13 +55,13 @@ object Navigation {
                 ActionSummary.SHOW -> {
                     return Intent(context, DetailConversationActivity::class.java)
                         .putExtras(
-                            bundleOf(
-                                Const.ID to params.id,
-                                Const.SHOULD_OPEN_KEYBOARD to false,
-                                Const.IS_CONVERSATION_1TO1 to true,
-                                Const.IS_MEMBER to true,
-                                Const.IS_CONVERSATION to true
-                            )
+                            Bundle().apply {
+                                params.id?.let { putInt(Const.ID, it) }
+                                putBoolean(Const.SHOULD_OPEN_KEYBOARD, false)
+                                putBoolean(Const.IS_CONVERSATION_1TO1, true)
+                                putBoolean(Const.IS_MEMBER, true)
+                                putBoolean(Const.IS_CONVERSATION, true)
+                            }
                         )
                 }
                 ActionSummary.INDEX -> {

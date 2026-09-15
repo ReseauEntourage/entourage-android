@@ -34,6 +34,7 @@ import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.nextPage
 import social.entourage.android.tools.utils.previousPage
+import social.entourage.android.tools.utils.serializableExtra
 import timber.log.Timber
 
 class CreateEventFragment : Fragment() {
@@ -64,7 +65,7 @@ class CreateEventFragment : Fragment() {
         handleBackButton()
         eventPresenter.newEventCreated.observe(viewLifecycleOwner, ::handleCreateEventResponse)
         eventPresenter.isEventUpdated.observe(viewLifecycleOwner, ::isEventUpdated)
-        event = activity?.intent?.getSerializableExtra(Const.EVENT_UI) as Events?
+        event = activity?.intent?.serializableExtra<Events>(Const.EVENT_UI)
         CommunicationHandler.eventEdited = event
         setView()
     }

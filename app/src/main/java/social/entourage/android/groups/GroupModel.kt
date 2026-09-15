@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.Status
 import social.entourage.android.api.model.notification.Translation
+import social.entourage.android.tools.utils.readListCompat
+import social.entourage.android.tools.utils.readSerializableCompat
 
 data class GroupModel(
     @SerializedName("id")
@@ -37,30 +39,35 @@ data class GroupModel(
     constructor(parcel: Parcel) : this(
         parcel.readValue(Int::class.java.classLoader) as? Int, // id
         parcel.readString(), // name
-        parcel.readParcelable(Translation::class.java.classLoader), // nameTranslations
+        parcel.readSerializableCompat<Translation>(Translation::class.java.classLoader), // nameTranslations
         parcel.readString(), // uuid_v2
         parcel.readValue(Int::class.java.classLoader) as? Int, // members_count
         parcel.readString(), // address
         mutableListOf<String>().apply { parcel.readStringList(this)}, // interests
         parcel.readString(), // description
-        parcel.readParcelable(Translation::class.java.classLoader), // descriptionTranslations
-        mutableListOf<GroupMember>().apply { parcel.readList(this, GroupMember::class.java.classLoader)}, // members
+        parcel.readSerializableCompat<Translation>(Translation::class.java.classLoader), // descriptionTranslations
+        mutableListOf<GroupMember>().apply { parcel.readListCompat(this, GroupMember::class.java.classLoader)}, // members
         parcel.readByte() != 0.toByte(), // member
         parcel.readByte() != 0.toByte(), // admin
         parcel.readValue(Int::class.java.classLoader) as? Int, // recurrence
-        parcel.readParcelable(Status::class.java.classLoader) // status
+        parcel.readValue(Status::class.java.classLoader) as? Status // status
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeValue(id)
         parcel.writeString(name)
+        parcel.writeSerializable(nameTranslations)
         parcel.writeValue(uuid_v2)
         parcel.writeValue(members_count)
         parcel.writeString(address)
         parcel.writeStringList(interests)
         parcel.writeString(description)
+        parcel.writeSerializable(descriptionTranslations)
         parcel.writeList(members)
         parcel.writeByte(if (member) 1 else 0)
+        parcel.writeByte(if (admin) 1 else 0)
+        parcel.writeValue(recurrence)
+        parcel.writeValue(status)
     }
 
     override fun describeContents(): Int {

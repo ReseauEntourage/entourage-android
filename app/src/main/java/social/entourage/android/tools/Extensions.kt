@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Matrix
-import android.graphics.PorterDuff
 import android.os.Build
 import android.text.Html
 import android.text.SpannableString
@@ -20,6 +19,9 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.graphics.BlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
@@ -90,7 +92,10 @@ fun TextView.displayHtml(textContent: String) {
 
 fun ImageButton.disable() {
     Timber.d("Call disable")
-    drawable.setColorFilter(resources.getColor(R.color.onboard_button_unselect), PorterDuff.Mode.LIGHTEN)
+    drawable.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+        ResourcesCompat.getColor(resources, R.color.onboard_button_unselect, null),
+        BlendModeCompat.LIGHTEN
+    )
     isClickable = false
 }
 
@@ -146,11 +151,9 @@ fun String?.isValidEmail(): Boolean {
 fun EditText.showKeyboard() {
     post {
         requestFocus()
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(
-                InputMethodManager.SHOW_FORCED,
-                InputMethodManager.HIDE_IMPLICIT_ONLY
-        )
+        (context as? Activity)?.window?.let { window ->
+            WindowCompat.getInsetsController(window, this).show(WindowInsetsCompat.Type.ime())
+        }
     }
 }
 

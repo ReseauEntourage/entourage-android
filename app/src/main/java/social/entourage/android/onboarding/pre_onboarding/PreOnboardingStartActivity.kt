@@ -7,7 +7,6 @@ import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -95,12 +94,12 @@ class PreOnboardingStartActivity : AppCompatActivity() {
         binding.uiRecyclerView.layoutManager = linearLayoutManager
 
         // Vérifie si l'interface est en RTL
-        val isRtl = resources.configuration.layoutDirection == ViewCompat.LAYOUT_DIRECTION_RTL
+        val isRtl = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
         if (isRtl) {
 
-            ViewCompat.setLayoutDirection(binding.uiRecyclerView, ViewCompat.LAYOUT_DIRECTION_RTL)
+            binding.uiRecyclerView.layoutDirection = View.LAYOUT_DIRECTION_RTL
         } else {
-            ViewCompat.setLayoutDirection(binding.uiRecyclerView, ViewCompat.LAYOUT_DIRECTION_LTR)
+            binding.uiRecyclerView.layoutDirection = View.LAYOUT_DIRECTION_LTR
         }
 
         // Initialise l'adaptateur

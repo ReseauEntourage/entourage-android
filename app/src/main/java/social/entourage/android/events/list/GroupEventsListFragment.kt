@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -26,6 +27,9 @@ class GroupEventsListFragment : Fragment() {
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
 
     private val args: GroupEventsListFragmentArgs by navArgs()
+    private val activityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -77,7 +81,7 @@ class GroupEventsListFragment : Fragment() {
         binding.createEvent.setOnClickListener {
             val intent = Intent(context, CreateEventActivity::class.java)
             intent.putExtra(Const.GROUP_ID, args.groupID)
-            startActivityForResult(intent,0)
+            activityResultLauncher.launch(intent)
         }
     }
 }

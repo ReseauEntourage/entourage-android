@@ -26,6 +26,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.countrycodepicker.Country
 import social.entourage.android.tools.view.countrycodepicker.CountryCodePickerListener
 import social.entourage.android.tools.utils.Utils
+import social.entourage.android.tools.utils.serializableCompat
 import timber.log.Timber
 import java.util.Calendar
 import java.util.Locale
@@ -97,7 +98,7 @@ class OnboardingPhase1Fragment : Fragment() {
             phone = it.getString(ARG_PHONE)
             hasConsent = it.getBoolean(ARG_CONSENT)
             email = it.getString(ARG_EMAIL)
-            country = it.getSerializable(ARG_COUNTRY) as? Country
+            country = it.serializableCompat<Country>(ARG_COUNTRY)
             howDidYouHearKey = it.getString(ARG_HOW_DID_YOU_HEAR)
             company = it.getString(ARG_COMPANY)
             event = it.getString(ARG_EVENT)
@@ -181,9 +182,9 @@ class OnboardingPhase1Fragment : Fragment() {
 
     private fun setupListeners() {
         binding.uiOnboardPhoneCcpCode.countryCodePickerListener = object : CountryCodePickerListener {
-            override fun updatedCountry(newCountry: Country) {
-                country = newCountry
-                updatePlaceholder(newCountry.phoneCode)
+            override fun updatedCountry(country: Country) {
+                this@OnboardingPhase1Fragment.country = country
+                updatePlaceholder(country.phoneCode)
                 updateButtonNext()
             }
         }
@@ -196,6 +197,15 @@ class OnboardingPhase1Fragment : Fragment() {
         }
 
         binding.uiOnboardConsentCheck.setOnCheckedChangeListener { _, _ -> updateButtonNext() }
+
+        val textWatcher = object : android.text.TextWatcher {
+            override fun afterTextChanged(s: android.text.Editable?) { updateButtonNext() }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        }
+        binding.uiOnboardNamesEtFirstname.addTextChangedListener(textWatcher)
+        binding.uiOnboardNamesEtLastname.addTextChangedListener(textWatcher)
+        binding.uiOnboardPhoneEtPhone.addTextChangedListener(textWatcher)
 
         binding.uiOnboardEmail.addTextChangedListener(object : android.text.TextWatcher {
             override fun afterTextChanged(s: android.text.Editable?) {
@@ -348,7 +358,7 @@ class OnboardingPhase1Fragment : Fragment() {
         )
         val labels = fixed.map { it.label }
 
-        val view = binding.uiOnboardSpinnerGender as MaterialAutoCompleteTextView
+        val view = binding.uiOnboardSpinnerGender
         view.setAdapter(ArrayAdapter(ctx, android.R.layout.simple_list_item_1, labels))
 
         val pre = findPreselectIndex(fixed, genderKey)
@@ -365,7 +375,7 @@ class OnboardingPhase1Fragment : Fragment() {
         val ctx = binding.root.context
         val labels = options.map { it.label }
 
-        val view = binding.uiOnboardSpinnerHowDidYouHear as MaterialAutoCompleteTextView
+        val view = binding.uiOnboardSpinnerHowDidYouHear
         view.setAdapter(ArrayAdapter(ctx, android.R.layout.simple_list_item_1, labels))
 
         val pre = findPreselectIndex(options, howDidYouHearKey)
@@ -383,7 +393,7 @@ class OnboardingPhase1Fragment : Fragment() {
         val ctx = binding.root.context
         val names = enterpriseList.map { it.Name }
 
-        val view = binding.uiOnboardSpinnerCompany as MaterialAutoCompleteTextView
+        val view = binding.uiOnboardSpinnerCompany
         view.setAdapter(ArrayAdapter(ctx, android.R.layout.simple_list_item_1, names))
 
         // Préselect par ID (company contient un Id)
@@ -422,7 +432,7 @@ class OnboardingPhase1Fragment : Fragment() {
         val events = eventListByEnterpriseId[enterpriseId] ?: emptyList()
         val names = events.map { it.Name }
 
-        val view = binding.uiOnboardSpinnerEvent as MaterialAutoCompleteTextView
+        val view = binding.uiOnboardSpinnerEvent
         view.setAdapter(ArrayAdapter(ctx, android.R.layout.simple_list_item_1, names))
 
         // préselect par Id (event contient un Id)
@@ -449,8 +459,8 @@ class OnboardingPhase1Fragment : Fragment() {
             company = null
             event = null
             selectedEnterpriseId = null
-            clearDropdown(binding.uiOnboardSpinnerCompany as MaterialAutoCompleteTextView)
-            clearDropdown(binding.uiOnboardSpinnerEvent as MaterialAutoCompleteTextView)
+            clearDropdown(binding.uiOnboardSpinnerCompany)
+            clearDropdown(binding.uiOnboardSpinnerEvent)
         }
     }
 
@@ -491,6 +501,8 @@ class OnboardingPhase1Fragment : Fragment() {
         // MODE CALENDRIER
         var calendarHooked = false
         try {
+            // No non-deprecated replacement exists for DatePicker#getCalendarView(); this
+            // best-effort calendar-mode hookup already tolerates its absence via the catch below.
             val cv = dp.calendarView
             if (cv != null && cv.visibility == View.VISIBLE) {
                 calendarHooked = true
