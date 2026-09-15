@@ -2005,4 +2005,5 @@
     <string name="group_feed_post_unavailable">This post no longer exists.</string>
     <string name="message_action_react">Réagir</string>
 
+    <string name="comment_posted_confirmation">Commentaire publié !</string>
 </resources>
