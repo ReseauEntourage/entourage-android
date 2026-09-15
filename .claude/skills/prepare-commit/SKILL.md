@@ -25,7 +25,12 @@ Pour l'ensemble des fichiers récupérés à l'étape 1 :
 ### 3. Proposition d'implémentation des tests
 - Proposer à l'utilisateur d'implémenter automatiquement les tests unitaires et/ou d'intégration proposés avant de procéder au commit.
 
-### 4. Génération du message de commit
+### 4. Détection d'une change OpenSpec non archivée
+1. Parmi les fichiers récupérés à l'étape 1, repérer ceux situés sous `openspec/changes/<change-id>/specs/**` (delta specs), à l'exclusion de tout chemin sous `openspec/changes/archive/`.
+2. **Si de tels fichiers sont présents :** proposer à l'utilisateur d'exécuter `/opsx:sync` pour synchroniser ces delta specs vers `openspec/specs/` avant de poursuivre. Ne pas l'exécuter automatiquement — attendre la confirmation de l'utilisateur.
+3. **Sinon :** passer directement à l'étape suivante sans mentionner OpenSpec.
+
+### 5. Génération du message de commit
 Générer un message de commit structuré basé sur le périmètre des fichiers récupérés :
 - **Préfixe approprié :**
   - `feat:` nouvelle fonctionnalité
