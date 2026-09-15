@@ -3516,7 +3516,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboarding_start_action_ask_button">Faire ma première demande</string>
     <string name="onboarding_start_action_ask_skip">Me le rappeler plus tard</string>
 
-    <string name="comment_posted_confirmation">Commentaire publié !</string>
     <string name="event_canceled_banner_subtitle">Cet événement n\'aura pas lieu</string>
     <string name="event_canceled_badge">Annulé</string>
 </resources>

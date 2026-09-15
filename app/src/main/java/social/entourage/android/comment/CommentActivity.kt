@@ -9,7 +9,6 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
@@ -292,10 +291,8 @@ private fun handleMessageDeleted(isMessageDeleted:Boolean){
  * remplace l'entrée déjà insérée par le socket au lieu d'en ajouter une deuxième.
  */
 protected fun handleCommentPosted(post: Post?) {
-    binding.comment.isEnabled = true
     post?.let {
         mergeIncomingMessage(it)
-        Toast.makeText(this, R.string.comment_posted_confirmation, Toast.LENGTH_SHORT).show()
     } ?: run {
         messagesFailed.add(comment)
         comment?.let { commentsList.add(it) }
@@ -869,10 +866,9 @@ private fun setupConversationChips() {
         }
 
         if (message.isNotBlank() || photoUri != null) {
-            // Désactiver le bouton le temps de l'envoi, pour éviter un double-envoi.
-            // EN-9456 : plus de loader plein écran — la confirmation se fait via un toast
-            // dans handleCommentPosted() une fois la réponse serveur reçue.
+            // Désactiver le bouton et afficher la progress bar
             binding.comment.isEnabled = false
+            binding.progressBar.visibility = View.VISIBLE
 
             // Créer l'utilisateur et le commentaire
             val user = EntourageUser().apply {
@@ -889,6 +885,12 @@ private fun setupConversationChips() {
 
             // Envoi du commentaire
             addComment()
+
+            // Simuler un délai de 2 secondes pour la réactivation du bouton
+            binding.comment.postDelayed({
+                binding.comment.isEnabled = true
+                binding.progressBar.visibility = View.GONE
+            }, 2000)
 
             // Nettoyer le champ de saisie et cacher le clavier
             binding.commentMessage.text.clear()
