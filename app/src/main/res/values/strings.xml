@@ -3464,8 +3464,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <!-- Badge: Tisseur de liens -->
     <string name="badge_tisseur_liens_title">Tisseur de liens</string>
-    <string name="badge_tisseur_liens_description_short">Soyez actif dans vos groupes (en postant, commentant, réagissant) au moins 3 semaines par mois</string>
-    <string name="badge_tisseur_liens_how_it_works">Soyez actif dans vos groupes (en postant, commentant, réagissant) au moins 3 semaines par mois.</string>
+    <string name="badge_tisseur_liens_description_short">Soyez actif dans vos groupes (en postant, commentant, réagissant) 3 semaines sur 4</string>
+    <string name="badge_tisseur_liens_how_it_works">Soyez actif dans vos groupes (en postant, commentant, réagissant) au moins 3 semaines sur les 4 dernières.</string>
     <string name="badge_tisseur_liens_what_it_means">La régularité crée la confiance. Ce badge honore ceux qui sont là semaine après semaine, qui animent la vie locale et maintiennent le lien dans leur quartier.</string>
     <string name="badge_tisseur_liens_cta">Aller dans mes groupes</string>
 
