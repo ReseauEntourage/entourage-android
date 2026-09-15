@@ -103,6 +103,7 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
                 val geocoder = Geocoder(requireContext())
                 userAddress?.displayAddress?.let { userDisplayAddress->
                     geocoder.getFromLocationNameCompat(userDisplayAddress, 1) { addresses ->
+                        if (!isAdded) return@getFromLocationNameCompat
                         if (!addresses.isNullOrEmpty()) {
                             with(viewModel.group) {
                                 latitude = addresses.first().latitude
@@ -113,10 +114,12 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
                             if (isAdded && view != null) {
                                 findNavController().popBackStack()
                             } else {
-                                val intent = Intent(context, MainActivity::class.java)
-                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                intent.putExtra("goDemand", true)
-                                requireContext().startActivity(intent)
+                                context?.let { ctx ->
+                                    val intent = Intent(ctx, MainActivity::class.java)
+                                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    intent.putExtra("goDemand", true)
+                                    ctx.startActivity(intent)
+                                }
                             }
                         }
                     }

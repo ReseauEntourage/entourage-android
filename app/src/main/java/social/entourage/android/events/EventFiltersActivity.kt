@@ -273,6 +273,7 @@ class EventFiltersActivity : AppCompatActivity() {
                 latlng.longitude,
                 1
             ) { address ->
+                if (isFinishing || isDestroyed) return@getFromLocationCompat
                 if (!address.isNullOrEmpty()) {
                     val city = address[0].locality
                     val cp = address[0].postalCode
@@ -309,12 +310,15 @@ class EventFiltersActivity : AppCompatActivity() {
         binding.placeName.text = ""
         binding.placeName.hint = getString(R.string.onboard_place_placeholder)
         lastLocation?.let {
+            val initialAddress = Address(it.latitude, it.longitude, "")
+            currentFilters?.modifyAddress(initialAddress)
             try {
                 Geocoder(this, Locale.getDefault()).getFromLocationCompat(
                     it.latitude,
                     it.longitude,
                     1
                 ) { address ->
+                    if (isFinishing || isDestroyed) return@getFromLocationCompat
                     if (!address.isNullOrEmpty()) {
                         var street = address[0].thoroughfare
                         val city = address[0].locality

@@ -112,6 +112,11 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
         setupViews()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     override fun onDetach() {
         super.onDetach()
         mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
@@ -188,27 +193,30 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
                 try {
                     temporaryLocation = lastLocation
                     temporaryAddressPlace = null
+                    temporaryAddressName = null
+                    updateCallback()
                     Geocoder(activity, Locale.getDefault()).getFromLocationCompat(
                         it.latitude,
                         it.longitude,
                         1
                     ) { address ->
+                        if (!isAdded || _binding == null) return@getFromLocationCompat
                         if (!address.isNullOrEmpty()) {
-                            val street = address[0].thoroughfare
                             val city = address[0].locality
                             val cp = address[0].postalCode
 
                             temporaryAddressName = "$city - $cp"
-                            binding.uiOnboardPlaceTvLocation.text = temporaryAddressName
+                            _binding?.uiOnboardPlaceTvLocation?.text = temporaryAddressName
+                            updateCallback()
                         }
                     }
                 } catch (e: IOException) {
                     Timber.e(e)
                 }
             }
+        } ?: run {
+            updateCallback()
         }
-
-        updateCallback()
     }
 
     //**********//**********//**********
