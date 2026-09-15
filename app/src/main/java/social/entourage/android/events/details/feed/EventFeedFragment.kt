@@ -362,6 +362,15 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 dateStartsAt.icon = ContextCompat.getDrawable(requireContext(), R.drawable.new_calendar_grey)
                 time.content.setTextColor(getColor(requireContext(), R.color.grey))
                 time.icon = ContextCompat.getDrawable(requireContext(), R.drawable.new_time_grey)
+
+                // EN-9334 : image grisée (désaturée + assombrie), comme sur la maquette.
+                val grayscaleFilter = android.graphics.ColorMatrixColorFilter(
+                    android.graphics.ColorMatrix().apply { setSaturation(0.4f) }
+                )
+                eventImage.colorFilter = grayscaleFilter
+                eventImage.alpha = 0.7f
+                eventImageToolbar.colorFilter = grayscaleFilter
+                eventImageToolbar.alpha = 0.7f
             }
         }
     }
