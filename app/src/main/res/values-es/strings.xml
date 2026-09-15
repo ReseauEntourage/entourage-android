@@ -2314,9 +2314,6 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
 
     <string name="home_v2_pedago_item_length_title">"%d lectura mínima</string>
 
-    <string name="home_v2_hz_item_title">“Oye, parece un poco tranquilo por aquí…</string>
-    <string name="home_v2_hz_item_subtitle">“¿Y si trajeras un poco de solidaridad a tu ciudad? ¡Entourage te da las claves para empezar!</string>
-    <string name="home_v2_hz_item_button">"Más información</string>
 
     <string name="event_date_time">"dd 'de' MMMM 'de' yyyy 'a las' HH:mm"</string>
     <string name="event_date">"dd/MM/yyyy"</string>

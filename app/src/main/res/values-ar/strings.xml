@@ -2311,9 +2311,6 @@
 
     <string name="home_v2_pedago_item_length_title">"قراءة %d دقيقة</string>
 
-    <string name="home_v2_hz_item_title">"مرحبًا، يبدو المكان هادئًا بعض الشيء هنا...</string>
-    <string name="home_v2_hz_item_subtitle">"ماذا لو جلبت القليل من التضامن إلى مدينتك؟ تمنحك Entourage المفاتيح للبدء!</string>
-    <string name="home_v2_hz_item_button">"اقرأ المزيد</string>
 
     <string name="event_date_time">"dd MMMM yyyy 'الساعة' HH:mm"</string>
     <string name="event_date">"dd/MM/yyyy"</string>
