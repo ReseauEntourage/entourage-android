@@ -2327,9 +2327,6 @@
 
     <string name="home_v2_pedago_item_length_title">«Прочитано %d хв</string>
 
-    <string name="home_v2_hz_item_title">«Гей, тут, здається, трохи тихо…</string>
-    <string name="home_v2_hz_item_subtitle">"Що, якби ви принесли трохи солідарності у своє місто? Entourage дасть вам ключі, щоб почати!</string>
-    <string name="home_v2_hz_item_button">"Вивчайте більше</string>
 
     <string name="event_date_time">"dd MMMM yyyy 'o' HH:mm"</string>
     <string name="event_date">"dd.MM.yyyy"</string>

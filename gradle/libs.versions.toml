@@ -165,6 +165,7 @@ androidx-test-rules = { module = "androidx.test:rules", version = "1.7.0" }
 androidx-test-core-ktx = { module = "androidx.test:core-ktx", version.ref = "androidx-test-core" }
 androidx-uiautomator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "androidx-uiautomator" }
 androidx-arch-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "androidx-arch-core-testing" }
+androidx-fragment-testing = { module = "androidx.fragment:fragment-testing", version.ref = "androidx-fragment" }
 #espresso
 espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
 espresso-intents = { module = "androidx.test.espresso:espresso-intents", version.ref = "espresso" }
@@ -184,7 +185,8 @@ androidx-test = [
     "androidx-test-rules",
     "androidx-test-core-ktx",
     "androidx-uiautomator",
-    "androidx-arch-core-testing"
+    "androidx-arch-core-testing",
+    "androidx-fragment-testing"
 ]
 espresso-test = [
     "espresso-core",

@@ -93,9 +93,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private var isAnimating = false
     private var pedagoItemForCreateEvent: Pedago? = null
     private var pedagoItemForCreateGroup: Pedago? = null
-    private var checksum = 0
     private var totalchecksum = 0
-    private var isEventsEmpty = false
     private var isActionEmpty = false
     private var isContribution = false
     private lateinit var actionsPresenter: ActionsPresenter
@@ -193,9 +191,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private lateinit var homeGroupAdapter: HomeGroupAdapter
     private lateinit var groupWrapperAdapter: HomeHorizontalWrapperAdapter
     private lateinit var groupButtonAdapter: HomeSectionButtonAdapter
-
-    // Map & Hors Zone
-    private lateinit var horsZoneAdapter: HomeSingleLayoutAdapter
 
     // Tools
     private lateinit var homeToolsAdapter: HomeToolsAdapter
@@ -462,7 +457,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         setupActionAdapter(viewPool)
         setupEventAdapter(viewPool)
         setupGroupAdapter(viewPool)
-        setupHorsZoneAdapter()
         setupToolsAdapter()
         setupPedagoAdapter()
         setupSuggestionsAdapters()
@@ -549,20 +543,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             mainActivity?.setGoDiscoverGroupFromDeepL(true)
             mainActivity?.goGroup()
         }
-    }
-
-    private fun setupHorsZoneAdapter() {
-        horsZoneAdapter = HomeSingleLayoutAdapter(R.layout.home_hors_zone) { view ->
-            val button = view.findViewById<View>(R.id.button_hz_item)
-            button.setOnClickListener {
-                AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Buffet)
-                val urlString =
-                    "https://reseauentourage.notion.site/Buffet-du-lien-social-69c20e089dbd483cb093e90ae2953a54"
-                WebViewFragment.newInstance(urlString, 0, true)
-                    .show(requireActivity().supportFragmentManager, WebViewFragment.TAG)
-            }
-        }
-        horsZoneAdapter.setVisible(false)
     }
 
     private fun setupToolsAdapter() {
@@ -718,7 +698,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
     override fun onResume() {
         super.onResume()
-        checksum = 0
         resetFilter()
         callToInitHome()
         actionsPresenter.getUnreadCount()
@@ -1074,12 +1053,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         }
     }
 
-    private fun checkSumEventAction() {
-        checksum++
-        val showHorsZone = (checksum == 2) && (isEventsEmpty && isActionEmpty)
-        horsZoneAdapter.setVisible(showHorsZone)
-    }
-
     private fun doTotalchecksumToDisplayHomeFirstTime() {
         totalchecksum++
         // CORRECTION: On fait un fade out sur la progress bar plutôt que de changer la visibilité du RV
@@ -1102,7 +1075,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 concatAdapter.addAdapter(groupHeaderAdapter)
                 concatAdapter.addAdapter(groupWrapperAdapter)
                 concatAdapter.addAdapter(groupButtonAdapter)
-                concatAdapter.addAdapter(horsZoneAdapter)
                 concatAdapter.addAdapter(smallTalkHeaderAdapter)
                 concatAdapter.addAdapter(homeSmallTalkAdapter)
                 concatAdapter.addAdapter(homeToolsAdapter)
@@ -1199,19 +1171,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         if (allEvent == null) return
         doTotalchecksumToDisplayHomeFirstTime()
 
-        val _offline_events: MutableList<Events> = mutableListOf()
-        if (allEvent.isNotEmpty()) {
-            for (event in allEvent) {
-                if (event.online == false) {
-                    _offline_events.add(event)
-                }
-            }
-            isEventsEmpty = _offline_events.size == 0
-        } else {
-            isEventsEmpty = true
-        }
-
-        checkSumEventAction()
         this.homeEventAdapter.resetData(allEvent)
 
         val showEvents = allEvent.isNotEmpty()
@@ -1226,9 +1185,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
         isActionEmpty = allAction.isEmpty()
 
-        if (!isContribution) {
-            checkSumEventAction()
-        }
         this.homeActionAdapter.resetData(allAction)
 
         val showActions = !isActionEmpty

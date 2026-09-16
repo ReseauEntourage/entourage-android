@@ -1437,9 +1437,6 @@
     <string name="home_v2_help_title_two">How to create an event?</string>
     <string name="home_help_title_three">A question?\nContact %s</string>
     <string name="home_v2_pedago_item_length_title">%d min read</string>
-    <string name="home_v2_hz_item_title">Hey, it seems a little quiet around here…</string>
-    <string name="home_v2_hz_item_subtitle">How about bringing solidarity to your city? Entourage gives you the keys to getting started!</string>
-    <string name="home_v2_hz_item_button">Learn more</string>
     <string name="empty_description"></string>
     <plurals name="number_of_people">
         <item quantity="one">%1$d participant</item>

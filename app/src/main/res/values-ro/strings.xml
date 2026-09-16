@@ -2322,9 +2322,6 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
 
     <string name="home_v2_pedago_item_length_title">„%d min. de citire</string>
 
-    <string name="home_v2_hz_item_title">„Hei, pare puțin liniștit pe aici...</string>
-    <string name="home_v2_hz_item_subtitle">„Dacă ai aduce puțină solidaritate în orașul tău? Entourage îți dă cheile pentru a începe!</string>
-    <string name="home_v2_hz_item_button">"Află mai multe</string>
 
     <string name="event_date_time">"dd MMMM yyyy 'la' HH:mm"</string>
     <string name="event_date">"dd/MM/yyyy"</string>

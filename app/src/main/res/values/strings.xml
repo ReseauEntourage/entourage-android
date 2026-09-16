@@ -486,7 +486,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="leave_event_dialog_content">Souhaitez-vous quitter l\'événement ?</string>
     <string name="dot">•</string>
     <string name="event_limited_places_title">Événement à places limitées</string>
-    <string name="event_limited_places_subtitle">Attention, cet événement est à places limitées, votre inscription n’est pas garantie. L’administrateur de l’événement reviendra vers vous pour vous confirmer la réservation de votre place.</string>
+    <string name="event_limited_places_subtitle">Cet événement est à places limitées : votre inscription sera confirmée par l’organisateur.</string>
     <string name="event_add_to_calendar_title">Votre inscription est prise en compte ! </string>
     <string name="event_add_to_calendar_subtitle">Voulez-vous ajouter cet événement à votre agenda personnel ?</string>
     <string name="add">Ajouter</string>
@@ -2653,9 +2653,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="home_v2_pedago_item_length_title">"%d min</string>
 
-    <string name="home_v2_hz_item_title">"Tiens, ça semble un peu calme par ici…</string>
-    <string name="home_v2_hz_item_subtitle">"Et si vous mettiez un peu de solidarité dans votre ville ? Entourage vous donne les clés pour vous lancer !</string>
-    <string name="home_v2_hz_item_button">"En savoir plus</string>
     <string name="empty_description" />
     <plurals name="number_of_people">
         <item quantity="one">%1$d participant</item>
@@ -3469,8 +3466,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <!-- Badge: Tisseur de liens -->
     <string name="badge_tisseur_liens_title">Tisseur de liens</string>
-    <string name="badge_tisseur_liens_description_short">Soyez actif dans vos groupes (en postant, commentant, réagissant) au moins 3 semaines par mois</string>
-    <string name="badge_tisseur_liens_how_it_works">Soyez actif dans vos groupes (en postant, commentant, réagissant) au moins 3 semaines par mois.</string>
+    <string name="badge_tisseur_liens_description_short">Soyez actif dans vos groupes (en postant, commentant, réagissant) 3 semaines sur 4</string>
+    <string name="badge_tisseur_liens_how_it_works">Soyez actif dans vos groupes (en postant, commentant, réagissant) au moins 3 semaines sur les 4 dernières.</string>
     <string name="badge_tisseur_liens_what_it_means">La régularité crée la confiance. Ce badge honore ceux qui sont là semaine après semaine, qui animent la vie locale et maintiennent le lien dans leur quartier.</string>
     <string name="badge_tisseur_liens_cta">Aller dans mes groupes</string>
 
@@ -3521,4 +3518,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboarding_start_action_ask_button">Faire ma première demande</string>
     <string name="onboarding_start_action_ask_skip">Me le rappeler plus tard</string>
 
+    <string name="event_canceled_banner_subtitle">Cet événement n\'aura pas lieu</string>
+    <string name="event_canceled_badge">Annulé</string>
 </resources>

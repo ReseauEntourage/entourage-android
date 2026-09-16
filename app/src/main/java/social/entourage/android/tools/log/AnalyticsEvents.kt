@@ -687,7 +687,6 @@ object AnalyticsEvents {
     const val   Action__Home__Moderator = "Action__Home__Moderator"
     const val   Action_Home_Contrib_Detail = "Action_Home_Contrib_Detail"
     const val   Action_Home_Contrib_All = "Action_Home_Contrib_All"
-    const val   Action_Home_Buffet = "Action_Home_Buffet"
 
 // NEW EVENT
     const val   View__Event__List = "View__Event__List"
