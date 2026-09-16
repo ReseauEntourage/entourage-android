@@ -2767,4 +2767,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="post_draft_meetup">Et si on se retrouvait prochainement ? Je propose </string>
     <string name="group_feed_post_unavailable">Cette publication n\'existe plus.</string>
     <string name="message_action_react">Réagir</string>
+    
+    <string name="profile_address_radius_format">%1$s - Rayon de %2$d km</string>
     </resources>

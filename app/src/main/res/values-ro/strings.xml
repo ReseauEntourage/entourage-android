@@ -2864,4 +2864,6 @@ Ei vor citi acest mesaj imediat ce se vor alătura grupului.</string>
     <string name="group_feed_post_unavailable">Cette publication n\'existe plus.</string>
     <string name="message_action_react">Réagir</string>
 
+
+    <string name="profile_address_radius_format">%1$s - Rază de %2$d km</string>
 </resources>

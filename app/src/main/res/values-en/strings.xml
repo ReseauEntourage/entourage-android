@@ -2005,4 +2005,6 @@
     <string name="group_feed_post_unavailable">This post no longer exists.</string>
     <string name="message_action_react">Réagir</string>
 
+
+    <string name="profile_address_radius_format">%1$s - %2$d km radius</string>
 </resources>
