@@ -20,8 +20,8 @@ import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
-import androidx.test.espresso.matcher.RootMatchers.withDecorView
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.isEnabled
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.espresso.IdlingPolicies
@@ -31,7 +31,6 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
 import org.hamcrest.Matchers.allOf
-import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Assume.assumeTrue
 import org.junit.Before
@@ -213,14 +212,12 @@ class GroupCommentScenarioTest : EntourageTestAfterLogin() {
         onIdle()
         shoot("commentaire_envoye")
 
-        // EN-9456 : plus de loader plein écran bloquant à l'envoi — confirmation via toast
-        // une fois la réponse serveur reçue (cf. CommentActivity.handleCommentPosted).
-        // Texte en dur (plutôt que R.string.comment_posted_confirmation) pour ne pas coupler
-        // cette branche à la string ajoutée côté develop tant qu'elle n'a pas été resynchronisée.
-        onView(withText("Commentaire publié !"))
-            .inRoot(withDecorView(not(currentActivity()?.window?.decorView)))
-            .check(matches(isDisplayed()))
-        shoot("toast_confirmation_commentaire")
+        // EN-9456 : plus de loader plein écran bloquant à l'envoi ; le bouton d'envoi doit se
+        // réactiver une fois la réponse serveur reçue (cf. CommentActivity.reenableCommentInput,
+        // appelée depuis handleCommentPosted()). Pas de toast : décision produit revenue en
+        // arrière après implémentation (cf. commentaire Jira EN-9456).
+        onView(withId(R.id.comment)).check(matches(isEnabled()))
+        shoot("bouton_envoi_reactive")
 
         onView(allOf(withId(R.id.comments), isDisplayed())).perform(
             actionOnItemAtPosition<ViewHolder>(lastMessagePosition(), tapOptionsIconOnOwnMessage())
