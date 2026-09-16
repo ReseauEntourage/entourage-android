@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:layout_marginBottom="12dp">
+
+    <TextView
+        android:id="@+id/tv_day_label"
+        android:layout_width="44dp"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/nunitosans_regular" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip_morning"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        style="@style/CustomChip.Availability"
+        android:text="@string/enhanced_onboarding_time_disponibility_time_morning"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip_afternoon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        style="@style/CustomChip.Availability"
+        android:text="@string/enhanced_onboarding_time_disponibility_time_afternoon"
+        android:layout_marginEnd="4dp" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip_evening"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        style="@style/CustomChip.Availability"
+        android:text="@string/enhanced_onboarding_time_disponibility_time_evening" />
+
+</LinearLayout>

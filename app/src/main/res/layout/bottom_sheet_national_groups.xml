@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    android:paddingTop="16dp">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Groupes thématiques"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/quicksand_bold"
+        android:gravity="center_horizontal"
+        android:paddingBottom="8dp"/>
+
+    <TextView
+        android:id="@+id/subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Des membres partout en France partagent vos centres d'intérêt. Rejoignez-les."
+        android:textSize="16sp"
+        android:textColor="@color/grey"
+        android:fontFamily="@font/nunitosans_regular"
+        android:gravity="center_horizontal"
+        android:paddingBottom="16dp"
+        android:layout_marginStart="@dimen/entourage_marginstart"
+        android:layout_marginEnd="@dimen/entourage_margin_end"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/groups_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="400dp"
+        android:paddingHorizontal="@dimen/entourage_marginstart"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_marginTop="16dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/close_button"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:text="Fermer"
+        android:textAllCaps="false"
+        android:textColor="@color/orange"
+        android:backgroundTint="@android:color/white"
+        app:cornerRadius="24dp"
+        app:strokeColor="@color/orange"
+        app:strokeWidth="1dp"/>
+</LinearLayout>

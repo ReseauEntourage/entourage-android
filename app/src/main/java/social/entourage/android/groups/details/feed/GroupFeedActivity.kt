@@ -13,8 +13,10 @@ class GroupFeedActivity : BaseActivity() {
         setContentView(R.layout.activity_feed_group)
 
         val id = intent.getIntExtra(Const.GROUP_ID, DEFAULT_VALUE)
+        val postId = intent.getIntExtra(Const.POST_ID, DEFAULT_VALUE)
         val bundle = Bundle().apply {
             putInt(Const.GROUP_ID, id)
+            putInt(Const.POST_ID, postId)
         }
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment

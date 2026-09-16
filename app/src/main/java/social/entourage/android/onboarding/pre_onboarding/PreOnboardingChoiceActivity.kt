@@ -1,9 +1,11 @@
 package social.entourage.android.onboarding.pre_onboarding
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import social.entourage.android.R
@@ -12,7 +14,8 @@ import social.entourage.android.databinding.ActivityPreOnboardingChoiceBinding
 import social.entourage.android.onboarding.login.LoginActivity
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
+import timber.log.Timber
 
 class PreOnboardingChoiceActivity : BaseActivity() {
 
@@ -20,6 +23,7 @@ class PreOnboardingChoiceActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityPreOnboardingChoiceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -43,11 +47,15 @@ class PreOnboardingChoiceActivity : BaseActivity() {
         }
         binding.uiButtonAbout.setOnClickListener {
             val chartIntent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.website_url)))
-            startActivity(chartIntent)
+            try {
+                startActivity(chartIntent)
+            } catch (e: ActivityNotFoundException) {
+                Timber.e(e, "No browser found to open website URL")
+            }
         }
 
         AnalyticsEvents.logEvent(AnalyticsEvents.PreOnboard_view_choice)
-        updatePaddingTopForEdgeToEdge(binding.logos)
+        updatePaddingForEdgeToEdge(binding.root)
     }
 
     private fun goLogin() {

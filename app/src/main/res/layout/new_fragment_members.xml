@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/new_bg_profile"
-    android:orientation="vertical"
     app:layout_goneMarginTop="8dp"
     android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_above="@+id/layout_unsubscribed_participants">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,7 +26,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginStart="10dp"
             android:padding="10dp"
-            android:src="@drawable/new_back"
+            android:src="@drawable/ic_back_round"
            />
 
         <TextView
@@ -40,33 +45,52 @@
         android:id="@+id/layout_searchbar"
         android:layout_marginHorizontal="@dimen/padding_horizontal">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/search_bar_layout"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            app:endIconDrawable="@drawable/new_cross"
-            app:endIconMode="custom"
-            app:endIconTint="@color/orange"
-            app:hintEnabled="false">
+            android:layout_height="wrap_content">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/search_bar"
-                style="@style/input"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/search_bar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:background="@drawable/new_bg_rounded_search_orange_stroke_transparent"
-                android:drawablePadding="8dp"
-                android:hint="@string/search_member_hint"
-                android:imeOptions="actionSearch"
-                android:inputType="textCapSentences|textMultiLine"
-                android:paddingStart="16dp"
-                app:drawableStartCompat="@drawable/new_search" />
+                app:hintEnabled="false">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/search_bar"
+                    style="@style/input"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@drawable/new_bg_rounded_search_orange_stroke_transparent"
+                    android:drawablePadding="8dp"
+                    android:hint="@string/search_member_hint"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="48dp"
+                    app:drawableStartCompat="@drawable/new_search" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Bouton indépendant du endIcon de TextInputLayout, qui perd son
+                 click listener après un premier cycle affichage/masquage. -->
+            <ImageButton
+                android:id="@+id/search_clear_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end|center_vertical"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:padding="10dp"
+                android:src="@drawable/new_cross"
+                app:tint="@color/orange"
+                android:visibility="gone"
+                android:contentDescription="@string/button_clear_hint" />
+
+        </FrameLayout>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
@@ -98,14 +122,12 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="@dimen/padding_horizontal"
         android:layout_marginVertical="15dp"
-        android:orientation="vertical"
         android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -143,4 +165,160 @@
                 app:layout_constraintTop_toBottomOf="@id/image" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-</LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_unsubscribed_participants"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="@dimen/padding_horizontal"
+            android:text="@string/participants_ajoutes_sur_place"
+            android:textColor="@color/black"
+            style="@style/left_courant_bold_black"
+            android:textSize="14sp"
+            android:textAllCaps="true" />
+
+        <LinearLayout
+            android:id="@+id/layout_isoles"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:background="@color/beige_clair"
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="@dimen/padding_horizontal"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/placeholder_user" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_isoles_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/h2"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ajoutes_sur_place"
+                    style="@style/left_courant_black"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_femmes_isolees"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:background="@color/beige_clair"
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="@dimen/padding_horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/placeholder_user" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_femmes_isolees_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/h2"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ajoutes_sur_place"
+                    style="@style/left_courant_black"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_riverains"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:background="@color/beige_clair"
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="@dimen/padding_horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/placeholder_user" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_riverains_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/h2"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ajoutes_sur_place"
+                    style="@style/left_courant_black"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.leinardi.android.speeddial.SpeedDialView
+        android:id="@+id/fab_add_unsubscribed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="16dp"
+        app:sdMainFabClosedSrc="@drawable/new_fab_plus"
+        app:sdMainFabOpenedSrc="@drawable/new_fab_plus"
+        android:visibility="gone" />
+
+</RelativeLayout>

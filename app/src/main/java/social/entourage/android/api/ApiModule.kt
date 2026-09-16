@@ -7,6 +7,7 @@ import com.google.gson.annotations.Expose
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import timber.log.Timber
 import retrofit2.converter.gson.GsonConverterFactory
 import social.entourage.android.BuildConfig
 import social.entourage.android.api.model.BaseEntourage
@@ -28,6 +29,7 @@ import social.entourage.android.api.request.PartnerRequest
 import social.entourage.android.api.request.PoiRequest
 import social.entourage.android.api.request.SharingRequest
 import social.entourage.android.api.request.SmallTalkRequest
+import social.entourage.android.api.request.SuggestionRequest
 import social.entourage.android.api.request.SurveyRequest
 import social.entourage.android.api.request.UserRequest
 import social.entourage.android.authentication.AuthenticationInterceptor
@@ -56,6 +58,7 @@ class ApiModule {
     val appLinksRequest: AppLinksRequest
 
     val associationsRequest: AssociationsRequest
+    val suggestionRequest: SuggestionRequest
 
     init {
         okHttpClient = providesOkHttpClient()
@@ -79,11 +82,14 @@ class ApiModule {
         appLinksRequest = providesAppLinksRequest(retrofit)
 
         associationsRequest = providesAssociationsRequest(retrofit)
+        suggestionRequest = providesSuggestionRequest(retrofit)
     }
 
     fun providesOkHttpClient(): OkHttpClient {
         val builder = OkHttpClient.Builder()
         builder.addInterceptor(AuthenticationInterceptor)
+            .addInterceptor(ApiErrorInterceptor)
+            .addInterceptor(HmacInterceptor())
             .readTimeout(Const.READ_CONNECT_WRITE_TIMEOUT, TimeUnit.SECONDS)
             .connectTimeout(Const.READ_CONNECT_WRITE_TIMEOUT, TimeUnit.SECONDS)
             .writeTimeout(Const.READ_CONNECT_WRITE_TIMEOUT, TimeUnit.SECONDS)
@@ -91,7 +97,14 @@ class ApiModule {
         builder.addInterceptor(CurlLoggingInterceptor())
 
         if (BuildConfig.DEBUG) {
-            val loggingInterceptor = HttpLoggingInterceptor()
+            val loggingInterceptor = HttpLoggingInterceptor { message ->
+                val maxLogLength = 4000
+                if (message.length > maxLogLength) {
+                    Timber.tag("OkHttp").d("%s... [TRUNCATED]", message.substring(0, maxLogLength))
+                } else {
+                    Timber.tag("OkHttp").d(message)
+                }
+            }
             loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             builder.addInterceptor(loggingInterceptor)
         }
@@ -197,5 +210,9 @@ class ApiModule {
 
     fun providesAssociationsRequest(restAdapter: Retrofit): AssociationsRequest {
         return restAdapter.create(AssociationsRequest::class.java)
+    }
+
+    fun providesSuggestionRequest(restAdapter: Retrofit): SuggestionRequest {
+        return restAdapter.create(SuggestionRequest::class.java)
     }
 }

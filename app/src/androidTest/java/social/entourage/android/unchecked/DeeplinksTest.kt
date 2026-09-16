@@ -267,10 +267,10 @@ class DeepLinkingTestFeed : DeepLinkingTest() {
 
 class DeepLinkingTestEntourage : DeepLinkingTest() {
 
-    private val entourageID = if (BuildConfig.FLAVOR_env == "prod") "204" else "2300"
-    private val entourageHash = if (BuildConfig.FLAVOR_env == "prod") "eWvL7X0WfPug" else "eP8v6B2UYM44"
-    private val dmHash = if (BuildConfig.FLAVOR_env == "prod") "1_list_me-94" else "1_list_me-2790"
-    private val dmID = if (BuildConfig.FLAVOR_env == "prod") "51946" else "2013"
+    private val entourageID = if (BuildConfig.BUILD_TYPE == "release") "204" else "2300"
+    private val entourageHash = if (BuildConfig.BUILD_TYPE == "release") "eWvL7X0WfPug" else "eP8v6B2UYM44"
+    private val dmHash = if (BuildConfig.BUILD_TYPE == "release") "1_list_me-94" else "1_list_me-2790"
+    private val dmID = if (BuildConfig.BUILD_TYPE == "release") "51946" else "2013"
 
     //TODO
     /*//TODO  @Test

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/light_beige"
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="48dp"
+    android:paddingBottom="32dp">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie_error"
+        android:layout_width="240dp"
+        android:layout_height="194dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8dp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/error_404_animation" />
+
+    <LinearLayout
+        android:id="@+id/error_badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_api_error_badge"
+        android:orientation="horizontal"
+        android:paddingHorizontal="14dp"
+        android:paddingVertical="6dp">
+
+        <TextView
+            android:id="@+id/tv_badge_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.08"
+            android:text="@string/api_error_badge_label"
+            android:textAllCaps="true"
+            android:textColor="@color/orange"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_error_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.08"
+            android:textColor="@color/orange_entourage"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            tools:text="404" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_error_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:gravity="center"
+        android:lineSpacingMultiplier="1.3"
+        android:textColor="@color/gris_tres_tres_fonce"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        tools:text="On s'est perdus en chemin !" />
+
+    <TextView
+        android:id="@+id/tv_error_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginBottom="32dp"
+        android:gravity="center"
+        android:lineSpacingMultiplier="1.6"
+        android:textColor="@color/brownish_grey"
+        android:textSize="14sp"
+        tools:text="Cette ressource n'existe pas ou a été déplacée." />
+
+    <Button
+        android:id="@+id/btn_go_home"
+        style="@style/AccentButton.BigRoundedCorners"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:text="@string/api_error_button_go_home"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btn_dismiss"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/shape_button_v9_negative"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="@string/api_error_button_dismiss"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+</LinearLayout>

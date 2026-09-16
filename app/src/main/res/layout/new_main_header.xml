@@ -27,11 +27,11 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:padding="10dp"
-            android:src="@drawable/new_back_white"
+            android:src="@drawable/ic_back_onboarding"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/new_back_white" />
+            tools:src="@drawable/ic_back_onboarding" />
 
         <ImageView
             android:layout_width="wrap_content"

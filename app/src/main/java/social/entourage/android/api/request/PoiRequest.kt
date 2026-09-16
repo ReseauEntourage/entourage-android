@@ -36,5 +36,6 @@ interface PoiRequest {
         @Query("distance") distance: Double,
         @Query("category_ids") categoryIDs: String?,
         @Query("partners_filters") partnersFilters: String?,
+        @Query("air_conditioned") airConditioned: Boolean?,
     ): Call<ClusterPoiResponse>
 }

@@ -2,6 +2,7 @@ package social.entourage.android.profile.activities_settings
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
@@ -13,7 +14,7 @@ import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.profile.settings.OnItemCheckListener
 import social.entourage.android.profile.settings.ProfilFullViewModel
 import social.entourage.android.profile.settings.UnblockUsersListAdapter
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.CustomAlertDialog
 
 class UnblockUsersActivity : AppCompatActivity() {
@@ -26,10 +27,11 @@ class UnblockUsersActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityUnblockUsersBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        updatePaddingTopForEdgeToEdge(binding.header.hbsLayout)
+        updatePaddingForEdgeToEdge(binding.root)
         binding.header.hbsView.isVisible = false
         profilFullViewModel = ViewModelProvider(this).get(ProfilFullViewModel::class.java)
         initializeRecyclerView()

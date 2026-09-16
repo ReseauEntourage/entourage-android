@@ -3,19 +3,15 @@ package social.entourage.android.guide
 import android.Manifest
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.graphics.Point
 import android.os.Bundle
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import android.widget.RelativeLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
@@ -219,6 +215,7 @@ class GuideMapFragment :
         initializePOIList()
         initializeFloatingButtons()
         initializeFilterButton()
+        initializeAirConditionedButton()
     }
 
     override fun onStart() {
@@ -277,9 +274,9 @@ class GuideMapFragment :
             }
         }
 
-        // Ajouter les POIs à l'adaptateur
+        // Ajouter les POIs à l'adaptateur (toujours vider d'abord pour ne pas garder les POIs de l'état précédent)
+        poisAdapter.removeAll()
         if (poisToAdd.isNotEmpty()) {
-            poisAdapter.removeAll()
             poisAdapter.addItems(poisToAdd)
         }
         isMapReady = MutableLiveData(true)
@@ -610,6 +607,24 @@ class GuideMapFragment :
             it.setOnClickListener {onShowFilter()}
             it.setText(if (instance.hasFilteredCategories()) R.string.guide_filters_activated else R.string.guide_no_filter)
         }
+    }
+
+    private fun initializeAirConditionedButton() {
+        binding.fragmentGuideAirConditionedToggle.setOnClickListener { onAirConditionedToggleClicked() }
+        updateAirConditionedButton()
+    }
+
+    private fun onAirConditionedToggleClicked() {
+        instance.isAirConditionedSelected = !instance.isAirConditionedSelected
+        updateAirConditionedButton()
+        onSolidarityGuideFilterChanged()
+    }
+
+    private fun updateAirConditionedButton() {
+        if (context == null) return
+        val colorRes = if (instance.isAirConditionedSelected) R.color.accent else R.color.grey
+        binding.fragmentGuideAirConditionedToggle.backgroundTintList =
+            ContextCompat.getColorStateList(requireContext(), colorRes)
     }
 
     private fun onAnimationUpdate(valueAnimator: ValueAnimator) {

@@ -18,6 +18,42 @@ import java.util.*
  * Created by Mihai Ionescu on 03/10/2017.
  */
 object AnalyticsEvents {
+//Onboarding Tracking Request
+    // Small Talk Tracking Events
+    const val ACTION_BONNES_ONDES_START_DISCUSSION = "click_bonnes_ondes_start_discussion"
+    const val ACTION_BONNES_ONDES_VIEW_MESSAGES = "click_bonnes_ondes_view_messages"
+
+    const val View__Onboarding__InputNames = "View__Onboarding__InputNames"
+    const val Clic__Next__Onboarding__InputNames = "Clic__Next__Onboarding__InputNames"
+
+    const val View__Onboarding__InputCode = "View__Onboarding__InputCode"
+    const val Clic__New__Code__Onboarding__InputCode = "Clic__New__Code__Onboarding__InputCode"
+    const val Clic__Contact__Onboarding__InputCode = "Clic__Contact__Onboarding__InputCode"
+    const val Clic__Next__Onboarding__InputCode = "Clic__Next__Onboarding__InputCode"
+
+    const val View__Onboarding__InputProfile = "View__Onboarding__InputProfile"
+    const val Clic__Next__Onboarding__Profile = "Clic__Next__Onboarding__Profile"
+
+    const val View__Onboarding__AssoSearch = "View__Onboarding__AssoSearch"
+    const val Clic__Back__Onboarding__AssoSearch = "Clic__Back__Onboarding__AssoSearch"
+    const val Clic__Next__Onboarding__AssoSearch = "Clic__Next__Onboarding__AssoSearch"
+
+    const val View__Onboarding__Location = "View__Onboarding__Location"
+    const val Clic__Back__Onboarding__Location = "Clic__Back__Onboarding__Location"
+    const val Clic__Next__Onboarding__Location = "Clic__Next__Onboarding__Location"
+
+    const val View__Onboarding__Confirmation = "View__Onboarding__Confirmation"
+    const val Clic__Start__Onboarding__Confirmation = "Clic__Start__Onboarding__Confirmation"
+
+    const val View__Onboarding__Notifications = "View__Onboarding__Notifications"
+    const val Clic__Enable__Onboarding__Notifications = "Clic__Enable__Onboarding__Notifications"
+    const val Clic__Skip__Onboarding__Notifications = "Clic__Skip__Onboarding__Notifications"
+
+    const val View__Onboarding__AssoDescription = "View__Onboarding__AssoDescription"
+    const val Clic__Later__Onboarding__AssoDescription = "Clic__Later__Onboarding__AssoDescription"
+    const val Clic__Finish__Onboarding__AssoDescription = "Clic__Finish__Onboarding__AssoDescription"
+
+
     // Analytics events
     const val EVENT_OPEN_POI_FROM_MAP = "Open_POI_From_Map"
 
@@ -428,6 +464,7 @@ object AnalyticsEvents {
     const val ACTION_GROUP_FEED_OPTION = "Action__GroupFeed__Option"
     const val ACTION_GROUP_FEED_BACK_ARROW = "Action__GroupFeed__BackArrow"
     const val VIEW_GROUP_FEED_FULL_DESCRIPTION = "View__GroupFeed__FullDescription"
+    const val ACTION_GROUP_FEED_NOTIF_POST_NOT_FOUND = "Action__GroupFeed__NotifPostNotFound"
 
     //GROUPE - LISTE DES MEMBRES
 
@@ -546,14 +583,6 @@ object AnalyticsEvents {
     const val Onboard_code = "View__Onboarding__InputCode"
     const val Onboard_profile = "View__Onboarding__InputProfile"
     const val Onboard_end = "View__Onboarding__Confirmation"
-    const val View_WelcomeOfferHelp_Day2 = "View_WelcomeOfferHelp_Day2"
-    const val Action_WelcomeOfferHelp_Day2 = "Action_WelcomeOfferHelp_Day2"
-
-    const val View_WelcomeOfferHelp_Day8 = "View_WelcomeOfferHelp_Day8"
-    const val Action_WelcomeOfferHelp_Day8 = "Action_WelcomeOfferHelp_Day8"
-
-    const val View_WelcomeOfferHelp_Day11 = "View_WelcomeOfferHelp_Day11"
-    const val Action_WelcomeOfferHelp_Day11 = "Action_WelcomeOfferHelp_Day11"
 
     const val NotificationReceived__Demand = "NotificationReceived__Demand"
 
@@ -658,7 +687,6 @@ object AnalyticsEvents {
     const val   Action__Home__Moderator = "Action__Home__Moderator"
     const val   Action_Home_Contrib_Detail = "Action_Home_Contrib_Detail"
     const val   Action_Home_Contrib_All = "Action_Home_Contrib_All"
-    const val   Action_Home_Buffet = "Action_Home_Buffet"
 
 // NEW EVENT
     const val   View__Event__List = "View__Event__List"
@@ -703,6 +731,7 @@ object AnalyticsEvents {
 
     // Écran de fin
     const val onboarding_end_browse_events_clic = "onboarding_end_browse_events_clic"
+    const val onboarding_end_skip_clic = "onboarding_end_skip_clic"
     const val onboarding_end_congrats_clic_on_ = "onboarding_end_congrats_clic_on_"
 
 
@@ -795,6 +824,27 @@ object AnalyticsEvents {
 
     // SmallTalk - Visio
     const val CLIC__SMALLTALK__VISIO_ICON = "smalltalk_click_visio_icon_chat_screen"
+
+    // Badges
+    const val VIEW__BADGES__INTRO = "View__Badges__Intro"
+    const val ACTION__BADGES__INTRO__DISCOVER = "Action__Badges__Intro__Discover"
+    const val ACTION__BADGES__INTRO__LATER = "Action__Badges__Intro__Later"
+    const val VIEW__BADGES__PROFILE_SECTION = "View__Badges__ProfileSection"
+    const val ACTION__BADGES__PROFILE__SEE_ALL = "Action__Badges__Profile__SeeAll"
+    const val ACTION__BADGES__PROFILE__CARD_CLICK = "Action__Badges__Profile__CardClick"
+    const val VIEW__BADGES__LIST = "View__Badges__List"
+    const val ACTION__BADGES__LIST__BACK = "Action__Badges__List__Back"
+    const val ACTION__BADGES__LIST__FAQ = "Action__Badges__List__FAQ"
+    const val ACTION__BADGES__LIST__BADGE_CLICK = "Action__Badges__List__BadgeClick"
+    const val ACTION__BADGES__LIST__START = "Action__Badges__List__Start"
+    const val VIEW__BADGES__DETAIL = "View__Badges__Detail"
+    const val ACTION__BADGES__DETAIL__CLOSE = "Action__Badges__Detail__Close"
+    const val ACTION__BADGES__DETAIL__SEE_ALL = "Action__Badges__Detail__SeeAll"
+    const val ACTION__BADGES__DETAIL__CTA = "Action__Badges__Detail__CTA"
+    const val VIEW__BADGES__UNLOCKED = "View__Badges__Unlocked"
+    const val ACTION__BADGES__UNLOCKED__CLOSE = "Action__Badges__Unlocked__Close"
+    const val ACTION__BADGES__UNLOCKED__SEE_BADGES = "Action__Badges__Unlocked__SeeBadges"
+    const val ACTION__BADGES__UNLOCKED__CONTINUE = "Action__Badges__Unlocked__Continue"
 
     val TAG: String? = AnalyticsEvents::class.java.simpleName
 

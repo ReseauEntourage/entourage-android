@@ -42,6 +42,9 @@ class Poi : TimestampedObject(), Serializable {
 
     var source = ""
     var uuid = ""
+
+    @SerializedName("air_conditioned")
+    var airConditioned: Boolean? = null
     // ----------------------------------
     // GETTERS & SETTERS
     // ----------------------------------

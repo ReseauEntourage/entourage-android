@@ -36,7 +36,7 @@ import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.databinding.FragmentActionsBinding
 import social.entourage.android.events.create.CommunicationHandler
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
-import social.entourage.android.home.HomeFragment
+import social.entourage.android.home.HomeState
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.main_filter.MainFilterMode
@@ -82,7 +82,7 @@ class ActionsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         presenter = ViewModelProvider(requireActivity()).get(ActionsPresenter::class.java)
-        var isDemand = !HomeFragment.isContribProfile
+        var isDemand = !HomeState.isContribProfile
         arguments?.let {
             isDemand = it.getBoolean(Const.IS_ACTION_DEMAND)
         }

@@ -22,7 +22,7 @@ import social.entourage.android.api.model.Group
 import social.entourage.android.databinding.FragmentCreateActionBinding
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.nextPage
@@ -69,7 +69,7 @@ class CreateActionFragment : Fragment() {
     ): View {
         _binding = FragmentCreateActionBinding.inflate(inflater, container, false)
 
-        updatePaddingTopForEdgeToEdge(binding.layout)
+        updatePaddingForEdgeToEdge(binding.root)
         return binding.root
     }
 
@@ -261,7 +261,8 @@ class CreateActionFragment : Fragment() {
                 requireContext(),
                 getString(R.string.back_create_action_title),
                 getString(R.string.back_create_action_content,if (isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib)),
-                getString(R.string.exit), {}
+                getString(R.string.exit),
+                onNo = {}
             ) {
                 requireActivity().finish()
             }

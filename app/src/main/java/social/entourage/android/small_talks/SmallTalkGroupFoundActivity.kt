@@ -4,20 +4,18 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.api.model.User
 import social.entourage.android.api.model.toUsers
 import social.entourage.android.base.BaseActivity
-import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.databinding.ActivitySmallTalkGroupFoundBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 
 class SmallTalkGroupFoundActivity : BaseActivity() {
 
@@ -29,9 +27,10 @@ class SmallTalkGroupFoundActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivitySmallTalkGroupFoundBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        updatePaddingTopForEdgeToEdge(binding.root)
+        updatePaddingForEdgeToEdge(binding.root)
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__SMALLTALK__MATCH)
         smallTalkId = intent.getIntExtra(EXTRA_SMALL_TALK_ID, -1)
 

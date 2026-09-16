@@ -36,7 +36,7 @@
                 android:layout_height="40dp"
                 android:elevation="1dp"
                 android:padding="10dp"
-                android:src="@drawable/new_back"
+                android:src="@drawable/ic_back_round"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -114,6 +114,7 @@
                 android:id="@+id/nest_sv_feed_fragment">
 
                 <LinearLayout
+                    android:id="@+id/feed_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -495,6 +496,34 @@ purus dui, aliquet cursus tellus a, dictum hen." />
             android:layout_height="match_parent"
             android:background="#CCFFFFFF"
             android:visibility="gone" />
+
+        <ScrollView
+            android:id="@+id/feed_skeleton_overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/beige"
+            android:visibility="gone"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer_feed_skeleton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:shimmer_auto_start="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/layout_group_feed_post_skeleton" />
+                    <include layout="@layout/layout_group_feed_post_skeleton" />
+                    <include layout="@layout/layout_group_feed_post_skeleton" />
+                    <include layout="@layout/layout_group_feed_post_skeleton" />
+
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+        </ScrollView>
 
         <com.leinardi.android.speeddial.SpeedDialView
             android:id="@+id/create_post"

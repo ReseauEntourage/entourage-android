@@ -1,6 +1,7 @@
 package social.entourage.android.actions.create
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import social.entourage.android.R
@@ -11,6 +12,7 @@ import social.entourage.android.tools.utils.Const
 class CreateActionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(R.layout.activity_create_action)
 
         val isDemand = intent.getBooleanExtra(Const.IS_ACTION_DEMAND,false)

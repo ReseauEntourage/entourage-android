@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp">
+
+    <!-- Beige card: emoji row + title + subtitle -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/beige">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
+
+            <LinearLayout
+                android:id="@+id/tv_badges_emoji_row"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/iv_empty_badge_icon_0"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginHorizontal="4dp" />
+
+                <ImageView
+                    android:id="@+id/iv_empty_badge_icon_1"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginHorizontal="4dp" />
+
+                <ImageView
+                    android:id="@+id/iv_empty_badge_icon_2"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginHorizontal="4dp" />
+
+                <ImageView
+                    android:id="@+id/iv_empty_badge_icon_3"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginHorizontal="4dp" />
+
+                <ImageView
+                    android:id="@+id/iv_empty_badge_icon_4"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_marginHorizontal="4dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_empty_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:textAlignment="center"
+                android:fontFamily="@font/quicksand_bold"
+                android:textSize="22sp"
+                android:textColor="@color/black"
+                android:text="@string/badges_empty_title" />
+
+            <TextView
+                android:id="@+id/tv_empty_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="8dp"
+                android:textAlignment="center"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textSize="13sp"
+                android:lineSpacingMultiplier="1.3"
+                android:textColor="@color/black"
+                android:text="@string/badges_empty_subtitle" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Orange light card: Commencez par -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="0dp"
+        app:cardBackgroundColor="@color/pre_onboard_orange_trans">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:id="@+id/iv_start_badge_icon"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_circle_light_orange"
+                    android:padding="6dp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:paddingStart="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/badges_empty_start_label"
+                        android:fontFamily="@font/nunitosans_bold"
+                        android:textSize="10sp"
+                        android:textColor="@color/orange"
+                        android:letterSpacing="0.08" />
+
+                    <TextView
+                        android:id="@+id/tv_start_badge_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/nunitosans_bold"
+                        android:textSize="15sp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="1dp"
+                        tools:text="Le badge Premier pas 👣" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/badges_empty_start_description"
+                android:fontFamily="@font/nunitosans_regular"
+                android:textSize="13sp"
+                android:lineSpacingMultiplier="1.3"
+                android:textColor="@color/black" />
+
+            <Button
+                android:id="@+id/btn_start"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginTop="14dp"
+                android:text="@string/badges_empty_cta"
+                android:background="@drawable/bg_button_accent_rounded_large_radius"
+                android:textColor="@color/white"
+                android:fontFamily="@font/nunitosans_bold"
+                android:textSize="14sp"
+                android:paddingHorizontal="28dp"
+                android:textAllCaps="false" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- "Tous les badges X/5" header -->
+    <TextView
+        android:id="@+id/tv_badges_all_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="4dp"
+        android:fontFamily="@font/nunitosans_bold"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:text="@string/badges_all_title"
+        tools:text="Tous les badges 0/5" />
+
+</LinearLayout>

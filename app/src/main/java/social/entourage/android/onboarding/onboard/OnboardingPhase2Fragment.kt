@@ -32,6 +32,7 @@ import com.google.android.material.snackbar.Snackbar
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentOnboardingPhase2Binding
 import social.entourage.android.tools.hideKeyboard
+import social.entourage.android.tools.hideKeyboardOnDone
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.tools.view.countrycodepicker.Country
@@ -91,7 +92,7 @@ class OnboardingPhase2Fragment : Fragment() {
         setupViews()
         setupOtp()
         activateTimer()
-        AnalyticsEvents.logEvent(AnalyticsEvents.Onboard_code)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__Onboarding__InputCode)
 
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
@@ -200,6 +201,7 @@ class OnboardingPhase2Fragment : Fragment() {
         // Lien "Renvoyer le code"
         binding.tvRetryLink.setOnClickListener {
             if (binding.tvRetryLink.isEnabled) {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Clic__New__Code__Onboarding__InputCode)
                 callback?.requestNewCode()
                 activateTimer()
             }
@@ -207,6 +209,7 @@ class OnboardingPhase2Fragment : Fragment() {
 
         // Bouton d'aide → email
         binding.uiOnboardBtHelp.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Clic__Contact__Onboarding__InputCode)
             val intent = Intent(Intent.ACTION_SENDTO).apply { data = Uri.parse("mailto:") }
             intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.contact_email)))
             try {
@@ -308,6 +311,7 @@ class OnboardingPhase2Fragment : Fragment() {
         fields.forEachIndexed { index, editText ->
             editText.imeOptions =
                 if (index == 5) EditorInfo.IME_ACTION_DONE else EditorInfo.IME_ACTION_NEXT
+            editText.hideKeyboardOnDone()
             editText.setOnKeyListener { _, keyCode, event ->
                 if (keyCode == KeyEvent.KEYCODE_DEL &&
                     event.action == KeyEvent.ACTION_DOWN &&

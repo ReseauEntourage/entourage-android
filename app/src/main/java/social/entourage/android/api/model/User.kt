@@ -89,6 +89,9 @@ class User : Serializable {
     @SerializedName("is_birthday")
     var isBirthday: Boolean = false
 
+    @SerializedName("badges")
+    var badges: MutableList<social.entourage.android.badges.ApiBadge>? = null
+
     // ----------------------------------
     // ATTRIBUTES (Not Serialized)
     // ----------------------------------

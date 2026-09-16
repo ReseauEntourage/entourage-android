@@ -3,15 +3,15 @@ package social.entourage.android.small_talks
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.MainActivity
-import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.SmallTalkOtherBandsBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import timber.log.Timber
 
 enum class OtherBandType {
@@ -35,9 +35,10 @@ class SmallTalkListOtherBands : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = SmallTalkOtherBandsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        updatePaddingTopForEdgeToEdge(binding.root)
+        updatePaddingForEdgeToEdge(binding.root)
 
         viewModel = ViewModelProvider(this)[SmallTalkViewModel::class.java]
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__SMALLTALK__SUGGESTIONS)

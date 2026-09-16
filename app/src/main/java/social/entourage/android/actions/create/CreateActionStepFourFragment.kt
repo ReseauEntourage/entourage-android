@@ -8,13 +8,10 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
-import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Group
 import social.entourage.android.databinding.FragmentActionCreateStepFourLayoutBinding
-import social.entourage.android.databinding.FragmentCreateActionStepCategoryBinding
 import social.entourage.android.groups.GroupPresenter
-import timber.log.Timber
 
 class CreateActionStepFourFragment : Fragment() {
 
@@ -74,9 +71,6 @@ class CreateActionStepFourFragment : Fragment() {
     }
 
     private fun handleResponseGetGroups(groups:Group) {
-        if (groups == null ) {
-            return
-        }
         groups.let {
             if(actionCreateViewModel.isDemand){
                 binding.title.text = String.format(getString(R.string.share_request_group),getString(R.string.action_name_demand), it.name)

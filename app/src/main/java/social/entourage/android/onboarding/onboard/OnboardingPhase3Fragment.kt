@@ -63,7 +63,7 @@ class OnboardingPhase3Fragment : Fragment() {
 
         //binding.tvTitle.text = getString(R.string.onboard_profile_title)
 
-        AnalyticsEvents.logEvent(AnalyticsEvents.Onboard_profile)
+        AnalyticsEvents.logEvent(AnalyticsEvents.View__Onboarding__InputProfile)
         EnhancedOnboarding.shouldNotDisplayCampain = true
 
         setupRecycler()

@@ -16,6 +16,7 @@ class GuideFilter private constructor() : Serializable {
     var isPartnersSelected = true
     var isVolunteersSelected = false
     var isDonationsSelected = false
+    var isAirConditionedSelected = false
 
     fun valueForCategoryId(categoryId: Int): Boolean {
         return filterValues[categoryId]
@@ -64,6 +65,9 @@ class GuideFilter private constructor() : Serializable {
 
             return filters
         }
+
+    val requestedAirConditioned: Boolean?
+        get() = if (isAirConditionedSelected) true else null
 
     fun getFiltersSelected() : String {
         var filtersString = ""

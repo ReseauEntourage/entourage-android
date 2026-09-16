@@ -43,7 +43,7 @@
         <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
         <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/transparent</item>
         <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">@drawable/splash_insets</item>
-        <item name="android:windowSplashScreenAnimationDuration" tools:targetApi="s">5000</item>
+        <item name="android:windowSplashScreenAnimationDuration" tools:targetApi="s">1000</item>
         <item name="android:windowSplashScreenIconBackgroundColor" tools:targetApi="s">@color/transparent</item>
     </style>
 
@@ -402,7 +402,7 @@
 
     <style name="h2">
         <item name="android:textSize">@dimen/profile_description</item>
-        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:fontFamily">@font/quicksand_bold</item>
         <item name="android:textColor">@android:color/black</item>
     </style>
 
@@ -689,6 +689,13 @@
         <item name="android:windowBackground">@drawable/bg_rounded_dialog</item>
     </style>
 
+    <style name="CustomChip.Availability" parent="CustomChip">
+        <item name="chipMinHeight">48dp</item>
+        <item name="chipStartPadding">12dp</item>
+        <item name="chipEndPadding">12dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="CustomChip" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="chipBackgroundColor">@color/chip_background_color</item>
         <item name="chipStrokeColor">@color/chip_stroke_color</item>
@@ -733,6 +740,12 @@
         <item name="endIconTint">@color/ent_end_icon_tint</item>
     </style>
 
+    <style name="Theme.UCropStrict" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">#000000</item>
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
     <style name="Ent"/>
 
 

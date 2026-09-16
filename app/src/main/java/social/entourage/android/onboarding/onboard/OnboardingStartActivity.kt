@@ -4,9 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -15,14 +18,11 @@ import social.entourage.android.api.model.User
 import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.databinding.ActivityOnboardingStartBinding
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
-import social.entourage.android.tools.disable
-import social.entourage.android.tools.enable
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.view.CustomProgressDialog
 import social.entourage.android.tools.view.countrycodepicker.Country
 import timber.log.Timber
-import androidx.core.content.edit
 
 class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
     private lateinit var binding: ActivityOnboardingStartBinding
@@ -55,6 +55,7 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityOnboardingStartBinding.inflate(layoutInflater)
         setContentView(binding.root)
         if (FRAGMENT_NUMBER != 0) {
@@ -73,15 +74,19 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
             changeFragment()
         }
         setupViews()
-        updatePaddingTopForEdgeToEdge(binding.layoutOnboardingActivity)
+        updatePaddingForEdgeToEdge(binding.layoutOnboardingActivity)
 
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        if (currentFragmentPosition >= numberOfSteps) return
-        goPrevious()
-        super.onBackPressed()
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (currentFragmentPosition >= numberOfSteps) return
+                if (currentFragmentPosition <= 1) {
+                    startActivity(Intent(this@OnboardingStartActivity, PreOnboardingChoiceActivity::class.java))
+                    finish()
+                    return
+                }
+                goPrevious()
+            }
+        })
     }
 
     /********
@@ -304,10 +309,16 @@ class OnboardingStartActivity : AppCompatActivity(), OnboardingStartCallback {
         Timber.d("***** Go next = $currentFragmentPosition")
         when (currentFragmentPosition) {
             PositionsType.NamesPhone.pos -> {
+                social.entourage.android.tools.log.AnalyticsEvents.logEvent(social.entourage.android.tools.log.AnalyticsEvents.Clic__Next__Onboarding__InputNames)
                 callSignup()
             }
             PositionsType.Passcode.pos -> {
+                social.entourage.android.tools.log.AnalyticsEvents.logEvent(social.entourage.android.tools.log.AnalyticsEvents.Clic__Next__Onboarding__InputCode)
                 sendPasscode()
+            }
+            PositionsType.Type.pos -> {
+                social.entourage.android.tools.log.AnalyticsEvents.logEvent(social.entourage.android.tools.log.AnalyticsEvents.Clic__Next__Onboarding__Profile)
+                updateGoal()
             }
             else -> {
                 updateGoal()

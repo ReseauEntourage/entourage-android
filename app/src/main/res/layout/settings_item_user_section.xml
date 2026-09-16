@@ -48,6 +48,7 @@
         tool:text="subtitle for user section explaning what it is about"
         />
     <View
+        android:id="@+id/view_divider_user_section"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="@color/new_light_grey"

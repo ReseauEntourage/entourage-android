@@ -130,9 +130,10 @@ class CreateGroupStepOneFragment : Fragment(), UserEditActionZoneFragment.Fragme
         }
     }
 
-    override fun onDestroy() {
-        binding.layout.error.root.visibility = View.GONE
-        super.onDestroy()
+    override fun onDestroyView() {
+        _binding?.layout?.error?.root?.visibility = View.GONE
+        _binding = null
+        super.onDestroyView()
     }
 
     override fun onUserEditActionZoneFragmentDismiss() {

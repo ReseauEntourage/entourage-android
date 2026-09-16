@@ -8,11 +8,24 @@ import retrofit2.Response
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.Events
-import social.entourage.android.api.request.*
+import social.entourage.android.api.model.Group
+import social.entourage.android.api.model.Pedago
+import social.entourage.android.api.model.SuggestionResponse
+import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.notification.InAppNotification
 import social.entourage.android.api.model.notification.InAppNotificationPermission
-import social.entourage.android.api.model.Pedago
-import social.entourage.android.api.model.Summary
+import social.entourage.android.api.request.ContribsListWrapper
+import social.entourage.android.api.request.DemandsListWrapper
+import social.entourage.android.api.request.EventsListWrapper
+import social.entourage.android.api.request.GroupsListWrapper
+import social.entourage.android.api.request.NotificationInAppResponse
+import social.entourage.android.api.request.NotificationPermissionsResponse
+import social.entourage.android.api.request.NotificationsCountResponse
+import social.entourage.android.api.request.NotificationsInAppResponse
+import social.entourage.android.api.request.PedagogicResponse
+import social.entourage.android.api.request.PedagogicSingleResponse
+import social.entourage.android.api.request.SummaryResponse
+import social.entourage.android.api.request.UnreadCountWrapper
 import social.entourage.android.events.list.EVENTS_PER_PAGE
 
 class HomePresenter: ViewModel() {
@@ -21,6 +34,7 @@ class HomePresenter: ViewModel() {
     var pedagogicalContent = MutableLiveData<MutableList<Pedago>>()
     var pedagogicalInitialContent = MutableLiveData<MutableList<Pedago>>()
     var pedagolSingle = MutableLiveData<Pedago>()
+    var welcomeResource = MutableLiveData<Pedago>()
 
     var unreadMessages = MutableLiveData<UnreadMessages?>()
 
@@ -32,6 +46,36 @@ class HomePresenter: ViewModel() {
 
     var getAllEvents = MutableLiveData<MutableList<Events>>()
     var getAllActions = MutableLiveData<MutableList<Action>>()
+
+    var suggestionData = MutableLiveData<SuggestionResponse?>()
+
+    fun fetchSuggestions() {
+        EntourageApplication.get().apiModule.suggestionRequest
+            .getSuggestions()
+            .enqueue(object : Callback<SuggestionResponse> {
+                override fun onResponse(
+                    call: Call<SuggestionResponse>,
+                    response: Response<SuggestionResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        suggestionData.value = response.body()
+                    }
+                }
+
+                override fun onFailure(call: Call<SuggestionResponse>, t: Throwable) {
+                    suggestionData.value = null
+                }
+            })
+    }
+
+    fun dismissSuggestion(id: Int, action: String) {
+        EntourageApplication.get().apiModule.suggestionRequest
+            .updateSuggestion(id, action)
+            .enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {}
+                override fun onFailure(call: Call<Void>, t: Throwable) {}
+            })
+    }
 
     var isLoading: Boolean = false
     var isLastPage: Boolean = false
@@ -93,6 +137,8 @@ class HomePresenter: ViewModel() {
             })
     }
 
+    var getNationalGroups = MutableLiveData<MutableList<Group>>()
+
     fun getAllDemands(page: Int, per: Int,distance:Int?,latitude:Double?,longitude:Double?,sections: String?) {
         EntourageApplication.get().apiModule.actionsRequest.getAllActionsDemandWithoutMine(page,per,sections,distance,latitude,longitude, true)
             .enqueue(object : Callback<DemandsListWrapper> {
@@ -106,6 +152,23 @@ class HomePresenter: ViewModel() {
                     }
                 }
                 override fun onFailure(call: Call<DemandsListWrapper>, t: Throwable) {}
+            })
+    }
+
+    fun getNationalGroups() {
+        EntourageApplication.get().apiModule.groupRequest.getNationalGroups()
+            .enqueue(object : Callback<GroupsListWrapper> {
+                override fun onResponse(
+                    call: Call<GroupsListWrapper>,
+                    response: Response<GroupsListWrapper>
+                ) {
+                    response.body()?.let { groupsWrapper ->
+                        getNationalGroups.value = groupsWrapper.allGroups
+                    }
+                }
+
+                override fun onFailure(call: Call<GroupsListWrapper>, t: Throwable) {
+                }
             })
     }
 
@@ -149,6 +212,24 @@ class HomePresenter: ViewModel() {
 
 
 
+
+    fun getWelcomeResource() {
+        EntourageApplication.get().apiModule.homeRequest
+            .getWelcomeResource()
+            .enqueue(object : Callback<PedagogicSingleResponse> {
+                override fun onResponse(
+                    call: Call<PedagogicSingleResponse>,
+                    response: Response<PedagogicSingleResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        welcomeResource.value = response.body()?.pedago
+                    }
+                }
+
+                override fun onFailure(call: Call<PedagogicSingleResponse>, t: Throwable) {
+                }
+            })
+    }
 
     fun getPedagogicalResource(resourceId:Int) {
         EntourageApplication.get().apiModule.homeRequest

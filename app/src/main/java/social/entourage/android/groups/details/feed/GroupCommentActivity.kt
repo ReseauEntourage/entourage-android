@@ -2,7 +2,9 @@ package social.entourage.android.groups.details.feed
 
 import android.os.Build
 import android.os.Bundle
-import android.text.*
+import android.text.Editable
+import android.text.Html
+import android.text.TextWatcher
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.animation.AccelerateDecelerateInterpolator
@@ -14,12 +16,11 @@ import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.ReactionType
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.MentionAdapter
-import social.entourage.android.databinding.ActivityCommentsBinding
 import social.entourage.android.groups.GroupPresenter
-import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import timber.log.Timber
 import java.util.UUID
@@ -31,6 +32,10 @@ class GroupCommentActivity : CommentActivity() {
     // Retient l'index du dernier '@' tapé. -1 => pas de mention en cours
     private var lastMentionStartIndex = -1
 
+    override val allowsMessageReactions: Boolean get() = true
+    override val allowsMessageEdit: Boolean get() = true
+    override val usesMessageOptionsMenu: Boolean get() = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -38,13 +43,14 @@ class GroupCommentActivity : CommentActivity() {
         groupPresenter.getAllComments.observe(this, ::handleGetPostComments)
         groupPresenter.commentPosted.observe(this, ::handleCommentPosted)
         groupPresenter.getCurrentParentPost.observe(this, ::handleParentPost)
+        groupPresenter.messageUpdated.observe(this) { it?.let { post -> mergeIncomingMessage(post, forceScrollIfMine = false) } }
         // Observers pour la suppression de post
-        groupPresenter.isPostDeleted.observe(this, { isDeleted ->
+        groupPresenter.isPostDeleted.observe(this) { isDeleted ->
             if (isDeleted) {
                 // Rafraîchir la liste des commentaires ou des posts
                 groupPresenter.getPostComments(id, postId)
             }
-        })
+        }
 
         // Charge les commentaires du groupe
         groupPresenter.getPostComments(id, postId)
@@ -72,11 +78,54 @@ class GroupCommentActivity : CommentActivity() {
     override fun onResume() {
         super.onResume()
         this.isGroup = true
+        // Le canal du groupe (instance_type "Neighborhood", instance_id = id du groupe)
+        // diffuse tous ses chat_messages (posts ET commentaires) ; on ne garde que ceux
+        // qui répondent au post actuellement affiché.
+        Timber.tag("ConvSocket").d("GroupCommentActivity.onResume(): groupId=%d postId=%d", id, postId)
+        connectChatSocket(
+            "Neighborhood",
+            id,
+            belongsToThisScreen = { post -> post.postId == postId },
+            onReconnected = { groupPresenter.getPostComments(id, postId) }
+        )
+    }
+
+    override fun onPause() {
+        super.onPause()
+        disconnectChatSocket()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disconnectChatSocket()
+    }
+
+    // ---------------------------------------------------------------------------
+    // Édition d'un commentaire (PATCH neighborhoods/{id}/chat_messages/{id}, même
+    // ressource chat_message que les conversations — à confirmer en recette).
+    // ---------------------------------------------------------------------------
+    override fun updateComment(messageId: Int, newContentHtml: String) {
+        groupPresenter.updatePost(id, messageId, newContentHtml)
     }
 
     // ---------------------------------------------------------------------------
     // Publication du commentaire
     // ---------------------------------------------------------------------------
+
+    // ---------------------------------------------------------------------------
+    // Réactions sur un commentaire (réutilise les endpoints déjà existants pour les
+    // posts de groupe : chat_messages/{id}/reactions marche pour tout chat_message,
+    // post ou commentaire).
+    // ---------------------------------------------------------------------------
+    override fun onMessageReactionClicked(comment: Post, reactionType: ReactionType) {
+        val commentId = comment.id ?: return
+        toggleMessageReaction(
+            comment, reactionType,
+            sendAdd = { reactionId, onComplete -> groupPresenter.reactToPost(id, commentId, reactionId, onComplete) },
+            sendDelete = { onComplete -> groupPresenter.deleteReactToPost(id, commentId, onComplete) },
+        )
+    }
+
     /**
      * On convertit le Spanned en HTML si on détecte <a href="...">,
      * sinon on envoie du texte brut.
@@ -96,11 +145,15 @@ class GroupCommentActivity : CommentActivity() {
         // 3) Vérifie si on a un lien <a href="...">
         val hasLink = fullHtml.contains("<a href=")
 
-        // 4) Choix final du contenu
-        val finalContent = if (hasLink) {
-            fullHtml
+        // 4) Choix final du contenu (et on vérifie qu'il n'est pas vide)
+        val finalContent = if (spannedText.toString().trim().isEmpty()) {
+            null
         } else {
-            spannedText.toString()
+            if (hasLink) {
+                fullHtml
+            } else {
+                spannedText.toString()
+            }
         }
 
         // 5) Construit le Post comme dans l'ancienne version
@@ -149,7 +202,7 @@ class GroupCommentActivity : CommentActivity() {
         this.currentParentPost = currentPost
         binding.progressBar.visibility = View.GONE
         (binding.comments.adapter as? CommentsListAdapter)?.updateData(this.currentParentPost)
-        scrollAfterLayout()
+        scrollAndHighlightIfNeeded()
         updateView(commentsList.isEmpty())
     }
 
@@ -166,7 +219,7 @@ class GroupCommentActivity : CommentActivity() {
             return
         }
         binding.progressBar.visibility = View.GONE
-        scrollAfterLayout()
+        scrollAndHighlightIfNeeded()
     }
 
     // ---------------------------------------------------------------------------

@@ -8,7 +8,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.CalendarContract
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,19 +49,18 @@ import social.entourage.android.comment.SurveyInteractionListener
 import social.entourage.android.databinding.FragmentFeedEventBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.events.EventsPresenter
-import social.entourage.android.events.details.SettingsModalFragment
 import social.entourage.android.groups.details.feed.CallbackReportFragment
 import social.entourage.android.groups.details.feed.GroupMembersPhotosAdapter
 import social.entourage.android.groups.details.members.MembersType
-import social.entourage.android.home.HomeFragment
+import social.entourage.android.home.HomeState
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.members.MembersActivity
 import social.entourage.android.profile.association.AssociationProfileActivity
-import social.entourage.android.profile.association.AssociationProfileFragment
 import social.entourage.android.profile.myProfile.InterestsAdapter
 import social.entourage.android.survey.ResponseSurveyActivity
 import social.entourage.android.survey.SurveyPresenter
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
@@ -76,8 +74,6 @@ import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import kotlin.math.abs
-import kotlin.math.sign
-import social.entourage.android.user.partner.PartnerFragment
 
 class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     SurveyInteractionListener, OnMapReadyCallback {
@@ -106,6 +102,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     ): View {
         _binding = FragmentFeedEventBinding.inflate(inflater, container, false)
         updatePaddingTopForEdgeToEdge(binding.header)
+        updatePaddingBottomForEdgeToEdge(binding.layoutJoin)
         reduceButtonSizeImage()
         return binding.root
     }
@@ -154,41 +151,54 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     private fun handleResponseGetEvent(getEvent: Events?) {
         getEvent?.let {
             event = it
-            if(event?.author?.userID == EntourageApplication.get().me()?.id){
-                iAmOrganiser = true
-            }
-            if(it.signable != null){
-                signable = it.signable
-                ActionSheetFragment.isSignable = signable
-            }
+            processEventRoles(it)
             updateView()
-            if(shouldAddToAgenda){
-                val startMillis: Long = Calendar.getInstance().run {
-                    time = it.metadata?.startsAt ?: time
-                    timeInMillis
-                }
-                val endMillis: Long = Calendar.getInstance().run {
-                    time = it.metadata?.endsAt ?: time
-                    timeInMillis
-                }
-                val intent = Intent(Intent.ACTION_INSERT)
-                    .setData(CalendarContract.Events.CONTENT_URI)
-                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startMillis)
-                    .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endMillis)
-                    .putExtra(CalendarContract.Events.TITLE, it.title)
-                    .putExtra(
-                        CalendarContract.Events.EVENT_LOCATION,
-                        it.metadata?.displayAddress
-                    )
-                    .putExtra(
-                        CalendarContract.Events.AVAILABILITY,
-                        CalendarContract.Events.AVAILABILITY_BUSY
-                    )
-                requireContext().startActivity(intent)
-            }
+            checkAddToAgenda(it)
         }
         binding.progressBar.visibility = View.GONE
         handleImageViewAnimation()
+        setupEventMap()
+        updateDiscussionVisibility()
+    }
+
+    private fun processEventRoles(it: Events) {
+        if(event?.author?.userID == EntourageApplication.get().me()?.id){
+            iAmOrganiser = true
+        }
+        if(it.signable != null){
+            signable = it.signable
+            ActionSheetFragment.isSignable = signable
+        }
+    }
+
+    private fun checkAddToAgenda(it: Events) {
+        if(shouldAddToAgenda){
+            val startMillis: Long = Calendar.getInstance().run {
+                time = it.metadata?.startsAt ?: time
+                timeInMillis
+            }
+            val endMillis: Long = Calendar.getInstance().run {
+                time = it.metadata?.endsAt ?: time
+                timeInMillis
+            }
+            val intent = Intent(Intent.ACTION_INSERT)
+                .setData(CalendarContract.Events.CONTENT_URI)
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startMillis)
+                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endMillis)
+                .putExtra(CalendarContract.Events.TITLE, it.title)
+                .putExtra(
+                    CalendarContract.Events.EVENT_LOCATION,
+                    it.metadata?.displayAddress
+                )
+                .putExtra(
+                    CalendarContract.Events.AVAILABILITY,
+                    CalendarContract.Events.AVAILABILITY_BUSY
+                )
+            requireContext().startActivity(intent)
+        }
+    }
+
+    private fun setupEventMap() {
         val latitude = event?.location?.latitude ?: 0.0
         val longitude = event?.location?.longitude ?: 0.0
         if(latitude == 0.0 && longitude == 0.0){
@@ -207,9 +217,11 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
             }
         }
+    }
 
+    private fun updateDiscussionVisibility() {
         if(event?.member == true) {
-           binding.discussionBox.visibility = View.VISIBLE
+            binding.discussionBox.visibility = View.VISIBLE
         }else{
             binding.discussionBox.visibility = View.GONE
         }
@@ -248,134 +260,133 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     @SuppressLint("StringFormatMatches")
     private fun updateView() {
-
         MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
+        setupEventHeader()
+        setupEventDetails()
+        setupEventDescription()
+        setupEventImages()
+        setupEventStatus()
+        setupEventJoinButton()
+        openGoogleMaps()
+    }
+
+    private fun setupEventHeader() {
         with(binding) {
             eventName.text = event?.title
             eventNameToolbar.text = event?.title
-            if (event?.metadata?.reserved_female == true) {
-                tvReservedFemale.visibility = View.VISIBLE
+            tvReservedFemale.isVisible = event?.metadata?.reserved_female == true
+
+            val membersCount = event?.membersCount ?: 0
+            eventMembersNumberLocation.text = if (membersCount > 1) {
+                String.format(getString(R.string.participant_number), membersCount.toString())
             } else {
-                tvReservedFemale.visibility = View.GONE
+                String.format(getString(R.string.participant_number_singular), membersCount.toString())
             }
-            eventDescription.enableCopyOnLongClick(requireContext())
-            if(event != null && event?.membersCount!! > 1){
-                eventMembersNumberLocation.text = String.format(
-                    getString(R.string.participant_number),
-                    event?.membersCount,
-                )
-            }else{
-                eventMembersNumberLocation.text = String.format(
-                    getString(R.string.participant_number_singular),
-                    event?.membersCount,
-                )
-            }
-            val locale = LanguageManager.getLocaleFromPreferences(requireContext())
+            initializeMembersPhotos()
+            initializeInterests()
+        }
+    }
 
-
+    private fun setupEventDetails() {
+        val locale = LanguageManager.getLocaleFromPreferences(requireContext())
+        with(binding) {
             event?.metadata?.placeLimit?.let {
-                if(it == 0){
-                    placesLimit.root.visibility = View.GONE
-                }else{
-                    placesLimit.root.visibility = View.VISIBLE
-                }
-                placesLimit.content.text = String.format(
-                    getString(R.string.places_numbers),
-                    it,
-                )
+                placesLimit.root.isVisible = it != 0
+                placesLimit.content.text = String.format(getString(R.string.places_numbers), it.toString())
             }
+
             event?.metadata?.startsAt?.let {
-                binding.dateStartsAt.content.text = Utils.formatEventDateForDisplay(
-                    it,
-                    requireContext()
-                )
-            }
-            event?.metadata?.startsAt?.let { startsAt ->
-                val endsAt = event?.metadata?.endsAt
+                dateStartsAt.content.text = Utils.formatEventDateForDisplay(it, requireContext())
+
                 val timeFormat = SimpleDateFormat(context?.getString(R.string.feed_event_time), locale)
-                val startTime = timeFormat.format(startsAt)
-                binding.time.content.text = if (endsAt != null) {
+                val startTime = timeFormat.format(it)
+                val endsAt = event?.metadata?.endsAt
+                time.content.text = if (endsAt != null) {
                     val endTime = timeFormat.format(endsAt)
                     "$startTime - $endTime"
                 } else {
                     startTime
                 }
             }
-            initializeMembersPhotos()
-            initializeInterests()
-            eventDescription.visibility = View.VISIBLE
-            eventDescription.text = event?.description
-            if(event?.descriptionTranslations != null){
-                eventDescription.text = event?.descriptionTranslations?.translation
-            }
-            binding.location.icon = AppCompatResources.getDrawable(
+
+            location.icon = AppCompatResources.getDrawable(
                 requireContext(),
                 if (event?.online == true) R.drawable.new_web else R.drawable.new_location
             )
 
-            (if (event?.online == true) event?.eventUrl else event?.metadata?.displayAddress)?.let {
-                binding.location.content.underline(
-                    it
-                )
-            }
-            event?.author.let {author->
-                //binding.organizer.content.text = String.format(getString(R.string.event_organisez_by), author?.userName)
-                author?.partner?.name?.let { partnerName->
-                    if(partnerName.isNotEmpty()){
-                        binding.tvAssociation.text = String.format(getString(R.string.event_organisez_asso),partnerName)
-                        binding.tvAssociation.visibility = View.VISIBLE
-                    }
+            val locationContent = if (event?.online == true) event?.eventUrl else event?.metadata?.displayAddress
+            locationContent?.let { location.content.underline(it) }
+
+            event?.author?.partner?.name?.let { partnerName ->
+                if (partnerName.isNotEmpty()) {
+                    tvAssociation.text = String.format(getString(R.string.event_organisez_asso), partnerName)
+                    tvAssociation.visibility = View.VISIBLE
                 }
             }
-            event?.metadata?.landscapeUrl?.let {
-                Glide.with(requireActivity())
-                    .load(it)
-                    .error(R.drawable.new_group_illu)
-                    .centerCrop()
-                    .into(eventImage)
+        }
+    }
 
-                Glide.with(requireActivity())
-                    .load(it)
-                    .error(R.drawable.new_group_illu)
-                    .transform(CenterCrop(), RoundedCorners(5.px))
-                    .into(eventImageToolbar)
-            } ?: kotlin.run {
-                Glide.with(requireActivity())
-                    .load(R.drawable.new_group_illu)
-                    .centerCrop()
-                    .into(eventImage)
+    private fun setupEventDescription() {
+        with(binding) {
+            eventDescription.enableCopyOnLongClick(requireContext())
+            eventDescription.visibility = View.VISIBLE
+            eventDescription.text = event?.descriptionTranslations?.translation ?: event?.description
+        }
+    }
 
-                Glide.with(requireActivity())
-                    .load(R.drawable.new_group_illu)
-                    .transform(CenterCrop(), RoundedCorners(5.px))
-                    .into(eventImageToolbar)
-            }
+    private fun setupEventImages() {
+        val landscapeUrl = event?.metadata?.landscapeUrl
+        val placeholder = R.drawable.new_group_illu
 
+        with(binding) {
+            Glide.with(requireActivity())
+                .load(landscapeUrl ?: placeholder)
+                .error(placeholder)
+                .centerCrop()
+                .into(eventImage)
+
+            Glide.with(requireActivity())
+                .load(landscapeUrl ?: placeholder)
+                .error(placeholder)
+                .transform(CenterCrop(), RoundedCorners(5.px))
+                .into(eventImageToolbar)
+        }
+    }
+
+    private fun setupEventStatus() {
+        with(binding) {
             canceled.isVisible = event?.status == Status.CLOSED
             if (event?.status == Status.CLOSED) {
                 eventName.setTextColor(getColor(requireContext(), R.color.grey))
                 dateStartsAt.content.setTextColor(getColor(requireContext(), R.color.grey))
-                dateStartsAt.icon = ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.new_calendar_grey
-                )
+                dateStartsAt.icon = ContextCompat.getDrawable(requireContext(), R.drawable.new_calendar_grey)
                 time.content.setTextColor(getColor(requireContext(), R.color.grey))
-                time.icon = ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.new_time_grey
+                time.icon = ContextCompat.getDrawable(requireContext(), R.drawable.new_time_grey)
+
+                // EN-9334 : image grisée (désaturée + assombrie), comme sur la maquette.
+                val grayscaleFilter = android.graphics.ColorMatrixColorFilter(
+                    android.graphics.ColorMatrix().apply { setSaturation(0.4f) }
                 )
+                eventImage.colorFilter = grayscaleFilter
+                eventImage.alpha = 0.7f
+                eventImageToolbar.colorFilter = grayscaleFilter
+                eventImageToolbar.alpha = 0.7f
             }
         }
-        if(event?.member == true){
-            if (iAmOrganiser) {
-                binding.buttonJoin.text = getString(R.string.event_cancel_button)
+    }
+
+    private fun setupEventJoinButton() {
+        with(binding.buttonJoin) {
+            setBackgroundResource(R.drawable.shape_button_v9_positive)
+            setTextColor(getColor(requireContext(), R.color.white))
+
+            text = if (event?.member == true) {
+                if (iAmOrganiser) getString(R.string.event_cancel_button)
+                else getString(R.string.event_leave_button)
             } else {
-                binding.buttonJoin.text = getString(R.string.event_leave_button)
+                getString(R.string.share_and_join_event)
             }
-        }else{
-            binding.buttonJoin.text = getString(R.string.share_and_join_event)
         }
-        openGoogleMaps()
     }
 
     private fun handleBackButton() {
@@ -460,7 +471,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
         binding.iconSettings.setOnClickListener {
             // droits : organisateur / animateur (selon tes règles existantes)
-            val canManageParticipants = HomeFragment.signablePermission && event?.signable == true
+            val canManageParticipants = HomeState.signablePermission && event?.signable == true
 
             // infos d’entête pour la sheet
             val title = event?.title
@@ -545,7 +556,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             startActivity(Intent.createChooser(shareIntent, getString(R.string.entourage_share_intent_title)))
         }
 
-        binding.btnDiscussion.setOnClickListener {
+        binding.discussionBox.setOnClickListener {
             goDiscussion()
         }
     }
@@ -632,7 +643,8 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                         requireContext(),
                         getString(R.string.delete_event_title),
                         getString(R.string.delete_event_confirmation),
-                        getString(R.string.delete)
+                        getString(R.string.cancel_event),
+                        getString(R.string.back)
                     ) {
                         eventPresenter.cancelEvent(eventId)
                     }
@@ -651,7 +663,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
             requestInAppReview(requireContext())
             val meUser = EntourageApplication.me(activity)
-            if(meUser?.roles?.contains("Ambassadeur") == true){
+            if(meUser?.roles?.contains("Animateur Entourage") == true){
                 CustomAlertDialog.showAmbassadorWithTwoButton(requireContext(),
                     onNo = {
                         if (event?.member==false){
@@ -678,7 +690,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 // Passage des arguments nécessaires
                 putExtra("ID", eventId) // Assure-toi que 'groupId' est un Int
                 putExtra("TYPE", MembersType.EVENT.code) // Utilise 'code' pour passer l'enum comme un Int
-                putExtra("ROLE", (signable && HomeFragment.signablePermission))
+                putExtra("ROLE", (signable && HomeState.signablePermission))
             }
             startActivity(intent)
             requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
@@ -713,15 +725,26 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     }
 
     private fun showLimitPlacePopUp() {
-        CustomAlertDialog.showOnlyOneButton(
+        CustomAlertDialog.showLimitedPlacesEvent(
             requireContext(),
-            getString(R.string.event_limited_places_title),
-            getString(R.string.event_limited_places_subtitle),
-            getString(R.string.button_OK)
-        ) {
-            goDiscussion()
-        }
-
+            badge = getString(R.string.event_limited_places_badge),
+            title = getString(R.string.event_limited_places_modal_title),
+            intro = getString(R.string.event_limited_places_modal_intro),
+            step1 = getString(R.string.event_limited_places_step1),
+            step2 = getString(R.string.event_limited_places_step2),
+            step3 = getString(R.string.event_limited_places_step3),
+            nudge = getString(R.string.event_limited_places_nudge),
+            actionPrimary = getString(R.string.event_limited_places_cta_primary),
+            actionSecondary = getString(R.string.event_limited_places_cta_secondary),
+            onConfirm = {
+                goDiscussion()
+                Toast.makeText(
+                    requireContext(),
+                    R.string.event_limited_places_request_sent_toast,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        )
     }
 
     private fun handleMetaData(tags: Tags?) {

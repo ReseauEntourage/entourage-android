@@ -10,7 +10,8 @@ class HomeToolsAdapter(
     private val context: Context,
     private val onMapClick: () -> Unit,
     private val onPedagoClick: () -> Unit,
-    private val onCharterClick: () -> Unit
+    private val onCharterClick: () -> Unit,
+    private val onClimateMapClick: () -> Unit
 ) : RecyclerView.Adapter<HomeToolsAdapter.ToolsViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ToolsViewHolder {
@@ -22,6 +23,7 @@ class HomeToolsAdapter(
         holder.binding.cardToolsMap.setOnClickListener { onMapClick() }
         holder.binding.cardToolsPedago.setOnClickListener { onPedagoClick() }
         holder.binding.cardToolsCharter.setOnClickListener { onCharterClick() }
+        holder.binding.cardClimateMap.setOnClickListener { onClimateMapClick() }
     }
 
     override fun getItemCount(): Int = 1

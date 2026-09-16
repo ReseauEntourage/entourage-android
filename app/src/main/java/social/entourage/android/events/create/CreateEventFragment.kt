@@ -28,7 +28,7 @@ import social.entourage.android.databinding.FragmentCreateEventBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.create.CommunicationHandler.canExitEventCreation
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
@@ -54,7 +54,7 @@ class CreateEventFragment : Fragment() {
     ): View {
         _binding = FragmentCreateEventBinding.inflate(inflater, container, false)
 
-        updatePaddingTopForEdgeToEdge(binding.header.layout)
+        updatePaddingForEdgeToEdge(binding.root)
         return binding.root
     }
 
@@ -170,20 +170,25 @@ class CreateEventFragment : Fragment() {
         val cancelOneEvent = customDialog.findViewById<RadioButton>(R.id.one_event)
         val cancelAllEvents =
             customDialog.findViewById<RadioButton>(R.id.all_events_recurrent)
+        val radioGroup = customDialog.findViewById<android.widget.RadioGroup>(R.id.recurrence)
 
-
-        //buttonYes.background = requireContext().getDrawable(R.drawable.btn_shape_orange_alert_dialog)
-
-        with(customDialog.findViewById<Button>(R.id.yes)) {
-           this.background = requireContext().getDrawable(R.drawable.btn_shape_light_orange)
-
+        val btnYes = customDialog.findViewById<Button>(R.id.yes)
+        with(btnYes) {
+            this.background = requireContext().getDrawable(R.drawable.btn_shape_light_orange)
             text = getString(R.string.validate)
+            isEnabled = false
+
             setOnClickListener {
                 if (cancelOneEvent.isChecked) updateEventWithoutRecurrence()
                 if (cancelAllEvents.isChecked) updateEventWithRecurrence()
                 alertDialog.dismiss()
                 activity?.finish()
             }
+        }
+
+        radioGroup.setOnCheckedChangeListener { _, _ ->
+            btnYes.isEnabled = true
+            btnYes.background = requireContext().getDrawable(R.drawable.btn_shape_orange_alert_dialog)
         }
         customDialog.findViewById<TextView>(R.id.title).text =
             getString(R.string.event_edit_recurrent_event)

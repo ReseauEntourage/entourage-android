@@ -8,13 +8,14 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import okhttp3.ResponseBody
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.Partner
 import social.entourage.android.databinding.ActivityPartnerOnboardingBinding
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 
 class PartnerOnboardingActivity : AppCompatActivity() {
 
@@ -35,6 +36,7 @@ class PartnerOnboardingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityPartnerOnboardingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -58,7 +60,7 @@ class PartnerOnboardingActivity : AppCompatActivity() {
     // ------------------------------------------------------------------------
 
     private fun setupUi() {
-        updatePaddingTopForEdgeToEdge(binding.layoutPartnerOnboarding)
+        updatePaddingForEdgeToEdge(binding.root)
 
         binding.tvTitle.text = getString(R.string.onboarding_partner_title)
         binding.tvSubtitle.text = getString(R.string.onboarding_partner_subtitle)

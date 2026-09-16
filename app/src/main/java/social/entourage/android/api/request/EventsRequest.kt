@@ -10,7 +10,6 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Image
 import social.entourage.android.api.model.CompleteReactionsResponse
 import social.entourage.android.api.model.ReactionWrapper
-import social.entourage.android.events.JoinRoleBody
 
 class EventsImagesResponse(@field:SerializedName("entourage_images") val eventImages: ArrayList<Image>)
 class EventsListWrapper(@field:SerializedName("outings") val allEvents: MutableList<Events>)
@@ -20,6 +19,13 @@ class EventWrapper(@field:SerializedName("outing") val event: Events)
 class EventWeekAverageResponse(@field:SerializedName("average") val average: Float)
 
 interface EventsRequest {
+    @POST("outings/{id}/users/unsubscribed_participants")
+    fun updateUnsubscribedParticipants(
+        @Path("id") eventId: Int,
+        @Query("offer_help") offerHelp: Int,
+        @Query("ask_for_help") askForHelp: Int,
+        @Query("female") female: Int
+    ): Call<EventWrapper>
     @GET("outings/week_average")
     fun getEventsWeekAverage(
         @Query("latitude") latitude: Double,
@@ -48,7 +54,10 @@ interface EventsRequest {
         @Query("travel_distance") travelDistance: Int?,
         @Query("latitude") latitude: Double?,
         @Query("longitude") longitude: Double?,
-        @Query("period") period: String
+        @Query("period") period: String,
+        @Query("reserved_female") reservedFemale: Boolean? = null,
+        @Query("format") format: String? = null,
+        @Query("entourage_only") entourageOnly: Boolean? = null
     ): Call<EventsListWrapper>
     @GET("outings")
     fun getAllEvents(
@@ -67,7 +76,10 @@ interface EventsRequest {
         @Query("travel_distance") travelDistance: Int?,
         @Query("latitude") latitude: Double?,
         @Query("longitude") longitude: Double?,
-        @Query("period") period:String
+        @Query("period") period:String,
+        @Query("reserved_female") reservedFemale: Boolean? = null,
+        @Query("format") format: String? = null,
+        @Query("entourage_only") entourageOnly: Boolean? = null
     ): Call<EventsListWrapper>
 
     @POST("outings")
@@ -91,6 +103,16 @@ interface EventsRequest {
         @Path("event_id") groupId: Int,
         @Path("post_id") postId: Int
     ): Call<ResponseBody>
+
+    // Même ressource chat_message que conversations/{id}/chat_messages/{id} (cf.
+    // DiscussionsRequest.updateMessage) : à confirmer en recette avant release, ce PATCH
+    // n'ayant pas été testé contre le back pour les posts/commentaires de sortie.
+    @PATCH("outings/{event_id}/chat_messages/{post_id}")
+    fun updatePost(
+        @Path("event_id") eventId: Int,
+        @Path("post_id") postId: Int,
+        @Body params: ArrayMap<String, Any>
+    ): Call<PostWrapper>
     @GET("outings/{event_id}/users")
     fun getMembersSearch(
         @Path("event_id") eventId: Int,
@@ -115,8 +137,15 @@ interface EventsRequest {
     @GET("outings/sensibilisation")
     fun getEventSensibilisation(): Call<EventWrapper>
 
-    @GET("outings/first_steps")
-    fun getEventWelcome(): Call<EventWrapper>
+
+    @GET("outings/firsts_steps")
+    fun getEventListWelcome(): Call<EventsListWrapper>
+
+    @GET("outings/papotages")
+    fun getEventsPapotages(): Call<EventsListWrapper>
+
+    @GET("outings/webinar")
+    fun getEventsWebinar(): Call<EventsListWrapper>
 
     @POST("outings/{event_id}/users")
     fun participate(
@@ -142,7 +171,7 @@ interface EventsRequest {
         @Query("per")  per:  Int? = null
     ): Call<MembersWrapper>
 
-    @DELETE("outings/{event_id}")
+    @POST("outings/{event_id}/cancel")
     fun cancelEvent(
         @Path("event_id") eventId: Int
     ): Call<EventWrapper>
@@ -165,6 +194,11 @@ interface EventsRequest {
         @Path("event_id") eventId: Int,
         @Body params: RequestContent
     ): Call<PrepareAddPostResponse>
+
+    @POST("outings/presigned_upload")
+    fun prepareImageUpload(
+        @Body params: social.entourage.android.events.create.PrepareEventImageUploadRepository.Request
+    ): Call<social.entourage.android.events.create.PrepareEventImageUploadRepository.Response>
 
     @GET("outings/{event_id}/chat_messages/{post_id}/comments")
     fun getPostComments(
@@ -260,3 +294,8 @@ interface EventsRequest {
     ): Call<okhttp3.ResponseBody>
 
 }
+
+data class JoinRoleBody(
+    @com.google.gson.annotations.SerializedName("role")
+    val role: String
+)
