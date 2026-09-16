@@ -67,7 +67,7 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
     private val placeAutocompleteLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                if (this.activity == null) return@registerForActivityResult
+                if (!isAdded || _binding == null) return@registerForActivityResult
                 val place = result.data?.let { Autocomplete.getPlaceFromIntent(it) }
                 val formattedAddress = place?.formattedAddress
                 if (place == null || formattedAddress == null) return@registerForActivityResult
@@ -78,7 +78,7 @@ open class UserActionPlaceFragment : BaseDialogFragment() {
                 }
                 updateFromPlace(place.id, address, place.location)
             } else if (result.resultCode == AutocompleteActivity.RESULT_ERROR || result.resultCode == Activity.RESULT_CANCELED) {
-                if (this.activity == null) return@registerForActivityResult
+                if (!isAdded || _binding == null) return@registerForActivityResult
                 updateFromPlace(null, null, null)
             }
         }
