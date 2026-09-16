@@ -12,7 +12,6 @@
     <fragment
         android:id="@+id/navigation_messages"
         android:name="social.entourage.android.discussions.DiscussionsMainFragment"
-        android:label="DiscussionsMainFragment"
-        tools:layout="@layout/fragment_messages" />
+        android:label="DiscussionsMainFragment" />
 
 </navigation>

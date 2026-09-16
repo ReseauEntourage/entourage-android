@@ -2864,4 +2864,5 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="discussion_filter_outings_subtitle">Papotages, sorties, moments de convivialité</string>
     <string name="discussion_filter_smalltalks_title">Discussions de groupes de bonnes ondes</string>
     <string name="discussion_filter_smalltalks_subtitle">Vos petits groupes solidaires</string>
+    <string name="discussion_dedicated_contact_badge">Votre contact Entourage</string>
 </resources>
