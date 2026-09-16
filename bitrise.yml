@@ -37,11 +37,11 @@ workflows:
         opts:
           is_expand: false
     steps:
-      - gradle-runner@2:
+      - gradle-runner:
           inputs:
             - gradle_task: "$GRADLE_TASK"
             - gradle_options: "--stacktrace"
-      - slack@3:
+      - slack:
           is_skippable: true
           inputs:
             - webhook_url: ''
@@ -61,7 +61,7 @@ workflows:
                 Jira|<${JIRA_BASE_URL}browse/${JIRA_ISSUE_KEYS}|${JIRA_ISSUE_KEYS}>
             - api_token: "$SLACK__BOT_API_TOKEN"
             - channel: "#androiddev"
-      - post-jira-comment-with-build-details@1:
+      - post-jira-comment-with-build-details:
           is_skippable: true
           inputs:
             - base_url: "$JIRA_BASE_URL"
@@ -77,15 +77,15 @@ workflows:
           is_expand: false
       - HMAC_SECRET_ANDROID: "$HMAC_SECRET_ANDROID_PREPROD"
     steps:
-      - gradle-runner@2:
+      - gradle-runner:
           is_always_run: true
           inputs:
             - apk_file_include_filter: ''
             - app_file_include_filter: "*.apk"
             - gradle_options: "--stacktrace"
             - gradle_task: "$GRADLE_TASK"
-      - deploy-to-bitrise-io@2: {}
-      - slack@3:
+      - deploy-to-bitrise-io: {}
+      - slack:
           inputs:
             - webhook_url: ''
             - from_username: Bitrise
@@ -105,25 +105,25 @@ workflows:
                 Jira|<${JIRA_BASE_URL}browse/${JIRA_ISSUE_KEYS}|${JIRA_ISSUE_KEYS}>
             - api_token: "$SLACK__BOT_API_TOKEN"
             - channel: "#androiddev"
-      - post-jira-comment-with-build-details@1:
+      - post-jira-comment-with-build-details:
           inputs:
             - base_url: "$JIRA_BASE_URL"
             - api_token: "$JIRA_API_TOKEN"
             - user_name: "$JIRA_USER_EMAIL"
             - issue_keys: "$JIRA_ISSUE_KEYS"
-      - save-gradle-cache@1: {}
+      - save-gradle-cache: {}
   prepare_workflow:
     steps:
-      - set-java-version@1:
+      - set-java-version:
           inputs:
             - set_java_version: '21'
-      - activate-ssh-key@4:
+      - activate-ssh-key:
           run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
-      - git-clone@8:
+      - git-clone:
           inputs:
             - clone_depth: -1
             - merge_pr: "no"
-      - ruby-script@1:
+      - ruby-script:
           inputs:
             - ruby_content: |-
                 PROJECT_KEY = 'EN'
@@ -170,8 +170,8 @@ workflows:
                   )
                 end
             - gemfile_content: ''
-      - restore-gradle-cache@1: {}
-      - install-missing-android-tools@3: {}
+      - restore-gradle-cache: {}
+      - install-missing-android-tools: {}
   prod_entourage:
     before_run:
       - prepare_workflow
@@ -184,7 +184,7 @@ workflows:
           is_expand: false
       - HMAC_SECRET_ANDROID: "$HMAC_SECRET_ANDROID_PROD"
     steps:
-      - gradle-runner@2:
+      - gradle-runner:
           inputs:
             - apk_file_include_filter: ''
             - app_file_include_filter: "*.aab"
@@ -194,18 +194,18 @@ workflows:
             - mapping_file_include_filter: "*/mapping.txt"
             - gradle_options: "--stacktrace"
             - gradle_task: "$GRADLE_TASK"
-      - deploy-to-bitrise-io@2:
+      - deploy-to-bitrise-io:
           inputs:
             - generate_universal_apk_if_none: 'false'
             - is_enable_public_page: 'false'
-      - google-play-deploy@5:
+      - google-play-deploy:
           inputs:
             - package_name: "$PLAYSTORE_APP_NAME"
             - app_path: "$BITRISE_AAB_PATH"
             - mapping_path: "$BITRISE_MAPPING_PATH"
             - service_account_json_key_path: "$BITRISEIO_BITRISEIO_SERVICE_ACCOUNT_JSON_KEY_URL_URL"
             - retry_without_sending_to_review: "true"
-      - slack@3:
+      - slack:
           inputs:
             - from_username: Bitrise
             - from_username_on_error: Bitrise
@@ -224,6 +224,6 @@ workflows:
             - api_token: "$SLACK__BOT_API_TOKEN"
             - buttons: View App|${BITRISE_APP_URL}
             - channel: "#androiddev"
-      - git-tag@1:
+      - git-tag:
           inputs:
             - tag: Version_$BITRISE_BUILD_NUMBER
