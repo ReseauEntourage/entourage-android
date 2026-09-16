@@ -57,7 +57,7 @@ data class GroupModel(
         parcel.writeValue(id)
         parcel.writeString(name)
         parcel.writeSerializable(nameTranslations)
-        parcel.writeValue(uuid_v2)
+        parcel.writeString(uuid_v2)
         parcel.writeValue(members_count)
         parcel.writeString(address)
         parcel.writeStringList(interests)

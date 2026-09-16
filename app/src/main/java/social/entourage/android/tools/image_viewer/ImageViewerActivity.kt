@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.view.WindowInsets
 import android.view.WindowManager
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.CoroutineScope
@@ -53,9 +54,11 @@ class ImageViewerActivity:BaseActivity() {
         val screenWidth: Int
         val screenHeight: Int
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            val bounds = windowManager.currentWindowMetrics.bounds
-            screenWidth = bounds.width()
-            screenHeight = bounds.height()
+            val windowMetrics = windowManager.currentWindowMetrics
+            val insets = windowMetrics.windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
+            val bounds = windowMetrics.bounds
+            screenWidth = bounds.width() - insets.left - insets.right
+            screenHeight = bounds.height() - insets.top - insets.bottom
         } else {
             val displayMetrics = DisplayMetrics()
             val windowManager = this.getSystemService(Context.WINDOW_SERVICE) as WindowManager
