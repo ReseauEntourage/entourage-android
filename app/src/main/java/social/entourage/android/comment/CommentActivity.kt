@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
 import android.view.View
+import android.widget.Toast
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.activity.viewModels
@@ -291,14 +292,25 @@ private fun handleMessageDeleted(isMessageDeleted:Boolean){
  * remplace l'entrée déjà insérée par le socket au lieu d'en ajouter une deuxième.
  */
 protected fun handleCommentPosted(post: Post?) {
+    reenableCommentInput()
     post?.let {
         mergeIncomingMessage(it)
+        Toast.makeText(this, R.string.comment_posted_confirmation, Toast.LENGTH_SHORT).show()
     } ?: run {
         messagesFailed.add(comment)
         comment?.let { commentsList.add(it) }
         binding.comments.scrollToPositionSmooth(commentsList.size)
         updateView(false)
     }
+}
+
+/**
+ * Réactive le bouton d'envoi désactivé dans handleCommentAction() le temps de la requête.
+ * DetailConversationActivity (1-1) n'appelle pas handleCommentPosted — elle observe
+ * commentPosted directement — donc elle doit aussi appeler cette fonction dans son observer.
+ */
+protected fun reenableCommentInput() {
+    binding.comment.isEnabled = true
 }
 
 fun updateView(emptyState: Boolean) {
@@ -866,9 +878,12 @@ private fun setupConversationChips() {
         }
 
         if (message.isNotBlank() || photoUri != null) {
-            // Désactiver le bouton et afficher la progress bar
+            // Désactiver le bouton le temps de l'envoi, pour éviter un double-envoi.
+            // EN-9456 : plus de loader plein écran — réactivé par reenableCommentInput(),
+            // appelée depuis le callback de résultat (succès ou échec) de chaque écran :
+            // handleCommentPosted() pour les commentaires de groupe/événement, l'observer
+            // dédié de DetailConversationActivity pour les conversations 1-1.
             binding.comment.isEnabled = false
-            binding.progressBar.visibility = View.VISIBLE
 
             // Créer l'utilisateur et le commentaire
             val user = EntourageUser().apply {
@@ -885,12 +900,6 @@ private fun setupConversationChips() {
 
             // Envoi du commentaire
             addComment()
-
-            // Simuler un délai de 2 secondes pour la réactivation du bouton
-            binding.comment.postDelayed({
-                binding.comment.isEnabled = true
-                binding.progressBar.visibility = View.GONE
-            }, 2000)
 
             // Nettoyer le champ de saisie et cacher le clavier
             binding.commentMessage.text.clear()

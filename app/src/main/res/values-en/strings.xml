@@ -372,8 +372,6 @@
     <string name="leave_event">Leave the event</string>
     <string name="leave_event_dialog_content">Do you want to leave the event?</string>
     <string name="dot">•</string>
-    <string name="event_limited_places_title">Limited places event</string>
-    <string name="event_limited_places_subtitle">Please note that this event has limited places, your registration is not guaranteed. The event administrator will get back to you to confirm your place reservation.</string>
     <string name="event_add_to_calendar_title">Your registration has been processed!</string>
     <string name="event_add_to_calendar_subtitle">Do you want to add this event to your personal calendar?</string>
     <string name="add">Add</string>
@@ -2005,4 +2003,26 @@
     <string name="group_feed_post_unavailable">This post no longer exists.</string>
     <string name="message_action_react">Réagir</string>
 
+    <string name="comment_posted_confirmation">Commentaire publié !</string>
+    <string name="event_limited_places_badge">Places limitées</string>
+    <string name="event_limited_places_modal_title">Réservez votre place !</string>
+    <string name="event_limited_places_modal_intro">Le nombre de places étant limité pour cet événement, votre inscription se fait sur demande :</string>
+    <string name="event_limited_places_step1">Vous &lt;b&gt;rejoignez la discussion&lt;/b&gt; et demandez votre place.</string>
+    <string name="event_limited_places_step2">L’organisateur &lt;b&gt;confirme votre inscription&lt;/b&gt;.</string>
+    <string name="event_limited_places_step3">Vous êtes prévenu(e) par &lt;b&gt;notification, SMS ou appel&lt;/b&gt; dès que c’est validé.</string>
+    <string name="event_limited_places_nudge">&lt;b&gt;Un empêchement ?&lt;/b&gt; Pensez à vous désinscrire pour laisser votre place à quelqu’un d’autre.</string>
+    <string name="event_limited_places_cta_primary">Demander ma place</string>
+    <string name="event_limited_places_cta_secondary">Je ne souhaite pas m’inscrire</string>
+    <string name="event_limited_places_request_sent_toast">Votre demande est envoyée ! L’organisateur reviendra vers vous pour la confirmer.</string>
+    <string name="discussion_small_talk_card_title">Rejoindre une discussion solidaire</string>
+    <string name="discussion_small_talk_card_subtitle">Échangez avec un petit groupe qui vous ressemble.</string>
+    <string name="discussion_small_talk_card_cta">Discuter</string>
+    <string name="discussion_your_conversations_label">Vos conversations</string>
+    <string name="discussion_filter_title">Filtrer les discussions</string>
+    <string name="discussion_filter_private_title">Discussions individuelles</string>
+    <string name="discussion_filter_private_subtitle">Vos échanges avec un membre de la communauté</string>
+    <string name="discussion_filter_outings_title">Discussions d’événements</string>
+    <string name="discussion_filter_outings_subtitle">Papotages, sorties, moments de convivialité</string>
+    <string name="discussion_filter_smalltalks_title">Discussions de groupes de bonnes ondes</string>
+    <string name="discussion_filter_smalltalks_subtitle">Vos petits groupes solidaires</string>
 </resources>

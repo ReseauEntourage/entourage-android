@@ -172,7 +172,10 @@ class DetailConversationActivity : CommentActivity() {
         } else {
             discussionsPresenter.getDetailConversation(id)
             discussionsPresenter.getAllComments.observe(this) { handleGetPostComments(it) }
-            discussionsPresenter.commentPosted.observe(this) { it?.let { post -> mergeIncomingMessage(post) } }
+            discussionsPresenter.commentPosted.observe(this) {
+                reenableCommentInput()
+                it?.let { post -> mergeIncomingMessage(post) }
+            }
             discussionsPresenter.messageUpdated.observe(this) { it?.let { post -> mergeIncomingMessage(post, forceScrollIfMine = false) } }
             discussionsPresenter.loadInitialComments(id) // page 1 initiale
         }

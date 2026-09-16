@@ -24,11 +24,11 @@ import social.entourage.android.api.model.ConversationMembership
 import social.entourage.android.api.model.LastMessage
 import social.entourage.android.api.model.SmallTalk
 import social.entourage.android.databinding.FragmentMessagesBinding
-import social.entourage.android.databinding.LayoutDiscussionFilterBinding
 import social.entourage.android.events.create.CommunicationHandler
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.notifications.NotificationDemandActivity
+import social.entourage.android.small_talks.SmallTalkIntroActivity
 import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
@@ -39,7 +39,7 @@ import timber.log.Timber
 import kotlin.math.abs
 
 enum class FilterMode {
-    ALL, PRIVATE, OUTINGS, SMALLTALKS
+    PRIVATE, OUTINGS, SMALLTALKS
 }
 
 class DiscussionsMainFragment : Fragment() {
@@ -57,9 +57,12 @@ class DiscussionsMainFragment : Fragment() {
     }
 
     private val messagesList = mutableListOf<Conversation>()
+    /** Sous-ensemble de [messagesList] réellement montré à l'écran une fois le filtre
+     * EN-9489 appliqué — c'est cette liste (pas [messagesList]) qui est liée à l'adapter. */
+    private val displayedList = mutableListOf<Conversation>()
     private lateinit var discussionsAdapter: DiscussionsListAdapter
 
-    private var currentFilterMode: FilterMode = FilterMode.ALL
+    private val selectedFilters = mutableSetOf<FilterMode>()
     private var page = 0
     private var isFromRefresh = false
     private val readConversationIds = mutableSetOf<Int>()
@@ -74,11 +77,13 @@ class DiscussionsMainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.progressBar.visibility = View.VISIBLE
-        initializeSearchBar()
+        initializeFilterAndCard()
 
         arguments?.getBoolean("isSmallTalkFilter")?.let { isSmallTalkFilter ->
             if (isSmallTalkFilter) {
-                changeFilterMode(FilterMode.SMALLTALKS, binding.filterSmalltalks)
+                selectedFilters.clear()
+                selectedFilters.add(FilterMode.SMALLTALKS)
+                updateFilterBadge()
             }
         }
 
@@ -132,35 +137,50 @@ class DiscussionsMainFragment : Fragment() {
 
     // -------------------- INIT UI --------------------
 
-    private fun initializeSearchBar() {
-        binding.filterAll.buttonStart.text = getString(R.string.filter_all)
-        binding.filterDiscussions.buttonStart.text = getString(R.string.filter_discussions)
-        binding.filterEvents.buttonStart.text = getString(R.string.filter_events)
-        binding.filterSmalltalks.buttonStart.text = getString(R.string.filter_band_solidarity)
+    private fun initializeFilterAndCard() {
+        binding.cardSmallTalkCta.setOnClickListener {
+            startActivity(Intent(context, SmallTalkIntroActivity::class.java))
+        }
+        binding.uiLayoutFilter.setOnClickListener {
+            DiscussionsFilterBottomSheet.newInstance(selectedFilters).apply {
+                onApply = { newSelection ->
+                    selectedFilters.clear()
+                    selectedFilters.addAll(newSelection)
+                    updateFilterBadge()
+                    refreshDisplayedList()
+                }
+            }.show(childFragmentManager, DiscussionsFilterBottomSheet.TAG)
+        }
+        updateFilterBadge()
+    }
 
-        setFilterActive(binding.filterAll)
-        setFilterInactive(binding.filterDiscussions)
-        setFilterInactive(binding.filterEvents)
-        setFilterInactive(binding.filterSmalltalks)
+    private fun updateFilterBadge() {
+        binding.filterActiveDot.visibility = if (selectedFilters.isEmpty()) View.GONE else View.VISIBLE
+    }
 
-        binding.filterAll.buttonStart.setOnClickListener {
-            changeFilterMode(FilterMode.ALL, binding.filterAll)
+    /** EN-9489 : filtre multi-sélection appliqué côté client sur la liste déjà récupérée
+     * (toutes les memberships sont toujours fetchées ; aucune sélection = tout afficher). */
+    private fun matchesSelectedFilters(conversation: Conversation): Boolean {
+        if (selectedFilters.isEmpty()) return true
+        return selectedFilters.any { filter ->
+            when (filter) {
+                FilterMode.PRIVATE    -> conversation.type == "private"
+                FilterMode.OUTINGS    -> conversation.type == "outing"
+                FilterMode.SMALLTALKS -> conversation.type == "small_talk"
+            }
         }
-        binding.filterDiscussions.buttonStart.setOnClickListener {
-            changeFilterMode(FilterMode.PRIVATE, binding.filterDiscussions)
-        }
-        binding.filterEvents.buttonStart.setOnClickListener {
-            changeFilterMode(FilterMode.OUTINGS, binding.filterEvents)
-        }
-        binding.filterSmalltalks.buttonStart.setOnClickListener {
-            changeFilterMode(FilterMode.SMALLTALKS, binding.filterSmalltalks)
-        }
+    }
 
-        binding.filterLayout.visibility = View.VISIBLE
+    /** Recalcule [displayedList] (celle liée à l'adapter) à partir de [messagesList]
+     * (la liste brute complète) et du filtre courant. */
+    private fun refreshDisplayedList() {
+        displayedList.clear()
+        displayedList.addAll(messagesList.filter { matchesSelectedFilters(it) })
+        binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 
     private fun initializeRecyclerView() {
-        discussionsAdapter = DiscussionsListAdapter(messagesList).apply {
+        discussionsAdapter = DiscussionsListAdapter(displayedList).apply {
             setOnItemClickListener(object : DiscussionsListAdapter.OnItemClickListener {
                 override fun onItemClick(position: Int, conversation: Conversation) {
                     if (discussionsAdapter.isDeletionMode) {
@@ -186,17 +206,9 @@ class DiscussionsMainFragment : Fragment() {
     private fun handleSwipeRefresh() {
         binding.swipeRefresh.setOnRefreshListener {
             // Reset propre côté presenter (évite accumulation/duplication)
-            discussionsPresenter.fetchMemberships(currentFilterModeString(), reset = true)
+            discussionsPresenter.fetchMemberships(null, reset = true)
         }
     }
-
-    private fun currentFilterModeString(): String? =
-        when (currentFilterMode) {
-            FilterMode.ALL        -> null
-            FilterMode.PRIVATE    -> "Conversation"
-            FilterMode.OUTINGS    -> "Outing"
-            FilterMode.SMALLTALKS -> "Smalltalk"
-        }
 
     private fun reloadFromStart() {
         resetMessagesList()
@@ -209,54 +221,19 @@ class DiscussionsMainFragment : Fragment() {
 
         // ✅ déclenche un refetch propre qui efface la LiveData d'accumulation
         binding.progressBar.visibility = View.VISIBLE
-        discussionsPresenter.fetchMemberships(currentFilterModeString(), reset = true)
-    }
-
-    private fun changeFilterMode(newMode: FilterMode, activeFilter: LayoutDiscussionFilterBinding) {
-        currentFilterMode = newMode
-        // ✅ reset à chaque changement de filtre
-        discussionsPresenter.fetchMemberships(currentFilterModeString(), reset = true)
-        setFilterActive(activeFilter)
-        listOf(binding.filterAll, binding.filterDiscussions, binding.filterEvents, binding.filterSmalltalks)
-            .filter { it != activeFilter }
-            .forEach { setFilterInactive(it) }
+        discussionsPresenter.fetchMemberships(null, reset = true)
     }
 
     private fun resetMessagesList() {
         messagesList.clear()
+        displayedList.clear()
         page = 0
         discussionsPresenter.isLastPage = false
         discussionsPresenter.getAllMessages.value?.clear()
         binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 
-    private fun setFilterActive(view: LayoutDiscussionFilterBinding) {
-        view.buttonStart.apply {
-            setBackgroundResource(R.drawable.shape_filter_discussion_activated)
-            setTextColor(resources.getColor(android.R.color.white, null))
-        }
-    }
-
-    private fun setFilterInactive(view: LayoutDiscussionFilterBinding) {
-        view.buttonStart.apply {
-            setBackgroundResource(R.drawable.shape_filter_discussion_desactivated)
-            setTextColor(resources.getColor(R.color.orange, null))
-        }
-    }
-
     // -------------------- LOGIQUE MESSAGES --------------------
-
-    private fun loadMessages() {
-        binding.swipeRefresh.isRefreshing = false
-        binding.progressBar.visibility = View.VISIBLE
-
-        when (currentFilterMode) {
-            FilterMode.ALL        -> discussionsPresenter.fetchMemberships(null)
-            FilterMode.PRIVATE    -> discussionsPresenter.fetchMemberships("Conversation")
-            FilterMode.OUTINGS    -> discussionsPresenter.fetchMemberships("Outing")
-            FilterMode.SMALLTALKS -> discussionsPresenter.fetchMemberships("Smalltalk")
-        }
-    }
 
     private fun handleResponseGetDiscussions(allGroups: MutableList<Conversation>?) {
         if (page == 1) messagesList.clear()
@@ -270,7 +247,7 @@ class DiscussionsMainFragment : Fragment() {
         }
 
         binding.progressBar.visibility = View.GONE
-        binding.recyclerView.adapter?.notifyDataSetChanged()
+        refreshDisplayedList()
     }
 
     private fun handleResponseGetSmallTalks(allSmallTalks: List<SmallTalk>?) {
@@ -279,7 +256,7 @@ class DiscussionsMainFragment : Fragment() {
             messagesList.addAll(list.map { smallTalkToConversation(it) })
         }
         binding.progressBar.visibility = View.GONE
-        binding.recyclerView.adapter?.notifyDataSetChanged()
+        refreshDisplayedList()
     }
 
     private fun smallTalkToConversation(smallTalk: SmallTalk): Conversation {
@@ -297,11 +274,11 @@ class DiscussionsMainFragment : Fragment() {
     }
 
     private fun showDetail(position: Int) {
-        if (position >= messagesList.size) {
+        if (position >= displayedList.size) {
             Timber.e("Position out of bound in DiscussionsMainFragment:ShowDetail")
             return
         }
-        val conversation = messagesList[position]
+        val conversation = displayedList[position]
         // 1. Marquez comme lu
         conversation.numberUnreadMessages = 0
         conversation.id?.let { id ->
@@ -311,7 +288,7 @@ class DiscussionsMainFragment : Fragment() {
 
         // 2. Lancez l'activité
         VibrationUtil.vibrate(requireContext())
-        DetailConversationActivity.isSmallTalkMode = (currentFilterMode == FilterMode.SMALLTALKS || conversation.type == "small_talk")
+        DetailConversationActivity.isSmallTalkMode = (conversation.type == "small_talk")
         if (DetailConversationActivity.isSmallTalkMode) {
             DetailConversationActivity.smallTalkId = conversation.id.toString()
         }
@@ -388,7 +365,7 @@ class DiscussionsMainFragment : Fragment() {
             val first = lm.findFirstVisibleItemPosition()
             if (!discussionsPresenter.isLoadingMemberships && !discussionsPresenter.isLastPageMemberships) {
                 if (visible + first >= total && first >= 0 && total >= discussionsPresenter.perPageMemberships) {
-                    discussionsPresenter.fetchMemberships(currentFilterModeString())
+                    discussionsPresenter.fetchMemberships(null)
                 }
             }
         }
@@ -407,7 +384,7 @@ class DiscussionsMainFragment : Fragment() {
                 }
             }
         }
-        binding.recyclerView.adapter?.notifyDataSetChanged()
+        refreshDisplayedList()
     }
 
     private fun handleImageViewAnimation() {
@@ -463,11 +440,12 @@ class DiscussionsMainFragment : Fragment() {
     }
 
     private fun deleteConversation(conversation: Conversation) {
-        val position = messagesList.indexOf(conversation)
-        if (position != -1) {
-            messagesList.removeAt(position)
-            discussionsAdapter.notifyItemRemoved(position)
+        val displayPosition = displayedList.indexOf(conversation)
+        if (displayPosition != -1) {
+            displayedList.removeAt(displayPosition)
+            discussionsAdapter.notifyItemRemoved(displayPosition)
         }
+        messagesList.remove(conversation)
         val id = conversation.id ?: return
         when (conversation.type) {
             "small_talk" -> smallTalkViewModel.leaveSmallTalk(id.toString())
