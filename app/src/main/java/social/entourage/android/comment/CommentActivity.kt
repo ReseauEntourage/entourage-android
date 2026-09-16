@@ -7,7 +7,6 @@ import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
 import android.view.View
-import android.widget.Toast
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.activity.viewModels
@@ -295,7 +294,6 @@ protected fun handleCommentPosted(post: Post?) {
     reenableCommentInput()
     post?.let {
         mergeIncomingMessage(it)
-        Toast.makeText(this, R.string.comment_posted_confirmation, Toast.LENGTH_SHORT).show()
     } ?: run {
         messagesFailed.add(comment)
         comment?.let { commentsList.add(it) }

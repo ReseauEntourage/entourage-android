@@ -2765,7 +2765,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="post_draft_meetup">Et si on se retrouvait prochainement ? Je propose </string>
     <string name="group_feed_post_unavailable">Cette publication n\'existe plus.</string>
     <string name="message_action_react">Réagir</string>
-    <string name="comment_posted_confirmation">Commentaire publié !</string>
         <string name="event_limited_places_badge">Places limitées</string>
     <string name="event_limited_places_modal_title">Réservez votre place !</string>
     <string name="event_limited_places_modal_intro">Le nombre de places étant limité pour cet événement, votre inscription se fait sur demande :</string>
