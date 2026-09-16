@@ -6,8 +6,10 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.api.model.ChatMessage
+import social.entourage.android.api.model.CompleteReactionsResponse
 import social.entourage.android.api.model.MembersWrapper
 import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.ReactionWrapper
 import social.entourage.android.api.model.SmallTalk
 import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.api.model.UserSmallTalkRequestWithMatchDataWrapper
@@ -145,6 +147,25 @@ interface SmallTalkRequest {
     // Supprimer un message
     @DELETE("smalltalks/{smalltalk_id}/chat_messages/{message_id}")
     fun deleteChatMessage(
+        @Path("smalltalk_id") smallTalkId: String,
+        @Path("message_id")   messageId:  String
+    ): Call<ResponseBody>
+
+    @GET("smalltalks/{smalltalk_id}/chat_messages/{message_id}/reactions/users")
+    fun getDetailsReactionChatMessage(
+        @Path("smalltalk_id") smallTalkId: String,
+        @Path("message_id")   messageId:  String
+    ): Call<CompleteReactionsResponse>
+
+    @POST("smalltalks/{smalltalk_id}/chat_messages/{message_id}/reactions")
+    fun postReactionChatMessage(
+        @Path("smalltalk_id") smallTalkId: String,
+        @Path("message_id")   messageId:  String,
+        @Body reactionWrapper: ReactionWrapper
+    ): Call<ResponseBody>
+
+    @DELETE("smalltalks/{smalltalk_id}/chat_messages/{message_id}/reactions")
+    fun deleteReactionChatMessage(
         @Path("smalltalk_id") smallTalkId: String,
         @Path("message_id")   messageId:  String
     ): Call<ResponseBody>

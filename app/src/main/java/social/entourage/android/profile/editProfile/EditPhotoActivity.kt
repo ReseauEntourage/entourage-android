@@ -3,10 +3,10 @@ package social.entourage.android.profile.editProfile
 import android.Manifest
 import android.content.ActivityNotFoundException
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.core.content.PermissionChecker
@@ -33,26 +33,18 @@ class EditPhotoActivity : BaseActivity(), PhotoEditInterface, AvatarUploadView {
 
     private lateinit var binding: ActivityEditPhotoBinding
 
-    private var pickedImageUri: Uri? = null
     protected var pickedImageEditedUri: Uri? = null
     private var photoSource = 0
     private var mCurrentPhotoFile: File? = null
     private lateinit var avatarUploadPresenter: AvatarUploadPresenter
 
-    private val readMediaPermission: String = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
-        Manifest.permission.READ_EXTERNAL_STORAGE else Manifest.permission.READ_MEDIA_IMAGES
-
     val profilePresenter: ProfilePresenter by lazy { ProfilePresenter() }
 
-    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+    // Android Photo Picker: no READ_MEDIA_IMAGES/READ_MEDIA_VIDEO permission needed
+    private val getContent = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
         uri?.let {
             photoSource = PICK_IMAGE_REQUEST
-            if (PermissionChecker.checkSelfPermission(this, readMediaPermission) != PermissionChecker.PERMISSION_GRANTED) {
-                pickedImageUri = it
-                requestReadPicturePermissionLauncher.launch(readMediaPermission)
-            } else {
-                loadPickedImage(it)
-            }
+            loadPickedImage(it)
         }
     }
 
@@ -77,16 +69,6 @@ class EditPhotoActivity : BaseActivity(), PhotoEditInterface, AvatarUploadView {
             showTakePhotoActivity()
         } else {
             Toast.makeText(this, R.string.user_photo_error_camera_permission, Toast.LENGTH_LONG).show()
-        }
-    }
-
-    private val requestReadPicturePermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (isGranted) {
-            pickedImageUri?.let { loadPickedImage(it) } ?: showChoosePhotoActivity()
-        } else {
-            Toast.makeText(this, R.string.user_photo_error_read_permission, Toast.LENGTH_LONG).show()
         }
     }
 
@@ -127,11 +109,7 @@ class EditPhotoActivity : BaseActivity(), PhotoEditInterface, AvatarUploadView {
         }
 
         binding.buttonGallery.setOnClickListener {
-            if (PermissionChecker.checkSelfPermission(this, readMediaPermission) != PermissionChecker.PERMISSION_GRANTED) {
-                requestReadPicturePermissionLauncher.launch(readMediaPermission)
-            } else {
-                showChoosePhotoActivity()
-            }
+            showChoosePhotoActivity()
         }
 
         binding.buttonTakePicture.setOnClickListener {
@@ -144,7 +122,7 @@ class EditPhotoActivity : BaseActivity(), PhotoEditInterface, AvatarUploadView {
     }
 
     private fun showChoosePhotoActivity() {
-        getContent.launch("image/jpeg")
+        getContent.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
     private fun showTakePhotoActivity() {
@@ -206,7 +184,6 @@ class EditPhotoActivity : BaseActivity(), PhotoEditInterface, AvatarUploadView {
 
     private fun loadPickedImage(uri: Uri?) {
         uri?.let { showNextStep(it) }
-        pickedImageUri = null
     }
 
     override fun onPhotoEdited(photoURI: Uri?, photoSource: Int) {

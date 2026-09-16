@@ -28,8 +28,7 @@ class OnboardingViewModel : ViewModel() {
     var user: social.entourage.android.api.model.User? = null
     var selectedCategory: String? = null
 
-    var selectedDays = MutableLiveData<List<String>>()
-    var selectedTimeSlots = MutableLiveData<List<String>>()
+    var selectedAvailability = MutableLiveData<Map<String, List<String>>>()
 
     private val onboardingService: UserRequest
         get() = EntourageApplication.get().apiModule.userRequest
@@ -60,21 +59,7 @@ class OnboardingViewModel : ViewModel() {
     }
 
     fun updateUserInterests(listener: (isOK: Boolean, userResponse: UserResponse?) -> Unit) {
-        val dayMapping = mapOf(
-            "Lundi" to "1", "Mardi" to "2", "Mercredi" to "3",
-            "Jeudi" to "4", "Vendredi" to "5", "Samedi" to "6", "Dimanche" to "7"
-        )
-        val timeSlotMapping = mapOf(
-            "Matin" to "09:00-12:00",
-            "Après-midi" to "14:00-18:00",
-            "Soir" to "18:00-21:00"
-        )
-
-        val availability = selectedDays.value?.associate { day ->
-            val dayNumber = dayMapping[day]
-            val timeRanges = selectedTimeSlots.value?.mapNotNull { timeSlotMapping[it] } ?: listOf()
-            dayNumber!! to timeRanges
-        } ?: emptyMap()
+        val availability = selectedAvailability.value?.filter { it.value.isNotEmpty() } ?: emptyMap()
 
         val finalInterests = interests.value?.filter { it.isSelected }?.map { it.id }
             ?: user?.interests ?: emptyList()
@@ -174,12 +159,8 @@ class OnboardingViewModel : ViewModel() {
         actionsWishes.postValue(updatedActionsWishes ?: listOf())
     }
 
-    fun updateSelectedDays(days: List<String>) {
-        selectedDays.postValue(days)
-    }
-
-    fun updateSelectedTimeSlots(timeSlots: List<String>) {
-        selectedTimeSlots.postValue(timeSlots)
+    fun updateAvailability(availability: Map<String, List<String>>) {
+        selectedAvailability.postValue(availability)
     }
 
     fun setOnboardingFirstStep(value: Boolean) {

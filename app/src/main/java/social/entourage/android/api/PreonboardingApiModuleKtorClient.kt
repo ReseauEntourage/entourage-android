@@ -1,3 +1,5 @@
+package social.entourage.android.api // Assure-toi que ce package correspond bien à ton architecture
+
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.okhttp.OkHttp
@@ -11,8 +13,6 @@ import social.entourage.android.BuildConfig
 import social.entourage.android.api.model.Metadata
 import social.entourage.android.api.model.SalesforceEnterprise
 import social.entourage.android.api.model.SalesforceEvent
-import social.entourage.android.api.model.Summary
-import timber.log.Timber
 
 object PreonboardingApiModuleKtorClient {
 

@@ -8,12 +8,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import social.entourage.android.R
 import social.entourage.android.databinding.ActivityOnboardingAssociationChoiceBinding
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 
 class OnboardingAssociationChoiceActivity : AppCompatActivity() {
 
@@ -30,15 +31,18 @@ class OnboardingAssociationChoiceActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityOnboardingAssociationChoiceBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        social.entourage.android.tools.log.AnalyticsEvents.logEvent(social.entourage.android.tools.log.AnalyticsEvents.View__Onboarding__AssoSearch)
 
         initialAddress = intent.getStringExtra(EXTRA_ADDRESS)
         initialLat = intent.getDoubleExtra(EXTRA_LAT, Double.NaN).takeIf { !it.isNaN() }
         initialLng = intent.getDoubleExtra(EXTRA_LNG, Double.NaN).takeIf { !it.isNaN() }
         initialPostalCode = intent.getStringExtra(EXTRA_POSTAL_CODE)
 
-        updatePaddingTopForEdgeToEdge(binding.rootScroll)
+        updatePaddingForEdgeToEdge(binding.root)
 
         setupTexts()
         setupDropdown()
@@ -135,9 +139,13 @@ class OnboardingAssociationChoiceActivity : AppCompatActivity() {
     }
 
     private fun setupButtons() {
-        binding.buttonPrevious.setOnClickListener { finish() }
+        binding.buttonPrevious.setOnClickListener {
+            social.entourage.android.tools.log.AnalyticsEvents.logEvent(social.entourage.android.tools.log.AnalyticsEvents.Clic__Back__Onboarding__AssoSearch)
+            finish()
+        }
 
         binding.buttonNext.setOnClickListener {
+            social.entourage.android.tools.log.AnalyticsEvents.logEvent(social.entourage.android.tools.log.AnalyticsEvents.Clic__Next__Onboarding__AssoSearch)
             val picked = (binding.dropdownAssoc.editText as? AutoCompleteTextView)
                 ?.text?.toString()?.trim().orEmpty()
 

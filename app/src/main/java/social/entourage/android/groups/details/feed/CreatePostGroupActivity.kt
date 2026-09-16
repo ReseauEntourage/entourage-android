@@ -2,8 +2,10 @@ package social.entourage.android.groups.details.feed
 
 import android.os.Bundle
 import androidx.collection.ArrayMap
+import social.entourage.android.R
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.posts.CreatePostActivity
+import social.entourage.android.tools.utils.Const
 import java.io.File
 
 class CreatePostGroupActivity : CreatePostActivity() {
@@ -37,6 +39,28 @@ class CreatePostGroupActivity : CreatePostActivity() {
     }
 
     // --------------------------------------------------------------------------------
+    // Chips d'inspiration selon le type de groupe
+    // --------------------------------------------------------------------------------
+    override fun getInspirationChips(): List<Pair<Int, Int>> {
+        val isNational = intent.getBooleanExtra(Const.IS_NATIONAL_GROUP, false)
+        return if (isNational) {
+            listOf(
+                R.string.post_chip_share    to R.string.post_draft_share,
+                R.string.post_chip_question to R.string.post_draft_question,
+                R.string.post_chip_exchange to R.string.post_draft_exchange,
+                R.string.post_chip_meetup   to R.string.post_draft_meetup,
+            )
+        } else {
+            listOf(
+                R.string.post_chip_neighborhood to R.string.post_draft_neighborhood,
+                R.string.post_chip_activity     to R.string.post_draft_activity,
+                R.string.post_chip_help         to R.string.post_draft_help,
+                R.string.post_chip_hello        to R.string.post_draft_hello,
+            )
+        }
+    }
+
+    // --------------------------------------------------------------------------------
     // Logique mention : on redéfinit la méthode abstraite onMentionQuery
     // --------------------------------------------------------------------------------
     override fun onMentionQuery(query: String) {
@@ -47,8 +71,11 @@ class CreatePostGroupActivity : CreatePostActivity() {
 
     // Publication d'un post avec image
     override fun addPostWithImage(file: File) {
+        val messageText = binding.message.text.toString().trim()
+        val finalMessage = if (messageText.isEmpty()) null else messageText
+
         groupPresenter.addPost(
-            binding.message.text.toString(),
+            finalMessage,
             file,
             groupId
         )

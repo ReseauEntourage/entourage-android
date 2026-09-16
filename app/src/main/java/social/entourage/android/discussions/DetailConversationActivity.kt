@@ -36,10 +36,13 @@ import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.GroupMember
+import social.entourage.android.api.model.ReactionType
+import social.entourage.android.api.model.toUser
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.SmallTalk
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.toGroupMember
+import social.entourage.android.sockets.ConversationSocketManager
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.MentionAdapter
@@ -47,6 +50,7 @@ import social.entourage.android.discussions.members.MembersConversationFragment
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.groups.GroupPresenter
+import social.entourage.android.groups.details.feed.GroupFeedActivity
 import social.entourage.android.profile.MyProfileFullActivity
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.small_talks.SmallTalkGuidelinesActivity
@@ -79,6 +83,9 @@ class DetailConversationActivity : CommentActivity() {
     private val smallTalkViewModel: SmallTalkViewModel by viewModels()
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
 
+    // State
+    private var hasClosedStaffBanner: Boolean = false
+
     // Launchers
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var galleryLauncher: ActivityResultLauncher<String>
@@ -102,10 +109,9 @@ class DetailConversationActivity : CommentActivity() {
 
     private var event: Events? = null
 
-    // Refresh (page 1 -> append en bas)
-    private val refreshHandler = Handler(Looper.getMainLooper())
-    private val refreshIntervalMs = 1_500L
-    private var refreshRunnable: Runnable? = null
+    override val allowsMessageEdit: Boolean get() = true
+    override val allowsMessageReactions: Boolean get() = true
+    override val usesMessageOptionsMenu: Boolean get() = true
 
     // Clé stable pour les items
     private fun Post.diffKey(): String =
@@ -114,6 +120,7 @@ class DetailConversationActivity : CommentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         isMember = isSmallTalkMode
+        isSmallTalk = isSmallTalkMode
         hasToShowFirstMessage = intent.getBooleanExtra(Const.HAS_TO_SHOW_MESSAGE, false)
         binding.emptyState.visibility = View.GONE
 
@@ -128,6 +135,16 @@ class DetailConversationActivity : CommentActivity() {
         discussionsPresenter.detailConversation.observe(this) { handleDetailConversation(it) }
         eventPresenter.getEvent.observe(this) { handleGetEvent(it) }
         eventPresenter.getMembersSearch.observe(this) { handleMembersSearch(it) }
+        groupPresenter.getGroup.observe(this) { group ->
+            group?.let {
+                startActivity(
+                    Intent(this, GroupFeedActivity::class.java).putExtra(
+                        Const.GROUP_ID,
+                        group.id
+                    )
+                )
+            }
+        }
         binding.comments.layoutManager = LinearLayoutManager(this)
         setupScrollPagination()
 
@@ -135,7 +152,7 @@ class DetailConversationActivity : CommentActivity() {
             smallTalkViewModel.smallTalkDetail.observe(this) { handleSmallTalkDetail(it) }
             smallTalkViewModel.messages.observe(this) { handleSmallTalkMessages(it) }
             smallTalkViewModel.participants.observe(this) { handleParticipants(it) }
-            smallTalkViewModel.createdMessage.observe(this) { scrollAfterLayout() }
+            smallTalkViewModel.createdMessage.observe(this) { it?.let { post -> mergeIncomingMessage(post) } }
 
             smallTalkViewModel.getSmallTalk(smallTalkId)
             smallTalkViewModel.loadInitialMessages(smallTalkId) // page 1 initiale
@@ -155,7 +172,11 @@ class DetailConversationActivity : CommentActivity() {
         } else {
             discussionsPresenter.getDetailConversation(id)
             discussionsPresenter.getAllComments.observe(this) { handleGetPostComments(it) }
-            discussionsPresenter.commentPosted.observe(this) { scrollAfterLayout() }
+            discussionsPresenter.commentPosted.observe(this) {
+                reenableCommentInput()
+                it?.let { post -> mergeIncomingMessage(post) }
+            }
+            discussionsPresenter.messageUpdated.observe(this) { it?.let { post -> mergeIncomingMessage(post, forceScrollIfMine = false) } }
             discussionsPresenter.loadInitialComments(id) // page 1 initiale
         }
 
@@ -189,20 +210,48 @@ class DetailConversationActivity : CommentActivity() {
         binding.header.headerIconSettings.setOnClickListener {
             buildAndShowActionSheet()
         }
-
-
     }
 
-    // ===== Refresh page 1 (append en bas) =====
+    // ===== Websocket temps réel =====
     override fun onResume() {
         super.onResume()
         AnalyticsEvents.logEvent(AnalyticsEvents.Message_view_detail)
-        startRefreshing()
+        connectSocketIfPossible()
     }
 
     override fun onPause() {
         super.onPause()
-        stopRefreshing()
+        disconnectChatSocket()
+    }
+
+    private fun connectSocketIfPossible() {
+        if (isSmallTalkMode) {
+            val smallTalkNumericId = smallTalkId.toIntOrNull()
+            if (smallTalkNumericId == null) {
+                Timber.tag("ConvSocket").w("connectSocketIfPossible(): smallTalkId '%s' not parseable, skipping socket connect", smallTalkId)
+                return
+            }
+            Timber.tag("ConvSocket").d("connectSocketIfPossible(): smalltalk id=%d", smallTalkNumericId)
+            connectChatSocket("Smalltalk", smallTalkNumericId, onReconnected = {
+                smallTalkViewModel.loadInitialMessages(smallTalkId)
+            })
+        } else {
+            val convId = detailConversation?.id
+            if (convId == null) {
+                Timber.tag("ConvSocket").w("connectSocketIfPossible(): detailConversation not loaded yet (id=%d), skipping socket connect", id)
+                return
+            }
+            val instanceType = ConversationSocketManager.mapConversationTypeToInstanceType(detailConversation?.type)
+            Timber.tag("ConvSocket").d("connectSocketIfPossible(): type=%s (raw='%s') convId=%d", instanceType, detailConversation?.type, convId)
+            connectChatSocket(instanceType, convId, onReconnected = {
+                discussionsPresenter.loadInitialComments(id)
+            })
+        }
+    }
+
+    override fun mergeIncomingMessage(post: Post, forceScrollIfMine: Boolean) {
+        if (isLoadingOlder) return
+        super.mergeIncomingMessage(post, forceScrollIfMine)
     }
 
     private fun buildAndShowActionSheet() {
@@ -295,35 +344,6 @@ class DetailConversationActivity : CommentActivity() {
         return !isSmallTalkMode && detailConversation?.type != "outing"
     }
 
-    private fun startRefreshing() {
-        if (refreshRunnable != null) return
-        refreshRunnable = object : Runnable {
-            override fun run() {
-                if (!isLoadingOlder) {
-                    if (isSmallTalkMode) {
-                        smallTalkViewModel.listChatMessages(smallTalkId, page = 1)
-                    } else {
-                        discussionsPresenter.getPostComments(id) // page 1
-                    }
-                    // Ajoutez un délai pour laisser le temps à la liste de se mettre à jour
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        if (isAtBottom()) {
-                            scrollAfterLayout()
-                        }
-                    }, 300) // Délai court pour laisser le temps à la liste de se recharger
-                }
-                refreshHandler.postDelayed(this, refreshIntervalMs)
-            }
-        }
-        refreshHandler.postDelayed(refreshRunnable!!, refreshIntervalMs)
-    }
-
-
-    private fun stopRefreshing() {
-        refreshRunnable?.let { refreshHandler.removeCallbacks(it) }
-        refreshRunnable = null
-    }
-
     // ===== API héritée =====
     override fun reloadView() {
         shouldOpenKeyboard = false
@@ -355,12 +375,7 @@ class DetailConversationActivity : CommentActivity() {
         }
     }
 
-    private fun isAtBottom(): Boolean {
-        val lm = binding.comments.layoutManager as? LinearLayoutManager ?: return true
-        val last = lm.findLastCompletelyVisibleItemPosition()
-        val total = lm.itemCount
-        return last >= total - 2
-    }
+    private fun isAtBottom(): Boolean = isAtBottomOfComments()
 
     private fun setupOptionMenu() {
         var isOptionsVisible = false
@@ -436,6 +451,9 @@ class DetailConversationActivity : CommentActivity() {
     private fun setupScrollPagination() {
         binding.comments.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
+                if (hasUnseenNewMessages && isAtBottom()) {
+                    hideNewMessagesBanner()
+                }
                 if (dy < 0 && !rv.canScrollVertically(-1) && !isLoadingOlder) {
                     val lm = rv.layoutManager as LinearLayoutManager
                     val firstPos = lm.findFirstVisibleItemPosition()
@@ -494,6 +512,7 @@ class DetailConversationActivity : CommentActivity() {
         smallTalkId = smallTalk?.id.toString()
         this.smallTalk = smallTalk
         setCameraIcon()
+        connectSocketIfPossible()
     }
 
     private fun handleSmallTalkMessages(messages: List<Post>?) {
@@ -540,12 +559,16 @@ class DetailConversationActivity : CommentActivity() {
             return
         }
         val spanned = binding.commentMessage.editableText
-        val caption = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Html.toHtml(spanned, Html.FROM_HTML_MODE_LEGACY)
+        val caption = if (spanned.toString().trim().isEmpty()) {
+            null
         } else {
-            @Suppress("DEPRECATION")
-            Html.toHtml(spanned)
-        }.trim().ifEmpty { null }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Html.toHtml(spanned, Html.FROM_HTML_MODE_LEGACY)
+            } else {
+                @Suppress("DEPRECATION")
+                Html.toHtml(spanned)
+            }.trim().ifEmpty { null }
+        }
         if (isSmallTalkMode) {
             smallTalkViewModel.addMessageWithImage(smallTalkId, caption, file)
         } else if (detailConversation?.type == "outing") {
@@ -569,6 +592,7 @@ class DetailConversationActivity : CommentActivity() {
     private fun handleDetailConversation(conversation: Conversation?) {
         conversation ?: return
         this.detailConversation = conversation
+        isEvent = conversation.type == "outing"
 
         // Contexte & état de base
         isMember = conversation.member == true
@@ -705,6 +729,122 @@ class DetailConversationActivity : CommentActivity() {
         // Mémoriser les membres pour les mentions
         allMembers = conversation.members ?: emptyList()
         Timber.d("[DetailConversation] allMembers.size=%s", allMembers.size)
+
+        // Banner Staff Out-of-Office check
+        checkStaffBannerDisplay(conversation)
+
+        connectSocketIfPossible()
+    }
+
+    private fun checkStaffBannerDisplay(conversation: Conversation) {
+        if (hasClosedStaffBanner) {
+            binding.layoutStaffBanner.visibility = View.GONE
+            return
+        }
+
+        // Must be a 1-to-1 conversation
+        if (!isOne2One || conversation.type == "outing") {
+            binding.layoutStaffBanner.visibility = View.GONE
+            return
+        }
+
+        // Find the other user
+        val meId = EntourageApplication.get().me()?.id
+        val otherUser = conversation.members?.firstOrNull { it.id != meId }
+
+        if (otherUser == null) {
+            binding.layoutStaffBanner.visibility = View.GONE
+            return
+        }
+
+        // Convert GroupMember to User to get roles
+        val otherUserRoles = conversation.user?.roles ?: otherUser.toUser().roles
+
+        val isStaff = otherUserRoles?.any { it.equals("Équipe Entourage", ignoreCase = true) } == true
+
+        if (!isStaff) {
+            binding.layoutStaffBanner.visibility = View.GONE
+            return
+        }
+
+        // Time Check
+        val calendar = java.util.Calendar.getInstance(java.util.TimeZone.getDefault())
+        val dayOfWeek = calendar.get(java.util.Calendar.DAY_OF_WEEK)
+        val hourOfDay = calendar.get(java.util.Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(java.util.Calendar.MINUTE)
+
+        val isWeekend = (dayOfWeek == java.util.Calendar.FRIDAY && (hourOfDay > 18 || (hourOfDay == 18 && minute > 0))) ||
+                        dayOfWeek == java.util.Calendar.SATURDAY ||
+                        dayOfWeek == java.util.Calendar.SUNDAY ||
+                        (dayOfWeek == java.util.Calendar.MONDAY && (hourOfDay < 8 || (hourOfDay == 8 && minute < 59)))
+
+        val isNightTime = (hourOfDay > 18 || (hourOfDay == 18 && minute > 0)) ||
+                          (hourOfDay < 8 || (hourOfDay == 8 && minute < 59))
+
+        if (isWeekend || isNightTime) {
+            binding.layoutStaffBanner.visibility = View.VISIBLE
+            setupStaffBannerContent()
+        } else {
+            binding.layoutStaffBanner.visibility = View.GONE
+        }
+    }
+
+
+    private fun setupStaffBannerContent() {
+        // Handle links in the banner text
+        val staffMessage = getString(R.string.staff_out_of_office_banner)
+        val spannableStr = android.text.SpannableStringBuilder()
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            spannableStr.append(android.text.Html.fromHtml(staffMessage, android.text.Html.FROM_HTML_MODE_COMPACT))
+        } else {
+            @Suppress("DEPRECATION")
+            spannableStr.append(android.text.Html.fromHtml(staffMessage))
+        }
+
+        val spans = spannableStr.getSpans(0, spannableStr.length, android.text.style.URLSpan::class.java)
+        for (span in spans) {
+            val start = spannableStr.getSpanStart(span)
+            val end = spannableStr.getSpanEnd(span)
+            val flags = spannableStr.getSpanFlags(span)
+            val url = span.url
+
+            spannableStr.removeSpan(span)
+            val clickableSpan = object : android.text.style.ClickableSpan() {
+                override fun onClick(widget: View) {
+                    if (url.startsWith("tel:")) {
+                        val intent = Intent(Intent.ACTION_DIAL, Uri.parse(url))
+                        startActivity(intent)
+                    } else if (url == "entourage://groupe") {
+                        groupPresenter.getDefaultGroup()
+                    }
+                }
+
+                override fun updateDrawState(ds: android.text.TextPaint) {
+                    super.updateDrawState(ds)
+                    ds.color = ContextCompat.getColor(this@DetailConversationActivity, R.color.orange)
+                    ds.isUnderlineText = true
+                }
+            }
+            spannableStr.setSpan(clickableSpan, start, end, flags)
+        }
+
+        binding.tvStaffBannerMessage.text = spannableStr
+        binding.tvStaffBannerMessage.movementMethod = android.text.method.LinkMovementMethod.getInstance()
+
+        binding.btnCloseStaffBanner.setOnClickListener {
+            hasClosedStaffBanner = true
+            binding.layoutStaffBanner.animate()
+                .translationY(binding.layoutStaffBanner.height.toFloat())
+                .alpha(0f)
+                .setDuration(300)
+                .withEndAction {
+                    binding.layoutStaffBanner.visibility = View.GONE
+                    binding.layoutStaffBanner.translationY = 0f
+                    binding.layoutStaffBanner.alpha = 1f
+                }
+                .start()
+        }
     }
 
     private fun handleGetEvent(event: Events?) {
@@ -785,6 +925,36 @@ class DetailConversationActivity : CommentActivity() {
         scrollAfterLayout()
     }
 
+    // ===== Édition d'un message =====
+    override fun updateComment(messageId: Int, newContentHtml: String) {
+        if (isSmallTalkMode) {
+            smallTalkViewModel.updateChatMessage(smallTalkId, messageId.toString(), newContentHtml)
+        } else {
+            val convId = detailConversation?.id ?: id
+            discussionsPresenter.updateMessage(convId, messageId, newContentHtml)
+        }
+    }
+
+    // ===== Réactions sur message =====
+    override fun onMessageReactionClicked(comment: Post, reactionType: ReactionType) {
+        val convId = detailConversation?.id ?: id
+        val messageId = comment.id ?: return
+        toggleMessageReaction(
+            comment, reactionType,
+            sendAdd = { reactionId, onComplete -> sendAddReaction(convId, messageId, reactionId, onComplete) },
+            sendDelete = { onComplete -> sendDeleteReaction(convId, messageId, onComplete) },
+        )
+    }
+
+    private fun sendAddReaction(convId: Int, messageId: Int, reactionId: Int, onComplete: (Boolean) -> Unit = {}) {
+        if (isSmallTalkMode) smallTalkViewModel.reactToChatMessage(smallTalkId, messageId.toString(), reactionId, onComplete)
+        else discussionsPresenter.reactToMessage(convId, messageId, reactionId, onComplete)
+    }
+
+    private fun sendDeleteReaction(convId: Int, messageId: Int, onComplete: (Boolean) -> Unit = {}) {
+        if (isSmallTalkMode) smallTalkViewModel.deleteReactionChatMessage(smallTalkId, messageId.toString(), onComplete)
+        else discussionsPresenter.deleteReactionMessage(convId, messageId, onComplete)
+    }
 
     // ===== Réception des messages =====
     override fun handleGetPostComments(allComments: MutableList<Post>?) {
@@ -825,6 +995,7 @@ class DetailConversationActivity : CommentActivity() {
         val toAppend = formatted.filter { existingKeys.add(it.diffKey()) }.toMutableList()
         if (toAppend.isEmpty()) {
             binding.progressBar.visibility = View.GONE
+            updateView(commentsList.isEmpty())
             return
         }
 
@@ -1003,7 +1174,7 @@ class DetailConversationActivity : CommentActivity() {
         isSmallTalkMode = false
         MembersConversationFragment.isFromDiscussion = false
         smallTalkId = ""
-        stopRefreshing()
+        disconnectChatSocket()
         mentionSearchJob?.cancel()
     }
 }

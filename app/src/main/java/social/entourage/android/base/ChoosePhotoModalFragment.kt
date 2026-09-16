@@ -7,13 +7,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
@@ -43,12 +43,12 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
     var takingPhoto:Boolean = false
     private var mCurrentPhotoPath: String? = null
 
-    val getContent =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            uri.let { urii ->
+    // Android Photo Picker: no READ_MEDIA_IMAGES/READ_MEDIA_VIDEO permission needed
+    val pickMedia =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
+            uri?.let { urii ->
                 photoFileUri = urii
                 loadPickedImage(urii)
-                return@let
             }
         }
 
@@ -141,7 +141,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
 
     private fun handleImportPictureButton() {
         binding.importPicture.root.setOnClickListener {
-            pickPhoto()
+            showChoosePhotoActivity()
             this.pickingPhoto = true
             this.takingPhoto = false
         }
@@ -199,7 +199,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
     }
 
     private fun showChoosePhotoActivity() {
-        getContent.launch("image/*")
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
     private fun loadPickedImage(uri: Uri?) {
@@ -259,19 +259,6 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
             }
         }
 
-    private val permReqChoosePhotoLauncher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-            if (granted) {
-                showChoosePhotoActivity()
-            } else {
-                Toast.makeText(
-                    activity,
-                    R.string.user_photo_error_camera_permission,
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        }
-
     private fun hasPermission(
         context: Context,
         permission: String
@@ -292,28 +279,8 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun pickPhoto() {
-        activity?.let {
-            if (hasPermission(
-                    activity as Context,
-                    readMediaPermission
-                )
-            ) {
-                showChoosePhotoActivity()
-            } else {
-                permReqChoosePhotoLauncher.launch(readMediaPermission)
-            }
-        }
-    }
-
-
     companion object {
         const val TAG = "ChooseGalleryPhotoModalFragment"
-        val readMediaPermission =
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            else
-                Manifest.permission.READ_MEDIA_IMAGES
 
         fun newInstance(): ChoosePhotoModalFragment {
             return ChoosePhotoModalFragment()

@@ -9,15 +9,18 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
 import android.view.View
-import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import com.bumptech.glide.Glide
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompletePrediction
@@ -37,6 +40,7 @@ import social.entourage.android.main_filter.MainFilterActivity.Companion.PlaceDe
 import social.entourage.android.profile.editProfile.EditPhotoActivity
 import social.entourage.android.profile.editProfile.EditProfilePresenter
 import social.entourage.android.tools.isValidEmail
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.transformIntoDatePicker
 import social.entourage.android.tools.utils.trimEnd
 import social.entourage.android.user.AvatarUploadPresenter
@@ -74,8 +78,10 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityEditProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        updatePaddingForEdgeToEdge(binding.root)
 
         initPlacesClient()
         initAvatarPresenter()
@@ -389,16 +395,16 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     }
 
     private fun fetchPlaceDetails(placeId: String) {
-        val placeFields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
+        val placeFields = listOf(Place.Field.ID, Place.Field.DISPLAY_NAME, Place.Field.LOCATION, Place.Field.FORMATTED_ADDRESS)
         val request = FetchPlaceRequest.builder(placeId, placeFields).build()
 
         placesClient.fetchPlace(request).addOnSuccessListener { response ->
             val place = response.place
-            binding.cityAction.setText(place.name ?: "", false)
+            binding.cityAction.setText(place.displayName ?: "", false)
 
-            savedLocation = place.latLng?.let {
+            savedLocation = place.location?.let {
                 PlaceDetails(
-                    place.name ?: "",
+                    place.displayName ?: "",
                     it.latitude,
                     it.longitude
                 )
@@ -529,21 +535,29 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
     }
 
     private fun adjustPaddingForKeyboard() {
-        val rootView = binding.root
-        rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                val rect = Rect()
-                rootView.getWindowVisibleDisplayFrame(rect)
-                val screenHeight = rootView.height
-                val keypadHeight = screenHeight - rect.bottom
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+            val statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            val navBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            val ime = insets.getInsets(WindowInsetsCompat.Type.ime())
 
-                if (keypadHeight > screenHeight * 0.15) {
-                    binding.scrollView.setPadding(0, 0, 0, keypadHeight)
-                } else {
-                    binding.scrollView.setPadding(0, 0, 0, 0)
+            binding.root.updatePadding(
+                top = statusBars.top,
+                bottom = maxOf(navBars.bottom, ime.bottom)
+            )
+
+            if (insets.isVisible(WindowInsetsCompat.Type.ime())) {
+                binding.scrollView.findFocus()?.let { focusedView ->
+                    binding.scrollView.post {
+                        val rect = Rect()
+                        focusedView.getDrawingRect(rect)
+                        binding.scrollView.offsetDescendantRectToMyCoords(focusedView, rect)
+                        binding.scrollView.scrollTo(0, rect.top)
+                    }
                 }
             }
-        })
+
+            insets
+        }
     }
 
     override fun onUploadError() {

@@ -76,10 +76,9 @@ object Navigation {
             }
             HomeType.NEIGHBORHOOD -> when (action) {
                 ActionSummary.SHOW ->
-                    return Intent(context, GroupFeedActivity::class.java).putExtra(
-                        Const.GROUP_ID,
-                        params.id
-                    )
+                    return Intent(context, GroupFeedActivity::class.java)
+                        .putExtra(Const.GROUP_ID, params.id)
+                        .putExtra(Const.POST_ID, params.postId)
                 ActionSummary.INDEX -> {
                     ViewPagerDefaultPageController.shouldSelectDiscoverGroups = true
                     val bottomNavigationView =
@@ -215,6 +214,7 @@ object Navigation {
                 val intent = Intent(context, GroupCommentActivity::class.java)
                 intent.putExtra(Const.ID, params.id)
                 intent.putExtra(Const.POST_ID, params.postId)
+                intent.putExtra(Const.CHAT_MESSAGE_ID, params.chatMessageId)
                 intent.putExtra(Const.IS_FROM_NOTIF, true)
                 return intent
             }
@@ -223,6 +223,7 @@ object Navigation {
                 val intent = Intent(context, EventCommentActivity::class.java)
                 intent.putExtra(Const.ID, params.id)
                 intent.putExtra(Const.POST_ID, params.postId)
+                intent.putExtra(Const.CHAT_MESSAGE_ID, params.chatMessageId)
                 intent.putExtra(Const.IS_FROM_NOTIF, true)
                 return intent
             }

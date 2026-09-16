@@ -49,13 +49,12 @@ class MainFilterAdapter(
             binding.root.setBackgroundResource(backgroundResource)
             binding.ivInterestCheck.setImageResource(if (item.isSelected) R.drawable.ic_onboarding_check else R.drawable.ic_onboarding_uncheck)
 
-            if (item.subtitle.isNotEmpty()) {
-                binding.tvInterestTitleFromRight.typeface = quicksandBold
-                binding.tvInterestSubTitleFromRight.typeface = nunitosansRegular
-            } else {
-                val typeface = if (item.isSelected) quicksandBold else nunitosansRegular
-                binding.tvInterestTitleFromRight.typeface = typeface
-            }
+            // Le titre passe en gras si sélectionné, sinon reste en régulier
+            val titleTypeface = if (item.isSelected) quicksandBold else nunitosansRegular
+            binding.tvInterestTitleFromRight.typeface = titleTypeface
+
+            // Le sous-titre reste toujours en police régulière
+            binding.tvInterestSubTitleFromRight.typeface = nunitosansRegular
         }
     }
 

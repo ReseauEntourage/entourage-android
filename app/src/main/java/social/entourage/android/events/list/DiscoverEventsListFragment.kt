@@ -59,8 +59,13 @@ class DiscoverEventsListFragment : Fragment() {
     private var isLoadMoreSearchResults = false
     private var searchResultsList: MutableList<Events> = mutableListOf()
 
+    private var listSkeletonShownAt: Long = 0L
+    private var hasCompletedInitialEventsLoad = false
+    private var hasCompletedInitialMyEventsLoad = false
+
     companion object {
         var isFirstResumeWithFilters = true
+        private const val MIN_SKELETON_DURATION_MS = 1000L
     }
 
     override fun onAttach(context: Context) {
@@ -165,6 +170,7 @@ class DiscoverEventsListFragment : Fragment() {
         eventsPresenter.isLastPage = false
         eventsPresenter.isLastPageMyEvent = false
         if (MainFilterActivity.savedGroupInterests.isNotEmpty() ||
+            MainFilterActivity.savedEventTypes.isNotEmpty() ||
             MainFilterActivity.savedRadius != 0 ||
             MainFilterActivity.savedLocation != null) {
             applyFilters()
@@ -177,6 +183,8 @@ class DiscoverEventsListFragment : Fragment() {
     fun initView() {
         isLoading = false
         binding.progressBar.visibility = View.VISIBLE
+        binding.listSkeletonOverlay.visibility = View.VISIBLE
+        listSkeletonShownAt = System.currentTimeMillis()
         binding.searchEditText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
         eventsAdapter.clearList()
         myeventsAdapter.clearList()
@@ -185,6 +193,18 @@ class DiscoverEventsListFragment : Fragment() {
         page = 0
         pageMyEvent = 0
 
+    }
+
+    // Le skeleton doit couvrir les deux listes (events + my events), chargées indépendamment :
+    // on ne le retire qu'une fois les deux premières réponses arrivées, et pas avant
+    // MIN_SKELETON_DURATION_MS pour laisser le temps de voir l'anim.
+    private fun hideListSkeletonIfBothLoaded() {
+        if (!hasCompletedInitialEventsLoad || !hasCompletedInitialMyEventsLoad) return
+        val elapsed = System.currentTimeMillis() - listSkeletonShownAt
+        val remaining = (MIN_SKELETON_DURATION_MS - elapsed).coerceAtLeast(0)
+        binding.listSkeletonOverlay.postDelayed({
+            if (isAdded) binding.listSkeletonOverlay.visibility = View.GONE
+        }, remaining)
     }
 
     private fun handleResponseGetEvents(allEvents: MutableList<Events>?) {
@@ -197,10 +217,16 @@ class DiscoverEventsListFragment : Fragment() {
             }
             updateView(false)
         } else {
-            updateView(true)
+            if (eventsAdapter.itemCount == 0) {
+                updateView(true)
+            }
         }
         isLoading = false
         binding.progressBar.visibility = View.GONE
+        if (!hasCompletedInitialEventsLoad) {
+            hasCompletedInitialEventsLoad = true
+            hideListSkeletonIfBothLoaded()
+        }
     }
 
     private fun handleResponseGetMYEvents(myEvents: MutableList<Events>?) {
@@ -219,6 +245,10 @@ class DiscoverEventsListFragment : Fragment() {
         }
         isLoading = false
         binding.progressBar.visibility = View.GONE
+        if (!hasCompletedInitialMyEventsLoad) {
+            hasCompletedInitialMyEventsLoad = true
+            hideListSkeletonIfBothLoaded()
+        }
     }
 
     private fun handleResponseSearchEvents(allEvents: MutableList<Events>?) {
@@ -363,7 +393,8 @@ class DiscoverEventsListFragment : Fragment() {
                 eventsPresenter.getAllEventsWithFilter(
                     page, EVENTS_PER_PAGE,
                     MainFilterActivity.savedGroupInterests.joinToString(","),
-                    radius, latitude, longitude, "future"
+                    radius, latitude, longitude, "future",
+                    reservedFemaleFilter(), formatFilter(), entourageOnlyFilter()
                 )
             }
         }
@@ -393,10 +424,23 @@ class DiscoverEventsListFragment : Fragment() {
                     myId!!,
                     pageMyEvent, EVENTS_PER_PAGE,
                     MainFilterActivity.savedGroupInterests.joinToString(","),
-                    radius, latitude, longitude, "future"
+                    radius, latitude, longitude, "future",
+                    reservedFemaleFilter(), formatFilter(), entourageOnlyFilter()
                 )
             }
         }
+    }
+
+    private fun reservedFemaleFilter(): Boolean? =
+        MainFilterActivity.savedEventTypes.contains(MainFilterActivity.EVENT_TYPE_RESERVED_FEMALE).takeIf { it }
+
+    private fun entourageOnlyFilter(): Boolean? =
+        MainFilterActivity.savedEventTypes.contains(MainFilterActivity.EVENT_TYPE_ENTOURAGE).takeIf { it }
+
+    private fun formatFilter(): String? = when (MainFilterActivity.savedEventFormat) {
+        MainFilterActivity.EVENT_FORMAT_PRESENTIAL -> "in_person"
+        MainFilterActivity.EVENT_FORMAT_REMOTE -> "online"
+        else -> null
     }
 
 

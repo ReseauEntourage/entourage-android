@@ -1,6 +1,7 @@
 package social.entourage.android.profile.activities_settings
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import social.entourage.android.language.LanguageAdapter
 import social.entourage.android.language.LanguageItem
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.language.OnLanguageClicked
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.user.UserPresenter
 
 
@@ -22,8 +24,10 @@ class LanguageSettingsActivity : AppCompatActivity(), OnLanguageClicked {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityLanguageSettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        updatePaddingForEdgeToEdge(binding.root)
         fillArray()
         handleValidateClick()
         handleCrossButton()

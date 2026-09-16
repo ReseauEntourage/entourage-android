@@ -10,6 +10,8 @@ import android.text.Html
 import android.text.TextWatcher
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.flexbox.FlexboxLayout
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -26,7 +29,7 @@ import social.entourage.android.comment.MentionAdapter
 import social.entourage.android.databinding.ActivityCreatePostBinding
 import social.entourage.android.groups.details.feed.CreatePostGroupActivity
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.px
@@ -62,6 +65,7 @@ abstract class CreatePostActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_GROUP_FEED_NEW_POST_SCREEN)
 
@@ -78,6 +82,7 @@ abstract class CreatePostActivity : AppCompatActivity() {
         validatePost()
         handleBackButton()
         handleMessageChangedTextListener()
+        setupChips(getInspirationChips())
 
         // Mise en place du RecyclerView pour les suggestions de mention
         binding.mentionSuggestionsRecycler.layoutManager = LinearLayoutManager(this)
@@ -86,7 +91,59 @@ abstract class CreatePostActivity : AppCompatActivity() {
         // Ecoute du '@' dans l'EditText
         setupMentionTextWatcher()
 
-        updatePaddingTopForEdgeToEdge(binding.header.headerLayout)
+        updatePaddingForEdgeToEdge(binding.root)
+    }
+
+    /**
+     * Retourne les chips d'inspiration à afficher (label, draft).
+     * Null par défaut (aucune chip). Les groupes surchargent cette méthode.
+     */
+    protected open fun getInspirationChips(): List<Pair<Int, Int>>? = null
+
+    private fun setupChips(chips: List<Pair<Int, Int>>?) {
+        if (chips.isNullOrEmpty()) return
+        binding.chipsSection.visibility = View.VISIBLE
+        val container = binding.chipsContainer
+        val chipViews = mutableListOf<TextView>()
+
+        chips.forEach { (labelRes, draftRes) ->
+            val chip = TextView(this).apply {
+                text = getString(labelRes)
+                textSize = 12f
+                typeface = ResourcesCompat.getFont(this@CreatePostActivity, R.font.nunitosans_semibold)
+                setTextColor(ContextCompat.getColor(this@CreatePostActivity, R.color.black))
+                setBackgroundResource(R.drawable.bg_chip_conversation_suggestion)
+                val hPad = 16.px
+                val vPad = 9.px
+                setPadding(hPad, vPad, hPad, vPad)
+                layoutParams = FlexboxLayout.LayoutParams(
+                    FlexboxLayout.LayoutParams.WRAP_CONTENT,
+                    FlexboxLayout.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    marginEnd = 8.px
+                    bottomMargin = 6.px
+                }
+                setOnClickListener {
+                    chipViews.forEach { c -> c.setBackgroundResource(R.drawable.bg_chip_conversation_suggestion) }
+                    setBackgroundResource(R.drawable.bg_chip_conversation_suggestion_selected)
+                    binding.message.setText(getString(draftRes))
+                    binding.message.requestFocus()
+                    binding.message.setSelection(binding.message.text.length)
+                    handleSaveButtonState(true)
+                }
+            }
+            chipViews.add(chip)
+            container.addView(chip)
+        }
+    }
+
+    fun deselectAllChips() {
+        binding.chipsContainer.let { container ->
+            for (i in 0 until container.childCount) {
+                (container.getChildAt(i) as? TextView)
+                    ?.setBackgroundResource(R.drawable.bg_chip_conversation_suggestion)
+            }
+        }
     }
 
     /**
@@ -292,6 +349,7 @@ abstract class CreatePostActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 handleSaveButtonState(isMessageValid() || imageURI != null)
+                deselectAllChips()
             }
         })
     }

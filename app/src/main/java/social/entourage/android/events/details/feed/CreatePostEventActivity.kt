@@ -39,7 +39,9 @@ class CreatePostEventActivity : CreatePostActivity() {
 
     // Publication d'un post avec image
     override fun addPostWithImage(file: File) {
-        eventPresenter.addPost(binding.message.text.toString(), file, groupId)
+        val messageText = binding.message.text.toString().trim()
+        val finalMessage = if (messageText.isEmpty()) null else messageText
+        eventPresenter.addPost(finalMessage, file, groupId)
     }
 
     // Publication d'un post sans image

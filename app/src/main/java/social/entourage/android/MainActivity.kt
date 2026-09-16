@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -19,6 +20,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
@@ -34,12 +36,12 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.ReactionType
 import social.entourage.android.api.model.formatEventStartTime
-import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.api.request.userConfig
 import social.entourage.android.base.BaseSecuredActivity
 import social.entourage.android.databinding.ActivityMainBinding
 import social.entourage.android.deeplinks.UniversalLinkManager
+import social.entourage.android.enhanced_onboarding.OnboardingNavigation
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.BirthdayActivity
@@ -57,8 +59,6 @@ import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
-import social.entourage.android.enhanced_onboarding.OnboardingNavigation
-import social.entourage.android.welcome.WelcomeTwoActivity
 import timber.log.Timber
 
 class MainActivity : BaseSecuredActivity() {
@@ -70,11 +70,13 @@ class MainActivity : BaseSecuredActivity() {
     private lateinit var viewModel: CommunicationHandlerBadgeViewModel
     private val universalLinkManager = UniversalLinkManager(this)
     private var fromDeepLinkGoDiscoverGroup = false
+    private var fromDeepLinkGoWelcomeVideo = false
     private lateinit var updateActivityResultLauncher: ActivityResultLauncher<IntentSenderRequest>
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        updateMainLanguage()
         super.onCreate(savedInstanceState)
+        updateMainLanguage()
+        enableEdgeToEdge()
 
         instance = this
         val binding = ActivityMainBinding.inflate(layoutInflater)
@@ -118,6 +120,14 @@ class MainActivity : BaseSecuredActivity() {
 
     fun getFromDeepLGoDiscoverGroup(): Boolean {
         return this.fromDeepLinkGoDiscoverGroup
+    }
+
+    fun setGoWelcomeVideoFromDeepL(bool: Boolean) {
+        this.fromDeepLinkGoWelcomeVideo = bool
+    }
+
+    fun getFromDeepLGoWelcomeVideo(): Boolean {
+        return this.fromDeepLinkGoWelcomeVideo
     }
 
     override fun onStart() {
@@ -257,9 +267,7 @@ class MainActivity : BaseSecuredActivity() {
     private fun handleOnboardingNavigation(navigation: OnboardingNavigation) {
         when (navigation) {
             is OnboardingNavigation.WelcomeGroup -> {
-                val intent = Intent(this, WelcomeTwoActivity::class.java)
-                startActivity(intent)
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                goGroup()
             }
             is OnboardingNavigation.Events -> {
                 shouldLaunchEvent = true
@@ -271,6 +279,12 @@ class MainActivity : BaseSecuredActivity() {
             is OnboardingNavigation.CreateActionDemand -> {
                 val intent = Intent(this, CreateActionActivity::class.java)
                 intent.putExtra(Const.IS_ACTION_DEMAND, true)
+                startActivity(intent)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
+            is OnboardingNavigation.CreateActionContribution -> {
+                val intent = Intent(this, CreateActionActivity::class.java)
+                intent.putExtra(Const.IS_ACTION_DEMAND, false)
                 startActivity(intent)
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             }
@@ -306,24 +320,34 @@ class MainActivity : BaseSecuredActivity() {
             goEvent()
             return
         }
-        val fromWelcomeActivity = intent.getBooleanExtra("fromWelcomeActivity", false)
-        val fromWelcomeActivityThreeEvent =
-            intent.getBooleanExtra("fromWelcomeActivityThreeEvent", false)
-        val fromWelcomeActivityThreeDemand =
-            intent.getBooleanExtra("fromWelcomeActivityThreeDemand", false)
-        val fromWelcomeActivityThreeContrib =
-            intent.getBooleanExtra("fromWelcomeActivityThreeContrib", false)
         val goContrib = intent.getBooleanExtra("goContrib", false)
         val goDemand = intent.getBooleanExtra("goDemand", false)
         val goDiscoverGroup = intent.getBooleanExtra("goDiscoverGroup", false)
         val goDiscoverEvent = intent.getBooleanExtra("goDiscoverEvent", false)
+        val badgeKey = intent.getStringExtra("badgeKey")
+        if (badgeKey != null) {
+            intent.removeExtra("badgeKey")
+            goHome()
+            social.entourage.android.badges.BadgeUnlockedBottomSheet.newInstance(badgeKey)
+                .show(supportFragmentManager, "BadgeUnlocked")
+            return
+        }
+
         val goBirthday = intent.getBooleanExtra("goBirthday", false)
+        val goWelcomeVideo = intent.getBooleanExtra("goWelcomeVideo", false)
 
 
         if (goBirthday) {
             intent.removeExtra("goBirthday")
             goHome()
             startActivity(Intent(this, BirthdayActivity::class.java))
+            return
+        }
+
+        if (goWelcomeVideo) {
+            intent.removeExtra("goWelcomeVideo")
+            this.setGoWelcomeVideoFromDeepL(true)
+            goHome()
             return
         }
 
@@ -347,25 +371,19 @@ class MainActivity : BaseSecuredActivity() {
             goDemand()
             return
         }
-        else if (fromWelcomeActivity) {
-            goGroup()
+
+        val badgeNavTab = intent.getStringExtra(EXTRA_BADGE_NAV_TAB)
+        if (badgeNavTab != null) {
+            intent.removeExtra(EXTRA_BADGE_NAV_TAB)
+            when (badgeNavTab) {
+                "messages" -> goConv()
+                "groups" -> goGroup()
+                "events" -> goEvent()
+                else -> goHome()
+            }
             return
         }
-        else if (fromWelcomeActivityThreeEvent) {
-            goEvent()
-            return
-        }
-        else if (fromWelcomeActivityThreeDemand) {
-            goDemand()
-            return
-        }
-        else if (fromWelcomeActivityThreeContrib) {
-            goContrib()
-            val newIntent = Intent(this, CreateActionActivity::class.java)
-            newIntent.putExtra(Const.IS_ACTION_DEMAND, false)
-            startActivity(newIntent)
-            return
-        }
+
         else {
             this.intent = intent
             handleUniversalLinkFromMain(intent)
@@ -399,10 +417,17 @@ class MainActivity : BaseSecuredActivity() {
                 // 1. GESTION SPÉCIALE ANNIVERSAIRE (ou tout autre "stage" sans instance)
                 if (extra.stage == "birthday") {
                     NotificationActionManager.presentWelcomeAction(this, extra.stage)
-                    return // On arrête là, pas besoin de chercher une instance
+                    return
                 }
 
-                // 2. GESTION CLASSIQUE (avec instance)
+                // 2. GESTION BADGE
+                if (!extra.badge.isNullOrEmpty()) {
+                    social.entourage.android.badges.BadgeUnlockedBottomSheet.newInstance(extra.badge)
+                        .show(supportFragmentManager, "BadgeUnlocked")
+                    return
+                }
+
+                // 3. GESTION CLASSIQUE (avec instance)
                 extra.instance?.let { instance ->
                     NotificationActionManager.presentAction(
                         this,
@@ -412,7 +437,8 @@ class MainActivity : BaseSecuredActivity() {
                         extra.postId,
                         stage = extra.stage,
                         popup = extra.popup,
-                        tracking = extra.tracking
+                        tracking = extra.tracking,
+                        chatMessageId = extra.chatMessageId
                     )
                 }
             }
@@ -565,38 +591,52 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
 
+    private fun singleTopNavOptions() = NavOptions.Builder()
+        .setLaunchSingleTop(true)
+        .setRestoreState(true)
+        .setPopUpTo(navController.graph.startDestinationId, inclusive = false, saveState = true)
+        .build()
+
     fun goHome() {
-        navController.navigate(R.id.navigation_home)
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+        bottomNavigationView.selectedItemId = R.id.navigation_home
     }
 
     fun goGroup() {
-        navController.navigate(R.id.navigation_groups)
-
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+        bottomNavigationView.selectedItemId = R.id.navigation_groups
     }
 
     fun goEvent() {
-        navController.navigate(R.id.navigation_events)
         if (shouldLaunchEvent == false) {
             MainFilterActivity.resetAllFilters(this)
         }
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+        bottomNavigationView.selectedItemId = R.id.navigation_events
     }
 
-    fun goConv() {
-        if (navController.currentDestination?.id == R.id.navigation_messages) return
-        navController.navigate(R.id.navigation_messages)
+    fun goConv(isSmallTalkFilter: Boolean = false) {
+        if (isSmallTalkFilter) {
+            val bundle = bundleOf("isSmallTalkFilter" to true)
+            navController.navigate(R.id.navigation_messages, bundle, singleTopNavOptions())
+        } else {
+            val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+            bottomNavigationView.selectedItemId = R.id.navigation_messages
+        }
+    }
+
+    fun navigateToGroupsTab() {
+        goGroup()
     }
 
     fun goContrib() {
-        val bundle =
-            bundleOf("isActionDemand" to false) // Mettez ici la valeur souhaitée pour "isActionDemand"
-        navController.navigate(R.id.navigation_donations, bundle)
-
+        val bundle = bundleOf("isActionDemand" to false)
+        navController.navigate(R.id.navigation_donations, bundle, singleTopNavOptions())
     }
 
     fun goDemand() {
-        val bundle =
-            bundleOf("isActionDemand" to true) // Mettez ici la valeur souhaitée pour "isActionDemand"
-        navController.navigate(R.id.navigation_donations, bundle)
+        val bundle = bundleOf("isActionDemand" to true)
+        navController.navigate(R.id.navigation_donations, bundle, singleTopNavOptions())
     }
 
     private fun initializeNavBar() {
@@ -627,13 +667,8 @@ class MainActivity : BaseSecuredActivity() {
                     MainFilterActivity.resetAllFilters(this)
                 }
             }
-            // LA navigation est faite ici par NavigationUI, toi tu ne navigues pas ailleurs.
-            val handled = NavigationUI.onNavDestinationSelected(item, navController)
-            if (!handled && item.itemId == R.id.navigation_home) {
-                goHome()
-                return@setOnItemSelectedListener true
-            }
-            handled
+            // LA navigation est faite ici par NavigationUI
+            NavigationUI.onNavDestinationSelected(item, navController)
         }
     }
 
@@ -711,6 +746,7 @@ class MainActivity : BaseSecuredActivity() {
     companion object {
         var instance: MainActivity? = null
         const val UPDATE_REQUEST_CODE = 1001 // Ou tout autre numéro que tu souhaites.
+        const val EXTRA_BADGE_NAV_TAB = "badge_nav_tab"
         var reactionsList: MutableList<ReactionType>? = null
         var interest: MutableList<userConfig>? = null
         var concerns: MutableList<userConfig>? = null

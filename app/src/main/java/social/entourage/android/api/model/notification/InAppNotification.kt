@@ -15,11 +15,15 @@ class InAppNotification (
     val instanceId: Int? = null,
     @SerializedName("post_id")
     val postId: Int? = null,
+    @SerializedName("chat_message_id")
+    val chatMessageId: Int? = null,
     @SerializedName("welcome")
     val welcome: Boolean? = false,
     //value = h1, j2, j8, j11
     @SerializedName("stage")
     val stage: String? = null,
+    @SerializedName("badge")
+    val badge: String? = null,
     @SerializedName("context")
     val context: String? = null,
     @SerializedName("url")

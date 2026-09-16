@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import social.entourage.android.R
 import social.entourage.android.api.model.Partner
 import social.entourage.android.databinding.FragmentAssociationProfileBinding
+import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.CustomAlertDialog
 
 class AssociationProfileFragment : Fragment() {
@@ -30,6 +31,7 @@ class AssociationProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAssociationProfileBinding.inflate(inflater, container, false)
+        updatePaddingTopForEdgeToEdge(binding.root)
         return binding.root
     }
 
@@ -134,7 +136,7 @@ class AssociationProfileFragment : Fragment() {
     private fun setBackButton() {
         binding.assoProfileIconBack.setOnClickListener {
             if(isFromNotifs) {
-                activity?.onBackPressed()
+                activity?.onBackPressedDispatcher?.onBackPressed()
                 return@setOnClickListener
             }
 

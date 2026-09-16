@@ -1,15 +1,21 @@
 package social.entourage.android.user.partner
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import social.entourage.android.R
+import social.entourage.android.databinding.ActivityPartnerDetailBinding
 import social.entourage.android.tools.utils.Const
 
 class PartnerDetailActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityPartnerDetailBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_partner_detail)
+        enableEdgeToEdge()
+        binding = ActivityPartnerDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val id = intent.getIntExtra(Const.PARTNER_ID, Const.DEFAULT_VALUE)
         val isFromNotif = intent.getBooleanExtra(Const.IS_FROM_NOTIF,false)

@@ -9,6 +9,23 @@ Our app is available [here](https://play.google.com/store/apps/details?id=social
 
 ...
 
+## Configuration — variables d'environnement CI
+
+Les secrets sensibles sont injectés au build via des variables d'environnement (Bitrise ou local).
+
+| Variable | `BuildConfig` field | Description |
+|----------|---------------------|-------------|
+| `HMAC_SECRET_ANDROID` | `BuildConfig.HMAC_SECRET` | Shared secret for HMAC-SHA256 request signing (anti-bot, see below) |
+
+### HMAC_SECRET_ANDROID — signature des requêtes
+
+`HMAC_SECRET_ANDROID` protège l'endpoint de création de compte (`POST /api/v1/users`) contre les bots.
+`HmacInterceptor` signe automatiquement chaque appel avec `HMAC-SHA256(secret, "POST\n/api/v1/users\n{timestamp}\n{phone}")` et ajoute les headers `X-Request-Timestamp` et `X-Request-Signature`.
+
+- **En local** : laisser vide (ou ne pas définir). `HmacInterceptor` ne signe pas si `BuildConfig.HMAC_SECRET` est vide, et le backend laisse passer les requêtes sans signature.
+- **En CI (Bitrise)** : définir la variable d'environnement `HMAC_SECRET_ANDROID` avant le build. Elle est injectée dans `BuildConfig` via `build.gradle.kts`.
+- Le même secret doit être configuré côté backend avec la variable `HMAC_SECRET_ANDROID` (Heroku config vars).
+
 ## Codestyle
 
 Pour installer le fichier XML de codestyle du projet, il suffit de copier le fichier xml qui se trouve dans le dossier

@@ -10,6 +10,10 @@
         <argument
             android:name="groupID"
             app:argType="integer" />
+        <argument
+            android:name="postID"
+            app:argType="integer"
+            android:defaultValue="-1" />
         <action
             android:id="@+id/action_group_feed_to_group_members"
             app:destination="@id/group_members"

@@ -24,7 +24,7 @@ class EntourageUser : TimestampedObject(), Serializable {
     var confirmedAt : Boolean? = null
 
     @SerializedName("participate_at")
-    var participateAt : Boolean? = null
+    var participateAt : String? = null
 
     @SerializedName("avatar_url")
     var avatarURLAsString: String? = null

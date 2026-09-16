@@ -28,14 +28,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" /> <!-- uses-permission android:name="android.permission.BLUETOOTH"/ -->
 
-    <!-- Devices running Android 12L (API level 32) or lower  -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
-    <!-- Devices running Android 13 (API level 33) or higher -->
-    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
-    <!-- To handle the reselection within the app on devices running Android 14
-         or higher if your app targets Android 14 (API level 34) or higher.  -->
-    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
+    <!-- Photos/videos are selected via the Android Photo Picker / system document picker,
+         which grants per-URI read access without a runtime permission. Do not re-add
+         READ_MEDIA_IMAGES / READ_MEDIA_VIDEO / READ_EXTERNAL_STORAGE for gallery pickers -
+         Play Console flags apps that request them instead of using a system picker. -->
     <!-- uses-permission android:name="android.permission.RECORD_AUDIO"/ -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -74,20 +70,14 @@
             android:name=".onboarding.onboard.OnboardingStartActivity"
             android:exported="false"
             android:theme="@style/AppMaterial"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".onboarding.onboard.OnboardingEndActivity"
-            android:exported="false" />
-        <activity
-            android:name=".welcome.WelcomeOneActivity"
             android:exported="false" />
         <activity android:name=".enhanced_onboarding.EnhancedOnboarding"
             android:exported="false"/>
         <activity android:name=".notifications.NotificationDemandActivity"
             android:exported="false"/>
-        <activity
-            android:name=".welcome.WelcomeTwoActivity"
-            android:exported="false" />
 
         <activity android:name="social.entourage.android.profile.activities_settings.LanguageSettingsActivity"/>
         <activity android:name="social.entourage.android.profile.activities_settings.SettingsNotificationsActivity"/>
@@ -102,12 +92,6 @@
         <activity android:name=".onboarding.onboard.OnboardingAssociationChoiceActivity"
             android:exported="false" />
         <activity android:name="social.entourage.android.profile.activities_settings.UnblockUsersActivity"/>
-        <activity
-            android:name=".welcome.WelcomeThreeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".welcome.WelcomeFourActivity"
-            android:exported="false" />
         <activity android:name=".members.MembersActivity"
             android:exported="false" />
         <activity android:name=".survey.CreateSurveyActivity"
@@ -116,6 +100,9 @@
             android:exported="false"/>
         <activity android:name=".small_talks.SmallTalkNoBandFound"
             android:exported="false"/>
+        <activity android:name=".events.list.WelcomeEventsListActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity android:name=".comment.ImageZoomActivity"
             />
         <activity
@@ -124,11 +111,16 @@
             />
 
         <activity
+            android:name=".badges.BadgesListActivity"
+            android:exported="false"
+            />
+
+        <activity
             android:name=".home.pedago.PedagoDetailActivity"
             android:exported="false" />
         <activity
             android:name=".discussions.DetailConversationActivity"
-            android:windowSoftInputMode="adjustPan"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".tools.image_viewer.ImageListActivity"
@@ -170,10 +162,6 @@
             android:exported="false" />
         <activity
             android:name=".events.create.CreateEventActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".welcome.WelcomeFiveActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".profile.editProfile.EditPhotoActivity"
@@ -220,15 +208,14 @@
         <activity
             android:name=".onboarding.login.LoginChangePhoneActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".guide.GDSMainActivity"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".main_filter.MainFilterActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="false"
+            android:windowSoftInputMode="adjustResize"
             />
 
 
@@ -302,17 +289,20 @@
              android:name=".onboarding.login.LoginActivity"
              android:screenOrientation="portrait"
              android:theme="@style/AppMaterial"
-             android:windowSoftInputMode="adjustPan" />
+             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".profile.ProfileFullActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".profile.MyProfileFullActivity"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".profile.ProfileSettingsActivity"
+            android:windowSoftInputMode="adjustPan" />
 
          <activity
              android:name=".profile.EditProfileActivity"
-             android:windowSoftInputMode="adjustPan" />
+             android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".small_talks.SmallTalkIntroActivity"
             android:windowSoftInputMode="adjustPan"
@@ -371,6 +361,16 @@
          <uses-library
              android:name="android.test.runner"
              android:required="false" />
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.UCropStrict"
+            tools:replace="android:theme" />
+        
+        <activity
+            android:name=".home.NationalGroupsActivity"
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait" />
      </application>
 
  </manifest>

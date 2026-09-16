@@ -61,12 +61,11 @@
             android:id="@+id/button_start"
             android:layout_width="wrap_content"
             android:layout_height="47dp"
-            android:layout_weight="1"
             android:background="@drawable/shape_button_v9_positive"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/button_skip"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="10dp"
             android:text="@string/onboarding_congrats_leave"
             android:textColor="@android:color/white"
             android:textAllCaps="false"
@@ -75,6 +74,22 @@
             android:fontFamily="@font/quicksand_bold"
             android:layout_marginStart="4dp"
             android:paddingVertical="10dp"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <Button
+            android:id="@+id/button_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="20dp"
+            android:text="@string/onboarding_congrats_skip"
+            android:textColor="@color/orange"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            android:fontFamily="@font/quicksand_bold"
             style="?android:attr/borderlessButtonStyle"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

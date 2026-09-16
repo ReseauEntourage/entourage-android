@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.ViewCompat
@@ -15,6 +16,7 @@ import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.databinding.ActivityIntroCarouselBinding
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 
 class PreOnboardingStartActivity : AppCompatActivity() {
 
@@ -26,10 +28,12 @@ class PreOnboardingStartActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         binding = ActivityIntroCarouselBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+        updatePaddingForEdgeToEdge(binding.root)
 
         arrayViewDots.add(binding.uiIvDot1)
         arrayViewDots.add(binding.uiIvDot2)
@@ -115,7 +119,6 @@ class PreOnboardingStartActivity : AppCompatActivity() {
         }
         binding.uiRecyclerView.addOnScrollListener(scrollListener)
     }
-
 
     private fun updateViewAndDots() {
         for (i in arrayViewDots.indices) {

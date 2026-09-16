@@ -20,19 +20,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navGraph="@navigation/bottom_navigation_bar_graph" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:background="@drawable/bottom_navigation_shadow"
-        app:layout_constraintBottom_toTopOf="@id/nav_view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/tabs_height"
-        android:minHeight="@dimen/tabs_height"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
         android:background="?android:attr/windowBackground"

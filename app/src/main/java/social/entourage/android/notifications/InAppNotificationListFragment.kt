@@ -154,6 +154,7 @@ class InAppNotificationListFragment : Fragment() {
                     val stage = notif.context
                     val notifContext = notif.context
                     val postId:Int? = notif.postId
+                    val chatMessageId:Int? = notif.chatMessageId
                     if (notif.completedAt == null) {
                         itemSelected = position
                         notif.id?.let { homePresenter.markReadNotification(notif.id) }
@@ -161,8 +162,16 @@ class InAppNotificationListFragment : Fragment() {
                     else {
                         itemSelected = -1
                     }
+
+                    val badgeTag = notif.badge ?: social.entourage.android.badges.BadgeKey.fromApiKey(notifContext ?: "")?.apiKey
+                    if (badgeTag != null) {
+                        social.entourage.android.badges.BadgeUnlockedBottomSheet.newInstance(badgeTag)
+                            .show(parentFragmentManager, "BadgeUnlocked")
+                        return
+                    }
+
                     if(instance != null) {
-                        NotificationActionManager.presentAction(requireContext(),parentFragmentManager,instance,instanceId,postId,stage, notifContext = notifContext )
+                        NotificationActionManager.presentAction(requireContext(),parentFragmentManager,instance,instanceId,postId,stage, notifContext = notifContext, chatMessageId = chatMessageId )
                     } else{
                         NotificationActionManager.presentWelcomeAction(requireContext(), stage)
                     }

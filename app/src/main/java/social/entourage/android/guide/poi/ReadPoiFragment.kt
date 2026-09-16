@@ -112,6 +112,7 @@ class ReadPoiFragment : BaseDialogFragment() {
     fun onDisplayedPoi(poi: Poi, onAddressClickListener: OnAddressClickListener?, onPhoneClickListener: OnPhoneClickListener?) {
         binding.textviewPoiName.text = poi.name
         binding.textviewPoiDescription.text = poi.description
+        binding.uiLayoutAirConditionedChip.visibility = if (poi.airConditioned == true) View.VISIBLE else View.GONE
         setActionButton(binding.buttonPoiPhone, poi.phone,binding.uiLayoutPhone)
         setActionButton(binding.buttonPoiMail, poi.email,binding.uiLayoutMail)
         setActionButton(binding.buttonPoiWeb, poi.website,binding.uiLayoutWeb)

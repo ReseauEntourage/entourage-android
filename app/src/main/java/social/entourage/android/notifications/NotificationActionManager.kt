@@ -6,6 +6,7 @@ import android.content.Intent
 import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
+import com.google.gson.Gson
 import social.entourage.android.MainActivity
 import social.entourage.android.Navigation
 import social.entourage.android.R
@@ -19,12 +20,8 @@ import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.small_talks.SmallTalkListOtherBands
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.user.partner.PartnerDetailActivity
-import social.entourage.android.welcome.WelcomeFiveActivity
-import social.entourage.android.welcome.WelcomeFourActivity
-import social.entourage.android.welcome.WelcomeOneActivity
-import social.entourage.android.welcome.WelcomeThreeActivity
-import social.entourage.android.welcome.WelcomeTwoActivity
 import social.entourage.android.home.BirthdayActivity
+import timber.log.Timber
 
 /**
  * Created by Me on 26/09/2022.
@@ -32,7 +29,7 @@ import social.entourage.android.home.BirthdayActivity
 object NotificationActionManager {
 
     /**/
-    fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int = 0, postId:Int?, stage:String? = "", popup:String? = "" , notifContext:String? = "", tracking:String? = ""){
+    fun presentAction(context:Context,supportFragmentManager: FragmentManager, instance:String, id:Int = 0, postId:Int?, stage:String? = "", popup:String? = "" , notifContext:String? = "", tracking:String? = "", chatMessageId:Int? = null){
 
         if(popup.equals("outing_on_day_before")){
             if(context is MainActivity){
@@ -57,34 +54,10 @@ object NotificationActionManager {
             }
         }
 
-        if(!stage.isNullOrEmpty()){
-
-            if(stage.equals("h1")){
-                val intent = Intent(context, WelcomeOneActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j2")){
-                val intent = Intent(context, WelcomeTwoActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j5")){
-                val intent = Intent(context, WelcomeThreeActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j8")){
-                val intent = Intent(context, WelcomeFourActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j11")){
-                val intent = Intent(context, WelcomeFiveActivity::class.java)
-                context.startActivity(intent)
-            }
-        }
-
-
         Log.wtf("wtf", "instance from NotificationActionManager: $instance")
         Log.wtf("wtf", "tracking: from NotificationActionManager$tracking")
         Log.wtf("wtf", "id: from NotificationActionManager$id")
+
 
         // Cas spécifiques : si c'est un outing ET que le tracking correspond à une conversation
         val validTracking = listOf(
@@ -117,6 +90,19 @@ object NotificationActionManager {
             return
         }
 
+        // Notification de groupe (instance générique, pas "neighborhood_post") qui référence
+        // un post précis : on ouvre le feed du groupe, scrollé jusqu'au post.
+        // Note : on ne se base pas sur tracking/notifContext ici, ces valeurs se sont révélées
+        // peu fiables (ex: "chat_message_created" côté in-app plutôt que la valeur attendue).
+        // Le fil principal d'un quartier est lui-même une liste de chat_messages (Post.id ==
+        // chat_message_id) : quand post_id est absent (cas du chat de quartier, par opposition
+        // à une publication), chat_message_id sert de cible de scroll au même titre.
+        val neighborhoodFeedTargetId = postId ?: chatMessageId
+        if ((instance == "neighborhoods" || instance == "neighborhood") && neighborhoodFeedTargetId != null) {
+            showGroupPostInFeed(context, supportFragmentManager, id, neighborhoodFeedTargetId)
+            return
+        }
+
         when(getInstanceTypeFromName(instance)) {
             InstanceType.POIS -> showPoi(supportFragmentManager,id)
             InstanceType.USERS -> showUser(context,supportFragmentManager,id)
@@ -130,16 +116,17 @@ object NotificationActionManager {
             InstanceType.SMALLTALK -> showSmallTalk(context,supportFragmentManager,id)
             InstanceType.AlMOSTMATCH -> showAlmostMatch(context,supportFragmentManager,id)
             InstanceType.PARTNERS -> showPartner(context,id)
+            InstanceType.BADGES -> return
             InstanceType.NONE -> return
 
             else -> {
                 if(getInstanceTypeFromName(instance) == InstanceType.OUTING_POSTS){
                     if (postId != null) {
-                        showEventPost(context,supportFragmentManager,id,postId)
+                        showEventPost(context,supportFragmentManager,id,postId,chatMessageId)
                     }
                 } else if(getInstanceTypeFromName(instance) == InstanceType.NEIGHBORHOODS_POSTS){
                     if (postId != null) {
-                        showGroupPost(context,supportFragmentManager,id,postId)
+                        showGroupPost(context,supportFragmentManager,id,postId,chatMessageId)
                     }
                 }
             }
@@ -148,26 +135,6 @@ object NotificationActionManager {
 
     fun presentWelcomeAction(context: Context, stage:String? = ""){
         if(!stage.isNullOrEmpty()){
-            if(stage.equals("h1")){
-                val intent = Intent(context, WelcomeOneActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j2")){
-                val intent = Intent(context, WelcomeTwoActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j5")){
-                val intent = Intent(context, WelcomeThreeActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j8")){
-                val intent = Intent(context, WelcomeFourActivity::class.java)
-                context.startActivity(intent)
-            }
-            if(stage.equals("j11")){
-                val intent = Intent(context, WelcomeFiveActivity::class.java)
-                context.startActivity(intent)
-            }
             if (stage == "birthday") {
                 if (context is MainActivity) {
                     (context as MainActivity).goHome()
@@ -199,6 +166,7 @@ object NotificationActionManager {
             InstanceType.SOLICITATIONS -> return R.drawable.ic_new_placeholder_notif
             InstanceType.CONVERSATIONS -> return R.drawable.placeholder_user
             InstanceType.PARTNERS -> return R.drawable.ic_new_placeholder_notif
+            InstanceType.BADGES -> return R.drawable.ic_new_placeholder_notif
             InstanceType.NONE -> R.drawable.ic_new_placeholder_notif
             InstanceType.NEIGHBORHOODS_POSTS -> return R.drawable.placeholder_user
             InstanceType.OUTING_POSTS -> return R.drawable.placeholder_user
@@ -308,22 +276,33 @@ object NotificationActionManager {
             ActionSummary.SHOW, params)
     }
 
-    private fun showEventPost(context:Context,supportFragmentManager: FragmentManager, instanceId: Int , postID:Int) {
+    private fun showEventPost(context:Context,supportFragmentManager: FragmentManager, instanceId: Int , postID:Int, chatMessageId: Int? = null) {
         val params = HomeActionParams()
         params.id = instanceId
         params.postId = postID
+        params.chatMessageId = chatMessageId
         Navigation.navigate(context,supportFragmentManager,
             HomeType.OUTING_POST,
             ActionSummary.SHOW, params)
     }
 
-    private fun showGroupPost(context:Context,supportFragmentManager: FragmentManager, instanceId: Int , postID:Int) {
+    private fun showGroupPost(context:Context,supportFragmentManager: FragmentManager, instanceId: Int , postID:Int, chatMessageId: Int? = null) {
 
         val params = HomeActionParams()
         params.id = instanceId
         params.postId = postID
+        params.chatMessageId = chatMessageId
         Navigation.navigate(context,supportFragmentManager,
             HomeType.NEIGHBORHOOD_POST,
+            ActionSummary.SHOW, params)
+    }
+
+    private fun showGroupPostInFeed(context:Context,supportFragmentManager: FragmentManager, instanceId: Int , postID:Int) {
+        val params = HomeActionParams()
+        params.id = instanceId
+        params.postId = postID
+        Navigation.navigate(context,supportFragmentManager,
+            HomeType.NEIGHBORHOOD,
             ActionSummary.SHOW, params)
     }
 
@@ -342,6 +321,7 @@ object NotificationActionManager {
         SMALLTALK,
         AlMOSTMATCH,
         PARTNERS,
+        BADGES,
         NONE
     }
 
@@ -361,6 +341,7 @@ object NotificationActionManager {
             "smalltalk", "user_smalltalk " -> InstanceType.SMALLTALK
             "almost_matches" -> InstanceType.AlMOSTMATCH
             "partners" -> InstanceType.PARTNERS
+            "badges", "badge", "user_badge" -> InstanceType.BADGES
             else -> InstanceType.NONE
         }
     }

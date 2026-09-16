@@ -3,12 +3,12 @@ package social.entourage.android.onboarding.login
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.text.Html
-import android.text.method.LinkMovementMethod
 import android.view.Gravity
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.enableEdgeToEdge
 import androidx.core.content.edit
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -21,9 +21,9 @@ import social.entourage.android.authentication.AuthenticationController
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityLoginBinding
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity
-import social.entourage.android.tools.hideKeyboard
+import social.entourage.android.tools.hideKeyboardOnDone
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.view.CustomProgressDialog
@@ -42,13 +42,20 @@ class LoginActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityLoginBinding.inflate(layoutInflater)
         authenticationController = EntourageApplication.get().authenticationController
         alertDialog = CustomProgressDialog(this)
         setupViews()
         setContentView(binding.root)
+        updatePaddingForEdgeToEdge(binding.root)
 
-        //binding.layoutHeader?.let { updatePaddingTopForEdgeToEdge(it) }
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                goBack()
+            }
+        })
+
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_VIEW_LOGIN_LOGIN)
     }
 
@@ -91,8 +98,23 @@ class LoginActivity : BaseActivity() {
         return getInputText(view).isNotEmpty()
     }
 
+    private fun updatePlaceholder(countryCode: String) {
+        binding.uiLoginPhoneInputLayout.placeholderText = Utils.getPhoneNumberPlaceholder(countryCode)
+    }
+
     private fun setupViews() {
         setEditTextAlignmentBasedOnLocale()
+        binding.uiLoginPhoneEtPhone.hideKeyboardOnDone()
+        binding.uiLoginEtCode.hideKeyboardOnDone()
+
+        binding.uiLoginPhoneCcpCode.countryCodePickerListener = object : social.entourage.android.tools.view.countrycodepicker.CountryCodePickerListener {
+            override fun updatedCountry(country: social.entourage.android.tools.view.countrycodepicker.Country) {
+                updatePlaceholder(country.phoneCode)
+            }
+        }
+
+        val initialCountryCode = binding.uiLoginPhoneCcpCode.selectedCountry?.phoneCode ?: "33"
+        updatePlaceholder(initialCountryCode)
 
         binding.iconBack?.setOnClickListener {
             goBack()
@@ -135,7 +157,7 @@ class LoginActivity : BaseActivity() {
     private fun activateTimer() {
         cancelTimer()
         timeOut = TIME_BEFORE_CALL
-        countDownTimer = object : CountDownTimer(600000, 1000) {
+        countDownTimer = object : CountDownTimer(60000, 1000) {
             override fun onFinish() {
                 cancelTimer()
             }
@@ -170,12 +192,6 @@ class LoginActivity : BaseActivity() {
         }
         startActivity(intent)
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        super.onBackPressed()
-        goBack()
     }
 
     private fun validateInputsAndLogin(): Boolean {

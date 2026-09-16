@@ -1,10 +1,10 @@
 package social.entourage.android.groups
 
-import android.util.Log
+import android.os.Build
+import android.text.Html
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -14,17 +14,29 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.request.*
 import social.entourage.android.RefreshController
+import social.entourage.android.api.model.CompleteReactionsResponse
 import social.entourage.android.api.model.EntourageUser
-import social.entourage.android.groups.list.groupPerPage
-import social.entourage.android.home.UnreadMessages
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Post
-import social.entourage.android.api.model.CompleteReactionsResponse
 import social.entourage.android.api.model.ReactionWrapper
+import social.entourage.android.api.model.notification.Translation
+import social.entourage.android.api.request.EntourageUserResponse
+import social.entourage.android.api.request.EventsListWrapper
+import social.entourage.android.api.request.GroupWrapper
+import social.entourage.android.api.request.GroupsListWrapper
+import social.entourage.android.api.request.MembersWrapper
+import social.entourage.android.api.request.PostListWrapper
+import social.entourage.android.api.request.PostWrapper
+import social.entourage.android.api.request.PrepareAddPostResponse
+import social.entourage.android.api.request.Report
+import social.entourage.android.api.request.ReportWrapper
+import social.entourage.android.api.request.RequestContent
+import social.entourage.android.api.request.UnreadCountWrapper
 import social.entourage.android.groups.details.feed.CreatePostGroupActivity
+import social.entourage.android.groups.list.groupPerPage
+import social.entourage.android.home.UnreadMessages
 import timber.log.Timber
 import java.io.File
 import java.io.IOException
@@ -51,6 +63,7 @@ class GroupPresenter: ViewModel() {
     var getAllPosts = MutableLiveData<MutableList<Post>>()
     var hasPost = MutableLiveData<Boolean>()
     var commentPosted = MutableLiveData<Post?>()
+    var messageUpdated = MutableLiveData<Post?>()
     var isGroupReported = MutableLiveData<Boolean>()
     var isPostReported = MutableLiveData<Boolean>()
     var isPostDeleted = MutableLiveData<Boolean>()
@@ -110,7 +123,7 @@ class GroupPresenter: ViewModel() {
         this.isPageHaveToChange.postValue(isChangingPage)
     }
 
-    fun reactToPost(groupId:Int, postId:Int, reactionId:Int){
+    fun reactToPost(groupId:Int, postId:Int, reactionId:Int, onComplete: (Boolean) -> Unit = {}){
         var reactionWrapper = ReactionWrapper()
         reactionWrapper.reactionId = reactionId
 
@@ -119,13 +132,11 @@ class GroupPresenter: ViewModel() {
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                    }
-                }
+                onComplete(response.isSuccessful)
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("GroupPresenter", "onFailure: $t")
+                Timber.tag("GroupPresenter").d("onFailure: $t")
+                onComplete(false)
             }
         })
     }
@@ -162,20 +173,22 @@ class GroupPresenter: ViewModel() {
             })
     }
 
-    fun deleteReactToPost(groupId: Int,postId: Int){
+    /**
+     * [onComplete] permet à l'appelant d'enchaîner un POST juste après (changement de
+     * réaction) : le serveur refuse un ajout tant que l'ancienne réaction existe encore
+     * ("User can only react once"), donc on ne peut pas tirer delete/add en parallèle.
+     */
+    fun deleteReactToPost(groupId: Int,postId: Int, onComplete: (Boolean) -> Unit = {}){
         EntourageApplication.get().apiModule.groupRequest.deleteReactionGroupPost(groupId,postId).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                if (response.isSuccessful) {
-                    response.body()?.let {
-
-                    }
-                }
+                onComplete(response.isSuccessful)
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("GroupPresenter", "onFailure: $t")
+                Timber.tag("GroupPresenter").d("onFailure: $t")
+                onComplete(false)
             }
         })
     }
@@ -224,6 +237,7 @@ class GroupPresenter: ViewModel() {
     }
 
     fun getGroup(id: Int) {
+        //val fakeId = 999999999
         EntourageApplication.get().apiModule.groupRequest.getGroup(id)
             .enqueue(object : Callback<GroupWrapper> {
                 override fun onResponse(
@@ -291,6 +305,42 @@ class GroupPresenter: ViewModel() {
                 }
 
                 override fun onFailure(call: Call<GroupsListWrapper>, t: Throwable) {
+                }
+            })
+    }
+
+    fun getNationalGroups() {
+        EntourageApplication.get().apiModule.groupRequest.getNationalGroups()
+            .enqueue(object : Callback<GroupsListWrapper> {
+                override fun onResponse(
+                    call: Call<GroupsListWrapper>,
+                    response: Response<GroupsListWrapper>
+                ) {
+                    if (response.isSuccessful) {
+                        response.body()?.let { groupsWrapper ->
+                            // Conserver la liste actuelle et mettre à jour les statuts
+                            val currentGroups = getAllGroups.value ?: mutableListOf()
+                            
+                            // Mettre à jour les statuts des groupes existants
+                            groupsWrapper.allGroups.forEach { newGroup ->
+                                val existingIndex = currentGroups.indexOfFirst { it.id == newGroup.id }
+                                if (existingIndex >= 0) {
+                                    // Mettre à jour le statut member du groupe existant
+                                    currentGroups[existingIndex].member = newGroup.member
+                                } else {
+                                    // Ajouter les nouveaux groupes
+                                    currentGroups.add(newGroup)
+                                }
+                            }
+                            
+                            // Notifier les observateurs avec la liste mise à jour
+                            getAllGroups.value = currentGroups
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<GroupsListWrapper>, t: Throwable) {
+                    Timber.e(t, "Failed to get national groups")
                 }
             })
     }
@@ -402,7 +452,7 @@ class GroupPresenter: ViewModel() {
                 }
 
                 override fun onFailure(call: Call<PostListWrapper>, t: Throwable) {
-                    Log.wtf("wtf", "error $t")
+                    Timber.tag("wtf").wtf("error $t")
 
                 }
             })
@@ -537,6 +587,12 @@ class GroupPresenter: ViewModel() {
                 }
 
                 override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
+                    // Peut être une vraie panne réseau, mais aussi une exception Retrofit/Gson
+                    // levée pendant la désérialisation d'une réponse pourtant réussie (HTTP 200)
+                    // — auquel cas l'appel a bien fonctionné côté back mais l'app le traite à
+                    // tort comme un échec. Logué en détail pour distinguer les deux cas (cf.
+                    // signalement "publication créée mais écran resté bloqué").
+                    Timber.e(t, "GroupPresenter.addPost: onFailure (network error OR response parsing exception)")
                     hasPost.value = false
                     isSendingCreatePost = false
                     CreatePostGroupActivity.idGroupForPost = null
@@ -560,9 +616,79 @@ class GroupPresenter: ViewModel() {
                 }
 
                 override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
-                    commentPosted.value = null
+                    // cf. addPost ci-dessus : peut être un vrai échec réseau, ou une exception
+                    // de désérialisation Retrofit/Gson sur une réponse pourtant réussie (HTTP
+                    // 201) — auquel cas "Erreur de publication, réessayez" s'affiche à tort, ET
+                    // en double puisque le commentaire arrive quand même par le websocket
+                    // (chat_message_created n'est pas filtré pour l'auteur). Une IOException est
+                    // un vrai échec réseau ; toute autre exception ici ne peut venir que de la
+                    // désérialisation d'une réponse pourtant reçue — pas la peine d'afficher
+                    // l'échec, le websocket se charge d'insérer le message confirmé.
+                    Timber.e(t, "GroupPresenter.addComment: onFailure (network error OR response parsing exception)")
+                    if (t is java.io.IOException) {
+                        commentPosted.value = null
+                    }
                 }
             })
+    }
+
+    fun updatePost(groupId: Int, postId: Int, newContent: String) {
+        val params = ArrayMap<String, Any>()
+        params["content"] = newContent
+        EntourageApplication.get().apiModule.groupRequest.updatePost(groupId, postId, params)
+            .enqueue(object : Callback<PostWrapper> {
+                override fun onResponse(call: Call<PostWrapper>, response: Response<PostWrapper>) {
+                    messageUpdated.value = withFreshEditedContent(response.body()?.post, newContent)
+                }
+
+                override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
+                    Timber.e(t, "GroupPresenter.updatePost: onFailure (network error OR response parsing exception)")
+                    messageUpdated.value = null
+                }
+            })
+    }
+
+    /** cf. DiscussionsPresenter.withFreshEditedContent : même contournement du même bug
+     * (content_translations(_html) pas encore resynchronisé juste après le PATCH). */
+    private fun withFreshEditedContent(post: Post?, newContentHtml: String): Post? {
+        post ?: return null
+        val plain = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(newContentHtml, Html.FROM_HTML_MODE_LEGACY).toString()
+        } else {
+            @Suppress("DEPRECATION") Html.fromHtml(newContentHtml).toString()
+        }
+        return Post(
+            id = post.id,
+            content = newContentHtml,
+            contentHtml = newContentHtml,
+            contentTranslations = Translation(
+                translation = plain,
+                original = plain,
+                fromLang = post.contentTranslations?.fromLang,
+                toLang = post.contentTranslations?.toLang
+            ),
+            contentTranslationsHtml = Translation(
+                translation = newContentHtml,
+                original = newContentHtml,
+                fromLang = post.contentTranslationsHtml?.fromLang,
+                toLang = post.contentTranslationsHtml?.toLang
+            ),
+            user = post.user,
+            createdTime = post.createdTime,
+            messageType = post.messageType,
+            postId = post.postId,
+            hasComments = post.hasComments,
+            commentsCount = post.commentsCount,
+            imageUrl = post.imageUrl,
+            status = post.status,
+            reactions = post.reactions,
+            read = post.read,
+            reactionId = post.reactionId,
+            idInternal = post.idInternal,
+            survey = post.survey,
+            surveyResponse = post.surveyResponse,
+            autoPostFrom = post.autoPostFrom,
+        )
     }
 
     fun sendReport(

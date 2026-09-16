@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.SeekBar
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -31,12 +32,12 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest
 import com.google.android.libraries.places.api.net.PlacesClient
-import kotlin.math.cos
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.ActivityOnboardingZoneChoiceBinding
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
+import kotlin.math.cos
 
 class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -58,8 +59,11 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityOnboardingZoneChoiceBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        social.entourage.android.tools.log.AnalyticsEvents.logEvent(social.entourage.android.tools.log.AnalyticsEvents.View__Onboarding__Location)
 
         selectedUserType = intent.getStringExtra(EXTRA_USER_TYPE)
             ?.let { runCatching { UserType.valueOf(it) }.getOrNull() }
@@ -101,15 +105,17 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
             binding.mapCard.layoutParams.height = (h * 0.33f).toInt()
             binding.mapCard.requestLayout()
         }
-        updatePaddingTopForEdgeToEdge(binding.layoutChoiceZone)
+        updatePaddingForEdgeToEdge(binding.root)
     }
 
     private fun setupButtons() {
         binding.buttonConfigureLater.setOnClickListener {
-            onBackPressed()
+            social.entourage.android.tools.log.AnalyticsEvents.logEvent(social.entourage.android.tools.log.AnalyticsEvents.Clic__Back__Onboarding__Location)
+            onBackPressedDispatcher.onBackPressed()
         }
 
         binding.buttonStart.setOnClickListener {
+            social.entourage.android.tools.log.AnalyticsEvents.logEvent(social.entourage.android.tools.log.AnalyticsEvents.Clic__Next__Onboarding__Location)
             val latLng = currentLatLng
             if (latLng == null) {
                 Toast.makeText(this, R.string.onboarding_zone_pick_location_first, Toast.LENGTH_SHORT).show()

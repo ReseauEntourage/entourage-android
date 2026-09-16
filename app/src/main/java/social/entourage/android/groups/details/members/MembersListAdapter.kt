@@ -17,11 +17,12 @@ import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.ReactionType
 import social.entourage.android.databinding.NewGroupMemberItemBinding
-import social.entourage.android.home.HomeFragment
+import social.entourage.android.home.HomeState
 import social.entourage.android.members.MembersActivity
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.ui.ActionSheetFragment
+import timber.log.Timber
 
 interface OnItemShowListener {
     fun onShowConversation(userId: Int)
@@ -59,15 +60,19 @@ class MembersListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val b = holder.binding
         val item = membersList[position]
-
-        // -------- Checkbox participation (visibilité + état + listener) --------
         val isMe = EntourageApplication.get().me()?.id == item.userId
-        if (HomeFragment.signablePermission && ActionSheetFragment.isSignable && !MembersActivity.isFromReact) {
+        val canCheckIn = HomeState.signablePermission && ActionSheetFragment.isSignable
 
+        // -------- Nom + badge "organizer" (Spannable coloré) --------
+        val isOrganizer = item.groupRole == "organizer" || item.groupRole == "creator" ||
+                         item.communityRoles?.contains("Animateur Entourage") == true ||
+                         item.communityRoles?.contains("Équipe Entourage") == true ||
+                         item.communityRoles?.contains("Ambassadeur") == true
+
+        if ((canCheckIn) && !MembersActivity.isFromReact) {
             b.checkboxConfirmation.visibility = View.VISIBLE
-            // état actuel : participe si participateAt ou confirmedAt non null
-            val isParticipating = (item.participateAt != null) || (item.confirmedAt != null)
-
+            // état actuel : participe si participateAt ou confirmedAt est true
+            val isParticipating = item.participateAt?.isNotEmpty() == true
             b.checkboxConfirmation.setOnCheckedChangeListener(null)
             b.checkboxConfirmation.isChecked = isParticipating
             b.checkboxConfirmation.setOnCheckedChangeListener { _, isChecked ->
@@ -80,15 +85,13 @@ class MembersListAdapter(
             b.checkboxConfirmation.visibility = View.GONE
         }
 
-        // -------- Nom + badge "organizer" (Spannable coloré) --------
-        val isOrganizer = item.groupRole == "organizer"
         if (isOrganizer) {
             b.layout.background = ContextCompat.getDrawable(context, R.drawable.background_organizer)
 
-            val roleLabel = if (isMe) {
-                context.getString(R.string.animateur_label)
-            } else {
+            val roleLabel = if (item.groupRole == "organizer" || item.groupRole == "creator") {
                 context.getString(R.string.organizer_label)
+            } else {
+                context.getString(R.string.animateur_label)
             }
 
             val baseName = item.displayName ?: ""
@@ -109,9 +112,22 @@ class MembersListAdapter(
         }
 
         // Suffixe "Participation confirmée" si applicable (on garde la logique existante)
-        if (item.confirmedAt != null) {
-            b.name.text = "${b.name.text} - Participation confirmée"
-            // idéalement : b.name.text = context.getString(R.string.participation_confirmed_suffix, b.name.text)
+        if (item.confirmedAt == true) {
+            val currentText = b.name.text
+            val suffix = " - Participation confirmée"
+            val fullText = SpannableString("$currentText$suffix")
+
+            // Si c'était un spannable (organisateur), on essaie de préserver le style du début
+            if (currentText is Spannable) {
+                val spans = currentText.getSpans(0, currentText.length, Any::class.java)
+                for (span in spans) {
+                    val start = currentText.getSpanStart(span)
+                    val end = currentText.getSpanEnd(span)
+                    val flags = currentText.getSpanFlags(span)
+                    fullText.setSpan(span, start, end, flags)
+                }
+            }
+            b.name.text = fullText
         }
 
         // -------- Rôles communauté --------

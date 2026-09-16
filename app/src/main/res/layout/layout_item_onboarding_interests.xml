@@ -65,6 +65,7 @@
         app:layout_constraintBottom_toTopOf="@+id/tvInterestTitle"/>
     <TextView
         android:id="@+id/tvInterestTitle"
+        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -75,6 +76,23 @@
         android:textColor="@color/black"
         android:textSize="15sp"
         android:text="title" />
+
+
+    <TextView
+        android:id="@+id/tvInterestSubTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toBottomOf="@id/tvInterestTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:textAlignment="textStart"
+        android:fontFamily="@font/nunitosans_regular"
+        android:textColor="@color/grey"
+        android:textSize="13sp"
+        tools:text="subtitle" />
 
 
     <ImageView

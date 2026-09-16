@@ -121,7 +121,7 @@ class AuthenticationController() {
 
     private fun saveCurrentUser() {
         appSharedPref.putObject(PREF_KEY_USER, user)
-        appSharedPref.commit()
+        appSharedPref.apply()
     }
 
     var isIgnoringActionZone
@@ -138,7 +138,7 @@ class AuthenticationController() {
             saveCurrentUser()
             userPreferencesHashMap[user.id] = userPreferences
             appSharedPref.putObject(PREF_KEY_USER_PREFERENCES, userPreferencesHashMap)
-            appSharedPref.commit()
+            appSharedPref.apply()
         }
     }
 

@@ -17,6 +17,7 @@ object Const {
     const val CHOOSE_PHOTO = "choose_photo"
     const val GROUP_ID = "groupID"
     const val POST_ID = "postID"
+    const val CHAT_MESSAGE_ID = "chatMessageID"
     const val POST_AUTHOR_ID = "postAuthorID"
     const val GROUP_UI = "groupUI"
     const val CONVERSATION_ID = "conversation_id"
@@ -69,5 +70,7 @@ object Const {
     const val NOTIF_COUNT = "notifCount"
 
     const val APPLINK_RESSOURCE_ID = "applinkRessourceId"
+
+    const val IS_NATIONAL_GROUP = "is_national_group"
 
 }
