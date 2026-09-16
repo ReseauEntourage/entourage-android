@@ -3,7 +3,6 @@ package social.entourage.android.events.create
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,15 +10,14 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import com.google.gson.Gson
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.NewFragmentCreateEventStepTwoBinding
 import social.entourage.android.language.LanguageManager
-import social.entourage.android.tools.utils.transformIntoDatePicker
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.transformIntoDatePicker
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
 
 class CreateEventStepTwoFragment : Fragment() {
     private var _binding: NewFragmentCreateEventStepTwoBinding? = null

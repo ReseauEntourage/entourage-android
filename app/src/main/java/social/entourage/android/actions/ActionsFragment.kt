@@ -43,6 +43,8 @@ import social.entourage.android.main_filter.MainFilterMode
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.overrideTransitionCompat
+import social.entourage.android.tools.utils.serializableExtra
 
 class ActionsFragment : Fragment() {
 
@@ -63,12 +65,12 @@ class ActionsFragment : Fragment() {
         activityResultLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
-            (result.data?.getSerializableExtra(LOCATION_FILTERS) as? EventActionLocationFilters)?.let {
+            result.data?.serializableExtra<EventActionLocationFilters>(LOCATION_FILTERS)?.let {
                 this.currentLocationFilters = it
                 updateFilters()
             }
 
-            (result.data?.getSerializableExtra(CATEGORIES_FILTERS) as? ActionSectionFilters)?.let {
+            result.data?.serializableExtra<ActionSectionFilters>(CATEGORIES_FILTERS)?.let {
                 this.currentCategoriesFilters = it
                 updateFilters()
             }
@@ -256,10 +258,10 @@ class ActionsFragment : Fragment() {
             MainFilterActivity.hasToReloadAction = true
             val intent = Intent(activity, MainFilterActivity::class.java)
             startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
 
         }
-        binding.searchEditText.setOnTouchListener { v, event ->
+        binding.searchEditText.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 val clearIcon = binding.searchEditText.compoundDrawables[2]
                 val backIcon = binding.searchEditText.compoundDrawables[0]
@@ -340,13 +342,13 @@ class ActionsFragment : Fragment() {
                 R.id.fab_create_demand -> {
                     val intent = Intent(context, CreateActionActivity::class.java)
                     intent.putExtra(Const.IS_ACTION_DEMAND, true)
-                    startActivityForResult(intent, 0)
+                    activityResultLauncher?.launch(intent)
                     true
                 }
                 R.id.fab_create_contrib -> {
                     val intent = Intent(context, CreateActionActivity::class.java)
                     intent.putExtra(Const.IS_ACTION_DEMAND, false)
-                    startActivityForResult(intent, 0)
+                    activityResultLauncher?.launch(intent)
                     true
                 }
                 else -> false

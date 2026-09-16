@@ -1,14 +1,13 @@
 package social.entourage.android.actions.list
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.os.ConfigurationCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -57,13 +56,12 @@ class ActionsListAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(action: Action) {
             binding.layoutContrib.setOnClickListener { view ->
-                (view.context as? Activity)?.startActivityForResult(
+                view.context.startActivity(
                     Intent(view.context, ActionDetailActivity::class.java)
                         .putExtra(Const.ACTION_ID, action.id)
                         .putExtra(Const.ACTION_TITLE,action.title)
                         .putExtra(Const.IS_ACTION_DEMAND,false)
-                        .putExtra(Const.IS_ACTION_MINE, action.isMine()),
-                    0
+                        .putExtra(Const.IS_ACTION_MINE, action.isMine())
                 )
             }
 
@@ -97,20 +95,16 @@ class ActionsListAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(action: Action) {
             binding.layoutDemand.setOnClickListener { view->
-                (view.context as? Activity)?.startActivityForResult(
+                view.context.startActivity(
                     Intent(view.context, ActionDetailActivity::class.java)
                         .putExtra(Const.ACTION_ID, action.id)
                         .putExtra(Const.ACTION_TITLE,action.title)
                         .putExtra(Const.IS_ACTION_DEMAND,true)
-                        .putExtra(Const.IS_ACTION_MINE, action.isMine()),
-                    0
+                        .putExtra(Const.IS_ACTION_MINE, action.isMine())
                 )
             }
-            val isArabic = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                binding.root.resources.configuration.locales[0].language == "ar"
-            } else {
-                binding.root.resources.configuration.locale.language == "ar"
-            }
+            val isArabic = ConfigurationCompat
+                .getLocales(binding.root.resources.configuration)[0]?.language == "ar"
 
             // Appliquer les propriétés en fonction de la langue
             if (isArabic) {

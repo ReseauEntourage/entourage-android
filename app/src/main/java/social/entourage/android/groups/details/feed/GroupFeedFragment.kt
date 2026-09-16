@@ -15,9 +15,9 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
@@ -73,6 +73,7 @@ import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.CustomTypefaceSpan
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.VibrationUtil
+import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.utils.scrollToView
 import timber.log.Timber
@@ -101,6 +102,9 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
     private var isSearchingTargetPost = false
     private var feedSkeletonShownAt: Long = 0L
     private var surveyPresenter: SurveyPresenter = SurveyPresenter()
+    private val activityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
 
     private var newPostsList: MutableList<Post> = ArrayList()
     private var oldPostsList: MutableList<Post> = ArrayList()
@@ -339,18 +343,17 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
     private fun openCommentPage(post: Post, shouldOpenKeyboard: Boolean) {
         // Vérifier qu'on est attaché
         if (!isAdded) return
-        startActivityForResult(
+        activityResultLauncher.launch(
             Intent(context, GroupCommentActivity::class.java).putExtras(
-                bundleOf(
-                    Const.ID to group?.id,
-                    Const.POST_ID to post.id,
-                    Const.POST_AUTHOR_ID to post.user?.userId,
-                    Const.SHOULD_OPEN_KEYBOARD to shouldOpenKeyboard,
-                    Const.IS_MEMBER to group?.member,
-                    Const.NAME to group?.name
-                )
-            ),
-            0
+                Bundle().apply {
+                    group?.id?.let { putInt(Const.ID, it) }
+                    post.id?.let { putInt(Const.POST_ID, it) }
+                    post.user?.userId?.let { putInt(Const.POST_AUTHOR_ID, it) }
+                    putBoolean(Const.SHOULD_OPEN_KEYBOARD, shouldOpenKeyboard)
+                    group?.member?.let { putBoolean(Const.IS_MEMBER, it) }
+                    putString(Const.NAME, group?.name)
+                }
+            )
         )
     }
 
@@ -539,7 +542,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
             ResponseSurveyActivity.question = question
         }
         startActivity(intent)
-        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     // ============================
@@ -596,7 +599,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         intent.putExtra(Const.POST_ID, postId)
         intent.putExtra(Const.GROUP_ID, this.group?.id)
         startActivity(intent)
-        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     // ============================
@@ -659,7 +662,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
             putExtra("TYPE", MembersType.GROUP.code)
         }
         startActivity(intent)
-        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
 
     }
 
@@ -784,7 +787,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
                 putExtra("TYPE", MembersType.GROUP.code)
             }
             startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
 
@@ -929,7 +932,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         intent.putExtra(Const.ID, groupId)
         intent.putExtra(Const.IS_NATIONAL_GROUP, group?.zone == null)
         if (!isAdded) return
-        startActivityForResult(intent, 0)
+        activityResultLauncher.launch(intent)
     }
 
     private fun handleCreatePostButton() {
@@ -1112,7 +1115,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
                     AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_NEW_EVENT)
                     val intent = Intent(context, CreateEventActivity::class.java)
                     intent.putExtra(Const.GROUP_ID, groupId)
-                    startActivityForResult(intent, 0)
+                    activityResultLauncher.launch(intent)
                     true
                 }
                 R.id.fab_create_post -> {
@@ -1127,7 +1130,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
                     isFromCreation = true
                     intent.putExtra(Const.GROUP_ID, groupId)
                     startActivity(intent)
-                    requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                    requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                     true
                 }
                 else -> false

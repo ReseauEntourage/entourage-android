@@ -8,6 +8,7 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Action
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.serializableExtra
 
 class CreateActionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,7 +17,7 @@ class CreateActionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_create_action)
 
         val isDemand = intent.getBooleanExtra(Const.IS_ACTION_DEMAND,false)
-        val action = intent.getSerializableExtra(Const.ACTION_OBJ) as? Action
+        val action = intent.serializableExtra<Action>(Const.ACTION_OBJ)
         val bundle = Bundle().apply {
             putBoolean(Const.IS_ACTION_DEMAND, isDemand)
             putSerializable(Const.ACTION_OBJ, action)

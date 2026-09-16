@@ -5,11 +5,9 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.SeekBar
@@ -31,6 +29,7 @@ import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityMainFilterBinding
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingForEdgeToEdge
+import timber.log.Timber
 
 enum class MainFilterMode {
     ACTION,
@@ -325,7 +324,7 @@ class MainFilterActivity : BaseActivity() {
     }
 
     private fun setupLocationAutoComplete() {
-        val autoCompleteTextView = binding.autoCompleteCityName as AutoCompleteTextView
+        val autoCompleteTextView = binding.autoCompleteCityName
         autoCompleteTextView.threshold = 1
         autoCompleteTextView.setAdapter(ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line))
         autoCompleteTextView.setOnItemClickListener { parent, _, position, _ ->
@@ -368,27 +367,30 @@ class MainFilterActivity : BaseActivity() {
             autocompletePredictions = response.autocompletePredictions
             val suggestions = autocompletePredictions.map { it.getFullText(null).toString() }
             val adapter = ArrayAdapter(this, android.R.layout.simple_dropdown_item_1line, suggestions)
-            (binding.autoCompleteCityName as AutoCompleteTextView).setAdapter(adapter)
+            binding.autoCompleteCityName.setAdapter(adapter)
             adapter.notifyDataSetChanged()
         }.addOnFailureListener { exception ->
-            Log.e("PlaceAutocomplete", "Error: ${exception.message}", exception)
+            Timber.tag("PlaceAutocomplete").e(exception, "Error: ${exception.message}")
         }
     }
 
     private fun fetchPlaceDetails(placeId: String) {
-        val placeFields = listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG, Place.Field.ADDRESS)
+        val placeFields = listOf(Place.Field.ID, Place.Field.DISPLAY_NAME, Place.Field.LOCATION, Place.Field.FORMATTED_ADDRESS)
         val request = FetchPlaceRequest.builder(placeId, placeFields).build()
 
         placesClient.fetchPlace(request).addOnSuccessListener { response ->
             val place = response.place
-            selectedLocation = place.name ?: ""
+            selectedLocation = place.displayName ?: ""
             binding.autoCompleteCityName.setText(selectedLocation)
-            val autoCompleteTextView = binding.autoCompleteCityName as AutoCompleteTextView
+            val autoCompleteTextView = binding.autoCompleteCityName
             autoCompleteTextView.setSelection(autoCompleteTextView.text.length) // Placer le curseur à la fin
             autoCompleteTextView.dismissDropDown()
-            savedLocation = PlaceDetails(place.name!!, place.latLng!!.latitude, place.latLng!!.longitude)
+            val location = place.location
+            if (location != null) {
+                savedLocation = PlaceDetails(place.displayName ?: "", location.latitude, location.longitude)
+            }
         }.addOnFailureListener { exception ->
-            Log.e("PlaceAutocomplete", "Error: ${exception.message}", exception)
+            Timber.tag("PlaceAutocomplete").e(exception, "Error: ${exception.message}")
         }
     }
 
@@ -414,8 +416,8 @@ class MainFilterActivity : BaseActivity() {
         selectedLocation = user?.address?.displayAddress ?: ""
         // Reset UI elements
         interestsAdapter.resetItems(loadInterestsOrActions())
-        binding.seekbar.progress = user?.travelDistance ?: 0
-        binding.tvRadius.text = user?.travelDistance.toString() ?: "0 km"
+        binding.seekbar.progress = selectedRadius
+        binding.tvRadius.text = "$selectedRadius km"
         binding.autoCompleteCityName.setText(user?.address?.displayAddress?: "")
         if (mod == MainFilterMode.EVENT) {
             refreshEventTypeAndFormatStyles()

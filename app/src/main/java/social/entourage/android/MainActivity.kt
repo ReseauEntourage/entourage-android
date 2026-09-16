@@ -17,7 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.os.bundleOf
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
@@ -27,6 +27,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.messaging.FirebaseMessaging
@@ -57,6 +58,9 @@ import social.entourage.android.tools.TestHelper
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.fcmTokenTask
+import social.entourage.android.tools.utils.overrideTransitionCompat
+import social.entourage.android.tools.utils.parcelableExtra
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
 import timber.log.Timber
@@ -66,6 +70,9 @@ class MainActivity : BaseSecuredActivity() {
     private val presenter: MainPresenter = MainPresenter(this)
     private val userPresenter: UserPresenter by lazy { UserPresenter() }
     private lateinit var eventPresenter: EventsPresenter
+    private val profileLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
 
     private lateinit var viewModel: CommunicationHandlerBadgeViewModel
     private val universalLinkManager = UniversalLinkManager(this)
@@ -95,8 +102,11 @@ class MainActivity : BaseSecuredActivity() {
         handleUniversalLinkFromMain(this.intent)
         updateActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
             if (result.resultCode != Activity.RESULT_OK) {
+                AnalyticsEvents.logEvent(AnalyticsEvents.clic_update_version_cancel)
                 Timber.tag("Update")
                     .e("La mise à jour a échoué ou a été annulée par l'utilisateur.")
+            } else {
+                AnalyticsEvents.logEvent(AnalyticsEvents.clic_update_version_validate)
             }
         }
         checkForAppUpdate()
@@ -181,7 +191,7 @@ class MainActivity : BaseSecuredActivity() {
         }
 
         if (this.intent != null) {
-            useIntentForRedictection(this.intent)
+            useIntentForRedirection(this.intent)
             if(!TestHelper.isRunningInTestHarness()) {
                 //TODO WHY WHY WHY WHY WHY ? It does make the tests do a timeout !
                 this.intent = null
@@ -206,9 +216,8 @@ class MainActivity : BaseSecuredActivity() {
                     AnalyticsEvents.logEvent(AnalyticsEvents.view_update_version)
                     appUpdateManager.startUpdateFlowForResult(
                         appUpdateInfo,
-                        AppUpdateType.IMMEDIATE,
-                        this, // Ton Activity.
-                        UPDATE_REQUEST_CODE // Un code de requête défini par toi.
+                        updateActivityResultLauncher,
+                        AppUpdateOptions.defaultOptions(AppUpdateType.IMMEDIATE)
                     )
                 } catch (e: IntentSender.SendIntentException) {
                     e.printStackTrace()
@@ -217,19 +226,7 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
 
-    @Deprecated("Deprecated in kt 1.9.0")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == UPDATE_REQUEST_CODE) {
-            if (resultCode != RESULT_OK) {
-                AnalyticsEvents.logEvent(AnalyticsEvents.clic_update_version_cancel)
-                Timber.tag("Update")
-                    .e("La mise à jour a échoué ou a été annulée par l'utilisateur.")
-            } else {
-                AnalyticsEvents.logEvent(AnalyticsEvents.clic_update_version_validate)
-            }
-        }
-    }
+
 
     fun updateMainLanguage() {
         updateLanguage()
@@ -280,13 +277,13 @@ class MainActivity : BaseSecuredActivity() {
                 val intent = Intent(this, CreateActionActivity::class.java)
                 intent.putExtra(Const.IS_ACTION_DEMAND, true)
                 startActivity(intent)
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
             }
             is OnboardingNavigation.CreateActionContribution -> {
                 val intent = Intent(this, CreateActionActivity::class.java)
                 intent.putExtra(Const.IS_ACTION_DEMAND, false)
                 startActivity(intent)
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
             }
             is OnboardingNavigation.Quiz -> {
                 val urlString = "https://kahoot.it/challenge/45371e80-fe50-4be5-afec-b37e3d50ede2_1733228323615"
@@ -302,8 +299,9 @@ class MainActivity : BaseSecuredActivity() {
         }
     }
 
-    fun useIntentForRedictection(intent: Intent) {
-        val onboardingNav = intent.getParcelableExtra<OnboardingNavigation>("extra_onboarding_navigation")
+    fun useIntentForRedirection(intent: Intent) {
+    
+        val onboardingNav = intent.parcelableExtra<OnboardingNavigation>("extra_onboarding_navigation")
         if (onboardingNav != null) {
             intent.removeExtra("extra_onboarding_navigation")
             handleOnboardingNavigation(onboardingNav)
@@ -393,7 +391,7 @@ class MainActivity : BaseSecuredActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         this.intent = intent
-        useIntentForRedictection(intent)
+        useIntentForRedirection(intent)
     }
 
     private fun updateAnalyticsInfo() {
@@ -540,7 +538,7 @@ class MainActivity : BaseSecuredActivity() {
                 .apply()
         }
         if (notificationsEnabled) {
-            FirebaseMessaging.getInstance().token.addOnSuccessListener { token ->
+            FirebaseMessaging.getInstance().fcmTokenTask.addOnSuccessListener { token ->
                 sendRegistrationToServer(token)
             }
         }
@@ -617,7 +615,7 @@ class MainActivity : BaseSecuredActivity() {
 
     fun goConv(isSmallTalkFilter: Boolean = false) {
         if (isSmallTalkFilter) {
-            val bundle = bundleOf("isSmallTalkFilter" to true)
+            val bundle = Bundle().apply { putBoolean("isSmallTalkFilter", true) }
             navController.navigate(R.id.navigation_messages, bundle, singleTopNavOptions())
         } else {
             val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
@@ -630,12 +628,12 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     fun goContrib() {
-        val bundle = bundleOf("isActionDemand" to false)
+        val bundle = Bundle().apply { putBoolean("isActionDemand", false) }
         navController.navigate(R.id.navigation_donations, bundle, singleTopNavOptions())
     }
 
     fun goDemand() {
-        val bundle = bundleOf("isActionDemand" to true)
+        val bundle = Bundle().apply { putBoolean("isActionDemand", true) }
         navController.navigate(R.id.navigation_donations, bundle, singleTopNavOptions())
     }
 
@@ -683,8 +681,8 @@ class MainActivity : BaseSecuredActivity() {
         badge.isVisible = true
         badge.maxCharacterCount = 2
         badge.verticalOffsetWithText = 10
-        badge.backgroundColor = resources.getColor(R.color.tomato)
-        badge.badgeTextColor = resources.getColor(R.color.white)
+        badge.backgroundColor = ContextCompat.getColor(this, R.color.tomato)
+        badge.badgeTextColor = ContextCompat.getColor(this, R.color.white)
         if (count == 0) {
             bottomNavigationView.removeBadge(R.id.navigation_messages)
         }
@@ -699,8 +697,8 @@ class MainActivity : BaseSecuredActivity() {
         badge.isVisible = true
         badge.maxCharacterCount = 2
         badge.verticalOffsetWithText = 10
-        badge.backgroundColor = resources.getColor(R.color.tomato)
-        badge.badgeTextColor = resources.getColor(R.color.white)
+        badge.backgroundColor = ContextCompat.getColor(this, R.color.tomato)
+        badge.badgeTextColor = ContextCompat.getColor(this, R.color.white)
         if (count == 0) {
             bottomNavigationView.removeBadge(R.id.navigation_groups)
         }
@@ -708,7 +706,7 @@ class MainActivity : BaseSecuredActivity() {
 
     fun showProfile() {
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_MODPROFIL)
-        startActivityForResult(Intent(this, MyProfileFullActivity::class.java), 0)
+        profileLauncher.launch(Intent(this, MyProfileFullActivity::class.java))
     }
 
     fun showFeed() {
@@ -736,7 +734,7 @@ class MainActivity : BaseSecuredActivity() {
     fun showGuideMap() {
         val intent = Intent(this, GDSMainActivity::class.java)
         startActivity(intent)
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     fun deleteApplicationInfo(listener: () -> Unit) {
@@ -745,7 +743,6 @@ class MainActivity : BaseSecuredActivity() {
 
     companion object {
         var instance: MainActivity? = null
-        const val UPDATE_REQUEST_CODE = 1001 // Ou tout autre numéro que tu souhaites.
         const val EXTRA_BADGE_NAV_TAB = "badge_nav_tab"
         var reactionsList: MutableList<ReactionType>? = null
         var interest: MutableList<userConfig>? = null

@@ -1,13 +1,14 @@
 package social.entourage.android.entourage
 
 import android.content.Context
-import android.graphics.PorterDuff
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.BlendModeColorFilterCompat
+import androidx.core.graphics.BlendModeCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import social.entourage.android.R
@@ -64,7 +65,10 @@ class ShareEntourageAdapter(private val context: Context, private val myDataset:
         AppCompatResources.getDrawable(context, entourageCategory.iconRes)?.let { categoryIcon ->
             categoryIcon.mutate()
             categoryIcon.clearColorFilter()
-            categoryIcon.setColorFilter(ContextCompat.getColor(context, entourageCategory.typeColorRes), PorterDuff.Mode.SRC_IN)
+            categoryIcon.colorFilter = BlendModeColorFilterCompat.createBlendModeColorFilterCompat(
+                ContextCompat.getColor(context, entourageCategory.typeColorRes),
+                BlendModeCompat.SRC_IN
+            )
             return categoryIcon
         }
 

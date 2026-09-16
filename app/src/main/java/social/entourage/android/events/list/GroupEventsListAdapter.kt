@@ -1,6 +1,5 @@
 package social.entourage.android.events.list
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -102,9 +101,9 @@ class GroupEventsListAdapter(
 
     private fun bindChild(childViewHolder: ChildViewHolder, child: Events) {
         childViewHolder.binding.layout.setOnClickListener { view ->
-            (view.context as? Activity)?.startActivityForResult(
+            view.context.startActivity(
                 Intent(view.context, EventFeedActivity::class.java)
-                    .putExtra(Const.EVENT_ID, child.id), 0
+                    .putExtra(Const.EVENT_ID, child.id)
             )
         }
 

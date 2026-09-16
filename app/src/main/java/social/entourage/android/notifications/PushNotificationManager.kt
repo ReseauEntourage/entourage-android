@@ -15,7 +15,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.edit
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.os.bundleOf
 import androidx.preference.PreferenceManager
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
@@ -314,9 +313,9 @@ object PushNotificationManager {
                 .setContentText(pushNotificationMessage.getContentTextForCount(count, context))
                 .setColor(ResourcesCompat.getColor(context.resources,R.color.accent,null))
                 .setDeleteIntent(dismissedPendingIntent) // Ajoutez le PendingIntent pour l'action de suppression
+                .setDefaults(NotificationCompat.DEFAULT_LIGHTS)
 
         val notification = builder.build()
-        notification.defaults = NotificationCompat.DEFAULT_LIGHTS
         notification.flags = NotificationCompat.FLAG_AUTO_CANCEL or NotificationCompat.FLAG_SHOW_LIGHTS
         Timber.d("TAG = %s , ID = %d", pushNotificationMessage.pushNotificationTag, pushNotificationMessage.pushNotificationId)
         NotificationManagerCompat.from(context).notify(pushNotificationMessage.pushNotificationTag, pushNotificationMessage.pushNotificationId, notification)
@@ -342,9 +341,9 @@ object PushNotificationManager {
                 .setContentTitle(fcmTitle)
                 .setContentText(fcmBody)
                 .setColor(ResourcesCompat.getColor(context.resources,R.color.accent,null))
+                .setDefaults(NotificationCompat.DEFAULT_LIGHTS)
 
         val notification = builder.build()
-        notification.defaults = NotificationCompat.DEFAULT_LIGHTS
         notification.flags = NotificationCompat.FLAG_AUTO_CANCEL or NotificationCompat.FLAG_SHOW_LIGHTS
         NotificationManagerCompat.from(context).notify(PushNotificationMessage.Companion.PushNotificationIds.FCM, notification)
     }
@@ -439,15 +438,15 @@ object PushNotificationManager {
             DetailConversationActivity.isSmallTalkMode = false
             val intent = Intent(context, DetailConversationActivity::class.java).apply {
                 putExtras(
-                    bundleOf(
-                        Const.ID to pushNotificationMessage.content?.joinableId?.toInt(), // ou .toLong() selon ton implémentation
-                        Const.SHOULD_OPEN_KEYBOARD to false,
-                        Const.IS_CONVERSATION_1TO1 to true, // à adapter selon besoin
-                        Const.IS_MEMBER to true,
-                        Const.IS_CONVERSATION to true,
-                        Const.HAS_TO_SHOW_MESSAGE to true, // à adapter selon besoin
-                        "notification_content" to Gson().toJson(pushNotificationMessage.content)
-                    )
+                    Bundle().apply {
+pushNotificationMessage.content?.let { putInt(Const.ID, it.joinableId.toInt()) }
+                        putBoolean(Const.SHOULD_OPEN_KEYBOARD, false)
+                        putBoolean(Const.IS_CONVERSATION_1TO1, true)
+                        putBoolean(Const.IS_MEMBER, true)
+                        putBoolean(Const.IS_CONVERSATION, true)
+                        putBoolean(Const.HAS_TO_SHOW_MESSAGE, true)
+                        putString("notification_content", Gson().toJson(pushNotificationMessage.content))
+                    }
                 )
             }
 

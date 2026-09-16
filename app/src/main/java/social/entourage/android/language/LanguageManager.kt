@@ -44,11 +44,17 @@ object LanguageManager {
 
     fun getLocaleFromPreferences(context: Context): Locale {
         val languageCode = loadLanguageFromPreferences(context)
-        return Locale(languageCode)
+        return Locale.forLanguageTag(languageCode)
     }
 
+    /**
+     * updateConfiguration is deprecated in API 25, but createConfigurationContext
+     * requires returning a new Context which changes the API signature.
+     * Kept on deprecated API until minSdk >= 25.
+     */
+    @Suppress("DEPRECATION")
     fun setLocale(context: Context, langCode: String) {
-        val locale = Locale(langCode)
+        val locale = Locale.forLanguageTag(langCode)
         Locale.setDefault(locale)
         val config = Configuration()
         config.setLocale(locale)

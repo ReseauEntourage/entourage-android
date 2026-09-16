@@ -51,7 +51,7 @@ class EditPasswordFragment()  : BaseDialogFragment() {
     fun onSaveButton() {
         if (validatePassword()) {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_EDITPWD)
-            presenter.saveNewPassword(this, binding.userNewPassword.text.toString().trim { it <= ' ' } ?: "")
+            presenter.saveNewPassword(this, binding.userNewPassword.text.toString().trim { it <= ' ' })
         }
     }
 

@@ -74,7 +74,7 @@ class BadgesListAdapter(
             binding.ivBadgeIcon.loadBadgeSvg(def.svgRes)
             binding.tvBadgeTitle.text = ctx.getString(def.titleRes)
 
-            val materialCard = binding.cardBadgeItem as MaterialCardView
+            val materialCard = binding.cardBadgeItem
             when {
                 progress.isObtained -> {
                     // White card with grey border

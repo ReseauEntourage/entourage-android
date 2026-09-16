@@ -14,6 +14,7 @@ import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.enhanced_onboarding.InterestForAdapter
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 class OnboardingActionWishesFragment : Fragment() {
 
@@ -103,8 +104,8 @@ class OnboardingActionWishesFragment : Fragment() {
         }
 
         // On récupère les listes existantes pour éviter les null check répétitifs
-        val userOrientations = user.orientations ?: emptyList()
-        val userInvolvements = user.involvements ?: emptyList()
+        val userOrientations = user.orientations
+        val userInvolvements = user.involvements
 
         val actionWishes = if (isAssociationMode()) {
             // --- MODE ASSOCIATION ---
@@ -220,6 +221,8 @@ class OnboardingActionWishesFragment : Fragment() {
     }
 
     private fun onInterestClicked(interest: InterestForAdapter) {
+        Timber.tag("EN9530_DEBUG")
+            .d("onInterestClicked: id=${interest.id} wasSelected=${interest.isSelected}")
         viewModel.updateActionsWishes(interest)
     }
 }

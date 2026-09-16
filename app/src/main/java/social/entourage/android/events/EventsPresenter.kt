@@ -2,12 +2,10 @@ package social.entourage.android.events
 
 import android.os.Build
 import android.text.Html
-import android.util.Log
 import android.widget.Toast
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.annotations.SerializedName
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -17,18 +15,30 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.request.*
 import social.entourage.android.RefreshController
+import social.entourage.android.api.model.CompleteReactionsResponse
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.EventActionLocationFilters
+import social.entourage.android.api.model.Events
+import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.ReactionWrapper
+import social.entourage.android.api.model.notification.Translation
+import social.entourage.android.api.request.CreateEventWrapper
+import social.entourage.android.api.request.EntourageUserResponse
+import social.entourage.android.api.request.EventWrapper
+import social.entourage.android.api.request.EventsListWrapper
+import social.entourage.android.api.request.JoinRoleBody
+import social.entourage.android.api.request.MembersWrapper
+import social.entourage.android.api.request.PostListWrapper
+import social.entourage.android.api.request.PostWrapper
+import social.entourage.android.api.request.PrepareAddPostResponse
+import social.entourage.android.api.request.Report
+import social.entourage.android.api.request.ReportWrapper
+import social.entourage.android.api.request.RequestContent
+import social.entourage.android.api.request.UnreadCountWrapper
 import social.entourage.android.events.create.CreateEvent
 import social.entourage.android.events.list.EVENTS_PER_PAGE
 import social.entourage.android.home.UnreadMessages
-import social.entourage.android.api.model.Events
-import social.entourage.android.api.model.Post
-import social.entourage.android.api.model.CompleteReactionsResponse
-import social.entourage.android.api.model.ReactionWrapper
-import social.entourage.android.api.model.notification.Translation
 import social.entourage.android.ui.ActionSheetFragment
 import timber.log.Timber
 import java.io.File
@@ -185,7 +195,7 @@ class EventsPresenter : ViewModel() {
                 }
 
                 override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
-                    Timber.wtf("wtf error " + t.message)
+                    Timber.wtf("wtf error %s", t.message)
                 }
             })
     }
@@ -205,7 +215,7 @@ class EventsPresenter : ViewModel() {
                 }
 
                 override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
-                    Timber.wtf("wtf error " + t.message)
+                    Timber.wtf("wtf error %s", t.message)
                 }
             })
     }
@@ -225,7 +235,7 @@ class EventsPresenter : ViewModel() {
                 }
 
                 override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
-                    Timber.wtf("wtf error " + t.message)
+                    Timber.wtf("wtf error %s", t.message)
                 }
             })
     }
@@ -280,7 +290,7 @@ class EventsPresenter : ViewModel() {
             }
 
             override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
-                Log.e("EventsPresenter", "Failed to fetch filtered my events: ${t.message}")
+                Timber.tag("EventsPresenter").e("Failed to fetch filtered my events: ${t.message}")
             }
         })
     }
@@ -331,7 +341,7 @@ class EventsPresenter : ViewModel() {
             }
 
             override fun onFailure(call: Call<EventsListWrapper>, t: Throwable) {
-                Log.e("EventsPresenter", "Failed to fetch filtered events: ${t.message}")
+                Timber.tag("EventsPresenter").e("Failed to fetch filtered events: ${t.message}")
             }
         })
     }
@@ -440,7 +450,7 @@ class EventsPresenter : ViewModel() {
                     }
                 }
                 override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
-                    Timber.wtf("wtf error " + t.message)
+                    Timber.wtf("wtf error %s", t.message)
                 }
             })
     }
@@ -461,7 +471,7 @@ class EventsPresenter : ViewModel() {
                 }
 
                 override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
-                    Timber.wtf("wtf error " + t.message)
+                    Timber.wtf("wtf error %s", t.message)
                 }
             })
     }
@@ -885,8 +895,7 @@ class EventsPresenter : ViewModel() {
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("EventPresenter deleteReactToPost", "onFailure: $t")
-                onComplete(false)
+                Timber.tag("EventPresenter deleteReactToPost").d("onFailure: $t")
             }
         })
     }
@@ -909,8 +918,7 @@ class EventsPresenter : ViewModel() {
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("deleteReactToPost deleteReactToPost", "onFailure: $t")
-                onComplete(false)
+                Timber.tag("deleteReactToPost deleteReactToPost").d("onFailure: $t")
             }
         })
     }
@@ -944,17 +952,18 @@ class EventsPresenter : ViewModel() {
             .enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     if (response.isSuccessful) {
-                        Log.d("EventsPresenter", "Participation confirmée avec succès.")
+                        Timber.tag("EventsPresenter").d("Participation confirmée avec succès.")
                         isUserConfirmedParticipating.value = true
                     } else {
-                        Toast.makeText(EntourageApplication.get(), "Échec de la confirmation de participation.", Toast.LENGTH_SHORT).show()
-                        Log.d("EventsPresenter", "Échec de la confirmation de participation.")
+                        Toast.makeText(EntourageApplication.get(), "Échec de la confirmation de participation.", Toast.LENGTH_SHORT)
+                            .show()
+                        Timber.tag("EventsPresenter").d("Échec de la confirmation de participation.")
                         isUserConfirmedParticipating.value = false
                     }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Log.e("EventsPresenter", "Échec de l'appel réseau: ${t.message}")
+                    Timber.tag("EventsPresenter").e("Échec de l'appel réseau: ${t.message}")
                     isUserConfirmedParticipating.value = false
                 }
             })
@@ -1011,7 +1020,7 @@ class EventsPresenter : ViewModel() {
                 }
 
                 override fun onFailure(call: Call<EventWrapper>, t: Throwable) {
-                    Timber.wtf("wtf error " + t.message)
+                    Timber.wtf("wtf error %s", t.message)
                 }
             })
     }

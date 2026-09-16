@@ -1,8 +1,10 @@
 package social.entourage.android.tools.image_viewer
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.view.WindowInsets
 import android.view.WindowManager
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.CoroutineScope
@@ -49,11 +51,22 @@ class ImageViewerActivity:BaseActivity() {
     }
 
     fun setView(imageUrl:String){
-        val displayMetrics = DisplayMetrics()
-        val windowManager = this.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-        val screenWidth = displayMetrics.widthPixels
-        val screenHeight = displayMetrics.heightPixels
+        val screenWidth: Int
+        val screenHeight: Int
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val windowMetrics = windowManager.currentWindowMetrics
+            val insets = windowMetrics.windowInsets.getInsetsIgnoringVisibility(WindowInsets.Type.systemBars())
+            val bounds = windowMetrics.bounds
+            screenWidth = bounds.width() - insets.left - insets.right
+            screenHeight = bounds.height() - insets.top - insets.bottom
+        } else {
+            val displayMetrics = DisplayMetrics()
+            val windowManager = this.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            @Suppress("DEPRECATION")
+            windowManager.defaultDisplay.getMetrics(displayMetrics)
+            screenWidth = displayMetrics.widthPixels
+            screenHeight = displayMetrics.heightPixels
+        }
         val params = binding.photoView.layoutParams
         params.width = screenWidth
         params.height = screenHeight

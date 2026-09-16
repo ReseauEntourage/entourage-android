@@ -392,8 +392,8 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="category">Kategoria</string>
     <string name="associated_groups">Powiązane grupy:</string>
     <string name="associated_group">Powiązana grupa:</string>
-    <string name="date_recurrence_event">%s . %s</string>
-    <string name="start_and_end_time_event">Od %s do %s</string>
+    <string name="date_recurrence_event">%1$s . %2$s</string>
+    <string name="start_and_end_time_event">Od %1$s do %2$s</string>
     <string name="limited_places">Ograniczona liczba miejsc: %d</string>
     <string name="created_at">Utworzono %s</string>
     <string name="updated_at">Zmodyfikowano %s</string>
@@ -637,7 +637,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="action_created_by">„Utworzono %s przez</string>
     <string name="action_created_by_">"Stworzone przez</string>
 
-    <string name="atKm">%s, %s km ode mnie</string>
+    <string name="atKm">%1$s, %2$s km ode mnie</string>
     <string name="AtKm">DO %s km ode mnie</string>
 
 
@@ -1491,7 +1491,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="entourage_share_intent_title">Podziel się przez</string>
     <string name="entourage_share_link">https://www.entourage.social</string>
 
-    <string name="info_share_poi_sms">Dzień dobry ! Oto adres %1$s, które mogą Cię zainteresować.\n%2$s\n%3$s\nAby uzyskać więcej informacji na temat tego miejsca oraz stworzyć powiązania pomiędzy wspierającymi sąsiadami, umówię Cię na spotkanie w sieci Entourage %4 $ S</string>
+    <string name="info_share_poi_sms">Dzień dobry ! Oto adres %1$s, które mogą Cię zainteresować.\n%2$s\n%3$s\nAby uzyskać więcej informacji na temat tego miejsca oraz stworzyć powiązania pomiędzy wspierającymi sąsiadami, umówię Cię na spotkanie w sieci Entourage %4$s</string>
 
     <string name="entourage_share_text_for_entourage">%1$s.\n\nDziękujemy bardzo za solidarność!</string>
 
@@ -2472,7 +2472,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="home_v2_no_adress_button">Dodaj moją lokalizację</string>
     <string name="popup_event_confirm_btn_confirm">Przyjdę</string>
     <string name="popup_event_confirm_btn_cancel">Nie przyjdę</string>
-    <string name="popup_event_confirm_title">Nie zapomnij: „%s” odbywa się jutro o %s w %s!</string>
+    <string name="popup_event_confirm_title">Nie zapomnij: „%1$s” odbywa się jutro o %2$s w %3$s!</string>
     <string name="popup_event_confirm_content">Aby ułatwić organizację wydarzenia, czy możesz powiedzieć, czy będziesz jutro obecny?</string>
     <string name="onboarding_presentation_title">%s, poznajmy się!</string>
     <string name="onboarding_presentation_content">Przed zanurzeniem się w naszej aplikacji, poświęć chwilę, aby lepiej się poznać. Twoje zainteresowania pomogą nam zasugerować ci działania i treści, które cię zainteresują.</string>
@@ -2558,7 +2558,7 @@ Przeczytają tę wiadomość, gdy tylko dołączą do grupy.</string>
     <string name="popup_ambassador_button_participant">Uczestnik</string>
     <string name="organizer_label">- Organizator</string>
     <string name="animateur_label">- Animator</string>
-    <string name="share_request_group">Czy chcesz udostępnić swoją %s w grupie %s?</string>
+    <string name="share_request_group">Czy chcesz udostępnić swoją %1$s w grupie %2$s?</string>
     <string name="share_request_description">Masz możliwość udostępnienia swojej %s w grupie sąsiedzkiej twojego miasta, aby zwiększyć jej widoczność</string>
     <string name="demand_social_title">Przykład: Spacer po parku</string>
     <string name="demand_social_description">Przykład: Proponuję spacer po parku w ten weekend, aby porozmawiać i się zrelaksować.</string>

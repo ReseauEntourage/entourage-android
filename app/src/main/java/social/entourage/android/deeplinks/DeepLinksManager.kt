@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.util.Linkify
 import android.widget.TextView
+import androidx.core.net.toUri
 import social.entourage.android.BuildConfig
 import social.entourage.android.MainActivity
 import social.entourage.android.notifications.EntourageFirebaseMessagingService
@@ -109,7 +110,7 @@ object DeepLinksManager {
                     activity.showFeed()
                     activity.showWebView(url)
                 }
-            } catch (ignored: Exception) {
+            } catch (_: Exception) {
             }
         } else if (key == DeepLinksView.PROFILE.view) {
             activity.showProfile()
@@ -120,7 +121,7 @@ object DeepLinksManager {
         } else if (key == DeepLinksView.CREATE_ACTION.view) {
             activity.showActionsTab()
         } else if (key == DeepLinksView.ENTOURAGE.view || key == DeepLinksView.ENTOURAGES.view || key == DeepLinksView.APPLINK_ACTION.view) {
-            if (pathSegments != null && pathSegments.isNotEmpty()) {
+            if (!pathSegments.isNullOrEmpty()) {
                 //TODO EntBus.post(OnFeedItemInfoViewRequestedEvent(TimestampedObject.ENTOURAGE_CARD, "", pathSegments[0]))
             }
             //TODO check if it is working ??
@@ -158,7 +159,11 @@ object DeepLinksManager {
      * @param textView textview to be linkified
      */
     fun linkify(textView: TextView) {
-        Linkify.addLinks(textView, Linkify.ALL) // to add support for standard URLs, emails, phones a.s.o.
+        // Linkify.ALL is deprecated because it includes the non-functional MAP_ADDRESSES mask.
+        Linkify.addLinks(
+            textView,
+            Linkify.WEB_URLS or Linkify.EMAIL_ADDRESSES or Linkify.PHONE_NUMBERS
+        )
         /*Not working
         val pattern = Pattern.compile(BuildConfig.DEEP_LINKS_SCHEME + "://\\S+")
         Linkify.addLinks(textView, pattern, null)
@@ -171,8 +176,8 @@ object DeepLinksManager {
             // Save the deep link intent
             intent = newIntent
         } else if (extras != null && extras.containsKey(EntourageFirebaseMessagingService.KEY_CTA)) {
-            intent = Intent(Intent.ACTION_VIEW, Uri.parse(extras.getString(
-                EntourageFirebaseMessagingService.KEY_CTA)))
+            intent = Intent(Intent.ACTION_VIEW, extras.getString(
+                EntourageFirebaseMessagingService.KEY_CTA)?.toUri())
         }
     }
 

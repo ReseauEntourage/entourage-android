@@ -97,7 +97,7 @@ E2E scenarios live under `app/src/androidTest/java/social/entourage/android/e2e/
 
 | Variant | API base | App ID suffix | Deep link scheme |
 |---|---|---|---|
-| `entourageDebug` (default) | `api-preprod.entourage.social` | `.debug` | `entourage-staging://` |
+| `entourageDebug` (default) | `api-preprod.entourage.social` | `.debug` | `entourage-debug://` |
 | `entouragePreprod` | `api-preprod.entourage.social` | `.preprod` | `entourage-staging://` |
 | `entourageRelease` | `api.entourage.social` | _(none)_ | `entourage://` |
 

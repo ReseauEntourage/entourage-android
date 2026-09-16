@@ -2,8 +2,7 @@ package social.entourage.android.survey
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.core.os.bundleOf
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.EntourageUser
@@ -23,6 +22,9 @@ class ResponseSurveyActivity:BaseActivity(), OnItemShowListener {
     private var surveyPresenter = SurveyPresenter()
     private var surveyResponses:SurveyResponsesListWrapper? = null
     private val discussionPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
+    private val conversationLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,20 +74,20 @@ class ResponseSurveyActivity:BaseActivity(), OnItemShowListener {
     private fun handleGetConversation(conversation: Conversation?) {
         conversation?.let {
             DetailConversationActivity.isSmallTalkMode = false
-            startActivityForResult(
+            conversationLauncher.launch(
                 Intent(this, DetailConversationActivity::class.java)
                     .putExtras(
-                        bundleOf(
-                            Const.ID to conversation.id,
-                            Const.POST_AUTHOR_ID to conversation.user?.id,
-                            Const.SHOULD_OPEN_KEYBOARD to false,
-                            Const.NAME to conversation.title,
-                            Const.IS_CONVERSATION_1TO1 to true,
-                            Const.IS_MEMBER to true,
-                            Const.IS_CONVERSATION to true,
-                            Const.HAS_TO_SHOW_MESSAGE to conversation.hasToShowFirstMessage()
-                        )
-                    ), 0
+                        Bundle().apply {
+                            conversation.id?.let { putInt(Const.ID, it) }
+                            conversation.user?.id?.let { putInt(Const.POST_AUTHOR_ID, it) }
+                            putBoolean(Const.SHOULD_OPEN_KEYBOARD, false)
+                            putString(Const.NAME, conversation.title)
+                            putBoolean(Const.IS_CONVERSATION_1TO1, true)
+                            putBoolean(Const.IS_MEMBER, true)
+                            putBoolean(Const.IS_CONVERSATION, true)
+                            putBoolean(Const.HAS_TO_SHOW_MESSAGE, conversation.hasToShowFirstMessage())
+                        }
+                    )
             )
         }
     }

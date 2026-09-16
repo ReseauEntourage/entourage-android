@@ -22,6 +22,7 @@ import social.entourage.android.api.model.Partner
 import social.entourage.android.api.model.PartnerResponse
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.deeplinks.DeepLinksManager
+import social.entourage.android.tools.utils.serializableCompat
 import timber.log.Timber
 
 class PartnerFragment : BaseDialogFragment() {
@@ -36,7 +37,7 @@ class PartnerFragment : BaseDialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            partner = arguments?.getSerializable(KEY_PARTNER) as Partner?
+            partner = arguments?.serializableCompat<Partner>(KEY_PARTNER)
             partnerId = arguments?.getInt(KEY_PARTNERID)
         }
     }

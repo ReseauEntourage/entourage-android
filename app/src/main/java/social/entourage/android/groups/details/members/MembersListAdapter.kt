@@ -1,6 +1,5 @@
 package social.entourage.android.groups.details.members
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.text.Spannable
@@ -171,10 +170,9 @@ class MembersListAdapter(
         b.layout.setOnClickListener { view ->
             val pos = holder.bindingAdapterPosition
             if (pos == RecyclerView.NO_POSITION) return@setOnClickListener
-            (view.context as? Activity)?.startActivityForResult(
+            view.context.startActivity(
                 Intent(view.context, ProfileFullActivity::class.java)
-                    .putExtra(Const.USER_ID, item.userId),
-                0
+                    .putExtra(Const.USER_ID, item.userId)
             )
         }
 
