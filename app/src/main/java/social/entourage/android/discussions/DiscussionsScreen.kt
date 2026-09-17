@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -294,7 +295,7 @@ private fun DedicatedContactRow(moderator: HomeModerator, onClick: () -> Unit) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = moderator.displayName.orEmpty(),
-                fontFamily = NunitoSansBold,
+                fontFamily = QuicksandBold,
                 fontSize = 15.sp,
                 color = Color(0xFF1A1A1A)
             )
@@ -357,7 +358,7 @@ private fun ConversationRow(conversation: Conversation, onClick: () -> Unit) {
             }
             Text(
                 text = nameToDisplay,
-                fontFamily = NunitoSansBold,
+                fontFamily = QuicksandBold,
                 fontSize = 15.sp,
                 color = Color(0xFF1A1A1A),
                 maxLines = 1
@@ -365,6 +366,13 @@ private fun ConversationRow(conversation: Conversation, onClick: () -> Unit) {
             if (isOuting) {
                 Text(
                     text = conversation.subname.orEmpty(),
+                    fontFamily = NunitoSansRegular,
+                    fontSize = 12.5.sp,
+                    color = Color(0xFF7A7A7A)
+                )
+            } else {
+                Text(
+                    text = conversation.dateFormattedString(context),
                     fontFamily = NunitoSansRegular,
                     fontSize = 12.5.sp,
                     color = Color(0xFF7A7A7A)
@@ -383,9 +391,10 @@ private fun ConversationRow(conversation: Conversation, onClick: () -> Unit) {
             Spacer(Modifier.width(8.dp))
             Box(
                 modifier = Modifier
+                    .defaultMinSize(minWidth = 20.dp, minHeight = 20.dp)
                     .clip(CircleShape)
                     .background(Color(0xFFFF6A38))
-                    .padding(horizontal = 6.dp, vertical = 3.dp),
+                    .padding(horizontal = 5.dp, vertical = 2.dp),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
