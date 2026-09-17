@@ -2,6 +2,7 @@ package social.entourage.android.discussions
 
 import android.content.Context
 import android.widget.ImageView
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -35,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
@@ -102,20 +105,19 @@ fun DiscussionsScreen(
                 item(key = "small_talk_card") {
                     SmallTalkFeatureCard(onClick = onSmallTalkCtaClick)
                 }
+                item(key = "section_label") {
+                    Text(
+                        text = stringResource(R.string.discussion_your_conversations_label),
+                        fontFamily = QuicksandBold,
+                        fontSize = 18.sp,
+                        color = colorResource(R.color.grey),
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                }
                 if (dedicatedContact != null) {
                     item(key = "dedicated_contact") {
                         DedicatedContactRow(moderator = dedicatedContact, onClick = onDedicatedContactClick)
                     }
-                }
-                item(key = "section_label") {
-                    Text(
-                        text = stringResource(R.string.discussion_your_conversations_label),
-                        fontFamily = NunitoSansBold,
-                        fontSize = 11.sp,
-                        letterSpacing = 1.sp,
-                        color = colorResource(R.color.grey),
-                        modifier = Modifier.padding(vertical = 8.dp)
-                    )
                 }
                 items(conversations, key = { it.id ?: it.hashCode() }) { conversation ->
                     ConversationRow(conversation = conversation, onClick = { onConversationClick(conversation) })
@@ -142,44 +144,50 @@ private fun LoadMoreOnScrollEnd(listState: LazyListState, onLoadMore: () -> Unit
 
 @Composable
 private fun DiscussionsHeader(isFilterActive: Boolean, onFilterClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                color = colorResource(R.color.orange),
-                shape = RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp)
-            )
-            .padding(start = 20.dp, end = 12.dp, top = 24.dp, bottom = 28.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = stringResource(R.string.discussion_main_title),
-            fontFamily = QuicksandBold,
-            fontSize = 26.sp,
-            color = Color.White,
-            modifier = Modifier.weight(1f)
+    Box(modifier = Modifier.fillMaxWidth()) {
+        Image(
+            painter = painterResource(R.drawable.header_profile_orange),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            alignment = Alignment.TopCenter,
+            modifier = Modifier.matchParentSize()
         )
-        Box {
-            IconButton(
-                onClick = onFilterClick,
-                modifier = Modifier
-                    .size(48.dp)
-                    .background(Color.White, CircleShape)
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ds_ic_filter),
-                    contentDescription = stringResource(R.string.discussion_filter_title),
-                    tint = colorResource(R.color.orange),
-                    modifier = Modifier.size(22.dp)
-                )
-            }
-            if (isFilterActive) {
-                Box(
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .statusBarsPadding()
+                .padding(start = 20.dp, end = 12.dp, top = 24.dp, bottom = 28.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(R.string.discussion_main_title),
+                fontFamily = QuicksandBold,
+                fontSize = 24.sp,
+                color = Color.White,
+                modifier = Modifier.weight(1f)
+            )
+            Box {
+                IconButton(
+                    onClick = onFilterClick,
                     modifier = Modifier
-                        .size(13.dp)
-                        .align(Alignment.TopEnd)
-                        .background(Color(0xFFFE2929), CircleShape)
-                )
+                        .size(48.dp)
+                        .background(Color.White, CircleShape)
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ds_ic_filter),
+                        contentDescription = stringResource(R.string.discussion_filter_title),
+                        tint = colorResource(R.color.orange),
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
+                if (isFilterActive) {
+                    Box(
+                        modifier = Modifier
+                            .size(13.dp)
+                            .align(Alignment.TopEnd)
+                            .background(Color(0xFFFE2929), CircleShape)
+                    )
+                }
             }
         }
     }
