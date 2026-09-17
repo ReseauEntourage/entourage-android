@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -391,10 +390,9 @@ private fun ConversationRow(conversation: Conversation, onClick: () -> Unit) {
             Spacer(Modifier.width(8.dp))
             Box(
                 modifier = Modifier
-                    .defaultMinSize(minWidth = 20.dp, minHeight = 20.dp)
+                    .size(20.dp)
                     .clip(CircleShape)
-                    .background(Color(0xFFFF6A38))
-                    .padding(horizontal = 5.dp, vertical = 2.dp),
+                    .background(Color(0xFFFF6A38)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(
