@@ -53,7 +53,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.HomeModerator
-import social.entourage.android.ui.theme.NunitoSansBold
 import social.entourage.android.ui.theme.NunitoSansRegular
 import social.entourage.android.ui.theme.QuicksandBold
 
@@ -243,7 +242,7 @@ private fun SmallTalkFeatureCard(onClick: () -> Unit) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = stringResource(R.string.discussion_small_talk_card_title),
-                fontFamily = NunitoSansBold,
+                fontFamily = QuicksandBold,
                 fontSize = 14.sp,
                 color = Color(0xFF1A1A1A)
             )
@@ -264,7 +263,7 @@ private fun SmallTalkFeatureCard(onClick: () -> Unit) {
         ) {
             Text(
                 text = stringResource(R.string.discussion_small_talk_card_cta),
-                fontFamily = NunitoSansBold,
+                fontFamily = QuicksandBold,
                 fontSize = 12.sp,
                 color = Color.White
             )
@@ -307,7 +306,7 @@ private fun DedicatedContactRow(moderator: HomeModerator, onClick: () -> Unit) {
             ) {
                 Text(
                     text = stringResource(R.string.discussion_dedicated_contact_badge),
-                    fontFamily = NunitoSansBold,
+                    fontFamily = QuicksandBold,
                     fontSize = 10.5.sp,
                     color = colorResource(R.color.orange_entourage)
                 )
@@ -379,7 +378,7 @@ private fun ConversationRow(conversation: Conversation, onClick: () -> Unit) {
             }
             Text(
                 text = conversation.getLastMessage(context = context).orEmpty(),
-                fontFamily = if (unread) NunitoSansBold else NunitoSansRegular,
+                fontFamily = if (unread) QuicksandBold else NunitoSansRegular,
                 fontSize = 13.sp,
                 color = if (unread) Color(0xFF2A2A2A) else colorResource(R.color.dark_grey_opacity_40),
                 maxLines = 1
@@ -397,7 +396,7 @@ private fun ConversationRow(conversation: Conversation, onClick: () -> Unit) {
             ) {
                 Text(
                     text = conversation.numberUnreadMessages.toString(),
-                    fontFamily = NunitoSansBold,
+                    fontFamily = QuicksandBold,
                     fontSize = 12.sp,
                     color = Color.White
                 )
