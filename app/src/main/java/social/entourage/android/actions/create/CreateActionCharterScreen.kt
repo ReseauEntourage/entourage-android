@@ -129,7 +129,7 @@ fun CreateActionCharterScreen(
                 Spacer(Modifier.height(18.dp))
                 CharterDotHeader(
                     symbol = "!",
-                    dotBackground = R.drawable.bg_circle_light_orange,
+                    dotBackgroundColor = colorResource(R.color.charter_dot_background),
                     dotTextColor = colorResource(R.color.custom_button_accent_pressed),
                     title = stringResource(R.string.action_cgu_limits_header)
                 )
@@ -140,7 +140,7 @@ fun CreateActionCharterScreen(
                     Spacer(Modifier.height(18.dp))
                     CharterDotHeader(
                         symbol = "♥",
-                        dotBackground = R.drawable.bg_circle_light_orange,
+                        dotBackgroundColor = colorResource(R.color.charter_dot_background),
                         dotTextColor = colorResource(R.color.custom_button_accent_pressed),
                         title = stringResource(R.string.action_cgu_consent_header)
                     )
@@ -247,7 +247,7 @@ private fun CharterDotHeader(
     title: String,
     iconRes: Int? = null,
     symbol: String? = null,
-    dotBackground: Int? = null,
+    dotBackgroundColor: Color? = null,
     dotTextColor: Color = Color.Unspecified,
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -257,15 +257,12 @@ private fun CharterDotHeader(
                 contentDescription = null,
                 modifier = Modifier.size(22.dp)
             )
-            symbol != null && dotBackground != null -> Box(
-                modifier = Modifier.size(22.dp),
+            symbol != null && dotBackgroundColor != null -> Box(
+                modifier = Modifier
+                    .size(22.dp)
+                    .background(dotBackgroundColor, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
-                Image(
-                    painter = painterResource(dotBackground),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize()
-                )
                 Text(text = symbol, style = TextStyle(fontFamily = QuicksandBold, fontSize = 13.sp, color = dotTextColor))
             }
         }
