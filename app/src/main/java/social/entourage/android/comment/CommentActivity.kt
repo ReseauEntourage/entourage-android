@@ -1,5 +1,6 @@
 package social.entourage.android.comment
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -36,11 +37,14 @@ import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.groups.GroupPresenter
+import social.entourage.android.members.MembersActivity
+import social.entourage.android.members.MembersType
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.report.onDissmissFragment
 import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.sockets.ConversationSocketManager
+import social.entourage.android.tools.log.AnalyticsEvents
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -422,6 +426,10 @@ private fun setupConversationChips() {
                     override fun onMessageReactionPicked(comment: Post, reactionType: ReactionType) {
                         comment.id?.let { applyReactionFromMessageActions(it, reactionType) }
                     }
+
+                    override fun onMessageReactionsSeen(comment: Post) {
+                        onSeeMessageReactionsClicked(comment)
+                    }
                 }
             )
             (adapter as? CommentsListAdapter)?.initiateList()
@@ -562,6 +570,30 @@ private fun setupConversationChips() {
 
     /** Overridden by subclasses to actually send/remove the reaction. */
     protected open fun onMessageReactionClicked(comment: Post, reactionType: ReactionType) {}
+
+    /**
+     * Overridden by subclasses to open the "qui a réagi" screen for [comment] — chaque écran
+     * connaît seul le bon id de contexte (ex. DetailConversationActivity utilise
+     * detailConversation?.id plutôt que `id` pour une conversation de sortie, et n'a rien à
+     * ouvrir pour un smalltalk, cf. onMessageReactionClicked/sendAddReaction plus haut : même
+     * asymétrie que pour poser une réaction).
+     */
+    protected open fun onSeeMessageReactionsClicked(comment: Post) {}
+
+    /**
+     * Ouvre l'écran "qui a réagi avec quoi" (réutilisation de [MembersActivity], comme pour les
+     * posts, cf. GroupFeedFragment.seeMemberReaction / EventFeedFragment.seeMemberReaction).
+     */
+    protected fun openReactionsMembersScreen(containerId: Int, messageId: Int, membersType: MembersType) {
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_MESSAGE_SEE_REACTIONS)
+        MembersActivity.isFromReact = true
+        MembersActivity.postId = messageId
+        startActivity(Intent(this, MembersActivity::class.java).apply {
+            putExtra("ID", containerId)
+            putExtra("TYPE", membersType.code)
+        })
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+    }
 
     /** Appelé par ActionSheetFragment (barre de réactions en haut du sheet d'actions) quand
      * l'utilisateur choisit/retape une réaction pour [messageId]. */

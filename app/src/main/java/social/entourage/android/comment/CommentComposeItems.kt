@@ -2,6 +2,7 @@ package social.entourage.android.comment
 
 import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.text.Spannable
 import android.text.SpannableStringBuilder
@@ -98,6 +99,7 @@ fun MessageBubbleItem(
     onRetryClick: () -> Unit,
     onOptionsClick: (Rect) -> Unit,
     onReactionPicked: (ReactionType) -> Unit,
+    onSeeReactions: () -> Unit,
     reactions: List<Reaction>,
     reactionTypes: List<ReactionType>,
 ) {
@@ -204,7 +206,7 @@ fun MessageBubbleItem(
                 Spacer(Modifier.padding(top = 4.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     if (showBadges) {
-                        ReactionsBadgeRow(reactions = reactions, reactionTypes = reactionTypes)
+                        ReactionsBadgeRow(reactions = reactions, reactionTypes = reactionTypes, onClick = onSeeReactions)
                         if (!isMe) Spacer(Modifier.padding(start = 6.dp))
                     }
                     if (!isMe) {
@@ -216,7 +218,7 @@ fun MessageBubbleItem(
                 }
             } else if (!usesMessageOptionsMenu && allowsReactions && comment.id != null) {
                 Spacer(Modifier.padding(top = 2.dp))
-                ReactionsBadgeRow(reactions = reactions, reactionTypes = reactionTypes)
+                ReactionsBadgeRow(reactions = reactions, reactionTypes = reactionTypes, onClick = onSeeReactions)
             }
         }
 
@@ -330,8 +332,12 @@ private fun MessageActionsTriggerButton(showLabel: Boolean, onClick: () -> Unit,
 }
 
 /**
- * Une pastille par type de réaction déjà posé sur le message (icône + nombre), lecture
- * seule — pour réagir, voir [ReactionPickerRow] (appui long sur la bulle).
+ * Réactions déjà posées sur le message : des ronds gris avec l'emoji de chaque type présent
+ * (5 max), superposés comme sur les posts (cf. item_reaction.xml/new_layout_post.xml), suivis
+ * d'un unique compteur global (somme de tous les types). Lecture seule — pour réagir, voir
+ * [ReactionPickerRow] (appui long sur la bulle) ; pour voir qui a réagi et avec quoi, un tap
+ * déclenche [onClick] (cf. [social.entourage.android.members.MembersActivity], réutilisé tel
+ * quel pour les posts).
  *
  * Rendu en Views Android classiques plutôt qu'en Compose pur : la ComposeView réutilisée par
  * le RecyclerView (un item par message) ne recomposait pas de façon fiable cette pastille après
@@ -344,9 +350,10 @@ private fun MessageActionsTriggerButton(showLabel: Boolean, onClick: () -> Unit,
  * fiable à chaque appel.
  */
 @Composable
-private fun ReactionsBadgeRow(reactions: List<Reaction>, reactionTypes: List<ReactionType>) {
+private fun ReactionsBadgeRow(reactions: List<Reaction>, reactionTypes: List<ReactionType>, onClick: () -> Unit) {
     val buckets = reactions.filter { it.reactionsCount > 0 }
     if (buckets.isEmpty()) return
+    val totalCount = buckets.sumOf { it.reactionsCount }
     AndroidView(
         factory = { ctx ->
             LinearLayout(ctx).apply {
@@ -360,26 +367,22 @@ private fun ReactionsBadgeRow(reactions: List<Reaction>, reactionTypes: List<Rea
             fun dp(value: Float) = (value * density).roundToInt()
 
             container.removeAllViews()
-            buckets.forEachIndexed { index, bucket ->
+            container.setOnClickListener { onClick() }
+
+            buckets.take(5).forEachIndexed { index, bucket ->
                 val type = reactionTypes.firstOrNull { it.id == bucket.reactionId }
-                val pill = LinearLayout(ctx).apply {
-                    orientation = LinearLayout.HORIZONTAL
-                    gravity = Gravity.CENTER_VERTICAL
-                    background = GradientDrawable().apply {
-                        shape = GradientDrawable.RECTANGLE
-                        cornerRadius = dp(15f).toFloat()
-                        setColor(ContextCompat.getColor(ctx, R.color.white))
+                val pill = FrameLayout(ctx).apply {
+                    layoutParams = LinearLayout.LayoutParams(dp(25f), dp(25f)).apply {
+                        if (index > 0) marginStart = dp(-5f)
                     }
-                    setPadding(dp(6f), dp(3f), dp(6f), dp(3f))
-                    layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                    ).apply {
-                        if (index > 0) marginStart = dp(4f)
+                    background = GradientDrawable().apply {
+                        shape = GradientDrawable.OVAL
+                        setColor(ContextCompat.getColor(ctx, R.color.white))
+                        setStroke(dp(1f), android.graphics.Color.parseColor("#D9D9D9"))
                     }
                 }
                 val icon = ImageView(ctx).apply {
-                    layoutParams = LinearLayout.LayoutParams(dp(16f), dp(16f))
+                    layoutParams = FrameLayout.LayoutParams(dp(15f), dp(15f), Gravity.CENTER)
                     scaleType = ImageView.ScaleType.CENTER_CROP
                 }
                 if (type?.imageUrl != null) {
@@ -388,19 +391,19 @@ private fun ReactionsBadgeRow(reactions: List<Reaction>, reactionTypes: List<Rea
                     icon.setImageResource(R.drawable.ic_pouce_orange)
                 }
                 pill.addView(icon)
-                val countText = TextView(ctx).apply {
-                    text = bucket.reactionsCount.toString()
-                    setTextColor(ContextCompat.getColor(ctx, R.color.black))
-                    textSize = 13f
-                    typeface = ResourcesCompat.getFont(ctx, R.font.nunitosans_regular)
-                    layoutParams = LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                    ).apply { marginStart = dp(4f) }
-                }
-                pill.addView(countText)
                 container.addView(pill)
             }
+            val countText = TextView(ctx).apply {
+                text = totalCount.toString()
+                setTextColor(ContextCompat.getColor(ctx, R.color.black))
+                textSize = 13f
+                typeface = ResourcesCompat.getFont(ctx, R.font.nunitosans_regular)
+                layoutParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                ).apply { marginStart = dp(5f) }
+            }
+            container.addView(countText)
         }
     )
 }

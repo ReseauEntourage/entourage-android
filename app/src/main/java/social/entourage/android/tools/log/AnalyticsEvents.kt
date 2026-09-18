@@ -476,6 +476,10 @@ object AnalyticsEvents {
     const val ACTION_GROUP_MEMBER_SEARCH_DELETE = "Action__GroupMember__Search_Delete"
     const val ACTION_GROUP_MEMBER_SEARCH_SEE_RESULT = "Action__GroupMember__Search_SeeResult"
 
+    //MESSAGE - REACTIONS
+
+    const val ACTION_MESSAGE_SEE_REACTIONS = "Action__Message__SeeReactions"
+
     //GROUPE - PLUS
 
     const val ACTION_GROUP_FEED_PLUS = "Action__GroupFeed__Plus"
