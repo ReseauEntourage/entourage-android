@@ -7,33 +7,46 @@ import android.text.Editable
 import android.text.Html
 import android.text.TextWatcher
 import android.view.View
+import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import androidx.activity.viewModels
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.drawToBitmap
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.Reaction
+import social.entourage.android.api.model.ReactionType
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityCommentsBinding
 import social.entourage.android.deeplinks.UniversalLinkManager
+import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.groups.GroupPresenter
-import social.entourage.android.report.DataLanguageStock
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.report.onDissmissFragment
 import social.entourage.android.small_talks.SmallTalkViewModel
+import social.entourage.android.sockets.ConversationSocketManager
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
+import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.utils.scrollToPositionSmooth
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.ui.ActionSheetFragment
@@ -57,6 +70,50 @@ var isGroup = false
 var isSmallTalk = false
 lateinit var viewModel: DiscussionsPresenter
 var haveReloadFromDelete = false
+protected var editingMessageId: Int? = null
+
+// Panneau d'actions unifié actuellement affiché (cf. showMessageActionsOverlay), le cas
+// échéant — null quand aucun n'est ouvert.
+private var messageActionsOverlayView: ComposeView? = null
+
+// chat_message_id ciblé par une notification (deep link vers un commentaire précis dans ce
+// fil) : consommé une seule fois par scrollAndHighlightIfNeeded(), puis remis à null.
+private var targetChatMessageId: Int? = null
+
+// Vrai pour tout écran qui propose l'édition d'un message (discussion + commentaires
+// de publication). Le PATCH chat_messages/{id} de groupe/sortie n'a pas été confirmé
+// contre le back au moment de son ajout ici — à vérifier en recette avant release.
+protected open val allowsMessageEdit: Boolean get() = false
+
+// Vrai pour tout écran où les réactions sur message sont proposées (discussion +
+// commentaires de publication).
+protected open val allowsMessageReactions: Boolean get() = false
+
+// Vrai uniquement pour DetailConversationActivity (conversation, event/outing ET smalltalk
+// confondus) : contrôle le bouton 3-points + la barre de réactions inline sous la bulle
+// (cf. MessageBubbleItem). Volontairement indépendant de `isConversation`, qui vient de
+// l'extra d'intent Const.IS_CONVERSATION — pas systématiquement posé par tous les écrans qui
+// ouvrent DetailConversationActivity (ex. SmallTalkGroupFoundActivity/SmallTalkListOtherBands
+// ne le posent pas), alors que ce nouveau flag doit rester vrai partout où cette Activity
+// s'ouvre, quel que soit l'appelant.
+protected open val usesMessageOptionsMenu: Boolean get() = false
+
+private var socketEventsJob: Job? = null
+protected var hasUnseenNewMessages = false
+
+// chat_message_id des messages dont la réaction est en cours d'envoi (delete et/ou add pas
+// encore confirmés) — cf. toggleMessageReaction. Retaper la même bulle avant la fin de cette
+// séquence relançait un second delete/add qui pouvait s'entrelacer côté serveur avec le
+// premier (même bug que le changement de réaction non séquencé, mais entre deux appuis
+// distincts cette fois).
+private val reactionRequestsInFlight = mutableSetOf<Int>()
+
+// Dernière réaction demandée pendant qu'une requête était déjà en cours pour ce message (cf.
+// reactionRequestsInFlight), rejouée dès que celle-ci se termine. Sans ça, plusieurs appuis
+// rapprochés sur des réactions différentes (changer d'avis plusieurs fois de suite) faisaient
+// ignorer tous les appuis sauf le tout premier : l'affichage restait bloqué sur une réaction
+// intermédiaire au lieu de converger vers la dernière choisie.
+private val pendingReactionPicks = mutableMapOf<Int, ReactionType>()
 
 
 protected var isOne2One = false
@@ -81,6 +138,9 @@ override fun onCreate(savedInstanceState: Bundle?) {
     viewModel = ViewModelProvider(this).get(DiscussionsPresenter::class.java)
     id = intent.getIntExtra(Const.ID, Const.DEFAULT_VALUE)
     postId = intent.getIntExtra(Const.POST_ID, Const.DEFAULT_VALUE)
+    intent.getIntExtra(Const.CHAT_MESSAGE_ID, Const.DEFAULT_VALUE).let {
+        targetChatMessageId = if (it != Const.DEFAULT_VALUE) it else null
+    }
     postAuthorID = intent.getIntExtra(Const.POST_AUTHOR_ID, Const.DEFAULT_VALUE)
     isMember = intent.getBooleanExtra(Const.IS_MEMBER, false)
     titleName = intent.getStringExtra(Const.NAME)
@@ -100,7 +160,44 @@ override fun onCreate(savedInstanceState: Bundle?) {
     handleSendButtonState()
     setupConversationChips()
     setupWindowInsets()
+    binding.btnCancelEditMessage.setOnClickListener { cancelEditingMessage() }
+    binding.tvNewMessagesBanner.setOnClickListener {
+        hideNewMessagesBanner()
+        scrollAfterLayout()
+    }
 }
+
+/**
+ * Met le message dans le champ de saisie du bas et bascule le bouton d'envoi en mode
+ * "modifier" : le prochain envoi fera un PATCH (via [updateComment]) au lieu de créer
+ * un nouveau message.
+ */
+fun startEditingMessage(messageId: Int, messageHtml: String?) {
+    if (messageId == 0) return
+    editingMessageId = messageId
+    val html = messageHtml ?: ""
+    val spanned = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY)
+    } else {
+        @Suppress("DEPRECATION") Html.fromHtml(html)
+    }
+    binding.commentMessage.setText(spanned)
+    binding.commentMessage.setSelection(binding.commentMessage.text?.length ?: 0)
+    binding.layoutEditingMessage.visibility = View.VISIBLE
+    binding.commentMessage.requestFocus()
+    val imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as? android.view.inputmethod.InputMethodManager
+    imm?.showSoftInput(binding.commentMessage, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT)
+}
+
+fun cancelEditingMessage() {
+    editingMessageId = null
+    binding.commentMessage.text?.clear()
+    binding.layoutEditingMessage.visibility = View.GONE
+    Utils.hideKeyboard(this)
+}
+
+/** Overridden by DetailConversationActivity to PATCH the edited message. */
+abstract fun updateComment(messageId: Int, newContentHtml: String)
 
 fun setIsEventTrue(){
     this.isEvent = true
@@ -122,25 +219,86 @@ protected fun scrollAfterLayout() {
         .addOnGlobalLayoutListener(
             object : OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
-                    binding.comments.scrollToPosition(commentsList.size - 1)
+                    // + parentPostOffset() : sur les commentaires de publication, l'item 0 est
+                    // le post parent (cf. getItemCount()/hasCurrentPost) — sans ce décalage on
+                    // scrollait systématiquement un cran trop court, laissant le tout dernier
+                    // message juste sous le bord visible.
+                    binding.comments.scrollToPosition(commentsList.size - 1 + parentPostOffset())
                     binding.comments.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 }
             })
+}
+
+/**
+ * Variante de [scrollAfterLayout] qui scrolle et met en évidence [targetChatMessageId] s'il
+ * y en a un en attente (deep link notif vers un commentaire précis), sinon se comporte comme
+ * [scrollAfterLayout] (scroll vers le dernier message). Le fil de commentaires n'étant pas
+ * paginé côté client (chargé en un seul appel), pas besoin d'aller chercher une page
+ * supplémentaire : si le message ciblé existe dans ce fil, il est déjà en mémoire.
+ */
+protected fun scrollAndHighlightIfNeeded() {
+    val targetId = targetChatMessageId
+    if (targetId == null) {
+        scrollAfterLayout()
+        return
+    }
+    targetChatMessageId = null
+
+    val commentIndex = commentsList.indexOfFirst { it.id == targetId }
+    val isParentPost = commentIndex == -1 && currentParentPost?.id == targetId
+    if (commentIndex == -1 && !isParentPost) {
+        // Message ciblé introuvable dans ce fil (racine ou commentaire) : comportement par défaut.
+        scrollAfterLayout()
+        return
+    }
+
+    val adapterIndex = if (isParentPost) 0 else commentIndex + parentPostOffset()
+    binding.comments.viewTreeObserver.addOnGlobalLayoutListener(
+        object : OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                binding.comments.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                binding.comments.scrollToPosition(adapterIndex)
+                if (!isParentPost) highlightCommentAt(adapterIndex, targetId)
+            }
+        })
+}
+
+private fun highlightCommentAt(adapterIndex: Int, targetId: Int) {
+    val adapter = binding.comments.adapter as? CommentsListAdapter ?: return
+    adapter.highlightedMessageId = targetId
+    adapter.notifyItemChanged(adapterIndex)
+    binding.comments.postDelayed({
+        if (adapter.highlightedMessageId == targetId) {
+            adapter.highlightedMessageId = null
+            adapter.notifyItemChanged(adapterIndex)
+        }
+    }, HIGHLIGHT_DURATION_MS)
+}
+
+companion object {
+    private const val HIGHLIGHT_DURATION_MS = 1200L
 }
 
 private fun handleMessageDeleted(isMessageDeleted:Boolean){
 
 }
 
+/**
+ * Confirmation REST de l'envoi d'un commentaire. Sur les commentaires de groupe/sortie, le
+ * même message revient aussi par le websocket (chat_message_created n'est pas filtré pour
+ * l'auteur, contrairement aux réactions) : sans déduplication, il apparaissait deux fois
+ * selon l'ordre d'arrivée REST/socket. On passe donc par [mergeIncomingMessage], qui
+ * remplace l'entrée déjà insérée par le socket au lieu d'en ajouter une deuxième.
+ */
 protected fun handleCommentPosted(post: Post?) {
     post?.let {
-        commentsList.add(post)
+        mergeIncomingMessage(it)
     } ?: run {
         messagesFailed.add(comment)
         comment?.let { commentsList.add(it) }
+        binding.comments.scrollToPositionSmooth(commentsList.size)
+        updateView(false)
     }
-    binding.comments.scrollToPositionSmooth(commentsList.size)
-    updateView(false)
 }
 
 fun updateView(emptyState: Boolean) {
@@ -211,46 +369,6 @@ private fun setupConversationChips() {
     }
 }
 
-    // CommentActivity.kt
-    private fun reportComment(
-        commentId: Int?,
-        isForEvent: Boolean,
-        isForGroup: Boolean,
-        isMe: Boolean,
-        commentLang: String,
-        messageHtml: String? = null
-    ) {
-        commentId ?: return
-
-        val (containerId, type) = when {
-            isForEvent -> id to ReportTypes.REPORT_POST_EVENT
-            isForGroup -> id to ReportTypes.REPORT_POST
-            else       -> id to ReportTypes.REPORT_COMMENT
-        }
-
-        val plain = when {
-            !messageHtml.isNullOrBlank() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ->
-                Html.fromHtml(messageHtml, Html.FROM_HTML_MODE_LEGACY).toString()
-            !messageHtml.isNullOrBlank() ->
-                @Suppress("DEPRECATION") Html.fromHtml(messageHtml).toString()
-            else -> ""
-        }
-        if (plain.isNotBlank()) DataLanguageStock.updateContentToCopy(plain)
-
-        ReportModalFragment.newInstance(
-            id = commentId,                       // ✅ reportedId = le message
-            groupId = containerId,                // ✅ groupId = contexte (conv/groupe/event)
-            reportType = type,
-            isFromMe = isMe,
-            isConv = !(isForEvent || isForGroup),
-            isOneToOne = (isConversation && isOne2One),
-            contentCopied = plain,
-            openDirectSignal = true               // ✅ ouvre directement le step "signalement"
-        ).show(supportFragmentManager, ReportModalFragment.TAG)
-    }
-
-
-
     private fun initializeComments() {
         binding.comments.apply {
             layoutManager = LinearLayoutManager(context)
@@ -268,50 +386,454 @@ private fun setupConversationChips() {
                         commentsList.remove(comment)
                     }
 
-                    override fun onCommentReport(
-                        commentId: Int?,
-                        isForEvent: Boolean,
-                        isForGroup: Boolean,
-                        isMe: Boolean,
-                        commentLang: String
-                    ) {
-                        commentId ?: return
-                        reportComment(commentId, isForEvent, isForGroup, isMe, commentLang, null)
-                    }
-
                     override fun onShowWeb(url: String) {
-                        WebViewFragment.newInstance(
-                            if (!url.startsWith("http")) "https://$url" else url,
-                            0,
-                            true
-                        ).show(supportFragmentManager, WebViewFragment.TAG)
+                        val fullUrl = if (!url.startsWith("http")) "https://$url" else url
+                        val uri = Uri.parse(fullUrl)
+                        // Les mentions @ sont insérées sous forme de lien universel
+                        // (https://<DEEP_LINKS_URL>/app/users/<id>), cf.
+                        // DetailConversationActivity.insertMentionIntoEditText : on les route
+                        // vers l'écran in-app plutôt que de les ouvrir dans la WebView.
+                        if (uri.host == universalLinkManager.prodURL || uri.host == universalLinkManager.stagingURL) {
+                            universalLinkManager.handleUniversalLink(uri)
+                            return
+                        }
+                        WebViewFragment.newInstance(fullUrl, 0, true)
+                            .show(supportFragmentManager, WebViewFragment.TAG)
                     }
 
-                    override fun onMessageLongPress(comment: Post, isMe: Boolean) {
-                        showMessageOptions(comment, isMe)
+                    override fun onMessageLongPress(target: MessageActionsTarget) {
+                        showMessageActionsOverlay(target)
+                    }
+
+                    override fun onMessageOptionsClick(target: MessageActionsTarget) {
+                        showMessageActionsOverlay(target)
+                    }
+
+                    override fun onMessageReactionPicked(comment: Post, reactionType: ReactionType) {
+                        comment.id?.let { applyReactionFromMessageActions(it, reactionType) }
                     }
                 }
             )
             (adapter as? CommentsListAdapter)?.initiateList()
+            (adapter as? CommentsListAdapter)?.allowsReactions = allowsMessageReactions
+            (adapter as? CommentsListAdapter)?.usesMessageOptionsMenu = usesMessageOptionsMenu
         }
     }
 
-    private fun showMessageOptions(comment: Post, isMe: Boolean) {
-        val conversationId = if (isConversation) id else 0
-        val groupId = if (isGroup) id else 0
-        val eventId = if (isEvent) id else 0
+    /**
+     * Panneau d'actions unifié (cf. [MessageActionsOverlay]) : remplace l'ancien
+     * `ActionSheetFragment` (SheetMode.MESSAGE_ACTIONS) qui ouvrait un bottom sheet séparé —
+     * long-clic sur la bulle et tap sur le bouton déclencheur (cf. MessageBubbleItem) ouvrent
+     * tous les deux ce même panneau, ancré à la position capturée dans [target].
+     */
+    private fun showMessageActionsOverlay(target: MessageActionsTarget) {
+        if (messageActionsOverlayView != null) return
+        val comment = target.comment
+        val isMe = target.isMe
+        val canEdit = allowsMessageEdit && isMe && comment.status !in listOf("deleted", "offensive", "offensible")
+        val canReact = allowsMessageReactions && !isMe && comment.id != null
 
-        val sheet = ActionSheetFragment.newMessageActions(
-            conversationId = conversationId,
-            groupId = groupId,
-            eventId = eventId,
-            messageId = comment.id ?: 0,
-            messageHtml = comment.content ?: comment.contentHtml,
-            isMyMessage = isMe,
-            isEventContext = isEvent,
-            isGroupContext = isGroup
+        val screenshot = try {
+            window.decorView.drawToBitmap().softBlur()
+        } catch (e: Exception) {
+            null
+        }
+
+        val rootContent = findViewById<ViewGroup>(android.R.id.content)
+        val overlay = ComposeView(this).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnDetachedFromWindow)
+        }
+        rootContent.addView(
+            overlay,
+            ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         )
-        sheet.show(supportFragmentManager, "MessageActionsSheet")
+        messageActionsOverlayView = overlay
+
+        overlay.setContent {
+            MessageActionsOverlay(
+                target = target,
+                backgroundBitmap = screenshot,
+                canEdit = canEdit,
+                allowsReactions = canReact,
+                reactionTypes = MainActivity.reactionsList ?: emptyList(),
+                myReactionId = comment.reactionId ?: 0,
+                onDismiss = { dismissMessageActionsOverlay() },
+                onCopy = { performMessageCopy(comment); dismissMessageActionsOverlay() },
+                onEdit = {
+                    startEditingMessage(comment.id ?: 0, comment.content ?: comment.contentHtml)
+                    dismissMessageActionsOverlay()
+                },
+                onReport = { performMessageReport(comment, isMe); dismissMessageActionsOverlay() },
+                onDelete = { performMessageDelete(comment); dismissMessageActionsOverlay() },
+                onReactionPicked = { type ->
+                    comment.id?.let { applyReactionFromMessageActions(it, type) }
+                    dismissMessageActionsOverlay()
+                },
+            )
+        }
+    }
+
+    private fun dismissMessageActionsOverlay() {
+        val overlay = messageActionsOverlayView ?: return
+        (overlay.parent as? ViewGroup)?.removeView(overlay)
+        messageActionsOverlayView = null
+    }
+
+    private fun performMessageCopy(comment: Post) {
+        val messageHtml = comment.content ?: comment.contentHtml
+        val plain = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(messageHtml.orEmpty(), Html.FROM_HTML_MODE_LEGACY).toString()
+        } else {
+            @Suppress("DEPRECATION") Html.fromHtml(messageHtml.orEmpty()).toString()
+        }
+        val cm = getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+        cm.setPrimaryClip(android.content.ClipData.newPlainText("message", plain))
+    }
+
+    /**
+     * Porté depuis l'ancien `ActionSheetFragment` (SheetMode.MESSAGE_ACTIONS, bloc
+     * layoutReport) : pour un message de conversation, on signale la conversation entière
+     * (REPORT_CONVERSATION, avec résolution smalltalk) plutôt que le message individuel.
+     */
+    private fun performMessageReport(comment: Post, isMe: Boolean) {
+        val messageHtml = comment.content ?: comment.contentHtml
+        val plain = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(messageHtml.orEmpty(), Html.FROM_HTML_MODE_LEGACY).toString()
+        } else {
+            @Suppress("DEPRECATION") Html.fromHtml(messageHtml.orEmpty()).toString()
+        }
+
+        if (!isEvent && !isGroup) {
+            val isSmallTalkMode = isSmallTalk || DetailConversationActivity.isSmallTalkMode
+            val convOrSmallTalkId = if (isSmallTalkMode) {
+                DetailConversationActivity.smallTalkId.toIntOrNull() ?: 0
+            } else {
+                id
+            }
+            ReportModalFragment.newInstance(
+                id = convOrSmallTalkId,
+                groupId = Const.DEFAULT_VALUE,
+                reportType = ReportTypes.REPORT_CONVERSATION,
+                isFromMe = isMe,
+                isConv = true,
+                isOneToOne = false,
+                contentCopied = plain,
+                openDirectSignal = true,
+                isSmallTalk = isSmallTalkMode
+            ).show(supportFragmentManager, ReportModalFragment.TAG)
+        } else {
+            val (containerId, reportType) = when {
+                isEvent -> id to ReportTypes.REPORT_POST_EVENT
+                isGroup -> id to ReportTypes.REPORT_POST
+                else -> 0 to ReportTypes.REPORT_POST
+            }
+            ReportModalFragment.newInstance(
+                id = comment.id ?: 0,
+                groupId = containerId,
+                reportType = reportType,
+                isFromMe = isMe,
+                isConv = false,
+                isOneToOne = false,
+                contentCopied = plain,
+                openDirectSignal = true
+            ).show(supportFragmentManager, ReportModalFragment.TAG)
+        }
+    }
+
+    private fun performMessageDelete(comment: Post) {
+        val messageId = comment.id ?: return
+        when {
+            isEvent && id != 0 -> eventPresenter.deletedEventPost(id, messageId)
+            isGroup && id != 0 -> groupPresenter.deletedGroupPost(id, messageId)
+            else -> discussionsPresenter.deleteMessage(id, messageId)
+        }
+        reloadView()
+    }
+
+    /** Overridden by subclasses to actually send/remove the reaction. */
+    protected open fun onMessageReactionClicked(comment: Post, reactionType: ReactionType) {}
+
+    /** Appelé par ActionSheetFragment (barre de réactions en haut du sheet d'actions) quand
+     * l'utilisateur choisit/retape une réaction pour [messageId]. */
+    fun applyReactionFromMessageActions(messageId: Int, reactionType: ReactionType) {
+        val comment = commentsList.firstOrNull { it.id == messageId } ?: return
+        onMessageReactionClicked(comment, reactionType)
+    }
+
+    // ==================================================================================
+    // Websocket temps réel (ConversationChannel) — partagé entre DetailConversationActivity,
+    // GroupCommentActivity et EventCommentActivity : connexion/déconnexion, fusion des
+    // messages entrants sans voler le scroll, bandeau "nouveaux messages", et mise à jour
+    // optimiste des réactions.
+    // ==================================================================================
+
+    /** [belongsToThisScreen] filtre les événements reçus (utile quand la souscription
+     * est plus large que l'écran affiché, ex. tout un groupe alors qu'on ne regarde que
+     * les commentaires d'un post précis). [onReconnected] est appelé quand la souscription
+     * est reconfirmée après une coupure (voir ChatEvent.Reconnected) : aucun historique
+     * n'étant rejoué par le serveur, l'écran doit recharger via REST pour combler le trou. */
+    protected fun connectChatSocket(
+        instanceType: String,
+        instanceId: Int,
+        belongsToThisScreen: (Post) -> Boolean = { true },
+        onReconnected: () -> Unit = {}
+    ) {
+        ConversationSocketManager.connect(instanceType, instanceId)
+        socketEventsJob?.cancel()
+        socketEventsJob = lifecycleScope.launch {
+            ConversationSocketManager.events.collect { event -> onChatSocketEvent(event, belongsToThisScreen, onReconnected) }
+        }
+    }
+
+    protected fun disconnectChatSocket() {
+        socketEventsJob?.cancel()
+        socketEventsJob = null
+        ConversationSocketManager.disconnect()
+    }
+
+    private fun onChatSocketEvent(
+        event: ConversationSocketManager.ChatEvent,
+        belongsToThisScreen: (Post) -> Boolean,
+        onReconnected: () -> Unit
+    ) {
+        when (event) {
+            is ConversationSocketManager.ChatEvent.MessageCreated ->
+                if (belongsToThisScreen(event.message)) mergeIncomingMessage(event.message)
+            is ConversationSocketManager.ChatEvent.MessageUpdated ->
+                if (belongsToThisScreen(event.message)) updateExistingMessageInPlace(event.message)
+            is ConversationSocketManager.ChatEvent.ReactionAdded ->
+                applyReactionAdded(event.chatMessageId, event.reactionId)
+            is ConversationSocketManager.ChatEvent.ReactionRemoved ->
+                applyReactionRemoved(event.chatMessageId, event.reactionId)
+            is ConversationSocketManager.ChatEvent.Reconnected -> onReconnected()
+        }
+    }
+
+    /** Décalage d'index dû au "post parent" affiché en position 0 (commentaires de publication). */
+    private fun parentPostOffset(): Int = if (currentParentPost != null) 1 else 0
+
+    protected fun isAtBottomOfComments(): Boolean {
+        val lm = binding.comments.layoutManager as? LinearLayoutManager ?: return true
+        // findLastVisibleItemPosition (partiellement visible) plutôt que ...Completely... : une
+        // bulle un peu haute (réactions + bouton sous le message) n'entre pas forcément en
+        // entier dans le viewport même quand on est au bas de la liste, ce qui faisait
+        // faussement croire qu'on n'était "pas en bas" et coupait l'auto-scroll à la réception.
+        val last = lm.findLastVisibleItemPosition()
+        return last >= lm.itemCount - 2
+    }
+
+    protected fun showNewMessagesBanner() {
+        hasUnseenNewMessages = true
+        binding.tvNewMessagesBanner.visibility = View.VISIBLE
+    }
+
+    protected fun hideNewMessagesBanner() {
+        hasUnseenNewMessages = false
+        binding.tvNewMessagesBanner.visibility = View.GONE
+    }
+
+    /**
+     * Insère ou met à jour un message reçu (confirmation d'envoi du serveur, ou message
+     * poussé par le websocket). Ne force le scroll que si on était déjà en bas de la
+     * liste (ou si c'est notre propre message) : sinon on affiche juste le bandeau
+     * "nouveaux messages", comme sur Messenger.
+     */
+    protected open fun mergeIncomingMessage(post: Post, forceScrollIfMine: Boolean = true) {
+        val existingIdx = if (post.id != null) commentsList.indexOfFirst { it.id == post.id } else -1
+        if (existingIdx >= 0) {
+            commentsList[existingIdx] = post
+            binding.comments.adapter?.notifyItemChanged(existingIdx + parentPostOffset())
+            return
+        }
+        val wasAtBottom = isAtBottomOfComments()
+        val insertPos = commentsList.size
+        commentsList.add(post)
+        binding.comments.adapter?.notifyItemInserted(insertPos + parentPostOffset())
+        val isMine = post.user?.userId == EntourageApplication.get().me()?.id
+        if (wasAtBottom || (isMine && forceScrollIfMine)) {
+            scrollAfterLayout()
+            hideNewMessagesBanner()
+        } else {
+            showNewMessagesBanner()
+        }
+        binding.progressBar.visibility = View.GONE
+        updateView(commentsList.isEmpty())
+    }
+
+    private fun updateExistingMessageInPlace(post: Post) {
+        val idx = commentsList.indexOfFirst { it.id != null && it.id == post.id }
+        if (idx >= 0) {
+            commentsList[idx] = mergeUpdatedMessageFields(commentsList[idx], post)
+            binding.comments.adapter?.notifyItemChanged(idx + parentPostOffset())
+        }
+    }
+
+    /**
+     * Le payload d'un chat_message_updated reçu par websocket (édition ou suppression douce,
+     * cf. ConversationSocketManager) peut être une projection plus légère que la réponse REST
+     * complète d'un Post — un remplacement intégral de l'entrée locale viderait alors des
+     * champs absents de ce payload (user, reactions...) qu'une édition/suppression ne modifie
+     * pourtant jamais. On ne reprend donc de [incoming] que ce qu'une édition/suppression peut
+     * réellement changer, et on conserve le reste de [existing].
+     */
+    private fun mergeUpdatedMessageFields(existing: Post, incoming: Post): Post = Post(
+        id = existing.id,
+        content = incoming.content ?: existing.content,
+        contentHtml = incoming.contentHtml ?: existing.contentHtml,
+        contentTranslations = incoming.contentTranslations ?: existing.contentTranslations,
+        contentTranslationsHtml = incoming.contentTranslationsHtml ?: existing.contentTranslationsHtml,
+        user = existing.user,
+        createdTime = existing.createdTime,
+        messageType = existing.messageType,
+        postId = existing.postId,
+        hasComments = existing.hasComments,
+        commentsCount = existing.commentsCount,
+        imageUrl = incoming.imageUrl ?: existing.imageUrl,
+        status = incoming.status ?: existing.status,
+        reactions = existing.reactions,
+        read = existing.read,
+        reactionId = existing.reactionId,
+        idInternal = existing.idInternal,
+        survey = existing.survey,
+        surveyResponse = existing.surveyResponse,
+        autoPostFrom = existing.autoPostFrom,
+    ).also {
+        it.datePostText = existing.datePostText
+        it.isDatePostOnly = existing.isDatePostOnly
+    }
+
+    private fun applyReactionAdded(chatMessageId: Int, reactionId: Int) {
+        val idx = commentsList.indexOfFirst { it.id == chatMessageId }
+        if (idx >= 0) {
+            addOrUpdateReactionBucket(commentsList[idx], reactionId)
+            binding.comments.adapter?.notifyDataSetChanged()
+        }
+    }
+
+    private fun applyReactionRemoved(chatMessageId: Int, reactionId: Int) {
+        val idx = commentsList.indexOfFirst { it.id == chatMessageId }
+        if (idx >= 0) {
+            removeReactionBucket(commentsList[idx], reactionId)
+            binding.comments.adapter?.notifyDataSetChanged()
+        }
+    }
+
+    /**
+     * Réaffecte toujours une NOUVELLE liste à [Post.reactions] plutôt que de la muter en place :
+     * la ComposeView de la bulle, réutilisée par le RecyclerView, ne recomposait pas de façon
+     * fiable la pastille de réaction quand la même instance de liste était mutée sur place —
+     * seul le panneau de réactions (composition à part, reconstruite à chaque long-clic)
+     * reflétait alors l'état à jour. Une nouvelle référence de liste force la recomposition
+     * quel que soit le mécanisme exact de stabilité de Compose en jeu ici.
+     */
+    protected fun addOrUpdateReactionBucket(post: Post, reactionId: Int) {
+        val current = post.reactions.orEmpty()
+        val updated = current.map { bucket ->
+            if (bucket.reactionId == reactionId) {
+                Reaction().apply { this.reactionId = reactionId; this.reactionsCount = bucket.reactionsCount + 1 }
+            } else {
+                bucket
+            }
+        }.toMutableList()
+        if (current.none { it.reactionId == reactionId }) {
+            updated.add(Reaction().apply { this.reactionId = reactionId; this.reactionsCount = 1 })
+        }
+        post.reactions = updated
+    }
+
+    /**
+     * Bascule optimiste de la réaction locale sur [comment], puis enchaîne les appels réseau
+     * ([sendDelete]/[sendAdd], propres à l'écran : conversation/smalltalk, groupe, sortie) dans
+     * le bon ordre : sur un changement de réaction, le serveur refuse le POST tant que
+     * l'ancienne réaction existe encore ("User can only react once"), donc le DELETE doit être
+     * confirmé avant d'envoyer le POST — les tirer en parallèle est ce qui causait l'affichage
+     * incohérent après un changement/annulation de réaction. Un second appui sur la même bulle
+     * avant la fin de cette séquence ne relance pas un second delete/add en parallèle (même
+     * risque d'entrelacement côté serveur) : il est mémorisé dans [pendingReactionPicks] et
+     * rejoué dès que la séquence en cours se termine, pour que plusieurs changements d'avis
+     * rapprochés convergent vers le dernier choisi plutôt que de rester bloqués sur le premier.
+     */
+    protected fun toggleMessageReaction(
+        comment: Post,
+        reactionType: ReactionType,
+        sendAdd: (reactionId: Int, onComplete: (Boolean) -> Unit) -> Unit,
+        sendDelete: (onComplete: (Boolean) -> Unit) -> Unit,
+    ) {
+        val messageId = comment.id ?: return
+        if (!reactionRequestsInFlight.add(messageId)) {
+            pendingReactionPicks[messageId] = reactionType
+            return
+        }
+        VibrationUtil.vibrate(this)
+
+        val previousReactionId = comment.reactionId ?: 0
+        val idx = commentsList.indexOfFirst { it.id == messageId }
+
+        fun onRequestSettled() {
+            reactionRequestsInFlight.remove(messageId)
+            val queued = pendingReactionPicks.remove(messageId) ?: return
+            toggleMessageReaction(comment, queued, sendAdd, sendDelete)
+        }
+
+        if (previousReactionId == reactionType.id) {
+            // Toggle off : on enlève la réaction existante.
+            removeReactionBucket(comment, previousReactionId)
+            comment.reactionId = 0
+            if (idx >= 0) binding.comments.adapter?.notifyDataSetChanged()
+            sendDelete { success ->
+                if (!success) revertOptimisticReaction(comment, 0, previousReactionId)
+                onRequestSettled()
+            }
+        } else {
+            // Mise à jour optimiste immédiate de l'affichage...
+            if (previousReactionId != 0) removeReactionBucket(comment, previousReactionId)
+            addOrUpdateReactionBucket(comment, reactionType.id)
+            comment.reactionId = reactionType.id
+            if (idx >= 0) binding.comments.adapter?.notifyDataSetChanged()
+
+            val newReactionId = reactionType.id
+            val finish: (Boolean) -> Unit = { success ->
+                if (!success) revertOptimisticReaction(comment, newReactionId, previousReactionId)
+                onRequestSettled()
+            }
+            // ...mais côté réseau on attend la confirmation du DELETE avant d'envoyer le POST.
+            if (previousReactionId != 0) {
+                sendDelete { deleted -> if (deleted) sendAdd(newReactionId, finish) else finish(false) }
+            } else {
+                sendAdd(newReactionId, finish)
+            }
+        }
+    }
+
+    /**
+     * Annule la mise à jour optimiste locale d'une réaction quand l'appel réseau
+     * correspondant échoue (cf. toggleMessageReaction) : sans ça, un POST/DELETE qui échoue
+     * laissait la bulle affichée avec une réaction qui ne correspond plus à rien côté serveur,
+     * jusqu'au prochain rechargement complet du fil.
+     */
+    protected fun revertOptimisticReaction(post: Post, appliedReactionId: Int, previousReactionId: Int) {
+        if (appliedReactionId != 0) removeReactionBucket(post, appliedReactionId)
+        if (previousReactionId != 0) addOrUpdateReactionBucket(post, previousReactionId)
+        post.reactionId = previousReactionId
+        val idx = commentsList.indexOfFirst { it.id == post.id }
+        if (idx >= 0) binding.comments.adapter?.notifyDataSetChanged()
+    }
+
+    /** Réaffecte toujours une nouvelle liste — cf. [addOrUpdateReactionBucket]. */
+    protected fun removeReactionBucket(post: Post, reactionId: Int) {
+        val current = post.reactions.orEmpty()
+        val bucket = current.firstOrNull { it.reactionId == reactionId } ?: return
+        post.reactions = if (bucket.reactionsCount <= 1) {
+            current.filter { it.reactionId != reactionId }.toMutableList()
+        } else {
+            current.map {
+                if (it.reactionId == reactionId) {
+                    Reaction().apply { this.reactionId = reactionId; this.reactionsCount = it.reactionsCount - 1 }
+                } else {
+                    it
+                }
+            }.toMutableList()
+        }
     }
 
 
@@ -332,6 +854,15 @@ private fun setupConversationChips() {
                 @Suppress("DEPRECATION")
                 Html.toHtml(binding.commentMessage.text)
             }
+        }
+
+        val messageIdBeingEdited = editingMessageId
+        if (messageIdBeingEdited != null) {
+            if (message.isNotBlank()) {
+                updateComment(messageIdBeingEdited, message)
+            }
+            cancelEditingMessage()
+            return@setOnClickListener
         }
 
         if (message.isNotBlank() || photoUri != null) {

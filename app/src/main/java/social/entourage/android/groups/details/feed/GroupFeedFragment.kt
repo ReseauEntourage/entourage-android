@@ -12,6 +12,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -65,6 +66,7 @@ import social.entourage.android.survey.ResponseSurveyActivity
 import social.entourage.android.survey.SurveyPresenter
 import social.entourage.android.tools.image_viewer.ImageViewerActivity
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
@@ -72,6 +74,7 @@ import social.entourage.android.tools.utils.CustomTypefaceSpan
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.utils.px
+import social.entourage.android.tools.utils.scrollToView
 import timber.log.Timber
 import kotlin.math.abs
 import kotlin.math.max
@@ -92,6 +95,11 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
     private var isLoading = false
     private var page: Int = 0
     private var hasShownWelcomeMessage = false
+
+    // Provient d'une notification "nouveau post" : id du post à retrouver et sur lequel scroller
+    private var targetPostId: Int = Const.DEFAULT_VALUE
+    private var isSearchingTargetPost = false
+    private var feedSkeletonShownAt: Long = 0L
     private var surveyPresenter: SurveyPresenter = SurveyPresenter()
 
     private var newPostsList: MutableList<Post> = ArrayList()
@@ -114,6 +122,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         _binding = FragmentFeedGroupBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_GROUP_FEED_SHOW)
         updatePaddingTopForEdgeToEdge(binding.toolbarHeader)
+        updatePaddingBottomForEdgeToEdge(binding.feedContent)
         return binding.root
     }
 
@@ -126,6 +135,11 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         groupId = args.groupID
+        targetPostId = args.postID
+        isSearchingTargetPost = targetPostId != Const.DEFAULT_VALUE
+        // Skeleton pour tout premier chargement du feed, pas seulement le cas notif -> post
+        binding.feedSkeletonOverlay.visibility = View.VISIBLE
+        feedSkeletonShownAt = System.currentTimeMillis()
         myId = EntourageApplication.me(activity)?.id
 
         getPrincipalMember()
@@ -349,57 +363,146 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 binding.swipeRefresh.isRefreshing = false
-                binding.progressBar.visibility = View.GONE
                 isLoading = false
 
-                allPosts?.let {
-                    allPostsList.addAll(allPosts)
+                processPostsData(allPosts)
+                updatePostsVisibility()
 
-                    it.forEach { post ->
-                        if (post.read == true || post.read == null) {
-                            oldPostsList.add(post)
-                        } else {
-                            newPostsList.add(post)
-                        }
+                if (isSearchingTargetPost) {
+                    continueTargetPostSearch(allPosts)
+                } else {
+                    binding.progressBar.visibility = View.GONE
+                    if (page == 1) {
+                        hideFeedSkeleton()
                     }
-                }
-
-                // Filtrer les posts supprimés
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    newPostsList.removeIf { post -> post.status == "deleted" }
-                    oldPostsList.removeIf { post -> post.status == "deleted" }
-                }
-
-                if (newPostsList.isEmpty() && oldPostsList.isEmpty()) {
-                    binding.postsLayoutEmptyState.visibility = View.VISIBLE
-                    binding.postsNewRecyclerview.visibility = View.GONE
-                    binding.postsOldRecyclerview.visibility = View.GONE
-                }
-                if (newPostsList.isNotEmpty()) {
-                    binding.postsNew.root.visibility = View.VISIBLE
-                    binding.postsNewRecyclerview.visibility = View.VISIBLE
-                    binding.postsLayoutEmptyState.visibility = View.GONE
-                    binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
-                } else {
-                    binding.postsNew.root.visibility = View.GONE
-                    binding.postsNewRecyclerview.visibility = View.GONE
-                }
-
-                if (oldPostsList.isNotEmpty()) {
-                    // Si on a des newPosts, on affiche le bloc « Anciens messages »
-                    if (newPostsList.isNotEmpty()) binding.postsOld.root.visibility = View.VISIBLE
-                    else binding.postsOld.root.visibility = View.GONE
-
-                    binding.postsOldRecyclerview.visibility = View.VISIBLE
-                    binding.postsLayoutEmptyState.visibility = View.GONE
-                    binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
-                } else {
-                    binding.postsOldRecyclerview.visibility = View.GONE
                 }
 
             } catch (e: NullPointerException) {
                 Timber.e("Error in coroutine handleResponseGetGroupPosts")
             }
+        }
+    }
+
+    // ============================
+    //   PARTIE NOTIF -> SCROLL TO POST
+    // ============================
+
+    private fun continueTargetPostSearch(lastFetchedPage: MutableList<Post>?) {
+        val isTargetVisible = newPostsList.any { it.id == targetPostId } ||
+            oldPostsList.any { it.id == targetPostId }
+
+        when {
+            isTargetVisible -> {
+                isSearchingTargetPost = false
+                scrollToTargetPost(targetPostId)
+            }
+            lastFetchedPage.isNullOrEmpty() || page >= MAX_TARGET_POST_SEARCH_PAGES -> {
+                isSearchingTargetPost = false
+                hideFeedSkeleton()
+                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_NOTIF_POST_NOT_FOUND)
+                showToast(getString(R.string.group_feed_post_unavailable))
+            }
+            else -> {
+                // Le skeleton reste affiché depuis le premier chargement : rien à faire de plus,
+                // on continue juste de paginer en tâche de fond.
+                isLoading = true
+                loadPosts()
+            }
+        }
+    }
+
+    private fun scrollToTargetPost(postId: Int) {
+        val isNew = newPostsList.any { it.id == postId }
+        val recyclerView = if (isNew) binding.postsNewRecyclerview else binding.postsOldRecyclerview
+        val index = (if (isNew) newPostsList else oldPostsList).indexOfFirst { it.id == postId }
+        if (index == -1 || !isAdded) {
+            hideFeedSkeleton()
+            return
+        }
+
+        val holder = recyclerView.findViewHolderForAdapterPosition(index)
+        if (holder != null) {
+            revealTargetPost(holder.itemView)
+            return
+        }
+
+        recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                val readyHolder = recyclerView.findViewHolderForAdapterPosition(index)
+                recyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                if (readyHolder == null || !isAdded) {
+                    hideFeedSkeleton()
+                    return
+                }
+                revealTargetPost(readyHolder.itemView)
+            }
+        })
+    }
+
+    // Positionne le post cible avant de retirer le skeleton, pour qu'il soit déjà visible au
+    // bon endroit dès la disparition du skeleton (pas de scroll à vue).
+    private fun revealTargetPost(postView: View) {
+        binding.nestSvFeedFragment.scrollToView(postView)
+        hideFeedSkeleton()
+    }
+
+    // Le shimmer doit rester visible au moins MIN_SKELETON_DURATION_MS : sinon, quand la première
+    // page (ou le post cible) arrive tout de suite, le skeleton disparaît avant qu'on ait pu le voir.
+    private fun hideFeedSkeleton() {
+        val elapsed = System.currentTimeMillis() - feedSkeletonShownAt
+        val remaining = (MIN_SKELETON_DURATION_MS - elapsed).coerceAtLeast(0)
+        binding.feedSkeletonOverlay.postDelayed({
+            if (isAdded) binding.feedSkeletonOverlay.visibility = View.GONE
+        }, remaining)
+    }
+
+    private fun processPostsData(allPosts: MutableList<Post>?) {
+        allPosts?.let {
+            allPostsList.addAll(allPosts)
+
+            it.forEach { post ->
+                if (post.read == true || post.read == null) {
+                    oldPostsList.add(post)
+                } else {
+                    newPostsList.add(post)
+                }
+            }
+        }
+
+        // Filtrer les posts supprimés
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            newPostsList.removeIf { post -> post.status == "deleted" }
+            oldPostsList.removeIf { post -> post.status == "deleted" }
+        }
+    }
+
+    private fun updatePostsVisibility() {
+        if (newPostsList.isEmpty() && oldPostsList.isEmpty()) {
+            binding.postsLayoutEmptyState.visibility = View.VISIBLE
+            binding.postsNewRecyclerview.visibility = View.GONE
+            binding.postsOldRecyclerview.visibility = View.GONE
+        }
+        if (newPostsList.isNotEmpty()) {
+            binding.postsNew.root.visibility = View.VISIBLE
+            binding.postsNewRecyclerview.visibility = View.VISIBLE
+            binding.postsLayoutEmptyState.visibility = View.GONE
+            binding.postsNewRecyclerview.adapter?.notifyDataSetChanged()
+        } else {
+            binding.postsNew.root.visibility = View.GONE
+            binding.postsNewRecyclerview.visibility = View.GONE
+        }
+
+        if (oldPostsList.isNotEmpty()) {
+            // Si on a des newPosts, on affiche le bloc « Anciens messages »
+            if (newPostsList.isNotEmpty()) binding.postsOld.root.visibility = View.VISIBLE
+            else binding.postsOld.root.visibility = View.GONE
+
+            binding.postsOldRecyclerview.visibility = View.VISIBLE
+            binding.postsLayoutEmptyState.visibility = View.GONE
+            binding.postsOldRecyclerview.adapter?.notifyDataSetChanged()
+        } else {
+            binding.postsOldRecyclerview.visibility = View.GONE
         }
     }
 
@@ -844,7 +947,16 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
 
     private fun updateView() {
         MetaDataRepository.metaData.observe(viewLifecycleOwner, ::handleMetaData)
+        setupHeader()
+        setupGroupEvents()
+        setupImages()
+        setupVisibility()
+        updateButtonJoin()
+        initializePosts()
+        handleCreatePostButton()
+    }
 
+    private fun setupHeader() {
         with(binding) {
             groupDescription.enableCopyOnLongClick(requireContext())
             groupName.text = group?.name
@@ -854,19 +966,12 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
                 group?.address?.displayAddress
             )
             initializeMembersPhotos()
-            more.visibility = View.VISIBLE
-            btnShare.visibility = View.VISIBLE
-            join.visibility = View.GONE
-            VibrationUtil.vibrate(requireContext())
-            toKnow.visibility = View.GONE
-            groupDescription.visibility = View.GONE
+            setupMoreTextView()
+        }
+    }
 
-            if (group?.member == true) {
-                join.visibility = View.GONE
-            } else {
-                join.visibility = View.VISIBLE
-            }
-
+    private fun setupGroupEvents() {
+        with(binding) {
             if (group?.futureEvents?.isEmpty() == true) {
                 eventsLayoutEmptyState.visibility = View.VISIBLE
                 eventsRecyclerview.visibility = View.GONE
@@ -878,7 +983,11 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
 
             seeMoreEvents.isVisible = group?.futureEvents?.isNotEmpty() == true
             arrowEvents.isVisible = group?.futureEvents?.isNotEmpty() == true
+        }
+    }
 
+    private fun setupImages() {
+        with(binding) {
             Glide.with(requireActivity())
                 .load(group?.imageUrl)
                 .error(R.drawable.new_group_illu)
@@ -891,13 +1000,23 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
                 .error(R.drawable.new_group_illu)
                 .transform(CenterCrop(), RoundedCorners(8.px))
                 .into(groupImageToolbar)
-
-            setupMoreTextView()
         }
+    }
 
-        updateButtonJoin()
-        initializePosts()
-        handleCreatePostButton()
+    private fun setupVisibility() {
+        with(binding) {
+            more.visibility = View.VISIBLE
+            btnShare.visibility = View.VISIBLE
+            VibrationUtil.vibrate(requireContext())
+            toKnow.visibility = View.GONE
+            groupDescription.visibility = View.GONE
+
+            if (group?.member == true) {
+                join.visibility = View.GONE
+            } else {
+                join.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun updateButtonJoin() {
@@ -944,36 +1063,46 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
     // ============================
 
     private fun createPost() {
+        setupSpeedDialMenu()
+        setupSpeedDialActions()
+    }
+
+    private fun setupSpeedDialMenu() {
         val speedDialView: SpeedDialView = binding.createPost
+        val orange = ContextCompat.getColor(requireContext(), R.color.orange)
+        val white = ContextCompat.getColor(requireContext(), R.color.white)
 
         speedDialView.addActionItem(
             SpeedDialActionItem.Builder(R.id.fab_create_event, R.drawable.ic_group_feed_two)
-                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
-                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setFabBackgroundColor(orange)
+                .setFabImageTintColor(white)
                 .setLabel(getString(R.string.create_event))
-                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.white))
-                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setLabelColor(white)
+                .setLabelBackgroundColor(orange)
                 .create()
         )
         speedDialView.addActionItem(
             SpeedDialActionItem.Builder(R.id.fab_create_post, R.drawable.ic_group_feed_one)
-                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
-                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setFabBackgroundColor(orange)
+                .setFabImageTintColor(white)
                 .setLabel(getString(R.string.create_post))
-                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.white))
-                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setLabelColor(white)
+                .setLabelBackgroundColor(orange)
                 .create()
         )
         speedDialView.addActionItem(
             SpeedDialActionItem.Builder(R.id.fab_create_survey, R.drawable.ic_survey_creation)
-                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
-                .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
+                .setFabBackgroundColor(orange)
+                .setFabImageTintColor(white)
                 .setLabel(getString(R.string.create_survey))
-                .setLabelColor(ContextCompat.getColor(requireContext(), R.color.white))
-                .setLabelBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setLabelColor(white)
+                .setLabelBackgroundColor(orange)
                 .create()
         )
+    }
 
+    private fun setupSpeedDialActions() {
+        val speedDialView: SpeedDialView = binding.createPost
         speedDialView.setOnActionSelectedListener { actionItem ->
             // Vérifier qu'on est encore attaché
             if (!isAdded || requireActivity().isFinishing) return@setOnActionSelectedListener false
@@ -1068,6 +1197,8 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
     companion object {
         var isFromCreation = false
         private const val ITEM_PER_PAGE = 10
+        private const val MAX_TARGET_POST_SEARCH_PAGES = 30
+        private const val MIN_SKELETON_DURATION_MS = 1000L
     }
 }
 

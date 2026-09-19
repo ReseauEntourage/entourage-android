@@ -111,7 +111,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun setupButtons() {
         binding.buttonConfigureLater.setOnClickListener {
             social.entourage.android.tools.log.AnalyticsEvents.logEvent(social.entourage.android.tools.log.AnalyticsEvents.Clic__Back__Onboarding__Location)
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
 
         binding.buttonStart.setOnClickListener {

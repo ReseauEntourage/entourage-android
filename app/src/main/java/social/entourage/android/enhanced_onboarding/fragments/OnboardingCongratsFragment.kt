@@ -7,21 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.coroutines.MainScope
-import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.api.model.Events
 import social.entourage.android.databinding.FragmentOnboardingCongratsFragmentBinding
-import social.entourage.android.databinding.FragmentOnboardingInterestsLayoutBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.enhanced_onboarding.OnboardingViewModel
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.list.EVENTS_PER_PAGE
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.tools.log.AnalyticsEvents
-import timber.log.Timber
 
 class OnboardingCongratsFragment: Fragment() {
 
@@ -47,6 +43,11 @@ class OnboardingCongratsFragment: Fragment() {
             AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_end_browse_events_clic)
             AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_end_congrats_clic_on_ + category)
             viewModel.registerAndQuit(category)
+        }
+        binding.buttonSkip.setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.onboarding_end_skip_clic)
+            // "Plus tard" doit fermer l'onboarding vers la home, pas suivre le même CTA que le bouton principal
+            viewModel.registerAndQuit(null)
         }
         eventsPresenter = ViewModelProvider(this).get(EventsPresenter::class.java)
         eventsPresenter.getFilteredEvents.observe(requireActivity(), ::handleResponseGetEvents)
@@ -80,14 +81,35 @@ class OnboardingCongratsFragment: Fragment() {
         }
     }
 
+    private fun isIsolatedPersonMode(): Boolean {
+        return viewModel.user?.isUserTypeAlone == true
+    }
+
     private fun configureOnboardingView() {
         val categoriesList = viewModel.actionsWishes.value?.filter { it.isSelected }?.map { it.id } ?: listOf()
         var titleRes = R.string.onboarding_congrats_title
         var contentRes = R.string.onboarding_congrats_content
         var buttonTextRes = R.string.onboarding_congrats_leave
 
-        // Condition par défaut : si la liste est vide ou que la préférence est "contribution"
-        if (categoriesList.isEmpty() || EnhancedOnboarding.preference == "contribution") {
+        Log.d("EN9530_DEBUG", "configureOnboardingView: goal=${viewModel.user?.goal} " +
+                "isUserTypeAlone=${viewModel.user?.isUserTypeAlone} " +
+                "EnhancedOnboarding.preference=${EnhancedOnboarding.preference} " +
+                "categoriesList=$categoriesList")
+
+        // Priorité 0 : profil "solliciter" (préférence contribution ou personne isolée) -> toujours une demande d'aide,
+        // quels que soient les souhaits sélectionnés (ce profil ne peut que solliciter, jamais contribuer)
+        if (EnhancedOnboarding.preference == "contribution" || isIsolatedPersonMode()) {
+            titleRes = R.string.onboarding_start_action_ask_title
+            contentRes = R.string.onboarding_start_action_ask_content
+            buttonTextRes = R.string.onboarding_start_action_ask_button
+            binding.tvTitle.setText(titleRes)
+            binding.tvDescription.setText(contentRes)
+            binding.buttonStart.setText(buttonTextRes)
+            binding.buttonSkip.setText(R.string.onboarding_start_action_ask_skip)
+            category = "ask_help"
+        }
+        // Condition par défaut : si la liste est vide (profil riverain sans souhait sélectionné)
+        else if (categoriesList.isEmpty()) {
             binding.tvTitle.setText(titleRes)
             binding.tvDescription.setText(contentRes)
             binding.buttonStart.setText(buttonTextRes)
@@ -140,6 +162,8 @@ class OnboardingCongratsFragment: Fragment() {
             binding.buttonStart.setText(buttonTextRes)
             category = "neighborhoods"
         }
+
+        Log.d("EN9530_DEBUG", "configureOnboardingView: resolved category=$category titleRes=${resources.getResourceEntryName(titleRes)}")
     }
 
 }

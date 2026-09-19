@@ -15,6 +15,7 @@ import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.ReactionType
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.MentionAdapter
@@ -27,6 +28,10 @@ import java.util.UUID
 class EventCommentActivity : CommentActivity() {
 
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
+
+    override val allowsMessageReactions: Boolean get() = true
+    override val allowsMessageEdit: Boolean get() = true
+    override val usesMessageOptionsMenu: Boolean get() = true
 
     // Retient l'index du dernier '@' tapé. -1 => pas de mention en cours
     private var lastMentionStartIndex = -1
@@ -46,6 +51,7 @@ class EventCommentActivity : CommentActivity() {
         eventPresenter.getAllComments.observe(this, ::handleGetPostComments)
         eventPresenter.commentPosted.observe(this, ::handleCommentPosted)
         eventPresenter.getCurrentParentPost.observe(this, ::handleParentPost)
+        eventPresenter.messageUpdated.observe(this) { it?.let { post -> mergeIncomingMessage(post, forceScrollIfMine = false) } }
 
         // Récupère les commentaires existants
         eventPresenter.getPostComments(id, postId)
@@ -75,6 +81,26 @@ class EventCommentActivity : CommentActivity() {
     override fun onResume() {
         super.onResume()
         this.isEvent = true
+        // Le canal de la sortie (instance_type "Outing", instance_id = id de la sortie)
+        // diffuse tous ses chat_messages (posts ET commentaires) ; on ne garde que ceux
+        // qui répondent au post actuellement affiché.
+        Timber.tag("ConvSocket").d("EventCommentActivity.onResume(): eventId=%d postId=%d", id, postId)
+        connectChatSocket(
+            "Outing",
+            id,
+            belongsToThisScreen = { post -> post.postId == postId },
+            onReconnected = { eventPresenter.getPostComments(id, postId) }
+        )
+    }
+
+    override fun onPause() {
+        super.onPause()
+        disconnectChatSocket()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disconnectChatSocket()
     }
 
     private fun animateMentionSuggestions(show: Boolean) {
@@ -114,6 +140,26 @@ class EventCommentActivity : CommentActivity() {
         }
     }
 
+
+    // Édition d'un commentaire (PATCH outings/{id}/chat_messages/{id}, même ressource
+    // chat_message que les conversations — à confirmer en recette).
+    override fun updateComment(messageId: Int, newContentHtml: String) {
+        eventPresenter.updatePost(id, messageId, newContentHtml)
+    }
+
+    // ---------------------------------------------------------------------------
+    // Réactions sur un commentaire (réutilise les endpoints déjà existants pour les
+    // posts de sortie : chat_messages/{id}/reactions marche pour tout chat_message,
+    // post ou commentaire).
+    // ---------------------------------------------------------------------------
+    override fun onMessageReactionClicked(comment: Post, reactionType: ReactionType) {
+        val commentId = comment.id ?: return
+        toggleMessageReaction(
+            comment, reactionType,
+            sendAdd = { reactionId, onComplete -> eventPresenter.reactToPost(id, commentId, reactionId, onComplete) },
+            sendDelete = { onComplete -> eventPresenter.deleteReactToPost(id, commentId, onComplete) },
+        )
+    }
 
     // ---------------------------------------------------------------------------
     // Publication du commentaire
@@ -191,7 +237,7 @@ class EventCommentActivity : CommentActivity() {
         this.currentParentPost = currentPost
         binding.progressBar.visibility = View.GONE
         (binding.comments.adapter as? CommentsListAdapter)?.updateData(this.currentParentPost)
-        scrollAfterLayout()
+        scrollAndHighlightIfNeeded()
         updateView(commentsList.isEmpty())
     }
 
@@ -205,7 +251,7 @@ class EventCommentActivity : CommentActivity() {
             return
         }
         binding.progressBar.visibility = View.GONE
-        scrollAfterLayout()
+        scrollAndHighlightIfNeeded()
     }
 
     // ---------------------------------------------------------------------------

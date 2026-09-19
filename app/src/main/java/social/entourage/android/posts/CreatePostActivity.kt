@@ -11,7 +11,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.TextView
-import com.google.android.flexbox.FlexboxLayout
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.flexbox.FlexboxLayout
 import social.entourage.android.BuildConfig
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
@@ -28,7 +29,7 @@ import social.entourage.android.comment.MentionAdapter
 import social.entourage.android.databinding.ActivityCreatePostBinding
 import social.entourage.android.groups.details.feed.CreatePostGroupActivity
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.px
@@ -64,6 +65,7 @@ abstract class CreatePostActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
 
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_GROUP_FEED_NEW_POST_SCREEN)
 
@@ -89,7 +91,7 @@ abstract class CreatePostActivity : AppCompatActivity() {
         // Ecoute du '@' dans l'EditText
         setupMentionTextWatcher()
 
-        updatePaddingTopForEdgeToEdge(binding.header.headerLayout)
+        updatePaddingForEdgeToEdge(binding.root)
     }
 
     /**

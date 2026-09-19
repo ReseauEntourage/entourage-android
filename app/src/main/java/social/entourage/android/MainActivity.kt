@@ -74,8 +74,8 @@ class MainActivity : BaseSecuredActivity() {
     private lateinit var updateActivityResultLauncher: ActivityResultLauncher<IntentSenderRequest>
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        updateMainLanguage()
         super.onCreate(savedInstanceState)
+        updateMainLanguage()
         enableEdgeToEdge()
 
         instance = this
@@ -282,6 +282,12 @@ class MainActivity : BaseSecuredActivity() {
                 startActivity(intent)
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
             }
+            is OnboardingNavigation.CreateActionContribution -> {
+                val intent = Intent(this, CreateActionActivity::class.java)
+                intent.putExtra(Const.IS_ACTION_DEMAND, false)
+                startActivity(intent)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
             is OnboardingNavigation.Quiz -> {
                 val urlString = "https://kahoot.it/challenge/45371e80-fe50-4be5-afec-b37e3d50ede2_1733228323615"
                 WebViewFragment.newInstance(urlString, 0, true)
@@ -431,7 +437,8 @@ class MainActivity : BaseSecuredActivity() {
                         extra.postId,
                         stage = extra.stage,
                         popup = extra.popup,
-                        tracking = extra.tracking
+                        tracking = extra.tracking,
+                        chatMessageId = extra.chatMessageId
                     )
                 }
             }
@@ -586,30 +593,40 @@ class MainActivity : BaseSecuredActivity() {
 
     private fun singleTopNavOptions() = NavOptions.Builder()
         .setLaunchSingleTop(true)
+        .setRestoreState(true)
+        .setPopUpTo(navController.graph.startDestinationId, inclusive = false, saveState = true)
         .build()
 
     fun goHome() {
-        navController.navigate(R.id.navigation_home, null, singleTopNavOptions())
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+        bottomNavigationView.selectedItemId = R.id.navigation_home
     }
 
     fun goGroup() {
-        navController.navigate(R.id.navigation_groups, null, singleTopNavOptions())
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+        bottomNavigationView.selectedItemId = R.id.navigation_groups
     }
 
     fun goEvent() {
-        navController.navigate(R.id.navigation_events, null, singleTopNavOptions())
         if (shouldLaunchEvent == false) {
             MainFilterActivity.resetAllFilters(this)
         }
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+        bottomNavigationView.selectedItemId = R.id.navigation_events
     }
 
     fun goConv(isSmallTalkFilter: Boolean = false) {
-        val bundle = if (isSmallTalkFilter) bundleOf("isSmallTalkFilter" to true) else null
-        navController.navigate(R.id.navigation_messages, bundle, singleTopNavOptions())
+        if (isSmallTalkFilter) {
+            val bundle = bundleOf("isSmallTalkFilter" to true)
+            navController.navigate(R.id.navigation_messages, bundle, singleTopNavOptions())
+        } else {
+            val bottomNavigationView = findViewById<BottomNavigationView>(R.id.nav_view)
+            bottomNavigationView.selectedItemId = R.id.navigation_messages
+        }
     }
 
     fun navigateToGroupsTab() {
-        navController.navigate(R.id.navigation_groups, null, singleTopNavOptions())
+        goGroup()
     }
 
     fun goContrib() {
@@ -650,13 +667,8 @@ class MainActivity : BaseSecuredActivity() {
                     MainFilterActivity.resetAllFilters(this)
                 }
             }
-            // LA navigation est faite ici par NavigationUI, toi tu ne navigues pas ailleurs.
-            val handled = NavigationUI.onNavDestinationSelected(item, navController)
-            if (!handled && item.itemId == R.id.navigation_home) {
-                goHome()
-                return@setOnItemSelectedListener true
-            }
-            handled
+            // LA navigation est faite ici par NavigationUI
+            NavigationUI.onNavDestinationSelected(item, navController)
         }
     }
 

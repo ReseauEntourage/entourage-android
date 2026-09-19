@@ -1,12 +1,13 @@
 package social.entourage.android
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import com.google.firebase.analytics.FirebaseAnalytics
 import social.entourage.android.api.ApiModule
@@ -22,11 +23,12 @@ import social.entourage.android.onboarding.login.LoginActivity
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 import social.entourage.android.profile.settings.SettingsPresenter
 import social.entourage.android.tools.LibrariesSupport
+import social.entourage.android.tools.SafeTouchWindowCallback
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
 /**
- * Application setup for Analytics, JodaTime and Dagger
+ * Application setup for Analytics, Timber and API modules
  */
 class EntourageApplication : Application() {
     private val activities: ArrayList<BaseActivity> = ArrayList()
@@ -47,9 +49,19 @@ class EntourageApplication : Application() {
         complexPreferences = ComplexPreferences(this, "userPref", Context.MODE_PRIVATE)
         authenticationController = AuthenticationController()
         apiModule = ApiModule()
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         librariesSupport = LibrariesSupport()
         librariesSupport.setupLibraries(this)
+        registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
+            override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+                activity.window.callback = SafeTouchWindowCallback(activity.window.callback)
+            }
+            override fun onActivityStarted(activity: Activity) {}
+            override fun onActivityResumed(activity: Activity) {}
+            override fun onActivityPaused(activity: Activity) {}
+            override fun onActivityStopped(activity: Activity) {}
+            override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
+            override fun onActivityDestroyed(activity: Activity) {}
+        })
     }
 
     val sharedPreferences: SharedPreferences
@@ -104,34 +116,31 @@ class EntourageApplication : Application() {
 
     fun logOut() {
         authenticationController.me?.let { me ->
-            //remove user phone
-            mainActivity?.deleteApplicationInfo(){
-                authenticationController.logOutUser()
-                //val sharedPreferences = sharedPreferences
-                sharedPreferences.edit {
-                    (sharedPreferences.getStringSet(
-                        KEY_TUTORIAL_DONE,
-                        HashSet()
-                    ) as HashSet<String?>?)?.let {
-                        val loggedNumbers = HashSet(it)
-                        loggedNumbers.remove(me.phone)
-                        putStringSet(KEY_TUTORIAL_DONE, loggedNumbers)
-                    }
-                    remove(KEY_REGISTRATION_ID)
-                    remove(KEY_NOTIFICATIONS_ENABLED)
-                    remove(KEY_GEOLOCATION_ENABLED)
-                    remove(KEY_NO_MORE_DEMAND)
-                    remove(isFirstTimeHome)
-                    putInt(KEY_NB_OF_LAUNCH, 0)
-                    putBoolean("translatedByDefault", true)
+            //best-effort server-side push token cleanup; must not gate the actual logout/redirect
+            mainActivity?.deleteApplicationInfo {}
+
+            authenticationController.logOutUser()
+            sharedPreferences.edit {
+                (sharedPreferences.getStringSet(
+                    KEY_TUTORIAL_DONE,
+                    HashSet()
+                ) as HashSet<String?>?)?.let {
+                    val loggedNumbers = HashSet(it)
+                    loggedNumbers.remove(me.phone)
+                    putStringSet(KEY_TUTORIAL_DONE, loggedNumbers)
                 }
-                removeAllPushNotifications()
-                AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_LOGOUT)
-                mainActivity?.let {
-                    startActivity(Intent(this, PreOnboardingStartActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-                    it.finish()
-                }
+                remove(KEY_REGISTRATION_ID)
+                remove(KEY_NOTIFICATIONS_ENABLED)
+                remove(KEY_GEOLOCATION_ENABLED)
+                remove(KEY_NO_MORE_DEMAND)
+                remove(isFirstTimeHome)
+                putInt(KEY_NB_OF_LAUNCH, 0)
+                putBoolean("translatedByDefault", true)
             }
+            removeAllPushNotifications()
+            AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_LOGOUT)
+            startActivity(Intent(this, PreOnboardingStartActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            mainActivity?.finish()
         } ?: run {
             Timber.d("not needed to logout")
         }

@@ -474,7 +474,12 @@ class ProfileFullActivity : BaseSecuredActivity() {
         binding.tvMail.visibility = View.GONE
         binding.tvPhone.visibility = View.GONE
         user?.address?.let { address ->
-            binding.tvZone.text = address.displayAddress
+            if (address.displayAddress.isNotBlank()) {
+                binding.tvZone.text = address.displayAddress
+                binding.tvZone.visibility = View.VISIBLE
+            } else {
+                binding.tvZone.visibility = View.GONE
+            }
         } ?: run {
             binding.tvZone.visibility = View.GONE
         }

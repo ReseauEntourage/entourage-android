@@ -64,10 +64,10 @@ class PedagoContentDetailsFragment : Fragment() {
     private fun handleBackButton() {
         binding.header.headerIconBack.setOnClickListener {
             if(isFromNotifs) {
-                activity?.onBackPressed()
+                activity?.onBackPressedDispatcher?.onBackPressed()
             }
             else if(findNavController().popBackStack() == false) {
-                activity?.onBackPressed()
+                activity?.onBackPressedDispatcher?.onBackPressed()
             }
         }
     }

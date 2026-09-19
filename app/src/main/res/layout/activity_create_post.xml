@@ -14,10 +14,9 @@
         <!-- LinearLayout principal -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:gravity="center"
-            android:paddingBottom="5dp"
+            android:gravity="top|center_horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -199,17 +198,21 @@
                 </LinearLayout>
             </ScrollView>
 
-            <!-- Bouton de validation (en bas) -->
-            <include
-                android:id="@+id/validate"
-                layout="@layout/new_rounded_button_white"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:layout_marginBottom="5dp"
-                app:content="@{@string/share_post}"
-                app:drawable="@{@drawable/new_bg_rounded_inactive_button_light_orange}" />
         </LinearLayout>
+        <!-- Bouton de validation (en bas) -->
+        <include
+            android:id="@+id/validate"
+            layout="@layout/new_rounded_button_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="15dp"
+            app:content="@{@string/share_post}"
+            app:drawable="@{@drawable/new_bg_rounded_inactive_button_light_orange}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

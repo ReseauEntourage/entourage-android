@@ -48,6 +48,9 @@ class Summary : Serializable {
     @SerializedName("moderator")
     var moderator: HomeModerator? = null
 
+    @SerializedName("referent_benevole")
+    var referentBenevole: HomeModerator? = null
+
     @SerializedName("congratulations")
     var congratulations: MutableList<HomeAction>? = null
 
@@ -93,6 +96,9 @@ class HomeActionParams : Serializable {
 
     @SerializedName("post_id")
     var postId: Int? = null
+
+    @SerializedName("chat_message_id")
+    var chatMessageId: Int? = null
 
 }
 

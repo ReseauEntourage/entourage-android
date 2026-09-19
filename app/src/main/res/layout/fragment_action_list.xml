@@ -3,6 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
@@ -115,4 +119,28 @@
 
         </LinearLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <ScrollView
+            android:id="@+id/list_skeleton_overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp">
+
+                <include layout="@layout/layout_avatar_card_skeleton" />
+                <include layout="@layout/layout_avatar_card_skeleton" />
+                <include layout="@layout/layout_avatar_card_skeleton" />
+                <include layout="@layout/layout_avatar_card_skeleton" />
+
+            </LinearLayout>
+        </ScrollView>
+
+    </FrameLayout>
 </layout>

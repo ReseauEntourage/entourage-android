@@ -44,6 +44,9 @@ class EnhancedOnboarding : BaseActivity() {
         viewModel = ViewModelProvider(this).get(OnboardingViewModel::class.java)
         viewModel.user = EntourageApplication.me(this)
 
+        android.util.Log.d("EN9530_DEBUG", "EnhancedOnboarding.onCreate: user.goal=${viewModel.user?.goal} " +
+                "isUserTypeAlone=${viewModel.user?.isUserTypeAlone} EnhancedOnboarding.preference=$preference")
+
         val userGoal = viewModel.user?.goal
         val isAssoRole = viewModel.user?.partner != null && (viewModel.user?.roles?.contains("Association") == true || viewModel.user?.roles?.contains("Équipe Entourage") == true)
 
@@ -141,6 +144,10 @@ class EnhancedOnboarding : BaseActivity() {
             .getBoolean(PREF_IS_ASSOCIATION_FROM_SUMMARY, false)
     }
 
+    private fun isIsolatedPersonMode(): Boolean {
+        return viewModel.user?.isUserTypeAlone == true
+    }
+
     private fun handleOnboardingFirstStep(value: Boolean) {
         if (value) replaceFragment(OnboardingPresentationFragment())
     }
@@ -165,7 +172,7 @@ class EnhancedOnboarding : BaseActivity() {
 
     private fun handleOnboardingDisponibilityStep(value: Boolean) {
         if (value) {
-            if (isAssociationMode()) {
+            if (isAssociationMode() || (isIsolatedPersonMode() && !isFromSettingsDisponibility)) {
                 viewModel.setOnboardingFifthStep(true)
             } else {
                 replaceFragment(OnboardingDisponibilityFragment())
@@ -176,7 +183,6 @@ class EnhancedOnboarding : BaseActivity() {
     private fun handleOnboardingFifthStep(value: Boolean) {
         if (value) {
             if (isAssociationMode()) {
-
                 viewModel.register { success ->
                     viewModel.step = 6
                     replaceFragment(EnhancedOnboardingAssoFragment())
@@ -211,13 +217,16 @@ class EnhancedOnboarding : BaseActivity() {
                 when (viewModel.selectedCategory) {
                     "neighborhoods" -> OnboardingNavigation.WelcomeGroup
                     "event" -> OnboardingNavigation.Events
-                    "contribution" -> OnboardingNavigation.Donations
-                    "both_actions" -> OnboardingNavigation.CreateActionDemand
+                    "contribution" -> OnboardingNavigation.CreateActionContribution
+                    "both_actions" -> OnboardingNavigation.CreateActionContribution
+                    "ask_help" -> OnboardingNavigation.CreateActionDemand
                     "resources" -> OnboardingNavigation.Quiz
                     "no_event" -> OnboardingNavigation.CreateActionDemand
                     else -> OnboardingNavigation.Home
                 }
             }
+
+            android.util.Log.d("EN9530_DEBUG", "handleOnboardingShouldQuit: selectedCategory=${viewModel.selectedCategory} -> navigation=$navigation")
 
             val intent = Intent(this, MainActivity::class.java)
             intent.putExtra("extra_onboarding_navigation", navigation)

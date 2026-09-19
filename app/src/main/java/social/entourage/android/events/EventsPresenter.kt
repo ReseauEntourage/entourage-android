@@ -1,5 +1,7 @@
 package social.entourage.android.events
 
+import android.os.Build
+import android.text.Html
 import android.util.Log
 import android.widget.Toast
 import androidx.collection.ArrayMap
@@ -26,6 +28,7 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.CompleteReactionsResponse
 import social.entourage.android.api.model.ReactionWrapper
+import social.entourage.android.api.model.notification.Translation
 import social.entourage.android.ui.ActionSheetFragment
 import timber.log.Timber
 import java.io.File
@@ -70,6 +73,7 @@ class EventsPresenter : ViewModel() {
     var isEventUpdated = MutableLiveData<Boolean>()
     var hasPost = MutableLiveData<Boolean>()
     var commentPosted = MutableLiveData<Post?>()
+    var messageUpdated = MutableLiveData<Post?>()
     var haveToChangePage = MutableLiveData<Boolean>()
     var haveToCreateEvent = MutableLiveData<Boolean>()
     var shouldChangeTopView = MutableLiveData<Boolean>()
@@ -226,34 +230,44 @@ class EventsPresenter : ViewModel() {
             })
     }
 
-    fun searchEventMembers(eventId: Int, query: String) {
-        EntourageApplication.get().apiModule.eventsRequest
-            .getMembersSearch(eventId, query)
-            .enqueue(object : Callback<MembersWrapper> {
-                override fun onResponse(
-                    call: Call<MembersWrapper>,
-                    response: Response<MembersWrapper>
-                ) {
-                    if (response.isSuccessful) {
-                        val result = response.body()?.users ?: mutableListOf()
-                        getMembersSearch.value = result
-                    } else {
-                        getMembersSearch.value = mutableListOf()
-                    }
-                }
+    private var searchMembersCall: Call<MembersWrapper>? = null
 
-                override fun onFailure(call: Call<MembersWrapper>, t: Throwable) {
+    fun searchEventMembers(eventId: Int, query: String) {
+        // La recherche part à chaque lettre tapée : on annule la requête précédente pour
+        // qu'une réponse arrivée en retard n'écrase pas celle de la saisie la plus récente.
+        searchMembersCall?.cancel()
+        val call = EntourageApplication.get().apiModule.eventsRequest
+            .getMembersSearch(eventId, query)
+        searchMembersCall = call
+        call.enqueue(object : Callback<MembersWrapper> {
+            override fun onResponse(
+                call: Call<MembersWrapper>,
+                response: Response<MembersWrapper>
+            ) {
+                if (call.isCanceled) return
+                if (response.isSuccessful) {
+                    val result = response.body()?.users ?: mutableListOf()
+                    getMembersSearch.value = result
+                } else {
                     getMembersSearch.value = mutableListOf()
                 }
-            })
+            }
+
+            override fun onFailure(call: Call<MembersWrapper>, t: Throwable) {
+                if (call.isCanceled) return
+                getMembersSearch.value = mutableListOf()
+            }
+        })
     }
 
     fun getMyEventsWithFilter(
         userId: Int, page: Int, per: Int, interests: String, travelDistance: Int?,
-        latitude: Double?, longitude: Double?, period: String
+        latitude: Double?, longitude: Double?, period: String,
+        reservedFemale: Boolean? = null, format: String? = null, entourageOnly: Boolean? = null
     ) {
         EntourageApplication.get().apiModule.eventsRequest.getMyEventsWithFilter(
-            userId, page, per, interests, travelDistance, latitude, longitude, period
+            userId, page, per, interests, travelDistance, latitude, longitude, period,
+            reservedFemale, format, entourageOnly
         ).enqueue(object : Callback<EventsListWrapper> {
             override fun onResponse(
                 call: Call<EventsListWrapper>,
@@ -299,10 +313,12 @@ class EventsPresenter : ViewModel() {
 
     fun getAllEventsWithFilter(
         page: Int, per: Int, interests: String, travelDistance: Int?,
-        latitude: Double?, longitude: Double?, period: String
+        latitude: Double?, longitude: Double?, period: String,
+        reservedFemale: Boolean? = null, format: String? = null, entourageOnly: Boolean? = null
     ) {
         EntourageApplication.get().apiModule.eventsRequest.getAllEventsWithFilter(
-            page, per, interests, travelDistance, latitude, longitude, period
+            page, per, interests, travelDistance, latitude, longitude, period,
+            reservedFemale, format, entourageOnly
         ).enqueue(object : Callback<EventsListWrapper> {
             override fun onResponse(
                 call: Call<EventsListWrapper>,
@@ -723,9 +739,79 @@ class EventsPresenter : ViewModel() {
                 }
 
                 override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
-                    commentPosted.value = null
+                    // Peut être un vrai échec réseau, ou une exception de désérialisation
+                    // Retrofit/Gson sur une réponse pourtant réussie (cf. le même bug déjà
+                    // repéré côté groupe : "Erreur de publication" affiché malgré un 201, ET en
+                    // double puisque le commentaire arrive quand même par le websocket). Une
+                    // IOException est un vrai échec réseau ; toute autre exception ici ne peut
+                    // venir que de la désérialisation d'une réponse pourtant reçue — pas la
+                    // peine d'afficher l'échec, le websocket se charge d'insérer le message
+                    // confirmé.
+                    Timber.e(t, "EventsPresenter.addComment: onFailure (network error OR response parsing exception)")
+                    if (t is java.io.IOException) {
+                        commentPosted.value = null
+                    }
                 }
             })
+    }
+
+    fun updatePost(eventId: Int, postId: Int, newContent: String) {
+        val params = ArrayMap<String, Any>()
+        params["content"] = newContent
+        EntourageApplication.get().apiModule.eventsRequest.updatePost(eventId, postId, params)
+            .enqueue(object : Callback<PostWrapper> {
+                override fun onResponse(call: Call<PostWrapper>, response: Response<PostWrapper>) {
+                    messageUpdated.value = withFreshEditedContent(response.body()?.post, newContent)
+                }
+
+                override fun onFailure(call: Call<PostWrapper>, t: Throwable) {
+                    Timber.e(t, "EventsPresenter.updatePost: onFailure (network error OR response parsing exception)")
+                    messageUpdated.value = null
+                }
+            })
+    }
+
+    /** cf. DiscussionsPresenter.withFreshEditedContent : même contournement du même bug
+     * (content_translations(_html) pas encore resynchronisé juste après le PATCH). */
+    private fun withFreshEditedContent(post: Post?, newContentHtml: String): Post? {
+        post ?: return null
+        val plain = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(newContentHtml, Html.FROM_HTML_MODE_LEGACY).toString()
+        } else {
+            @Suppress("DEPRECATION") Html.fromHtml(newContentHtml).toString()
+        }
+        return Post(
+            id = post.id,
+            content = newContentHtml,
+            contentHtml = newContentHtml,
+            contentTranslations = Translation(
+                translation = plain,
+                original = plain,
+                fromLang = post.contentTranslations?.fromLang,
+                toLang = post.contentTranslations?.toLang
+            ),
+            contentTranslationsHtml = Translation(
+                translation = newContentHtml,
+                original = newContentHtml,
+                fromLang = post.contentTranslationsHtml?.fromLang,
+                toLang = post.contentTranslationsHtml?.toLang
+            ),
+            user = post.user,
+            createdTime = post.createdTime,
+            messageType = post.messageType,
+            postId = post.postId,
+            hasComments = post.hasComments,
+            commentsCount = post.commentsCount,
+            imageUrl = post.imageUrl,
+            status = post.status,
+            reactions = post.reactions,
+            read = post.read,
+            reactionId = post.reactionId,
+            idInternal = post.idInternal,
+            survey = post.survey,
+            surveyResponse = post.surveyResponse,
+            autoPostFrom = post.autoPostFrom,
+        )
     }
 
     fun updateEvent(eventId: Int, eventEdited: CreateEvent) {
@@ -782,7 +868,7 @@ class EventsPresenter : ViewModel() {
             })
     }
 
-    fun reactToPost(eventId: Int, postId: Int, reactionId: Int) {
+    fun reactToPost(eventId: Int, postId: Int, reactionId: Int, onComplete: (Boolean) -> Unit = {}) {
         val reactionWrapper = ReactionWrapper()
         reactionWrapper.reactionId = reactionId
 
@@ -795,19 +881,22 @@ class EventsPresenter : ViewModel() {
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                    }
-                }
+                onComplete(response.isSuccessful)
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("EventPresenter deleteReactToPost", "onFailure: $t")
+                onComplete(false)
             }
         })
     }
 
-    fun deleteReactToPost(eventId: Int, postId: Int) {
+    /**
+     * [onComplete] permet à l'appelant d'enchaîner un POST juste après (changement de
+     * réaction) : le serveur refuse un ajout tant que l'ancienne réaction existe encore
+     * ("User can only react once"), donc on ne peut pas tirer delete/add en parallèle.
+     */
+    fun deleteReactToPost(eventId: Int, postId: Int, onComplete: (Boolean) -> Unit = {}) {
         EntourageApplication.get().apiModule.eventsRequest.deleteReactionAnEventPost(
             eventId,
             postId
@@ -816,14 +905,12 @@ class EventsPresenter : ViewModel() {
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                    }
-                }
+                onComplete(response.isSuccessful)
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("deleteReactToPost deleteReactToPost", "onFailure: $t")
+                onComplete(false)
             }
         })
     }

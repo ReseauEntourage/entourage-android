@@ -2494,6 +2494,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="onboarding_congrats_title">Ihr maßgeschneidertes Erlebnis ist bereit!</string>
     <string name="onboarding_congrats_content">Basierend auf Ihren Vorlieben und Ihrer Verfügbarkeit haben wir eine Auswahl von Veranstaltungen für Sie zusammengestellt. Es ist Zeit zu handeln!</string>
     <string name="onboarding_congrats_leave">Veranstaltungen durchsuchen</string>
+    <string name="onboarding_congrats_skip">Später</string>
     <string name="onboarding_congrats_temporary_title">Ihr maßgeschneidertes Erlebnis ist (fast) bereit!</string>
     <string name="onboarding_congrats_temporary_content">Danke, dass Sie uns Ihre Handlungswünsche und Interessen mitgeteilt haben. Wir freuen uns darauf, Ihnen bald maßgeschneiderte Veranstaltungen anzubieten. \nBleiben Sie verbunden!</string>
     <string name="notif_ask_page_title">Aktivieren Sie Benachrichtigungen, um nichts zu verpassen</string>
@@ -2507,6 +2508,12 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="main_filter_subtitle_action">Nach Kategorie</string>
     <string name="main_filter_title_location">Nach Standort</string>
     <string name="main_filter_title_radius">Innerhalb eines Radius von</string>
+    <string name="main_filter_subtitle_event_type">Veranstaltungstyp</string>
+    <string name="main_filter_chip_entourage">Entourage-Veranstaltungen</string>
+    <string name="main_filter_chip_reserved_female">Nur für Frauen</string>
+    <string name="main_filter_subtitle_format">Format</string>
+    <string name="main_filter_chip_presentiel">Vor Ort</string>
+    <string name="main_filter_chip_visio">Videoanruf</string>
     <string name="sharing_time_title">Teilnahmezeit</string>
     <string name="sharing_time_subtitle">Kaffee, Aktivität...</string>
     <string name="services_title">Dienstleistung</string>
@@ -2731,6 +2738,7 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <!-- Badges section -->
     <string name="badges_section_title">SEINE ABZEICHEN</string>
     <string name="badges_see_all">Alle anzeigen</string>
+    <string name="badges_section_title_me">Meine Abzeichen</string>
     <string name="badges_screen_title">Meine Abzeichen</string>
     <string name="badges_screen_subtitle">%1$d erhalten, %2$d in Bearbeitung, %3$d zu entdecken. Jedes Abzeichen belohnt eine konkrete Aktion in Ihrer Gemeinschaft.</string>
     <string name="badges_section_obtained">Erhalten %1$d/%2$d</string>
@@ -2746,12 +2754,15 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="badges_faq_link">Wie funktionieren Abzeichen?</string>
     <string name="badge_obtained_on">Erhalten am %1$s</string>
     <string name="badge_not_yet_obtained">Noch nicht erhalten</string>
+    <string name="badge_status_obtained">Erhalten</string>
+    <string name="badge_status_not_obtained">Nicht erhalten</string>
     <string name="badge_how_it_works_title">WIE ES FUNKTIONIERT</string>
     <string name="badge_mechanism_title">MECHANISMUS</string>
     <string name="badge_what_it_means_title">WAS ES BEDEUTET</string>
     <string name="badge_mechanism_irreversible">Irreversibel — einmal erhalten, für immer.</string>
     <string name="badge_mechanism_reversible">Reversibel — wird alle 90 Tage erneuert.</string>
     <string name="badge_see_all_mine">Alle meine Abzeichen anzeigen</string>
+    <string name="badge_cta_see_my_badges">Meine Abzeichen anzeigen</string>
     <string name="badge_progress_label">Ihr Fortschritt</string>
     <string name="badges_debug_switch_label">Abzeichen-Demo-Modus</string>
     <string name="badge_premier_pas_title">Erster Schritt</string>
@@ -2802,6 +2813,21 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="badge_diffuseur_liens_unlocked_message">Du hast in den letzten 90 Tagen 3 Veranstaltungen organisiert. Du bringst die Entourage-Gemeinschaft in Bewegung, großartig!</string>
     <string name="badge_as_papotage_unlocked_message">3 solidarische Papotages in eineinhalb Monaten — deine regelmäßige Anwesenheit schafft Verbindungen und tut dir gut. Danke für dein konstantes Engagement.</string>
     <string name="badge_tisseur_liens_unlocked_message">3 aktive Wochen von 4 — du lässt das Herz der Nachbarschaftsgruppen schlagen. Danke für dein konstantes Engagement.</string>
+    <string name="badge_diffuseur_liens_progress_hint">Erstellen oder moderieren Sie Veranstaltungen in den letzten 90 Tagen, um dieses Abzeichen zu erhalten.</string>
+    <string name="badge_as_papotage_progress_hint">Nehmen Sie in den letzten 90 Tagen an solidarischen Papotages teil, um dieses Abzeichen zu erhalten.</string>
+    <string name="badge_tisseur_liens_progress_hint">Seien Sie mindestens 3 der letzten 4 Wochen in Ihren Gruppen aktiv, um dieses Abzeichen zu erhalten.</string>
+    <plurals name="badge_diffuseur_liens_progress_hint_remaining">
+        <item quantity="one">Nur noch 1 Veranstaltung zu erstellen oder zu moderieren, um dieses Abzeichen zu erhalten.</item>
+        <item quantity="other">Noch %d Veranstaltungen zu erstellen oder zu moderieren, um dieses Abzeichen zu erhalten.</item>
+    </plurals>
+    <plurals name="badge_as_papotage_progress_hint_remaining">
+        <item quantity="one">Nur noch 1 solidarisches Papotage, um dieses Abzeichen zu erhalten.</item>
+        <item quantity="other">Noch %d solidarische Papotages, um dieses Abzeichen zu erhalten.</item>
+    </plurals>
+    <plurals name="badge_tisseur_liens_progress_hint_remaining">
+        <item quantity="one">Nur noch 1 aktive Woche, um dieses Abzeichen zu erhalten.</item>
+        <item quantity="other">Noch %d aktive Wochen, um dieses Abzeichen zu erhalten.</item>
+    </plurals>
 
     <!-- Inspirations-Chips für die Erstellung von Beiträgen in Gruppen -->
     <string name="create_post_inspiration_label">Brauchst du Inspiration?</string>
@@ -2821,5 +2847,8 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="post_draft_question">Hallo, ich hätte eine Frage an die Gruppe: </string>
     <string name="post_draft_exchange">Ich würde gerne gemeinsam über dieses Thema diskutieren: </string>
     <string name="post_draft_meetup">Was wäre, wenn wir uns bald treffen würden? Ich schlage vor </string>
+
+    <string name="group_feed_post_unavailable">Cette publication n\'existe plus.</string>
+    <string name="message_action_react">Réagir</string>
 
 </resources>

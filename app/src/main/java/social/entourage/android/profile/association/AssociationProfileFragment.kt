@@ -136,7 +136,7 @@ class AssociationProfileFragment : Fragment() {
     private fun setBackButton() {
         binding.assoProfileIconBack.setOnClickListener {
             if(isFromNotifs) {
-                activity?.onBackPressed()
+                activity?.onBackPressedDispatcher?.onBackPressed()
                 return@setOnClickListener
             }
 

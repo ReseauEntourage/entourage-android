@@ -2851,6 +2851,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboarding_congrats_title">Votre expérience sur-mesure est prête !</string>
     <string name="onboarding_congrats_content">À partir de vos préférences et disponibilités, nous vous avons préparé une sélection d\’événements à votre image. C\’est le moment de passer à l\’action !</string>
     <string name="onboarding_congrats_leave">Parcourir les événements</string>
+    <string name="onboarding_congrats_skip">Plus tard</string>
     <string name="onboarding_congrats_temporary_title">Votre expérience sur-mesure est (quasi) prête !</string>
     <string name="onboarding_congrats_temporary_content">Merci d\'avoir partagé vos envies d\'agir et vos centres d\'intérêts. Nous sommes impatients de vous proposer bientôt des événements sur-mesure qui vous correspondent. \nRestez connecté(e) !</string>
 
@@ -2888,6 +2889,12 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="main_filter_subtitle_action">Par catégorie</string>
     <string name="main_filter_title_location">Par localisation</string>
     <string name="main_filter_title_radius">Dans un rayon de</string>
+    <string name="main_filter_subtitle_event_type">Type d\'événement</string>
+    <string name="main_filter_chip_entourage">Événements Entourage</string>
+    <string name="main_filter_chip_reserved_female">Réservé aux femmes</string>
+    <string name="main_filter_subtitle_format">Format</string>
+    <string name="main_filter_chip_presentiel">Présentiel</string>
+    <string name="main_filter_chip_visio">Visio</string>
     <string name="sharing_time_title">Temps de partage</string>
     <string name="sharing_time_subtitle">(café, activité, rencontre...)</string>
     <string name="services_title">Service</string>
@@ -3364,6 +3371,10 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="message_action_copy">Copier le texte</string>
     <string name="message_action_report">Signaler le message</string>
     <string name="message_action_delete">Supprimer mon message</string>
+    <string name="message_action_edit">Modifier</string>
+    <string name="message_action_edit_in_progress">Modification du message en cours…</string>
+    <string name="message_action_react">Réagir</string>
+    <string name="new_messages_banner">Nouveaux messages ↓</string>
 
     <string name="event_settings_see_photos">Voir les photos</string>
     <string name="discussion_de_groupe">Discussion de groupe</string>
@@ -3500,5 +3511,12 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
         <item quantity="one">Plus qu\'1 semaine d\'activité pour obtenir ce badge.</item>
         <item quantity="other">Encore %d semaines d\'activité pour obtenir ce badge.</item>
     </plurals>
+
+    <string name="group_feed_post_unavailable">Cette publication n\'existe plus.</string>
+
+    <string name="onboarding_start_action_ask_title">C\'est parti ! Demandez un coup de pouce près de chez vous</string>
+    <string name="onboarding_start_action_ask_content">On vous propose de commencer par formuler une première demande : un coup de main, un objet utile ou juste un moment de partage. C\'est gratuit, et c\'est souvent le début d\'une belle rencontre avec vos voisins.</string>
+    <string name="onboarding_start_action_ask_button">Faire ma première demande</string>
+    <string name="onboarding_start_action_ask_skip">Me le rappeler plus tard</string>
 
 </resources>

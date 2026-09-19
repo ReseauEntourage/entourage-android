@@ -1,23 +1,23 @@
 package social.entourage.android.main_filter
 
-import android.app.Activity
-import android.app.ActivityManager
 import android.content.Context
-import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import android.widget.ScrollView
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.SeekBar
-import androidx.core.widget.NestedScrollView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.AutocompletePrediction
@@ -30,6 +30,7 @@ import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityMainFilterBinding
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.updatePaddingForEdgeToEdge
 
 enum class MainFilterMode {
     ACTION,
@@ -47,16 +48,26 @@ class MainFilterActivity : BaseActivity() {
         var savedGroupInterests = mutableListOf<String>()
         var savedActionInterests = mutableListOf<String>()
         var savedGroupInterestsFromOnboarding = mutableListOf<String>()
+        var savedEventTypes = mutableListOf<String>()
+        var savedEventFormat: String? = null
         var savedRadius = 0
         var savedLocation: PlaceDetails? = null
         var mod: MainFilterMode = MainFilterMode.GROUP
         var hasToReloadAction = false
         var hasFilter = false
         data class PlaceDetails(val name: String, val lat: Double, val lng: Double)
+
+        const val EVENT_TYPE_ENTOURAGE = "entourage"
+        const val EVENT_TYPE_RESERVED_FEMALE = "reserved_female"
+        const val EVENT_FORMAT_PRESENTIAL = "presential"
+        const val EVENT_FORMAT_REMOTE = "remote"
+
         fun resetAllFilters(context: Context) {
             val user = EntourageApplication.me(context)
             savedGroupInterests.clear()
             savedActionInterests.clear()
+            savedEventTypes.clear()
+            savedEventFormat = null
             savedRadius = user?.travelDistance ?: 0
             savedLocation = user?.address?.let { PlaceDetails(it.displayAddress, it.latitude, it.longitude) }
             hasFilter = false
@@ -64,6 +75,8 @@ class MainFilterActivity : BaseActivity() {
     }
 
     private var selectedInterests = mutableListOf<String>()
+    private var selectedEventTypes = mutableListOf<String>()
+    private var selectedFormat: String? = null
     private var selectedRadius = 0
     private var selectedLocation = ""
 
@@ -73,6 +86,7 @@ class MainFilterActivity : BaseActivity() {
 
         binding = ActivityMainFilterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        updatePaddingForEdgeToEdge(binding.root)
 
         // Initialize Places.
         Places.initialize(applicationContext, getString(R.string.google_api_key))
@@ -83,7 +97,8 @@ class MainFilterActivity : BaseActivity() {
         setupSeekBar()
         setupLocationAutoComplete()
         setupButtons()
-        updateFilterCount(selectedInterests.size) // Initialiser le compteur avec le nombre d'intérêts sélectionnés
+        setupEventTypeAndFormatChips()
+        updateFilterCount(totalFilterCount()) // Initialiser le compteur avec le nombre de filtres sélectionnés
 
         // Ajouter un listener pour détecter les changements de layout (comme l'ouverture du clavier)
         addKeyboardListener()
@@ -99,31 +114,32 @@ class MainFilterActivity : BaseActivity() {
     }
 
     private fun addKeyboardListener() {
-        val rootView = binding.root
-        rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-            override fun onGlobalLayout() {
-                val rect = Rect()
-                rootView.getWindowVisibleDisplayFrame(rect)
-                val screenHeight = rootView.height
-                val keypadHeight = screenHeight - rect.bottom
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+            val statusBars = insets.getInsets(WindowInsetsCompat.Type.statusBars())
+            val navBars = insets.getInsets(WindowInsetsCompat.Type.navigationBars())
+            val ime = insets.getInsets(WindowInsetsCompat.Type.ime())
 
-                if (keypadHeight > screenHeight * 0.15) { // si le clavier est visible
-                    val params = binding.rvMainFilter.layoutParams as ViewGroup.MarginLayoutParams
-                    params.height = screenHeight - keypadHeight - binding.autoCompleteCityName.height
-                    binding.rvMainFilter.layoutParams = params
-                    scrollToView(binding.autoCompleteCityName)
-                } else {
-                    val params = binding.rvMainFilter.layoutParams as ViewGroup.MarginLayoutParams
-                    params.height = ViewGroup.LayoutParams.MATCH_PARENT
-                    binding.rvMainFilter.layoutParams = params
+            binding.root.updatePadding(
+                top = statusBars.top,
+                bottom = maxOf(navBars.bottom, ime.bottom)
+            )
+
+            if (insets.isVisible(WindowInsetsCompat.Type.ime())) {
+                binding.scrollView.findFocus()?.let { focusedView ->
+                    scrollToView(focusedView)
                 }
             }
-        })
+
+            insets
+        }
     }
 
     private fun scrollToView(view: View) {
         binding.scrollView.post {
-            binding.scrollView.smoothScrollTo(0, view.bottom)
+            val rect = Rect()
+            view.getDrawingRect(rect)
+            binding.scrollView.offsetDescendantRectToMyCoords(view, rect)
+            binding.scrollView.scrollTo(0, rect.top)
         }
     }
 
@@ -135,6 +151,13 @@ class MainFilterActivity : BaseActivity() {
         } else if (mod == MainFilterMode.ACTION && savedActionInterests.isNotEmpty()) {
             selectedInterests = savedActionInterests.toMutableList()
             hasFilter = true
+        }
+
+        if (mod == MainFilterMode.EVENT) {
+            selectedEventTypes = savedEventTypes.toMutableList()
+            if (selectedEventTypes.isNotEmpty()) hasFilter = true
+            selectedFormat = savedEventFormat
+            if (selectedFormat != null) hasFilter = true
         }
 
         if (savedRadius != 0) {
@@ -203,16 +226,88 @@ class MainFilterActivity : BaseActivity() {
             } else {
                 selectedInterests.remove(interest.id)
             }
-            updateFilterCount(selectedInterests.size) // Mettre à jour le compteur chaque fois qu'un intérêt est sélectionné ou désélectionné
+            updateFilterCount(totalFilterCount()) // Mettre à jour le compteur chaque fois qu'un intérêt est sélectionné ou désélectionné
         }
         binding.rvMainFilter.layoutManager = LinearLayoutManager(this)
         binding.rvMainFilter.adapter = interestsAdapter
     }
 
+    private fun totalFilterCount(): Int {
+        return selectedInterests.size + selectedEventTypes.size + (if (selectedFormat != null) 1 else 0)
+    }
+
     private fun updateFilterCount(count: Int) {
-        binding.tvNumberOfFilter.text = count.toString()
+        // Le badge est affiché à côté du titre "Par thématique" : il ne doit refléter
+        // que les intérêts sélectionnés, pas les chips type d'event / format.
+        binding.tvNumberOfFilter.text = selectedInterests.size.toString()
         if(count > 0){
             hasFilter = true
+        }
+    }
+
+    private fun setupEventTypeAndFormatChips() {
+        val isEventMode = mod == MainFilterMode.EVENT
+        binding.tvSubtitleEventType.visibility = if (isEventMode) View.VISIBLE else View.GONE
+        binding.layoutEventTypeChips.visibility = if (isEventMode) View.VISIBLE else View.GONE
+        binding.tvSubtitleFormat.visibility = if (isEventMode) View.VISIBLE else View.GONE
+        binding.layoutFormatChips.visibility = if (isEventMode) View.VISIBLE else View.GONE
+
+        if (!isEventMode) return
+
+        val isFemale = EntourageApplication.me(this)?.gender == "female"
+        binding.chipEventReservedFemale.visibility = if (isFemale) View.VISIBLE else View.GONE
+
+        binding.chipEventEntourage.setOnClickListener { toggleEventType(EVENT_TYPE_ENTOURAGE) }
+        binding.chipEventReservedFemale.setOnClickListener { toggleEventType(EVENT_TYPE_RESERVED_FEMALE) }
+        binding.chipFormatPresentiel.setOnClickListener { toggleFormat(EVENT_FORMAT_PRESENTIAL) }
+        binding.chipFormatVisio.setOnClickListener { toggleFormat(EVENT_FORMAT_REMOTE) }
+
+        refreshEventTypeAndFormatStyles()
+    }
+
+    private fun toggleEventType(type: String) {
+        if (selectedEventTypes.contains(type)) {
+            selectedEventTypes.remove(type)
+        } else {
+            selectedEventTypes.add(type)
+            AnalyticsEvents.logEvent("event_" + AnalyticsEvents.filter_tag_item_ + type)
+        }
+        refreshEventTypeAndFormatStyles()
+        updateFilterCount(totalFilterCount())
+    }
+
+    private fun toggleFormat(format: String) {
+        selectedFormat = if (selectedFormat == format) null else format
+        if (selectedFormat != null) {
+            AnalyticsEvents.logEvent("event_" + AnalyticsEvents.filter_tag_item_ + selectedFormat)
+        }
+        refreshEventTypeAndFormatStyles()
+        updateFilterCount(totalFilterCount())
+    }
+
+    private fun refreshEventTypeAndFormatStyles() {
+        updateChipToggleStyle(
+            binding.chipEventEntourage, binding.ivChipEntourageIcon, binding.tvChipEntourage,
+            selectedEventTypes.contains(EVENT_TYPE_ENTOURAGE)
+        )
+        updateChipToggleStyle(
+            binding.chipEventReservedFemale, binding.ivChipReservedFemaleIcon, binding.tvChipReservedFemale,
+            selectedEventTypes.contains(EVENT_TYPE_RESERVED_FEMALE), R.drawable.shape_chip_pill_purple_filled
+        )
+        updateChipToggleStyle(binding.chipFormatPresentiel, null, binding.tvChipPresentiel, selectedFormat == EVENT_FORMAT_PRESENTIAL)
+        updateChipToggleStyle(binding.chipFormatVisio, null, binding.tvChipVisio, selectedFormat == EVENT_FORMAT_REMOTE)
+    }
+
+    private fun updateChipToggleStyle(
+        container: LinearLayout, icon: ImageView?, text: TextView, isSelected: Boolean,
+        selectedBackgroundRes: Int = R.drawable.shape_chip_pill_orange_filled
+    ) {
+        container.setBackgroundResource(if (isSelected) selectedBackgroundRes else R.drawable.shape_chip_pill_grey_border)
+        text.setTextColor(ContextCompat.getColor(this, if (isSelected) R.color.white else R.color.black))
+        if (isSelected) {
+            icon?.setColorFilter(ContextCompat.getColor(this, R.color.white))
+        } else {
+            icon?.clearColorFilter()
         }
     }
 
@@ -312,6 +407,8 @@ class MainFilterActivity : BaseActivity() {
     fun resetFilters() {
         val user = EntourageApplication.me(this)
         selectedInterests.clear()
+        selectedEventTypes.clear()
+        selectedFormat = null
         savedLocation = user?.address?.let { PlaceDetails(it.displayAddress, it.latitude, it.longitude) }
         selectedRadius = user?.travelDistance ?: 0
         selectedLocation = user?.address?.displayAddress ?: ""
@@ -320,6 +417,9 @@ class MainFilterActivity : BaseActivity() {
         binding.seekbar.progress = user?.travelDistance ?: 0
         binding.tvRadius.text = user?.travelDistance.toString() ?: "0 km"
         binding.autoCompleteCityName.setText(user?.address?.displayAddress?: "")
+        if (mod == MainFilterMode.EVENT) {
+            refreshEventTypeAndFormatStyles()
+        }
         updateFilterCount(0)
         if (mod == MainFilterMode.GROUP || mod == MainFilterMode.EVENT) {
             savedGroupInterests.clear()
@@ -328,6 +428,9 @@ class MainFilterActivity : BaseActivity() {
         }
         savedRadius = 0
         savedLocation = null
+        savedEventTypes.clear()
+        savedEventFormat = null
+        hasFilter = false
     }
 
     private fun applyFilters() {
@@ -348,6 +451,10 @@ class MainFilterActivity : BaseActivity() {
             savedActionInterests = selectedInterests
         }
         savedRadius = selectedRadius
+        if (mod == MainFilterMode.EVENT) {
+            savedEventTypes = selectedEventTypes
+            savedEventFormat = selectedFormat
+        }
         finish()
     }
 

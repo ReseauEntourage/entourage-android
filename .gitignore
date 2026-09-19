@@ -58,3 +58,8 @@ app/.classpath
 .DS_Store
 .kotlin
 .aider*
+
+.artifacts
+
+# Heap dumps générés par la JVM/Gradle
+*.hprof

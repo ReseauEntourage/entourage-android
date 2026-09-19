@@ -125,6 +125,11 @@ class DiscussionsMainFragment : Fragment() {
         page = 0
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     // -------------------- INIT UI --------------------
 
     private fun initializeSearchBar() {

@@ -28,13 +28,16 @@ class HighlightOverlayView(context: Context, private val targetView: View) : Fra
         // Dessiner le fond semi-transparent
         canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), backgroundPaint)
 
-        // Obtenir la position de 'targetView' dans l'écran
+        // Obtenir la position de 'targetView' et de cet overlay lui-même dans l'écran
         val location = IntArray(2)
         targetView.getLocationOnScreen(location)
+        val overlayLocation = IntArray(2)
+        getLocationOnScreen(overlayLocation)
 
-        // Calculer les coordonnées du centre du 'targetView' dans les coordonnées de l'overlay
-        val centerX = location[0] + targetView.width / 2f
-        val centerY = location[1] + targetView.height / 2f - getStatusBarHeight()
+        // Calculer les coordonnées du centre du 'targetView' dans les coordonnées locales de l'overlay
+        // (différence de position écran, valable qu'on soit en edge-to-edge ou pas, pas d'hypothèse sur la status bar)
+        val centerX = location[0] - overlayLocation[0] + targetView.width / 2f
+        val centerY = location[1] - overlayLocation[1] + targetView.height / 2f
 
         // Calculer le rayon du cercle (ajustez le facteur selon vos besoins)
         val radius = (Math.max(targetView.width, targetView.height) / 2f) * 1.2f // Augmentez 1.2f pour un cercle plus grand
@@ -44,10 +47,5 @@ class HighlightOverlayView(context: Context, private val targetView: View) : Fra
 
         // Dessiner le reste des enfants (par exemple, votre bubble layout)
         super.dispatchDraw(canvas)
-    }
-
-    private fun getStatusBarHeight(): Int {
-        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-        return if (resourceId > 0) resources.getDimensionPixelSize(resourceId) else 0
     }
 }

@@ -2537,6 +2537,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="onboarding_congrats_title">Votre expérience sur-mesure est prête !</string>
     <string name="onboarding_congrats_content">À partir de vos préférences et disponibilités, nous vous avons préparé une sélection d\’événements à votre image. C\’est le moment de passer à l\’action !</string>
     <string name="onboarding_congrats_leave">Parcourir les événements</string>
+    <string name="onboarding_congrats_skip">Plus tard</string>
     <string name="onboarding_congrats_temporary_title">Votre expérience sur-mesure est (quasi) prête !</string>
     <string name="onboarding_congrats_temporary_content">Merci d\'avoir partagé vos envies d\'agir et vos centres d\'intérêts. Nous sommes impatients de vous proposer bientôt des événements sur-mesure qui vous correspondent. \nRestez connecté(e) !</string>
 
@@ -2713,4 +2714,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_small_talk_matching">+%1$d en cours de matching</string>
     <string name="home_small_talk_launch_new">+ Lancer une nouvelle rencontre (%1$d/3)</string>
     <string name="home_small_talk_subtitle_waiting">%1$d discussion en cours de matching</string>
+    <string name="group_feed_post_unavailable">Cette publication n\'existe plus.</string>
+    <string name="message_action_react">Réagir</string>
     </resources>

@@ -54,7 +54,10 @@ interface EventsRequest {
         @Query("travel_distance") travelDistance: Int?,
         @Query("latitude") latitude: Double?,
         @Query("longitude") longitude: Double?,
-        @Query("period") period: String
+        @Query("period") period: String,
+        @Query("reserved_female") reservedFemale: Boolean? = null,
+        @Query("format") format: String? = null,
+        @Query("entourage_only") entourageOnly: Boolean? = null
     ): Call<EventsListWrapper>
     @GET("outings")
     fun getAllEvents(
@@ -73,7 +76,10 @@ interface EventsRequest {
         @Query("travel_distance") travelDistance: Int?,
         @Query("latitude") latitude: Double?,
         @Query("longitude") longitude: Double?,
-        @Query("period") period:String
+        @Query("period") period:String,
+        @Query("reserved_female") reservedFemale: Boolean? = null,
+        @Query("format") format: String? = null,
+        @Query("entourage_only") entourageOnly: Boolean? = null
     ): Call<EventsListWrapper>
 
     @POST("outings")
@@ -97,6 +103,16 @@ interface EventsRequest {
         @Path("event_id") groupId: Int,
         @Path("post_id") postId: Int
     ): Call<ResponseBody>
+
+    // Même ressource chat_message que conversations/{id}/chat_messages/{id} (cf.
+    // DiscussionsRequest.updateMessage) : à confirmer en recette avant release, ce PATCH
+    // n'ayant pas été testé contre le back pour les posts/commentaires de sortie.
+    @PATCH("outings/{event_id}/chat_messages/{post_id}")
+    fun updatePost(
+        @Path("event_id") eventId: Int,
+        @Path("post_id") postId: Int,
+        @Body params: ArrayMap<String, Any>
+    ): Call<PostWrapper>
     @GET("outings/{event_id}/users")
     fun getMembersSearch(
         @Path("event_id") eventId: Int,

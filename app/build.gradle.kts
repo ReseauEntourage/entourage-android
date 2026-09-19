@@ -1,14 +1,14 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.aboutlibraries)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.navigation.safeargs)
     alias(libs.plugins.google.services)
-    alias(libs.plugins.aboutlibraries)
 }
 
 fun String.runCommand(currentWorkingDir: File = file("./")): String {
@@ -20,14 +20,27 @@ fun String.runCommand(currentWorkingDir: File = file("./")): String {
 
 android {
 // Java versions
-    val sourceCompatibilityVersion = JavaVersion.VERSION_17
-    val targetCompatibilityVersion = JavaVersion.VERSION_17
+    val sourceCompatibilityVersion = JavaVersion.VERSION_21
+    val targetCompatibilityVersion = JavaVersion.VERSION_21
 
     // App versions
-    val versionMajor = 14
-    val versionMinor = 4
-    val versionPatch = "git rev-list HEAD --count".runCommand().toInt()
-    val versionBranchName = "git rev-parse --abbrev-ref HEAD".runCommand()
+    val isReleaseOrPreprod = project.gradle.startParameter.taskNames.any { it.contains("release", ignoreCase = true)||it.contains("preprod", ignoreCase = true) }
+
+    val versionMajor = 15
+    val versionMinor = 0
+
+    // Use a fixed version for debug builds to speed up configuration and enable caching
+    val versionPatch = if (isReleaseOrPreprod) {
+        "git rev-list HEAD --count".runCommand().toIntOrNull() ?: 0
+    } else {
+        1000
+    }
+
+    val versionBranchName = if (isReleaseOrPreprod) {
+        "git rev-parse --abbrev-ref HEAD".runCommand()
+    } else {
+        "debug"
+    }
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
     val versionNameProd = "${versionMajor}.${versionMinor}.${versionPatch}"
     val appBundleName = System.getenv("APPBUNDLE_NAME") ?: "app"
@@ -39,16 +52,10 @@ android {
     val deepLinksURLProd = "www.entourage.social"
     val deepLinksURLStaging = "preprod.entourage.social"
 
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
-    }
-
     buildFeatures {
         viewBinding = true
         dataBinding = true
-
+        compose = true
     }
     bundle {
         language {
@@ -114,38 +121,15 @@ android {
             storeFile = file("../keystore/debug.keystore")
         }
     }
-    flavorDimensions += listOf("app", "env")
+    flavorDimensions += listOf("app")
 
     productFlavors {
-        create("prod") {
-            dimension = "env"
-            buildConfigField("String", "ENTOURAGE_URL", "\"${entourageURLProd}\"")
-            buildConfigField("String", "DEEP_LINKS_SCHEME", "\"${deepLinksSchemeProd}\"")
-            buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLProd}\"")
-            buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "15")
-            buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "37")
-            buildConfigField("int", "PEDAGO_ACTION_SECTION_ID", "34")
-            buildConfigField("String", "PEDAGO_GUIDE_ID", "\"eOB7jU8NNODY\"")
-        }
-        create("staging") {
-            manifestPlaceholders += mapOf(
-                "deepLinksHostName" to deepLinksURLStaging,
-                "deepLinksScheme" to deepLinksSchemeStaging
-            )
-            dimension = "env"
-            applicationIdSuffix = ".preprod"
-            buildConfigField("String", "ENTOURAGE_URL", "\"${entourageURLStaging}\"")
-            buildConfigField("String", "DEEP_LINKS_SCHEME", "\"${deepLinksSchemeStaging}\"")
-            buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLStaging}\"")
-            buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "32")
-            buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "33")
-            buildConfigField("int", "PEDAGO_ACTION_SECTION_ID", "33")
-            buildConfigField("String", "PEDAGO_GUIDE_ID", "\"eyck8DuIn3cI\"")
-
-        }
         create("entourage") {
             dimension = "app"
-            buildConfigField("String", "API_KEY", "\"4a7373f3e7dd45fc391a2f19\"")
+            val apiKey = (System.getenv("ApiKey")
+                ?: findProperty("entourageApiKey") as String?
+                ?: "")
+            buildConfigField("String", "API_KEY", "\"$apiKey\"")
             val hmacSecret = (System.getenv("HMAC_SECRET_ANDROID")
                 ?: findProperty("entourageHmacSecret") as String?
                 ?: "")
@@ -157,20 +141,50 @@ android {
         release {
             signingConfig = signingConfigs.getAt("googleplay")
             isDebuggable = false
+            ndk {
+                debugSymbolLevel = "FULL"
+            }
+            buildConfigField("String", "ENTOURAGE_URL", "\"${entourageURLProd}\"")
+            buildConfigField("String", "DEEP_LINKS_SCHEME", "\"${deepLinksSchemeProd}\"")
+            buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLProd}\"")
+            buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "15")
+            buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "37")
+            buildConfigField("int", "PEDAGO_ACTION_SECTION_ID", "34")
+            buildConfigField("String", "PEDAGO_GUIDE_ID", "\"eOB7jU8NNODY\"")
+        }
+
+        create("preprod") {
+            signingConfig = signingConfigs.getAt("googleplay")
+            isDebuggable = false
+            applicationIdSuffix = ".preprod"
+            manifestPlaceholders += mapOf(
+                "deepLinksHostName" to deepLinksURLStaging,
+                "deepLinksScheme" to deepLinksSchemeStaging
+            )
+            buildConfigField("String", "ENTOURAGE_URL", "\"${entourageURLStaging}\"")
+            buildConfigField("String", "DEEP_LINKS_SCHEME", "\"${deepLinksSchemeStaging}\"")
+            buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLStaging}\"")
+            buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "32")
+            buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "33")
+            buildConfigField("int", "PEDAGO_ACTION_SECTION_ID", "33")
+            buildConfigField("String", "PEDAGO_GUIDE_ID", "\"eyck8DuIn3cI\"")
         }
 
         debug {
+            isDefault = true
             signingConfig = signingConfigs.getAt("debug")
             applicationIdSuffix = ".debug"
-            //firebaseCrashlytics.mappingFileUploadEnabled = false
-            //optimizing build speed
-            aaptOptions.cruncherEnabled = false
-            /*FirebasePerformance {
-                // Set this flag to "false" to disable @AddTrace annotation processing and
-                // automatic monitoring of HTTP/S network requests
-                // for a specific build variant at compile time.
-                instrumentationEnabled = false
-            }*/
+            manifestPlaceholders += mapOf(
+                "deepLinksHostName" to deepLinksURLStaging,
+                "deepLinksScheme" to deepLinksSchemeStaging
+            )
+            buildConfigField("String", "ENTOURAGE_URL", "\"${entourageURLStaging}\"")
+            buildConfigField("String", "DEEP_LINKS_SCHEME", "\"${deepLinksSchemeStaging}\"")
+            buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLStaging}\"")
+            buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "32")
+            buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "33")
+            buildConfigField("int", "PEDAGO_ACTION_SECTION_ID", "33")
+            buildConfigField("String", "PEDAGO_GUIDE_ID", "\"eyck8DuIn3cI\"")
         }
     }
 
@@ -197,10 +211,25 @@ android {
     }
 
     lint {
+        checkReleaseBuilds = isReleaseOrPreprod
         abortOnError = false
         disable += listOf("InvalidPackage")
+        ignoreTestSources = true
+        checkDependencies = false
+    }
+    aboutLibraries {
+        offlineMode.set(true)
     }
     namespace = "social.entourage.android"
+}
+
+configurations.all {
+    exclude(group = "com.google.android.play", module = "core")
+    exclude(group = "com.google.android.play", module = "core-ktx")
+}
+
+aboutLibraries {
+    // keep it empty
 }
 
 dependencies {
@@ -217,6 +246,12 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.preference.ktx)
     implementation(libs.androidx.compose.ui.text.android)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.runtime.livedata)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 
     implementation(libs.tape)
     implementation(libs.timber)
@@ -279,9 +314,7 @@ dependencies {
     implementation(libs.flexbox)
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.navigation.ui.ktx)
-    implementation(libs.sectioned.recyclerview)
     implementation(libs.lottie)
-    implementation(libs.photoview)
     implementation(libs.transition)
     implementation(libs.play.app.update.ktx)
     implementation(libs.play.asset.delivery)
@@ -303,10 +336,29 @@ dependencies {
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 }
 
+// Résout le chemin complet vers adb : Gradle n'hérite pas toujours du PATH du shell interactif,
+// donc un simple "adb" échoue parfois ("A problem occurred starting process 'command 'adb''")
+// même quand adb fonctionne très bien en ligne de commande.
+fun adbExecutable(): String {
+    val sdkDir = System.getenv("ANDROID_HOME")
+        ?: System.getenv("ANDROID_SDK_ROOT")
+        ?: run {
+            val localPropsFile = rootProject.file("local.properties")
+            if (localPropsFile.exists()) {
+                val props = Properties()
+                localPropsFile.inputStream().use { props.load(it) }
+                props.getProperty("sdk.dir")
+            } else null
+        }
+    val isWindows = System.getProperty("os.name").contains("Windows", ignoreCase = true)
+    val adbName = if (isWindows) "adb.exe" else "adb"
+    return sdkDir?.let { File(it, "platform-tools/$adbName").absolutePath } ?: adbName
+}
+
 tasks.register<Exec>("clearSnapshots") {
     group = "verification"
     description = "Vider les snapshots sur le device"
-    commandLine("adb", "shell", "rm", "-rf", "/sdcard/Download/entourage_snapshots/*")
+    commandLine(adbExecutable(), "shell", "rm", "-rf", "/sdcard/Download/entourage_snapshots/*")
     isIgnoreExitValue = true
 }
 
@@ -319,7 +371,7 @@ tasks.register<Exec>("pullSnapshots") {
         if (!localDir.exists()) localDir.mkdirs()
     }
 
-    commandLine("adb", "pull", "/sdcard/Download/entourage_snapshots/.", localDir.absolutePath)
+    commandLine(adbExecutable(), "pull", "/sdcard/Download/entourage_snapshots/.", localDir.absolutePath)
 
     isIgnoreExitValue = true
     finalizedBy("clearSnapshots")

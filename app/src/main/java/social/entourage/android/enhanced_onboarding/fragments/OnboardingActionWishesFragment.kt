@@ -79,6 +79,10 @@ class OnboardingActionWishesFragment : Fragment() {
         return goal != null && goal.equals(User.USER_GOAL_ASSO, ignoreCase = true)
     }
 
+    private fun isIsolatedPersonMode(): Boolean {
+        return viewModel.user?.isUserTypeAlone == true
+    }
+
     private fun setupRecyclerView() {
         adapter = OnboardingInterestsAdapter(
             isFromInterest = false,
@@ -101,6 +105,10 @@ class OnboardingActionWishesFragment : Fragment() {
         // On récupère les listes existantes pour éviter les null check répétitifs
         val userOrientations = user.orientations ?: emptyList()
         val userInvolvements = user.involvements ?: emptyList()
+
+        android.util.Log.d("EN9530_DEBUG", "loadAndSendActionWishes: goal=${user.goal} isUserTypeAlone=${user.isUserTypeAlone} " +
+                "EnhancedOnboarding.preference=${EnhancedOnboarding.preference} isIsolatedPersonMode=${isIsolatedPersonMode()} " +
+                "userInvolvements=$userInvolvements")
 
         val actionWishes = if (isAssociationMode()) {
             // --- MODE ASSOCIATION ---
@@ -142,7 +150,7 @@ class OnboardingActionWishesFragment : Fragment() {
             // --- MODE PARTICULIER ---
             // On vérifie la présence des clés dans 'userInvolvements'
             buildList {
-                if (EnhancedOnboarding.preference == "contribution") {
+                if (EnhancedOnboarding.preference == "contribution" || isIsolatedPersonMode()) {
                     // Ordre spécifique : Contribution
                     add(InterestForAdapter(
                         icon = getIconForActionWish("outings"),
@@ -216,6 +224,7 @@ class OnboardingActionWishesFragment : Fragment() {
     }
 
     private fun onInterestClicked(interest: InterestForAdapter) {
+        android.util.Log.d("EN9530_DEBUG", "onInterestClicked: id=${interest.id} wasSelected=${interest.isSelected}")
         viewModel.updateActionsWishes(interest)
     }
 }

@@ -204,9 +204,9 @@ class OnboardingInterestFragment : Fragment() {
         viewModel.updateInterest(interest)
 
         if (interest.isSelected) {
-            MainFilterActivity.savedGroupInterestsFromOnboarding.remove(interest.id)
-        } else {
             MainFilterActivity.savedGroupInterestsFromOnboarding.add(interest.id)
+        } else {
+            MainFilterActivity.savedGroupInterestsFromOnboarding.remove(interest.id)
         }
     }
 }

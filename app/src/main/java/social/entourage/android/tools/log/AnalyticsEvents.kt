@@ -464,6 +464,7 @@ object AnalyticsEvents {
     const val ACTION_GROUP_FEED_OPTION = "Action__GroupFeed__Option"
     const val ACTION_GROUP_FEED_BACK_ARROW = "Action__GroupFeed__BackArrow"
     const val VIEW_GROUP_FEED_FULL_DESCRIPTION = "View__GroupFeed__FullDescription"
+    const val ACTION_GROUP_FEED_NOTIF_POST_NOT_FOUND = "Action__GroupFeed__NotifPostNotFound"
 
     //GROUPE - LISTE DES MEMBRES
 
@@ -731,6 +732,7 @@ object AnalyticsEvents {
 
     // Écran de fin
     const val onboarding_end_browse_events_clic = "onboarding_end_browse_events_clic"
+    const val onboarding_end_skip_clic = "onboarding_end_skip_clic"
     const val onboarding_end_congrats_clic_on_ = "onboarding_end_congrats_clic_on_"
 
 

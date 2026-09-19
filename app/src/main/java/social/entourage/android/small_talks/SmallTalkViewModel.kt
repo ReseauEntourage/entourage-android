@@ -47,6 +47,7 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
     val almostMatches = MutableLiveData<List<UserSmallTalkRequestWithMatchData>>()
     val shouldLeave = MutableLiveData<Boolean>()
     val messageDeleteResult = MutableLiveData<Boolean>()
+    val reactionResult = MutableLiveData<Boolean>()
     private var currentPage = 1
     private val messagesPerPage = 50
     private var isLoading = false
@@ -379,6 +380,38 @@ class SmallTalkViewModel(application: Application) : AndroidViewModel(applicatio
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 // En cas d'échec, on renvoie false et l'ID du message
                 messageDeleteResult.postValue(false)
+            }
+        })
+    }
+
+    fun reactToChatMessage(smallTalkId: String, messageId: String, reactionId: Int, onComplete: (Boolean) -> Unit = {}) {
+        val wrapper = ReactionWrapper().apply { this.reactionId = reactionId }
+        request.postReactionChatMessage(smallTalkId, messageId, wrapper).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                reactionResult.value = response.isSuccessful
+                onComplete(response.isSuccessful)
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                reactionResult.value = false
+                onComplete(false)
+            }
+        })
+    }
+
+    /**
+     * [onComplete] permet à l'appelant d'enchaîner un POST juste après (changement de
+     * réaction) : le serveur refuse un ajout tant que l'ancienne réaction existe encore
+     * ("User can only react once"), donc on ne peut pas tirer delete/add en parallèle.
+     */
+    fun deleteReactionChatMessage(smallTalkId: String, messageId: String, onComplete: (Boolean) -> Unit = {}) {
+        request.deleteReactionChatMessage(smallTalkId, messageId).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                reactionResult.value = response.isSuccessful
+                onComplete(response.isSuccessful)
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                reactionResult.value = false
+                onComplete(false)
             }
         })
     }

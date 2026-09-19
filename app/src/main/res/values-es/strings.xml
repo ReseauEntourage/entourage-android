@@ -2490,6 +2490,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="onboarding_congrats_title">¡Tu experiencia personalizada está lista!</string>
     <string name="onboarding_congrats_content">Según tus preferencias y disponibilidad, hemos preparado una selección de eventos que te representan. ¡Es hora de actuar!</string>
     <string name="onboarding_congrats_leave">Explorar eventos</string>
+    <string name="onboarding_congrats_skip">Más tarde</string>
     <string name="onboarding_congrats_temporary_title">¡Tu experiencia personalizada está (casi) lista!</string>
     <string name="onboarding_congrats_temporary_content">Gracias por compartir tus deseos de actuar y tus intereses. Estamos ansiosos por ofrecerte pronto eventos personalizados que te correspondan. \n¡Mantente conectado!</string>
     <string name="notif_ask_page_title">Activa las notificaciones para no perderte nada</string>
@@ -2503,6 +2504,12 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="main_filter_subtitle_action">Por categoría</string>
     <string name="main_filter_title_location">Por ubicación</string>
     <string name="main_filter_title_radius">Dentro de un radio de</string>
+    <string name="main_filter_subtitle_event_type">Tipo de evento</string>
+    <string name="main_filter_chip_entourage">Eventos Entourage</string>
+    <string name="main_filter_chip_reserved_female">Reservado a mujeres</string>
+    <string name="main_filter_subtitle_format">Formato</string>
+    <string name="main_filter_chip_presentiel">Presencial</string>
+    <string name="main_filter_chip_visio">Videollamada</string>
     <string name="sharing_time_title">Tiempo de compartir</string>
     <string name="sharing_time_subtitle">café, actividad...</string>
     <string name="services_title">Servicio</string>
@@ -2729,6 +2736,7 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <!-- Badges section -->
     <string name="badges_section_title">SUS INSIGNIAS</string>
     <string name="badges_see_all">Ver todo</string>
+    <string name="badges_section_title_me">Mis insignias</string>
     <string name="badges_screen_title">Mis insignias</string>
     <string name="badges_screen_subtitle">%1$d obtenidas, %2$d en curso, %3$d por descubrir. Cada insignia recompensa una acción concreta en tu comunidad.</string>
     <string name="badges_section_obtained">Obtenidas %1$d/%2$d</string>
@@ -2744,12 +2752,15 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="badges_faq_link">¿Cómo funcionan las insignias?</string>
     <string name="badge_obtained_on">Obtenida el %1$s</string>
     <string name="badge_not_yet_obtained">Aún no obtenida</string>
+    <string name="badge_status_obtained">Obtenida</string>
+    <string name="badge_status_not_obtained">No obtenida</string>
     <string name="badge_how_it_works_title">CÓMO FUNCIONA</string>
     <string name="badge_mechanism_title">MECANISMO</string>
     <string name="badge_what_it_means_title">LO QUE REPRESENTA</string>
     <string name="badge_mechanism_irreversible">Irreversible — una vez obtenida, es para siempre.</string>
     <string name="badge_mechanism_reversible">Reversible — se renueva cada 90 días.</string>
     <string name="badge_see_all_mine">Ver todas mis insignias</string>
+    <string name="badge_cta_see_my_badges">Ver mis insignias</string>
     <string name="badge_progress_label">Tu progreso</string>
     <string name="badges_debug_switch_label">Modo demo insignias</string>
     <string name="badge_premier_pas_title">Primer paso</string>
@@ -2800,6 +2811,21 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="badge_diffuseur_liens_unlocked_message">Has organizado 3 eventos en los últimos 90 días. Estás moviendo a la comunidad Entourage, ¡un gran bravo!</string>
     <string name="badge_as_papotage_unlocked_message">3 Papotages solidarios en un mes y medio, tu presencia regular crea vínculos y hace el bien a tu alrededor. Gracias por tu compromiso constante.</string>
     <string name="badge_tisseur_liens_unlocked_message">3 semanas de actividad de cada 4 — haces latir el corazón de los grupos de vecinos. Gracias por tu compromiso constante.</string>
+    <string name="badge_diffuseur_liens_progress_hint">Crea o co-organiza eventos en los últimos 90 días para obtener esta insignia.</string>
+    <string name="badge_as_papotage_progress_hint">Participa en Papotages solidarios en los últimos 90 días para obtener esta insignia.</string>
+    <string name="badge_tisseur_liens_progress_hint">Sé activo/a en tus grupos al menos 3 de las últimas 4 semanas para obtener esta insignia.</string>
+    <plurals name="badge_diffuseur_liens_progress_hint_remaining">
+        <item quantity="one">Solo te falta 1 evento por crear o co-organizar para obtener esta insignia.</item>
+        <item quantity="other">Te faltan %d eventos por crear o co-organizar para obtener esta insignia.</item>
+    </plurals>
+    <plurals name="badge_as_papotage_progress_hint_remaining">
+        <item quantity="one">Solo te falta 1 Papotage solidario para obtener esta insignia.</item>
+        <item quantity="other">Te faltan %d Papotages solidarios para obtener esta insignia.</item>
+    </plurals>
+    <plurals name="badge_tisseur_liens_progress_hint_remaining">
+        <item quantity="one">Solo te falta 1 semana activa para obtener esta insignia.</item>
+        <item quantity="other">Te faltan %d semanas activas para obtener esta insignia.</item>
+    </plurals>
 
     <!-- Chips de inspiración para crear publicaciones en grupos -->
     <string name="create_post_inspiration_label">¿Necesitas inspiración?</string>
@@ -2819,5 +2845,8 @@ Leerán este mensaje tan pronto como se unan al grupo.</string>
     <string name="post_draft_question">Hola, tengo una pregunta para el grupo: </string>
     <string name="post_draft_exchange">Me gustaría que debatiéramos juntos sobre este tema: </string>
     <string name="post_draft_meetup">¿Y si nos reunimos pronto? Propongo </string>
+
+    <string name="group_feed_post_unavailable">Cette publication n\'existe plus.</string>
+    <string name="message_action_react">Réagir</string>
 
 </resources>

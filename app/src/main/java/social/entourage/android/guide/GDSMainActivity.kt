@@ -21,7 +21,7 @@ class GDSMainActivity : BaseSecuredActivity() {
         val binding:ActivityGDSMainBinding = ActivityGDSMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.uiBtBack.setOnClickListener { onBackPressed() }
+        binding.uiBtBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
         guideFg = GuideMapFragment()
 
         val fragmentTransaction = supportFragmentManager.beginTransaction()

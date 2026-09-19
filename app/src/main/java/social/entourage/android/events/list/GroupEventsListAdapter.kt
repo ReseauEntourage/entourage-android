@@ -12,7 +12,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.intrusoft.sectionedrecyclerview.SectionRecyclerViewAdapter
 import social.entourage.android.R
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.GroupMember
@@ -28,14 +27,20 @@ import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 
 class GroupEventsListAdapter(
-    context: Context,
+    private val context: Context,
     var sectionItemList: List<SectionHeader?>?,
     var userId: Int?
-) :
-    SectionRecyclerViewAdapter<SectionHeader, Events, GroupEventsListAdapter.SectionViewHolder, GroupEventsListAdapter.ChildViewHolder>(
-        context,
-        sectionItemList
-    ) {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private sealed class Row {
+        data class Section(val header: SectionHeader) : Row()
+        data class Child(val item: Events) : Row()
+    }
+
+    companion object {
+        private const val TYPE_SECTION = 0
+        private const val TYPE_CHILD = 1
+    }
 
     inner class SectionViewHolder(val binding: NewEventsListHeaderBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -43,43 +48,59 @@ class GroupEventsListAdapter(
     inner class ChildViewHolder(val binding: NewEventItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    var context: Context
+    private var rows: List<Row> = buildRows(sectionItemList)
 
     private val eventDateFormatter: SimpleDateFormat by lazy {
         val locale = LanguageManager.getLocaleFromPreferences(context)
         SimpleDateFormat(context.getString(R.string.event_date_time), locale)
     }
 
-    override fun onCreateSectionViewHolder(sectionViewGroup: ViewGroup, viewType: Int): SectionViewHolder {
-        val binding = NewEventsListHeaderBinding.inflate(
-            LayoutInflater.from(sectionViewGroup.context),
-            sectionViewGroup,
-            false
-        )
-        return SectionViewHolder(binding)
+    private fun buildRows(sections: List<SectionHeader?>?): List<Row> {
+        val result = mutableListOf<Row>()
+        sections?.forEach { section ->
+            if (section != null) {
+                result.add(Row.Section(section))
+                section.childList.forEach { child -> result.add(Row.Child(child)) }
+            }
+        }
+        return result
+    }
+
+    fun notifyDataChanged(newSections: List<SectionHeader?>?) {
+        sectionItemList = newSections
+        rows = buildRows(newSections)
+        notifyDataSetChanged()
     }
 
     fun resetList() {}
 
-    override fun onCreateChildViewHolder(childViewGroup: ViewGroup, viewType: Int): ChildViewHolder {
-        val binding = NewEventItemBinding.inflate(
-            LayoutInflater.from(childViewGroup.context),
-            childViewGroup,
-            false
-        )
-        return ChildViewHolder(binding)
+    override fun getItemViewType(position: Int) = when (rows[position]) {
+        is Row.Section -> TYPE_SECTION
+        is Row.Child -> TYPE_CHILD
     }
 
-    override fun onBindSectionViewHolder(sectionViewHolder: SectionViewHolder, sectionPosition: Int, section: SectionHeader) {
+    override fun getItemCount() = rows.size
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            TYPE_SECTION -> SectionViewHolder(NewEventsListHeaderBinding.inflate(inflater, parent, false))
+            else -> ChildViewHolder(NewEventItemBinding.inflate(inflater, parent, false))
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (val row = rows[position]) {
+            is Row.Section -> bindSection(holder as SectionViewHolder, row.header)
+            is Row.Child -> bindChild(holder as ChildViewHolder, row.item)
+        }
+    }
+
+    private fun bindSection(sectionViewHolder: SectionViewHolder, section: SectionHeader) {
         sectionViewHolder.binding.month.text = section.sectionText
     }
 
-    override fun onBindChildViewHolder(
-        childViewHolder: ChildViewHolder,
-        sectionPosition: Int,
-        childPosition: Int,
-        child: Events
-    ) {
+    private fun bindChild(childViewHolder: ChildViewHolder, child: Events) {
         childViewHolder.binding.layout.setOnClickListener { view ->
             (view.context as? Activity)?.startActivityForResult(
                 Intent(view.context, EventFeedActivity::class.java)
@@ -192,9 +213,5 @@ class GroupEventsListAdapter(
             minutes % 60 == 0L -> "${minutes / 60}h"
             else -> "${minutes / 60}h${minutes % 60}"
         }
-    }
-
-    init {
-        this.context = context
     }
 }

@@ -7,13 +7,21 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.EntourageApplication
+import social.entourage.android.MainActivity
 import social.entourage.android.RefreshController
 import social.entourage.android.R
 import social.entourage.android.api.model.Events
+import social.entourage.android.comment.CommentActivity
+import social.entourage.android.comment.ReactionPickerRow
 import social.entourage.android.databinding.NewFragmentSettingsDiscussionModalBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
@@ -69,7 +77,10 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
     private var isMyMessage: Boolean = false
     private var isEventContext: Boolean = false
     private var isGroupContext: Boolean = false
+    private var canEditMessage: Boolean = false
     private var headerFromEventFeed: Boolean = false
+    private var allowsReactions: Boolean = false
+    private var myReactionId: Int = 0
 
     // Pour “Modifier l’événement”
     private var eventObj: Events? = null
@@ -97,7 +108,10 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             isMyMessage = getBoolean(ARG_IS_MY_MESSAGE, false)
             isEventContext = getBoolean(ARG_IS_EVENT_CONTEXT, false)
             isGroupContext = getBoolean(ARG_IS_GROUP_CONTEXT, false)
+            canEditMessage = getBoolean(ARG_CAN_EDIT_MESSAGE, false)
             headerFromEventFeed = getBoolean(ARG_HEADER_FROM_EVENT_FEED, false)
+            allowsReactions = getBoolean(ARG_ALLOWS_REACTIONS, false)
+            myReactionId = getInt(ARG_MY_REACTION_ID, 0)
             isEventCreator = getBoolean(ARG_IS_EVENT_CREATOR, false)
             canEditEvent = getBoolean(ARG_CAN_EDIT_EVENT, false)
 
@@ -146,6 +160,34 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 activity?.finish()
             }
         }
+        discussionPresenter.hasBlockUser.observe(viewLifecycleOwner) { showPopValidateBlockUser() }
+        discussionPresenter.hasUserUnblock.observe(viewLifecycleOwner) { showPopValidateUnblockUser() }
+    }
+
+    /** Popup de confirmation affiché après un blocage réussi. */
+    private fun showPopValidateBlockUser() {
+        CustomAlertDialog.showOnlyOneButton(
+            requireContext(),
+            getString(R.string.params_block_user_conv_pop_validate_title, username),
+            getString(R.string.params_block_user_conv_pop_validate_subtitle),
+            getString(R.string.params_block_user_conv_pop_validate_bt)
+        ) {
+            (activity as? DetailConversationActivity)?.updateDiscussion()
+            dismiss()
+        }
+    }
+
+    /** Popup de confirmation affiché après un déblocage réussi. */
+    private fun showPopValidateUnblockUser() {
+        CustomAlertDialog.showOnlyOneButton(
+            requireContext(),
+            getString(R.string.params_unblock_user_pop_validate_title, username),
+            getString(R.string.params_unblock_user_pop_validate_subtitle),
+            getString(R.string.params_unblock_user_pop_validate_bt)
+        ) {
+            (activity as? DetailConversationActivity)?.updateDiscussion()
+            dismiss()
+        }
     }
 
     private fun configureUI() {
@@ -161,9 +203,14 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.profile.setLabel(getString(R.string.discussion_settings_profil))
                 binding.profile.profileSettingsItemSubLabel.visibility = View.GONE
 
-                binding.layoutBlock.isVisible = !imBlocker
-                binding.block.text = getString(R.string.discussion_block_title)
-                binding.blockSub.text = getString(R.string.discussion_block_subtitle, username)
+                binding.layoutBlock.isVisible = true
+                if (imBlocker) {
+                    binding.block.text = getString(R.string.params_unblock_user_pop_bt_unblock)
+                    binding.blockSub.text = getString(R.string.message_user_blocked_by_me_list)
+                } else {
+                    binding.block.text = getString(R.string.discussion_block_title)
+                    binding.blockSub.text = getString(R.string.discussion_block_subtitle, username)
+                }
 
                 // Affichage du bouton "Quitter" pour le 1-to-1
                 binding.quit.profileSettingsItemLayout.isVisible = false
@@ -286,6 +333,8 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             SheetMode.MESSAGE_ACTIONS -> {
                 binding.header.title = getString(R.string.message_action_title)
 
+                configureReactionsRow()
+
                 binding.profile.setLabel(getString(R.string.message_action_copy))
                 binding.profile.profileSettingsItemSubLabel.visibility = View.GONE
 
@@ -302,7 +351,10 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.eventInfo.isVisible = false
                 binding.rules.profileSettingsItemLayout.isVisible = false
                 binding.photos.profileSettingsItemLayout.isVisible = false
-                binding.edit.profileSettingsItemLayout.isVisible = false
+                binding.edit.profileSettingsItemLayout.isVisible = canEditMessage
+                if (canEditMessage) {
+                    binding.edit.setLabel(getString(R.string.message_action_edit))
+                }
             }
         }
 
@@ -323,6 +375,38 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             val isMember = eventObj?.member ?: EventFeedActivity.isFromMyEvent
             if (!isMember) {
                 binding.quit.profileSettingsItemLayout.isVisible = false
+            }
+        }
+    }
+
+    /** Barre de réactions en haut du sheet d'actions sur un message (façon Messenger/WhatsApp :
+     * choisir/retaper une réaction ferme le sheet). Absente sur son propre message ou sur les
+     * écrans qui ne proposent pas les réactions (ex. commentaires de sortie) — voir
+     * CommentActivity.showMessageOptions, qui calcule [allowsReactions]. */
+    private fun configureReactionsRow() {
+        if (!allowsReactions) {
+            binding.reactionsPickerRow.isVisible = false
+            return
+        }
+        val types = MainActivity.reactionsList
+        if (types.isNullOrEmpty()) {
+            binding.reactionsPickerRow.isVisible = false
+            return
+        }
+        binding.reactionsPickerRow.isVisible = true
+        binding.reactionsPickerRow.setViewCompositionStrategy(
+            ViewCompositionStrategy.DisposeOnDetachedFromWindow
+        )
+        binding.reactionsPickerRow.setContent {
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                ReactionPickerRow(
+                    types = types,
+                    selectedTypeId = myReactionId,
+                    onPicked = { type ->
+                        (activity as? CommentActivity)?.applyReactionFromMessageActions(messageId, type)
+                        dismiss()
+                    }
+                )
             }
         }
     }
@@ -386,6 +470,14 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         }
 
         binding.edit.profileSettingsItemLayout.setOnClickListener {
+            if (mode == SheetMode.MESSAGE_ACTIONS) {
+                // CommentActivity (pas DetailConversationActivity) : ce sheet est aussi ouvert
+                // depuis GroupCommentActivity/EventCommentActivity pour les commentaires de
+                // publication, qui partagent startEditingMessage via la classe de base.
+                (activity as? CommentActivity)?.startEditingMessage(messageId, messageHtml)
+                dismiss()
+                return@setOnClickListener
+            }
             eventObj?.let { ev ->
                 startActivity(
                     Intent(requireContext(), CreateEventActivity::class.java)
@@ -576,7 +668,11 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                         else ->
                             discussionPresenter.deleteMessage(conversationId, messageId)
                     }
-                    (activity as? DetailConversationActivity)?.reloadView()
+                    // Idem : CommentActivity, pas DetailConversationActivity (cf. edit ci-dessus) —
+                    // ce cast échouait silencieusement pour les commentaires de groupe/sortie,
+                    // qui avaient déjà leur propre rafraîchissement (isPostDeleted) mais pas
+                    // toujours ce reloadView() de secours.
+                    (activity as? CommentActivity)?.reloadView()
                     dismiss()
                 }
 
@@ -608,18 +704,33 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
         binding.layoutBlock.setOnClickListener {
             if (mode == SheetMode.DISCUSSION_ONE_TO_ONE) {
-                val desc =
-                    getString(R.string.params_block_user_conv_pop_message, username)
-                CustomAlertDialog.showButtonClickedWithCrossClose(
-                    requireContext(),
-                    getString(R.string.params_block_user_conv_pop_title),
-                    desc,
-                    getString(R.string.params_block_user_conv_pop_bt_cancel),
-                    getString(R.string.params_block_user_conv_pop_bt_quit),
-                    showCross = false,
-                    onNo = {},
-                    onYes = { discussionPresenter.blockUser(userId) }
-                )
+                if (imBlocker) {
+                    val desc =
+                        getString(R.string.params_unblock_user_pop_message, username)
+                    CustomAlertDialog.showButtonClickedWithCrossClose(
+                        requireContext(),
+                        getString(R.string.params_unblock_user_pop_title),
+                        desc,
+                        getString(R.string.params_unblock_user_pop_bt_cancel),
+                        getString(R.string.params_unblock_user_pop_bt_unblock),
+                        showCross = false,
+                        onNo = {},
+                        onYes = { discussionPresenter.unblockUsers(arrayListOf(userId)) }
+                    )
+                } else {
+                    val desc =
+                        getString(R.string.params_block_user_conv_pop_message, username)
+                    CustomAlertDialog.showButtonClickedWithCrossClose(
+                        requireContext(),
+                        getString(R.string.params_block_user_conv_pop_title),
+                        desc,
+                        getString(R.string.params_block_user_conv_pop_bt_cancel),
+                        getString(R.string.params_block_user_conv_pop_bt_quit),
+                        showCross = false,
+                        onNo = {},
+                        onYes = { discussionPresenter.blockUser(userId) }
+                    )
+                }
             }
         }
     }
@@ -641,12 +752,15 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         private const val ARG_IS_MY_MESSAGE = "isMyMessage"
         private const val ARG_IS_EVENT_CONTEXT = "isEventContext"
         private const val ARG_IS_GROUP_CONTEXT = "isGroupContext"
+        private const val ARG_CAN_EDIT_MESSAGE = "canEditMessage"
         private const val ARG_FORCE_SHOW_EDIT = "forceShowEdit"
         private const val ARG_HEADER_FROM_EVENT_FEED = "headerFromEventFeed"
         private const val ARG_IS_EVENT_CREATOR = "isEventCreator"
         private const val ARG_CAN_EDIT_EVENT = "canEditEvent"
         private const val ARG_IS_SMALL_TALK = "isSmallTalk"
         private const val ARG_SMALL_TALK_ID = "smallTalkId"
+        private const val ARG_ALLOWS_REACTIONS = "allowsReactions"
+        private const val ARG_MY_REACTION_ID = "myReactionId"
 
         var isSignable = false
 
@@ -665,7 +779,10 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
             messageHtml: String?,
             isMyMessage: Boolean,
             isEventContext: Boolean,
-            isGroupContext: Boolean
+            isGroupContext: Boolean,
+            canEditMessage: Boolean = false,
+            allowsReactions: Boolean = false,
+            myReactionId: Int = 0
         ) = ActionSheetFragment().apply {
             arguments = Bundle().apply {
                 putString(ARG_MODE, SheetMode.MESSAGE_ACTIONS.name)
@@ -677,6 +794,9 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 putBoolean(ARG_IS_MY_MESSAGE, isMyMessage)
                 putBoolean(ARG_IS_EVENT_CONTEXT, isEventContext)
                 putBoolean(ARG_IS_GROUP_CONTEXT, isGroupContext)
+                putBoolean(ARG_CAN_EDIT_MESSAGE, canEditMessage)
+                putBoolean(ARG_ALLOWS_REACTIONS, allowsReactions)
+                putInt(ARG_MY_REACTION_ID, myReactionId)
             }
         }
 

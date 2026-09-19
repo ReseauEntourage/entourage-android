@@ -7,6 +7,7 @@ import com.google.gson.annotations.Expose
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import timber.log.Timber
 import retrofit2.converter.gson.GsonConverterFactory
 import social.entourage.android.BuildConfig
 import social.entourage.android.api.model.BaseEntourage
@@ -96,7 +97,14 @@ class ApiModule {
         builder.addInterceptor(CurlLoggingInterceptor())
 
         if (BuildConfig.DEBUG) {
-            val loggingInterceptor = HttpLoggingInterceptor()
+            val loggingInterceptor = HttpLoggingInterceptor { message ->
+                val maxLogLength = 4000
+                if (message.length > maxLogLength) {
+                    Timber.tag("OkHttp").d("%s... [TRUNCATED]", message.substring(0, maxLogLength))
+                } else {
+                    Timber.tag("OkHttp").d(message)
+                }
+            }
             loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             builder.addInterceptor(loggingInterceptor)
         }

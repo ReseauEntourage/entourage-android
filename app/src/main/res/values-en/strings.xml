@@ -1632,6 +1632,7 @@
     <string name="onboarding_congrats_title">Your personalized experience is ready!</string>
     <string name="onboarding_congrats_content">Based on your preferences and availability, we have prepared a selection of events that match your profile. Take action now on our app!</string>
     <string name="onboarding_congrats_leave">Browse events</string>
+    <string name="onboarding_congrats_skip">Later</string>
     <string name="onboarding_congrats_temporary_title">Your personalized experience is (almost) ready!</string>
     <string name="onboarding_congrats_temporary_content">Thank you for sharing your enthusiasm and interests. We look forward to offering you personalized events soon.\nStay tuned!</string>
     <string name="notif_ask_page_title">Enable notifications to stay updated on everything</string>
@@ -1645,6 +1646,12 @@
     <string name="main_filter_subtitle_action">By category</string>
     <string name="main_filter_title_location">By location</string>
     <string name="main_filter_title_radius">Within</string>
+    <string name="main_filter_subtitle_event_type">Event type</string>
+    <string name="main_filter_chip_entourage">Entourage Events</string>
+    <string name="main_filter_chip_reserved_female">Women only</string>
+    <string name="main_filter_subtitle_format">Format</string>
+    <string name="main_filter_chip_presentiel">In person</string>
+    <string name="main_filter_chip_visio">Video call</string>
     <string name="sharing_time_title">Sharing time</string>
     <string name="sharing_time_subtitle">coffee, activity...</string>
     <string name="services_title">Service</string>
@@ -1885,6 +1892,7 @@
     <!-- Badges section -->
     <string name="badges_section_title">THEIR BADGES</string>
     <string name="badges_see_all">See all</string>
+    <string name="badges_section_title_me">My badges</string>
     <string name="badges_screen_title">My badges</string>
     <string name="badge_detail_screen_title">Badge detail</string>
     <string name="badges_screen_subtitle">%1$d earned, %2$d in progress, %3$d to discover. Each badge rewards a concrete action in your community.</string>
@@ -1901,12 +1909,15 @@
     <string name="badges_faq_link">How do badges work?</string>
     <string name="badge_obtained_on">Earned on %1$s</string>
     <string name="badge_not_yet_obtained">Not yet earned</string>
+    <string name="badge_status_obtained">Earned</string>
+    <string name="badge_status_not_obtained">Not earned</string>
     <string name="badge_how_it_works_title">HOW IT WORKS</string>
     <string name="badge_mechanism_title">MECHANISM</string>
     <string name="badge_what_it_means_title">WHAT IT REPRESENTS</string>
     <string name="badge_mechanism_irreversible">Irreversible — once earned, it\'s yours forever.</string>
     <string name="badge_mechanism_reversible">Reversible — renewed every 90 days.</string>
     <string name="badge_see_all_mine">See all my badges</string>
+    <string name="badge_cta_see_my_badges">See my badges</string>
     <string name="badge_progress_label">Your progress</string>
     <string name="badges_debug_switch_label">Badge demo mode</string>
     <string name="badge_premier_pas_title">First step</string>
@@ -1962,6 +1973,18 @@
     <string name="badge_diffuseur_liens_progress_hint">Create or co-host events over the past 90 days to earn this badge.</string>
     <string name="badge_as_papotage_progress_hint">Participate in solidarity Papotages over the past 90 days to earn this badge.</string>
     <string name="badge_tisseur_liens_progress_hint">Be active in your groups at least 3 weeks out of the last 4 to earn this badge.</string>
+    <plurals name="badge_diffuseur_liens_progress_hint_remaining">
+        <item quantity="one">Just 1 more event to create or co-host to earn this badge.</item>
+        <item quantity="other">%d more events to create or co-host to earn this badge.</item>
+    </plurals>
+    <plurals name="badge_as_papotage_progress_hint_remaining">
+        <item quantity="one">Just 1 more solidarity Papotage to earn this badge.</item>
+        <item quantity="other">%d more solidarity Papotages to earn this badge.</item>
+    </plurals>
+    <plurals name="badge_tisseur_liens_progress_hint_remaining">
+        <item quantity="one">Just 1 more active week to earn this badge.</item>
+        <item quantity="other">%d more active weeks to earn this badge.</item>
+    </plurals>
 
     <!-- Inspiration chips for group post creation -->
     <string name="create_post_inspiration_label">Need some inspiration?</string>
@@ -1981,5 +2004,8 @@
     <string name="post_draft_question">Hi, I have a question for the group: </string>
     <string name="post_draft_exchange">I\'d love for us to discuss this topic together: </string>
     <string name="post_draft_meetup">What if we got together soon? I suggest </string>
+
+    <string name="group_feed_post_unavailable">This post no longer exists.</string>
+    <string name="message_action_react">Réagir</string>
 
 </resources>

@@ -73,7 +73,7 @@ class PedagoDetailActivity : AppCompatActivity() {
     fun handlePedago(hasNoReturn: Boolean){
         if(hasNoReturn){
             Toast.makeText(this,"Aucune ressource trouvée",Toast.LENGTH_SHORT).show()
-            this.onBackPressed()
+            this.onBackPressedDispatcher.onBackPressed()
         }
     }
 
