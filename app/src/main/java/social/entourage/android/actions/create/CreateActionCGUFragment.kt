@@ -1,5 +1,6 @@
 package social.entourage.android.actions.create
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,10 +9,10 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import social.entourage.android.R
 import social.entourage.android.api.model.Action
+import social.entourage.android.groups.details.rules.GroupRulesActivity
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.view.WebViewFragment
+import social.entourage.android.tools.utils.Const
 
 class CreateActionCGUFragment : Fragment() {
 
@@ -53,8 +54,9 @@ class CreateActionCGUFragment : Fragment() {
     }
 
     private fun openFullCharter() {
-        WebViewFragment.newInstance(getString(R.string.action_cgu_full_charter_url), sendRead = true)
-            .show(parentFragmentManager, WebViewFragment.TAG)
+        val intent = Intent(context, GroupRulesActivity::class.java)
+        intent.putExtra(Const.RULES_TYPE, Const.RULES_ACTION)
+        startActivity(intent)
     }
 
     private fun navigateToCreateAction() {
