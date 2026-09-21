@@ -18,6 +18,9 @@ enum class Status(val value: String) {
 
     @SerializedName("closed")
     CLOSED("closed"),
+
+    @SerializedName("cancelled")
+    CANCELLED("cancelled"),
 }
 
 data class GroupEvent(

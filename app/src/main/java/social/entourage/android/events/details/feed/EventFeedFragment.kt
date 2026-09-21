@@ -359,8 +359,8 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun setupEventStatus() {
         with(binding) {
-            canceled.isVisible = event?.status == Status.CLOSED
-            if (event?.status == Status.CLOSED) {
+            canceled.isVisible = event?.status == Status.CLOSED || event?.status == Status.CANCELLED
+            if (event?.status == Status.CLOSED || event?.status == Status.CANCELLED) {
                 eventName.setTextColor(getColor(requireContext(), R.color.grey))
                 dateStartsAt.content.setTextColor(getColor(requireContext(), R.color.grey))
                 dateStartsAt.icon = ContextCompat.getDrawable(requireContext(), R.drawable.new_calendar_grey)
@@ -381,14 +381,25 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun setupEventJoinButton() {
         with(binding.buttonJoin) {
-            setBackgroundResource(R.drawable.shape_button_v9_positive)
-            setTextColor(getColor(requireContext(), R.color.white))
-
-            text = if (event?.member == true) {
-                if (iAmOrganiser) getString(R.string.event_cancel_button)
-                else getString(R.string.event_leave_button)
+            val isCancelled = event?.status == Status.CLOSED || event?.status == Status.CANCELLED
+            if (isCancelled) {
+                setBackgroundResource(R.drawable.shape_button_disabled_grey)
+                setTextColor(getColor(requireContext(), R.color.grey))
+                text = getString(R.string.event_canceled)
+                isEnabled = false
+                isClickable = false
             } else {
-                getString(R.string.share_and_join_event)
+                setBackgroundResource(R.drawable.shape_button_v9_positive)
+                setTextColor(getColor(requireContext(), R.color.white))
+                isEnabled = true
+                isClickable = true
+
+                text = if (event?.member == true) {
+                    if (iAmOrganiser) getString(R.string.event_cancel_button)
+                    else getString(R.string.event_leave_button)
+                } else {
+                    getString(R.string.share_and_join_event)
+                }
             }
         }
     }

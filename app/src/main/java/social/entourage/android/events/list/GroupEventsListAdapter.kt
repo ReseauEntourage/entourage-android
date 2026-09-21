@@ -149,16 +149,16 @@ class GroupEventsListAdapter(
 
         childViewHolder.binding.star.isVisible = child.author?.userID == userId
         childViewHolder.binding.admin.isVisible = child.author?.userID == userId
-        childViewHolder.binding.canceled.isVisible = child.status == Status.CLOSED
-        childViewHolder.binding.ivCanceled.isVisible = child.status == Status.CLOSED
+        childViewHolder.binding.canceled.isVisible = child.status == Status.CLOSED || child.status == Status.CANCELLED
+        childViewHolder.binding.ivCanceled.isVisible = child.status == Status.CLOSED || child.status == Status.CANCELLED
+        // EN-9334 : badge "Annulé" (icône + fond sombre) sur l'image, aligné sur AllEventAdapter.
+        childViewHolder.binding.layoutCanceledBadge.isVisible = child.status == Status.CLOSED || child.status == Status.CANCELLED
 
-        if (child.calculateIfEventPassed()) {
+        if (child.calculateIfEventPassed() || child.status == Status.CLOSED || child.status == Status.CANCELLED) {
             childViewHolder.binding.eventName.setTextColor(ContextCompat.getColor(context, R.color.grey))
             childViewHolder.binding.blackLayout.visibility = View.VISIBLE
         } else {
-            childViewHolder.binding.eventName.setTextColor(
-                ContextCompat.getColor(context, if (child.status == Status.CLOSED) R.color.grey else R.color.black)
-            )
+            childViewHolder.binding.eventName.setTextColor(ContextCompat.getColor(context, R.color.black))
             childViewHolder.binding.blackLayout.visibility = View.GONE
         }
     }

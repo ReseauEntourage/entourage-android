@@ -161,7 +161,7 @@ class HomeEventAdapter(
             if (!isReservedFemale && isEntourageEvent) View.VISIBLE else View.GONE
 
         // EN-9334 : image assombrie + badge "Annulé" + titre grisé, inspiré de la maquette.
-        val isCanceled = event.status == Status.CLOSED
+        val isCanceled = event.status == Status.CLOSED || event.status == Status.CANCELLED
         holder.binding.blackLayoutHomeEvent.visibility = if (isCanceled) View.VISIBLE else View.GONE
         holder.binding.layoutCanceledBadgeHome.visibility = if (isCanceled) View.VISIBLE else View.GONE
         holder.binding.tvTitleEventItem.setTextColor(

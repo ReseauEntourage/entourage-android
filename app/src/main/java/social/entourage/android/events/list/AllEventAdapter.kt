@@ -120,11 +120,11 @@ class AllEventAdapter(var userId: Int?, var context: Context) :
 
             holder.binding.star.isVisible = event.author?.userID == userId
             holder.binding.admin.isVisible = event.author?.userID == userId
-            holder.binding.canceled.isVisible = event.status == Status.CLOSED
+            holder.binding.canceled.isVisible = event.status == Status.CLOSED || event.status == Status.CANCELLED
             // EN-9334 : badge "Annulé" (icône + fond sombre) sur l'image, inspiré de la maquette.
-            holder.binding.layoutCanceledBadge.isVisible = event.status == Status.CLOSED
+            holder.binding.layoutCanceledBadge.isVisible = event.status == Status.CLOSED || event.status == Status.CANCELLED
 
-            if (event.calculateIfEventPassed() || event.status == Status.CLOSED) {
+            if (event.calculateIfEventPassed() || event.status == Status.CLOSED || event.status == Status.CANCELLED) {
                 holder.binding.eventName.setTextColor(ContextCompat.getColor(holder.binding.root.context, R.color.grey))
                 holder.binding.blackLayout.visibility = View.VISIBLE
             } else {

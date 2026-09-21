@@ -190,7 +190,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
             eventDescription.enableCopyOnLongClick(requireContext())
             initializeInterests()
             initializeGroups()
-            if (event?.status == Status.CLOSED)
+            if (event?.status == Status.CLOSED || event?.status == Status.CANCELLED)
                 handleEventCanceled()
         }
 
