@@ -476,6 +476,10 @@ object AnalyticsEvents {
     const val ACTION_GROUP_MEMBER_SEARCH_DELETE = "Action__GroupMember__Search_Delete"
     const val ACTION_GROUP_MEMBER_SEARCH_SEE_RESULT = "Action__GroupMember__Search_SeeResult"
 
+    //MESSAGE - REACTIONS
+
+    const val ACTION_MESSAGE_SEE_REACTIONS = "Action__Message__SeeReactions"
+
     //GROUPE - PLUS
 
     const val ACTION_GROUP_FEED_PLUS = "Action__GroupFeed__Plus"
@@ -687,7 +691,6 @@ object AnalyticsEvents {
     const val   Action__Home__Moderator = "Action__Home__Moderator"
     const val   Action_Home_Contrib_Detail = "Action_Home_Contrib_Detail"
     const val   Action_Home_Contrib_All = "Action_Home_Contrib_All"
-    const val   Action_Home_Buffet = "Action_Home_Buffet"
 
 // NEW EVENT
     const val   View__Event__List = "View__Event__List"

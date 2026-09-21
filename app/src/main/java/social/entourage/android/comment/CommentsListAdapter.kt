@@ -35,6 +35,7 @@ interface OnItemClickListener {
     fun onMessageLongPress(target: MessageActionsTarget)
     fun onMessageOptionsClick(target: MessageActionsTarget)
     fun onMessageReactionPicked(comment: Post, reactionType: ReactionType)
+    fun onMessageReactionsSeen(comment: Post)
 }
 
 /**
@@ -209,6 +210,7 @@ class CommentsListAdapter(
                 )
             },
             onReactionPicked = { type -> onItemClick.onMessageReactionPicked(comment, type) },
+            onSeeReactions = { onItemClick.onMessageReactionsSeen(comment) },
             reactions = comment.reactions ?: emptyList(),
             reactionTypes = MainActivity.reactionsList ?: emptyList(),
         )

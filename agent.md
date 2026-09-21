@@ -25,6 +25,7 @@ Ce fichier contient la synthèse des connaissances accumulées sur le projet Ent
 - **ViewBinding :** Obligatoire. Pas de `findViewById`.
   - IDs en `snake_case`, propriétés de binding en `camelCase`.
 - **Internationalisation :** Le français est la source (`values/strings.xml`). Utiliser `./add_strings.sh` pour ajouter des clés.
+- **Typographie :** Titres en Quicksand Bold (`@font/quicksand_bold`, cf. style `left_courant_bold_white`), texte courant en Nunito Sans (`@font/nunitosans_regular`, `_light`, `_semibold`, `_bold`, `_extralight`, `_italic`). Ne pas introduire d'autre famille de police (ex. Poppins n'existe qu'en `poppinregular.ttf`, cas isolé — préférer Quicksand/Nunito Sans par défaut).
 - **Performance UI :** Éviter les appels `requestLayout()` redondants. Toujours vérifier si une valeur (padding, visibility, layoutParams) a réellement changé avant de l'appliquer (cf. `Extensions.kt`).
 - **Analytics :** Utiliser `AnalyticsEvents.logEvent(AnalyticsEvents.VIEW__...)`.
 - **Vector Drawables :** `vectorDrawables.useSupportLibrary = true` est activé pour éviter les erreurs de génération PNG sur les anciens API.

@@ -21,6 +21,7 @@ import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.MentionAdapter
 import social.entourage.android.databinding.ActivityCommentsBinding
 import social.entourage.android.events.EventsPresenter
+import social.entourage.android.members.MembersType
 import social.entourage.android.tools.utils.Utils
 import timber.log.Timber
 import java.util.UUID
@@ -159,6 +160,11 @@ class EventCommentActivity : CommentActivity() {
             sendAdd = { reactionId, onComplete -> eventPresenter.reactToPost(id, commentId, reactionId, onComplete) },
             sendDelete = { onComplete -> eventPresenter.deleteReactToPost(id, commentId, onComplete) },
         )
+    }
+
+    override fun onSeeMessageReactionsClicked(comment: Post) {
+        val commentId = comment.id ?: return
+        openReactionsMembersScreen(id, commentId, MembersType.EVENT)
     }
 
     // ---------------------------------------------------------------------------

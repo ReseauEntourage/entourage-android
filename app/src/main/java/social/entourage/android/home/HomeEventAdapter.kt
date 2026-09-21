@@ -15,6 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import social.entourage.android.R
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.GroupMember
+import social.entourage.android.api.model.Status
 import social.entourage.android.databinding.HomeV2EventItemLayoutBinding
 import social.entourage.android.events.EventsFragment
 import social.entourage.android.events.details.feed.EventFeedActivity
@@ -161,6 +162,14 @@ class HomeEventAdapter(
         holder.binding.tvTagFemaleHome.visibility = if (isReservedFemale) View.VISIBLE else View.GONE
         holder.binding.tvTagEntourageHome.visibility =
             if (!isReservedFemale && isEntourageEvent) View.VISIBLE else View.GONE
+
+        // EN-9334 : image assombrie + badge "Annulé" + titre grisé, inspiré de la maquette.
+        val isCanceled = event.status == Status.CLOSED
+        holder.binding.blackLayoutHomeEvent.visibility = if (isCanceled) View.VISIBLE else View.GONE
+        holder.binding.layoutCanceledBadgeHome.visibility = if (isCanceled) View.VISIBLE else View.GONE
+        holder.binding.tvTitleEventItem.setTextColor(
+            context.getColor(if (isCanceled) R.color.grey else R.color.black)
+        )
 
         bindParticipants(event, holder.binding)
     }

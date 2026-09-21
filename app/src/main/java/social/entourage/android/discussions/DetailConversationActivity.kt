@@ -51,6 +51,7 @@ import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.feed.GroupFeedActivity
+import social.entourage.android.members.MembersType
 import social.entourage.android.profile.MyProfileFullActivity
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.small_talks.SmallTalkGuidelinesActivity
@@ -172,7 +173,10 @@ class DetailConversationActivity : CommentActivity() {
         } else {
             discussionsPresenter.getDetailConversation(id)
             discussionsPresenter.getAllComments.observe(this) { handleGetPostComments(it) }
-            discussionsPresenter.commentPosted.observe(this) { it?.let { post -> mergeIncomingMessage(post) } }
+            discussionsPresenter.commentPosted.observe(this) {
+                reenableCommentInput()
+                it?.let { post -> mergeIncomingMessage(post) }
+            }
             discussionsPresenter.messageUpdated.observe(this) { it?.let { post -> mergeIncomingMessage(post, forceScrollIfMine = false) } }
             discussionsPresenter.loadInitialComments(id) // page 1 initiale
         }
@@ -951,6 +955,16 @@ class DetailConversationActivity : CommentActivity() {
     private fun sendDeleteReaction(convId: Int, messageId: Int, onComplete: (Boolean) -> Unit = {}) {
         if (isSmallTalkMode) smallTalkViewModel.deleteReactionChatMessage(smallTalkId, messageId.toString(), onComplete)
         else discussionsPresenter.deleteReactionMessage(convId, messageId, onComplete)
+    }
+
+    // "Qui a réagi" (EN-9594) : non câblé en mode smalltalk (endpoint back existant —
+    // SmallTalkRequest.getDetailsReactionChatMessage — mais hors périmètre de ce ticket, qui ne
+    // mentionne que groupes/sorties et conversations de messagerie).
+    override fun onSeeMessageReactionsClicked(comment: Post) {
+        if (isSmallTalkMode) return
+        val convId = detailConversation?.id ?: id
+        val messageId = comment.id ?: return
+        openReactionsMembersScreen(convId, messageId, MembersType.CONVERSATION)
     }
 
     // ===== Réception des messages =====

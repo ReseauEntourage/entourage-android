@@ -106,10 +106,6 @@ class OnboardingActionWishesFragment : Fragment() {
         val userOrientations = user.orientations ?: emptyList()
         val userInvolvements = user.involvements ?: emptyList()
 
-        android.util.Log.d("EN9530_DEBUG", "loadAndSendActionWishes: goal=${user.goal} isUserTypeAlone=${user.isUserTypeAlone} " +
-                "EnhancedOnboarding.preference=${EnhancedOnboarding.preference} isIsolatedPersonMode=${isIsolatedPersonMode()} " +
-                "userInvolvements=$userInvolvements")
-
         val actionWishes = if (isAssociationMode()) {
             // --- MODE ASSOCIATION ---
             // On vérifie la présence des clés dans 'userOrientations'
@@ -224,7 +220,6 @@ class OnboardingActionWishesFragment : Fragment() {
     }
 
     private fun onInterestClicked(interest: InterestForAdapter) {
-        android.util.Log.d("EN9530_DEBUG", "onInterestClicked: id=${interest.id} wasSelected=${interest.isSelected}")
         viewModel.updateActionsWishes(interest)
     }
 }
