@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.FragmentManager
 import social.entourage.android.R
 import social.entourage.android.language.LanguageManager
 import java.text.SimpleDateFormat
@@ -49,6 +50,27 @@ fun EditText.transformIntoDatePicker(
             minDate?.time?.also { datePicker.minDate = it }
             show()
         }
+    }
+}
+
+/**
+ * Comme [transformIntoDatePicker], mais ouvre le MaterialDatePicker (M3) en mode saisie texte
+ * plutôt que le DatePickerDialog natif — voir [showBirthdateDatePicker].
+ */
+fun EditText.transformIntoMaterialBirthdatePicker(
+    fragmentManager: FragmentManager,
+    titleText: CharSequence
+) {
+    isFocusableInTouchMode = false
+    isClickable = true
+    isFocusable = false
+
+    setOnClickListener {
+        showBirthdateDatePicker(
+            fragmentManager = fragmentManager,
+            currentDateText = text?.toString(),
+            titleText = titleText
+        ) { newDate -> setText(newDate) }
     }
 }
 

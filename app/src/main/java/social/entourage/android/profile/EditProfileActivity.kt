@@ -41,7 +41,7 @@ import social.entourage.android.profile.editProfile.EditPhotoActivity
 import social.entourage.android.profile.editProfile.EditProfilePresenter
 import social.entourage.android.tools.isValidEmail
 import social.entourage.android.tools.updatePaddingForEdgeToEdge
-import social.entourage.android.tools.utils.transformIntoDatePicker
+import social.entourage.android.tools.utils.transformIntoMaterialBirthdatePicker
 import social.entourage.android.tools.utils.trimEnd
 import social.entourage.android.user.AvatarUploadPresenter
 import social.entourage.android.user.AvatarUploadRepository
@@ -306,9 +306,9 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
                 }
             }
 
-            birthday.peeiContent.transformIntoDatePicker(
-                this@EditProfileActivity,
-                dateFormatString
+            birthday.peeiContent.transformIntoMaterialBirthdatePicker(
+                supportFragmentManager,
+                getString(R.string.onboard_welcome_title_birthdate)
             )
 
             user.birthday?.let { apiDateStr ->

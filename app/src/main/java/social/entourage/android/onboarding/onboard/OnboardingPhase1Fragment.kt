@@ -11,9 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.DateValidatorPointBackward
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.launch
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
@@ -28,9 +25,9 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.countrycodepicker.Country
 import social.entourage.android.tools.view.countrycodepicker.CountryCodePickerListener
 import social.entourage.android.tools.utils.Utils
+import social.entourage.android.tools.utils.showBirthdateDatePicker
 import social.entourage.android.tools.utils.serializableCompat
 import timber.log.Timber
-import java.util.Calendar
 import java.util.Locale
 
 private const val ARG_FIRST = "firstN"
@@ -71,7 +68,6 @@ class OnboardingPhase1Fragment : Fragment() {
     private data class LabeledOption(val key: String, val label: String)
     private var hearOptions: List<LabeledOption> = emptyList()
     private var enterpriseModeKey: String? = null
-    private var isDatePickerShowing = false
 
     // ------------------ Helpers sûrs ------------------
 
@@ -468,48 +464,13 @@ class OnboardingPhase1Fragment : Fragment() {
 
     // ------------------ Date ------------------
 
-    /**
-     * EN-9438 : MaterialDatePicker (calendrier en grille + sélection rapide de l'année via
-     * l'en-tête, plus simple pour remonter loin en arrière jusqu'à une année de naissance
-     * que les spinners jour/mois/année du DatePickerDialog natif utilisé auparavant).
-     * MaterialDatePicker travaille en millis UTC : on convertit systématiquement via un
-     * Calendar en TimeZone UTC pour ne pas décaler le jour affiché selon le fuseau local.
-     */
     private fun showDatePicker() {
-        if (!isViewUsable() || isDatePickerShowing) return
-        isDatePickerShowing = true
-
-        val utcTimeZone = java.util.TimeZone.getTimeZone("UTC")
-        val utcCal = Calendar.getInstance(utcTimeZone)
-
-        // Pré-remplir depuis le champ si au format dd/MM/yyyy
-        binding.uiOnboardBirthdate.text?.toString()
-            ?.takeIf { it.matches(Regex("""\d{2}/\d{2}/\d{4}""")) }
-            ?.split("/")?.let { (dd, mm, yyyy) ->
-                runCatching {
-                    utcCal.set(yyyy.toInt(), mm.toInt() - 1, dd.toInt(), 0, 0, 0)
-                    utcCal.set(Calendar.MILLISECOND, 0)
-                }
-            }
-
-        val constraints = CalendarConstraints.Builder()
-            .setValidator(DateValidatorPointBackward.now())
-            .build()
-
-        val picker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText(getString(R.string.onboard_welcome_title_birthdate))
-            .setSelection(utcCal.timeInMillis)
-            .setCalendarConstraints(constraints)
-            .build()
-
-        picker.addOnPositiveButtonClickListener { selectionUtcMillis ->
-            val selected = Calendar.getInstance(utcTimeZone).apply { timeInMillis = selectionUtcMillis }
-            val newDate = String.format(
-                Locale.getDefault(), "%02d/%02d/%04d",
-                selected.get(Calendar.DAY_OF_MONTH),
-                selected.get(Calendar.MONTH) + 1,
-                selected.get(Calendar.YEAR)
-            )
+        if (!isViewUsable()) return
+        showBirthdateDatePicker(
+            fragmentManager = childFragmentManager,
+            currentDateText = binding.uiOnboardBirthdate.text?.toString(),
+            titleText = getString(R.string.onboard_welcome_title_birthdate)
+        ) { newDate ->
             birthdate = newDate
             safeUI {
                 binding.uiOnboardBirthdate.setText(newDate)
@@ -517,8 +478,6 @@ class OnboardingPhase1Fragment : Fragment() {
                 updateButtonNext()
             }
         }
-        picker.addOnDismissListener { isDatePickerShowing = false }
-        picker.show(childFragmentManager, "birthdate_picker")
     }
 
     private fun formatBirthdateForAPI(displayDate: String?): String? {
