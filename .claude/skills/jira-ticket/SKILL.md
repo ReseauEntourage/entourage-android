@@ -1,7 +1,6 @@
 ---
 name: ent:jira-ticket
 description: Traite un ticket Jira de bout en bout — analyse, enrichissement produit/technique, implémentation, commit et passage en "To Merge"
-disable-model-invocation: true
 argument-hint: [clé-ticket] (ex. EN-1234)
 allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(git add:*), Bash(git commit:*), Read, Grep, Glob, Edit
 ---
@@ -49,7 +48,7 @@ Si le ticket modifie un écran/une vue existante : selon [CLAUDE.md](CLAUDE.md),
 
 ## Étape 5 — Commit
 
-Vérifie `git status`/`git diff`, ajoute les fichiers pertinents (jamais `git add -A`/`.` à l'aveugle) et commit avec un message clair référençant le ticket, par ex. :
+Vérifie `git status`/`git diff`, ajoute les fichiers pertinents (jamais `git add -A`/`.` à l'aveugle) et commit avec un message clair référençant le ticket et en mettant son nom (EN-XXXX) dedans , par ex. :
 
 ```
 fix(<scope>): <résumé court> ($ARGUMENTS)
@@ -58,7 +57,7 @@ fix(<scope>): <résumé court> ($ARGUMENTS)
 ## Étape 6 — Transition
 
 1. Appelle `mcp__jira__jira_get_transitions` (`issue_key: $ARGUMENTS`) pour lister les transitions disponibles.
-2. Repère l'ID correspondant au statut "To Merge" (comparaison insensible à la casse).
+2. Repère l'ID correspondant au statut "To Merge" , jamais en toTest. la transisiton Tomerge to test est responsabilité humaine (comparaison insensible à la casse).
 3. Appelle `mcp__jira__jira_transition_issue` avec cet ID.
 
 Si aucune transition "To Merge" n'existe dans la liste, arrête-toi et signale les statuts disponibles à l'utilisateur plutôt que de choisir une transition approchante.
