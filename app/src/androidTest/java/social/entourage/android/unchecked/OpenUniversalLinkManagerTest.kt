@@ -1,4 +1,4 @@
-package social.entourage.android.afterLogin
+package social.entourage.android.unchecked
 
 import android.Manifest
 import android.app.Activity
@@ -11,6 +11,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import social.entourage.android.EntourageApplication
+import social.entourage.android.afterLogin.EntourageTestAfterLogin
 
 @LargeTest
 //@RunWith(AndroidJUnit4::class)
@@ -40,7 +41,7 @@ abstract class OpenUniversalLinkManagerTest : EntourageTestAfterLogin() {
     }
 
     companion object {
-        const val URL = "https://preprod.entourage.social/app/"
+        const val URL = "https://debug-preprod.entourage.social/app/"
 
         enum class EntourageLink(val link: String) {
             HOME(URL),

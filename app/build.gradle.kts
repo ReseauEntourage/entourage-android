@@ -52,6 +52,7 @@ android {
     val deepLinksSchemeDebug = "entourage-debug"
     val deepLinksURLProd = "www.entourage.social"
     val deepLinksURLStaging = "preprod.entourage.social"
+    val deepLinksURLDebug = "debug-preprod.entourage.social"
 
     buildFeatures {
         viewBinding = true
@@ -182,11 +183,11 @@ android {
             signingConfig = signingConfigs.getAt("debug")
             applicationIdSuffix = ".debug"
             manifestPlaceholders += mapOf(
-                "deepLinksHostName" to deepLinksURLStaging,
+                "deepLinksHostName" to deepLinksURLDebug,
                 "deepLinksScheme" to deepLinksSchemeDebug)
             buildConfigField("String", "ENTOURAGE_URL", "\"${entourageURLStaging}\"")
             buildConfigField("String", "DEEP_LINKS_SCHEME", "\"${deepLinksSchemeDebug}\"")
-            buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLStaging}\"")
+            buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLDebug}\"")
             buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "32")
             buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "33")
             buildConfigField("int", "PEDAGO_ACTION_SECTION_ID", "33")

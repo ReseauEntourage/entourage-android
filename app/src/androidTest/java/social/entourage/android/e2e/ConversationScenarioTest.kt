@@ -4,10 +4,16 @@ import android.Manifest
 import android.os.SystemClock
 import android.view.InputDevice
 import android.view.MotionEvent
+import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingPolicies
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.GeneralClickAction
 import androidx.test.espresso.action.GeneralLocation
@@ -20,9 +26,7 @@ import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.espresso.IdlingPolicies
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
@@ -58,6 +62,9 @@ import java.util.concurrent.TimeUnit
 class ConversationScenarioTest : EntourageTestAfterLogin() {
 
     private val screenshot = E2EScreenshot("conversation")
+
+    @get:Rule
+    val composeTestRule = createEmptyComposeRule()
 
     @get:Rule
     val permissionRule: GrantPermissionRule = GrantPermissionRule.grant(
@@ -183,9 +190,10 @@ class ConversationScenarioTest : EntourageTestAfterLogin() {
         onIdle()
         shoot("liste_conversations")
 
-        onView(allOf(withId(R.id.recycler_view), isDisplayed())).perform(
-            actionOnItemAtPosition<ViewHolder>(0, click())
-        )
+        composeTestRule.waitUntil(10_000) {
+            composeTestRule.onAllNodesWithTag("conversation_item").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeTestRule.onAllNodesWithTag("conversation_item").onFirst().performClick()
         onIdle()
         shoot("conversation_ouverte")
 
@@ -200,14 +208,14 @@ class ConversationScenarioTest : EntourageTestAfterLogin() {
         // Appui long sur notre message -> menu d'actions -> Copier le texte
         longClickOnOwnMessage()
         shoot("menu_actions_copier")
-        onView(withText(R.string.message_action_copy)).perform(click())
+        composeTestRule.onNodeWithText(EntourageApplication.get().getString(R.string.message_action_copy)).performClick()
         onIdle()
         shoot("apres_copier")
 
         // Appui long -> menu d'actions -> Modifier
         longClickOnOwnMessage()
         shoot("menu_actions_modifier")
-        onView(withText(R.string.message_action_edit)).perform(click())
+        composeTestRule.onNodeWithText(EntourageApplication.get().getString(R.string.message_action_edit)).performClick()
         onIdle()
         shoot("mode_edition")
 
@@ -222,7 +230,7 @@ class ConversationScenarioTest : EntourageTestAfterLogin() {
         // Appui long -> menu d'actions -> Supprimer mon message
         longClickOnOwnMessage()
         shoot("menu_actions_supprimer")
-        onView(withText(R.string.message_action_delete)).perform(click())
+        composeTestRule.onNodeWithText(EntourageApplication.get().getString(R.string.message_action_delete)).performClick()
         onIdle()
         shoot("message_supprime")
     }
