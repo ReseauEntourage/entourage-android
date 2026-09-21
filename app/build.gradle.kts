@@ -315,6 +315,7 @@ dependencies {
         exclude(group = "com.google.protobuf", module = "protobuf-lite")
         exclude(group = "org.jetbrains.kotlin")
     }
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
     // Unit tests
     testImplementation(libs.junit)

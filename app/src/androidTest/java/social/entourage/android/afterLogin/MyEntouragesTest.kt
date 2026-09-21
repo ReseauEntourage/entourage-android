@@ -1,6 +1,7 @@
 package social.entourage.android.afterLogin
 
 import android.Manifest
+import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
@@ -17,6 +18,9 @@ import social.entourage.android.MainActivity
 @LargeTest
 @RunWith(AndroidJUnit4::class)
 class MyEntouragesTest : EntourageTestAfterLogin() {
+
+    @get:Rule
+    val composeTestRule = createEmptyComposeRule()
 
     @get:Rule
     val ruleChain: RuleChain = RuleChain
@@ -52,7 +56,7 @@ class MyEntouragesTest : EntourageTestAfterLogin() {
                 isCategoryDisplayed("Demande")
             }
 
-            myEntouragesRobot {
+            myEntouragesRobot(composeTestRule) {
                 clickModify()
                 clickAcceptCharte()
                 selectCategoryAt(1) // Assuming index 1 in the category list

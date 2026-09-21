@@ -1,5 +1,9 @@
+
 package social.entourage.android.afterLogin
 
+import androidx.compose.ui.test.junit4.ComposeTestRule
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -8,14 +12,18 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.hasMinimumChildCount
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.platform.app.InstrumentationRegistry
 import com.adevinta.android.barista.assertion.BaristaVisibilityAssertions.assertDisplayed
 import com.adevinta.android.barista.interaction.BaristaClickInteractions.clickOn
 import org.hamcrest.Matchers.allOf
 import social.entourage.android.R
 
-fun myEntouragesRobot(func: MyEntouragesRobot.() -> Unit) = MyEntouragesRobot().apply { func() }
+fun myEntouragesRobot(
+    composeTestRule: ComposeTestRule? = null,
+    func: MyEntouragesRobot.() -> Unit
+) = MyEntouragesRobot(composeTestRule).apply { func() }
 
-class MyEntouragesRobot {
+class MyEntouragesRobot(private val composeTestRule: ComposeTestRule? = null) {
 
     fun goToDonations() {
         clickOn(R.id.navigation_donations)
@@ -39,7 +47,14 @@ class MyEntouragesRobot {
     }
 
     fun clickAcceptCharte() {
-        clickOn(R.id.accept)
+        if (composeTestRule != null) {
+            val context = InstrumentationRegistry.getInstrumentation().targetContext
+            composeTestRule.onNodeWithText(context.getString(R.string.action_cgu_accept_button))
+                .performClick()
+            composeTestRule.waitForIdle()
+        } else {
+            clickOn(R.string.action_cgu_accept_button)
+        }
     }
 
     fun clickNext() {
