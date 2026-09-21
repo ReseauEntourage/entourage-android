@@ -108,6 +108,7 @@ internal class CountryCodeDialog(private val mCountryCodePicker: CountryCodePick
             }
         })
         if (mCountryCodePicker.isKeyboardAutoPopOnSearch) {
+            binding.searchEdt.requestFocus()
             window?.let { WindowCompat.getInsetsController(it, binding.searchEdt).show(WindowInsetsCompat.Type.ime()) }
         }
     }
