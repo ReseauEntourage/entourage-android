@@ -286,7 +286,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_date">"dd/MM/yyyy"</string>
     <string name="event_date_time">"dd MMMM yyyy à HH'h'mm"</string>
     <string name="post_date">"dd.MM.yyyy"</string>
-    <string name="comments_title">Messages</string>
+    <string name="comments_title">Commentaires</string>
     <string name="comments_date">dd.MM.yy à HH:mm</string>
     <string name="write_your_message">Écrire votre message</string>
     <string name="share_post">Partager</string>
@@ -431,7 +431,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="error_event_end_time">L\'heure de fin ne peut pas dépasser minuit</string>
     <string name="deleted_publi">Cette publication a été supprimée.</string>
     <string name="deleted_message">Ce message a été supprimé.</string>
-    <string name="deleted_comment">Ce message a été supprimé.</string>
+    <string name="deleted_comment">Ce commentaire a été supprimé.</string>
     <string name="deleted__my_message">Vous avez supprimé ce message.</string>
 
 
@@ -2408,8 +2408,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
 
     <string name="modify_image"><u>Modifier ma photo</u></string>
     <string name="more"><u>En savoir plus</u></string>
-    <string name="posts_comment_number"><u>%d messages</u></string>
-    <string name="posts_comment_number_singular"><u>%d message</u></string>
+    <string name="posts_comment_number"><u>%d commentaires</u></string>
+    <string name="posts_comment_number_singular"><u>%d commentaire</u></string>
     <string name="show_more_lined"><u>Voir plus</u></string>
     <string name="welcome_one_sensib">Retrouvez nos contenus de sensibilisation <u><font color="#FF9739">ici</font></u></string>
     <string name="action_show_charte"><u>Charte éthique</u></string>
