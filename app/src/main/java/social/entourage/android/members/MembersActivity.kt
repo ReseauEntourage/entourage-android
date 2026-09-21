@@ -223,6 +223,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
                 observeEventMembers()
                 observeEventSearch()
             }
+            MembersType.CONVERSATION -> {}
         }
     }
 
@@ -230,6 +231,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
         when (type) {
             MembersType.GROUP -> groupPresenter.getMembersReactResponse.observe(this, ::handleReactions)
             MembersType.EVENT -> eventPresenter.getMembersReactResponse.observe(this, ::handleReactions)
+            MembersType.CONVERSATION -> discussionPresenter.getMembersReactResponse.observe(this, ::handleReactions)
         }
     }
 
@@ -262,6 +264,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
             when (type) {
                 MembersType.GROUP -> groupPresenter.getReactDetails(id, postId)
                 MembersType.EVENT -> eventPresenter.getReactDetails(id, postId)
+                MembersType.CONVERSATION -> discussionPresenter.getReactDetails(id, postId)
             }
             return
         }
@@ -274,6 +277,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
                 eventPresenter.resetEventMembersPaging()
                 eventPresenter.loadEventMembers(id)
             }
+            MembersType.CONVERSATION -> {}
         }
     }
 
@@ -286,6 +290,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
                 when (type) {
                     MembersType.GROUP -> groupPresenter.loadGroupMembers(id)
                     MembersType.EVENT -> eventPresenter.loadEventMembers(id)
+                    MembersType.CONVERSATION -> {}
                 }
             }
         }
@@ -337,6 +342,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
         when (type) {
             MembersType.GROUP -> groupPresenter.searchGroupMembers(id,query)
             MembersType.EVENT -> eventPresenter.searchEventMembers(id,query)
+            MembersType.CONVERSATION -> {}
         }
     }
 
@@ -398,6 +404,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
                 binding.headerTitle.setText(R.string.see_participants)
                 binding.searchBar.hint = getString(R.string.search_participant_hint)
             }
+            MembersType.CONVERSATION -> {}
         }
     }
 
@@ -492,5 +499,5 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
 }
 
 enum class MembersType(val code: Int) {
-    GROUP(0), EVENT(1)
+    GROUP(0), EVENT(1), CONVERSATION(2)
 }

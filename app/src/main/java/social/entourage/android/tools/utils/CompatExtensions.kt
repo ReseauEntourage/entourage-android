@@ -57,5 +57,6 @@ inline fun <reified T> Parcel.readListCompat(list: MutableList<T>, loader: Class
  * registration token we actually send to our own server, and requires an extra manifest
  * opt-in. There is no drop-in replacement for retrieving the token itself.
  */
+@Suppress("DEPRECATION")
 val FirebaseMessaging.fcmTokenTask: Task<String>
     get() = token

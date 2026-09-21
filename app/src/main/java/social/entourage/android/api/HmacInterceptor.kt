@@ -8,6 +8,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONException
 import org.json.JSONObject
 import social.entourage.android.BuildConfig
+import timber.log.Timber
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
@@ -22,6 +23,7 @@ class HmacInterceptor : Interceptor {
 
         val secret = BuildConfig.HMAC_SECRET
         if (secret.isBlank()) {
+            Timber.tag("Hmac").w("HMAC_SECRET is blank in this build — sending %s unsigned", original.url.encodedPath)
             return chain.proceed(original)
         }
 
@@ -34,6 +36,11 @@ class HmacInterceptor : Interceptor {
 
         val message = "POST\n/api/v1/users\n$timestamp\n$phone"
         val signature = sign(secret, message)
+
+        Timber.tag("Hmac").d(
+            "Signing %s: secretLen=%d phoneLen=%d timestamp=%d signature=%s",
+            original.url.encodedPath, secret.length, phone.length, timestamp, signature
+        )
 
         val newBody = bodyBytes.toRequestBody(original.body?.contentType())
         val signed = original.newBuilder()

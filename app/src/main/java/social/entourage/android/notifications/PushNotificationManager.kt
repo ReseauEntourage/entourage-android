@@ -26,7 +26,6 @@ import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.api.model.notification.PushNotificationMessage
 import social.entourage.android.discussions.DetailConversationActivity
-import social.entourage.android.home.BirthdayActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import timber.log.Timber
@@ -439,7 +438,7 @@ object PushNotificationManager {
             val intent = Intent(context, DetailConversationActivity::class.java).apply {
                 putExtras(
                     Bundle().apply {
-pushNotificationMessage.content?.let { putInt(Const.ID, it.joinableId.toInt()) }
+                        pushNotificationMessage.content.let { putInt(Const.ID, it.joinableId.toInt()) }
                         putBoolean(Const.SHOULD_OPEN_KEYBOARD, false)
                         putBoolean(Const.IS_CONVERSATION_1TO1, true)
                         putBoolean(Const.IS_MEMBER, true)
