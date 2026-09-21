@@ -48,7 +48,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
     private var marker: Marker? = null
     private var circle: Circle? = null
     private var currentLatLng: LatLng? = null
-    private var radiusKm: Int = 40
+    private var radiusKm: Int = 20
     private var selectedUserType: UserType = UserType.ENTOUR
     private var lastPlaceId: String? = null
     private var lastDisplayAddress: String? = null

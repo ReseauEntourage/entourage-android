@@ -118,44 +118,28 @@
                             android:id="@+id/canceled"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/new_bg_event_canceled_banner"
+                            android:layout_marginHorizontal="12dp"
+                            android:layout_marginBottom="6dp"
+                            android:background="@drawable/new_bg_event_candeled"
                             android:elevation="1dp"
-                            android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingHorizontal="16dp"
-                            android:paddingVertical="12dp"
+                            android:paddingHorizontal="20dp"
+                            android:paddingVertical="6dp"
                             android:visibility="gone"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent">
 
                             <ImageView
-                                android:layout_width="18dp"
-                                android:layout_height="18dp"
-                                android:layout_marginRight="10dp"
-                                android:src="@drawable/new_event_canceled"
-                                android:tint="@color/white" />
-
-                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:orientation="vertical">
+                                android:layout_marginRight="10dp"
+                                android:src="@drawable/new_calendar_canceled" />
 
-                                <TextView
-                                    style="@style/left_courant_bold_white"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/event_canceled" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:alpha="0.7"
-                                    android:fontFamily="@font/nunitosans_regular"
-                                    android:text="@string/event_canceled_banner_subtitle"
-                                    android:textColor="@android:color/white"
-                                    android:textSize="12sp" />
-                            </LinearLayout>
+                            <TextView
+                                style="@style/left_courant_bold_white"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/event_canceled" />
                         </LinearLayout>
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

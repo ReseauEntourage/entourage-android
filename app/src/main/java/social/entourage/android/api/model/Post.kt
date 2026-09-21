@@ -1,11 +1,6 @@
 package social.entourage.android.api.model
 
-import com.google.gson.TypeAdapter
-import com.google.gson.annotations.JsonAdapter
 import com.google.gson.annotations.SerializedName
-import com.google.gson.stream.JsonReader
-import com.google.gson.stream.JsonToken
-import com.google.gson.stream.JsonWriter
 import social.entourage.android.api.model.notification.Translation
 import java.text.SimpleDateFormat
 import java.util.*
@@ -42,7 +37,6 @@ class Post(
     @SerializedName("read")
     val read: Boolean? = null,
     @SerializedName("reaction_id")
-    @JsonAdapter(NullableBooleanTolerantIntAdapter::class)
     var reactionId: Int? = null,
     val idInternal: UUID? = null,
     @SerializedName("survey")
@@ -81,22 +75,3 @@ data class AutoPostFrom(
     @SerializedName("instance_id")
     val instanceId: Int
 )
-
-/**
- * Le back renvoie parfois `reaction_id: false` (booléen JSON) au lieu de `null`/absent quand il
- * n'y a pas de réaction utilisateur — constaté sur la réponse de POST chat_messages
- * (JsonSyntaxException "Expected an int but was BOOLEAN ... $.chat_message.reaction_id"), qui
- * faisait échouer tout le parsing de Post et donc croire à un échec de publication alors que le
- * post était bien créé côté serveur.
- */
-class NullableBooleanTolerantIntAdapter : TypeAdapter<Int?>() {
-    override fun write(out: JsonWriter, value: Int?) {
-        if (value == null) out.nullValue() else out.value(value)
-    }
-
-    override fun read(reader: JsonReader): Int? = when (reader.peek()) {
-        JsonToken.NULL -> { reader.nextNull(); null }
-        JsonToken.BOOLEAN -> { reader.nextBoolean(); null }
-        else -> reader.nextInt()
-    }
-}

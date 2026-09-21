@@ -362,15 +362,6 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 dateStartsAt.icon = ContextCompat.getDrawable(requireContext(), R.drawable.new_calendar_grey)
                 time.content.setTextColor(getColor(requireContext(), R.color.grey))
                 time.icon = ContextCompat.getDrawable(requireContext(), R.drawable.new_time_grey)
-
-                // EN-9334 : image grisée (désaturée + assombrie), comme sur la maquette.
-                val grayscaleFilter = android.graphics.ColorMatrixColorFilter(
-                    android.graphics.ColorMatrix().apply { setSaturation(0.4f) }
-                )
-                eventImage.colorFilter = grayscaleFilter
-                eventImage.alpha = 0.7f
-                eventImageToolbar.colorFilter = grayscaleFilter
-                eventImageToolbar.alpha = 0.7f
             }
         }
     }
@@ -725,26 +716,15 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     }
 
     private fun showLimitPlacePopUp() {
-        CustomAlertDialog.showLimitedPlacesEvent(
+        CustomAlertDialog.showOnlyOneButton(
             requireContext(),
-            badge = getString(R.string.event_limited_places_badge),
-            title = getString(R.string.event_limited_places_modal_title),
-            intro = getString(R.string.event_limited_places_modal_intro),
-            step1 = getString(R.string.event_limited_places_step1),
-            step2 = getString(R.string.event_limited_places_step2),
-            step3 = getString(R.string.event_limited_places_step3),
-            nudge = getString(R.string.event_limited_places_nudge),
-            actionPrimary = getString(R.string.event_limited_places_cta_primary),
-            actionSecondary = getString(R.string.event_limited_places_cta_secondary),
-            onConfirm = {
-                goDiscussion()
-                Toast.makeText(
-                    requireContext(),
-                    R.string.event_limited_places_request_sent_toast,
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        )
+            getString(R.string.event_limited_places_title),
+            getString(R.string.event_limited_places_subtitle),
+            getString(R.string.button_OK)
+        ) {
+            goDiscussion()
+        }
+
     }
 
     private fun handleMetaData(tags: Tags?) {

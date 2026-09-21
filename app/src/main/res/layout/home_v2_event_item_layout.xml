@@ -28,43 +28,6 @@
                 android:scaleType="centerCrop"
                 tools:src="@drawable/ic_event_placeholder" />
 
-            <View
-                android:id="@+id/black_layout_home_event"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/background_transparent"
-                android:visibility="gone" />
-
-            <!-- EN-9334 : badge "Annulé" (icône + fond sombre) sur l'image, inspiré de la maquette. -->
-            <LinearLayout
-                android:id="@+id/layout_canceled_badge_home"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|top"
-                android:layout_margin="10dp"
-                android:background="@drawable/bg_tag_event_canceled"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="9dp"
-                android:paddingVertical="4dp"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_marginEnd="4dp"
-                    android:src="@drawable/new_event_canceled"
-                    android:tint="@color/white" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/quicksand_bold"
-                    android:text="@string/event_canceled_badge"
-                    android:textColor="@color/white"
-                    android:textSize="10sp" />
-            </LinearLayout>
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

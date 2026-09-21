@@ -90,35 +90,14 @@
                 android:textSize="11sp"
                 android:visibility="gone" />
 
-            <LinearLayout
-                android:id="@+id/layout_canceled_badge"
+            <ImageView
+                android:id="@+id/iv_canceled"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|top"
                 android:layout_margin="10dp"
-                android:background="@drawable/bg_tag_event_canceled"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="9dp"
-                android:paddingVertical="4dp"
-                android:visibility="gone">
-
-                <ImageView
-                    android:id="@+id/iv_canceled"
-                    android:layout_width="10dp"
-                    android:layout_height="10dp"
-                    android:layout_marginEnd="4dp"
-                    android:src="@drawable/new_event_canceled"
-                    android:tint="@color/white" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/quicksand_bold"
-                    android:text="@string/event_canceled_badge"
-                    android:textColor="@color/white"
-                    android:textSize="10sp" />
-            </LinearLayout>
+                android:src="@drawable/new_event_canceled"
+                android:visibility="gone" />
 
         </FrameLayout>
 

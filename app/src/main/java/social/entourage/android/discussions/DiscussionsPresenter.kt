@@ -13,7 +13,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import social.entourage.android.EntourageApplication
-import social.entourage.android.api.model.CompleteReactionsResponse
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.ConversationMembership
 import social.entourage.android.api.model.ConversationMembershipsWrapper
@@ -55,7 +54,6 @@ class DiscussionsPresenter : ViewModel() {
     var commentPosted = MutableLiveData<Post?>()
     var messageUpdated = MutableLiveData<Post?>()
     var reactionResult = MutableLiveData<Boolean>()
-    var getMembersReactResponse = MutableLiveData<CompleteReactionsResponse>()
 
     var unreadMessages = MutableLiveData<UnreadMessages?>()
 
@@ -287,23 +285,6 @@ class DiscussionsPresenter : ViewModel() {
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     reactionResult.value = false
                     onComplete(false)
-                }
-            })
-    }
-
-    fun getReactDetails(conversationId: Int, messageId: Int) {
-        EntourageApplication.get().apiModule.discussionsRequest.getDetailsReactionMessage(conversationId, messageId)
-            .enqueue(object : Callback<CompleteReactionsResponse> {
-                override fun onResponse(call: Call<CompleteReactionsResponse>, response: Response<CompleteReactionsResponse>) {
-                    if (response.isSuccessful) {
-                        response.body()?.let { getMembersReactResponse.value = it }
-                    } else {
-                        Timber.e("getReactDetails: ${response.errorBody()?.string()}")
-                    }
-                }
-
-                override fun onFailure(call: Call<CompleteReactionsResponse>, t: Throwable) {
-                    Timber.e("getReactDetails: $t")
                 }
             })
     }

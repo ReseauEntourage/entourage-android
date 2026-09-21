@@ -21,7 +21,6 @@ import social.entourage.android.comment.CommentActivity
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.MentionAdapter
 import social.entourage.android.groups.GroupPresenter
-import social.entourage.android.members.MembersType
 import social.entourage.android.tools.utils.Utils
 import timber.log.Timber
 import java.util.UUID
@@ -125,11 +124,6 @@ class GroupCommentActivity : CommentActivity() {
             sendAdd = { reactionId, onComplete -> groupPresenter.reactToPost(id, commentId, reactionId, onComplete) },
             sendDelete = { onComplete -> groupPresenter.deleteReactToPost(id, commentId, onComplete) },
         )
-    }
-
-    override fun onSeeMessageReactionsClicked(comment: Post) {
-        val commentId = comment.id ?: return
-        openReactionsMembersScreen(id, commentId, MembersType.GROUP)
     }
 
     /**

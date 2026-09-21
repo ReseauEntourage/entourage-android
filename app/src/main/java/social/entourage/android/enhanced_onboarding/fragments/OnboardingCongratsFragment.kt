@@ -91,6 +91,11 @@ class OnboardingCongratsFragment: Fragment() {
         var contentRes = R.string.onboarding_congrats_content
         var buttonTextRes = R.string.onboarding_congrats_leave
 
+        Log.d("EN9530_DEBUG", "configureOnboardingView: goal=${viewModel.user?.goal} " +
+                "isUserTypeAlone=${viewModel.user?.isUserTypeAlone} " +
+                "EnhancedOnboarding.preference=${EnhancedOnboarding.preference} " +
+                "categoriesList=$categoriesList")
+
         // Priorité 0 : profil "solliciter" (préférence contribution ou personne isolée) -> toujours une demande d'aide,
         // quels que soient les souhaits sélectionnés (ce profil ne peut que solliciter, jamais contribuer)
         if (EnhancedOnboarding.preference == "contribution" || isIsolatedPersonMode()) {
@@ -157,6 +162,8 @@ class OnboardingCongratsFragment: Fragment() {
             binding.buttonStart.setText(buttonTextRes)
             category = "neighborhoods"
         }
+
+        Log.d("EN9530_DEBUG", "configureOnboardingView: resolved category=$category titleRes=${resources.getResourceEntryName(titleRes)}")
     }
 
 }

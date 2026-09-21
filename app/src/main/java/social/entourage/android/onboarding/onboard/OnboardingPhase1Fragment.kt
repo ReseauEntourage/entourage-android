@@ -1,5 +1,6 @@
 package social.entourage.android.onboarding.onboard
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.*
@@ -11,9 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.DateValidatorPointBackward
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import kotlinx.coroutines.launch
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
@@ -458,57 +456,68 @@ class OnboardingPhase1Fragment : Fragment() {
 
     // ------------------ Date ------------------
 
-    /**
-     * EN-9438 : MaterialDatePicker (calendrier en grille + sélection rapide de l'année via
-     * l'en-tête, plus simple pour remonter loin en arrière jusqu'à une année de naissance
-     * que les spinners jour/mois/année du DatePickerDialog natif utilisé auparavant).
-     * MaterialDatePicker travaille en millis UTC : on convertit systématiquement via un
-     * Calendar en TimeZone UTC pour ne pas décaler le jour affiché selon le fuseau local.
-     */
     private fun showDatePicker() {
         if (!isViewUsable() || isDatePickerShowing) return
         isDatePickerShowing = true
 
-        val utcTimeZone = java.util.TimeZone.getTimeZone("UTC")
-        val utcCal = Calendar.getInstance(utcTimeZone)
+        val ctx = context ?: run { isDatePickerShowing = false; return }
+        val cal = Calendar.getInstance()
 
         // Pré-remplir depuis le champ si au format dd/MM/yyyy
         binding.uiOnboardBirthdate.text?.toString()
             ?.takeIf { it.matches(Regex("""\d{2}/\d{2}/\d{4}""")) }
             ?.split("/")?.let { (dd, mm, yyyy) ->
-                runCatching {
-                    utcCal.set(yyyy.toInt(), mm.toInt() - 1, dd.toInt(), 0, 0, 0)
-                    utcCal.set(Calendar.MILLISECOND, 0)
-                }
+                runCatching { cal.set(yyyy.toInt(), mm.toInt() - 1, dd.toInt()) }
             }
 
-        val constraints = CalendarConstraints.Builder()
-            .setValidator(DateValidatorPointBackward.now())
-            .build()
+        val startY = cal.get(Calendar.YEAR)
+        val startM = cal.get(Calendar.MONTH)
+        val startD = cal.get(Calendar.DAY_OF_MONTH)
 
-        val picker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText(getString(R.string.onboard_welcome_title_birthdate))
-            .setSelection(utcCal.timeInMillis)
-            .setCalendarConstraints(constraints)
-            .build()
+        val dlg = DatePickerDialog(ctx, null, startY, startM, startD)
+        val dp = dlg.datePicker
 
-        picker.addOnPositiveButtonClickListener { selectionUtcMillis ->
-            val selected = Calendar.getInstance(utcTimeZone).apply { timeInMillis = selectionUtcMillis }
-            val newDate = String.format(
-                Locale.getDefault(), "%02d/%02d/%04d",
-                selected.get(Calendar.DAY_OF_MONTH),
-                selected.get(Calendar.MONTH) + 1,
-                selected.get(Calendar.YEAR)
-            )
+        fun commit(y: Int, m: Int, d: Int) {
+            val newDate = String.format(Locale.getDefault(), "%02d/%02d/%04d", d, m + 1, y)
             birthdate = newDate
             safeUI {
                 binding.uiOnboardBirthdate.setText(newDate)
                 binding.uiOnboardBirthdate.clearFocus()
                 updateButtonNext()
             }
+            dlg.dismiss()
         }
-        picker.addOnDismissListener { isDatePickerShowing = false }
-        picker.show(childFragmentManager, "birthdate_picker")
+
+        // MODE CALENDRIER
+        var calendarHooked = false
+        try {
+            val cv = dp.calendarView
+            if (cv != null && cv.visibility == View.VISIBLE) {
+                calendarHooked = true
+                cv.setOnDateChangeListener { _, y, m, d ->
+                    commit(y, m, d)
+                }
+            }
+        } catch (_: Throwable) {
+            // Certains OEM peuvent lancer si pas de CalendarView
+        }
+
+        // MODE SPINNERS
+        if (!calendarHooked) {
+            dp.init(startY, startM, startD) { _, y, m, d ->
+                if (y == startY && m == startM && d == startD) return@init
+                commit(y, m, d)
+            }
+        }
+
+        dlg.setOnShowListener {
+            dlg.getButton(DatePickerDialog.BUTTON_POSITIVE)?.setOnClickListener {
+                commit(dp.year, dp.month, dp.dayOfMonth)
+            }
+        }
+
+        dlg.setOnDismissListener { isDatePickerShowing = false }
+        dlg.show()
     }
 
     private fun formatBirthdateForAPI(displayDate: String?): String? {
