@@ -61,5 +61,11 @@ app/.classpath
 
 .artifacts
 
+# Screenshots des scénarios de test E2E (générés, voir app/build.gradle.kts pullE2EScreenshots)
+/test_screenshot/
+
 # Heap dumps générés par la JVM/Gradle
 *.hprof
+
+# Identifiants du compte utilisé pour les scénarios E2E
+/E2E_TEST_ACCOUNT.md

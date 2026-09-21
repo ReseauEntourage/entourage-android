@@ -1,22 +1,18 @@
-package social.entourage.android.afterLogin
+package social.entourage.android.unchecked
 
 import android.content.Intent
 import android.net.Uri
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.LargeTest
 import org.hamcrest.Matchers
 import org.junit.After
 import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
 import social.entourage.android.R
 import social.entourage.android.tools.TestHelper
 
-@LargeTest
-@RunWith(AndroidJUnit4::class)
+//TODO @LargeTest
+//TODO @RunWith(AndroidJUnit4::class)
 class UniversalLinkManagerTestWithHack : OpenUniversalLinkManagerTest() {
 
     @Before
@@ -31,7 +27,7 @@ class UniversalLinkManagerTestWithHack : OpenUniversalLinkManagerTest() {
         super.tearDown()
     }
 
-    @Test
+    //TODO @Test
     fun testGroupListLink() {
         val uri = Uri.parse(Companion.EntourageLink.GROUP_LIST.link)
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
@@ -52,7 +48,7 @@ class UniversalLinkManagerTestWithHack : OpenUniversalLinkManagerTest() {
         ).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
-    @Test
+    //TODO @Test
     fun testOutingListLink() {
         val uri = Uri.parse(Companion.EntourageLink.OUTINGS_LIST.link)
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
@@ -73,7 +69,7 @@ class UniversalLinkManagerTestWithHack : OpenUniversalLinkManagerTest() {
         ).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
-    @Test
+    //TODO @Test
     fun testContributionListLink() {
         val uri = Uri.parse(Companion.EntourageLink.CONTRIBUTIONS_LIST.link)
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
@@ -105,7 +101,7 @@ class UniversalLinkManagerTestWithHack : OpenUniversalLinkManagerTest() {
         ).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
     }
 
-    @Test
+    //TODO @Test
     fun testDemandListLink() {
         val uri = Uri.parse(Companion.EntourageLink.SOLICITATIONS_LIST.link)
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {

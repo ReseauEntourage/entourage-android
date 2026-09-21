@@ -52,6 +52,7 @@ android {
     val deepLinksSchemeDebug = "entourage-debug"
     val deepLinksURLProd = "www.entourage.social"
     val deepLinksURLStaging = "preprod.entourage.social"
+    val deepLinksURLDebug = "debug-preprod.entourage.social"
 
     buildFeatures {
         viewBinding = true
@@ -182,11 +183,11 @@ android {
             signingConfig = signingConfigs.getAt("debug")
             applicationIdSuffix = ".debug"
             manifestPlaceholders += mapOf(
-                "deepLinksHostName" to deepLinksURLStaging,
+                "deepLinksHostName" to deepLinksURLDebug,
                 "deepLinksScheme" to deepLinksSchemeDebug)
             buildConfigField("String", "ENTOURAGE_URL", "\"${entourageURLStaging}\"")
             buildConfigField("String", "DEEP_LINKS_SCHEME", "\"${deepLinksSchemeDebug}\"")
-            buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLStaging}\"")
+            buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLDebug}\"")
             buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "32")
             buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "33")
             buildConfigField("int", "PEDAGO_ACTION_SECTION_ID", "33")
@@ -230,6 +231,9 @@ android {
 }
 
 configurations.all {
+    resolutionStrategy {
+        force("com.google.protobuf:protobuf-javalite:3.25.1")
+    }
     exclude(group = "com.google.android.play", module = "core")
     exclude(group = "com.google.android.play", module = "core-ktx")
 }
@@ -308,6 +312,11 @@ dependencies {
         exclude(group = "com.google.protobuf", module = "protobuf-lite")
     }
     androidTestImplementation(libs.bundles.espresso.test)
+    androidTestImplementation(libs.barista) {
+        exclude(group = "com.google.protobuf", module = "protobuf-lite")
+        exclude(group = "org.jetbrains.kotlin")
+    }
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
     // Unit tests
     testImplementation(libs.junit)
@@ -381,4 +390,26 @@ tasks.register<Exec>("pullSnapshots") {
 
     isIgnoreExitValue = true
     finalizedBy("clearSnapshots")
+}
+
+tasks.register<Exec>("clearE2EScreenshots") {
+    group = "verification"
+    description = "Vider les screenshots des scénarios E2E sur le device"
+    commandLine(adbExecutable(), "shell", "rm", "-rf", "/sdcard/Download/test_screenshot/*")
+    isIgnoreExitValue = true
+}
+
+tasks.register<Exec>("pullE2EScreenshots") {
+    group = "verification"
+    description = "Transférer les screenshots des scénarios E2E vers test_screenshot/ à la racine du projet"
+
+    val localDir = File(rootDir, "test_screenshot")
+    doFirst {
+        if (!localDir.exists()) localDir.mkdirs()
+    }
+
+    commandLine(adbExecutable(), "pull", "/sdcard/Download/test_screenshot/.", localDir.absolutePath)
+
+    isIgnoreExitValue = true
+    finalizedBy("clearE2EScreenshots")
 }
