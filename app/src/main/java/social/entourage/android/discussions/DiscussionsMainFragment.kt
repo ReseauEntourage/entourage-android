@@ -77,14 +77,22 @@ class DiscussionsMainFragment : Fragment() {
             setContent {
                 val conversations = messagesList
                 val filters by selectedFilters
-                val displayed = remember(conversations.toList(), filters) {
-                    conversations.filter { matchesSelectedFilters(it, filters) }
+                val moderator = dedicatedContact.value
+                // EN-9489 (suite) : la conversation 1-1 avec le contact dédié est retrouvée par
+                // correspondance de nom dans la liste des memberships — l'API ne renvoie pas
+                // l'id utilisateur du contact dédié sur cet endpoint (cf. commentaires du ticket).
+                val dedicatedContactConversation = remember(conversations.toList(), moderator) {
+                    moderator?.let { mod -> conversations.firstOrNull { it.type == "private" && it.title == mod.displayName } }
+                }
+                val displayed = remember(conversations.toList(), filters, dedicatedContactConversation) {
+                    conversations.filter { matchesSelectedFilters(it, filters) && it !== dedicatedContactConversation }
                 }
                 MaterialTheme {
                     Surface(modifier = Modifier.fillMaxSize()) {
                         DiscussionsScreen(
                             conversations = displayed,
-                            dedicatedContact = dedicatedContact.value,
+                            dedicatedContact = moderator,
+                            dedicatedContactConversation = dedicatedContactConversation,
                             isFilterActive = filters.isNotEmpty(),
                             notificationBannerVisible = notificationBannerVisible.value,
                             isRefreshing = isRefreshing.value,

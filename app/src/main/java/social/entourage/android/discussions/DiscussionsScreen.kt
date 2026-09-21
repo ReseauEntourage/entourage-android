@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.ImageView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -54,6 +55,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.HomeModerator
 import social.entourage.android.ui.theme.NunitoSansRegular
+import social.entourage.android.ui.theme.NunitoSansSemiBold
 import social.entourage.android.ui.theme.QuicksandBold
 
 /**
@@ -66,6 +68,7 @@ import social.entourage.android.ui.theme.QuicksandBold
 fun DiscussionsScreen(
     conversations: List<Conversation>,
     dedicatedContact: HomeModerator?,
+    dedicatedContactConversation: Conversation?,
     isFilterActive: Boolean,
     notificationBannerVisible: Boolean,
     isRefreshing: Boolean,
@@ -77,49 +80,65 @@ fun DiscussionsScreen(
     onRefresh: () -> Unit,
     onLoadMore: () -> Unit,
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        DiscussionsHeader(isFilterActive = isFilterActive, onFilterClick = onFilterClick)
+    Box(modifier = Modifier.fillMaxSize()) {
+        Image(
+            painter = painterResource(R.drawable.header_profile_orange),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            alignment = Alignment.TopCenter,
+            modifier = Modifier.matchParentSize()
+        )
 
-        PullToRefreshBox(
-            isRefreshing = isRefreshing,
-            onRefresh = onRefresh,
-            modifier = Modifier
-                .fillMaxSize()
-                .background(colorResource(R.color.light_beige))
-        ) {
-            val listState = rememberLazyListState()
-            LoadMoreOnScrollEnd(listState = listState, onLoadMore = onLoadMore)
+        Column(modifier = Modifier.fillMaxSize()) {
+            DiscussionsHeader(isFilterActive = isFilterActive, onFilterClick = onFilterClick)
 
-            LazyColumn(
-                state = listState,
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp)
+            PullToRefreshBox(
+                isRefreshing = isRefreshing,
+                onRefresh = onRefresh,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 7.dp)
+                    .clip(RoundedCornerShape(topStart = 35.dp, topEnd = 35.dp))
+                    .background(colorResource(R.color.light_beige))
             ) {
-                if (notificationBannerVisible) {
-                    item(key = "notif_banner") {
-                        NotificationBanner(onClick = onEnableNotifications)
-                        Spacer(Modifier.height(16.dp))
+                val listState = rememberLazyListState()
+                LoadMoreOnScrollEnd(listState = listState, onLoadMore = onLoadMore)
+
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp)
+                ) {
+                    if (notificationBannerVisible) {
+                        item(key = "notif_banner") {
+                            NotificationBanner(onClick = onEnableNotifications)
+                            Spacer(Modifier.height(16.dp))
+                        }
                     }
-                }
-                item(key = "small_talk_card") {
-                    SmallTalkFeatureCard(onClick = onSmallTalkCtaClick)
-                }
-                item(key = "section_label") {
-                    Text(
-                        text = stringResource(R.string.discussion_your_conversations_label),
-                        fontFamily = QuicksandBold,
-                        fontSize = 18.sp,
-                        color = colorResource(R.color.grey),
-                        modifier = Modifier.padding(vertical = 8.dp)
-                    )
-                }
-                if (dedicatedContact != null) {
-                    item(key = "dedicated_contact") {
-                        DedicatedContactRow(moderator = dedicatedContact, onClick = onDedicatedContactClick)
+                    item(key = "small_talk_card") {
+                        SmallTalkFeatureCard(onClick = onSmallTalkCtaClick)
                     }
-                }
-                items(conversations, key = { it.id ?: it.hashCode() }) { conversation ->
-                    ConversationRow(conversation = conversation, onClick = { onConversationClick(conversation) })
+                    item(key = "section_label") {
+                        Text(
+                            text = stringResource(R.string.discussion_your_conversations_label),
+                            fontFamily = QuicksandBold,
+                            fontSize = 18.sp,
+                            color = colorResource(R.color.grey),
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        )
+                    }
+                    if (dedicatedContact != null) {
+                        item(key = "dedicated_contact") {
+                            DedicatedContactRow(
+                                moderator = dedicatedContact,
+                                conversation = dedicatedContactConversation,
+                                onClick = onDedicatedContactClick
+                            )
+                        }
+                    }
+                    items(conversations, key = { it.id ?: it.hashCode() }) { conversation ->
+                        ConversationRow(conversation = conversation, onClick = { onConversationClick(conversation) })
+                    }
                 }
             }
         }
@@ -144,13 +163,6 @@ private fun LoadMoreOnScrollEnd(listState: LazyListState, onLoadMore: () -> Unit
 @Composable
 private fun DiscussionsHeader(isFilterActive: Boolean, onFilterClick: () -> Unit) {
     Box(modifier = Modifier.fillMaxWidth()) {
-        Image(
-            painter = painterResource(R.drawable.header_profile_orange),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-            alignment = Alignment.TopCenter,
-            modifier = Modifier.matchParentSize()
-        )
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -227,6 +239,7 @@ private fun SmallTalkFeatureCard(onClick: () -> Unit) {
             .padding(bottom = 10.dp)
             .clip(RoundedCornerShape(16.dp))
             .background(Color.White)
+            .border(1.dp, colorResource(R.color.beige), RoundedCornerShape(16.dp))
             .padding(14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -272,15 +285,15 @@ private fun SmallTalkFeatureCard(onClick: () -> Unit) {
 }
 
 @Composable
-private fun DedicatedContactRow(moderator: HomeModerator, onClick: () -> Unit) {
+private fun DedicatedContactRow(moderator: HomeModerator, conversation: Conversation?, onClick: () -> Unit) {
+    val context = LocalContext.current
+    val unread = conversation?.hasUnread() == true
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 8.dp)
-            .clip(RoundedCornerShape(14.dp))
-            .background(Color.White)
             .clickable { onClick() }
-            .padding(vertical = 10.dp, horizontal = 6.dp),
+            .padding(vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         GlideImage(
@@ -291,15 +304,27 @@ private fun DedicatedContactRow(moderator: HomeModerator, onClick: () -> Unit) {
         )
         Spacer(Modifier.width(13.dp))
         Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = moderator.displayName.orEmpty(),
-                fontFamily = QuicksandBold,
-                fontSize = 15.sp,
-                color = Color(0xFF1A1A1A)
-            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = moderator.displayName.orEmpty(),
+                    fontFamily = QuicksandBold,
+                    fontSize = 15.sp,
+                    color = Color(0xFF1A1A1A),
+                    maxLines = 1,
+                    modifier = Modifier.weight(1f)
+                )
+                if (conversation != null) {
+                    Text(
+                        text = conversation.dateFormattedString(context),
+                        fontFamily = NunitoSansRegular,
+                        fontSize = 12.sp,
+                        color = colorResource(R.color.grey)
+                    )
+                }
+            }
             Box(
                 modifier = Modifier
-                    .padding(top = 4.dp)
+                    .padding(top = 4.dp, bottom = if (conversation != null) 4.dp else 0.dp)
                     .clip(RoundedCornerShape(10.dp))
                     .background(Color(0xFFFFE7D6))
                     .padding(horizontal = 9.dp, vertical = 3.dp)
@@ -309,6 +334,15 @@ private fun DedicatedContactRow(moderator: HomeModerator, onClick: () -> Unit) {
                     fontFamily = QuicksandBold,
                     fontSize = 10.5.sp,
                     color = colorResource(R.color.orange_entourage)
+                )
+            }
+            if (conversation != null) {
+                Text(
+                    text = conversation.getLastMessage(context = context).orEmpty(),
+                    fontFamily = if (unread) NunitoSansSemiBold else NunitoSansRegular,
+                    fontSize = 13.sp,
+                    color = if (unread) Color(0xFF2A2A2A) else colorResource(R.color.dark_grey_opacity_40),
+                    maxLines = 1
                 )
             }
         }
@@ -365,20 +399,20 @@ private fun ConversationRow(conversation: Conversation, onClick: () -> Unit) {
                 Text(
                     text = conversation.subname.orEmpty(),
                     fontFamily = NunitoSansRegular,
-                    fontSize = 12.5.sp,
+                    fontSize = 13.sp,
                     color = Color(0xFF7A7A7A)
                 )
             } else {
                 Text(
                     text = conversation.dateFormattedString(context),
                     fontFamily = NunitoSansRegular,
-                    fontSize = 12.5.sp,
+                    fontSize = 13.sp,
                     color = Color(0xFF7A7A7A)
                 )
             }
             Text(
                 text = conversation.getLastMessage(context = context).orEmpty(),
-                fontFamily = if (unread) QuicksandBold else NunitoSansRegular,
+                fontFamily = if (unread) NunitoSansSemiBold else NunitoSansRegular,
                 fontSize = 13.sp,
                 color = if (unread) Color(0xFF2A2A2A) else colorResource(R.color.dark_grey_opacity_40),
                 maxLines = 1
