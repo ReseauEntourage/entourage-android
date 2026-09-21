@@ -222,6 +222,7 @@ workflows:
             - api_token: "$SLACK__BOT_API_TOKEN"
             - buttons: View App|${BITRISE_APP_URL}
             - channel: "#androiddev"
+      - version-extractor-android@0: {}
       - git-tag:
           inputs:
-            - tag: Version_$BITRISE_BUILD_NUMBER
+            - tag: Bitrise_Deploy_$EXTRACTED_ANDROID_VERSION_CODE

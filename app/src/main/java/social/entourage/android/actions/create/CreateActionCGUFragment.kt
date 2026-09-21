@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import social.entourage.android.R
 import social.entourage.android.api.model.Action
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.view.WebViewFragment
 
 class CreateActionCGUFragment : Fragment() {
@@ -42,7 +41,6 @@ class CreateActionCGUFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
-            updatePaddingForEdgeToEdge(this)
             setContent {
                 CreateActionCharterScreen(
                     isDemand = isDemand,
