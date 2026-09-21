@@ -502,7 +502,7 @@ private fun setupConversationChips() {
         } else {
             @Suppress("DEPRECATION") Html.fromHtml(messageHtml.orEmpty()).toString()
         }
-        val cm = getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+        val cm = getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
         cm.setPrimaryClip(android.content.ClipData.newPlainText("message", plain))
     }
 
