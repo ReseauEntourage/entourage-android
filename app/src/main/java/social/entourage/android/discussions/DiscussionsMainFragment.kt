@@ -399,7 +399,7 @@ class DiscussionsMainFragment : Fragment() {
         var date:java.util.Date? = null
         m.lastChatMessageDate?.let {
             try {
-                val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US)
+                val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.US)
                 date = inputFormat.parse(it)
             } catch (_: Exception) {
                 try {
