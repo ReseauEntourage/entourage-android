@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.graphics.Color
+import android.graphics.Paint
 import android.os.Build
 import android.text.Html
 import android.view.LayoutInflater
@@ -550,7 +551,10 @@ object CustomAlertDialog {
         customDialog.findViewById<TextView>(R.id.step3_text).text = step3.toStyledText()
         customDialog.findViewById<TextView>(R.id.nudge).text = nudge.toStyledText()
         customDialog.findViewById<Button>(R.id.yes).text = actionPrimary
-        customDialog.findViewById<TextView>(R.id.no).text = actionSecondary
+        customDialog.findViewById<TextView>(R.id.no).apply {
+            text = actionSecondary
+            paintFlags = paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        }
 
         customDialog.findViewById<Button>(R.id.yes).setOnClickListener {
             onConfirm()

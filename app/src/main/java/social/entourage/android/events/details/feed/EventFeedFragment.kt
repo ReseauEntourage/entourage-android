@@ -673,16 +673,25 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                         }
                     }, onYes = {
                         if (event?.member==false){
-                            eventPresenter.participate(eventId)
+                            attemptParticipate()
                         }
                     })
             }else{
                 if (event?.member==false){
-                    eventPresenter.participate(eventId)
+                    attemptParticipate()
                 }
             }
         }
 
+    }
+
+    private fun attemptParticipate() {
+        val placeLimit = event?.metadata?.placeLimit
+        if (placeLimit != null && placeLimit != 0) {
+            showLimitPlacePopUp()
+        } else {
+            eventPresenter.participate(eventId)
+        }
     }
 
     private fun handleMembersButton() {
@@ -705,16 +714,15 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 event.member = !event.member
                 //handleCreatePostButton()
                 eventPresenter.getEvent(eventId.toString())
+                goDiscussion()
                 if (event.metadata?.placeLimit != null && event.metadata.placeLimit != 0) {
-                    showLimitPlacePopUp()
-                } else {
-                    if (shouldShowPopUp){
-                        goDiscussion()
-                    }else{
-                        goDiscussion()
-                    }
-                    shouldShowPopUp = false
+                    Toast.makeText(
+                        requireContext(),
+                        R.string.event_limited_places_request_sent_toast,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
+                shouldShowPopUp = false
             }
         }
 
@@ -739,12 +747,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             actionPrimary = getString(R.string.event_limited_places_cta_primary),
             actionSecondary = getString(R.string.event_limited_places_cta_secondary),
             onConfirm = {
-                goDiscussion()
-                Toast.makeText(
-                    requireContext(),
-                    R.string.event_limited_places_request_sent_toast,
-                    Toast.LENGTH_LONG
-                ).show()
+                eventPresenter.participate(eventId)
             }
         )
     }
