@@ -42,9 +42,14 @@ object LocationUtils {
         onResult: (List<Address>?) -> Unit
     ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            getFromLocation(latitude, longitude, maxResults) { addresses ->
-                Handler(Looper.getMainLooper()).post { onResult(addresses) }
-            }
+            getFromLocation(latitude, longitude, maxResults, object : Geocoder.GeocodeListener {
+                override fun onGeocode(addresses: MutableList<Address>) {
+                    Handler(Looper.getMainLooper()).post { onResult(addresses) }
+                }
+                override fun onError(errorMessage: String?) {
+                    Handler(Looper.getMainLooper()).post { onResult(null) }
+                }
+            })
         } else {
             @Suppress("DEPRECATION")
             onResult(getFromLocation(latitude, longitude, maxResults))
