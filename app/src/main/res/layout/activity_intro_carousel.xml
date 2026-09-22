@@ -26,11 +26,28 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ui_recyclerView"
         android:layout_width="0dp"
-        android:layout_height="348dp"
+        android:layout_height="0dp"
         android:clipToPadding="false"
+        app:layout_constraintBottom_toTopOf="@+id/ui_tv_title"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_max="350dp"
+        app:layout_constraintHeight_min="180dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ui_button_connect" />
+        app:layout_constraintTop_toBottomOf="@+id/ui_button_connect"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_weight="1" />
+
+    <ImageView
+        android:id="@+id/ui_logo"
+        android:layout_width="200dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/empty_description"
+        android:scaleType="fitCenter"
+        android:src="@drawable/logo_entourage_rvb_horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/ui_recyclerView" />
 
     <TextView
         android:id="@+id/ui_tv_title"
@@ -40,81 +57,41 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:fontFamily="@font/quicksand_bold"
-        android:text="titre"
+        tools:text="titre"
         android:textColor="@color/orange"
         android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/ui_tv_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ui_recyclerView" />
-
-    <ImageView
-        android:id="@+id/ui_logo"
-        android:layout_width="200dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="32dp"
-        android:scaleType="fitCenter"
-        android:contentDescription="@string/empty_description"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/ui_recyclerView"
-        android:src="@drawable/logo_entourage_rvb_horizontal"/>
 
     <TextView
         android:id="@+id/ui_tv_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:fontFamily="@font/nunitosans_regular"
-        android:text="_description"
+        tools:text="_description"
         android:textColor="@color/black"
         android:textSize="17sp"
+        app:layout_constraintBottom_toTopOf="@+id/login_slideshow_indicator_layout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/ui_tv_title"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ui_tv_title" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="46dp"
-        android:id="@+id/ui_button_previous"
-        android:gravity="center"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:textSize="15sp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:fontFamily="@font/nunitosans_bold"
-        android:text="@string/bt_previous"
-        android:textColor="@color/black"
-        android:background="@drawable/shape_button_v9_negative"
-        android:visibility="visible"
-        android:layout_marginStart="32dp"
-        app:layout_constraintBottom_toBottomOf="@+id/ui_button_next"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-    <Button
-        android:id="@+id/ui_button_next"
-        style="@style/h2_white"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/new_bg_rounded_button_orange_fill"
-        android:text="@string/next"
-        android:textAllCaps="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
     <LinearLayout
         android:id="@+id/login_slideshow_indicator_layout"
         android:layout_width="45dp"
         android:layout_height="12dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="16dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/ui_button_next"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui_tv_description">
 
         <ImageView
             android:id="@+id/ui_iv_dot1"
@@ -143,5 +120,38 @@
             app:srcCompat="@drawable/pre_onboard_dot_unselected" />
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="46dp"
+        android:id="@+id/ui_button_previous"
+        android:gravity="center"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:textSize="15sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/nunitosans_bold"
+        android:text="@string/bt_previous"
+        android:textColor="@color/black"
+        android:background="@drawable/shape_button_v9_negative"
+        android:visibility="visible"
+        android:layout_marginStart="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/ui_button_next"
+        style="@style/h2_white"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/new_bg_rounded_button_orange_fill"
+        android:text="@string/next"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
