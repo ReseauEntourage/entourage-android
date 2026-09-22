@@ -224,7 +224,24 @@ workflows:
             - api_token: "$SLACK__BOT_API_TOKEN"
             - buttons: View App|${BITRISE_APP_URL}
             - channel: "#androiddev"
-      - version-extractor-android@0: {}
+      - script:
+          title: Extract version from AAB (bundletool)
+          inputs:
+            - content: |-
+                #!/usr/bin/env bash
+                set -euo pipefail
+
+                BUNDLETOOL_VERSION="1.18.3"
+                BUNDLETOOL_JAR="$BITRISE_SOURCE_DIR/bundletool.jar"
+                curl -sSL -o "$BUNDLETOOL_JAR" \
+                  "https://github.com/google/bundletool/releases/download/${BUNDLETOOL_VERSION}/bundletool-all-${BUNDLETOOL_VERSION}.jar"
+
+                MANIFEST=$(java -jar "$BUNDLETOOL_JAR" dump manifest --bundle="$BITRISE_AAB_PATH")
+                VERSION_CODE=$(echo "$MANIFEST" | grep -oP 'versionCode="\K[0-9]+')
+                VERSION_NAME=$(echo "$MANIFEST" | grep -oP 'versionName="\K[^"]+')
+                echo "versionCode=$VERSION_CODE / versionName=$VERSION_NAME"
+                envman add --key EXTRACTED_ANDROID_VERSION_CODE --value "$VERSION_CODE"
+                envman add --key EXTRACTED_ANDROID_VERSION_NAME --value "$VERSION_NAME"
       - git-tag:
           inputs:
             - tag: Bitrise_Deploy_$EXTRACTED_ANDROID_VERSION_CODE
