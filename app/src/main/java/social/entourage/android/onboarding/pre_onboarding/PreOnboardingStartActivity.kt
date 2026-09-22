@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
@@ -106,13 +107,25 @@ class PreOnboardingStartActivity : AppCompatActivity() {
         val adapter = PreOnboardingRVAdapter(this, data)
         binding.uiRecyclerView.adapter = adapter
 
+        val snapHelper = PagerSnapHelper()
+        snapHelper.attachToRecyclerView(binding.uiRecyclerView)
+
         // Ajoute le scroll listener pour gérer les dots ou autres éléments de l'UI
         val scrollListener = object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    currentDotPosition = linearLayoutManager.findFirstVisibleItemPosition()
-                    updateViewAndDots()
+                    val snapView = snapHelper.findSnapView(linearLayoutManager)
+                    if (snapView != null) {
+                        val pos = linearLayoutManager.getPosition(snapView)
+                        if (pos != RecyclerView.NO_POSITION) {
+                            currentDotPosition = pos
+                            updateViewAndDots()
+                        }
+                    } else {
+                        currentDotPosition = linearLayoutManager.findFirstVisibleItemPosition()
+                        updateViewAndDots()
+                    }
                 }
             }
         }
