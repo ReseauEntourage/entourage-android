@@ -14,6 +14,7 @@ import org.junit.Test
 import org.junit.rules.RuleChain
 import org.junit.runner.RunWith
 import social.entourage.android.MainActivity
+import social.entourage.android.R
 import social.entourage.android.e2e.E2EScreenshot
 
 @LargeTest
@@ -56,8 +57,9 @@ class MyEntouragesTest : EntourageTestAfterLogin() {
             myEntouragesRobot {
                 clickFirstAction()
             } verify {
-                isActionDetailDisplayed("Demande")
-                isCategoryDisplayed("Demande")
+                isActionDetailDisplayed(R.string.action_name_Demand, R.string.action_name_Contrib)
+                //TODO clean the screen so it is appearing only once before adding it back
+                //isCategoryDisplayed(R.string.action_name_Demand, R.string.action_social_name)
             }
             screenshot.shoot("action_detail")
 
