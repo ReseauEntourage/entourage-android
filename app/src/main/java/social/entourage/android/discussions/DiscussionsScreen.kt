@@ -25,11 +25,14 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -45,6 +48,10 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.PlatformTextStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -81,6 +88,19 @@ fun DiscussionsScreen(
     onRefresh: () -> Unit,
     onLoadMore: () -> Unit,
 ) {
+    // EN-9489 : retour Gwen — espacement de police excessif hérité du padding vertical
+    // par défaut de Compose sur les polices custom (Quicksand/NunitoSans), qui n'existe
+    // pas avec les mêmes polices en XML/TextView. On le désactive pour tout l'écran.
+    val noExtraFontPaddingStyle = LocalTextStyle.current.merge(
+        TextStyle(
+            platformStyle = PlatformTextStyle(includeFontPadding = false),
+            lineHeightStyle = LineHeightStyle(
+                alignment = LineHeightStyle.Alignment.Center,
+                trim = LineHeightStyle.Trim.Both
+            )
+        )
+    )
+    CompositionLocalProvider(LocalTextStyle provides noExtraFontPaddingStyle) {
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(R.drawable.header_profile_orange),
@@ -135,15 +155,29 @@ fun DiscussionsScreen(
                                 conversation = dedicatedContactConversation,
                                 onClick = onDedicatedContactClick
                             )
+                            ConversationDivider()
                         }
                     }
                     items(conversations, key = { it.id ?: it.hashCode() }) { conversation ->
                         ConversationRow(conversation = conversation, onClick = { onConversationClick(conversation) })
+                        ConversationDivider()
                     }
                 }
             }
         }
     }
+    }
+}
+
+@Composable
+private fun ConversationDivider() {
+    // EN-9489 : retour Gwen — traits de séparation manquants entre chaque conversation.
+    // Couleur alignée sur l'ancien layout XML de prod (layout_conversation_home_item.xml
+    // avant réécriture Compose) : @color/beige, iso prod.
+    HorizontalDivider(
+        thickness = 1.dp,
+        color = colorResource(R.color.beige)
+    )
 }
 
 @Composable
@@ -391,14 +425,14 @@ private fun ConversationRow(conversation: Conversation, onClick: () -> Unit) {
             } else {
                 conversation.title.orEmpty()
             }
-            Text(
-                text = nameToDisplay,
-                fontFamily = QuicksandBold,
-                fontSize = 15.sp,
-                color = Color(0xFF1A1A1A),
-                maxLines = 1
-            )
             if (isOuting) {
+                Text(
+                    text = nameToDisplay,
+                    fontFamily = QuicksandBold,
+                    fontSize = 15.sp,
+                    color = Color(0xFF1A1A1A),
+                    maxLines = 1
+                )
                 Text(
                     text = conversation.subname.orEmpty(),
                     fontFamily = NunitoSansRegular,
@@ -406,12 +440,25 @@ private fun ConversationRow(conversation: Conversation, onClick: () -> Unit) {
                     color = Color(0xFF7A7A7A)
                 )
             } else {
-                Text(
-                    text = conversation.dateFormattedString(context),
-                    fontFamily = NunitoSansRegular,
-                    fontSize = 13.sp,
-                    color = Color(0xFF7A7A7A)
-                )
+                // EN-9489 : retour Gwen — date/heure repassée à côté du nom, alignée à
+                // droite (comme en prod), au lieu d'être affichée sous le nom.
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = nameToDisplay,
+                        fontFamily = QuicksandBold,
+                        fontSize = 15.sp,
+                        color = Color(0xFF1A1A1A),
+                        maxLines = 1,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(Modifier.width(8.dp))
+                    Text(
+                        text = conversation.dateFormattedString(context),
+                        fontFamily = NunitoSansRegular,
+                        fontSize = 13.sp,
+                        color = Color(0xFF7A7A7A)
+                    )
+                }
             }
             Text(
                 text = conversation.getLastMessage(context = context).orEmpty(),
@@ -435,6 +482,7 @@ private fun ConversationRow(conversation: Conversation, onClick: () -> Unit) {
                     text = conversation.numberUnreadMessages.toString(),
                     fontFamily = QuicksandBold,
                     fontSize = 12.sp,
+                    textAlign = TextAlign.Center,
                     color = Color.White
                 )
             }
