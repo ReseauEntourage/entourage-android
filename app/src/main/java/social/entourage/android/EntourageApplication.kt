@@ -139,8 +139,10 @@ class EntourageApplication : Application() {
             }
             removeAllPushNotifications()
             AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_LOGOUT)
-            startActivity(Intent(this, PreOnboardingStartActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
-            mainActivity?.finish()
+            mainActivity?.let {
+                startActivity(Intent(this, PreOnboardingStartActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+                it.finish()
+            }
         } ?: run {
             Timber.d("not needed to logout")
         }
