@@ -4,10 +4,8 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.constraintlayout.widget.ConstraintLayout
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.ActivityPreOnboardingChoiceBinding
@@ -67,18 +65,6 @@ class PreOnboardingChoiceActivity : BaseActivity() {
 
     private fun setImage() {
         binding.uiLogo2.setImageDrawable(AppCompatResources.getDrawable(this, R.drawable.logo_entourage_rvb_horizontal))
-
-        val width = 500  // Remplace par la largeur souhaitée en pixels
-        val height = 250 // Remplace par la hauteur souhaitée en pixels
-        val params = ConstraintLayout.LayoutParams(width, height)
-        val marginStart = 70  // En pixels
-        val marginTop = 55   // En pixels
-        params.marginStart = marginStart
-        params.topMargin = marginTop
-        params.topToTop = ConstraintLayout.LayoutParams.PARENT_ID
-        params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
-        binding.uiLogo2.scaleType = ImageView.ScaleType.FIT_START
-        binding.uiLogo2.layoutParams = params
 
         // Vérifie si la langue est en mode RTL (comme l'arabe)
         val isRtl = resources.configuration.layoutDirection == android.view.View.LAYOUT_DIRECTION_RTL

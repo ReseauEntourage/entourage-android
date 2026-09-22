@@ -8,106 +8,97 @@
     android:fitsSystemWindows="false"
     tools:context="social.entourage.android.onboarding.pre_onboarding.PreOnboardingChoiceActivity">
 
+    <ImageView
+        android:id="@+id/imageMosaic"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/empty_description"
+        android:cropToPadding="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@+id/ui_tv_title2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_min="160dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_weight="1"
+        app:srcCompat="@drawable/carousel_onboarding_1" />
+
+    <ImageView
+        android:id="@+id/ui_logo2"
+        android:layout_width="200dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/empty_description"
+        android:scaleType="fitStart"
+        android:src="@drawable/logo_entourage_rvb_horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/ui_tv_title2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="32dp"
         android:fontFamily="@font/quicksand_bold"
         android:text="@string/pre_onboard_choice_description_title"
         android:textColor="@color/orange"
         android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/ui_button_signup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logos" />
+        app:layout_constraintTop_toBottomOf="@+id/imageMosaic" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/ui_button_signup"
+        style="@style/h2_white"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/new_bg_rounded_button_orange_fill"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:text="@string/pre_onboard_choice_signup"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/ui_button_login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui_tv_title2" />
+
+    <TextView
+        android:id="@+id/ui_button_login"
+        android:layout_width="wrap_content"
+        android:layout_height="46dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/shape_button_v9_negative"
+        android:fontFamily="@font/nunitosans_bold"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp"
+        android:text="@string/pre_onboard_choice_login"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/ui_button_about"
-        app:layout_constraintTop_toBottomOf="@+id/ui_tv_title2">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="46dp"
-            android:id="@+id/ui_button_login"
-            android:gravity="center"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:textSize="15sp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:fontFamily="@font/nunitosans_bold"
-            android:text="@string/pre_onboard_choice_login"
-            android:textColor="@color/black"
-            android:background="@drawable/shape_button_v9_negative"
-            android:visibility="visible"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ui_button_signup"
-            />
-
-        <Button
-            android:id="@+id/ui_button_signup"
-            style="@style/h2_white"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/new_bg_rounded_button_orange_fill"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:text="@string/pre_onboard_choice_signup"
-            android:textAllCaps="false"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/logos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/ui_tv_title2">
-        <ImageView
-            android:id="@+id/imageMosaic"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:contentDescription="@string/empty_description"
-            android:cropToPadding="true"
-            android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/carousel_onboarding_1" />
-
-        <ImageView
-            android:id="@+id/ui_logo2"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="8dp"
-            android:contentDescription="@string/empty_description"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/logo_entourage_rvb_horizontal" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui_button_signup" />
 
     <Button
         android:id="@+id/ui_button_about"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:fontFamily="@font/nunitosans_bold"
         android:text="@string/pre_onboard_choice_about"
         android:textAllCaps="false"
@@ -115,6 +106,7 @@
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ui_button_login" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
