@@ -27,7 +27,7 @@ android {
     val isReleaseOrPreprod = project.gradle.startParameter.taskNames.any { it.contains("release", ignoreCase = true)||it.contains("preprod", ignoreCase = true) }
 
     val versionMajor = 15
-    val versionMinor = 0
+    val versionMinor = 1
 
     // Use a fixed version for debug builds to speed up configuration and enable caching
     val versionPatch = if (isReleaseOrPreprod) {

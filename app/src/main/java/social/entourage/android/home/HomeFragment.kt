@@ -12,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.animation.doOnEnd
@@ -46,7 +45,6 @@ import social.entourage.android.api.model.Pedago
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.SummaryAction
 import social.entourage.android.api.model.User
-import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.databinding.FragmentHomeBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
@@ -63,8 +61,6 @@ import social.entourage.android.notifications.NotificationDemandActivity
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 import social.entourage.android.onboarding.onboard.OnboardingZoneChoiceActivity
 import social.entourage.android.profile.MyProfileFullActivity
-import social.entourage.android.small_talks.SmallTalkIntroActivity
-import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
@@ -97,11 +93,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private var isActionEmpty = false
     private var isContribution = false
     private lateinit var actionsPresenter: ActionsPresenter
-    private val smallTalkViewModel: SmallTalkViewModel by lazy {
-        ViewModelProvider(this).get(SmallTalkViewModel::class.java)
-    }
-    private var isRequestLoaded = false
-    private var currentRequests: List<UserSmallTalkRequest> = emptyList()
 
     private val nationalGroupsLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -169,11 +160,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private lateinit var homeInitialPedagoAdapter: HomeInitialPedagoAdapter
     private lateinit var initialPedagoWrapperAdapter: HomeHorizontalWrapperAdapter
 
-    // Small Talk
-    private lateinit var smallTalkHeaderAdapter: HomeSectionHeaderAdapter
-    private lateinit var homeSmallTalkAdapter: HomeSmallTalkAdapter
-    // private lateinit var smallTalkWrapperAdapter: HomeHorizontalWrapperAdapter
-
     // Actions
     private lateinit var actionHeaderAdapter: HomeSectionHeaderAdapter
     private lateinit var homeActionAdapter: HomeActionAdapter
@@ -202,9 +188,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     // Suggestions
     private lateinit var homeSuggestionConnectionAdapter: HomeSuggestionConnectionAdapter
     private lateinit var homeSuggestionNextStepAdapter: HomeSuggestionNextStepAdapter
-
-    // Moderator
-    private lateinit var homeModeratorAdapter: HomeModeratorAdapter
 
     // Gère uniquement le cycle de vie du fragment pour ne pas lancer plusieurs popups en même temps
     private var hasRunEntryGating = false
@@ -439,12 +422,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             ChatBotBottomSheet().show(parentFragmentManager, "chatbot")
         }
 
-        smallTalkViewModel.userRequests.observe(viewLifecycleOwner) { requests ->
-            currentRequests = requests
-            composeSmallTalkItemsSimplified()
-        }
-
-        loadSmallTalkItems()
         return binding.root
     }
 
@@ -453,14 +430,12 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
         setupWelcomeJourneyAdapter()
         setupInitialPedagoAdapter(viewPool)
-        setupSmallTalkAdapter()
         setupActionAdapter(viewPool)
         setupEventAdapter(viewPool)
         setupGroupAdapter(viewPool)
         setupToolsAdapter()
         setupPedagoAdapter()
         setupSuggestionsAdapters()
-        setupModeratorAdapter()
     }
 
     private fun setupWelcomeJourneyAdapter() {
@@ -486,31 +461,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             }
         })
         initialPedagoWrapperAdapter = HomeHorizontalWrapperAdapter(homeInitialPedagoAdapter, viewPool)
-    }
-
-    private fun setupSmallTalkAdapter() {
-        smallTalkHeaderAdapter = HomeSectionHeaderAdapter()
-        homeSmallTalkAdapter = HomeSmallTalkAdapter(
-            onStartClick = {
-                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_BONNES_ONDES_START_DISCUSSION)
-                startActivity(Intent(requireContext(), SmallTalkIntroActivity::class.java))
-            },
-            onViewClick = {
-                AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_BONNES_ONDES_VIEW_MESSAGES)
-                (requireActivity() as? MainActivity)?.goConv(isSmallTalkFilter = true)
-            },
-            onMatchingClick = {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.small_talk_subtitle_waiting),
-                    Toast.LENGTH_SHORT
-                ).show()
-            },
-            onLaunchNewClick = {
-                startActivity(Intent(requireContext(), SmallTalkIntroActivity::class.java))
-            },
-            requireContext()
-        )
     }
 
     private fun setupActionAdapter(viewPool: RecyclerView.RecycledViewPool) {
@@ -642,14 +592,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         )
     }
 
-    private fun setupModeratorAdapter() {
-        homeModeratorAdapter = HomeModeratorAdapter { moderatorId ->
-            AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Moderator)
-            discussionsPresenter.createOrGetConversation(moderatorId.toString())
-        }
-    }
-
-
     private fun setupRecyclerView() {
         val config = ConcatAdapter.Config.Builder()
             .setIsolateViewTypes(true)
@@ -702,7 +644,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         callToInitHome()
         actionsPresenter.getUnreadCount()
         sendUserDiscussionStatus()
-        loadSmallTalkItems()
 
         val mainActivity = requireActivity() as? MainActivity
         if (mainActivity?.getFromDeepLGoWelcomeVideo() == true) {
@@ -710,35 +651,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             showVideoModal()
         }
     }
-
-    private fun loadSmallTalkItems() {
-        isRequestLoaded = false
-        smallTalkViewModel.listUserRequests()
-    }
-
-    private fun composeSmallTalkItemsSimplified() {
-        val items = mutableListOf<HomeSmallTalkItem>()
-        val matchedRequests = currentRequests.filter { it.smalltalkId != null }
-        val unmatchedRequestsCount = currentRequests.count { it.smalltalkId == null }
-
-        if (currentRequests.isEmpty()) {
-            items.add(HomeSmallTalkItem.MatchPossible)
-        } else if (matchedRequests.isEmpty() && unmatchedRequestsCount > 0) {
-            items.add(HomeSmallTalkItem.Waiting)
-        } else if (matchedRequests.isNotEmpty()) {
-            items.add(
-                HomeSmallTalkItem.Active(
-                    activeRequests = matchedRequests,
-                    waitingCount = unmatchedRequestsCount,
-                    totalCount = currentRequests.size
-                )
-            )
-        }
-
-        homeSmallTalkAdapter.submitList(items)
-        smallTalkHeaderAdapter.update("", null, false)
-    }
-
 
     override fun onDestroyView() {
         heartHandler?.removeCallbacks(heartRunnable)
@@ -1071,12 +983,9 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 concatAdapter.addAdapter(eventButtonAdapter)
                 concatAdapter.addAdapter(homeSuggestionConnectionAdapter)
                 concatAdapter.addAdapter(homeSuggestionNextStepAdapter)
-                concatAdapter.addAdapter(homeModeratorAdapter)
                 concatAdapter.addAdapter(groupHeaderAdapter)
                 concatAdapter.addAdapter(groupWrapperAdapter)
                 concatAdapter.addAdapter(groupButtonAdapter)
-                concatAdapter.addAdapter(smallTalkHeaderAdapter)
-                concatAdapter.addAdapter(homeSmallTalkAdapter)
                 concatAdapter.addAdapter(homeToolsAdapter)
                 concatAdapter.addAdapter(homePedagoAdapter)
                 binding.rvHome.scheduleLayoutAnimation()
@@ -1275,7 +1184,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         EnhancedOnboarding.isAssociationFromSummary = isAssociationFromSummary
         EnhancedOnboarding.preference = summary.preference ?: ""
         onActionUnclosed(summary)
-        handleModerator(summary)
         if (summary.signablePermission != null) {
             signablePermission = summary.signablePermission!!
             HomeState.signablePermission = summary.signablePermission!!
@@ -1304,13 +1212,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 currentFilters.longitude(),
                 currentSectionsFilters.getSectionsForWS()
             )
-        }
-    }
-
-    private fun handleModerator(summary: Summary) {
-        if (isAdded) {
-            doTotalchecksumToDisplayHomeFirstTime()
-            homeModeratorAdapter.updateSummary(summary)
         }
     }
 
