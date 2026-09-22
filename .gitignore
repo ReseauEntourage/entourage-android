@@ -69,3 +69,4 @@ app/.classpath
 
 # Identifiants du compte utilisé pour les scénarios E2E
 /E2E_TEST_ACCOUNT.md
+test_screenshot

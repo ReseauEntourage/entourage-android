@@ -2,7 +2,6 @@ package social.entourage.android.e2e
 
 import android.Manifest
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
@@ -76,11 +75,9 @@ class CreationEvenementScenarioTest : EntourageTestAfterLogin() {
         screenshot.shoot("accueil")
 
         onView(withId(R.id.navigation_events)).perform(click())
-        onIdle()
         screenshot.shoot("liste_evenements")
 
         onView(allOf(withId(R.id.create_event_expanded), isDisplayed())).perform(click())
-        onIdle()
         screenshot.shoot("etape1_vide")
 
         val titre = "Evenement test ${System.currentTimeMillis()}"
@@ -92,7 +89,6 @@ class CreationEvenementScenarioTest : EntourageTestAfterLogin() {
         screenshot.shoot("etape1_texte_rempli")
 
         onView(withId(R.id.add_photo_layout)).perform(click())
-        onIdle()
         screenshot.shoot("etape1_choix_photo")
         onView(allOf(withId(R.id.recycler_view), isDisplayed())).perform(
             actionOnItemAtPosition<ViewHolder>(0, click())
@@ -154,7 +150,6 @@ class CreationEvenementScenarioTest : EntourageTestAfterLogin() {
         screenshot.shoot("etape5_ne_pas_partager")
 
         onView(withText(R.string.create)).perform(click())
-        onIdle()
         screenshot.shoot("apres_clic_creer")
 
         onView(withText(R.string.event_success_title)).check(matches(isDisplayed()))

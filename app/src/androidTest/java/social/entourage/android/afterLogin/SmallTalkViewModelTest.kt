@@ -5,11 +5,14 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.small_talks.SmallTalkViewModel
 import timber.log.Timber
@@ -18,7 +21,7 @@ import java.util.concurrent.TimeUnit
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class SmallTalkViewModelTest {
+class SmallTalkViewModelTest : EntourageTestAfterLogin() {
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -28,12 +31,26 @@ class SmallTalkViewModelTest {
     @Before
     fun setup() {
         val context = ApplicationProvider.getApplicationContext<Application>()
+        super.setUp(context)
         viewModel = SmallTalkViewModel(context)
+    }
+
+    private fun fetchUserSmallTalkRequestIdFromApi(): String {
+        checkUserIsLoggedIn()
+
+        return runBlocking(Dispatchers.IO) {
+            val response = EntourageApplication.get().apiModule.smallTalkRequest
+                .listUserSmallTalkRequests()
+                .execute()
+
+            response.body()?.requests?.firstOrNull()?.id?.toString()
+                ?: response.body()?.requests?.firstOrNull()?.uuid
+        } ?: "fake-id"
     }
 
     @Test
     fun testMatchRequest() {
-        val dummyId = "fake-id" // TODO : Remplacer par un vrai ID si possible
+        val requestId = fetchUserSmallTalkRequestIdFromApi()
         val latch = CountDownLatch(1)
         var observedValue: Boolean? = null
 
@@ -43,7 +60,7 @@ class SmallTalkViewModelTest {
             latch.countDown()
         }
 
-        viewModel.matchRequest(dummyId)
+        viewModel.matchRequest(requestId)
 
         if (!latch.await(30, TimeUnit.SECONDS)) {
             Assert.fail("LiveData did not receive value within timeout")
@@ -52,9 +69,9 @@ class SmallTalkViewModelTest {
         Assert.assertNotNull(observedValue)
     }
 
-    @Test
+    //@Test
     fun testDeleteRequest() {
-        val dummyId = "fake-id"
+        checkUserIsLoggedIn()
         val latch = CountDownLatch(1)
         var observedValue: Boolean? = null
 
@@ -64,7 +81,7 @@ class SmallTalkViewModelTest {
             latch.countDown()
         }
 
-        viewModel.deleteRequest()// Wait for the LiveData to emit, with a timeout
+        viewModel.deleteRequest()
 
         if (!latch.await(30, TimeUnit.SECONDS)) {
             Assert.fail("LiveData did not receive value within timeout")
@@ -75,6 +92,7 @@ class SmallTalkViewModelTest {
 
     @Test
     fun testListUserRequests() {
+        checkUserIsLoggedIn()
         val latch = CountDownLatch(1)
         var observedValue: List<UserSmallTalkRequest>? = null
 

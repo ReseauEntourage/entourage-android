@@ -8,11 +8,14 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import social.entourage.android.BuildConfig
+import social.entourage.android.e2e.E2EScreenshot
 import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
 class SignUpTest : EntourageTestBeforeLogin() {
+
+    private val screenshot = E2EScreenshot("sign_up")
 
     @get:Rule
     var activityRule = ActivityScenarioRule(OnboardingStartActivity::class.java)
@@ -34,6 +37,7 @@ class SignUpTest : EntourageTestBeforeLogin() {
             isNamesScreenDisplayed()
             isPhoneScreenNotDisplayed()
         }
+        screenshot.shoot("empty_first_and_last_name")
     }
 
     @Test
@@ -46,6 +50,7 @@ class SignUpTest : EntourageTestBeforeLogin() {
             isNamesScreenDisplayed()
             isPhoneScreenNotDisplayed()
         }
+        screenshot.shoot("empty_first_name")
     }
 
     @Test
@@ -58,6 +63,7 @@ class SignUpTest : EntourageTestBeforeLogin() {
             isNamesScreenDisplayed()
             isPhoneScreenNotDisplayed()
         }
+        screenshot.shoot("empty_last_name")
     }
 
     @Test
@@ -69,6 +75,7 @@ class SignUpTest : EntourageTestBeforeLogin() {
         } verify {
             isPhoneScreenDisplayed()
         }
+        screenshot.shoot("empty_phone_number")
     }
 
     @Test
@@ -80,6 +87,7 @@ class SignUpTest : EntourageTestBeforeLogin() {
         } verify {
             isInvalidPhoneErrorDisplayed()
         }
+        screenshot.shoot("invalid_phone_number")
     }
 
     @Test
@@ -91,6 +99,7 @@ class SignUpTest : EntourageTestBeforeLogin() {
         } verify {
             isAlreadyRegisteredErrorDisplayed()
         }
+        screenshot.shoot("already_used_phone_number")
     }
 
     @Test
@@ -104,5 +113,6 @@ class SignUpTest : EntourageTestBeforeLogin() {
         } verify {
             isNetworkErrorDisplayed()
         }
+        screenshot.shoot("phone_failure_no_internet")
     }
 }

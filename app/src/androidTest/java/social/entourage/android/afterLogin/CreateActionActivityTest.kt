@@ -24,10 +24,13 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import social.entourage.android.R
 import social.entourage.android.actions.create.CreateActionActivity
+import social.entourage.android.e2e.E2EScreenshot
 import social.entourage.android.tools.utils.Const
 
 @RunWith(AndroidJUnit4::class)
 abstract class CreateActionActivityTest(isActionDemand: Boolean) : EntourageTestAfterLogin() {
+
+    private val screenshot = E2EScreenshot("create_action")
 
     @get:Rule
     val composeTestRule = AndroidComposeTestRule(
@@ -73,7 +76,8 @@ abstract class CreateActionActivityTest(isActionDemand: Boolean) : EntourageTest
         composeTestRule.onNodeWithText(context.getString(R.string.action_cgu_accept_button))
             .performClick()
         composeTestRule.waitForIdle()
-//        Thread.sleep(1000)
+        screenshot.shoot("cgus_accepted")
+
         onView(withText(stringTitle)).check(matches(isDisplayed()))
         onView(withText(R.string.action_social_name))//.check(matches(isDisplayed()))
             .perform(click())
@@ -87,6 +91,8 @@ abstract class CreateActionActivityTest(isActionDemand: Boolean) : EntourageTest
             ViewActions.typeText("description "),
             ViewActions.closeSoftKeyboard()
         )
+        screenshot.shoot("action_info_filled")
+
         onView(withText(R.string.next)).check(matches(isDisplayed()))
             .perform(click())
         Thread.sleep(1000)
@@ -101,6 +107,8 @@ abstract class CreateActionActivityTest(isActionDemand: Boolean) : EntourageTest
         onView(withId(R.id.ui_onboard_place_tv_location)).check(matches(Matchers.not(withText(""))))
         onView(withText(R.string.validate)).check(matches(isDisplayed()))
             .perform(click())
+        screenshot.shoot("location_selected")
+
         Thread.sleep(1000)
         onView(withText(R.string.next)).check(matches(isDisplayed()))
             .perform(click())
@@ -109,11 +117,14 @@ abstract class CreateActionActivityTest(isActionDemand: Boolean) : EntourageTest
             .perform(click())
         onView(withText(R.string.create)).check(matches(isDisplayed()))
             .perform(click())
+        screenshot.shoot("action_created")
+
         Thread.sleep(1000)
         onView(withText(R.string.action_create_end_finish_bt)).check(matches(isDisplayed()))
             .perform(click())
         checkNoOnboarding()
         onView(withText(R.string.home_title)).check(matches(isDisplayed()))
+        screenshot.shoot("home_screen_after_action")
     }
 }
 

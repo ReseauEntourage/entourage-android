@@ -9,11 +9,14 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import social.entourage.android.BuildConfig
 import social.entourage.android.R
+import social.entourage.android.e2e.E2EScreenshot
 import social.entourage.android.onboarding.login.LoginActivity
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class LoginTest : EntourageTestBeforeLogin() {
+
+    private val screenshot = E2EScreenshot("login")
     private var scenario: ActivityScenario<LoginActivity>? = null
 
     @Before
@@ -48,6 +51,7 @@ class LoginTest : EntourageTestBeforeLogin() {
         } verify {
             isLoginSuccessful()
         }
+        screenshot.shoot("login_ok")
     }
 
     @Test
@@ -59,6 +63,7 @@ class LoginTest : EntourageTestBeforeLogin() {
         } verify {
             isLoginSuccessful()
         }
+        screenshot.shoot("login_ok_no_country_code")
     }
 
     @Test
@@ -70,6 +75,7 @@ class LoginTest : EntourageTestBeforeLogin() {
         } verify {
             isLoginFailureDisplayed()
         }
+        screenshot.shoot("login_failure_wrong_pwd")
     }
 
     @Test
@@ -81,6 +87,7 @@ class LoginTest : EntourageTestBeforeLogin() {
         } verify {
             isLoginFailureDisplayed(R.string.attention_pop_title, R.string.close)
         }
+        screenshot.shoot("login_failure_short_pwd")
     }
 
     @Test
@@ -92,6 +99,7 @@ class LoginTest : EntourageTestBeforeLogin() {
         } verify {
             isLoginFailureDisplayed()
         }
+        screenshot.shoot("login_failure_wrong_phone")
     }
 
     @Test
@@ -105,6 +113,7 @@ class LoginTest : EntourageTestBeforeLogin() {
         } verify {
             isNetworkErrorDisplayed()
         }
+        screenshot.shoot("login_failure_no_internet")
     }
 
     @Test
@@ -115,6 +124,7 @@ class LoginTest : EntourageTestBeforeLogin() {
         } verify {
             isResendCodeActionDisplayed()
         }
+        screenshot.shoot("resend_code_action")
     }
 
     @Test
@@ -125,6 +135,7 @@ class LoginTest : EntourageTestBeforeLogin() {
         } verify {
             isLoginFailureDisplayed(R.string.attention_pop_title, R.string.close)
         }
+        screenshot.shoot("resend_code_empty_phone")
     }
 
     @Test
@@ -134,6 +145,7 @@ class LoginTest : EntourageTestBeforeLogin() {
         } verify {
             isChangePhoneScreenDisplayed()
         }
+        screenshot.shoot("change_phone_screen")
     }
 
     @Test
@@ -143,6 +155,7 @@ class LoginTest : EntourageTestBeforeLogin() {
         } verify {
             isPreOnboardingScreenDisplayed()
         }
+        screenshot.shoot("pre_onboarding_screen")
     }
 
     //@Test

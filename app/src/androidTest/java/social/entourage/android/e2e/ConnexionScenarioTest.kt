@@ -64,7 +64,6 @@ class ConnexionScenarioTest : EntourageTestBeforeLogin() {
 
         Espresso.onView(ViewMatchers.withId(R.id.ui_login_button_signup))
             .perform(ViewActions.click())
-        Espresso.onIdle()
         screenshot.shoot("apres_clic_sur_connexion")
 
         Intents.intended(IntentMatchers.hasComponent(MainActivity::class.java.name))

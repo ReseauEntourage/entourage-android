@@ -2,9 +2,11 @@ package social.entourage.android.unchecked
 
 import androidx.test.espresso.intent.Intents
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
+import org.junit.runner.RunWith
 import social.entourage.android.comment.ImageZoomActivity
 
 //TODO @RunWith(AndroidJUnit4::class)
@@ -24,7 +26,7 @@ class ImageZoomActivityTest {
     }
 
     //TODO @Test
-    fun testImageZoom() {
+    fun test_activity_launches() {
         // Activity is launched by the Rule
     }
 }

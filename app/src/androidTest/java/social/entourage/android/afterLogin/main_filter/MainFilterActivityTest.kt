@@ -14,11 +14,14 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import social.entourage.android.R
 import social.entourage.android.afterLogin.EntourageTestAfterLogin
+import social.entourage.android.e2e.E2EScreenshot
 import social.entourage.android.main_filter.MainFilterActivity
 
 @RunWith(AndroidJUnit4::class)
 @MediumTest
 class MainFilterActivityTest : EntourageTestAfterLogin() {
+
+    private val screenshot = E2EScreenshot("main_filter")
 
     @get:Rule
     val activityRule = ActivityScenarioRule(MainFilterActivity::class.java)
@@ -37,6 +40,7 @@ class MainFilterActivityTest : EntourageTestAfterLogin() {
         onView(withId(R.id.icon_back)).check(matches(isDisplayed()))
         onView(withId(R.id.button_start)).check(matches(isDisplayed()))
         onView(withId(R.id.button_configure_later)).check(matches(isDisplayed()))
+        screenshot.shoot("main_filter_header")
 
         // Scroll the content
         onView(withId(R.id.scrollView)).perform(swipeUp())
@@ -44,5 +48,6 @@ class MainFilterActivityTest : EntourageTestAfterLogin() {
         // Verify title and back icon remain displayed after scroll
         onView(withId(R.id.tv_title)).check(matches(isDisplayed()))
         onView(withId(R.id.icon_back)).check(matches(isDisplayed()))
+        screenshot.shoot("main_filter_after_scroll")
     }
 }

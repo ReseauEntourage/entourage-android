@@ -14,6 +14,7 @@ import org.junit.Test
 import org.junit.rules.RuleChain
 import org.junit.runner.RunWith
 import social.entourage.android.R
+import social.entourage.android.e2e.E2EScreenshot
 import social.entourage.android.guide.GDSMainActivity
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -21,6 +22,8 @@ import java.util.concurrent.TimeUnit
 @LargeTest
 @RunWith(AndroidJUnit4::class)
 class GDSMainActivityTest : EntourageTestAfterLogin() {
+
+    private val screenshot = E2EScreenshot("gds_main")
 
     @get:Rule
     val ruleChain: RuleChain = RuleChain
@@ -52,6 +55,7 @@ class GDSMainActivityTest : EntourageTestAfterLogin() {
             // Espresso synchronise automatiquement et doit être appelé depuis le thread de test
             Espresso.onView(ViewMatchers.withText(R.string.gds_title))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+            screenshot.shoot("carte_guide_solidaire")
         }
     }
 }

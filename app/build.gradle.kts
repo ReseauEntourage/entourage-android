@@ -370,10 +370,21 @@ fun adbExecutable(): String {
     return sdkDir?.let { File(it, "platform-tools/$adbName").absolutePath } ?: adbName
 }
 
+fun adbCommand(vararg args: String): List<String> {
+    val deviceId = (project.findProperty("deviceId") as? String)?.takeIf { it.isNotBlank() }
+    val command = mutableListOf(adbExecutable())
+    if (deviceId != null) {
+        command.add("-s")
+        command.add(deviceId)
+    }
+    command.addAll(args)
+    return command
+}
+
 tasks.register<Exec>("clearSnapshots") {
     group = "verification"
     description = "Vider les snapshots sur le device"
-    commandLine(adbExecutable(), "shell", "rm", "-rf", "/sdcard/Download/entourage_snapshots/*")
+    commandLine(adbCommand("shell", "rm", "-rf", "/sdcard/Download/entourage_snapshots/*"))
     isIgnoreExitValue = true
 }
 
@@ -386,7 +397,7 @@ tasks.register<Exec>("pullSnapshots") {
         if (!localDir.exists()) localDir.mkdirs()
     }
 
-    commandLine(adbExecutable(), "pull", "/sdcard/Download/entourage_snapshots/.", localDir.absolutePath)
+    commandLine(adbCommand("pull", "/sdcard/Download/entourage_snapshots/.", localDir.absolutePath))
 
     isIgnoreExitValue = true
     finalizedBy("clearSnapshots")
@@ -395,7 +406,7 @@ tasks.register<Exec>("pullSnapshots") {
 tasks.register<Exec>("clearE2EScreenshots") {
     group = "verification"
     description = "Vider les screenshots des scénarios E2E sur le device"
-    commandLine(adbExecutable(), "shell", "rm", "-rf", "/sdcard/Download/test_screenshot/*")
+    commandLine(adbCommand("shell", "rm", "-rf", "/sdcard/Download/test_screenshot/*"))
     isIgnoreExitValue = true
 }
 
@@ -408,7 +419,7 @@ tasks.register<Exec>("pullE2EScreenshots") {
         if (!localDir.exists()) localDir.mkdirs()
     }
 
-    commandLine(adbExecutable(), "pull", "/sdcard/Download/test_screenshot/.", localDir.absolutePath)
+    commandLine(adbCommand("pull", "/sdcard/Download/test_screenshot/.", localDir.absolutePath))
 
     isIgnoreExitValue = true
     finalizedBy("clearE2EScreenshots")

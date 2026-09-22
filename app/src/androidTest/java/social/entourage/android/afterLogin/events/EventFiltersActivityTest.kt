@@ -13,11 +13,14 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import social.entourage.android.R
 import social.entourage.android.afterLogin.EntourageTestAfterLogin
+import social.entourage.android.e2e.E2EScreenshot
 import social.entourage.android.events.EventFiltersActivity
 
 @RunWith(AndroidJUnit4::class)
 @MediumTest
 class EventFiltersActivityTest : EntourageTestAfterLogin() {
+
+    private val screenshot = E2EScreenshot("event_filters")
 
     @get:Rule
     val activityRule = ActivityScenarioRule(EventFiltersActivity::class.java)
@@ -34,5 +37,6 @@ class EventFiltersActivityTest : EntourageTestAfterLogin() {
         onView(withId(R.id.title_search)).check(matches(isDisplayed()))
         onView(withId(R.id.validate)).check(matches(isDisplayed()))
         onView(withId(R.id.seekbar)).check(matches(isDisplayed()))
+        screenshot.shoot("event_filters_elements")
     }
 }

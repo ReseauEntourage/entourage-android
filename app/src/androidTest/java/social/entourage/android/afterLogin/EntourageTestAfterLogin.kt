@@ -115,4 +115,20 @@ open class EntourageTestAfterLogin : EntourageTestWithAPI() {
             Timber.d(e)
         }
     }
+
+    protected fun fetchGroupIdFromApi(): Int {
+        checkUserIsLoggedIn()
+
+        return runBlocking(Dispatchers.IO) {
+            val response = EntourageApplication.get().apiModule.groupRequest
+                .getAllGroups(
+                    page = 1,
+                    per = 10,
+                )
+                .execute()
+
+            response.body()?.allGroups?.firstOrNull()?.id
+        } ?: throw IllegalStateException("Aucun groupe trouvé depuis l'API")
+    }
+
 }

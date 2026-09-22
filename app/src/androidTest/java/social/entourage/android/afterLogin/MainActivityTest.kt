@@ -15,9 +15,12 @@ import org.junit.rules.RuleChain
 import org.junit.runner.RunWith
 import social.entourage.android.MainActivity
 import social.entourage.android.R
+import social.entourage.android.e2e.E2EScreenshot
 
 @RunWith(AndroidJUnit4::class)
 class MainActivityTest : EntourageTestAfterLogin() {
+
+    private val screenshot = E2EScreenshot("main_activity")
 
     private val permissionRule = GrantPermissionRule.grant(
         Manifest.permission.POST_NOTIFICATIONS
@@ -38,6 +41,7 @@ class MainActivityTest : EntourageTestAfterLogin() {
         ActivityScenario.launch(MainActivity::class.java).use {
             checkNoOnboarding()
             myTakeSnapshot(this::class.java.simpleName)
+            screenshot.shoot("accueil_main_activity")
             Espresso.onView(ViewMatchers.withText(R.string.home_title))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
         }

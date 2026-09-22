@@ -11,7 +11,6 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.test.core.app.ActivityScenario
-import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingPolicies
 import androidx.test.espresso.ViewAction
@@ -153,7 +152,6 @@ class ConversationScenarioTest : EntourageTestAfterLogin() {
         while (currentMessageEditTextContent() != text && attempts < 6) {
             onView(withId(R.id.comment_message)).perform(clearText())
             onView(withId(R.id.comment_message)).perform(typeText(text))
-            onIdle()
             attempts++
         }
         onView(withId(R.id.comment_message)).perform(closeSoftKeyboard())
@@ -178,7 +176,6 @@ class ConversationScenarioTest : EntourageTestAfterLogin() {
         onView(allOf(withId(R.id.comments), isDisplayed())).perform(
             actionOnItemAtPosition<ViewHolder>(lastMessagePosition(), longClickOnMessageBubble())
         )
-        onIdle()
     }
 
     @Test
@@ -187,14 +184,12 @@ class ConversationScenarioTest : EntourageTestAfterLogin() {
         shoot("accueil")
 
         onView(withId(R.id.navigation_messages)).perform(click())
-        onIdle()
         shoot("liste_conversations")
 
         composeTestRule.waitUntil(10_000) {
             composeTestRule.onAllNodesWithTag("conversation_item").fetchSemanticsNodes().isNotEmpty()
         }
         composeTestRule.onAllNodesWithTag("conversation_item").onFirst().performClick()
-        onIdle()
         shoot("conversation_ouverte")
 
         val message = "Message test e2e ${System.currentTimeMillis()}"
@@ -202,21 +197,18 @@ class ConversationScenarioTest : EntourageTestAfterLogin() {
         shoot("message_saisi")
 
         onView(withId(R.id.comment)).perform(click())
-        onIdle()
         shoot("message_envoye")
 
         // Appui long sur notre message -> menu d'actions -> Copier le texte
         longClickOnOwnMessage()
         shoot("menu_actions_copier")
         composeTestRule.onNodeWithText(EntourageApplication.get().getString(R.string.message_action_copy)).performClick()
-        onIdle()
         shoot("apres_copier")
 
         // Appui long -> menu d'actions -> Modifier
         longClickOnOwnMessage()
         shoot("menu_actions_modifier")
         composeTestRule.onNodeWithText(EntourageApplication.get().getString(R.string.message_action_edit)).performClick()
-        onIdle()
         shoot("mode_edition")
 
         val messageModifie = "$message (modifie)"
@@ -224,14 +216,12 @@ class ConversationScenarioTest : EntourageTestAfterLogin() {
         shoot("message_modifie_saisi")
 
         onView(withId(R.id.comment)).perform(click())
-        onIdle()
         shoot("message_modifie_envoye")
 
         // Appui long -> menu d'actions -> Supprimer mon message
         longClickOnOwnMessage()
         shoot("menu_actions_supprimer")
         composeTestRule.onNodeWithText(EntourageApplication.get().getString(R.string.message_action_delete)).performClick()
-        onIdle()
         shoot("message_supprime")
     }
 }

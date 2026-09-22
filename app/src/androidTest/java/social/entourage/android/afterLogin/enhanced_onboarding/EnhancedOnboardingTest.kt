@@ -16,11 +16,14 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import social.entourage.android.R
 import social.entourage.android.afterLogin.EntourageTestAfterLogin
+import social.entourage.android.e2e.E2EScreenshot
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 
 @RunWith(AndroidJUnit4::class)
 @MediumTest
 class EnhancedOnboardingTest : EntourageTestAfterLogin() {
+
+    private val screenshot = E2EScreenshot("enhanced_onboarding")
 
     @get:Rule
     val activityRule = ActivityScenarioRule(EnhancedOnboarding::class.java)
@@ -39,11 +42,13 @@ class EnhancedOnboardingTest : EntourageTestAfterLogin() {
 
         // Back button is hidden on initial step (OnboardingPresentationFragment)
         onView(withId(R.id.btn_back)).check(matches(not(isDisplayed())))
+        screenshot.shoot("etape_1_presentation")
 
         // Navigate to second step (OnboardingActionWishesFragment)
         onView(withId(R.id.button_start)).perform(scrollTo(), click())
 
         // Back button is displayed on second step
         onView(withId(R.id.btn_back)).check(matches(isDisplayed()))
+        screenshot.shoot("etape_2_wishes")
     }
 }

@@ -14,10 +14,13 @@ import org.junit.Test
 import org.junit.rules.RuleChain
 import org.junit.runner.RunWith
 import social.entourage.android.MainActivity
+import social.entourage.android.e2e.E2EScreenshot
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
 class MyEntouragesTest : EntourageTestAfterLogin() {
+
+    private val screenshot = E2EScreenshot("my_entourages")
 
     @get:Rule
     val composeTestRule = createEmptyComposeRule()
@@ -48,6 +51,7 @@ class MyEntouragesTest : EntourageTestAfterLogin() {
             } verify {
                 isMyGroupsTabSelected()
             }
+            screenshot.shoot("mes_groupes_tab")
 
             myEntouragesRobot {
                 clickFirstAction()
@@ -55,6 +59,7 @@ class MyEntouragesTest : EntourageTestAfterLogin() {
                 isActionDetailDisplayed("Demande")
                 isCategoryDisplayed("Demande")
             }
+            screenshot.shoot("action_detail")
 
             myEntouragesRobot(composeTestRule) {
                 clickModify()
@@ -66,6 +71,7 @@ class MyEntouragesTest : EntourageTestAfterLogin() {
             } verify {
                 isCategoryDisplayed("Service")
             }
+            screenshot.shoot("categorie_modifiee")
         }
     }
 
@@ -80,6 +86,7 @@ class MyEntouragesTest : EntourageTestAfterLogin() {
             } verify {
                 isNetworkErrorDisplayed()
             }
+            screenshot.shoot("erreur_reseau")
         }
     }
 }
