@@ -2953,4 +2953,5 @@
     <string name="action_cgu_consent_2">Ne partagez pas d’infos permettant d’identifier une personne (téléphone, adresse, données sensibles).</string>
     <string name="action_cgu_consent_3">La bienveillance et le respect sont au cœur de chaque échange. Tout comportement discriminatoire, violent ou contraire à la loi est strictement interdit.</string>
     <string name="action_cgu_full_charter_url" translatable="false">https://www.entourage.social/app/resources/eMU*InNSSJbE</string>
+    <string name="profile_address_radius_format">%1$s - نصف قطر %2$d كم</string>
 </resources>
