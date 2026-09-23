@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -27,6 +28,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
@@ -107,58 +110,96 @@ fun CreateActionCharterScreen(
             contentScale = ContentScale.Crop
         )
 
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize().navigationBarsPadding()) {
             CharterHeader(onBackClick)
 
-            Column(
+            // EN-9620 : retour Gwen — le lien "Lire la charte complète" et le CTA ne sont plus
+            // dans un footer sticky rapporté sous la feuille : ils terminent le contenu
+            // scrollable (plus de couture visible, et il faut atteindre le bas pour valider).
+            // Un fondu en haut/bas de la zone scrollable évite que le contenu soit coupé net.
+            val sheetColor = colorResource(R.color.light_beige)
+            val scrollState = rememberScrollState()
+            Box(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(horizontal = 10.dp)
-                    .background(colorResource(R.color.light_beige), RoundedCornerShape(35.dp))
-                    .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 18.dp, vertical = 14.dp)
+                    .padding(start = 10.dp, end = 10.dp, bottom = 10.dp)
+                    .clip(RoundedCornerShape(35.dp))
+                    .background(sheetColor)
             ) {
-                CharterBanner(isDemand)
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .testTag("charter_scroll")
+                        .verticalScroll(scrollState)
+                        .padding(horizontal = 18.dp, vertical = 14.dp)
+                ) {
+                    CharterBanner(isDemand)
 
-                Spacer(Modifier.height(18.dp))
-                CharterDotHeader(
-                    iconRes = R.drawable.ic_check_green,
-                    title = stringResource(R.string.action_cgu_examples_header)
-                )
-                Spacer(Modifier.height(10.dp))
-                CharterBulletCard(examples)
-
-                Spacer(Modifier.height(18.dp))
-                CharterDotHeader(
-                    symbol = "!",
-                    dotBackgroundColor = colorResource(R.color.charter_dot_background),
-                    dotTextColor = colorResource(R.color.custom_button_accent_pressed),
-                    title = stringResource(R.string.action_cgu_limits_header)
-                )
-                Spacer(Modifier.height(10.dp))
-                CharterLimitsCard(limits, limitsFootnote)
-
-                if (isDemand) {
                     Spacer(Modifier.height(18.dp))
                     CharterDotHeader(
-                        symbol = "♥",
-                        dotBackgroundColor = colorResource(R.color.charter_dot_background),
-                        dotTextColor = colorResource(R.color.custom_button_accent_pressed),
-                        title = stringResource(R.string.action_cgu_consent_header)
+                        iconRes = R.drawable.ic_check_green,
+                        title = stringResource(R.string.action_cgu_examples_header)
                     )
                     Spacer(Modifier.height(10.dp))
-                    CharterBulletCard(consentItems)
-                } else {
+                    CharterBulletCard(examples)
+
                     Spacer(Modifier.height(18.dp))
-                    CharterSpiritCard()
+                    CharterDotHeader(
+                        symbol = "!",
+                        dotBackgroundColor = colorResource(R.color.charter_dot_background),
+                        dotTextColor = colorResource(R.color.custom_button_accent_pressed),
+                        title = stringResource(R.string.action_cgu_limits_header)
+                    )
+                    Spacer(Modifier.height(10.dp))
+                    CharterLimitsCard(limits, limitsFootnote)
+
+                    if (isDemand) {
+                        Spacer(Modifier.height(18.dp))
+                        CharterDotHeader(
+                            symbol = "♥",
+                            dotBackgroundColor = colorResource(R.color.charter_dot_background),
+                            dotTextColor = colorResource(R.color.custom_button_accent_pressed),
+                            title = stringResource(R.string.action_cgu_consent_header)
+                        )
+                        Spacer(Modifier.height(10.dp))
+                        CharterBulletCard(consentItems)
+                    } else {
+                        Spacer(Modifier.height(18.dp))
+                        CharterSpiritCard()
+                    }
+
+                    Spacer(Modifier.height(24.dp))
+                    CharterFooter(onReadFullCharterClick, onAcceptClick)
                 }
 
-                Spacer(Modifier.height(14.dp))
+                ScrollFade(
+                    color = sheetColor,
+                    fromTop = true,
+                    visible = scrollState.canScrollBackward,
+                    modifier = Modifier.align(Alignment.TopCenter)
+                )
+                ScrollFade(
+                    color = sheetColor,
+                    fromTop = false,
+                    visible = scrollState.canScrollForward,
+                    modifier = Modifier.align(Alignment.BottomCenter)
+                )
             }
-
-            CharterFooter(onReadFullCharterClick, onAcceptClick)
         }
     }
+}
+
+/** Masque dégradé (couleur de la feuille → transparent) posé sur un bord de la zone scrollable. */
+@Composable
+private fun ScrollFade(color: Color, fromTop: Boolean, visible: Boolean, modifier: Modifier = Modifier) {
+    if (!visible) return
+    val colors = if (fromTop) listOf(color, Color.Transparent) else listOf(Color.Transparent, color)
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(26.dp)
+            .background(Brush.verticalGradient(colors))
+    )
 }
 
 @Composable
@@ -185,11 +226,7 @@ private fun CharterHeader(onBackClick: () -> Unit) {
             style = EntourageComposeStyles.h1,
             modifier = Modifier.weight(1f)
         )
-        Image(
-            painter = painterResource(R.drawable.ic_new_header_action_create),
-            contentDescription = null,
-            modifier = Modifier.size(48.dp)
-        )
+        // EN-9620 : retour Gwen — picto "mains dans le cœur" retiré du header.
     }
 }
 
@@ -389,21 +426,18 @@ private fun CharterFooter(onReadFullCharterClick: () -> Unit, onAcceptClick: () 
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxWidth()
-            .navigationBarsPadding()
-            .padding(bottom = 10.dp)
+        modifier = Modifier.fillMaxWidth()
     ) {
         Text(
             text = hint,
             style = TextStyle(fontFamily = NunitoSansRegular, fontSize = 12.sp, color = colorResource(R.color.grey), textAlign = TextAlign.Center),
-            modifier = Modifier.padding(bottom = 9.dp)
+            modifier = Modifier.testTag("read_full_charter").padding(bottom = 9.dp)
         )
         Button(
             onClick = onAcceptClick,
             colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.orange)),
-            shape = RoundedCornerShape(35.dp),
-            modifier = Modifier.testTag("accept")
+            shape = RoundedCornerShape(32.dp),
+            modifier = Modifier.testTag("accept").heightIn(min = 48.dp)
         ) {
             Text(text = stringResource(R.string.action_cgu_accept_button), style = EntourageComposeStyles.h2White)
         }
