@@ -120,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/onboard_welcome_title_birthdate"
                 app:endIconMode="custom"
-                app:endIconDrawable="@drawable/new_calendar_grey"
+                app:endIconDrawable="@drawable/ic_calendar_grey"
                 android:layout_marginTop="12dp">
 
                 <com.google.android.material.textfield.TextInputEditText

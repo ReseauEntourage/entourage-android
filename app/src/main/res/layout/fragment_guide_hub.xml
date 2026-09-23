@@ -108,7 +108,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ui_description_1"
                     app:layout_constraintVertical_bias="0.0"
-                    app:srcCompat="@drawable/hub_number1_bg" />
+                    app:srcCompat="@drawable/bg_hub_number1" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -165,7 +165,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/hub_number2_bg" />
+                        app:srcCompat="@drawable/bg_hub_number2" />
 
                     <ImageView
                         android:id="@+id/imageView181"
@@ -259,7 +259,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ui_description_3"
                     app:layout_constraintVertical_bias="0.0"
-                    app:srcCompat="@drawable/hub_number3_bg" />
+                    app:srcCompat="@drawable/bg_hub_number3" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -304,7 +304,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/hub_number4_bg" />
+                        app:srcCompat="@drawable/bg_hub_number4" />
 
                     <ImageView
                         android:id="@+id/imageView1814"
@@ -393,7 +393,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/hub_number2_bg" />
+                        app:srcCompat="@drawable/bg_hub_number2" />
 
                     <ImageView
                         android:id="@+id/imageView185"

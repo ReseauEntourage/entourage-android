@@ -1,4 +1,4 @@
-package social.entourage.android.groups.create
+﻿package social.entourage.android.groups.create
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,15 +11,15 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Interest
 import social.entourage.android.api.model.Tags
-import social.entourage.android.databinding.NewFragmentCreateGroupStepTwoBinding
+import social.entourage.android.databinding.FragmentCreateGroupStepTwoBinding
 import social.entourage.android.profile.editProfile.InterestsListAdapter
 import social.entourage.android.profile.editProfile.OnItemCheckListener
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class CreateGroupStepTwoFragment : Fragment() {
 
-    private var _binding: NewFragmentCreateGroupStepTwoBinding? = null
-    val binding: NewFragmentCreateGroupStepTwoBinding get() = _binding!!
+    private var _binding: FragmentCreateGroupStepTwoBinding? = null
+    val binding: FragmentCreateGroupStepTwoBinding get() = _binding!!
 
     private var interestsList: MutableList<Interest> = mutableListOf()
     private var selectedInterestIdList: MutableList<String> = mutableListOf()
@@ -39,7 +39,7 @@ class CreateGroupStepTwoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentCreateGroupStepTwoBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateGroupStepTwoBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_NEW_GROUP_STEP2)
         return binding.root
     }

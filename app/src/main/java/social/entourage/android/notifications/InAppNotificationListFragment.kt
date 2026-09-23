@@ -1,4 +1,4 @@
-package social.entourage.android.notifications
+﻿package social.entourage.android.notifications
 
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.R
 import social.entourage.android.api.model.notification.InAppNotification
-import social.entourage.android.databinding.NewFragmentNotifsInAppListBinding
+import social.entourage.android.databinding.FragmentNotifsInAppListBinding
 import social.entourage.android.home.HomePresenter
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
@@ -19,8 +19,8 @@ import timber.log.Timber
 
 class InAppNotificationListFragment : Fragment() {
     private val groupPerPage = 10
-    private var _binding: NewFragmentNotifsInAppListBinding? = null
-    val binding: NewFragmentNotifsInAppListBinding get() = _binding!!
+    private var _binding: FragmentNotifsInAppListBinding? = null
+    val binding: FragmentNotifsInAppListBinding get() = _binding!!
 
     private val homePresenter: HomePresenter by lazy { HomePresenter() }
 
@@ -35,7 +35,7 @@ class InAppNotificationListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentNotifsInAppListBinding.inflate(inflater, container, false)
+        _binding = FragmentNotifsInAppListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -78,20 +78,20 @@ class InAppNotificationListFragment : Fragment() {
 
     private fun checkUnread() {
         if (hasToShowDot) {
-            binding.iconBell.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_new_notif_on))
+            binding.iconBell.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_notif_on))
             val timer = object: CountDownTimer(2000, 1000) {
                 override fun onTick(millisUntilFinished: Long) {}
 
                 override fun onFinish() {
                     if(context != null) {
-                        binding.iconBell.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_new_notif_off))
+                        binding.iconBell.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_notif_off))
                     }
                 }
             }
             timer.start()
         }
         else {
-            binding.iconBell.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_new_notif_off))
+            binding.iconBell.setImageDrawable(AppCompatResources.getDrawable(requireContext(), R.drawable.ic_notif_off))
         }
     }
 

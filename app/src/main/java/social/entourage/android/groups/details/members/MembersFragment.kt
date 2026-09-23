@@ -1,4 +1,4 @@
-package social.entourage.android.groups.details.members
+﻿package social.entourage.android.groups.details.members
 
 import android.content.Intent
 import android.os.Bundle
@@ -21,7 +21,7 @@ import social.entourage.android.api.model.CompleteReactionsResponse
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.ReactionType
-import social.entourage.android.databinding.NewFragmentMembersBinding
+import social.entourage.android.databinding.FragmentMembersBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.events.EventsPresenter
@@ -38,8 +38,8 @@ enum class MembersType(val code: Int) {
 }
 
 open class MembersFragment : Fragment() {
-    private var _binding: NewFragmentMembersBinding? = null
-    val binding: NewFragmentMembersBinding get() = _binding!!
+    private var _binding: FragmentMembersBinding? = null
+    val binding: FragmentMembersBinding get() = _binding!!
     private var membersList: MutableList<EntourageUser> = mutableListOf()
     private var membersListSearch: MutableList<EntourageUser> = ArrayList()
     private var id: Int? = Const.DEFAULT_VALUE
@@ -59,7 +59,7 @@ open class MembersFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentMembersBinding.inflate(inflater, container, false)
+        _binding = FragmentMembersBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_GROUP_MEMBER_SHOW_LIST)
         return binding.root
     }
@@ -165,7 +165,7 @@ open class MembersFragment : Fragment() {
 
     private fun initializeMembers() {
         val itemDecorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
-        ContextCompat.getDrawable(requireContext(), R.drawable.new_divider)?.let { itemDecorator.setDrawable(it) }
+        ContextCompat.getDrawable(requireContext(), R.drawable.ic_divider)?.let { itemDecorator.setDrawable(it) }
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = MembersListAdapter(
@@ -194,7 +194,7 @@ open class MembersFragment : Fragment() {
 
     private fun initializeMembersSearch() {
         val itemDecorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
-        ContextCompat.getDrawable(requireContext(), R.drawable.new_divider)?.let { itemDecorator.setDrawable(it) }
+        ContextCompat.getDrawable(requireContext(), R.drawable.ic_divider)?.let { itemDecorator.setDrawable(it) }
         binding.searchRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = MembersListAdapter(

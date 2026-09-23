@@ -1,10 +1,10 @@
-package social.entourage.android.events.create
+﻿package social.entourage.android.events.create
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.api.model.Group
-import social.entourage.android.databinding.NewChooseGroupEventItemBinding
+import social.entourage.android.databinding.ItemChooseGroupEventBinding
 
 interface OnItemCheckListener {
     fun onItemCheck(item: Group)
@@ -16,11 +16,11 @@ class ChooseGroupEventListAdapter(
     var onItemClick: OnItemCheckListener
 ) : RecyclerView.Adapter<ChooseGroupEventListAdapter.ViewHolder>() {
 
-    inner class ViewHolder(val binding: NewChooseGroupEventItemBinding) :
+    inner class ViewHolder(val binding: ItemChooseGroupEventBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = NewChooseGroupEventItemBinding.inflate(
+        val binding = ItemChooseGroupEventBinding.inflate(
             LayoutInflater.from(parent.context),  parent, false)
         return ViewHolder(binding)
     }

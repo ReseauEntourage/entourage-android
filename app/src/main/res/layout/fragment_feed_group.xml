@@ -19,7 +19,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/new_group_illu" />
+            android:src="@drawable/illu_group" />
 
         <LinearLayout
             android:id="@+id/toolbar_header"
@@ -46,7 +46,7 @@
                 android:layout_height="40dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="15dp"
-                android:src="@drawable/new_group_illu_toolbar" />
+                android:src="@drawable/illu_group_toolbar" />
 
             <TextView
                 android:id="@+id/group_name_toolbar"
@@ -65,7 +65,7 @@
                 android:layout_height="40dp"
                 android:padding="10dp"
                 android:elevation="1dp"
-                android:src="@drawable/new_settings"
+                android:src="@drawable/ic_settings"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -124,7 +124,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="4dp"
-                        android:background="@drawable/new_bg_rounded_beige"
+                        android:background="@drawable/bg_rounded_beige"
                         android:orientation="vertical"
                         android:padding="18dp">
 
@@ -191,7 +191,7 @@
                                 android:drawablePadding="16dp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:drawableTint="@color/black"
-                                app:drawableEndCompat="@drawable/share_icon"
+                                app:drawableEndCompat="@drawable/ic_share_action"
                                 android:visibility="gone"/>
                             <Button
                                 android:id="@+id/join"
@@ -302,7 +302,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             style="@style/left_courant_bold_black"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/new_arrow_orange" />
+                            android:src="@drawable/ic_arrow_orange" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -311,7 +311,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="4dp"
                         android:layout_marginTop="15dp"
-                        android:background="@drawable/new_bg_rounded_beige"
+                        android:background="@drawable/bg_rounded_beige"
                         android:orientation="horizontal"
                         android:padding="28dp"
                         android:visibility="gone"
@@ -322,7 +322,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/new_illu_header_group" />
+                            android:src="@drawable/illu_header_group" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -358,7 +358,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/events"
-                        tools:listitem="@layout/new_event_item_layout" />
+                        tools:listitem="@layout/item_event_layout" />
 
                     <TextView
                         android:id="@+id/posts"
@@ -376,7 +376,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         android:layout_marginHorizontal="4dp"
                         android:layout_marginTop="15dp"
                         android:layout_marginBottom="20dp"
-                        android:background="@drawable/new_bg_rounded_beige"
+                        android:background="@drawable/bg_rounded_beige"
                         android:orientation="vertical"
                         android:padding="28dp"
                         android:visibility="gone"
@@ -389,7 +389,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:src="@drawable/new_illu_header_group"
+                            android:src="@drawable/illu_header_group"
                             app:layout_constraintBottom_toTopOf="@+id/title"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -400,7 +400,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:layout_marginBottom="-15dp"
-                            android:src="@drawable/new_group_stars"
+                            android:src="@drawable/ic_group_stars"
                             app:layout_constraintBottom_toTopOf="@id/title"
                             app:layout_constraintStart_toStartOf="parent" />
 
@@ -434,7 +434,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             android:layout_height="wrap_content"
                             android:layout_marginStart="220dp"
                             android:layout_marginTop="17dp"
-                            android:src="@drawable/new_arrow_create_group"
+                            android:src="@drawable/ic_arrow_create_group"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent" />
                     </LinearLayout>
@@ -454,7 +454,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="4dp"
                         android:visibility="gone"
-                        tools:listitem="@layout/new_layout_post" />
+                        tools:listitem="@layout/layout_post" />
 
                     <include
                         android:id="@+id/posts_old"
@@ -471,7 +471,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="4dp"
                         android:visibility="gone"
-                        tools:listitem="@layout/new_layout_post" />
+                        tools:listitem="@layout/layout_post" />
                     <ProgressBar
                         android:layout_width="50dp"
                         android:layout_height="50dp"
@@ -531,8 +531,8 @@ purus dui, aliquet cursus tellus a, dictum hen." />
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_margin="16dp"
-            app:sdMainFabClosedSrc="@drawable/new_fab_plus"
-            app:sdMainFabOpenedSrc="@drawable/new_fab_plus" />
+            app:sdMainFabClosedSrc="@drawable/ic_fab_plus"
+            app:sdMainFabOpenedSrc="@drawable/ic_fab_plus" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

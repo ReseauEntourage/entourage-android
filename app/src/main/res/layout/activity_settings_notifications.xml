@@ -207,7 +207,7 @@
 
                 <include
                     android:id="@+id/validate"
-                    layout="@layout/new_rounded_button_white"
+                    layout="@layout/layout_rounded_button_white"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -215,7 +215,7 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     app:content="@{@string/param_notifs_validate}"
-                    app:drawable="@{@drawable/new_rounded_button_orange}"
+                    app:drawable="@{@drawable/bg_button_rounded_orange}"
                     app:layout_constraintBottom_toBottomOf="parent" />
             </LinearLayout>
 

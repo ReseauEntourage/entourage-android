@@ -1,4 +1,4 @@
-package social.entourage.android.home
+﻿package social.entourage.android.home
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
@@ -1231,7 +1231,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             binding.uiBellNotif.setImageDrawable(
                 ResourcesCompat.getDrawable(
                     resources,
-                    R.drawable.ic_new_notif_off,
+                    R.drawable.ic_notif_off,
                     null
                 )
             )

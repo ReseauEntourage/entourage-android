@@ -1,4 +1,4 @@
-package social.entourage.android.home.pedago
+﻿package social.entourage.android.home.pedago
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,14 +10,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.R
 import social.entourage.android.api.model.Category
 import social.entourage.android.api.model.Pedago
-import social.entourage.android.databinding.NewFragmentPedagoListBinding
+import social.entourage.android.databinding.FragmentPedagoListBinding
 import social.entourage.android.home.HomePresenter
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class PedagoListFragment : Fragment() {
 
-    private var _binding: NewFragmentPedagoListBinding? = null
-    val binding: NewFragmentPedagoListBinding get() = _binding!!
+    private var _binding: FragmentPedagoListBinding? = null
+    val binding: FragmentPedagoListBinding get() = _binding!!
 
     lateinit var pedagoAdapter: PedagoListAdapter
     private val homePresenter: HomePresenter by lazy { HomePresenter() }
@@ -34,7 +34,7 @@ class PedagoListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentPedagoListBinding.inflate(inflater, container, false)
+        _binding = FragmentPedagoListBinding.inflate(inflater, container, false)
         return binding.root
     }
 

@@ -1,4 +1,4 @@
-package social.entourage.android.actions.create
+﻿package social.entourage.android.actions.create
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -212,7 +212,7 @@ private fun CharterHeader(onBackClick: () -> Unit) {
             .padding(horizontal = 15.dp, vertical = 8.dp)
     ) {
         Image(
-            painter = painterResource(R.drawable.new_back_white),
+            painter = painterResource(R.drawable.ic_arrow_back_white),
             contentDescription = null,
             modifier = Modifier
                 .testTag("icon_back")

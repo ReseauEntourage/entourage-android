@@ -1,4 +1,4 @@
-package social.entourage.android.events.create
+﻿package social.entourage.android.events.create
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,15 +11,15 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Interest
 import social.entourage.android.api.model.Tags
-import social.entourage.android.databinding.NewFragmentCreateEventStepFourBinding
+import social.entourage.android.databinding.FragmentCreateEventStepFourBinding
 import social.entourage.android.profile.editProfile.InterestsListAdapter
 import social.entourage.android.profile.editProfile.OnItemCheckListener
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class CreateEventStepFourFragment : Fragment() {
 
-    private var _binding: NewFragmentCreateEventStepFourBinding? = null
-    val binding: NewFragmentCreateEventStepFourBinding get() = _binding!!
+    private var _binding: FragmentCreateEventStepFourBinding? = null
+    val binding: FragmentCreateEventStepFourBinding get() = _binding!!
 
     private var interestsList: MutableList<Interest> = mutableListOf()
     private var selectedInterestIdList: MutableList<String> = mutableListOf()
@@ -30,7 +30,7 @@ class CreateEventStepFourFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentCreateEventStepFourBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateEventStepFourBinding.inflate(inflater, container, false)
         return binding.root
     }
 

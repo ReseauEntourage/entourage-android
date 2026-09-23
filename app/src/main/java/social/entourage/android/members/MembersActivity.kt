@@ -1,4 +1,4 @@
-package social.entourage.android.members
+﻿package social.entourage.android.members
 
 import android.content.Context
 import android.content.Intent
@@ -20,7 +20,7 @@ import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.ReactionType
 import social.entourage.android.base.BaseActivity
-import social.entourage.android.databinding.NewFragmentMembersBinding
+import social.entourage.android.databinding.FragmentMembersBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.events.AcceptPhotoDialogFragment
@@ -44,7 +44,7 @@ import timber.log.Timber
 
 class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
 
-    private lateinit var binding: NewFragmentMembersBinding
+    private lateinit var binding: FragmentMembersBinding
     private val membersList: MutableList<EntourageUser> = mutableListOf()
     private val membersListSearch: MutableList<EntourageUser> = mutableListOf()
     private val reactionList: MutableList<ReactionType> = mutableListOf()
@@ -71,7 +71,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = NewFragmentMembersBinding.inflate(layoutInflater)
+        binding = FragmentMembersBinding.inflate(layoutInflater)
         setContentView(binding.root)
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_GROUP_MEMBER_SHOW_LIST)
 
@@ -105,7 +105,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
     private fun setupLists() {
         val ctx: Context = this
         val divider = DividerItemDecoration(this, DividerItemDecoration.VERTICAL).apply {
-            ContextCompat.getDrawable(this@MembersActivity, R.drawable.new_divider)?.let { setDrawable(it) }
+            ContextCompat.getDrawable(this@MembersActivity, R.drawable.ic_divider)?.let { setDrawable(it) }
         }
 
         binding.recyclerView.apply {

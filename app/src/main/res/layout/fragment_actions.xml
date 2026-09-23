@@ -120,7 +120,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="7dp"
-                android:background="@drawable/new_bg_profile"
+                android:background="@drawable/bg_profile"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent">
@@ -132,7 +132,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:tabBackground="@drawable/new_tab_indicator_color"
+                    app:tabBackground="@drawable/bg_tab_indicator"
                     app:tabIndicatorColor="@color/orange"
                     app:tabGravity="fill"
                     app:tabMode="fixed"
@@ -200,8 +200,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_margin="16dp"
-            app:sdMainFabClosedSrc="@drawable/new_fab_plus"
-            app:sdMainFabOpenedSrc="@drawable/new_fab_plus" />
+            app:sdMainFabClosedSrc="@drawable/ic_fab_plus"
+            app:sdMainFabOpenedSrc="@drawable/ic_fab_plus" />
 
         <View
             android:id="@+id/overlay_view"

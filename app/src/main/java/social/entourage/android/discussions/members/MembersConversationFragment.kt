@@ -1,4 +1,4 @@
-package social.entourage.android.discussions.members
+﻿package social.entourage.android.discussions.members
 
 import android.content.Intent
 import android.os.Bundle
@@ -20,7 +20,7 @@ import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.toGroupMembers
 import social.entourage.android.base.BaseDialogFragment
-import social.entourage.android.databinding.NewFragmentMembersDiscussionBinding
+import social.entourage.android.databinding.FragmentMembersDiscussionBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.groups.details.members.OnItemShowListener
@@ -31,7 +31,7 @@ import timber.log.Timber
 
 class MembersConversationFragment : BaseDialogFragment() {
 
-    private var _binding: NewFragmentMembersDiscussionBinding? = null
+    private var _binding: FragmentMembersDiscussionBinding? = null
     private val binding get() = _binding!!
 
     private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
@@ -55,7 +55,7 @@ class MembersConversationFragment : BaseDialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = NewFragmentMembersDiscussionBinding.inflate(inflater, container, false)
+        _binding = FragmentMembersDiscussionBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -103,7 +103,7 @@ class MembersConversationFragment : BaseDialogFragment() {
         })
 
         val divider = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL).apply {
-            ContextCompat.getDrawable(requireContext(), R.drawable.new_divider)?.let { setDrawable(it) }
+            ContextCompat.getDrawable(requireContext(), R.drawable.ic_divider)?.let { setDrawable(it) }
         }
 
         binding.recyclerView.apply {

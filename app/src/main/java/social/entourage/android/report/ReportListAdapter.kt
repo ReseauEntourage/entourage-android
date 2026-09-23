@@ -1,11 +1,11 @@
-package social.entourage.android.report
+﻿package social.entourage.android.report
 
 import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.api.model.TagMetaData
-import social.entourage.android.databinding.NewReportUserItemBinding
+import social.entourage.android.databinding.ItemReportUserBinding
 
 interface OnItemCheckListener {
     fun onItemCheck(item: TagMetaData)
@@ -17,11 +17,11 @@ class ReportListAdapter(
     var onItemClick: OnItemCheckListener
 ) : RecyclerView.Adapter<ReportListAdapter.ViewHolder>() {
 
-    inner class ViewHolder(val binding: NewReportUserItemBinding) :
+    inner class ViewHolder(val binding: ItemReportUserBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = NewReportUserItemBinding.inflate(
+        val binding = ItemReportUserBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false

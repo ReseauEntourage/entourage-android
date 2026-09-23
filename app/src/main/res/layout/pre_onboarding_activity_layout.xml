@@ -100,7 +100,7 @@
         android:layout_marginHorizontal="@dimen/padding_horizontal"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/new_bg_rounded_button_orange_fill"
+        android:background="@drawable/bg_button_orange_fill"
         android:drawablePadding="10dp"
         android:text="@string/next"
         android:textAllCaps="false"

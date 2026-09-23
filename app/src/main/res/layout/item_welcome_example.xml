@@ -58,7 +58,7 @@
                     android:layout_height="12dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="4dp"
-                    android:src="@drawable/new_contact" />
+                    android:src="@drawable/ic_contact" />
 
             </LinearLayout>
 
@@ -97,7 +97,7 @@
                     android:layout_width="20dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:src="@drawable/new_location_grey" />
+                    android:src="@drawable/ic_location_grey" />
 
                 <TextView
                     android:id="@+id/item_demand_example_location"
@@ -117,7 +117,7 @@
                     android:layout_width="20dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:src="@drawable/new_date_grey" />
+                    android:src="@drawable/ic_date_grey" />
 
                 <TextView
                     android:id="@+id/item_demand_example_date"

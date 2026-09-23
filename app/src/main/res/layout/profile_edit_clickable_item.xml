@@ -32,7 +32,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.2"
-            tools:src="@drawable/new_cross" />
+            tools:src="@drawable/ic_close" />
 
         <LinearLayout
             android:id="@+id/peci_linearLayout"

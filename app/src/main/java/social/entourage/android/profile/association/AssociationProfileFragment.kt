@@ -1,4 +1,4 @@
-package social.entourage.android.profile.association
+﻿package social.entourage.android.profile.association
 
 import android.net.Uri
 import android.os.Bundle
@@ -113,12 +113,12 @@ class AssociationProfileFragment : Fragment() {
             )
             val background = ResourcesCompat.getDrawable(
                 resources,
-                if (it.isFollowing) R.drawable.new_bg_rounded_button_orange_stroke else R.drawable.new_bg_rounded_button_orange_fill,
+                if (it.isFollowing) R.drawable.bg_button_orange_stroke else R.drawable.bg_button_orange_fill,
                 null
             )
             val rightDrawable = ResourcesCompat.getDrawable(
                 resources,
-                if (it.isFollowing) R.drawable.new_check else R.drawable.new_plus_white,
+                if (it.isFollowing) R.drawable.ic_check_orange else R.drawable.ic_plus_white,
                 null
             )
             binding.assoProfileSubscribe.button.text = label

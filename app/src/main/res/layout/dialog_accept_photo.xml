@@ -44,7 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginVertical="15dp"
-                    android:background="@color/new_light_grey"/>
+                    android:background="@color/grey_border_light"/>
 
 
                 <TextView

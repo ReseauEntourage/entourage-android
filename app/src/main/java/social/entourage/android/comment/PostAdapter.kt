@@ -1,4 +1,4 @@
-package social.entourage.android.comment
+﻿package social.entourage.android.comment
 
 import android.app.Activity
 import android.content.ClipData
@@ -29,7 +29,7 @@ import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.Reaction
 import social.entourage.android.api.model.ReactionType
 import social.entourage.android.api.model.Survey
-import social.entourage.android.databinding.NewLayoutPostBinding
+import social.entourage.android.databinding.LayoutPostBinding
 import social.entourage.android.databinding.SurveyLayoutBinding
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.ProfileFullActivity
@@ -112,7 +112,7 @@ class PostAdapter(
         notifyItemChanged(postsList.indexOfFirst { it.id == postId })
     }
 
-    class ViewHolder(val binding: NewLayoutPostBinding)
+    class ViewHolder(val binding: LayoutPostBinding)
         : RecyclerView.ViewHolder(binding.root)
 
     class SurveyViewHolder(val binding: SurveyLayoutBinding)
@@ -129,7 +129,7 @@ class PostAdapter(
                 SurveyViewHolder(binding)
             }
             else -> {
-                val binding = NewLayoutPostBinding.inflate(
+                val binding = LayoutPostBinding.inflate(
                     LayoutInflater.from(parent.context),
                     parent,
                     false
@@ -828,8 +828,8 @@ class PostAdapter(
             Glide.with(holder.itemView.context)
                 .load(post.imageUrl)
                 .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
-                .placeholder(R.drawable.new_group_illu)
-                .error(R.drawable.new_group_illu)
+                .placeholder(R.drawable.illu_group)
+                .error(R.drawable.illu_group)
                 .into(binding.photoPost)
             binding.photoPost.setOnClickListener {
                 post.imageUrl?.let { imageUrl ->

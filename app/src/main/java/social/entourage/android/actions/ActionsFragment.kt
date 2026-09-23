@@ -1,4 +1,4 @@
-package social.entourage.android.actions
+﻿package social.entourage.android.actions
 
 import android.content.Context
 import android.content.Intent
@@ -320,7 +320,7 @@ class ActionsFragment : Fragment() {
     private fun createAction() {
         val speedDialView: SpeedDialView = binding.createAction
         speedDialView.addActionItem(
-            SpeedDialActionItem.Builder(R.id.fab_create_demand, R.drawable.new_ic_create_demand)
+            SpeedDialActionItem.Builder(R.id.fab_create_demand, R.drawable.ic_create_demand)
                 .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
                 .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
                 .setLabel(getString(R.string.action_menu_create_demand))
@@ -329,7 +329,7 @@ class ActionsFragment : Fragment() {
                 .create()
         )
         speedDialView.addActionItem(
-            SpeedDialActionItem.Builder(R.id.fab_create_contrib, R.drawable.new_ic_create_contrib)
+            SpeedDialActionItem.Builder(R.id.fab_create_contrib, R.drawable.ic_create_contrib)
                 .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
                 .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
                 .setLabel(getString(R.string.action_menu_create_contrib))

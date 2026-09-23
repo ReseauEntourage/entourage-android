@@ -13,10 +13,10 @@
         android:layout_marginBottom="16dp"
         android:layout_marginStart="@dimen/entourage_marginstart"
         android:layout_marginEnd="@dimen/entourage_marginstart"
-        android:src="@drawable/new_cross"
+        android:src="@drawable/ic_close"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:src="@drawable/new_cross" />
+        tools:src="@drawable/ic_close" />
 
     <TextView
         android:id="@+id/title_name"
@@ -84,7 +84,7 @@
         android:layout_marginHorizontal="@dimen/padding_horizontal"
         android:layout_marginTop="100dp"
         android:layout_marginBottom="30dp"
-        android:background="@drawable/new_bg_rounded_button_orange_fill"
+        android:background="@drawable/bg_button_orange_fill"
         android:drawablePadding="10dp"
         android:text="@string/validate"
         android:textAllCaps="false" />

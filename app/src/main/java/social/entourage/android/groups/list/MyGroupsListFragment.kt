@@ -1,4 +1,4 @@
-package social.entourage.android.groups.list
+﻿package social.entourage.android.groups.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,15 +11,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.Group
-import social.entourage.android.databinding.NewFragmentMyGroupsListBinding
+import social.entourage.android.databinding.FragmentMyGroupsListBinding
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
 class MyGroupsListFragment : Fragment() , UpdateGroupInter{
 
-    private var _binding: NewFragmentMyGroupsListBinding? = null
-    val binding: NewFragmentMyGroupsListBinding get() = _binding!!
+    private var _binding: FragmentMyGroupsListBinding? = null
+    val binding: FragmentMyGroupsListBinding get() = _binding!!
     private var page: Int = 0
 
     private var groupsList: MutableList<Group> = ArrayList()
@@ -30,7 +30,7 @@ class MyGroupsListFragment : Fragment() , UpdateGroupInter{
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentMyGroupsListBinding.inflate(inflater, container, false)
+        _binding = FragmentMyGroupsListBinding.inflate(inflater, container, false)
         return binding.root
     }
 

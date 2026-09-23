@@ -1,4 +1,4 @@
-package social.entourage.android.ui
+﻿package social.entourage.android.ui
 
 import android.content.Intent
 import android.os.Build
@@ -22,7 +22,7 @@ import social.entourage.android.RefreshController
 import social.entourage.android.api.model.Events
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.comment.ReactionPickerRow
-import social.entourage.android.databinding.NewFragmentSettingsDiscussionModalBinding
+import social.entourage.android.databinding.FragmentSettingsDiscussionModalBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.discussions.members.MembersConversationFragment
@@ -45,7 +45,7 @@ enum class SheetMode { GROUP, EVENT, DISCUSSION_ONE_TO_ONE, DISCUSSION_GROUP, ME
 
 class ActionSheetFragment : BottomSheetDialogFragment() {
 
-    private var _binding: NewFragmentSettingsDiscussionModalBinding? = null
+    private var _binding: FragmentSettingsDiscussionModalBinding? = null
     private val binding get() = _binding!!
 
     private val discussionPresenter by lazy { DiscussionsPresenter() }
@@ -134,7 +134,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentSettingsDiscussionModalBinding.inflate(inflater, container, false)
+        _binding = FragmentSettingsDiscussionModalBinding.inflate(inflater, container, false)
         return binding.root
     }
 

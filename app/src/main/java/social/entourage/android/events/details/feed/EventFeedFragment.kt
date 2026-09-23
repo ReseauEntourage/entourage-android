@@ -1,4 +1,4 @@
-package social.entourage.android.events.details.feed
+﻿package social.entourage.android.events.details.feed
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -315,7 +315,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
             location.icon = AppCompatResources.getDrawable(
                 requireContext(),
-                if (event?.online == true) R.drawable.new_web else R.drawable.new_location
+                if (event?.online == true) R.drawable.ic_web else R.drawable.ic_location
             )
 
             val locationContent = if (event?.online == true) event?.eventUrl else event?.metadata?.displayAddress
@@ -340,7 +340,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun setupEventImages() {
         val landscapeUrl = event?.metadata?.landscapeUrl
-        val placeholder = R.drawable.new_group_illu
+        val placeholder = R.drawable.illu_group
 
         with(binding) {
             Glide.with(requireActivity())
@@ -363,9 +363,9 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             if (event?.status == Status.CLOSED || event?.status == Status.CANCELLED) {
                 eventName.setTextColor(getColor(requireContext(), R.color.grey))
                 dateStartsAt.content.setTextColor(getColor(requireContext(), R.color.grey))
-                dateStartsAt.icon = ContextCompat.getDrawable(requireContext(), R.drawable.new_calendar_grey)
+                dateStartsAt.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_calendar_grey)
                 time.content.setTextColor(getColor(requireContext(), R.color.grey))
-                time.icon = ContextCompat.getDrawable(requireContext(), R.drawable.new_time_grey)
+                time.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_time_grey)
 
                 // EN-9334 : image grisée (désaturée + assombrie), comme sur la maquette.
                 val grayscaleFilter = android.graphics.ColorMatrixColorFilter(

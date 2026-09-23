@@ -1,4 +1,4 @@
-package social.entourage.android.comment
+﻿package social.entourage.android.comment
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
@@ -234,7 +234,7 @@ private fun MessageActionsCard(
         if (isMe) {
             ActionRowDivider()
             MessageActionRow(
-                iconRes = R.drawable.new_delete,
+                iconRes = R.drawable.ic_delete,
                 label = stringResource(R.string.message_action_delete),
                 onClick = onDelete,
                 destructive = true
@@ -249,7 +249,7 @@ private fun ActionRowDivider() {
         Modifier
             .fillMaxWidth()
             .height(1.dp)
-            .background(colorResource(R.color.new_light_grey))
+            .background(colorResource(R.color.grey_border_light))
     )
 }
 

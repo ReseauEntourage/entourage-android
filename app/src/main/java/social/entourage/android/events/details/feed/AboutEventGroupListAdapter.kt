@@ -1,10 +1,10 @@
-package social.entourage.android.events.details.feed
+﻿package social.entourage.android.events.details.feed
 
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import social.entourage.android.databinding.NewAboutEventGroupItemBinding
+import social.entourage.android.databinding.ItemAboutEventGroupBinding
 import social.entourage.android.api.model.GroupEvent
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.underline
@@ -13,11 +13,11 @@ class AboutEventGroupListAdapter(
     var groupsList: List<GroupEvent>,
 ) : RecyclerView.Adapter<AboutEventGroupListAdapter.ViewHolder>() {
 
-    inner class ViewHolder(val binding: NewAboutEventGroupItemBinding) :
+    inner class ViewHolder(val binding: ItemAboutEventGroupBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = NewAboutEventGroupItemBinding.inflate(
+        val binding = ItemAboutEventGroupBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false

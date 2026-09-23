@@ -44,7 +44,7 @@
                 android:layout_height="40dp"
                 android:layout_marginStart="20dp"
                 android:padding="10dp"
-                android:src="@drawable/new_back_white"
+                android:src="@drawable/ic_arrow_back_white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/profile_nested_scroll_view"
@@ -280,7 +280,7 @@
                             app:layout_constraintStart_toStartOf="@+id/joined"
                             app:layout_constraintEnd_toStartOf="@+id/stat_event"
                             android:elevation="2dp"
-                            android:background="@drawable/new_rounded_background_statistics"
+                            android:background="@drawable/bg_rounded_statistics"
                             >
                             <TextView
                                 android:id="@+id/contrib_content"
@@ -332,7 +332,7 @@
                             app:layout_constraintStart_toEndOf="@+id/stat_contrib"
                             app:layout_constraintEnd_toEndOf="@+id/joined"
                             android:elevation="2dp"
-                            android:background="@drawable/new_rounded_background_statistics"
+                            android:background="@drawable/bg_rounded_statistics"
                             >
                             <TextView
                                 android:id="@+id/event_content"

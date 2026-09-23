@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/new_rounded_button"
+    android:background="@drawable/bg_rounded_white"
     android:paddingHorizontal="20dp"
     android:paddingTop="28dp"
     android:paddingBottom="18dp">
@@ -60,7 +60,7 @@
         android:layout_height="40dp"
         android:paddingTop="4dp"
         android:paddingBottom="20dp"
-        android:src="@drawable/new_cross"
+        android:src="@drawable/ic_close"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/new_alert_dialog_button_no"
+            android:background="@drawable/bg_alert_dialog_button_no"
             android:padding="10dp"
             android:text="@string/send"
             android:textAllCaps="false" />

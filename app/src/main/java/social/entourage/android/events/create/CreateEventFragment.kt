@@ -1,4 +1,4 @@
-package social.entourage.android.events.create
+﻿package social.entourage.android.events.create
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -305,7 +305,7 @@ class CreateEventFragment : Fragment() {
 
         val background = ContextCompat.getDrawable(
             requireContext(),
-            if (isButtonActive) R.drawable.new_rounded_button_light_orange else R.drawable.new_bg_rounded_inactive_button_light_orange
+            if (isButtonActive) R.drawable.bg_button_rounded_light_orange else R.drawable.bg_button_inactive_light_orange
         )
         binding.next.background = background
     }

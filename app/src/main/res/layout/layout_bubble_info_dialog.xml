@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/bubble_background"
+        android:background="@drawable/bg_bubble"
         android:padding="16dp"
         android:layout_marginTop="-10dp"
         android:layout_marginStart="16dp"

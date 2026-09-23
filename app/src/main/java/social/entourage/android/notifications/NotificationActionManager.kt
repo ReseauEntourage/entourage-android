@@ -1,4 +1,4 @@
-package social.entourage.android.notifications
+﻿package social.entourage.android.notifications
 
 import android.app.Activity
 import android.content.Context
@@ -144,27 +144,27 @@ object NotificationActionManager {
 
 
     fun setPlaceHolder(instance:String?):Int {
-        if (instance == null ) return R.drawable.ic_new_placeholder_notif
+        if (instance == null ) return R.drawable.ic_placeholder_notif
 
         when(getInstanceTypeFromName(instance)) {
-            InstanceType.POIS -> return R.drawable.ic_new_placeholder_notif
+            InstanceType.POIS -> return R.drawable.ic_placeholder_notif
             InstanceType.USERS -> return R.drawable.placeholder_user
             InstanceType.NEIGHBORHOODS -> return R.drawable.placeholder_user
-            InstanceType.RESOURCES -> return R.drawable.ic_new_placeholder_notif
+            InstanceType.RESOURCES -> return R.drawable.ic_placeholder_notif
             InstanceType.OUTINGS -> return R.drawable.placeholder_user
             InstanceType.OUTINGS_MESSAGE -> return R.drawable.placeholder_user
-            InstanceType.CONTRIBUTIONS -> return R.drawable.ic_new_placeholder_notif
-            InstanceType.SOLICITATIONS -> return R.drawable.ic_new_placeholder_notif
+            InstanceType.CONTRIBUTIONS -> return R.drawable.ic_placeholder_notif
+            InstanceType.SOLICITATIONS -> return R.drawable.ic_placeholder_notif
             InstanceType.CONVERSATIONS -> return R.drawable.placeholder_user
-            InstanceType.PARTNERS -> return R.drawable.ic_new_placeholder_notif
-            InstanceType.BADGES -> return R.drawable.ic_new_placeholder_notif
-            InstanceType.NONE -> R.drawable.ic_new_placeholder_notif
+            InstanceType.PARTNERS -> return R.drawable.ic_placeholder_notif
+            InstanceType.BADGES -> return R.drawable.ic_placeholder_notif
+            InstanceType.NONE -> R.drawable.ic_placeholder_notif
             InstanceType.NEIGHBORHOODS_POSTS -> return R.drawable.placeholder_user
             InstanceType.OUTING_POSTS -> return R.drawable.placeholder_user
             InstanceType.SMALLTALK -> return R.drawable.placeholder_user
             InstanceType.AlMOSTMATCH -> return R.drawable.placeholder_user
         }
-        return R.drawable.ic_new_placeholder_notif
+        return R.drawable.ic_placeholder_notif
     }
             /*InstanceType.NEIGHBORHOODS_POST -> showEventPost(context,supportFragmentManager, postId)
             InstanceType.OUTINGS_POST -> showGroupPost(context,supportFragmentManager, postId)*/

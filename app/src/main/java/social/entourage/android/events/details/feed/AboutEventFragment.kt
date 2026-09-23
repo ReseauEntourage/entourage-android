@@ -1,4 +1,4 @@
-package social.entourage.android.events.details.feed
+﻿package social.entourage.android.events.details.feed
 
 import android.content.Intent
 import android.graphics.drawable.Drawable
@@ -32,7 +32,7 @@ import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Status
 import social.entourage.android.api.model.Tags
-import social.entourage.android.databinding.NewFragmentAboutEventBinding
+import social.entourage.android.databinding.FragmentAboutEventBinding
 import social.entourage.android.events.EventModel
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.create.Recurrence
@@ -55,8 +55,8 @@ const val ZOOM = 15f
 
 class AboutEventFragment : Fragment(), OnMapReadyCallback {
 
-    private var _binding: NewFragmentAboutEventBinding? = null
-    val binding: NewFragmentAboutEventBinding get() = _binding!!
+    private var _binding: FragmentAboutEventBinding? = null
+    val binding: FragmentAboutEventBinding get() = _binding!!
     var event: EventModel? = null
     private var interestsList: ArrayList<String> = ArrayList()
     private val activityResultLauncher = registerForActivityResult(
@@ -70,7 +70,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentAboutEventBinding.inflate(inflater, container, false)
+        _binding = FragmentAboutEventBinding.inflate(inflater, container, false)
         //mMap = binding.mapView
         binding.mapView.onCreate(savedInstanceState)
         binding.mapView.getMapAsync(this)
@@ -111,7 +111,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
             )
             binding.location.icon = AppCompatResources.getDrawable(
                 requireContext(),
-                if (event?.online == true) R.drawable.new_web else R.drawable.new_location
+                if (event?.online == true) R.drawable.ic_web else R.drawable.ic_location
             )
 
             (if (event?.online == true) event?.eventUrl else event?.metadata?.displayAddress)?.let {
@@ -376,7 +376,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                     R.drawable.shape_button_v9_negative,
                     null
                 )
-                rightDrawable = ResourcesCompat.getDrawable(resources, R.drawable.new_check, null)
+                rightDrawable = ResourcesCompat.getDrawable(resources, R.drawable.ic_check_orange, null)
             } else {
                 label = getString(R.string.participate)
                 textColor = ContextCompat.getColor(requireContext(), R.color.black)
@@ -386,7 +386,7 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
                     null
                 )
                 rightDrawable =
-                    ResourcesCompat.getDrawable(resources, R.drawable.new_plus, null)
+                    ResourcesCompat.getDrawable(resources, R.drawable.ic_plus, null)
             }
             with(binding) {
                 join.text = label

@@ -1,4 +1,4 @@
-package social.entourage.android.groups.details
+﻿package social.entourage.android.groups.details
 
 import android.content.Intent
 import android.os.Bundle
@@ -16,7 +16,7 @@ import social.entourage.android.BuildConfig
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
-import social.entourage.android.databinding.NewFragmentSettingsModalBinding
+import social.entourage.android.databinding.FragmentSettingsModalBinding
 import social.entourage.android.groups.GroupModel
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.rules.GroupRulesActivity
@@ -32,8 +32,8 @@ import social.entourage.android.tools.utils.CustomAlertDialog
 
 class GroupDetailsFragment : BottomSheetDialogFragment() {
 
-    private var _binding: NewFragmentSettingsModalBinding? = null
-    val binding: NewFragmentSettingsModalBinding get() = _binding!!
+    private var _binding: FragmentSettingsModalBinding? = null
+    val binding: FragmentSettingsModalBinding get() = _binding!!
     private var group: GroupModel? = null
     private var interestsList: ArrayList<String> = ArrayList()
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
@@ -45,7 +45,7 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentSettingsModalBinding.inflate(inflater, container, false)
+        _binding = FragmentSettingsModalBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(
             AnalyticsEvents.VIEW_GROUP_OPTION_SHOW
         )

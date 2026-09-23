@@ -1,4 +1,4 @@
-package social.entourage.android.actions.create
+﻿package social.entourage.android.actions.create
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -206,7 +206,7 @@ class CreateActionFragment : Fragment() {
         val isActive = isButtonActive == true // Si isButtonActive est null, considérez-le comme false.
         val background = ContextCompat.getDrawable(
             requireContext(),
-            if (isActive) R.drawable.new_rounded_button_light_orange else R.drawable.new_bg_rounded_inactive_button_light_orange
+            if (isActive) R.drawable.bg_button_rounded_light_orange else R.drawable.bg_button_inactive_light_orange
         )
         binding.next.background = background
     }

@@ -1,4 +1,4 @@
-package social.entourage.android.events.create
+﻿package social.entourage.android.events.create
 
 import android.app.Activity
 import android.net.Uri
@@ -20,7 +20,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.yalantis.ucrop.UCrop
 import social.entourage.android.R
 import social.entourage.android.api.model.Image
-import social.entourage.android.databinding.NewFragmentCreateEventStepOneBinding
+import social.entourage.android.databinding.FragmentCreateEventStepOneBinding
 import social.entourage.android.groups.choosePhoto.ChooseGalleryPhotoModalFragment
 import social.entourage.android.groups.choosePhoto.ImagesType
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -31,8 +31,8 @@ import java.io.File
 
 class CreateEventStepOneFragment : Fragment(), EventImageUploadView {
 
-    private var _binding: NewFragmentCreateEventStepOneBinding? = null
-    val binding: NewFragmentCreateEventStepOneBinding get() = _binding!!
+    private var _binding: FragmentCreateEventStepOneBinding? = null
+    val binding: FragmentCreateEventStepOneBinding get() = _binding!!
     private var selectedImage: Image? = null
     private var uploadedImageFile: File? = null
     private lateinit var uploadPresenter: EventImageUploadPresenter
@@ -111,7 +111,7 @@ class CreateEventStepOneFragment : Fragment(), EventImageUploadView {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentCreateEventStepOneBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateEventStepOneBinding.inflate(inflater, container, false)
         uploadPresenter = EventImageUploadPresenter(this, EventImageUploadRepository())
         return binding.root
     }

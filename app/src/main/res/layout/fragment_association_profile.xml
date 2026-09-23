@@ -13,7 +13,7 @@
             android:id="@+id/asso_profile_image_association"
             android:layout_width="110dp"
             android:layout_height="110dp"
-            android:background="@drawable/new_shadow"
+            android:background="@drawable/bg_shadow"
             android:elevation="1dp"
             app:layout_constraintBottom_toTopOf="@id/asso_profile_scrollview"
             app:layout_constraintStart_toStartOf="parent"
@@ -28,10 +28,10 @@
             android:layout_marginVertical="30dp"
             android:layout_marginBottom="20dp"
             android:padding="10dp"
-            android:src="@drawable/new_back_white"
+            android:src="@drawable/ic_arrow_back_white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/new_back_white" />
+            tools:src="@drawable/ic_arrow_back_white" />
 
         <ScrollView
             android:id="@+id/asso_profile_scrollview"
@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:layout_marginHorizontal="7dp"
             android:layout_marginTop="90dp"
-            android:background="@drawable/new_bg_profile"
+            android:background="@drawable/bg_profile"
             android:paddingTop="60dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -72,12 +72,12 @@
 
                 <include
                     android:id="@+id/asso_profile_subscribe"
-                    layout="@layout/new_rounded_button_white"
+                    layout="@layout/layout_rounded_button_white"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     app:content="@{@string/import_picture}"
-                    app:drawable="@{@drawable/new_rounded_button_orange}"
+                    app:drawable="@{@drawable/bg_button_rounded_orange}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/asso_profile_scrollview" />
@@ -98,7 +98,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    app:icon="@{@drawable/new_city}"
+                    app:icon="@{@drawable/ic_city}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/asso_profile_birthday"
                     app:title="@{@string/accept_donations}" />
@@ -109,7 +109,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    app:icon="@{@drawable/new_contribution}"
+                    app:icon="@{@drawable/ic_contribution}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/asso_profile_birthday"
                     app:title="@{@string/volunteers}" />
@@ -129,7 +129,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    app:icon="@{@drawable/new_phone}"
+                    app:icon="@{@drawable/ic_phone}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/asso_profile_birthday"
                     app:title="@{@string/phone}" />
@@ -140,7 +140,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    app:icon="@{@drawable/new_phone}"
+                    app:icon="@{@drawable/ic_phone}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/asso_profile_birthday"
                     app:title="@{@string/web_site}" />
@@ -151,7 +151,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    app:icon="@{@drawable/new_phone}"
+                    app:icon="@{@drawable/ic_phone}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/asso_profile_birthday"
                     app:title="@{@string/phone}" />
@@ -162,7 +162,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    app:icon="@{@drawable/new_email}"
+                    app:icon="@{@drawable/ic_email}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/asso_profile_phone"
                     app:title="@{@string/email}" />

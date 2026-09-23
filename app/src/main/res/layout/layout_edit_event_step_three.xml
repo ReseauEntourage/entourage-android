@@ -79,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="15dp"
-                android:src="@drawable/new_location"
+                android:src="@drawable/ic_location"
                 tools:text="Title" />
 
             <EditText
@@ -207,7 +207,7 @@
 
         <include
             android:id="@+id/error"
-            layout="@layout/new_error"
+            layout="@layout/layout_error"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

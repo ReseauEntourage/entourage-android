@@ -1,4 +1,4 @@
-package social.entourage.android.events.list
+﻿package social.entourage.android.events.list
 
 import android.app.Activity
 import android.content.Context
@@ -17,7 +17,7 @@ import social.entourage.android.R
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.Status
-import social.entourage.android.databinding.NewEventItemBinding
+import social.entourage.android.databinding.ItemEventBinding
 import social.entourage.android.events.EventsFragment
 import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.language.LanguageManager
@@ -58,7 +58,7 @@ class AllEventAdapter(var userId: Int?, var context: Context) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
-        val binding = NewEventItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return EventViewHolder(binding)
     }
 
@@ -134,7 +134,7 @@ class AllEventAdapter(var userId: Int?, var context: Context) :
         }
     }
 
-    private fun bindParticipants(event: Events, binding: NewEventItemBinding) {
+    private fun bindParticipants(event: Events, binding: ItemEventBinding) {
         val members = event.members ?: emptyList()
         val totalCount = event.membersCount ?: 0
 
@@ -185,5 +185,5 @@ class AllEventAdapter(var userId: Int?, var context: Context) :
         }
     }
 
-    class EventViewHolder(val binding: NewEventItemBinding) : RecyclerView.ViewHolder(binding.root)
+    class EventViewHolder(val binding: ItemEventBinding) : RecyclerView.ViewHolder(binding.root)
 }

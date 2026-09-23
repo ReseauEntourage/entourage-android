@@ -106,7 +106,7 @@ class ActionDetailActivity : AppCompatActivity(), OnDetailActionReceive {
 
     private fun setSettingsIcon(title:String?) {
         binding.header.headerIconSettings.isVisible = true
-        binding.header.headerIconSettings.setImageResource(R.drawable.share_icon)
+        binding.header.headerIconSettings.setImageResource(R.drawable.ic_share_action)
         val whiteColor = ContextCompat.getColor(this, R.color.white)
         binding.header.headerIconSettings.imageTintList = ColorStateList.valueOf(whiteColor)
         binding.header.headerTitle.maxLines = 2

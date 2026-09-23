@@ -1,4 +1,4 @@
-package social.entourage.android.home.pedago
+﻿package social.entourage.android.home.pedago
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -11,8 +11,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
-import social.entourage.android.databinding.NewPedagoContentItemBinding
-import social.entourage.android.databinding.NewPedagoSectionHeaderBinding
+import social.entourage.android.databinding.ItemPedagoContentBinding
+import social.entourage.android.databinding.ItemPedagoSectionHeaderBinding
 import social.entourage.android.api.model.Pedago
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.px
@@ -37,10 +37,10 @@ class PedagoListAdapter(
         private const val TYPE_CHILD = 1
     }
 
-    inner class SectionViewHolder(val binding: NewPedagoSectionHeaderBinding) :
+    inner class SectionViewHolder(val binding: ItemPedagoSectionHeaderBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    inner class ChildViewHolder(val binding: NewPedagoContentItemBinding) :
+    inner class ChildViewHolder(val binding: ItemPedagoContentBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     private var rows: List<Row> = buildRows(sectionItemList)
@@ -74,8 +74,8 @@ class PedagoListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            TYPE_SECTION -> SectionViewHolder(NewPedagoSectionHeaderBinding.inflate(inflater, parent, false))
-            else -> ChildViewHolder(NewPedagoContentItemBinding.inflate(inflater, parent, false))
+            TYPE_SECTION -> SectionViewHolder(ItemPedagoSectionHeaderBinding.inflate(inflater, parent, false))
+            else -> ChildViewHolder(ItemPedagoContentBinding.inflate(inflater, parent, false))
         }
     }
 
@@ -105,14 +105,14 @@ class PedagoListAdapter(
 
         Glide.with(childViewHolder.itemView)
             .load(child.imageUrl)
-            .placeholder(R.drawable.new_illu_empty_state_event)
+            .placeholder(R.drawable.illu_empty_state_event)
             .apply(RequestOptions().override(77.px, 46.px))
             .transform(RoundedCorners(5.px))
             .into(childViewHolder.binding.image)
 
         val background = AppCompatResources.getDrawable(
             context,
-            if (child.watched == true) R.drawable.new_bg_rounded_button_light_orange_stroke else R.drawable.new_bg_rounded_beige_unread_pedago
+            if (child.watched == true) R.drawable.bg_button_light_orange_stroke else R.drawable.bg_rounded_beige_unread_pedago
         )
         childViewHolder.binding.rootLayout.background = background
         childViewHolder.binding.root.updatePadding(
@@ -122,8 +122,8 @@ class PedagoListAdapter(
         val backgroundShadow = AppCompatResources.getDrawable(
             context,
             if (sectionItemList?.get(sectionPosition)?.childList?.size?.minus(1) == childPosition)
-                R.drawable.new_bg_footer_pedagogical
-            else R.drawable.new_bg_pedagogical_item
+                R.drawable.bg_footer_pedagogical
+            else R.drawable.bg_pedagogical_item
         )
         childViewHolder.binding.root.background = backgroundShadow
     }

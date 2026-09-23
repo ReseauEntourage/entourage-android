@@ -1,4 +1,4 @@
-package social.entourage.android.home.pedago
+﻿package social.entourage.android.home.pedago
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.widget.TextViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.R
-import social.entourage.android.databinding.NewFilterItemLightBinding
+import social.entourage.android.databinding.ItemFilterLightBinding
 import social.entourage.android.api.model.Category
 
 interface OnItemClickListener {
@@ -22,13 +22,13 @@ class FilterAdapter(
     private var selectedItemPos = selectedFilterPosition
     private var lastItemSelectedPos = selectedFilterPosition
 
-    inner class ViewHolder(val binding: NewFilterItemLightBinding) :
+    inner class ViewHolder(val binding: ItemFilterLightBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun defaultBg() {
             binding.root.background =
                 AppCompatResources.getDrawable(
                     itemView.context,
-                    R.drawable.new_bg_unselected_filter
+                    R.drawable.bg_filter_unselected
                 )
             TextViewCompat.setTextAppearance(
                 binding.label,
@@ -40,7 +40,7 @@ class FilterAdapter(
             binding.root.background =
                 AppCompatResources.getDrawable(
                     itemView.context,
-                    R.drawable.new_bg_selected_filter
+                    R.drawable.bg_filter_selected
                 )
             TextViewCompat.setTextAppearance(
                 binding.label,
@@ -50,7 +50,7 @@ class FilterAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = NewFilterItemLightBinding.inflate(
+        val binding = ItemFilterLightBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false

@@ -152,7 +152,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/divider"
                         tools:itemCount="4"
-                        tools:listitem="@layout/new_event_item" />
+                        tools:listitem="@layout/item_event" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/emptyStateLayout"
@@ -173,7 +173,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:src="@drawable/new_event_empty_state"
+                                android:src="@drawable/illu_event_empty_state"
                                 app:layout_constraintBottom_toTopOf="@+id/title"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -183,7 +183,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
                                 android:layout_marginBottom="-15dp"
-                                android:src="@drawable/new_group_stars"
+                                android:src="@drawable/ic_group_stars"
                                 app:layout_constraintBottom_toTopOf="@id/title"
                                 app:layout_constraintStart_toStartOf="parent" />
                             <TextView
@@ -219,7 +219,7 @@
                             android:layout_marginEnd="115dp"
                             android:layout_marginBottom="90dp"
                             android:visibility="gone"
-                            android:src="@drawable/new_arrow_create_group"
+                            android:src="@drawable/ic_arrow_create_group"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             />

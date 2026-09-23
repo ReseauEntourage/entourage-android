@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/entourage_little_margin_start"
         android:layout_marginTop="4dp"
-        android:background="@drawable/home_action_category_bg"
+        android:background="@drawable/bg_home_action_category"
         android:fontFamily="@font/nunitosans_regular"
         android:paddingHorizontal="10dp"
         android:paddingVertical="4dp"

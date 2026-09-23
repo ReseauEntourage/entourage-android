@@ -1,4 +1,4 @@
-package social.entourage.android.events.create
+﻿package social.entourage.android.events.create
 
 import android.os.Bundle
 import android.text.Editable
@@ -12,7 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
-import social.entourage.android.databinding.NewFragmentCreateEventStepTwoBinding
+import social.entourage.android.databinding.FragmentCreateEventStepTwoBinding
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.transformIntoDatePicker
@@ -20,8 +20,8 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 class CreateEventStepTwoFragment : Fragment() {
-    private var _binding: NewFragmentCreateEventStepTwoBinding? = null
-    val binding: NewFragmentCreateEventStepTwoBinding get() = _binding!!
+    private var _binding: FragmentCreateEventStepTwoBinding? = null
+    val binding: FragmentCreateEventStepTwoBinding get() = _binding!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,7 +39,7 @@ class CreateEventStepTwoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentCreateEventStepTwoBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateEventStepTwoBinding.inflate(inflater, container, false)
         return binding.root
     }
 

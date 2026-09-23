@@ -1,4 +1,4 @@
-package social.entourage.android.groups.details.members
+﻿package social.entourage.android.groups.details.members
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -102,10 +102,10 @@ class AddUnsubscribedParticipantsBottomSheet : BottomSheetDialogFragment() {
         binding.tvQuestionFemmesIsolees.text = getString(R.string.question_femmes_isolees, isolesCount)
 
         if (femmesIsoleesCount >= isolesCount) {
-            binding.btnPlusFemmesIsolees.setBackgroundResource(R.drawable.new_circle_grey_button_fill)
+            binding.btnPlusFemmesIsolees.setBackgroundResource(R.drawable.bg_circle_grey_button)
             binding.btnPlusFemmesIsolees.isEnabled = false
         } else {
-            binding.btnPlusFemmesIsolees.setBackgroundResource(R.drawable.new_circle_orange_button_fill)
+            binding.btnPlusFemmesIsolees.setBackgroundResource(R.drawable.bg_circle_orange_button)
             binding.btnPlusFemmesIsolees.isEnabled = true
         }
     }
