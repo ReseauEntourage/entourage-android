@@ -10,9 +10,12 @@ import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
 import androidx.test.uiautomator.By
+import androidx.test.uiautomator.Direction
 import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.UiObject2
 import androidx.test.uiautomator.Until
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -35,6 +38,10 @@ import social.entourage.android.tools.utils.Const
  * `Modifier.semantics { testTagsAsResourceId = true }` + `Modifier.testTag(...)` poses
  * cote Compose (`CreateActionCharterScreen.kt`), qui exposent les tags "icon_back",
  * "accept" et "banner_title" comme des resource-id UiAutomator.
+ *
+ * Depuis le retour de recette EN-9620, le lien "Lire la charte complète" et le bouton
+ * "J'ai compris, je continue" terminent le contenu scrollable (plus de footer sticky) :
+ * il faut faire défiler "charter_scroll" pour les atteindre, cf. [scrollCharterToAccept].
  */
 @LargeTest
 @RunWith(AndroidJUnit4::class)
@@ -80,6 +87,9 @@ class CreateActionCharterScenarioTest : EntourageTestAfterLogin() {
         val bannerTitle = device.findObject(By.res("banner_title"))
         assertEquals("Vous sollicitez un coup de main", bannerTitle.text)
 
+        assertCtaAtBottomOfScroll()
+        screenshot.shoot("demande_charte_bas")
+
         device.findObject(By.res("icon_back")).click()
         scenario.close()
     }
@@ -98,7 +108,29 @@ class CreateActionCharterScenarioTest : EntourageTestAfterLogin() {
         val bannerTitle = device.findObject(By.res("banner_title"))
         assertEquals("Vous offrez un coup de main", bannerTitle.text)
 
+        assertCtaAtBottomOfScroll()
+        screenshot.shoot("contribution_charte_bas")
+
         device.findObject(By.res("icon_back")).click()
         scenario.close()
+    }
+
+    /** Le lien vers la charte complète et le CTA sont atteignables en bas de la zone scrollable. */
+    private fun assertCtaAtBottomOfScroll() {
+        device.scrollCharterToAccept()
+        assertNotNull(device.findObject(By.res("read_full_charter")))
+    }
+}
+
+/**
+ * Fait défiler la charte jusqu'au bouton "accept" (placé en fin de contenu scrollable
+ * depuis EN-9620) et le retourne. Partagé avec [CreateActionFullFlowScenarioTest].
+ */
+internal fun UiDevice.scrollCharterToAccept(): UiObject2 {
+    wait(Until.hasObject(By.res("charter_scroll")), 5_000)
+    findObject(By.res("charter_scroll"))
+        ?.scrollUntil(Direction.DOWN, Until.findObject(By.res("accept")))
+    return checkNotNull(findObject(By.res("accept"))) {
+        "Bouton \"accept\" introuvable après défilement de la charte"
     }
 }

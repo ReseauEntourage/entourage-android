@@ -295,6 +295,8 @@ dependencies {
 
     // Instrumentation tests
     androidTestImplementation(libs.bundles.androidx.test)
+    // Déclare l'activité hôte de FragmentScenario dans l'APK debug (sinon "Unable to resolve activity")
+    debugImplementation(libs.androidx.fragment.testing.manifest)
     androidTestImplementation(libs.androidx.espresso.contrib) {
         exclude(group = "com.google.protobuf", module = "protobuf-lite")
     }

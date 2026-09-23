@@ -108,7 +108,8 @@ class CreateActionFullFlowScenarioTest : EntourageTestAfterLogin() {
 
         device.wait(Until.hasObject(By.res("banner_title")), 5_000)
         screenshot.shoot("charte")
-        device.findObject(By.res("accept")).click()
+        // EN-9620 : le CTA est en bas du contenu scrollable, plus dans un footer sticky.
+        device.scrollCharterToAccept().click()
         onIdle()
 
         onView(withText(R.string.action_social_name)).perform(click())
