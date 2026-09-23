@@ -19,6 +19,7 @@ import social.entourage.android.api.model.Group
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.events.details.feed.EventFeedFragment
+import social.entourage.android.events.list.WelcomeEventsListActivity
 import social.entourage.android.groups.details.feed.GroupFeedActivity
 import social.entourage.android.groups.details.rules.GroupRulesActivity
 import social.entourage.android.guide.GDSMainActivity
@@ -106,7 +107,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         //HERE GO TO DETAIL MESSAGE GROUP
                     }
                 }
-                pathSegments.contains("conversations") || pathSegments.contains("messages") -> {
+                pathSegments.contains("conversations") || pathSegments.contains("messages") || pathSegments.contains("conversation-message") -> {
                     if(pathSegments.size > 2){
                         val convId = pathSegments[2]
                         this.conversationId = convId
@@ -282,6 +283,16 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
         } else if (pathSegments.contains("welcome")) {
             val intent = Intent(context, social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
             intent.putExtra("TYPE", "welcome")
+            context.startActivity(intent)
+            (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
+        } else if (pathSegments.contains("sensibilisation")) {
+            val intent = Intent(context, WelcomeEventsListActivity::class.java)
+            intent.putExtra("TYPE", "sensibilisation")
+            context.startActivity(intent)
+            (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
+        } else if (pathSegments.contains("first_steps")) {
+            val intent = Intent(context, WelcomeEventsListActivity::class.java)
+            intent.putExtra("TYPE", "first_steps")
             context.startActivity(intent)
             (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
         } else if (pathSegments.size > 3) {
