@@ -714,17 +714,15 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     fun showGuide() {
-        //TODO bottomBar?.showGuide()
+        goHome()
     }
 
     fun showEvents() {
-        //TODO infoFragment?.dismiss()
-        //TODO bottomBar?.showEvents()
+        goEvent()
     }
 
     fun showActionsTab() {
-        //TODO infoFragment?.dismiss()
-        //TODO bottomBar?.showActionsTab()
+        goContrib()
     }
 
     fun showTutorial(forced: Boolean) {

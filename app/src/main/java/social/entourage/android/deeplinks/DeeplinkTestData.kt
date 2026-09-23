@@ -24,121 +24,141 @@ object DeeplinkTestData {
                 description = "Custom scheme - Guide",
                 uriString = "$scheme://guide",
                 expectedView = DeepLinksManager.DeepLinksView.GUIDE,
-                targetViewIdName = "fragment_guide"
+                targetViewIdName = "navigation_home"
             ),
             DeeplinkTestCase(
                 description = "Custom scheme - Events",
                 uriString = "$scheme://events",
                 expectedView = DeepLinksManager.DeepLinksView.EVENTS,
-                targetViewIdName = "fragment_events"
+                targetViewIdName = "navigation_events"
             ),
             DeeplinkTestCase(
                 description = "Custom scheme - Profile",
                 uriString = "$scheme://profile",
                 expectedView = DeepLinksManager.DeepLinksView.PROFILE,
-                targetViewIdName = "fragment_profile"
+                targetViewIdName = "container_profile"
             ),
             DeeplinkTestCase(
                 description = "Custom scheme - Badge",
                 uriString = "$scheme://badge",
-                expectedView = DeepLinksManager.DeepLinksView.BADGE
+                expectedView = DeepLinksManager.DeepLinksView.BADGE,
+                targetViewIdName = "container_profile"
             ),
             DeeplinkTestCase(
                 description = "Custom scheme - Create Action",
                 uriString = "$scheme://create-action",
-                expectedView = DeepLinksManager.DeepLinksView.CREATE_ACTION
+                expectedView = DeepLinksManager.DeepLinksView.CREATE_ACTION,
+                targetViewIdName = "navigation_donations"
             ),
             DeeplinkTestCase(
                 description = "Custom scheme - Tutorial",
                 uriString = "$scheme://tutorial",
-                expectedView = DeepLinksManager.DeepLinksView.TUTORIAL
+                expectedView = DeepLinksManager.DeepLinksView.TUTORIAL,
+                targetViewIdName = "navigation_home"
             ),
             DeeplinkTestCase(
                 description = "Custom scheme - Guide Map",
                 uriString = "$scheme://guidemap",
-                expectedView = DeepLinksManager.DeepLinksView.GUIDE_MAP
+                expectedView = DeepLinksManager.DeepLinksView.GUIDE_MAP,
+                targetViewIdName = "mainView"
             ),
             DeeplinkTestCase(
                 description = "Custom scheme - Webview with URL",
                 uriString = "$scheme://webview?url=https://entourage.social",
-                expectedView = DeepLinksManager.DeepLinksView.WEBVIEW
+                expectedView = DeepLinksManager.DeepLinksView.WEBVIEW,
+                targetViewIdName = "navigation_home"
             ),
 
             // Official Web Links (/deeplink/ & /app/)
             DeeplinkTestCase(
                 description = "HTTP web link - Deeplink Guide",
                 uriString = "http://$domain/deeplink/guide",
-                expectedView = DeepLinksManager.DeepLinksView.GUIDE
+                expectedView = DeepLinksManager.DeepLinksView.GUIDE,
+                targetViewIdName = "navigation_home"
             ),
             DeeplinkTestCase(
                 description = "HTTPS web link - Deeplink Profile",
                 uriString = "https://$domain/deeplink/profile",
-                expectedView = DeepLinksManager.DeepLinksView.PROFILE
+                expectedView = DeepLinksManager.DeepLinksView.PROFILE,
+                targetViewIdName = "container_profile"
             ),
             DeeplinkTestCase(
                 description = "HTTPS web link - Deeplink Events",
                 uriString = "https://$domain/deeplink/events",
-                expectedView = DeepLinksManager.DeepLinksView.EVENTS
+                expectedView = DeepLinksManager.DeepLinksView.EVENTS,
+                targetViewIdName = "navigation_events"
             ),
             DeeplinkTestCase(
                 description = "HTTPS web link - Deeplink Create Action",
                 uriString = "https://$domain/deeplink/create-action",
-                expectedView = DeepLinksManager.DeepLinksView.CREATE_ACTION
+                expectedView = DeepLinksManager.DeepLinksView.CREATE_ACTION,
+                targetViewIdName = "navigation_donations"
             ),
             DeeplinkTestCase(
                 description = "HTTPS App link - Homepage",
                 uriString = "https://$domain/app/",
-                expectedView = DeepLinksManager.DeepLinksView.GUIDE
+                expectedView = DeepLinksManager.DeepLinksView.GUIDE,
+                targetViewIdName = "navigation_home"
             ),
             DeeplinkTestCase(
                 description = "HTTPS App link - Groups",
                 uriString = "https://$domain/app/groups",
-                expectedView = DeepLinksManager.DeepLinksView.ENTOURAGES
+                expectedView = DeepLinksManager.DeepLinksView.ENTOURAGES,
+                targetViewIdName = "navigation_groups"
             ),
             DeeplinkTestCase(
                 description = "HTTPS App link - Group Detail",
                 uriString = "https://$domain/app/neighborhoods/b207272a5541",
-                expectedView = DeepLinksManager.DeepLinksView.ENTOURAGE
+                expectedView = DeepLinksManager.DeepLinksView.ENTOURAGE,
+                targetViewIdName = "navigation_groups"
             ),
             DeeplinkTestCase(
                 description = "HTTPS App link - Outings",
                 uriString = "https://$domain/app/outings",
-                expectedView = DeepLinksManager.DeepLinksView.EVENTS
+                expectedView = DeepLinksManager.DeepLinksView.EVENTS,
+                targetViewIdName = "navigation_events"
             ),
             DeeplinkTestCase(
                 description = "HTTPS App link - Outings New",
                 uriString = "https://$domain/app/outings/new",
-                expectedView = DeepLinksManager.DeepLinksView.EVENTS
+                expectedView = DeepLinksManager.DeepLinksView.EVENTS,
+                targetViewIdName = "navigation_events"
             ),
             DeeplinkTestCase(
                 description = "HTTPS App link - Contributions",
                 uriString = "https://$domain/app/contributions",
-                expectedView = DeepLinksManager.DeepLinksView.CREATE_ACTION
+                expectedView = DeepLinksManager.DeepLinksView.CREATE_ACTION,
+                targetViewIdName = "navigation_donations"
             ),
             DeeplinkTestCase(
                 description = "HTTPS App link - Solicitations",
                 uriString = "https://$domain/app/solicitations",
-                expectedView = DeepLinksManager.DeepLinksView.CREATE_ACTION
+                expectedView = DeepLinksManager.DeepLinksView.CREATE_ACTION,
+                targetViewIdName = "navigation_donations"
             ),
             DeeplinkTestCase(
                 description = "HTTPS App link - Map",
                 uriString = "https://$domain/app/map",
-                expectedView = DeepLinksManager.DeepLinksView.GUIDE_MAP
+                expectedView = DeepLinksManager.DeepLinksView.GUIDE_MAP,
+                targetViewIdName = "mainView"
             ),
             DeeplinkTestCase(
                 description = "HTTPS App link - Badges",
                 uriString = "https://$domain/app/badges",
-                expectedView = DeepLinksManager.DeepLinksView.BADGE
+                expectedView = DeepLinksManager.DeepLinksView.BADGE,
+                targetViewIdName = "container_profile"
             ),
             DeeplinkTestCase(
                 description = "HTTPS App link - Resources",
                 uriString = "https://$domain/app/resources",
-                expectedView = DeepLinksManager.DeepLinksView.GUIDE
+                expectedView = DeepLinksManager.DeepLinksView.GUIDE,
+                targetViewIdName = "navigation_home"
             ),
             DeeplinkTestCase(
                 description = "HTTPS App link - Resource Detail",
                 uriString = "https://$domain/app/resources/aa820899a375",
-                expectedView = DeepLinksManager.DeepLinksView.GUIDE
+                expectedView = DeepLinksManager.DeepLinksView.GUIDE,
+                targetViewIdName = "navigation_home"
             )
         )
     }
