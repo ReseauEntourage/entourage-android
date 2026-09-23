@@ -48,10 +48,14 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -62,6 +66,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.HomeModerator
+import social.entourage.android.ui.theme.NunitoSansBold
 import social.entourage.android.ui.theme.NunitoSansRegular
 import social.entourage.android.ui.theme.NunitoSansSemiBold
 import social.entourage.android.ui.theme.QuicksandBold
@@ -91,7 +96,10 @@ fun DiscussionsScreen(
     // EN-9489 : retour Gwen — espacement de police excessif hérité du padding vertical
     // par défaut de Compose sur les polices custom (Quicksand/NunitoSans), qui n'existe
     // pas avec les mêmes polices en XML/TextView. On le désactive pour tout l'écran.
-    val noExtraFontPaddingStyle = LocalTextStyle.current.merge(
+    // Idem pour l'interligne : le LocalTextStyle M3 impose 24sp quelle que soit la taille de
+    // police, d'où des textes sur 2 lignes très aérés (ex. card "Bonnes ondes", où le
+    // sous-titre semblait collé au titre) — on revient à l'interligne naturel de la police.
+    val noExtraFontPaddingStyle = LocalTextStyle.current.copy(lineHeight = TextUnit.Unspecified).merge(
         TextStyle(
             platformStyle = PlatformTextStyle(includeFontPadding = false),
             lineHeightStyle = LineHeightStyle(
@@ -101,7 +109,9 @@ fun DiscussionsScreen(
         )
     )
     CompositionLocalProvider(LocalTextStyle provides noExtraFontPaddingStyle) {
-    Box(modifier = Modifier.fillMaxSize()) {
+    // testTagsAsResourceId : expose les testTag comme resource-id pour les scénarios e2e
+    // UiAutomator (Espresso ne traverse pas un ComposeView).
+    Box(modifier = Modifier.fillMaxSize().semantics { testTagsAsResourceId = true }) {
         Image(
             painter = painterResource(R.drawable.header_profile_orange),
             contentDescription = null,
@@ -257,12 +267,28 @@ private fun NotificationBanner(onClick: () -> Unit) {
             modifier = Modifier.size(22.dp)
         )
         Spacer(Modifier.width(13.dp))
-        Text(
-            text = stringResource(R.string.notifications_disabled_message),
-            fontFamily = NunitoSansRegular,
-            fontSize = 13.5.sp,
-            color = Color(0xFF3A3A3A)
-        )
+        // EN-9489 : retour Gwen — "Activez-les pour ne rien manquer" en gras et souligné
+        // pour signaler que l'encart est cliquable. On découpe la chaîne existante (déjà
+        // traduite dans toutes les langues) sur son saut de ligne.
+        val lines = stringResource(R.string.notifications_disabled_message).split("\n", limit = 2)
+        Column {
+            Text(
+                text = lines.first(),
+                fontFamily = NunitoSansRegular,
+                fontSize = 13.5.sp,
+                color = Color(0xFF3A3A3A)
+            )
+            lines.getOrNull(1)?.let { cta ->
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    text = cta,
+                    fontFamily = NunitoSansBold,
+                    fontSize = 13.5.sp,
+                    color = Color(0xFF3A3A3A),
+                    textDecoration = TextDecoration.Underline
+                )
+            }
+        }
     }
 }
 
@@ -271,6 +297,7 @@ private fun SmallTalkFeatureCard(onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .testTag("small_talk_card")
             .padding(bottom = 10.dp)
             .clip(RoundedCornerShape(16.dp))
             .background(Color.White)
@@ -292,13 +319,17 @@ private fun SmallTalkFeatureCard(onClick: () -> Unit) {
                 text = stringResource(R.string.discussion_small_talk_card_title),
                 fontFamily = QuicksandBold,
                 fontSize = 14.sp,
-                color = Color(0xFF1A1A1A)
+                color = Color(0xFF1A1A1A),
+                modifier = Modifier.testTag("small_talk_card_title")
             )
+            // EN-9489 : retour Gwen — espace manquant entre le titre et le sous-titre.
+            Spacer(Modifier.height(4.dp))
             Text(
                 text = stringResource(R.string.discussion_small_talk_card_subtitle),
                 fontFamily = NunitoSansRegular,
                 fontSize = 12.sp,
-                color = colorResource(R.color.grey)
+                color = colorResource(R.color.grey),
+                modifier = Modifier.testTag("small_talk_card_subtitle")
             )
         }
         Spacer(Modifier.width(8.dp))
@@ -409,8 +440,12 @@ private fun ConversationRow(conversation: Conversation, onClick: () -> Unit) {
                 modifier = Modifier.size(56.dp)
             )
         } else {
+            // EN-9489 : retour Gwen — la liste est alimentée par l'endpoint memberships
+            // (membershipToConversation), qui ne renseigne pas `user` : la photo de
+            // l'interlocuteur(trice) arrive dans `imageUrl`. Sans ce repli, on n'affichait
+            // que le placeholder avatar.
             GlideImage(
-                url = conversation.user?.imageUrl,
+                url = conversation.user?.imageUrl ?: conversation.imageUrl,
                 placeholder = R.drawable.placeholder_user,
                 circle = true,
                 modifier = Modifier.size(56.dp)
