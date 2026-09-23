@@ -54,8 +54,8 @@ fun EditText.transformIntoDatePicker(
 }
 
 /**
- * Comme [transformIntoDatePicker], mais ouvre le MaterialDatePicker (M3) en mode saisie texte
- * plutôt que le DatePickerDialog natif — voir [showBirthdateDatePicker].
+ * Comme [transformIntoDatePicker], mais ouvre le MaterialDatePicker (M3) directement en mode
+ * calendrier plutôt que le DatePickerDialog natif — voir [showBirthdateDatePicker].
  */
 fun EditText.transformIntoMaterialBirthdatePicker(
     fragmentManager: FragmentManager,
