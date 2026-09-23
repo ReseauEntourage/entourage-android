@@ -9,6 +9,19 @@ import social.entourage.android.BuildConfig
 class DeepLinksManagerTest {
 
     @Test
+    fun testAllCatalogDeeplinksParsing() {
+        DeeplinkTestData.getTestCases().forEach { testCase ->
+            val resolvedView = DeepLinksManager.resolveDeepLinkView(testCase.uriString)
+            assertNotNull("Failed to resolve view for URI: ${testCase.uriString}", resolvedView)
+            assertEquals(
+                "Mismatch for ${testCase.description} (${testCase.uriString})",
+                testCase.expectedView,
+                resolvedView
+            )
+        }
+    }
+
+    @Test
     fun testFindFirstDeeplinkInText_withCustomScheme() {
         val scheme = BuildConfig.DEEP_LINKS_SCHEME
         val text = "Bonjour, voici un lien vers l'action: $scheme://actions/1234 à consulter."

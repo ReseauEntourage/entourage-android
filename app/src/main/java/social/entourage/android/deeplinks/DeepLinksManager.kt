@@ -181,6 +181,49 @@ object DeepLinksManager {
         }
     }
 
+    fun resolveKey(uriString: String): String? {
+        if (uriString.isBlank()) return null
+        val scheme = uriString.substringBefore("://", "").lowercase(Locale.ROOT)
+        if (scheme.isEmpty()) return null
+
+        if (scheme.contains(BuildConfig.DEEP_LINKS_SCHEME.lowercase(Locale.ROOT))) {
+            val hostAndPath = uriString.substringAfter("://")
+            val host = hostAndPath.substringBefore("/").substringBefore("?").substringBefore("#")
+            return if (host.isNotEmpty()) host.lowercase(Locale.ROOT) else null
+        } else if (scheme == "http" || scheme == "https") {
+            val pathAndQuery = uriString.substringAfter("://").substringAfter("/", "")
+            val path = pathAndQuery.substringBefore("?").substringBefore("#")
+            val segments = path.split("/").filter { it.isNotEmpty() }
+            if (segments.isNotEmpty()) {
+                if (segments[0].equals(DeepLinksView.DEEPLINK.view, ignoreCase = true) && segments.size >= 2) {
+                    return segments[1].lowercase(Locale.ROOT)
+                } else if (segments[0].equals("app", ignoreCase = true)) {
+                    if (segments.size == 1) return DeepLinksView.GUIDE.view
+                    return mapAppPathSegmentToKey(segments)
+                }
+            }
+        }
+        return null
+    }
+
+    private fun mapAppPathSegmentToKey(segments: List<String>): String {
+        val firstSegment = segments[1].lowercase(Locale.ROOT)
+        return when (firstSegment) {
+            "groups", "neighborhoods" -> if (segments.size > 2) DeepLinksView.ENTOURAGE.view else DeepLinksView.ENTOURAGES.view
+            "outings" -> DeepLinksView.EVENTS.view
+            "contributions", "solicitations" -> DeepLinksView.CREATE_ACTION.view
+            "map" -> DeepLinksView.GUIDE_MAP.view
+            "badges" -> DeepLinksView.BADGE.view
+            "resources" -> DeepLinksView.GUIDE.view
+            else -> firstSegment
+        }
+    }
+
+    fun resolveDeepLinkView(uriString: String): DeepLinksView? {
+        val key = resolveKey(uriString) ?: return null
+        return DeepLinksView.entries.find { it.view.equals(key, ignoreCase = true) }
+    }
+
     fun findFirstDeeplinkInText(content: String): String? {
         val patternDeepLink  = (BuildConfig.DEEP_LINKS_SCHEME + "://\\S+").toRegex()
         patternDeepLink.find(content)?.let {
