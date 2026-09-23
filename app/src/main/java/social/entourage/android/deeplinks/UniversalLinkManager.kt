@@ -6,212 +6,120 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import social.entourage.android.MainActivity
 import social.entourage.android.R
-import androidx.appcompat.app.AppCompatActivity
 import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.actions.detail.ActionDetailActivity
 import social.entourage.android.api.model.Action
-import social.entourage.android.badges.BadgeIntroBottomSheet
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
+import social.entourage.android.badges.BadgeIntroBottomSheet
+import social.entourage.android.badges.BadgesListActivity
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.discussions.DetailConversationActivity
+import social.entourage.android.events.create.CreateEventActivity
+import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.events.details.feed.EventFeedFragment
 import social.entourage.android.events.list.WelcomeEventsListActivity
 import social.entourage.android.groups.details.feed.GroupFeedActivity
 import social.entourage.android.groups.details.rules.GroupRulesActivity
 import social.entourage.android.guide.GDSMainActivity
+import social.entourage.android.home.NationalGroupsActivity
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
-import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.overrideTransitionCompat
 import timber.log.Timber
 
-class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback {
-    /*private const val prodURL = "https://www.entourage.social"
-    private const val stagingURL = "https://www.entourage.social"*/
+/**
+ * Gestionnaire des Deeplinks officiels de l'application Entourage (https://www.entourage.social/app/...)
+ *
+ * Deeplinks officiels pris en charge :
+ * - Page d'accueil : `/app/` -> MainActivity
+ * - Page groupes : `/app/groups` -> Onglet découvrer groupes
+ * - Groupe national : `/app/groups/national` -> NationalGroupsActivity
+ * - Page détail d'un groupe : `/app/neighborhoods/{id}` -> GroupFeedActivity
+ * - Page événements : `/app/outings` -> Onglet découvrer événements
+ * - Page détail d'un événement : `/app/outings/{id}` -> EventFeedActivity
+ * - Ajout à l'agenda : `/app/outings/{id}/agenda` -> EventFeedActivity (ajout agenda)
+ * - Funnel création événement : `/app/outings/new` -> CreateEventActivity
+ * - Listes d'événements spécialisés :
+ *   - `/app/outings/webinar` -> Événement de sensibilisation en ligne
+ *   - `/app/outings/welcome` -> Événement de bienvenue en ligne
+ *   - `/app/outings/first_steps` -> Rdv de bienvenue
+ *   - `/app/outings/sensibilisation` -> Atelier de sensibilisation
+ *   - `/app/outings/papotages` -> Papotages solidaires
+ * - Contributions (Menu Entraide) :
+ *   - `/app/contributions` -> Onglet contributions
+ *   - `/app/contributions/new` -> Funnel création contribution
+ * - Demandes (Menu Entraide) :
+ *   - `/app/solicitations` -> Onglet demandes
+ *   - `/app/solicitations/new` -> Funnel création demande
+ * - Carte des lieux solidaires : `/app/map` -> GDSMainActivity
+ * - Charte des événements : `/app/chart-event` -> GroupRulesActivity
+ * - Conversations : `/app/conversation-message` -> Écran des conversations
+ * - Badges :
+ *   - `/app/badges/intro` -> Modal présentation des badges
+ *   - `/app/badges` -> Liste des badges
+ *   - `/app/badges/{badge_key}` -> Détail d'un badge spécifique (bienvenue, premier_contact, moteur_rencontres, fidele_papotages, voix_presente)
+ * - Contenus pédagogiques (Ressources) :
+ *   - `/app/resources` -> Liste des contenus
+ *   - `/app/resources/{hash_id}` -> Détail d'un contenu pédagogique
+ */
+class UniversalLinkManager(val context: Context) : UniversalLinksPresenterCallback {
 
     val prodURL = "www.entourage.social"
     val stagingURL = "preprod.entourage.social"
-    private var conversationId: String = ""
-    val presenter:UniversalLinkPresenter = UniversalLinkPresenter(this)
-
+    val presenter: UniversalLinkPresenter = UniversalLinkPresenter(this)
 
     fun handleUniversalLink(uri: Uri) {
         val pathSegments = uri.pathSegments
-        uri.queryParameterNames.forEach { name ->
-            val value = uri.getQueryParameter(name)
-        }
-        for (segment in pathSegments) {
-            Timber.d("Segment: $segment")
-        }
         if (uri.host == stagingURL || uri.host == prodURL) {
             Timber.d("Universal link: $uri")
             when {
-                pathSegments.contains("users") -> {
-                    if (pathSegments.size > 2) {
-                        val userId = pathSegments[2]
-                        try {
-                            val intent = Intent(context, ProfileFullActivity::class.java)
-                            intent.putExtra(Const.USER_ID, userId.toInt())
-                            context.startActivity(intent)
-                            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
-                        } catch (e: NumberFormatException) {
-                            Timber.e("NumberFormatException")
-                        }
-                    }
-                }
-                pathSegments.contains("user") -> {
-                    if (pathSegments.size > 2) {
-                        val userId = pathSegments[2]
-//                        ProfileFullActivity.isMe = false
-                        //ProfileFullActivity.userId = userId
-                        try {
-                            val intent = Intent(context, ProfileFullActivity::class.java)
-                            intent.putExtra(Const.USER_ID, userId.toInt())
-                            context.startActivity(intent)
-                            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
-                        } catch (e: NumberFormatException) {
-                            Timber.e("NumberFormatException")
-                        }
-                    }
-                }
-                pathSegments.contains("charte-ethique-entourage") ->{
-                    val chartIntent = Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.disclaimer_link_public)))
-                    context.startActivity(chartIntent)
-                }
+                // Page d'accueil : https://www.entourage.social/app/
                 pathSegments.contains("app") && pathSegments.size == 1 -> {
                     (context as? MainActivity)?.goHome()
                 }
-                pathSegments.contains("welcome-video") || (pathSegments.contains("home") && pathSegments.contains("welcome-video")) -> {
-                    val intent = Intent(context, MainActivity::class.java)
-                        .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                    intent.putExtra("goWelcomeVideo", true)
-                    context.startActivity(intent)
-                    (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
-                }
-                pathSegments.contains("outings") && pathSegments.contains("chat_messages") -> {
-                    if (pathSegments.size > 3) {
-                        val eventId = pathSegments[2]
-                        val postId = pathSegments[3]
-                        //HERE GO TO DETAIL MESSAGE EVENT
-                    }
-                }
-                pathSegments.contains("neighborhoods") && pathSegments.contains("chat_messages") -> {
-                    if (pathSegments.size > 3) {
-                        val groupId = pathSegments[2]
-                        val postId = pathSegments[3]
-                        //HERE GO TO DETAIL MESSAGE GROUP
-                    }
-                }
-                pathSegments.contains("conversations") || pathSegments.contains("messages") || pathSegments.contains("conversation-message") -> {
-                    if(pathSegments.size > 2){
-                        val convId = pathSegments[2]
-                        this.conversationId = convId
-                        presenter.addUserToConversation(convId)
-                    }else{
-                        (context as? MainActivity)?.goConv()
-                    }
-                }
-/*                pathSegments.contains("conversations") && pathSegments.contains("chat_messages") -> {
-                    val convId = pathSegments[2]
-                    val meId = EntourageApplication.get().me()?.id
-                    (context as? Activity)?.startActivityForResult(
-                        Intent(context, DetailConversationActivity::class.java)
-                            .putExtras(
-                                bundleOf(
-                                    Const.ID to convId,
-                                    Const.POST_AUTHOR_ID to meId,
-                                    Const.SHOULD_OPEN_KEYBOARD to false,
-                                    //CHECK NAME PARAM FOR SMART PLACEHOLDER
-                                    Const.NAME to "",
-                                    Const.IS_CONVERSATION_1TO1 to true,
-                                    Const.IS_MEMBER to true,
-                                    Const.IS_CONVERSATION to true,
-                                    Const.HAS_TO_SHOW_MESSAGE to true
-                                )
-                            ),0
-                    )
-                }*/
-                pathSegments.contains("chart-event") -> {
-                    val intent = Intent(context, GroupRulesActivity::class.java).apply {
-                        putExtra(Const.RULES_TYPE, Const.RULES_EVENT)
-                    }
-                    (context as Activity).startActivity(intent)
-                }
-                pathSegments.contains("good-waves") -> {
-                    val intent = Intent(context, social.entourage.android.small_talks.SmallTalkIntroActivity::class.java)
-                    context.startActivity(intent)
-                }
-                pathSegments.contains("badges") && pathSegments.contains("intro") -> {
-                    (context as? AppCompatActivity)?.let { activity ->
-                        BadgeIntroBottomSheet.newInstance()
-                            .show(activity.supportFragmentManager, "badge_intro")
-                    }
-                }
-                pathSegments.contains("badges") && pathSegments.size > 2 -> {
-                    val badgeId = pathSegments[2]
-                    val intent = Intent(context, social.entourage.android.badges.BadgesListActivity::class.java)
-                    intent.putExtra(social.entourage.android.badges.BadgesListActivity.EXTRA_OPEN_BADGE_KEY, badgeId)
-                    context.startActivity(intent)
-                    (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
-                }
-                pathSegments.contains("badges") -> {
-                    val intent = Intent(context, social.entourage.android.badges.BadgesListActivity::class.java)
-                    context.startActivity(intent)
-                    (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
-                }
-                pathSegments.contains("outings") -> {
-                    handleOutings(pathSegments)
-                }
+
+                // Groupes nationaux : https://www.entourage.social/app/groups/national
                 pathSegments.contains("national") -> {
-                    val intent = Intent(context, social.entourage.android.home.NationalGroupsActivity::class.java)
+                    val intent = Intent(context, NationalGroupsActivity::class.java)
                     context.startActivity(intent)
                     (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                 }
+
+                // Groupes & Détail groupe : https://www.entourage.social/app/groups ou /app/neighborhoods/{id}
                 pathSegments.contains("neighborhoods") || pathSegments.contains("groups") -> {
                     if (pathSegments.size > 2) {
                         val neighborhoodId = pathSegments[2]
                         presenter.getGroup(neighborhoodId)
-                    }else{
-                        val intent = Intent(context, MainActivity::class.java)
-                            .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                        intent.putExtra("goDiscoverGroup", true)
-                        context.startActivity(intent)
-                        (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
-                    }
-                }
-                pathSegments.contains("solicitations") -> {
-                    if (pathSegments.contains("new")) {
-                        val intent = Intent(context, CreateActionActivity::class.java)
-                        intent.putExtra(Const.IS_ACTION_DEMAND, true)
-                        context.startActivity(intent)
                     } else {
-                        if (pathSegments.size > 2) {
-                            val soliciationId = pathSegments[2]
-                            presenter.getDetailAction(soliciationId,true)
-                        }else{
+                        (context as? MainActivity)?.goGroup() ?: run {
                             val intent = Intent(context, MainActivity::class.java)
                                 .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                            intent.putExtra("goDemand", true)
+                            intent.putExtra("goDiscoverGroup", true)
                             context.startActivity(intent)
                             (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                         }
                     }
                 }
+
+                // Événements : https://www.entourage.social/app/outings...
+                pathSegments.contains("outings") -> {
+                    handleOutings(pathSegments)
+                }
+
+                // Contributions : https://www.entourage.social/app/contributions ou /contributions/new
                 pathSegments.contains("contributions") -> {
                     if (pathSegments.contains("new")) {
                         val intent = Intent(context, CreateActionActivity::class.java)
                         intent.putExtra(Const.IS_ACTION_DEMAND, false)
                         context.startActivity(intent)
                     } else {
-                        if (pathSegments.size > 2) {
-                            val contribId = pathSegments[2]
-                            presenter.getDetailAction(contribId,false)
-                        }else{
+                        (context as? MainActivity)?.goContrib() ?: run {
                             val intent = Intent(context, MainActivity::class.java)
                                 .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                             intent.putExtra("goContrib", true)
@@ -220,47 +128,80 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
                         }
                     }
                 }
+
+                // Demandes : https://www.entourage.social/app/solicitations ou /solicitations/new
+                pathSegments.contains("solicitations") -> {
+                    if (pathSegments.contains("new")) {
+                        val intent = Intent(context, CreateActionActivity::class.java)
+                        intent.putExtra(Const.IS_ACTION_DEMAND, true)
+                        context.startActivity(intent)
+                    } else {
+                        (context as? MainActivity)?.goDemand() ?: run {
+                            val intent = Intent(context, MainActivity::class.java)
+                                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                            intent.putExtra("goDemand", true)
+                            context.startActivity(intent)
+                            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
+                        }
+                    }
+                }
+
+                // Carte des lieux solidaires : https://www.entourage.social/app/map
                 pathSegments.contains("map") -> {
                     val intent = Intent(context, GDSMainActivity::class.java)
                     context.startActivity(intent)
                     (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                 }
+
+                // Charte des événements : https://www.entourage.social/app/chart-event
+                pathSegments.contains("chart-event") -> {
+                    val intent = Intent(context, GroupRulesActivity::class.java).apply {
+                        putExtra(Const.RULES_TYPE, Const.RULES_EVENT)
+                    }
+                    (context as Activity).startActivity(intent)
+                }
+
+                // Conversations : https://www.entourage.social/app/conversation-message
+                pathSegments.contains("conversation-message") || pathSegments.contains("conversations") || pathSegments.contains("messages") -> {
+                    (context as? MainActivity)?.goConv()
+                }
+
+                // Badges : https://www.entourage.social/app/badges...
+                pathSegments.contains("badges") && pathSegments.contains("intro") -> {
+                    (context as? AppCompatActivity)?.let { activity ->
+                        BadgeIntroBottomSheet.newInstance()
+                            .show(activity.supportFragmentManager, "badge_intro")
+                    }
+                }
+                pathSegments.contains("badges") && pathSegments.size > 2 -> {
+                    val badgeId = pathSegments[2]
+                    val intent = Intent(context, BadgesListActivity::class.java)
+                    intent.putExtra(BadgesListActivity.EXTRA_OPEN_BADGE_KEY, badgeId)
+                    context.startActivity(intent)
+                    (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
+                }
+                pathSegments.contains("badges") -> {
+                    val intent = Intent(context, BadgesListActivity::class.java)
+                    context.startActivity(intent)
+                    (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
+                }
+
+                // Contenus pédagogiques (Ressources) : https://www.entourage.social/app/resources...
                 pathSegments.contains("resources") -> {
                     val intent = when {
                         pathSegments.size > 2 -> {
                             // Un ID de ressource est présent
                             val resourcesId = pathSegments[2]
                             PedagoDetailActivity.hashId = resourcesId
-                            Intent(context, PedagoDetailActivity::class.java).apply {
-                                // Assumons que PedagoDetailActivity attend un extra avec l'ID de la ressource
-                            }
+                            Intent(context, PedagoDetailActivity::class.java)
                         }
                         else -> {
                             // Aucun ID de ressource spécifié; ouvrir la liste
                             Intent(context, PedagoListActivity::class.java)
                         }
                     }
-
-                    when (context) {
-                        is MainActivity -> {
-                            context.startActivity(intent)
-                            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
-                        }
-                        is DetailConversationActivity -> {
-                            context.startActivity(intent)
-                            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
-                        }
-                        is CommentActivity -> {
-                            context.startActivity(intent)
-                            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
-                        }
-                        else -> {
-                            // Logique par défaut ou gestion d'autres contextes
-                            context.startActivity(intent)
-                            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
-
-                        }
-                    }
+                    context.startActivity(intent)
+                    (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                 }
             }
         }
@@ -268,20 +209,20 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
 
     private fun handleOutings(pathSegments: List<String>) {
         if (pathSegments.contains("papotages")) {
-            val intent = Intent(context, social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
+            val intent = Intent(context, WelcomeEventsListActivity::class.java)
             intent.putExtra("TYPE", "papotages")
             context.startActivity(intent)
             (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
         } else if (pathSegments.contains("new")) {
-            val intent = Intent(context, social.entourage.android.events.create.CreateEventActivity::class.java)
+            val intent = Intent(context, CreateEventActivity::class.java)
             context.startActivity(intent)
         } else if (pathSegments.contains("webinar")) {
-            val intent = Intent(context, social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
+            val intent = Intent(context, WelcomeEventsListActivity::class.java)
             intent.putExtra("TYPE", "webinar")
             context.startActivity(intent)
             (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
         } else if (pathSegments.contains("welcome")) {
-            val intent = Intent(context, social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
+            val intent = Intent(context, WelcomeEventsListActivity::class.java)
             intent.putExtra("TYPE", "welcome")
             context.startActivity(intent)
             (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
@@ -315,7 +256,7 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
         context.startActivity(
             Intent(
                 context,
-                social.entourage.android.events.details.feed.EventFeedActivity::class.java
+                EventFeedActivity::class.java
             ).apply {
                 putExtra(Const.EVENT_ID, event.id)
                 addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
@@ -336,26 +277,15 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
         }
     }
 
-    override fun onRetrievedAction(action: Action,isContrib:Boolean) {
-        if(isContrib){
-            val intent = Intent(context, ActionDetailActivity::class.java)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .putExtra(Const.ACTION_ID, action.id)
-                .putExtra(Const.ACTION_TITLE,action.title)
-                .putExtra(Const.IS_ACTION_DEMAND,false)
-                .putExtra(Const.IS_ACTION_MINE, action.isMine())
-            context.startActivity(intent)
-            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
-        }else{
-            val intent = Intent(context, ActionDetailActivity::class.java)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .putExtra(Const.ACTION_ID, action.id)
-                .putExtra(Const.ACTION_TITLE,action.title)
-                .putExtra(Const.IS_ACTION_DEMAND,true)
-                .putExtra(Const.IS_ACTION_MINE, action.isMine())
-            context.startActivity(intent)
-            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
-        }
+    override fun onRetrievedAction(action: Action, isContrib: Boolean) {
+        val intent = Intent(context, ActionDetailActivity::class.java)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            .putExtra(Const.ACTION_ID, action.id)
+            .putExtra(Const.ACTION_TITLE, action.title)
+            .putExtra(Const.IS_ACTION_DEMAND, !isContrib)
+            .putExtra(Const.IS_ACTION_MINE, action.isMine())
+        context.startActivity(intent)
+        (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     override fun onRetrievedDiscussion(discussion: Conversation) {
@@ -398,8 +328,8 @@ class UniversalLinkManager(val context:Context):UniversalLinksPresenterCallback 
 
     }
 
-    override fun onUserJoinedConversation() {
-        presenter.getDetailConversation(this.conversationId)
+    override fun onUserJoinedConversation(conversationId: String) {
+        presenter.getDetailConversation(conversationId)
 
     }
 

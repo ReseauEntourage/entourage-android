@@ -12,17 +12,17 @@ import social.entourage.android.notifications.EntourageFirebaseMessagingService
 import java.util.Locale
 
 /**
- * Handles the deep links received by the app
- * Created by Mihai Ionescu on 31/10/2017.
+ * Handles custom scheme deep links received by the app (entourage://, entourage-debug://, etc.)
  *
- * entourage://...
- * http://websiteurl/key/info
- * https://websiteurl/key/info
- * /feed/
- * /feed/filters
- * /badge
- * /webview/...url=...
- * adb shell am start -W -a android.intent.action.VIEW -d "example://gizmos" com.example.android
+ * Supported Custom Scheme Routes:
+ * - `guide` / `app` -> Show Guide / Home
+ * - `events` / `outings` -> Show Events
+ * - `profile` / `badge` / `badges` -> Show Profile / Badges
+ * - `create-action` / `contributions` / `solicitations` -> Show Actions / Create Action
+ * - `tutorial` -> Show Onboarding Tutorial
+ * - `guidemap` / `map` -> Show Guide Map
+ * - `webview?url={url}` -> Show In-App WebView
+ * - `groups` / `neighborhoods` -> Show Groups
  */
 object DeepLinksManager {
     // ----------------------------------

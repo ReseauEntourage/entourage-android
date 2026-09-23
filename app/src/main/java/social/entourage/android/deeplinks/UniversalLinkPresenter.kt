@@ -143,7 +143,7 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
             .enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     if (response.isSuccessful) {
-                       callback.onUserJoinedConversation()
+                       callback.onUserJoinedConversation(conversationId)
                     } else {
                         callback.onUserErrorJoinedConversation()
                     }
@@ -164,7 +164,7 @@ interface UniversalLinksPresenterCallback{
     fun onRetrievedGroup(group:Group?)
     fun onRetrievedAction(action:Action, isContrib:Boolean)
     fun onRetrievedDiscussion(discussion: Conversation)
-    fun onUserJoinedConversation()
+    fun onUserJoinedConversation(conversationId: String)
 
     fun onErrorRetrievedDiscussion()
     fun onErrorRetrievedGroup()
