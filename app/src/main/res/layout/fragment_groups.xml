@@ -136,7 +136,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="7dp"
             android:layout_marginEnd="7dp"
-            android:background="@drawable/new_bg_profile"
+            android:background="@drawable/bg_profile"
             android:fillViewport="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
             <LinearLayout
@@ -261,7 +261,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:src="@drawable/new_choose_group_photo"
+                            android:src="@drawable/illu_choose_group_photo"
                             app:layout_constraintBottom_toTopOf="@+id/title"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -272,7 +272,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:layout_marginBottom="-15dp"
-                            android:src="@drawable/new_group_stars"
+                            android:src="@drawable/ic_group_stars"
                             app:layout_constraintBottom_toTopOf="@id/title"
                             app:layout_constraintStart_toStartOf="parent" />
 
@@ -308,7 +308,7 @@
                         android:layout_marginStart="250dp"
                         android:layout_marginEnd="115dp"
                         android:layout_marginBottom="90dp"
-                        android:src="@drawable/new_arrow_create_group"
+                        android:src="@drawable/ic_arrow_create_group"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -333,7 +333,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="7dp"
             android:layout_marginEnd="7dp"
-            android:background="@drawable/new_bg_profile"
+            android:background="@drawable/bg_profile"
             android:visibility="gone"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -373,7 +373,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
             android:layout_margin="16dp"
-            android:src="@drawable/new_fab_plus"
+            android:src="@drawable/ic_fab_plus"
             android:visibility="gone"
             app:fab_colorNormal="@color/orange"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -387,7 +387,7 @@
             android:layout_margin="16dp"
             android:fontFamily="@font/nunitosans_bold"
             android:padding="10dp"
-            android:src="@drawable/new_fab_plus"
+            android:src="@drawable/ic_fab_plus"
             android:text="@string/btn_create_group"
             android:textColor="@color/white"
             android:textSize="15sp"

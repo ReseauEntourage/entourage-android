@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/root_layout"
-        android:background="@drawable/new_profile_header_yellow"
+        android:background="@drawable/bg_profile_header_yellow"
         >
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -126,7 +126,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/new_location"
+                    app:srcCompat="@drawable/ic_location"
                     app:tint="@color/orange" />
 
                 <TextView
@@ -170,7 +170,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|bottom"
                 android:layout_margin="16dp"
-                android:src="@drawable/new_fab_plus"
+                android:src="@drawable/ic_fab_plus"
                 android:text="@string/create_event_btn_title"
                 android:textColor="@color/white"
                 android:padding="10dp"
@@ -187,7 +187,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|bottom"
                 android:layout_margin="16dp"
-                android:src="@drawable/new_fab_plus"
+                android:src="@drawable/ic_fab_plus"
                 android:textColor="@color/white"
                 android:padding="10dp"
                 app:backgroundTint="@color/orange"

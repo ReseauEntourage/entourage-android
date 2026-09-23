@@ -12,7 +12,7 @@
         android:layout_marginEnd="@dimen/entourage_margin_end"
         android:layout_marginStart="@dimen/entourage_marginstart"
         android:layout_marginTop="@dimen/entourage_marginstart"
-        android:background="@drawable/language_layout_background_full"
+        android:background="@drawable/bg_language_layout_full"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

@@ -1,4 +1,4 @@
-package social.entourage.android.discussions
+﻿package social.entourage.android.discussions
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -535,7 +535,7 @@ class DetailConversationActivity : CommentActivity() {
             binding.ivPhotoPreview.animate().alpha(1f).setDuration(300).start()
         }
 
-        binding.comment.background = ContextCompat.getDrawable(this, R.drawable.new_circle_orange_button_fill)
+        binding.comment.background = ContextCompat.getDrawable(this, R.drawable.bg_circle_orange_button)
         binding.comment.isEnabled = true
     }
 
@@ -1065,7 +1065,7 @@ class DetailConversationActivity : CommentActivity() {
 
     private fun setupHeader() {
         binding.header.headerIconSettings.setImageDrawable(
-            ContextCompat.getDrawable(this, R.drawable.new_settings)
+            ContextCompat.getDrawable(this, R.drawable.ic_settings)
         )
         val transparent = ContextCompat.getColor(this, R.color.transparent)
         binding.header.headerCardIconSetting.setBackgroundColor(transparent)

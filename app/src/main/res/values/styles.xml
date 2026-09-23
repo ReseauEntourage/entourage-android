@@ -185,7 +185,7 @@
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@drawable/rb_map_filter_textcolor</item>
-        <item name="android:background">@drawable/rb_map_filter_bg</item>
+        <item name="android:background">@drawable/bg_rb_map_filter</item>
     </style>
 
     <!-- Search edit text -->
@@ -415,7 +415,7 @@
     <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
         <item name="android:fontFamily">@font/nunitosans_bold</item>
         <item name="android:textSize">@dimen/profile_titles</item>
-        <item name="android:textColor">@color/new_light_grey</item>
+        <item name="android:textColor">@color/grey_border_light</item>
     </style>
 
     <style name="settings_items">
@@ -607,7 +607,7 @@
     </style>
 
     <style name="CustomBottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/new_bg_bottomsheet</item>
+        <item name="android:background">@drawable/bg_bottomsheet</item>
     </style>
 
     <style name="FullScreenDialog" parent="Theme.AppCompat.Light.Dialog">
@@ -640,7 +640,7 @@
     <style name="ColorSwitchStyle">
         <item name="thumbTint">@color/white</item>
         <item name="android:shadowColor">@color/transparent</item>
-        <item name="trackTint">@color/new_track_selector</item>
+        <item name="trackTint">@color/selector_track</item>
     </style>
 
     <style name="left_default">
@@ -723,7 +723,7 @@
         <item name="chipBackgroundColor">@color/chip_background_color</item>
         <item name="chipStrokeColor">@color/chip_stroke_color</item>
         <item name="chipStrokeWidth">1dp</item>
-        <item name="chipIcon">@drawable/chips_pin_icon</item>
+        <item name="chipIcon">@drawable/ic_chips_pin</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">13sp</item>
         <item name="android:fontFamily">@font/nunitosans_regular</item>

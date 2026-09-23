@@ -67,7 +67,7 @@
 
         <include
             android:id="@+id/error"
-            layout="@layout/new_error"
+            layout="@layout/layout_error"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -81,6 +81,6 @@
             android:layout_marginTop="5dp"
             android:visibility="gone"
             tools:itemCount="5"
-            tools:listitem="@layout/new_choose_group_event_item" />
+            tools:listitem="@layout/item_choose_group_event" />
     </LinearLayout>
 </layout>

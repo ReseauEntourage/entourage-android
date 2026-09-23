@@ -1,4 +1,4 @@
-package social.entourage.android.home
+﻿package social.entourage.android.home
 
 import android.view.LayoutInflater
 import android.view.View
@@ -51,13 +51,13 @@ class NationalGroupsAdapter(
                 Glide.with(itemView.context)
                     .load(group.imageUrl)
                     .apply(RequestOptions().override(100.px, 100.px))
-                    .placeholder(R.drawable.new_placeholder_group)
-                    .error(R.drawable.new_placeholder_group)
+                    .placeholder(R.drawable.illu_placeholder_group)
+                    .error(R.drawable.illu_placeholder_group)
                     .transform(CenterCrop(), RoundedCorners(20.px))
                     .into(groupImage)
             } else {
                 Glide.with(itemView.context)
-                    .load(R.drawable.new_placeholder_group)
+                    .load(R.drawable.illu_placeholder_group)
                     .apply(RequestOptions().override(100.px, 100.px))
                     .transform(CenterCrop(), RoundedCorners(20.px))
                     .into(groupImage)

@@ -13,7 +13,7 @@
         android:id="@+id/iv_star"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:src="@drawable/new_star_orange"
+        android:src="@drawable/ic_star_orange"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

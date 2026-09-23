@@ -1,4 +1,4 @@
-package social.entourage.android.comment
+﻿package social.entourage.android.comment
 
 import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
@@ -188,7 +188,7 @@ fun MessageBubbleItem(
                     modifier = Modifier.clickable(onClick = onRetryClick)
                 ) {
                     Image(
-                        painter = painterResource(R.drawable.new_retry),
+                        painter = painterResource(R.drawable.ic_retry),
                         contentDescription = null,
                         modifier = Modifier.padding(end = 4.dp)
                     )
@@ -311,7 +311,7 @@ private fun MessageActionsTriggerButton(showLabel: Boolean, onClick: () -> Unit,
         modifier = modifier
             .clip(RoundedCornerShape(20.dp))
             .background(colorResource(R.color.white))
-            .border(1.dp, colorResource(R.color.new_light_grey), RoundedCornerShape(20.dp))
+            .border(1.dp, colorResource(R.color.grey_border_light), RoundedCornerShape(20.dp))
             .clickable(onClick = onClick)
             .padding(horizontal = if (showLabel) 12.dp else 6.dp, vertical = 6.dp)
     ) {

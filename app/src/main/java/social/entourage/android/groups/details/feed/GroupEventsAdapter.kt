@@ -1,4 +1,4 @@
-package social.entourage.android.groups.details.feed
+﻿package social.entourage.android.groups.details.feed
 
 import android.content.Context
 import android.content.Intent
@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import social.entourage.android.R
-import social.entourage.android.databinding.NewEventItemLayoutBinding
+import social.entourage.android.databinding.ItemEventFeedBinding
 import social.entourage.android.api.model.Events
 import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.language.LanguageManager
@@ -22,11 +22,11 @@ class GroupEventsAdapter(
     var eventsList: List<Events>, var context: Context,
 ) : RecyclerView.Adapter<GroupEventsAdapter.ViewHolder>() {
 
-    inner class ViewHolder(val binding: NewEventItemLayoutBinding) :
+    inner class ViewHolder(val binding: ItemEventFeedBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = NewEventItemLayoutBinding.inflate(
+        val binding = ItemEventFeedBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false

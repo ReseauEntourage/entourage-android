@@ -1,4 +1,4 @@
-package social.entourage.android.discussions.members
+﻿package social.entourage.android.discussions.members
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.GroupMember
-import social.entourage.android.databinding.NewGroupMemberItemBinding
+import social.entourage.android.databinding.ItemGroupMemberBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.groups.details.members.OnItemShowListener
 import social.entourage.android.profile.ProfileFullActivity
@@ -26,11 +26,11 @@ class MembersConversationListAdapter(
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(val binding: NewGroupMemberItemBinding) :
+    inner class ViewHolder(val binding: ItemGroupMemberBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = NewGroupMemberItemBinding.inflate(
+        val binding = ItemGroupMemberBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false

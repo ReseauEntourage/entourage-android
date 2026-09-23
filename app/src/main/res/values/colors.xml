@@ -116,7 +116,7 @@
 
     <color name="bottom_sheet_background">#B5545454</color>
     <color name="orange_opacity_50">#ffcbab</color>
-    <color name="new_orange_bubble">#FFCDAE</color>
+    <color name="orange_bubble">#FFCDAE</color>
     <color name="orange_secondary_local">#FFD8B5</color>
     <color name="orange_text_map_local">#FF9739</color>
     <color name="orange_entourage">#F55F24</color>
@@ -126,7 +126,7 @@
     <color name="gris_tres_tres_fonce">#282523</color>
     <color name="separator">@color/greyish</color>
     <color name="grey_contour">#DADADA</color>
-    <color name="new_light_grey">#cdcdcd</color>
+    <color name="grey_border_light">#cdcdcd</color>
     <color name="deleted_grey">#a8a8a8</color>
     <color name="grey_vote">#979797</color>
     <color name="grey_onboarding_item_border">#CDCDCD</color>

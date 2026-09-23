@@ -53,7 +53,7 @@
                     android:layout_width="10dp"
                     android:layout_height="10dp"
                     android:layout_marginEnd="4dp"
-                    android:src="@drawable/new_event_canceled"
+                    android:src="@drawable/ic_event_canceled"
                     android:tint="@color/white" />
 
                 <TextView
@@ -153,7 +153,7 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_marginEnd="6dp"
-                    android:src="@drawable/new_date_grey" />
+                    android:src="@drawable/ic_date_grey" />
 
                 <TextView
                     android:id="@+id/tv_date_home_v2_event_item"
@@ -176,7 +176,7 @@
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_marginEnd="6dp"
-                    android:src="@drawable/new_location_grey" />
+                    android:src="@drawable/ic_location_grey" />
 
                 <TextView
                     android:id="@+id/tv_place_home_v2_event_item"

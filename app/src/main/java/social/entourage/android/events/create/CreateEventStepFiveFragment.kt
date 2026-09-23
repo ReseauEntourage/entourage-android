@@ -1,4 +1,4 @@
-package social.entourage.android.events.create
+﻿package social.entourage.android.events.create
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,15 +12,15 @@ import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.Group
-import social.entourage.android.databinding.NewFragmentCreateEventStepFiveBinding
+import social.entourage.android.databinding.FragmentCreateEventStepFiveBinding
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.list.groupPerPage
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class CreateEventStepFiveFragment : Fragment() {
-    private var _binding: NewFragmentCreateEventStepFiveBinding? = null
-    val binding: NewFragmentCreateEventStepFiveBinding get() = _binding!!
+    private var _binding: FragmentCreateEventStepFiveBinding? = null
+    val binding: FragmentCreateEventStepFiveBinding get() = _binding!!
     private var groupsList: MutableList<Group> = ArrayList()
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
     private var selectedGroupsIdList: MutableList<Int> = mutableListOf()
@@ -32,7 +32,7 @@ class CreateEventStepFiveFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentCreateEventStepFiveBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateEventStepFiveBinding.inflate(inflater, container, false)
         return binding.root
     }
 

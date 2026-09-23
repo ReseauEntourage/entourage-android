@@ -10,7 +10,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/new_round_group_success_right"
+            android:src="@drawable/ic_round_group_success_right"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
-            android:src="@drawable/new_round_group_success_left"
+            android:src="@drawable/ic_round_group_success_left"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="32dp"
             android:layout_marginBottom="24dp"
-            android:background="@drawable/new_rounded_button_orange"
+            android:background="@drawable/bg_button_rounded_orange"
             android:paddingHorizontal="15dp"
             android:text="@string/action_create_end_finish_bt"
             android:textAllCaps="false"
@@ -79,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
-            android:src="@drawable/new_group_stars"
+            android:src="@drawable/ic_group_stars"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/title" />
 

@@ -26,7 +26,7 @@
         android:layout_marginStart="@dimen/entourage_marginstart"
         android:layout_marginTop="28dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/new_backn_map_home"
+        android:background="@drawable/ic_back_map_home"
         app:layout_constraintBottom_toBottomOf="@+id/iv_map"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -37,7 +37,7 @@
             android:layout_height="29dp"
             android:layout_marginStart="20dp"
             android:scaleType="fitXY"
-            android:src="@drawable/home_map_button_illu"
+            android:src="@drawable/illu_home_map_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

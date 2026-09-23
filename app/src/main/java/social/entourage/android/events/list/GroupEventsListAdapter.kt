@@ -1,4 +1,4 @@
-package social.entourage.android.events.list
+﻿package social.entourage.android.events.list
 
 import android.content.Context
 import android.content.Intent
@@ -15,8 +15,8 @@ import social.entourage.android.R
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.Status
-import social.entourage.android.databinding.NewEventItemBinding
-import social.entourage.android.databinding.NewEventsListHeaderBinding
+import social.entourage.android.databinding.ItemEventBinding
+import social.entourage.android.databinding.ItemEventsListHeaderBinding
 import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.calculateIfEventPassed
@@ -41,10 +41,10 @@ class GroupEventsListAdapter(
         private const val TYPE_CHILD = 1
     }
 
-    inner class SectionViewHolder(val binding: NewEventsListHeaderBinding) :
+    inner class SectionViewHolder(val binding: ItemEventsListHeaderBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    inner class ChildViewHolder(val binding: NewEventItemBinding) :
+    inner class ChildViewHolder(val binding: ItemEventBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     private var rows: List<Row> = buildRows(sectionItemList)
@@ -83,8 +83,8 @@ class GroupEventsListAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            TYPE_SECTION -> SectionViewHolder(NewEventsListHeaderBinding.inflate(inflater, parent, false))
-            else -> ChildViewHolder(NewEventItemBinding.inflate(inflater, parent, false))
+            TYPE_SECTION -> SectionViewHolder(ItemEventsListHeaderBinding.inflate(inflater, parent, false))
+            else -> ChildViewHolder(ItemEventBinding.inflate(inflater, parent, false))
         }
     }
 
@@ -163,7 +163,7 @@ class GroupEventsListAdapter(
         }
     }
 
-    private fun bindParticipants(event: Events, binding: NewEventItemBinding) {
+    private fun bindParticipants(event: Events, binding: ItemEventBinding) {
         val members = event.members ?: emptyList()
         val totalCount = event.membersCount ?: 0
 

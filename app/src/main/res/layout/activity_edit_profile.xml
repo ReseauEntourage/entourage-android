@@ -60,7 +60,7 @@
                         layout="@layout/profile_edit_clickable_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:icon='@{@drawable/new_description}'
+                        app:icon='@{@drawable/ic_description}'
                         app:title='@{@string/onboard_welcome_title_gender}' />
 
                     <include
@@ -69,7 +69,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hint='@{@string/firstname}'
-                        app:icon='@{@drawable/new_description}'
+                        app:icon='@{@drawable/ic_description}'
                         app:title='@{@string/firstname}' />
 
                     <include
@@ -78,7 +78,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hint='@{@string/lastname}'
-                        app:icon='@{@drawable/new_description}'
+                        app:icon='@{@drawable/ic_description}'
                         app:title='@{@string/lastname}' />
 
                     <include
@@ -86,7 +86,7 @@
                         layout="@layout/profile_editable_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:icon='@{@drawable/new_description}'
+                        app:icon='@{@drawable/ic_description}'
                         app:title='@{@string/description}' />
 
                     <include
@@ -95,7 +95,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hint='@{@string/date_format_profile_fr}'
-                        app:icon='@{@drawable/new_birth}'
+                        app:icon='@{@drawable/ic_birth}'
                         app:title='@{@string/birthday}' />
 
                     <include
@@ -103,7 +103,7 @@
                         layout="@layout/profile_edit_clickable_item"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:icon='@{@drawable/new_phone}'
+                        app:icon='@{@drawable/ic_phone}'
                         app:title='@{@string/phone}' />
 
                     <include
@@ -112,7 +112,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:hint='@{@string/email}'
-                        app:icon='@{@drawable/new_mail}'
+                        app:icon='@{@drawable/ic_mail}'
                         app:title='@{@string/email}' />
 
                     <TextView
@@ -175,7 +175,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
                         android:visibility="gone"
-                        app:icon='@{@drawable/new_description}'
+                        app:icon='@{@drawable/ic_description}'
                         app:label='@{@string/my_interests}' />
 
                     <include
@@ -185,7 +185,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="70dp"
                         android:visibility="gone"
-                        app:icon='@{@drawable/new_description}'
+                        app:icon='@{@drawable/ic_description}'
                         app:label='@{@string/my_onboarding}' />
 
                 </LinearLayout>
@@ -194,13 +194,13 @@
 
         <include
             android:id="@+id/validate"
-            layout="@layout/new_rounded_button_white"
+            layout="@layout/layout_rounded_button_white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="65dp"
             android:layout_marginBottom="20dp"
             app:content='@{@string/apply_modifications}'
-            app:drawable='@{@drawable/new_rounded_button_orange}'
+            app:drawable='@{@drawable/bg_button_rounded_orange}'
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

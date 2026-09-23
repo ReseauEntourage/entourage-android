@@ -1,4 +1,4 @@
-package social.entourage.android.groups.list
+﻿package social.entourage.android.groups.list
 
 import android.content.Intent
 import android.net.Uri
@@ -12,7 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
 import social.entourage.android.api.model.Group
-import social.entourage.android.databinding.NewGroupItemBinding
+import social.entourage.android.databinding.ItemGroupBinding
 import social.entourage.android.groups.details.feed.GroupFeedActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
@@ -29,11 +29,11 @@ class GroupsListAdapter(
 ) : RecyclerView.Adapter<GroupsListAdapter.ViewHolder>() {
 
 
-    inner class ViewHolder(val binding: NewGroupItemBinding) :
+    inner class ViewHolder(val binding: ItemGroupBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = NewGroupItemBinding.inflate(
+        val binding = ItemGroupBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -100,13 +100,13 @@ class GroupsListAdapter(
                     Glide.with(binding.image.context)
                         .load(Uri.parse(it))
                         .apply(RequestOptions().override(90.px, 90.px))
-                        .placeholder(R.drawable.new_placeholder_group)
-                        .error(R.drawable.new_placeholder_group)
+                        .placeholder(R.drawable.illu_placeholder_group)
+                        .error(R.drawable.illu_placeholder_group)
                         .transform(CenterCrop(), RoundedCorners(20.px))
                         .into(binding.image)
                 } ?: run {
                     Glide.with(binding.image.context)
-                        .load(R.drawable.new_placeholder_group)
+                        .load(R.drawable.illu_placeholder_group)
                         .apply(RequestOptions().override(90.px, 90.px))
                         .transform(CenterCrop(), RoundedCorners(20.px))
                         .into(binding.image)

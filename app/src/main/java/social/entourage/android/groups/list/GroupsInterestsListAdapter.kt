@@ -1,20 +1,20 @@
-package social.entourage.android.groups.list
+﻿package social.entourage.android.groups.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.api.model.Interest
-import social.entourage.android.databinding.NewGroupsInterestsImageItemBinding
+import social.entourage.android.databinding.ItemGroupsInterestsImageBinding
 
 class GroupsInterestsListAdapter(
     var interestsList: List<String>,
 ) : RecyclerView.Adapter<GroupsInterestsListAdapter.ViewHolder>() {
 
-    inner class ViewHolder(val binding: NewGroupsInterestsImageItemBinding) :
+    inner class ViewHolder(val binding: ItemGroupsInterestsImageBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = NewGroupsInterestsImageItemBinding.inflate(
+        val binding = ItemGroupsInterestsImageBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false

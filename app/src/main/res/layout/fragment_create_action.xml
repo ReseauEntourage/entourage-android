@@ -22,11 +22,11 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:padding="10dp"
-                android:src="@drawable/new_back_white"
+                android:src="@drawable/ic_arrow_back_white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/new_back_white" />
+                tools:src="@drawable/ic_arrow_back_white" />
 
             <TextView
                 android:id="@+id/ui_header_title"
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:src="@drawable/ic_new_header_action_create"
+                android:src="@drawable/ic_header_action_create"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -86,7 +86,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                app:tabBackground="@drawable/new_tab_selector"
+                app:tabBackground="@drawable/selector_tab"
                 app:tabGravity="center"
                 app:tabIndicatorHeight="0dp" />
 
@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="0.3"
-                android:background="@drawable/new_bg_rounded_inactive_button_light_orange"
+                android:background="@drawable/bg_button_inactive_light_orange"
                 android:text="@string/next"
                 android:textAllCaps="false" />
 

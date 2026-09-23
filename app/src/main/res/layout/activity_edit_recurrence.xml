@@ -13,13 +13,13 @@
 
         <include
             android:id="@+id/header"
-            layout="@layout/new_main_header"
+            layout="@layout/layout_main_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="21dp"
             android:layout_marginBottom="12dp"
             android:layout_weight="0"
-            app:icon="@{@drawable/new_create_event_icon}"
+            app:icon="@{@drawable/ic_create_event_header}"
             app:title="@{@string/recurrence}" />
 
         <LinearLayout
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:layout_weight="0.6"
-            android:background="@drawable/new_bg_rounded_beige"
+            android:background="@drawable/bg_rounded_beige"
             android:orientation="vertical"
             android:padding="26dp">
 
@@ -106,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="125dp"
                 android:layout_weight="0.3"
-                android:background="@drawable/new_bg_rounded_button_orange_stroke_transparent"
+                android:background="@drawable/bg_button_orange_stroke_transparent"
                 android:text="@string/cancel"
                 android:textAllCaps="false" />
 
@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="0.3"
-                android:background="@drawable/new_rounded_button_light_orange"
+                android:background="@drawable/bg_button_rounded_light_orange"
                 android:text="@string/validate"
                 android:textAllCaps="false" />
 

@@ -155,7 +155,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:srcCompat="@drawable/new_bg_rounded_14_orange_light" />
+                                app:srcCompat="@drawable/bg_rounded_14_orange_light" />
 
                             <ImageView
                                 android:id="@+id/ui_image_placeholder"
@@ -163,7 +163,7 @@
                                 android:layout_height="184dp"
                                 android:layout_marginTop="4dp"
                                 android:adjustViewBounds="true"
-                                android:background="@drawable/new_bg_rounded_14_orange_light"
+                                android:background="@drawable/bg_rounded_14_orange_light"
                                 android:cropToPadding="true"
                                 android:scaleType="centerInside"
                                 android:visibility="gone"
@@ -179,7 +179,7 @@
                                 android:layout_height="30dp"
                                 android:layout_marginTop="8dp"
                                 android:layout_marginEnd="4dp"
-                                android:background="@drawable/new_bg_rounded_button_orange_stroke"
+                                android:background="@drawable/bg_button_orange_stroke"
                                 android:paddingHorizontal="4dp"
                                 android:paddingVertical="6dp"
                                 app:layout_constraintEnd_toEndOf="@+id/ui_image_contrib"
@@ -343,7 +343,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         android:layout_marginTop="8dp"
                         app:layout_constraintStart_toStartOf="@+id/ui_title_location"
                         app:layout_constraintTop_toBottomOf="@+id/ui_title_location"
-                        app:srcCompat="@drawable/new_location_grey" />
+                        app:srcCompat="@drawable/ic_location_grey" />
 
                     <TextView
                         android:id="@+id/ui_location"
@@ -406,7 +406,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             android:id="@+id/ui_user_iv"
                             android:layout_width="44dp"
                             android:layout_height="44dp"
-                            android:src="@drawable/new_contact"
+                            android:src="@drawable/ic_contact"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -478,7 +478,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             style="@style/left_courant_bold_black"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/new_arrow_orange"
+                            android:src="@drawable/ic_arrow_orange"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/title_signal"
@@ -508,7 +508,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                 android:layout_height="44dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/shape_button_v9_negative"
-                android:drawableRight="@drawable/new_delete"
+                android:drawableRight="@drawable/ic_delete"
                 android:drawablePadding="8dp"
                 android:elevation="0dp"
                 android:minWidth="120dp"
@@ -529,8 +529,8 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                 android:layout_width="wrap_content"
                 android:layout_height="44dp"
                 android:layout_marginStart="8dp"
-                android:background="@drawable/new_bg_rounded_button_orange_fill"
-                android:drawableRight="@drawable/new_create_post"
+                android:background="@drawable/bg_button_orange_fill"
+                android:drawableRight="@drawable/ic_create_post"
                 android:drawablePadding="8dp"
                 android:drawableTint="@color/white"
                 android:elevation="0dp"
@@ -554,8 +554,8 @@ purus dui, aliquet cursus tellus a, dictum hen." />
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/new_bg_rounded_button_orange_fill"
-            android:drawableRight="@drawable/new_contact_white"
+            android:background="@drawable/bg_button_orange_fill"
+            android:drawableRight="@drawable/ic_contact_white"
             android:drawablePadding="8dp"
             android:elevation="0dp"
             android:minWidth="120dp"
@@ -586,7 +586,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                 android:layout_width="wrap_content"
                 android:layout_height="44dp"
                 android:layout_marginTop="24dp"
-                android:background="@drawable/new_bg_rounded_button_orange_fill"
+                android:background="@drawable/bg_button_orange_fill"
                 android:drawableTint="@color/white"
                 android:elevation="0dp"
                 android:minWidth="120dp"
@@ -612,12 +612,12 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/new_action_empty_state_grey"
+                    android:src="@drawable/illu_action_empty_state_grey"
                     app:layout_constraintBottom_toTopOf="@+id/title"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/new_action_empty_state_grey" />
+                    app:srcCompat="@drawable/illu_action_empty_state_grey" />
 
                 <TextView
                     android:id="@+id/title"

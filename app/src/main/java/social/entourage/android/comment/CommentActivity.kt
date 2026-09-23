@@ -1,4 +1,4 @@
-package social.entourage.android.comment
+﻿package social.entourage.android.comment
 
 import android.content.Intent
 import android.net.Uri
@@ -949,8 +949,8 @@ private fun handleSendButtonState() {
         override fun afterTextChanged(s: Editable) {
             binding.comment.background = ResourcesCompat.getDrawable(
                 resources,
-                if (s.isEmpty() || s.isBlank()) R.drawable.new_bg_rounded_inactive_button_light_orange
-                else R.drawable.new_circle_orange_button_fill,
+                if (s.isEmpty() || s.isBlank()) R.drawable.bg_button_inactive_light_orange
+                else R.drawable.bg_circle_orange_button,
                 null
             )
         }
@@ -960,7 +960,7 @@ private fun handleSendButtonState() {
 private fun setSettingsIcon() {
     binding.header.title = getString(R.string.comments_title)
     binding.header.headerIconSettings.isVisible = true
-    binding.header.headerIconSettings.setImageResource(R.drawable.new_report_group)
+    binding.header.headerIconSettings.setImageResource(R.drawable.ic_report_group)
     binding.header.headerCardIconSetting.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
     binding.header.headerIconSettings.setBackgroundColor(ContextCompat.getColor(this, R.color.transparent))
 }

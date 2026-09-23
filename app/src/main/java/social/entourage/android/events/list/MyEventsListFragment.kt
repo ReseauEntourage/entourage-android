@@ -1,4 +1,4 @@
-package social.entourage.android.events.list
+﻿package social.entourage.android.events.list
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.EventActionLocationFilters
-import social.entourage.android.databinding.NewFragmentMyEventsListBinding
+import social.entourage.android.databinding.FragmentMyEventsListBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.api.model.Events
 import social.entourage.android.events.create.CreateEventActivity
@@ -25,8 +25,8 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import timber.log.Timber
 
 class MyEventsListFragment : Fragment() {
-    private var _binding: NewFragmentMyEventsListBinding? = null
-    val binding: NewFragmentMyEventsListBinding get() = _binding!!
+    private var _binding: FragmentMyEventsListBinding? = null
+    val binding: FragmentMyEventsListBinding get() = _binding!!
 
     private lateinit var eventsPresenter: EventsPresenter
     private var myId: Int? = null
@@ -44,7 +44,7 @@ class MyEventsListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentMyEventsListBinding.inflate(inflater, container, false)
+        _binding = FragmentMyEventsListBinding.inflate(inflater, container, false)
         return binding.root
     }
 

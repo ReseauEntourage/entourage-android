@@ -1,4 +1,4 @@
-package social.entourage.android.events.list
+﻿package social.entourage.android.events.list
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,15 +12,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.api.model.Events
-import social.entourage.android.databinding.NewFragmentGroupEventsListBinding
+import social.entourage.android.databinding.FragmentGroupEventsListBinding
 import social.entourage.android.events.create.CreateEventActivity
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 
 class GroupEventsListFragment : Fragment() {
-    private var _binding: NewFragmentGroupEventsListBinding? = null
-    val binding: NewFragmentGroupEventsListBinding get() = _binding!!
+    private var _binding: FragmentGroupEventsListBinding? = null
+    val binding: FragmentGroupEventsListBinding get() = _binding!!
 
     lateinit var eventsAdapter: GroupEventsListAdapter
     private var sections: MutableList<SectionHeader> = mutableListOf()
@@ -35,7 +35,7 @@ class GroupEventsListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentGroupEventsListBinding.inflate(inflater, container, false)
+        _binding = FragmentGroupEventsListBinding.inflate(inflater, container, false)
         return binding.root
     }
 

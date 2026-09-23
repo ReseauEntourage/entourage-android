@@ -1,4 +1,4 @@
-package social.entourage.android.profile.association
+﻿package social.entourage.android.profile.association
 
 import android.net.Uri
 import android.os.Bundle
@@ -94,13 +94,13 @@ class AssociationProfileActivity : BaseActivity() {
             if (!imgUrl.isNullOrEmpty()) {
                 Glide.with(this@AssociationProfileActivity)
                     .load(imgUrl) // Glide accepte directement le String
-                    .placeholder(R.drawable.partner_placeholder)
-                    .error(R.drawable.partner_placeholder)
+                    .placeholder(R.drawable.placeholder_partner)
+                    .error(R.drawable.placeholder_partner)
                     .circleCrop()
                     .into(assoProfileImageAssociation)
             } else {
                 // Image par défaut si aucune URL n'est fournie
-                assoProfileImageAssociation.setImageResource(R.drawable.partner_placeholder)
+                assoProfileImageAssociation.setImageResource(R.drawable.placeholder_partner)
             }
         }
         // Met à jour l'état du bouton "Suivre"
@@ -111,8 +111,8 @@ class AssociationProfileActivity : BaseActivity() {
         partner?.let {
             val label = if (it.isFollowing) getString(R.string.following) else getString(R.string.follow)
             val textColor = ContextCompat.getColor(this, if (it.isFollowing) R.color.orange else R.color.white)
-            val background = ResourcesCompat.getDrawable(resources, if (it.isFollowing) R.drawable.new_bg_rounded_button_orange_stroke else R.drawable.new_bg_rounded_button_orange_fill, null)
-            val rightDrawable = ResourcesCompat.getDrawable(resources, if (it.isFollowing) R.drawable.new_check else R.drawable.new_plus_white, null)
+            val background = ResourcesCompat.getDrawable(resources, if (it.isFollowing) R.drawable.bg_button_orange_stroke else R.drawable.bg_button_orange_fill, null)
+            val rightDrawable = ResourcesCompat.getDrawable(resources, if (it.isFollowing) R.drawable.ic_check_orange else R.drawable.ic_plus_white, null)
 
             binding.assoProfileSubscribe.button.text = label
             binding.assoProfileSubscribe.button.setTextColor(textColor)

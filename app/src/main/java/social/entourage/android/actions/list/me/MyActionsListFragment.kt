@@ -1,4 +1,4 @@
-package social.entourage.android.actions.list.me
+﻿package social.entourage.android.actions.list.me
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,7 +14,7 @@ import social.entourage.android.R
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.actions.detail.ActionDetailActivity
 import social.entourage.android.api.model.Action
-import social.entourage.android.databinding.NewFragmentActionsMyListBinding
+import social.entourage.android.databinding.FragmentActionsMyListBinding
 import social.entourage.android.tools.utils.Const
 
 class MyActionsListFragment : Fragment() {
@@ -22,8 +22,8 @@ class MyActionsListFragment : Fragment() {
         const val EVENTS_PER_PAGE = 10
     }
 
-    private var _binding: NewFragmentActionsMyListBinding? = null
-    val binding: NewFragmentActionsMyListBinding get() = _binding!!
+    private var _binding: FragmentActionsMyListBinding? = null
+    val binding: FragmentActionsMyListBinding get() = _binding!!
 
     private val myActionsPresenter: ActionsPresenter by lazy { ActionsPresenter() }
     private lateinit var actionAdapter: MyActionsListAdapter
@@ -39,7 +39,7 @@ class MyActionsListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentActionsMyListBinding.inflate(inflater,container,false)
+        _binding = FragmentActionsMyListBinding.inflate(inflater,container,false)
         return binding.root
     }
 

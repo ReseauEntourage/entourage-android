@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/new_rounded_button"
+    android:background="@drawable/bg_rounded_white"
     android:paddingHorizontal="24dp"
     android:paddingTop="26dp"
     android:paddingBottom="22dp">
@@ -173,7 +173,7 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginTop="18dp"
-        android:background="@drawable/new_bg_rounded_button_orange_fill"
+        android:background="@drawable/bg_button_orange_fill"
         app:backgroundTint="@null"
         android:fontFamily="@font/quicksand_bold"
         android:gravity="center"

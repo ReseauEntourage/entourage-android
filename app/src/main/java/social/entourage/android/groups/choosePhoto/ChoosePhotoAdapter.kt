@@ -1,4 +1,4 @@
-package social.entourage.android.groups.choosePhoto
+﻿package social.entourage.android.groups.choosePhoto
 
 import android.net.Uri
 import android.view.LayoutInflater
@@ -11,8 +11,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
 import social.entourage.android.api.model.Image
-import social.entourage.android.databinding.NewPhotoItemBinding
-import social.entourage.android.databinding.NewPhotoAddItemBinding
+import social.entourage.android.databinding.ItemPhotoBinding
+import social.entourage.android.databinding.ItemPhotoAddBinding
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 
@@ -37,22 +37,22 @@ class ChoosePhotoAdapter(
         return TYPE_PHOTO
     }
 
-    inner class PhotoViewHolder(val binding: NewPhotoItemBinding) :
+    inner class PhotoViewHolder(val binding: ItemPhotoBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    inner class AddPhotoViewHolder(val binding: NewPhotoAddItemBinding) :
+    inner class AddPhotoViewHolder(val binding: ItemPhotoAddBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == TYPE_ADD) {
-            val binding = NewPhotoAddItemBinding.inflate(
+            val binding = ItemPhotoAddBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
             AddPhotoViewHolder(binding)
         } else {
-            val binding = NewPhotoItemBinding.inflate(
+            val binding = ItemPhotoBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -92,7 +92,7 @@ class ChoosePhotoAdapter(
                     }
                     if (photosList[photoPosition].isSelected == true) {
                         checkedPosition = photoPosition
-                        binding.image.setBackgroundResource(R.drawable.new_bg_choose_photo_selected)
+                        binding.image.setBackgroundResource(R.drawable.bg_choose_photo_selected)
                     } else {
                         binding.image.setBackgroundResource(0)
                     }

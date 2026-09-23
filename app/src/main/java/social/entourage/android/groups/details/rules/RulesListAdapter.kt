@@ -1,11 +1,11 @@
-package social.entourage.android.groups.details.rules
+﻿package social.entourage.android.groups.details.rules
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.api.model.Rules
 import social.entourage.android.databinding.EventRulesSectionItemBinding
-import social.entourage.android.databinding.NewRulesItemBinding
+import social.entourage.android.databinding.ItemRulesBinding
 
 class RulesListAdapter(
     private var rulesList: List<Rules>
@@ -16,7 +16,7 @@ class RulesListAdapter(
         private const val TYPE_RULE = 2
     }
 
-    inner class RuleViewHolder(val binding: NewRulesItemBinding) :
+    inner class RuleViewHolder(val binding: ItemRulesBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     inner class SectionViewHolder(val binding: EventRulesSectionItemBinding) :
@@ -34,7 +34,7 @@ class RulesListAdapter(
             )
             SectionViewHolder(binding)
         } else {
-            val binding = NewRulesItemBinding.inflate(
+            val binding = ItemRulesBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             )
             RuleViewHolder(binding)

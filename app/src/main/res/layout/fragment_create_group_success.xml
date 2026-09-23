@@ -16,13 +16,13 @@
             app:layout_constraintBottom_toTopOf="@+id/title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/new_illu_empty_state_event" />
+            app:srcCompat="@drawable/illu_empty_state_event" />
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/new_round_group_success_right"
+            android:src="@drawable/ic_round_group_success_right"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="100dp"
-            android:src="@drawable/new_round_group_success_left"
+            android:src="@drawable/ic_round_group_success_left"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
        <LinearLayout
@@ -49,8 +49,8 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="30dp"
                 android:layout_weight="0.3"
-                android:background="@drawable/new_bg_rounded_button_orange_stroke_transparent"
-                android:drawableEnd="@drawable/new_arrow_orange"
+                android:background="@drawable/bg_button_orange_stroke_transparent"
+                android:drawableEnd="@drawable/ic_arrow_orange"
                 android:drawablePadding="@dimen/entourage_padding_10"
                 android:paddingHorizontal="15dp"
                 android:text="@string/pass"
@@ -69,7 +69,7 @@
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="34dp"
             android:layout_weight="0.3"
-            android:background="@drawable/new_rounded_button_orange"
+            android:background="@drawable/bg_button_rounded_orange"
             android:paddingHorizontal="15dp"
             android:text="@string/create_post"
             android:textAllCaps="false"
@@ -106,7 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="-10dp"
-            android:src="@drawable/new_group_stars"
+            android:src="@drawable/ic_group_stars"
             app:layout_constraintBottom_toTopOf="@id/title"
             app:layout_constraintStart_toStartOf="parent" />
 

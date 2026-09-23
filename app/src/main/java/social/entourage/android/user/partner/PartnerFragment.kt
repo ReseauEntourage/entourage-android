@@ -121,7 +121,7 @@ class PartnerFragment : BaseDialogFragment() {
                 partner.largeLogoUrl?.let { url ->
                     Glide.with(this)
                             .load(Uri.parse(url))
-                            .placeholder(R.drawable.partner_placeholder)
+                            .placeholder(R.drawable.placeholder_partner)
                             .circleCrop()
                             .into(logoView)
                 }

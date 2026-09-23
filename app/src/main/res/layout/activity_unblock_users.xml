@@ -66,7 +66,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/new_illu_header_group" />
+                    app:srcCompat="@drawable/illu_header_group" />
 
                 <TextView
                     android:id="@+id/title2"
@@ -84,13 +84,13 @@
 
         <include
             android:id="@+id/validate"
-            layout="@layout/new_rounded_button_white"
+            layout="@layout/layout_rounded_button_white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="65dp"
             android:layout_marginBottom="20dp"
             app:content="@{@string/settingsUnblockBT}"
-            app:drawable="@{@drawable/new_rounded_button_orange}"
+            app:drawable="@{@drawable/bg_button_rounded_orange}"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

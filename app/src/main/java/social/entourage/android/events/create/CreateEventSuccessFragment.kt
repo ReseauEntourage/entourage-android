@@ -1,4 +1,4 @@
-package social.entourage.android.events.create
+﻿package social.entourage.android.events.create
 
 import android.app.Activity
 import android.content.Context
@@ -12,14 +12,14 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.google.android.play.core.review.ReviewManagerFactory
 import social.entourage.android.RefreshController
-import social.entourage.android.databinding.NewFragmentCreateEventSuccessBinding
+import social.entourage.android.databinding.FragmentCreateEventSuccessBinding
 import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.tools.utils.Const
 
 class CreateEventSuccessFragment : Fragment() {
 
-    private var _binding: NewFragmentCreateEventSuccessBinding? = null
-    val binding: NewFragmentCreateEventSuccessBinding get() = _binding!!
+    private var _binding: FragmentCreateEventSuccessBinding? = null
+    val binding: FragmentCreateEventSuccessBinding get() = _binding!!
 
     private val args: CreateEventSuccessFragmentArgs by navArgs()
     private val activityResultLauncher = registerForActivityResult(
@@ -30,7 +30,7 @@ class CreateEventSuccessFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentCreateEventSuccessBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateEventSuccessBinding.inflate(inflater, container, false)
         return binding.root
     }
 

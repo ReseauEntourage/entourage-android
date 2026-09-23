@@ -8,7 +8,7 @@
     android:gravity="center"
     android:layout_marginEnd="8dp"
     android:padding="10dp"
-    android:background="@drawable/new_rounded_background_statistics">
+    android:background="@drawable/bg_rounded_statistics">
 
     <ImageView
         android:id="@+id/iv_badge_icon"

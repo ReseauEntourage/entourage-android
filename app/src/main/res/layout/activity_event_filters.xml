@@ -202,9 +202,9 @@
                             android:layout_marginTop="8dp"
                             android:max="100"
                             android:progress="20"
-                            android:progressDrawable="@drawable/new_seek_bar"
+                            android:progressDrawable="@drawable/bg_seek_bar"
                             android:splitTrack="false"
-                            android:thumb="@drawable/new_thumb"
+                            android:thumb="@drawable/ic_thumb"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/tv_trickle_indicator" />
@@ -251,7 +251,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="3dp"
-                            android:src="@drawable/new_cross_error" />
+                            android:src="@drawable/ic_close_error" />
 
                         <TextView
                             style="@style/error_msg"
@@ -267,13 +267,13 @@
 
         <include
             android:id="@+id/validate"
-            layout="@layout/new_rounded_button_white"
+            layout="@layout/layout_rounded_button_white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="65dp"
             android:layout_marginBottom="32dp"
             app:content="@{@string/validate}"
-            app:drawable="@{@drawable/new_rounded_button_orange}"
+            app:drawable="@{@drawable/bg_button_rounded_orange}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

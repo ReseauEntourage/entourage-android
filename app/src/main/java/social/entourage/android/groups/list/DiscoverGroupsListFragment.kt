@@ -1,4 +1,4 @@
-package social.entourage.android.groups.list
+﻿package social.entourage.android.groups.list
 
 import android.os.Bundle
 import android.text.Editable
@@ -15,7 +15,7 @@ import com.google.android.material.textfield.TextInputLayout.END_ICON_CUSTOM
 import com.google.android.material.textfield.TextInputLayout.END_ICON_NONE
 import social.entourage.android.R
 import social.entourage.android.api.model.Group
-import social.entourage.android.databinding.NewFragmentGroupsListBinding
+import social.entourage.android.databinding.FragmentGroupsListBinding
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Utils
@@ -24,8 +24,8 @@ const val groupPerPage = 10
 
 class DiscoverGroupsListFragment : Fragment() , UpdateGroupInter {
 
-    private var _binding: NewFragmentGroupsListBinding? = null
-    val binding: NewFragmentGroupsListBinding get() = _binding!!
+    private var _binding: FragmentGroupsListBinding? = null
+    val binding: FragmentGroupsListBinding get() = _binding!!
     private var groupsList: MutableList<Group> = ArrayList()
     private var groupsListSearch: MutableList<Group> = ArrayList()
     private lateinit var groupPresenter: GroupPresenter
@@ -53,7 +53,7 @@ class DiscoverGroupsListFragment : Fragment() , UpdateGroupInter {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentGroupsListBinding.inflate(inflater, container, false)
+        _binding = FragmentGroupsListBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(
             AnalyticsEvents.VIEW_GROUP_SHOW_DISCOVER
         )

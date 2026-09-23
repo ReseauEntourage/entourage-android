@@ -1,4 +1,4 @@
-package social.entourage.android.events.create
+﻿package social.entourage.android.events.create
 
 import android.app.TimePickerDialog
 import android.content.Context
@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.widget.EditText
 import androidx.constraintlayout.widget.ConstraintLayout
 import social.entourage.android.R
-import social.entourage.android.databinding.NewTimePickerStartEndBinding
+import social.entourage.android.databinding.LayoutTimePickerStartEndBinding
 import social.entourage.android.language.LanguageManager
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -21,15 +21,15 @@ class TimePickerStartEnd @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    private var _binding: NewTimePickerStartEndBinding? = null
-    val binding: NewTimePickerStartEndBinding get() = _binding!!
+    private var _binding: LayoutTimePickerStartEndBinding? = null
+    val binding: LayoutTimePickerStartEndBinding get() = _binding!!
 
     init {
         init()
     }
 
     private fun init() {
-        _binding = NewTimePickerStartEndBinding.inflate(LayoutInflater.from(context), this, true)
+        _binding = LayoutTimePickerStartEndBinding.inflate(LayoutInflater.from(context), this, true)
         startTimeTransformIntoTimePicker(context.getString(R.string.events_time))
         endTimeTransformIntoTimePicker(context.getString(R.string.events_time))
     }

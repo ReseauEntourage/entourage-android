@@ -1,4 +1,4 @@
-package social.entourage.android.groups.choosePhoto
+﻿package social.entourage.android.groups.choosePhoto
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -17,7 +17,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Image
-import social.entourage.android.databinding.NewFragmentCreateGroupChoosePhotoModalBinding
+import social.entourage.android.databinding.FragmentCreateGroupChoosePhotoModalBinding
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import android.content.Intent
@@ -31,8 +31,8 @@ enum class ImagesType {
 
 class ChooseGalleryPhotoModalFragment : BottomSheetDialogFragment() {
 
-    private var _binding: NewFragmentCreateGroupChoosePhotoModalBinding? = null
-    val binding: NewFragmentCreateGroupChoosePhotoModalBinding get() = _binding!!
+    private var _binding: FragmentCreateGroupChoosePhotoModalBinding? = null
+    val binding: FragmentCreateGroupChoosePhotoModalBinding get() = _binding!!
     private var photosList: MutableList<Image> = mutableListOf()
     private lateinit var choosePhotoAdapter: ChoosePhotoAdapter
     private var imagesType: ImagesType? = null
@@ -41,7 +41,7 @@ class ChooseGalleryPhotoModalFragment : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentCreateGroupChoosePhotoModalBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateGroupChoosePhotoModalBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(
             AnalyticsEvents.VIEW_NEW_GROUP_STEP3_PIC_GALLERY
         )

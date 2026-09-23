@@ -1,4 +1,4 @@
-package social.entourage.android.groups.edit
+﻿package social.entourage.android.groups.edit
 
 import android.net.Uri
 import android.os.Bundle
@@ -24,7 +24,7 @@ import social.entourage.android.api.model.Group
 import social.entourage.android.api.model.Image
 import social.entourage.android.api.model.Interest
 import social.entourage.android.api.model.Tags
-import social.entourage.android.databinding.NewFragmentEditGroupBinding
+import social.entourage.android.databinding.FragmentEditGroupBinding
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.choosePhoto.ChooseGalleryPhotoModalFragment
 import social.entourage.android.groups.choosePhoto.ImagesType
@@ -41,8 +41,8 @@ import social.entourage.android.tools.utils.trimEnd
 
 class EditGroupFragment : Fragment() {
 
-    private var _binding: NewFragmentEditGroupBinding? = null
-    val binding: NewFragmentEditGroupBinding get() = _binding!!
+    private var _binding: FragmentEditGroupBinding? = null
+    val binding: FragmentEditGroupBinding get() = _binding!!
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
     private lateinit var group: Group
     private var interestsList: MutableList<Interest> = mutableListOf()
@@ -77,7 +77,7 @@ class EditGroupFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentEditGroupBinding.inflate(inflater, container, false)
+        _binding = FragmentEditGroupBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(
             AnalyticsEvents.VIEW_GROUP_OPTION_EDITION
         )
@@ -244,7 +244,7 @@ class EditGroupFragment : Fragment() {
         val isActive = isInterestsListValid() && isGroupNameValid() && isGroupDescriptionValid()
         val background = ContextCompat.getDrawable(
             requireContext(),
-            if (isActive) R.drawable.new_rounded_button_orange else R.drawable.new_bg_rounded_inactive_button_light_orange
+            if (isActive) R.drawable.bg_button_rounded_orange else R.drawable.bg_button_inactive_light_orange
         )
         binding.validate.button.background = background
     }

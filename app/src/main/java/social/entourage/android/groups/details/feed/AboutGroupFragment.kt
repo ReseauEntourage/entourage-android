@@ -1,4 +1,4 @@
-package social.entourage.android.groups.details.feed
+﻿package social.entourage.android.groups.details.feed
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,7 +17,7 @@ import com.google.android.flexbox.JustifyContent
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Tags
-import social.entourage.android.databinding.NewFragmentAboutGroupBinding
+import social.entourage.android.databinding.FragmentAboutGroupBinding
 import social.entourage.android.groups.GroupModel
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.GroupDetailsFragment
@@ -31,8 +31,8 @@ import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 
 class AboutGroupFragment : Fragment() {
 
-    private var _binding: NewFragmentAboutGroupBinding? = null
-    val binding: NewFragmentAboutGroupBinding get() = _binding!!
+    private var _binding: FragmentAboutGroupBinding? = null
+    val binding: FragmentAboutGroupBinding get() = _binding!!
     var group: GroupModel? = null
     private var interestsList: ArrayList<String> = ArrayList()
     private val args: AboutGroupFragmentArgs by navArgs()
@@ -42,7 +42,7 @@ class AboutGroupFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentAboutGroupBinding.inflate(inflater, container, false)
+        _binding = FragmentAboutGroupBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(
             AnalyticsEvents.VIEW_GROUP_FEED_FULL_DESCRIPTION
         )
@@ -98,12 +98,12 @@ class AboutGroupFragment : Fragment() {
         )
         val background = ResourcesCompat.getDrawable(
             resources,
-            if (group?.member == true) R.drawable.new_bg_rounded_button_orange_stroke else R.drawable.new_bg_rounded_button_orange_fill,
+            if (group?.member == true) R.drawable.bg_button_orange_stroke else R.drawable.bg_button_orange_fill,
             null
         )
         val rightDrawable = ResourcesCompat.getDrawable(
             resources,
-            if (group?.member == true) R.drawable.new_check else R.drawable.new_plus_white,
+            if (group?.member == true) R.drawable.ic_check_orange else R.drawable.ic_plus_white,
             null
         )
         binding.join.text = label

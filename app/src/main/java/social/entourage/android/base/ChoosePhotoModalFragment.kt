@@ -1,4 +1,4 @@
-package social.entourage.android.base
+﻿package social.entourage.android.base
 
 import android.Manifest
 import android.content.ActivityNotFoundException
@@ -21,7 +21,7 @@ import androidx.fragment.app.setFragmentResult
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.takusemba.cropme.OnCropListener
 import social.entourage.android.R
-import social.entourage.android.databinding.NewFragmentChoosePhotoModalBinding
+import social.entourage.android.databinding.FragmentChoosePhotoModalBinding
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
@@ -34,8 +34,8 @@ import java.util.Date
 
 class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
 
-    private var _binding: NewFragmentChoosePhotoModalBinding? = null
-    val binding: NewFragmentChoosePhotoModalBinding get() = _binding!!
+    private var _binding: FragmentChoosePhotoModalBinding? = null
+    val binding: FragmentChoosePhotoModalBinding get() = _binding!!
 
     var photoFileUri: Uri? = null
     var pickingPhoto:Boolean = false
@@ -75,7 +75,7 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentChoosePhotoModalBinding.inflate(inflater, container, false)
+        _binding = FragmentChoosePhotoModalBinding.inflate(inflater, container, false)
         return binding.root
     }
 

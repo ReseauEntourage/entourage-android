@@ -1,4 +1,4 @@
-package social.entourage.android.home.pedago
+﻿package social.entourage.android.home.pedago
 
 import android.app.Activity
 import android.graphics.Bitmap
@@ -20,15 +20,15 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import social.entourage.android.R
 import social.entourage.android.api.model.Pedago
-import social.entourage.android.databinding.NewFragmentPedagoContentDetailsBinding
+import social.entourage.android.databinding.FragmentPedagoContentDetailsBinding
 import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.home.HomePresenter
 import java.lang.ref.WeakReference
 
 class PedagoContentDetailsFragment : Fragment() {
 
-    private var _binding: NewFragmentPedagoContentDetailsBinding? = null
-    val binding: NewFragmentPedagoContentDetailsBinding get() = _binding!!
+    private var _binding: FragmentPedagoContentDetailsBinding? = null
+    val binding: FragmentPedagoContentDetailsBinding get() = _binding!!
 
     private val homePresenter: HomePresenter by lazy { HomePresenter() }
 
@@ -41,7 +41,7 @@ class PedagoContentDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentPedagoContentDetailsBinding.inflate(inflater, container, false)
+        _binding = FragmentPedagoContentDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 

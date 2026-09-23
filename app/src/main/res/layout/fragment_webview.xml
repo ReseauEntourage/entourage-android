@@ -22,7 +22,7 @@
             android:id="@+id/webview_navigation_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/webview_navigation_background"
+            android:background="@drawable/bg_webview_navigation"
             android:orientation="vertical">
 
             <LinearLayout

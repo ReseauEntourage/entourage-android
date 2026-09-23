@@ -17,7 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="@dimen/entourage_little_margin_start"
-        tools:src="@drawable/first_help_item_illu"
+        tools:src="@drawable/illu_first_help_item"
 
         />
     <TextView

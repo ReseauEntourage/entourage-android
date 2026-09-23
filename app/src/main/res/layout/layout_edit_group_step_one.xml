@@ -115,7 +115,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/new_location"
+                android:src="@drawable/ic_location"
                 tools:text="Title" />
 
             <LinearLayout
@@ -145,7 +145,7 @@
 
         <include
             android:id="@+id/error"
-            layout="@layout/new_error"
+            layout="@layout/layout_error"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

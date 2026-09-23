@@ -14,13 +14,13 @@
             android:layout_height="30dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="15dp"
-            android:src="@drawable/new_arrow"
+            android:src="@drawable/ic_arrow_right"
             android:background="@drawable/bg_beige_round_15"
             app:layout_constraintBottom_toTopOf="@id/category_name_label"
             app:layout_constraintRight_toLeftOf="@id/title"
             app:layout_constraintTop_toBottomOf="@id/divider"
             app:layout_constraintWidth_percent="0.2"
-            tools:src="@drawable/new_edit_profile" />
+            tools:src="@drawable/ic_edit_profile" />
 
         <TextView
             android:id="@+id/title"

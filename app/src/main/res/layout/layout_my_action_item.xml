@@ -20,7 +20,7 @@
             android:layout_marginStart="0dp"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="12dp"
-            android:src="@drawable/new_illu_header_group"
+            android:src="@drawable/illu_header_group"
             tools:srcCompat="@drawable/ic_placeholder_action" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -58,7 +58,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:src="@drawable/new_date_grey" />
+                    android:src="@drawable/ic_date_grey" />
 
                 <TextView
                     android:id="@+id/date"

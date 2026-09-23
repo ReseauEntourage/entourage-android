@@ -35,9 +35,9 @@
         android:layout_marginTop="8dp"
         android:max="100"
         android:progress="20"
-        android:progressDrawable="@drawable/new_seek_bar"
+        android:progressDrawable="@drawable/bg_seek_bar"
         android:splitTrack="false"
-        android:thumb="@drawable/new_thumb"
+        android:thumb="@drawable/ic_thumb"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_trickle_indicator" />

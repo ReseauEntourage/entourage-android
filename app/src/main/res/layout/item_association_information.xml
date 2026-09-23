@@ -30,7 +30,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.1"
-            tools:src="@drawable/new_edit_profile" />
+            tools:src="@drawable/ic_edit_profile" />
 
         <LinearLayout
             android:id="@+id/asso_info_layout"

@@ -13,11 +13,11 @@
 
         <include
             android:id="@+id/header"
-            layout="@layout/new_main_header"
+            layout="@layout/layout_main_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
-            app:icon="@{@drawable/new_illu_header_group}"
+            app:icon="@{@drawable/illu_header_group}"
             app:title="@{@string/new_group}" />
 
         <androidx.viewpager2.widget.ViewPager2
@@ -52,7 +52,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.3"
-                app:tabBackground="@drawable/new_tab_selector"
+                app:tabBackground="@drawable/selector_tab"
                 app:tabGravity="center"
                 app:tabIndicatorHeight="0dp" />
 
@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_weight="0.3"
-                android:background="@drawable/new_bg_rounded_inactive_button_light_orange"
+                android:background="@drawable/bg_button_inactive_light_orange"
                 android:text="@string/next"
                 android:textAllCaps="false" />
 

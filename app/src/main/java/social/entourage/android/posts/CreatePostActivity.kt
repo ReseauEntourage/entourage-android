@@ -1,4 +1,4 @@
-package social.entourage.android.posts
+﻿package social.entourage.android.posts
 
 import android.net.Uri
 import android.os.Build
@@ -224,7 +224,7 @@ abstract class CreatePostActivity : AppCompatActivity() {
         binding.validate.button.setCompoundDrawablesWithIntrinsicBounds(
             null,
             null,
-            ResourcesCompat.getDrawable(resources, R.drawable.new_post, null),
+            ResourcesCompat.getDrawable(resources, R.drawable.ic_post, null),
             null
         )
     }
@@ -362,8 +362,8 @@ abstract class CreatePostActivity : AppCompatActivity() {
     private fun handleSaveButtonState(isActive: Boolean) {
         val background = ContextCompat.getDrawable(
             this,
-            if (isActive) R.drawable.new_rounded_button_orange
-            else R.drawable.new_bg_rounded_inactive_button_light_orange
+            if (isActive) R.drawable.bg_button_rounded_orange
+            else R.drawable.bg_button_inactive_light_orange
         )
         binding.validate.button.background = background
     }

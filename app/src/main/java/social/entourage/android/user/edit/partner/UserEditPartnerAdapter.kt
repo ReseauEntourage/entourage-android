@@ -65,9 +65,9 @@ class UserEditPartnerAdapter : BaseAdapter() {
                 binding.partnerName.setTypeface(null, if (it.isDefault) Typeface.BOLD else Typeface.NORMAL)
                 it.largeLogoUrl?.let { logoUrl ->
                     Glide.with(binding.partnerLogo.context).load(Uri.parse(logoUrl))
-                        .placeholder(R.drawable.partner_placeholder).into(binding.partnerLogo)
+                        .placeholder(R.drawable.placeholder_partner).into(binding.partnerLogo)
                 } ?: run {
-                    binding.partnerLogo.setImageDrawable(ResourcesCompat.getDrawable(binding.root.resources, R.drawable.partner_placeholder, null))
+                    binding.partnerLogo.setImageDrawable(ResourcesCompat.getDrawable(binding.root.resources, R.drawable.placeholder_partner, null))
                 }
                 binding.partnerCheckbox.tag = null // Préparer pour la réutilisation
                 binding.partnerCheckbox.isChecked = it.isDefault

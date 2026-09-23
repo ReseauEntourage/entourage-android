@@ -1,4 +1,4 @@
-package social.entourage.android.groups.details.members
+﻿package social.entourage.android.groups.details.members
 
 import android.content.Context
 import android.content.Intent
@@ -15,7 +15,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.ReactionType
-import social.entourage.android.databinding.NewGroupMemberItemBinding
+import social.entourage.android.databinding.ItemGroupMemberBinding
 import social.entourage.android.home.HomeState
 import social.entourage.android.members.MembersActivity
 import social.entourage.android.profile.ProfileFullActivity
@@ -37,12 +37,12 @@ class MembersListAdapter(
     private var iAmOrganiser: Boolean? = false ,
 
     ) : RecyclerView.Adapter<MembersListAdapter.ViewHolder>() {
-    inner class ViewHolder(val binding: NewGroupMemberItemBinding) :
+    inner class ViewHolder(val binding: ItemGroupMemberBinding) :
         RecyclerView.ViewHolder(binding.root)
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = NewGroupMemberItemBinding.inflate(
+        val binding = ItemGroupMemberBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -85,7 +85,7 @@ class MembersListAdapter(
         }
 
         if (isOrganizer) {
-            b.layout.background = ContextCompat.getDrawable(context, R.drawable.background_organizer)
+            b.layout.background = ContextCompat.getDrawable(context, R.drawable.bg_organizer)
 
             val roleLabel = if (item.groupRole == "organizer" || item.groupRole == "creator") {
                 context.getString(R.string.organizer_label)

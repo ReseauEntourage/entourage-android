@@ -1,4 +1,4 @@
-package social.entourage.android.discussions
+﻿package social.entourage.android.discussions
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,7 +12,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.RefreshController
 import social.entourage.android.api.model.Conversation
-import social.entourage.android.databinding.NewFragmentSettingsDiscussionModalBinding
+import social.entourage.android.databinding.FragmentSettingsDiscussionModalBinding
 import social.entourage.android.discussions.members.MembersConversationFragment
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.report.ReportModalFragment
@@ -24,7 +24,7 @@ import social.entourage.android.tools.utils.CustomAlertDialog
 class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
 
     /* ──────────────── viewBinding ──────────────── */
-    private var _binding: NewFragmentSettingsDiscussionModalBinding? = null
+    private var _binding: FragmentSettingsDiscussionModalBinding? = null
     private val binding get() = _binding!!
 
     /* ──────────────── ViewModels ──────────────── */
@@ -54,7 +54,7 @@ class SettingsDiscussionModalFragment : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentSettingsDiscussionModalBinding.inflate(inflater, container, false)
+        _binding = FragmentSettingsDiscussionModalBinding.inflate(inflater, container, false)
         return binding.root
     }
 

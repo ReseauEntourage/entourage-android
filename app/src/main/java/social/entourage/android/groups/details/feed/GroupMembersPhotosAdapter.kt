@@ -1,4 +1,4 @@
-package social.entourage.android.groups.details.feed
+﻿package social.entourage.android.groups.details.feed
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,18 +6,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import social.entourage.android.R
 import social.entourage.android.api.model.GroupMember
-import social.entourage.android.databinding.NewPhotoItemSmallBinding
+import social.entourage.android.databinding.ItemPhotoSmallBinding
 import social.entourage.android.tools.utils.Const.LIMIT_PHOTOS_MEMBERS
 
 class GroupMembersPhotosAdapter(
     var membersList: List<GroupMember>,
 ) : RecyclerView.Adapter<GroupMembersPhotosAdapter.ViewHolder>() {
 
-    inner class ViewHolder(val binding: NewPhotoItemSmallBinding) :
+    inner class ViewHolder(val binding: ItemPhotoSmallBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = NewPhotoItemSmallBinding.inflate(
+        val binding = ItemPhotoSmallBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false

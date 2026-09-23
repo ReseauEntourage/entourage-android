@@ -1,4 +1,4 @@
-package social.entourage.android.profile.myProfile
+﻿package social.entourage.android.profile.myProfile
 
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +13,7 @@ class InterestsAdapter(private val mList: List<String>) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.new_profile_interest_item, parent, false)
+            .inflate(R.layout.item_profile_interest, parent, false)
         return ViewHolder(view)
     }
 

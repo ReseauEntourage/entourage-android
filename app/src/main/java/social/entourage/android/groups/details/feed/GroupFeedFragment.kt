@@ -1,4 +1,4 @@
-package social.entourage.android.groups.details.feed
+﻿package social.entourage.android.groups.details.feed
 
 import android.app.Activity
 import android.app.AlertDialog
@@ -993,14 +993,14 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         with(binding) {
             Glide.with(requireActivity())
                 .load(group?.imageUrl)
-                .error(R.drawable.new_group_illu)
+                .error(R.drawable.illu_group)
                 .centerCrop()
                 .into(groupImage)
 
             Glide.with(requireActivity())
                 .load(group?.imageUrl)
-                .placeholder(R.drawable.new_group_illu)
-                .error(R.drawable.new_group_illu)
+                .placeholder(R.drawable.illu_group)
+                .error(R.drawable.illu_group)
                 .transform(CenterCrop(), RoundedCorners(8.px))
                 .into(groupImageToolbar)
         }
@@ -1036,13 +1036,13 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         )
         val background = ResourcesCompat.getDrawable(
             resources,
-            if (isMember) R.drawable.new_bg_rounded_button_orange_stroke
-            else R.drawable.new_bg_rounded_button_orange_fill,
+            if (isMember) R.drawable.bg_button_orange_stroke
+            else R.drawable.bg_button_orange_fill,
             null
         )
         val rightDrawable = ResourcesCompat.getDrawable(
             resources,
-            if (isMember) R.drawable.new_check else R.drawable.new_plus_white,
+            if (isMember) R.drawable.ic_check_orange else R.drawable.ic_plus_white,
             null
         )
         binding.join.text = label

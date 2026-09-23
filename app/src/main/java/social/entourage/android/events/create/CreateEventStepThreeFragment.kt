@@ -1,4 +1,4 @@
-package social.entourage.android.events.create
+﻿package social.entourage.android.events.create
 
 import android.os.Bundle
 import android.text.Editable
@@ -13,18 +13,18 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import social.entourage.android.R
-import social.entourage.android.databinding.NewFragmentCreateEventStepThreeBinding
+import social.entourage.android.databinding.FragmentCreateEventStepThreeBinding
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class CreateEventStepThreeFragment : Fragment() {
-    private var _binding: NewFragmentCreateEventStepThreeBinding? = null
-    val binding: NewFragmentCreateEventStepThreeBinding get() = _binding!!
+    private var _binding: FragmentCreateEventStepThreeBinding? = null
+    val binding: FragmentCreateEventStepThreeBinding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentCreateEventStepThreeBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateEventStepThreeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -81,7 +81,7 @@ class CreateEventStepThreeFragment : Fragment() {
             binding.layout.image.setImageDrawable(
                 AppCompatResources.getDrawable(
                     requireContext(),
-                    if (isEventFaceToFace) R.drawable.new_location else R.drawable.new_web
+                    if (isEventFaceToFace) R.drawable.ic_location else R.drawable.ic_web
                 )
             )
             CommunicationHandler.event.online(!isEventFaceToFace)

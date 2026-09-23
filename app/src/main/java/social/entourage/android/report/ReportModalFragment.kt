@@ -1,4 +1,4 @@
-package social.entourage.android.report
+﻿package social.entourage.android.report
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -26,7 +26,7 @@ import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.TagMetaData
 import social.entourage.android.api.model.Tags
-import social.entourage.android.databinding.NewFragmentReportBinding
+import social.entourage.android.databinding.FragmentReportModalBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.events.EventsPresenter
@@ -53,8 +53,8 @@ enum class ReportTypes(val code: Int) {
 class ReportModalFragment : BottomSheetDialogFragment() {
 
     private var signalList: MutableList<TagMetaData> = ArrayList()
-    private var _binding: NewFragmentReportBinding? = null
-    val binding: NewFragmentReportBinding get() = _binding!!
+    private var _binding: FragmentReportModalBinding? = null
+    val binding: FragmentReportModalBinding get() = _binding!!
 
     private var selectedSignalsIdList: MutableList<String> = mutableListOf()
 
@@ -86,7 +86,7 @@ class ReportModalFragment : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentReportBinding.inflate(inflater, container, false)
+        _binding = FragmentReportModalBinding.inflate(inflater, container, false)
         return binding.root
     }
 

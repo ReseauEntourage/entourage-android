@@ -1,4 +1,4 @@
-package social.entourage.android.groups.create
+﻿package social.entourage.android.groups.create
 
 import android.net.Uri
 import android.os.Bundle
@@ -15,7 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.api.model.Image
-import social.entourage.android.databinding.NewFragmentCreateGroupStepThreeBinding
+import social.entourage.android.databinding.FragmentCreateGroupStepThreeBinding
 import social.entourage.android.groups.choosePhoto.ChooseGalleryPhotoModalFragment
 import social.entourage.android.groups.choosePhoto.ImagesType
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -25,8 +25,8 @@ import social.entourage.android.tools.utils.px
 
 class CreateGroupStepThreeFragment : Fragment() {
 
-    private var _binding: NewFragmentCreateGroupStepThreeBinding? = null
-    val binding: NewFragmentCreateGroupStepThreeBinding get() = _binding!!
+    private var _binding: FragmentCreateGroupStepThreeBinding? = null
+    val binding: FragmentCreateGroupStepThreeBinding get() = _binding!!
     private val viewModel: CommunicationHandlerViewModel by activityViewModels()
     private var selectedImage: Image? = null
 
@@ -61,7 +61,7 @@ class CreateGroupStepThreeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = NewFragmentCreateGroupStepThreeBinding.inflate(inflater, container, false)
+        _binding = FragmentCreateGroupStepThreeBinding.inflate(inflater, container, false)
         AnalyticsEvents.logEvent(AnalyticsEvents.VIEW_NEW_GROUP_STEP3)
         return binding.root
     }

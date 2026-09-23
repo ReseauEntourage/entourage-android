@@ -1,4 +1,4 @@
-package social.entourage.android.home
+﻿package social.entourage.android.home
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import social.entourage.android.R
-import social.entourage.android.databinding.NewRecommendationItemBinding
+import social.entourage.android.databinding.ItemRecommendationBinding
 import social.entourage.android.api.model.HomeAction
 import social.entourage.android.tools.utils.px
 import timber.log.Timber
@@ -24,11 +24,11 @@ class RecommendationsListAdapter(
     var onItemClick: OnItemClickListener, var context: Context
 ) : RecyclerView.Adapter<RecommendationsListAdapter.ViewHolder>() {
 
-    inner class ViewHolder(val binding: NewRecommendationItemBinding) :
+    inner class ViewHolder(val binding: ItemRecommendationBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = NewRecommendationItemBinding.inflate(
+        val binding = ItemRecommendationBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -44,7 +44,7 @@ class RecommendationsListAdapter(
 
                 Glide.with(holder.itemView.context)
                     .load(this.imageURL)
-                    .placeholder(R.drawable.new_illu_empty_state_event)
+                    .placeholder(R.drawable.illu_empty_state_event)
                     .transform(RoundedCorners(10))
                     .into(binding.image)
 

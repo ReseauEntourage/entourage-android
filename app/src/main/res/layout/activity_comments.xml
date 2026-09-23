@@ -118,7 +118,7 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:id="@+id/iv_btn_event"
-                    android:src="@drawable/new_calendar"
+                    android:src="@drawable/ic_calendar"
                     app:layout_constraintStart_toStartOf="@+id/btn_see_event"
                     app:layout_constraintTop_toTopOf="@+id/btn_see_event"
                     app:layout_constraintBottom_toBottomOf="@+id/btn_see_event"
@@ -401,10 +401,10 @@
                 android:layout_width="46dp"
                 android:layout_height="46dp"
                 android:layout_marginStart="7dp"
-                android:background="@drawable/new_bg_rounded_inactive_button_light_orange"
+                android:background="@drawable/bg_button_inactive_light_orange"
                 android:gravity="end"
                 android:paddingVertical="10dp"
-                android:src="@drawable/new_contact_white" />
+                android:src="@drawable/ic_contact_white" />
 
         </LinearLayout>
 
@@ -460,7 +460,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/new_bg_rounded_button_grey_beige_stroke_slim"
+                android:background="@drawable/bg_button_grey_beige_stroke_slim"
                 android:enabled="false"
                 android:hint="@string/discussbis"
                 android:inputType="textCapSentences|textMultiLine"

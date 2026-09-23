@@ -36,7 +36,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.2"
-            tools:src="@drawable/new_cross" />
+            tools:src="@drawable/ic_close" />
 
         <LinearLayout
             android:id="@+id/peei_text"
@@ -70,7 +70,7 @@
 
             <include
                 android:id="@+id/error"
-                layout="@layout/new_error"
+                layout="@layout/layout_error"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"

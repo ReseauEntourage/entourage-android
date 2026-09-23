@@ -1,4 +1,4 @@
-package social.entourage.android.api.model
+﻿package social.entourage.android.api.model
 
 import social.entourage.android.R
 
@@ -16,7 +16,7 @@ class ActionSection(
                 equipment -> R.drawable.ic_action_section_equipment
                 hygiene -> R.drawable.ic_action_section_hygiene
                 services -> R.drawable.ic_action_section_services
-                else -> R.drawable.new_others
+                else -> R.drawable.ic_others
             }
         }
 
@@ -37,7 +37,7 @@ class ActionSection(
             equipment -> R.drawable.ic_action_section_equipment
             hygiene -> R.drawable.ic_action_section_hygiene
             services -> R.drawable.ic_action_section_services
-            else -> R.drawable.new_others
+            else -> R.drawable.ic_others
         }
 
     }

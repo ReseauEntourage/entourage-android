@@ -20,7 +20,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@drawable/new_group_illu" />
+                tools:src="@drawable/illu_group" />
 
             <LinearLayout
                 android:id="@+id/header"
@@ -40,7 +40,7 @@
                     android:outlineAmbientShadowColor="@color/light_orange_opacity_35"
                     android:outlineSpotShadowColor="@color/light_orange_opacity_35"
                     android:padding="10dp"
-                    android:src="@drawable/new_small_back"
+                    android:src="@drawable/ic_small_back"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,7 +50,7 @@
                     android:layout_height="40dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="15dp"
-                    android:src="@drawable/new_group_illu_toolbar" />
+                    android:src="@drawable/illu_group_toolbar" />
 
                 <TextView
                     android:id="@+id/event_name_toolbar"
@@ -73,7 +73,7 @@
                     android:outlineAmbientShadowColor="@color/light_orange_opacity_35"
                     android:outlineSpotShadowColor="@color/light_orange_opacity_35"
                     android:padding="10dp"
-                    android:src="@drawable/share_icon"
+                    android:src="@drawable/ic_share_action"
                     app:layout_constraintEnd_toStartOf="@id/icon_settings"
                     app:layout_constraintTop_toTopOf="parent"
                     app:tint="@color/orange" />
@@ -87,7 +87,7 @@
                     android:outlineAmbientShadowColor="@color/light_orange_opacity_35"
                     android:outlineSpotShadowColor="@color/light_orange_opacity_35"
                     android:padding="10dp"
-                    android:src="@drawable/new_small_settings"
+                    android:src="@drawable/ic_small_settings"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -118,7 +118,7 @@
                             android:id="@+id/canceled"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/new_bg_event_canceled_banner"
+                            android:background="@drawable/bg_event_canceled_banner"
                             android:elevation="1dp"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
@@ -133,7 +133,7 @@
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:layout_marginRight="10dp"
-                                android:src="@drawable/new_event_canceled"
+                                android:src="@drawable/ic_event_canceled"
                                 android:tint="@color/white" />
 
                             <LinearLayout
@@ -274,33 +274,33 @@
 
                                 <include
                                     android:id="@+id/date_starts_at"
-                                    layout="@layout/new_event_information_layout"
+                                    layout="@layout/layout_event_information"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginEnd="16dp"
                                     android:layout_weight="1"
-                                    app:icon="@{@drawable/new_calendar}" />
+                                    app:icon="@{@drawable/ic_calendar}" />
 
                                 <include
                                     android:id="@+id/time"
-                                    layout="@layout/new_event_information_layout"
+                                    layout="@layout/layout_event_information"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    app:icon="@{@drawable/new_time}" />
+                                    app:icon="@{@drawable/ic_time}" />
                             </LinearLayout>
 
                             <include
                                 android:id="@+id/location"
-                                layout="@layout/new_event_information_layout"
+                                layout="@layout/layout_event_information"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="12dp"
-                                app:icon="@{@drawable/new_location}" />
+                                app:icon="@{@drawable/ic_location}" />
 
                             <include
                                 android:id="@+id/organizer"
-                                layout="@layout/new_event_information_layout"
+                                layout="@layout/layout_event_information"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="12dp"
@@ -320,12 +320,12 @@
 
                             <include
                                 android:id="@+id/places_limit"
-                                layout="@layout/new_event_information_layout"
+                                layout="@layout/layout_event_information"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="12dp"
                                 android:visibility="gone"
-                                app:icon="@{@drawable/new_group_persons}" />
+                                app:icon="@{@drawable/ic_group_persons}" />
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/discussion_box"
@@ -344,7 +344,7 @@
                                     android:id="@+id/discussion_icon"
                                     android:layout_width="44dp"
                                     android:layout_height="44dp"
-                                    android:src="@drawable/new_top_icn_discussion"
+                                    android:src="@drawable/ic_top_discussion"
                                     app:layout_constraintStart_toStartOf="parent"
                                     app:layout_constraintTop_toTopOf="parent"
                                     app:layout_constraintBottom_toBottomOf="parent" />
@@ -385,7 +385,7 @@
                                     android:id="@+id/discussion_arrow"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/new_arrow_orange"
+                                    android:src="@drawable/ic_arrow_orange"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
                                     app:layout_constraintTop_toTopOf="parent" />
@@ -413,7 +413,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toBottomOf="@id/description"
                                 tools:itemCount="5"
-                                tools:listitem="@layout/new_profile_interest_item" />
+                                tools:listitem="@layout/item_profile_interest" />
 
                             <com.google.android.gms.maps.MapView
                                 android:id="@+id/mapView"
