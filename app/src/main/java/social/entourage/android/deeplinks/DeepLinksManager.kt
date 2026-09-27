@@ -42,7 +42,7 @@ object DeepLinksManager {
         intent?.let {
             currentUri = it.data
             it.data?.scheme?.let { scheme ->
-                if (scheme.contains(BuildConfig.DEEP_LINKS_SCHEME)) {
+                if (scheme.startsWith(BuildConfig.DEEP_LINKS_SCHEME)) {
                     handleEntourageDeepLink(activity)
                 } else {
                     handleHttpDeepLink(activity)
@@ -67,7 +67,7 @@ object DeepLinksManager {
     }
 
     /**
-     * Handles the deeplinks with format "http(s)://"
+     * Handles the deeplinks with format "http(s)://www.entourage.social/deeplink/..."
      * @param activity
      */
     private fun handleHttpDeepLink(activity: MainActivity) {
@@ -212,7 +212,7 @@ object DeepLinksManager {
             "groups", "neighborhoods" -> if (segments.size > 2) DeepLinksView.ENTOURAGE.view else DeepLinksView.ENTOURAGES.view
             "outings" -> DeepLinksView.EVENTS.view
             "contributions", "solicitations" -> DeepLinksView.CREATE_ACTION.view
-            "map" -> DeepLinksView.GUIDE_MAP.view
+            "map", "chart-event", "conversation-message" -> DeepLinksView.GUIDE_MAP.view
             "badges" -> DeepLinksView.BADGE.view
             "resources" -> DeepLinksView.GUIDE.view
             else -> firstSegment

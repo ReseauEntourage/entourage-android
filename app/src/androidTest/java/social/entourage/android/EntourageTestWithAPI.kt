@@ -2,11 +2,17 @@ package social.entourage.android
 
 import android.content.Context
 import android.os.Build
+import android.os.SystemClock
 import android.view.View
 import android.view.ViewGroup
 import android.view.autofill.AutofillManager
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.IdlingResource
+import androidx.test.espresso.Root
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.UiDevice
 import org.hamcrest.Matcher
@@ -137,6 +143,30 @@ open class EntourageTestWithAPI {
         } catch (e: Exception) {
             Timber.d(e)
         }*/
+    }
+
+    /**
+     * Polls until the view [resId] is displayed, or rethrows the last Espresso failure after
+     * [timeoutMs]. Covers work the OkHttp idling resource can't see (calls not enqueued yet,
+     * other HTTP clients, delayed fragment transactions).
+     */
+    /**
+     * @param root pass e.g. [androidx.test.espresso.matcher.RootMatchers.isDialog] for a view hosted in its
+     * own window (bottom sheet, dialog): the default root matcher may otherwise pick the activity window,
+     * which has no focus while the sheet is shown (RootViewWithoutFocusException).
+     */
+    protected fun waitForView(resId: Int, timeoutMs: Long = 10_000, root: Matcher<Root>? = null) {
+        val deadline = SystemClock.elapsedRealtime() + timeoutMs
+        while (true) {
+            try {
+                val interaction = onView(withId(resId))
+                (root?.let { interaction.inRoot(it) } ?: interaction).check(matches(isDisplayed()))
+                return
+            } catch (e: Throwable) {
+                if (SystemClock.elapsedRealtime() > deadline) throw e
+                SystemClock.sleep(200)
+            }
+        }
     }
 
     protected fun childAtPosition(

@@ -131,4 +131,55 @@ open class EntourageTestAfterLogin : EntourageTestWithAPI() {
         } ?: throw IllegalStateException("Aucun groupe trouvé depuis l'API")
     }
 
+    protected fun getNeighborhoodId(): String {
+        checkUserIsLoggedIn()
+
+        return runBlocking(Dispatchers.IO) {
+            val response = EntourageApplication.get().apiModule.groupRequest
+                .getAllGroups(
+                    page = 1,
+                    per = 10,
+                )
+                .execute()
+
+            response.body()?.allGroups?.firstOrNull()?.let { group ->
+                group.uuid_v2 ?: group.id?.toString()
+            }
+        } ?: throw IllegalStateException("Aucun groupe trouvé depuis l'API")
+    }
+
+    protected fun getMyResourceId(): String {
+        checkUserIsLoggedIn()
+
+        return runBlocking(Dispatchers.IO) {
+            val response = EntourageApplication.get().apiModule.homeRequest
+                .getPedagogicalResources(false)
+                .execute()
+
+            response.body()?.pedago?.firstOrNull()?.let { pedago ->
+                pedago.uuid_v2 ?: pedago.id?.toString()
+            }
+        } ?: throw IllegalStateException("Aucune ressource trouvée depuis l'API")
+    }
+
+    protected fun getOutingId(): String {
+        checkUserIsLoggedIn()
+
+        return runBlocking(Dispatchers.IO) {
+            val response = EntourageApplication.get().apiModule.eventsRequest
+                .getAllEvents(
+                    page = 1,
+                    per = 10,
+                    travelDistance = null,
+                    latitude = null,
+                    longitude = null,
+                    period = "all",
+                )
+                .execute()
+
+            response.body()?.allEvents?.firstOrNull()?.let { event ->
+                event.uuid_v2 ?: event.id?.toString()
+            }
+        } ?: throw IllegalStateException("Aucun événement trouvé depuis l'API")
+    }
 }

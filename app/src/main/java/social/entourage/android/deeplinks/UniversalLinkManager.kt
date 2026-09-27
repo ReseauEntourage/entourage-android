@@ -7,6 +7,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.withResumed
+import kotlinx.coroutines.launch
+import social.entourage.android.BuildConfig
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.actions.create.CreateActionActivity
@@ -38,7 +42,7 @@ import timber.log.Timber
  *
  * Deeplinks officiels pris en charge :
  * - Page d'accueil : `/app/` -> MainActivity
- * - Page groupes : `/app/groups` -> Onglet découvrer groupes
+ * - Page groupes : `/app/groups` -> Onglet découvrir groupes
  * - Groupe national : `/app/groups/national` -> NationalGroupsActivity
  * - Page détail d'un groupe : `/app/neighborhoods/{id}` -> GroupFeedActivity
  * - Page événements : `/app/outings` -> Onglet découvrer événements
@@ -70,13 +74,12 @@ import timber.log.Timber
  */
 class UniversalLinkManager(val context: Context) : UniversalLinksPresenterCallback {
 
-    val prodURL = "www.entourage.social"
-    val stagingURL = "preprod.entourage.social"
+    val baseURL = BuildConfig.DEEP_LINKS_URL
     val presenter: UniversalLinkPresenter = UniversalLinkPresenter(this)
 
     fun handleUniversalLink(uri: Uri) {
         val pathSegments = uri.pathSegments
-        if (uri.host == stagingURL || uri.host == prodURL) {
+        if (uri.host == baseURL) {
             Timber.d("Universal link: $uri")
             when {
                 // Page d'accueil : https://www.entourage.social/app/
@@ -169,8 +172,14 @@ class UniversalLinkManager(val context: Context) : UniversalLinksPresenterCallba
                 // Badges : https://www.entourage.social/app/badges...
                 pathSegments.contains("badges") && pathSegments.contains("intro") -> {
                     (context as? AppCompatActivity)?.let { activity ->
-                        BadgeIntroBottomSheet.newInstance()
-                            .show(activity.supportFragmentManager, "badge_intro")
+                        // Links can arrive via onNewIntent(), before onResume(): showing a
+                        // DialogFragment while state is saved would throw IllegalStateException
+                        activity.lifecycleScope.launch {
+                            activity.withResumed {
+                                BadgeIntroBottomSheet.newInstance()
+                                    .show(activity.supportFragmentManager, "badge_intro")
+                            }
+                        }
                     }
                 }
                 pathSegments.contains("badges") && pathSegments.size > 2 -> {
@@ -196,7 +205,7 @@ class UniversalLinkManager(val context: Context) : UniversalLinksPresenterCallba
                             Intent(context, PedagoDetailActivity::class.java)
                         }
                         else -> {
-                            // Aucun ID de ressource spécifié; ouvrir la liste
+                            // Aucun ID de ressource spécifié ; ouvrir la liste
                             Intent(context, PedagoListActivity::class.java)
                         }
                     }
@@ -244,11 +253,13 @@ class UniversalLinkManager(val context: Context) : UniversalLinksPresenterCallba
             val outingId = pathSegments[2]
             presenter.getEvent(outingId)
         } else {
-            val intent = Intent(context, MainActivity::class.java)
-                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-            intent.putExtra("goDiscoverEvent", true)
-            context.startActivity(intent)
-            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
+            (context as? MainActivity)?.goEvent() ?: run {
+                val intent = Intent(context, MainActivity::class.java)
+                    .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                intent.putExtra("goDiscoverEvent", true)
+                context.startActivity(intent)
+                (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
+            }
         }
     }
 

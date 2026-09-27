@@ -16,8 +16,6 @@ import social.entourage.android.api.request.EventWrapper
 import social.entourage.android.api.request.GroupWrapper
 
 class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
-
-
     fun getEvent(id: String) {
         EntourageApplication.get().apiModule.appLinksRequest.getEventFromHash(id)
             .enqueue(object : Callback<EventWrapper> {
@@ -117,6 +115,7 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
                 }
             })
     }
+
     fun getDetailConversation(conversationId: String) {
         EntourageApplication.get().apiModule.appLinksRequest.getDiscussionFromHash(conversationId)
             .enqueue(object : Callback<DiscussionDetailWrapper> {
@@ -154,9 +153,6 @@ class UniversalLinkPresenter(val callback:UniversalLinksPresenterCallback) {
                 }
             })
     }
-
-
-
 }
 
 interface UniversalLinksPresenterCallback{
