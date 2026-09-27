@@ -19,6 +19,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.withResumed
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
@@ -32,6 +34,7 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
+import kotlinx.coroutines.launch
 import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.Events
@@ -54,7 +57,6 @@ import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.notifications.NotificationActionManager
 import social.entourage.android.notifications.PushNotificationManager
 import social.entourage.android.profile.MyProfileFullActivity
-import social.entourage.android.tools.TestHelper
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.utils.Const
@@ -146,8 +148,7 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     fun handleUniversalLinkFromMain(intent: Intent) {
-        val uri = intent.data
-        if (uri != null) {
+        intent.data?.let { uri ->
             universalLinkManager.handleUniversalLink(uri)
             intent.data = null
         }
@@ -192,10 +193,6 @@ class MainActivity : BaseSecuredActivity() {
 
         if (this.intent != null) {
             useIntentForRedirection(this.intent)
-            if(!TestHelper.isRunningInTestHarness()) {
-                //TODO WHY WHY WHY WHY WHY ? It does make the tests do a timeout !
-                this.intent = null
-            }
         }
         if (shouldLaunchEventPopUp != 0) {
             ifEventLastDay(shouldLaunchEventPopUp)
@@ -326,8 +323,13 @@ class MainActivity : BaseSecuredActivity() {
         if (badgeKey != null) {
             intent.removeExtra("badgeKey")
             goHome()
-            social.entourage.android.badges.BadgeUnlockedBottomSheet.newInstance(badgeKey)
-                .show(supportFragmentManager, "BadgeUnlocked")
+            // Called from onNewIntent() before onResume(): wait until resumed to avoid state-loss crash
+            lifecycleScope.launch {
+                withResumed {
+                    social.entourage.android.badges.BadgeUnlockedBottomSheet.newInstance(badgeKey)
+                        .show(supportFragmentManager, "BadgeUnlocked")
+                }
+            }
             return
         }
 

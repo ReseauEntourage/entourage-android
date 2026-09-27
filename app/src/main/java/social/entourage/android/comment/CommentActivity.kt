@@ -405,7 +405,7 @@ private fun setupConversationChips() {
                         // (https://<DEEP_LINKS_URL>/app/users/<id>), cf.
                         // DetailConversationActivity.insertMentionIntoEditText : on les route
                         // vers l'écran in-app plutôt que de les ouvrir dans la WebView.
-                        if (uri.host == universalLinkManager.prodURL || uri.host == universalLinkManager.stagingURL) {
+                        if (uri.host == universalLinkManager.baseURL) {
                             universalLinkManager.handleUniversalLink(uri)
                             return
                         }

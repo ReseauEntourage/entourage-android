@@ -157,7 +157,7 @@ class CustomWebViewClient(
             // On vérifie que c'est bien un clic utilisateur (hasGesture) pour ne pas intercepter
             // le chargement initial d'iframe ou redirections automatiques de la baseURL
             if (it.hasGesture()) {
-                if (uri.host == universalLinkManager.prodURL || uri.host == universalLinkManager.stagingURL) {
+                if (uri.host == universalLinkManager.baseURL) {
                     universalLinkManager.handleUniversalLink(uri)
                     return true
                 }
@@ -171,7 +171,7 @@ class CustomWebViewClient(
         // Fallback for API < 24 if ever used, without hasGesture() which is not available here
         url?.let {
             val uri = Uri.parse(it)
-            if (uri.host == universalLinkManager.prodURL || uri.host == universalLinkManager.stagingURL) {
+            if (uri.host == universalLinkManager.baseURL) {
                 universalLinkManager.handleUniversalLink(uri)
                 return true
             }
