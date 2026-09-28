@@ -132,9 +132,10 @@ open class EntourageTestAfterLogin : EntourageTestWithAPI() {
     }
 
     protected fun getNeighborhoodId(): String {
+        cachedNeighborhoodId?.let { return it }
         checkUserIsLoggedIn()
 
-        return runBlocking(Dispatchers.IO) {
+        val id = runBlocking(Dispatchers.IO) {
             val response = EntourageApplication.get().apiModule.groupRequest
                 .getAllGroups(
                     page = 1,
@@ -146,12 +147,15 @@ open class EntourageTestAfterLogin : EntourageTestWithAPI() {
                 group.uuid_v2 ?: group.id?.toString()
             }
         } ?: throw IllegalStateException("Aucun groupe trouvé depuis l'API")
+        cachedNeighborhoodId = id
+        return id
     }
 
     protected fun getMyResourceId(): String {
+        cachedResourceId?.let { return it }
         checkUserIsLoggedIn()
 
-        return runBlocking(Dispatchers.IO) {
+        val id = runBlocking(Dispatchers.IO) {
             val response = EntourageApplication.get().apiModule.homeRequest
                 .getPedagogicalResources(false)
                 .execute()
@@ -160,12 +164,15 @@ open class EntourageTestAfterLogin : EntourageTestWithAPI() {
                 pedago.uuid_v2 ?: pedago.id?.toString()
             }
         } ?: throw IllegalStateException("Aucune ressource trouvée depuis l'API")
+        cachedResourceId = id
+        return id
     }
 
     protected fun getOutingId(): String {
+        cachedOutingId?.let { return it }
         checkUserIsLoggedIn()
 
-        return runBlocking(Dispatchers.IO) {
+        val id = runBlocking(Dispatchers.IO) {
             val response = EntourageApplication.get().apiModule.eventsRequest
                 .getAllEvents(
                     page = 1,
@@ -181,5 +188,13 @@ open class EntourageTestAfterLogin : EntourageTestWithAPI() {
                 event.uuid_v2 ?: event.id?.toString()
             }
         } ?: throw IllegalStateException("Aucun événement trouvé depuis l'API")
+        cachedOutingId = id
+        return id
+    }
+
+    private companion object {
+        private var cachedNeighborhoodId: String? = null
+        private var cachedResourceId: String? = null
+        private var cachedOutingId: String? = null
     }
 }
