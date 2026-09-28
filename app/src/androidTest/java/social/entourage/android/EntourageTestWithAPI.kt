@@ -29,6 +29,7 @@ open class EntourageTestWithAPI {
     private var afM: AutofillManager? = null
     protected var resource: IdlingResource? = null
     private val shouldTakeSnapshot = false
+    private var isNetworkDisabled = false
 
     @get:Rule
     val screenshotWatcher = object : TestWatcher() {
@@ -85,7 +86,6 @@ open class EntourageTestWithAPI {
         IdlingRegistry.getInstance().register(resource)
 
         enableWifiAndData(true)
-        Thread.sleep(2000) // Wait for network to stabilize
     }
 
     open fun tearDown() {
@@ -99,10 +99,10 @@ open class EntourageTestWithAPI {
             }
         }
         enableWifiAndData(true)
-        Thread.sleep(2000) // Wait for network to stabilize
     }
 
     protected fun enableWifiAndData(enable: Boolean) {
+        if (enable && !isNetworkDisabled) return
         val parameter = if (enable) "enable" else "disable"
         InstrumentationRegistry.getInstrumentation().uiAutomation.apply {
             if(SHOULD_SET_WIFI_STATE) {
@@ -110,6 +110,8 @@ open class EntourageTestWithAPI {
             }
             executeShellCommand("svc data $parameter")
         }
+        isNetworkDisabled = !enable
+        Thread.sleep(2000) // Wait for network to stabilize when toggled
     }
 
     private fun disableAnimationsOnce() {
@@ -164,7 +166,7 @@ open class EntourageTestWithAPI {
                 return
             } catch (e: Throwable) {
                 if (SystemClock.elapsedRealtime() > deadline) throw e
-                SystemClock.sleep(200)
+                SystemClock.sleep(50)
             }
         }
     }

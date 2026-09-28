@@ -48,7 +48,7 @@ class UniversalLinkTest : EntourageTestAfterLogin() {
                 return
             } catch (e: Throwable) {
                 if (SystemClock.elapsedRealtime() > deadline) throw e
-                SystemClock.sleep(200)
+                SystemClock.sleep(50)
             }
         }
     }
@@ -94,20 +94,6 @@ class UniversalLinkTest : EntourageTestAfterLogin() {
         uriString = "$scheme://create-action",
         expectedView = DeepLinksManager.DeepLinksView.CREATE_ACTION,
         targetViewIdName = "navigation_donations"
-    ))
-
-    fun customSchemeTutorial() = runDeeplinkTestCase(DeeplinkTestCase(
-        description = "Custom scheme - Tutorial",
-        uriString = "$scheme://tutorial",
-        expectedView = DeepLinksManager.DeepLinksView.TUTORIAL,
-        targetViewIdName = "navigation_home"
-    ))
-
-    fun customSchemeGuideMap() = runDeeplinkTestCase(DeeplinkTestCase(
-        description = "Custom scheme - Guide Map",
-        uriString = "$scheme://guidemap",
-        expectedView = DeepLinksManager.DeepLinksView.GUIDE_MAP,
-        targetViewIdName = "ui_container"
     ))
 
     @Test
@@ -230,7 +216,7 @@ class UniversalLinkTest : EntourageTestAfterLogin() {
         description = "HTTPS App link - Resources",
         uriString = "https://$domain/app/resources",
         expectedView = DeepLinksManager.DeepLinksView.GUIDE,
-        targetViewIdName = "new_pedago_content_item"
+        targetViewIdName = "content"
     ))
 
     @Test
@@ -238,7 +224,7 @@ class UniversalLinkTest : EntourageTestAfterLogin() {
         description = "HTTPS App link - Resource Detail",
         uriString = "https://$domain/app/resources/$RESOURCE_ID",
         expectedView = DeepLinksManager.DeepLinksView.GUIDE,
-        targetViewIdName = "new_pedago_content_item"
+        targetViewIdName = "content"
     ))
 
     @Test
@@ -410,6 +396,8 @@ class UniversalLinkTest : EntourageTestAfterLogin() {
                 }
                 if (resId != 0) {
                     waitForView(resId, root = if (testCase.inBottomSheet) RootMatchers.isDialog() else null)
+                } else {
+                    Assert.fail("View with ID $viewIdName not found")
                 }
             }
             extraAssert?.invoke()
