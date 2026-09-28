@@ -126,7 +126,7 @@ class ConversationScenarioTest : EntourageTestAfterLogin() {
      */
     private fun shoot(label: String) {
         screenshot.shoot(label)
-        SystemClock.sleep(500)
+        SystemClock.sleep(100)
     }
 
     private fun currentMessageEditTextContent(): String {
