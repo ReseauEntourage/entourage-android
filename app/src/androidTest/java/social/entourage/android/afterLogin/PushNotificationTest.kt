@@ -3,6 +3,7 @@ package social.entourage.android.afterLogin
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.os.SystemClock
 import androidx.core.app.NotificationManagerCompat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
@@ -151,11 +152,17 @@ class PushNotificationTest : EntourageTestAfterLogin() {
     }
 
     private fun checkNotifMessage(id: Int) {
-        Thread.sleep(NOTIFICATION_TIMEOUT)
-        val notifs = NotificationManagerCompat.from(context).activeNotifications
+        val deadline = SystemClock.elapsedRealtime() + NOTIFICATION_TIMEOUT
         var notificationId: Int? = null
-        notifs.filter({ notification -> notification.id == id }).forEach { notification ->
-            notificationId = notification.id
+        while (true) {
+            val notifs = NotificationManagerCompat.from(context).activeNotifications
+            val match = notifs.firstOrNull { notification -> notification.id == id }
+            if (match != null) {
+                notificationId = match.id
+                break
+            }
+            if (SystemClock.elapsedRealtime() > deadline) break
+            SystemClock.sleep(20)
         }
         //TODO find a way to see the notif in the screenshot
 //        screenshot.shoot("notif_$id")

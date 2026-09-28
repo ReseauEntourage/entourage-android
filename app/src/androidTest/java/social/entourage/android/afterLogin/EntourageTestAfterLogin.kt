@@ -1,6 +1,7 @@
 package social.entourage.android.afterLogin
 
 import android.content.Context
+import android.os.SystemClock
 import androidx.core.content.edit
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -86,7 +87,7 @@ open class EntourageTestAfterLogin : EntourageTestWithAPI() {
     }
 
     protected fun checkNoPopUpOnHome() {
-        Thread.sleep(2000) // Wait for potential popups
+        SystemClock.sleep(200) // Brief check for potential popups
         checkNoOnboarding()
         checkNoActionPopUp(R.string.custom_dialog_action_title_one_contrib)
         checkNoActionPopUp(R.string.custom_dialog_action_title_one_demand)

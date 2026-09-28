@@ -1,6 +1,7 @@
 
 package social.entourage.android.afterLogin
 
+import android.os.SystemClock
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithText
@@ -37,7 +38,7 @@ class MyEntouragesRobot(private val composeTestRule: ComposeTestRule? = null) {
     fun clickMyGroupsTab() {
         clickOn(R.string.actions_tab_mygroup)
         // Wait for ViewPager2 animation to finish
-        Thread.sleep(1000)
+        composeTestRule?.waitForIdle() ?: SystemClock.sleep(150)
     }
 
     fun clickFirstAction() {
