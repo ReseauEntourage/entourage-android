@@ -27,7 +27,6 @@ class LoginTest : EntourageTestBeforeLogin() {
             activity.window.addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
             activity.setFinishOnTouchOutside(false)
         }
-        Thread.sleep(5000)
     }
 
     @After
