@@ -5,6 +5,7 @@ import androidx.annotation.StringRes
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -54,6 +55,7 @@ class MyEntouragesRobot(private val composeTestRule: ComposeTestRule? = null) {
         if (composeTestRule != null) {
             val context = InstrumentationRegistry.getInstrumentation().targetContext
             composeTestRule.onNodeWithText(context.getString(R.string.action_cgu_accept_button))
+                .performScrollTo()
                 .performClick()
             composeTestRule.waitForIdle()
         } else {
