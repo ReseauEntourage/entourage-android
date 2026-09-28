@@ -193,9 +193,19 @@ open class EntourageTestAfterLogin : EntourageTestWithAPI() {
         return id
     }
 
+    protected fun getUserId(): String {
+        cachedUserId?.let { return it }
+        checkUserIsLoggedIn()
+        val id = EntourageApplication.get().authenticationController.me?.id?.toString()
+            ?: throw IllegalStateException("Aucun utilisateur connecté depuis l'API")
+        cachedUserId = id
+        return id
+    }
+
     private companion object {
         private var cachedNeighborhoodId: String? = null
         private var cachedResourceId: String? = null
         private var cachedOutingId: String? = null
+        private var cachedUserId: String? = null
     }
 }

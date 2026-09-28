@@ -326,6 +326,28 @@ class UniversalLinkTest : EntourageTestAfterLogin() {
     ))
 
     @Test
+    fun httpsAppLinkUsers() = runDeeplinkTestCase(DeeplinkTestCase(
+        description = "HTTPS App link - Users Profile",
+        uriString = "https://$domain/app/users/$USER_ID",
+        expectedView = DeepLinksManager.DeepLinksView.PROFILE
+    ))
+
+    @Test
+    fun httpsAppLinkUser() = runDeeplinkTestCase(DeeplinkTestCase(
+        description = "HTTPS App link - User Profile",
+        uriString = "https://$domain/app/user/$USER_ID",
+        expectedView = DeepLinksManager.DeepLinksView.PROFILE
+    ))
+
+    @Test
+    fun httpsAppLinkWelcomeVideo() = runDeeplinkTestCase(DeeplinkTestCase(
+        description = "HTTPS App link - Welcome Video",
+        uriString = "https://$domain/app/welcome-video",
+        expectedView = DeepLinksManager.DeepLinksView.GUIDE,
+        targetViewIdName = "webview_video"
+    ))
+
+    @Test
     fun httpsAppLinkBadgePresentation() = runDeeplinkTestCase(DeeplinkTestCase(
         description = "HTTPS App link - Badge Presentation",
         uriString = "https://$domain/app/badges/intro",
@@ -362,6 +384,9 @@ class UniversalLinkTest : EntourageTestAfterLogin() {
         } else if (uriString.contains(OUTING_ID)) {
             val id = getOutingId()
             uriString = uriString.replace(OUTING_ID, id)
+        } else if (uriString.contains(USER_ID)) {
+            val id = getUserId()
+            uriString = uriString.replace(USER_ID, id)
         }
         ActivityScenario.launch(MainActivity::class.java).use { scenario ->
             Espresso.onIdle()
@@ -427,5 +452,6 @@ class UniversalLinkTest : EntourageTestAfterLogin() {
         const val NEIGHBOURHOOD_ID = "%neighbourhoodId%"
         const val RESOURCE_ID = "%resourceId%"
         const val OUTING_ID = "%outingId%"
+        const val USER_ID = "%userId%"
     }
 }
