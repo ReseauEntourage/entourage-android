@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Matrix
-import android.os.Build
 import android.text.Html
 import android.text.SpannableString
 import android.text.Spanned
@@ -78,12 +77,7 @@ fun TextView.displayHtml(textContent: String) {
         .replace("</p>", "<br>")
         .replace("\n", "<br>")
 
-    text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        Html.fromHtml(processedText, Html.FROM_HTML_MODE_LEGACY)
-    } else {
-        @Suppress("DEPRECATION")
-        Html.fromHtml(processedText)
-    }
+    text = Html.fromHtml(processedText, Html.FROM_HTML_MODE_LEGACY)
     setHyperlinkClickable()
 }
 

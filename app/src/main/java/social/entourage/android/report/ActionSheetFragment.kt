@@ -439,15 +439,10 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                         .show(parentFragmentManager, "")
                 }
                 SheetMode.MESSAGE_ACTIONS -> {
-                    val plain = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        Html.fromHtml(
+                    val plain = Html.fromHtml(
                             messageHtml.orEmpty(),
                             Html.FROM_HTML_MODE_LEGACY
                         ).toString()
-                    } else {
-                        @Suppress("DEPRECATION")
-                        Html.fromHtml(messageHtml.orEmpty()).toString()
-                    }
                     val cm = requireContext()
                         .getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
                     cm.setPrimaryClip(
@@ -542,15 +537,10 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                     ).show(parentFragmentManager, ReportModalFragment.TAG)
                 }
                 SheetMode.MESSAGE_ACTIONS -> {
-                    val plain = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        Html.fromHtml(
+                    val plain = Html.fromHtml(
                             messageHtml.orEmpty(),
                             Html.FROM_HTML_MODE_LEGACY
                         ).toString()
-                    } else {
-                        @Suppress("DEPRECATION")
-                        Html.fromHtml(messageHtml.orEmpty()).toString()
-                    }
 
                     val isConversationContext = !isEventContext && !isGroupContext
                     if (isConversationContext) {

@@ -249,12 +249,7 @@ object Utils {
     }
 
     fun fromHtml(html: String): Spanned {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY)
-        } else {
-            @Suppress("DEPRECATION")
-            Html.fromHtml(html)
-        }
+        return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY)
     }
 
     /**

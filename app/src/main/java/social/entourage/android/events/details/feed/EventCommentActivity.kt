@@ -1,6 +1,5 @@
 package social.entourage.android.events.details.feed
 
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.Html
@@ -19,7 +18,6 @@ import social.entourage.android.api.model.ReactionType
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.MentionAdapter
-import social.entourage.android.databinding.ActivityCommentsBinding
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.members.MembersType
 import social.entourage.android.tools.utils.Utils
@@ -175,12 +173,7 @@ class EventCommentActivity : CommentActivity() {
         val spannedText = binding.commentMessage.editableText
 
         // 2) Convertit ce contenu en HTML pour conserver <a href="..."> si présent
-        val fullHtml = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Html.toHtml(spannedText, Html.FROM_HTML_MODE_LEGACY)
-        } else {
-            @Suppress("DEPRECATION")
-            Html.toHtml(spannedText)
-        }
+        val fullHtml = Html.toHtml(spannedText, Html.FROM_HTML_MODE_LEGACY)
 
         // 3) Vérifie s'il y a une balise <a href="...">
         val hasLink = fullHtml.contains("<a href=")

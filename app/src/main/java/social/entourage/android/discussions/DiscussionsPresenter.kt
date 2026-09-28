@@ -216,11 +216,7 @@ class DiscussionsPresenter : ViewModel() {
      */
     private fun withFreshEditedContent(post: Post?, newContentHtml: String): Post? {
         post ?: return null
-        val plain = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Html.fromHtml(newContentHtml, Html.FROM_HTML_MODE_LEGACY).toString()
-        } else {
-            @Suppress("DEPRECATION") Html.fromHtml(newContentHtml).toString()
-        }
+        val plain = Html.fromHtml(newContentHtml, Html.FROM_HTML_MODE_LEGACY).toString()
         return Post(
             id = post.id,
             content = newContentHtml,

@@ -256,11 +256,7 @@ class OnboardingPhase2Fragment : Fragment() {
         // CGU cliquables
         val text = getString(R.string.terms_and_conditions_html)
         @Suppress("DEPRECATION")
-        binding.tvConditionGenerales.text =
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N)
-                Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY)
-            else
-                Html.fromHtml(text)
+        binding.tvConditionGenerales.text =Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY)
         binding.tvConditionGenerales.movementMethod = LinkMovementMethod.getInstance()
         binding.tvConditionGenerales.linksClickable = true
         binding.tvConditionGenerales.movementMethod = LinkMovementMethod.getInstance()
