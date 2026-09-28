@@ -344,7 +344,8 @@ class UniversalLinkTest : EntourageTestAfterLogin() {
         description = "HTTPS App link - Welcome Video",
         uriString = "https://$domain/app/welcome-video",
         expectedView = DeepLinksManager.DeepLinksView.GUIDE,
-        targetViewIdName = "webview_video"
+targetViewIdName = "webview_video",
+        inBottomSheet = true
     ))
 
     @Test
