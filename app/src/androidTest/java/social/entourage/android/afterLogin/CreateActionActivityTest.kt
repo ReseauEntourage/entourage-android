@@ -6,6 +6,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.v2.AndroidComposeTestRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
@@ -74,6 +75,7 @@ abstract class CreateActionActivityTest(isActionDemand: Boolean) : EntourageTest
         composeTestRule.onNodeWithText(context.getString(R.string.action_cgu_header_title))
             .assertIsDisplayed()
         composeTestRule.onNodeWithText(context.getString(R.string.action_cgu_accept_button))
+            .performScrollTo()
             .performClick()
         composeTestRule.waitForIdle()
         screenshot.shoot("cgus_accepted")
