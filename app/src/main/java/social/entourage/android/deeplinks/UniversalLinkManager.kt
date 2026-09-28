@@ -33,6 +33,7 @@ import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.NationalGroupsActivity
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
+import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.overrideTransitionCompat
 import timber.log.Timber
@@ -71,6 +72,12 @@ import timber.log.Timber
  * - Contenus pédagogiques (Ressources) :
  *   - `/app/resources` -> Liste des contenus
  *   - `/app/resources/{hash_id}` -> Détail d'un contenu pédagogique
+ *
+ *   Deeplinks internes
+ *   https://<DEEP_LINKS_URL>/app/users/<id>
+ *   https://<DEEP_LINKS_URL>/app/user/<id>
+ *   https://<DEEP_LINKS_URL>/app/welcome-video
+ *
  */
 class UniversalLinkManager(val context: Context) : UniversalLinksPresenterCallback {
 
@@ -82,19 +89,44 @@ class UniversalLinkManager(val context: Context) : UniversalLinksPresenterCallba
         if (uri.host == baseURL) {
             Timber.d("Universal link: $uri")
             when {
+                pathSegments.contains("users") || pathSegments.contains("user") -> {
+                    if (pathSegments.size > 2) {
+                        val userId = pathSegments[2]
+                        try {
+                            val intent = Intent(context, ProfileFullActivity::class.java)
+                            intent.putExtra(Const.USER_ID, userId.toInt())
+                            context.startActivity(intent)
+                            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
+                        } catch (_: NumberFormatException) {
+                            Timber.e("NumberFormatException")
+                        }
+                    }
+                }
                 // Page d'accueil : https://www.entourage.social/app/
                 pathSegments.contains("app") && pathSegments.size == 1 -> {
                     (context as? MainActivity)?.goHome()
                 }
-
+                pathSegments.contains("welcome-video") || (pathSegments.contains("home") && pathSegments.contains("welcome-video")) -> {
+                    (context as? MainActivity)?.goWelcomeVideo() ?: run {
+                        val intent = Intent(context, MainActivity::class.java)
+                            .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                        intent.putExtra("goWelcomeVideo", true)
+                        context.startActivity(intent)
+                        (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
+                    }
+                }
                 // Groupes nationaux : https://www.entourage.social/app/groups/national
                 pathSegments.contains("national") -> {
                     val intent = Intent(context, NationalGroupsActivity::class.java)
                     context.startActivity(intent)
                     (context as? Activity)?.overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                 }
-
                 // Groupes & Détail groupe : https://www.entourage.social/app/groups ou /app/neighborhoods/{id}
+                //TODO HERE GO TO DETAIL MESSAGE GROUP
+                pathSegments.contains("neighborhoods") && pathSegments.contains("chat_messages") && pathSegments.size > 3 -> {
+                    val groupId = pathSegments[2]
+                    val postId = pathSegments[3]
+                }
                 pathSegments.contains("neighborhoods") || pathSegments.contains("groups") -> {
                     if (pathSegments.size > 2) {
                         val neighborhoodId = pathSegments[2]
@@ -109,53 +141,72 @@ class UniversalLinkManager(val context: Context) : UniversalLinksPresenterCallba
                         }
                     }
                 }
-
                 // Événements : https://www.entourage.social/app/outings...
+                //TODO HERE GO TO DETAIL MESSAGE EVENT
+//                pathSegments.contains("outings") && pathSegments.contains("chat_messages") && pathSegments.size > 3 -> {
+//                    val eventId = pathSegments[2]
+//                    val postId = pathSegments[3]
+//                }
                 pathSegments.contains("outings") -> {
                     handleOutings(pathSegments)
                 }
-
-                // Contributions : https://www.entourage.social/app/contributions ou /contributions/new
+                // Contributions : https://www.entourage.social/app
+                // /contributions
+                // /contributions/{id}
+                // /contributions/new
                 pathSegments.contains("contributions") -> {
                     if (pathSegments.contains("new")) {
                         val intent = Intent(context, CreateActionActivity::class.java)
                         intent.putExtra(Const.IS_ACTION_DEMAND, false)
                         context.startActivity(intent)
                     } else {
-                        (context as? MainActivity)?.goContrib() ?: run {
-                            val intent = Intent(context, MainActivity::class.java)
-                                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                            intent.putExtra("goContrib", true)
-                            context.startActivity(intent)
-                            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
+                        if (pathSegments.size > 2) {
+                            val contribId = pathSegments[2]
+                            presenter.getDetailAction(contribId,false)
+                        } else {
+                            (context as? MainActivity)?.goContrib() ?: run {
+                                val intent = Intent(context, MainActivity::class.java)
+                                    .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                                intent.putExtra("goContrib", true)
+                                context.startActivity(intent)
+                                (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
+                            }
                         }
                     }
                 }
-
-                // Demandes : https://www.entourage.social/app/solicitations ou /solicitations/new
+                // Demandes : https://www.entourage.social/app
+                // /solicitations
+                // /solicitations/{id]
+                // /solicitations/new
                 pathSegments.contains("solicitations") -> {
                     if (pathSegments.contains("new")) {
                         val intent = Intent(context, CreateActionActivity::class.java)
                         intent.putExtra(Const.IS_ACTION_DEMAND, true)
                         context.startActivity(intent)
                     } else {
-                        (context as? MainActivity)?.goDemand() ?: run {
-                            val intent = Intent(context, MainActivity::class.java)
-                                .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                            intent.putExtra("goDemand", true)
-                            context.startActivity(intent)
-                            (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
+                        if (pathSegments.size > 2) {
+                            val soliciationId = pathSegments[2]
+                            presenter.getDetailAction(soliciationId,true)
+                        }else{
+                            (context as? MainActivity)?.goDemand() ?: run {
+                                val intent = Intent(context, MainActivity::class.java)
+                                    .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                                intent.putExtra("goDemand", true)
+                                context.startActivity(intent)
+                                (context as Activity).overrideTransitionCompat(
+                                    R.anim.slide_in_right,
+                                    R.anim.slide_out_left
+                                )
+                            }
                         }
                     }
                 }
-
                 // Carte des lieux solidaires : https://www.entourage.social/app/map
                 pathSegments.contains("map") -> {
                     val intent = Intent(context, GDSMainActivity::class.java)
                     context.startActivity(intent)
                     (context as Activity).overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                 }
-
                 // Charte des événements : https://www.entourage.social/app/chart-event
                 pathSegments.contains("chart-event") -> {
                     val intent = Intent(context, GroupRulesActivity::class.java).apply {
@@ -163,10 +214,14 @@ class UniversalLinkManager(val context: Context) : UniversalLinksPresenterCallba
                     }
                     (context as Activity).startActivity(intent)
                 }
-
                 // Conversations : https://www.entourage.social/app/conversation-message
                 pathSegments.contains("conversation-message") || pathSegments.contains("conversations") || pathSegments.contains("messages") -> {
-                    (context as? MainActivity)?.goConv()
+                    if(pathSegments.size > 2){
+                        val convId = pathSegments[2]
+                        presenter.addUserToConversation(convId)
+                    } else {
+                        (context as? MainActivity)?.goConv()
+                    }
                 }
 
                 // Badges : https://www.entourage.social/app/badges...

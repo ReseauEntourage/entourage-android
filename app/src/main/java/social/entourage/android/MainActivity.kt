@@ -51,6 +51,7 @@ import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.BirthdayActivity
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.EventConfirmationDialogFragment
+import social.entourage.android.home.HomeFragment
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.main_filter.MainFilterActivity
@@ -637,6 +638,19 @@ class MainActivity : BaseSecuredActivity() {
     fun goDemand() {
         val bundle = Bundle().apply { putBoolean("isActionDemand", true) }
         navController.navigate(R.id.navigation_donations, bundle, singleTopNavOptions())
+    }
+
+    fun goWelcomeVideo() {
+        val homeFragment = (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as? NavHostFragment)
+            ?.childFragmentManager?.primaryNavigationFragment as? HomeFragment
+        if (homeFragment?.isResumed == true) {
+            // Home déjà affiché : onResume() ne sera pas rappelé, on ouvre la modale directement
+            homeFragment.showVideoModal()
+        } else {
+            // Consommé par HomeFragment.onResume()
+            setGoWelcomeVideoFromDeepL(true)
+            goHome()
+        }
     }
 
     private fun initializeNavBar() {

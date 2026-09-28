@@ -215,6 +215,8 @@ object DeepLinksManager {
             "map", "chart-event", "conversation-message" -> DeepLinksView.GUIDE_MAP.view
             "badges" -> DeepLinksView.BADGE.view
             "resources" -> DeepLinksView.GUIDE.view
+            "users", "user" -> DeepLinksView.PROFILE.view
+            "welcome-video" -> DeepLinksView.GUIDE.view
             else -> firstSegment
         }
     }
