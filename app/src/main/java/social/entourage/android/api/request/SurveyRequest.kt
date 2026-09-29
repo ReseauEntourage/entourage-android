@@ -63,8 +63,15 @@ interface SurveyRequest {
         @Body chatMessage: ChatMessageSurvey
     ): Call<ResponseBody>
 
+    @DELETE("conversations/{conversation_id}/chat_messages/{chat_message_id}/survey_responses")
+    fun deleteSurveyResponseForConversation(
+        @Path("conversation_id") conversationId: Int,
+        @Path("chat_message_id") chatMessageId: Int
+    ): Call<ResponseBody>
 
-
-
-
+    @DELETE("smalltalks/{smalltalk_id}/chat_messages/{chat_message_id}/survey_responses")
+    fun deleteSurveyResponseForSmallTalk(
+        @Path("smalltalk_id") smallTalkId: Int,
+        @Path("chat_message_id") chatMessageId: Int
+    ): Call<ResponseBody>
 }
