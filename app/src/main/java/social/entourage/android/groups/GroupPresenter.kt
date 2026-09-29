@@ -804,14 +804,23 @@ class GroupPresenter: ViewModel() {
             })
     }
 
+    // "Tous les groupes" et "Mes groupes" renvoient le même groupe si l'utilisateur en est membre :
+    // on n'ajoute que les groupes pas encore présents dans les résultats.
+    private fun appendSearchResults(newGroups: List<Group>) {
+        val currentList = groupSearch.value ?: mutableListOf()
+        val knownIds = currentList.mapNotNullTo(HashSet()) { it.id }
+        newGroups.forEach { group ->
+            if (group.id == null || knownIds.add(group.id!!)) currentList.add(group)
+        }
+        groupSearch.value = currentList
+    }
+
     fun getAllGroupsWithSearchQuery(query: String, page: Int, per: Int) {
         EntourageApplication.get().apiModule.groupRequest.getAllGroupsWithSearchQuery(query, page, per)
             .enqueue(object : Callback<GroupsListWrapper> {
                 override fun onResponse(call: Call<GroupsListWrapper>, response: Response<GroupsListWrapper>) {
                     response.body()?.let { allGroupsWrapper ->
-                        val currentList = groupSearch.value ?: mutableListOf()
-                        currentList.addAll(allGroupsWrapper.allGroups)
-                        groupSearch.value = currentList
+                        appendSearchResults(allGroupsWrapper.allGroups)
                         if (allGroupsWrapper.allGroups.size < per) isLastPageSearch = true
                     }
                 }
@@ -827,9 +836,7 @@ class GroupPresenter: ViewModel() {
             .enqueue(object : Callback<GroupsListWrapper> {
                 override fun onResponse(call: Call<GroupsListWrapper>, response: Response<GroupsListWrapper>) {
                     response.body()?.let { allGroupsWrapper ->
-                        val currentList = groupSearch.value ?: mutableListOf()
-                        currentList.addAll(allGroupsWrapper.allGroups)
-                        groupSearch.value = currentList
+                        appendSearchResults(allGroupsWrapper.allGroups)
                         if (allGroupsWrapper.allGroups.size < per) isLastPageSearch = true
                     }
                 }
