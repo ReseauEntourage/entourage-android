@@ -202,7 +202,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
 
         // Resource links
         resourcesBinding.cardToolbox.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, "https://drive.google.com/drive/folders/1H9_G4I7zgcJ7Y4DtZDws3coFPsoVnLLm".toUri()))
+            startActivity(Intent(Intent.ACTION_VIEW, "https://reseauentourage.notion.site/La-bo-te-outils-des-b-n-voles-2692fdfbf16c83ca9eae0155148a7e24".toUri()))
         }
         resourcesBinding.cardCharter.setOnClickListener {
             startActivity(
