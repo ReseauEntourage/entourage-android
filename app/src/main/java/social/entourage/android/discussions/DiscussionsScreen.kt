@@ -66,9 +66,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import social.entourage.android.R
 import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.HomeModerator
-import social.entourage.android.ui.theme.NunitoSansBold
 import social.entourage.android.ui.theme.NunitoSansRegular
-import social.entourage.android.ui.theme.NunitoSansSemiBold
 import social.entourage.android.ui.theme.QuicksandBold
 
 /**
@@ -282,7 +280,7 @@ private fun NotificationBanner(onClick: () -> Unit) {
                 Spacer(Modifier.height(4.dp))
                 Text(
                     text = cta,
-                    fontFamily = NunitoSansBold,
+                    fontFamily = QuicksandBold,
                     fontSize = 13.5.sp,
                     color = Color(0xFF3A3A3A),
                     textDecoration = TextDecoration.Underline
@@ -406,7 +404,7 @@ private fun DedicatedContactRow(moderator: HomeModerator, conversation: Conversa
             if (conversation != null) {
                 Text(
                     text = conversation.getLastMessage(context = context).orEmpty(),
-                    fontFamily = if (unread) NunitoSansSemiBold else NunitoSansRegular,
+                    fontFamily = if (unread) QuicksandBold else NunitoSansRegular,
                     fontSize = 13.sp,
                     color = if (unread) Color(0xFF2A2A2A) else colorResource(R.color.dark_grey_opacity_40),
                     maxLines = 1
@@ -497,7 +495,7 @@ private fun ConversationRow(conversation: Conversation, onClick: () -> Unit) {
             }
             Text(
                 text = conversation.getLastMessage(context = context).orEmpty(),
-                fontFamily = if (unread) NunitoSansSemiBold else NunitoSansRegular,
+                fontFamily = if (unread) QuicksandBold else NunitoSansRegular,
                 fontSize = 13.sp,
                 color = if (unread) Color(0xFF2A2A2A) else colorResource(R.color.dark_grey_opacity_40),
                 maxLines = 1
