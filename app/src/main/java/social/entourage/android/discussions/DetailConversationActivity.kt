@@ -560,12 +560,7 @@ class DetailConversationActivity : CommentActivity() {
         val caption = if (spanned.toString().trim().isEmpty()) {
             null
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Html.toHtml(spanned, Html.FROM_HTML_MODE_LEGACY)
-            } else {
-                @Suppress("DEPRECATION")
-                Html.toHtml(spanned)
-            }.trim().ifEmpty { null }
+            Html.toHtml(spanned, Html.FROM_HTML_MODE_LEGACY).trim().ifEmpty { null }
         }
         if (isSmallTalkMode) {
             smallTalkViewModel.addMessageWithImage(smallTalkId, caption, file)
@@ -790,13 +785,7 @@ class DetailConversationActivity : CommentActivity() {
         // Handle links in the banner text
         val staffMessage = getString(R.string.staff_out_of_office_banner)
         val spannableStr = android.text.SpannableStringBuilder()
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            spannableStr.append(Html.fromHtml(staffMessage, Html.FROM_HTML_MODE_COMPACT))
-        } else {
-            @Suppress("DEPRECATION")
-            spannableStr.append(Html.fromHtml(staffMessage))
-        }
+        spannableStr.append(Html.fromHtml(staffMessage, Html.FROM_HTML_MODE_COMPACT))
 
         val spans = spannableStr.getSpans(0, spannableStr.length, android.text.style.URLSpan::class.java)
         for (span in spans) {
@@ -892,12 +881,7 @@ class DetailConversationActivity : CommentActivity() {
             return
         }
         val spanned = binding.commentMessage.editableText
-        val html = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Html.toHtml(spanned, Html.FROM_HTML_MODE_LEGACY)
-        } else {
-            @Suppress("DEPRECATION")
-            Html.toHtml(spanned)
-        }
+        val html = Html.toHtml(spanned, Html.FROM_HTML_MODE_LEGACY)
         val content = if (html.contains("<a href=")) html else spanned.toString()
         if (isSmallTalkMode) {
             smallTalkViewModel.createChatMessage(smallTalkId, content)

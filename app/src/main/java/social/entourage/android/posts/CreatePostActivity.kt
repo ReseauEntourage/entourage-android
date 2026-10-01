@@ -308,12 +308,7 @@ abstract class CreatePostActivity : AppCompatActivity() {
             // Cas 1 : pas d'image, uniquement texte
             if (imageURI == null && isMessageValid()) {
                 val messageChat = ArrayMap<String, Any>()
-                val messageToSend = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    Html.toHtml(binding.message.text, Html.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
-                } else {
-                    @Suppress("DEPRECATION")
-                    Html.toHtml(binding.message.text)
-                }
+                val messageToSend = Html.toHtml(binding.message.text, Html.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
                 messageChat["content"] = messageToSend
                 val request = ArrayMap<String, Any>()
                 request["chat_message"] = messageChat
@@ -422,12 +417,7 @@ abstract class CreatePostActivity : AppCompatActivity() {
         val cleanedDisplayName = user.displayName?.replace(Regex("[^\\p{L}]"), "")  + ". "
 
         val mentionHtml = """<a href="$baseUrl/app/users/${user.userId}">@${cleanedDisplayName}</a>"""
-        val mentionSpanned = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Html.fromHtml(mentionHtml, Html.FROM_HTML_MODE_LEGACY)
-        } else {
-            @Suppress("DEPRECATION")
-            Html.fromHtml(mentionHtml)
-        }
+        val mentionSpanned = Html.fromHtml(mentionHtml, Html.FROM_HTML_MODE_LEGACY)
 
         editable.replace(lastMentionStartIndex, cursorPos, mentionSpanned)
         binding.message.setSelection(lastMentionStartIndex + mentionSpanned.length)

@@ -178,11 +178,7 @@ fun startEditingMessage(messageId: Int, messageHtml: String?) {
     if (messageId == 0) return
     editingMessageId = messageId
     val html = messageHtml ?: ""
-    val spanned = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-        Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY)
-    } else {
-        @Suppress("DEPRECATION") Html.fromHtml(html)
-    }
+    val spanned = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY)
     binding.commentMessage.setText(spanned)
     binding.commentMessage.setSelection(binding.commentMessage.text?.length ?: 0)
     binding.layoutEditingMessage.visibility = View.VISIBLE
@@ -497,11 +493,7 @@ private fun setupConversationChips() {
 
     private fun performMessageCopy(comment: Post) {
         val messageHtml = comment.content ?: comment.contentHtml
-        val plain = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Html.fromHtml(messageHtml.orEmpty(), Html.FROM_HTML_MODE_LEGACY).toString()
-        } else {
-            @Suppress("DEPRECATION") Html.fromHtml(messageHtml.orEmpty()).toString()
-        }
+        val plain = Html.fromHtml(messageHtml.orEmpty(), Html.FROM_HTML_MODE_LEGACY).toString()
         val cm = getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
         cm.setPrimaryClip(android.content.ClipData.newPlainText("message", plain))
     }
@@ -513,11 +505,7 @@ private fun setupConversationChips() {
      */
     private fun performMessageReport(comment: Post, isMe: Boolean) {
         val messageHtml = comment.content ?: comment.contentHtml
-        val plain = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Html.fromHtml(messageHtml.orEmpty(), Html.FROM_HTML_MODE_LEGACY).toString()
-        } else {
-            @Suppress("DEPRECATION") Html.fromHtml(messageHtml.orEmpty()).toString()
-        }
+        val plain = Html.fromHtml(messageHtml.orEmpty(), Html.FROM_HTML_MODE_LEGACY).toString()
 
         if (!isEvent && !isGroup) {
             val isSmallTalkMode = isSmallTalk || DetailConversationActivity.isSmallTalkMode
@@ -888,12 +876,7 @@ private fun setupConversationChips() {
         val message = if (rawText.isEmpty()) {
             ""
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                Html.toHtml(binding.commentMessage.text, Html.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
-            } else {
-                @Suppress("DEPRECATION")
-                Html.toHtml(binding.commentMessage.text)
-            }
+            Html.toHtml(binding.commentMessage.text, Html.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
         }
 
         val messageIdBeingEdited = editingMessageId

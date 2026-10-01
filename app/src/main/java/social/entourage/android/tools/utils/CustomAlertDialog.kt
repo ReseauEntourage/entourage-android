@@ -170,12 +170,7 @@ object CustomAlertDialog {
         }
         val formattedString = context.getString(R.string.custom_dialog_action_content_one_contrib, titleAction)
 
-        val styledText = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Html.fromHtml(formattedString, Html.FROM_HTML_MODE_LEGACY)
-        } else {
-            @Suppress("DEPRECATION")
-            Html.fromHtml(formattedString)
-        }
+        val styledText = Html.fromHtml(formattedString, Html.FROM_HTML_MODE_LEGACY)
         customDialog.findViewById<TextView>(R.id.content).text = styledText
         alertDialog.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
         alertDialog.show()
@@ -529,12 +524,7 @@ object CustomAlertDialog {
         onConfirm: () -> Unit = {},
         onDecline: () -> Unit = {},
     ) {
-        fun String.toStyledText() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY)
-        } else {
-            @Suppress("DEPRECATION")
-            Html.fromHtml(this)
-        }
+        fun String.toStyledText() = Html.fromHtml(this, Html.FROM_HTML_MODE_LEGACY)
 
         val layoutInflater = LayoutInflater.from(context)
         val customDialog: View =

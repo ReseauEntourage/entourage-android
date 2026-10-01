@@ -142,12 +142,7 @@ class GroupCommentActivity : CommentActivity() {
         val spannedText = binding.commentMessage.editableText
 
         // 2) Convertit en HTML pour garder les éventuelles balises <a>
-        val fullHtml = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            Html.toHtml(spannedText, Html.FROM_HTML_MODE_LEGACY)
-        } else {
-            @Suppress("DEPRECATION")
-            Html.toHtml(spannedText)
-        }
+        val fullHtml = Html.toHtml(spannedText, Html.FROM_HTML_MODE_LEGACY)
 
         // 3) Vérifie si on a un lien <a href="...">
         val hasLink = fullHtml.contains("<a href=")

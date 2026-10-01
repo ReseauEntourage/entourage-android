@@ -474,10 +474,8 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         }
 
         // Filtrer les posts supprimés
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            newPostsList.removeIf { post -> post.status == "deleted" }
-            oldPostsList.removeIf { post -> post.status == "deleted" }
-        }
+        newPostsList.removeIf { post -> post.status == "deleted" }
+        oldPostsList.removeIf { post -> post.status == "deleted" }
     }
 
     private fun updatePostsVisibility() {
