@@ -823,6 +823,10 @@ object AnalyticsEvents {
     const val CLIC__SMALLTALK__NO_SUGGESTIONS_EVENT = "smalltalk_click_event_no_suggestions_screen"
     const val CLIC__SMALLTALK__NO_SUGGESTIONS_HOME = "smalltalk_click_home_no_suggestions_screen"
 
+    // Parcours de bienvenue (Home)
+    const val ACTION__HOME__WELCOME_JOURNEY_SKIP_STEP = "Action__Home__WelcomeJourney__SkipStep"
+    const val ACTION__HOME__WELCOME_JOURNEY_HIDE = "Action__Home__WelcomeJourney__Hide"
+
     // SmallTalk - Charte
     const val VIEW__SMALLTALK__CHARTER = "smalltalk_view_charter_screen"
 

@@ -30,6 +30,21 @@
         android:textColor="@color/orange"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_title"
+        app:layout_constraintEnd_toStartOf="@+id/btn_more"
+        app:layout_constraintTop_toTopOf="@+id/tv_title" />
+
+    <TextView
+        android:id="@+id/btn_more"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/welcome_journey_options"
+        android:fontFamily="@font/quicksand_bold"
+        android:gravity="center"
+        android:text="⋯"
+        android:textColor="@color/grey_dark"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_title" />
 
@@ -120,6 +135,21 @@
             app:layout_constraintStart_toStartOf="@+id/tv_title_step_1"
             app:layout_constraintTop_toBottomOf="@+id/tv_title_step_1" />
 
+        <TextView
+            android:id="@+id/btn_redo_step_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_bold"
+            android:gravity="center"
+            android:minHeight="40dp"
+            android:text="@string/welcome_journey_redo_step"
+            android:textColor="@color/orange_entourage"
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/tv_title_step_1"
+            app:layout_constraintTop_toBottomOf="@+id/tv_desc_step_1" />
+
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_step_1"
             android:layout_width="0dp"
@@ -138,6 +168,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_desc_step_1" />
+
+        <TextView
+            android:id="@+id/btn_skip_step_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_bold"
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
+            android:minHeight="40dp"
+            android:text="@string/welcome_journey_skip_step"
+            android:textColor="@color/grey"
+            android:textSize="13sp"
+            android:visibility="gone"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_step_1" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -203,6 +251,21 @@
             app:layout_constraintStart_toStartOf="@+id/tv_title_step_2"
             app:layout_constraintTop_toBottomOf="@+id/tv_title_step_2" />
 
+        <TextView
+            android:id="@+id/btn_redo_step_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_bold"
+            android:gravity="center"
+            android:minHeight="40dp"
+            android:text="@string/welcome_journey_redo_step"
+            android:textColor="@color/orange_entourage"
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/tv_title_step_2"
+            app:layout_constraintTop_toBottomOf="@+id/tv_desc_step_2" />
+
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_step_2"
             android:layout_width="0dp"
@@ -222,6 +285,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_desc_step_2" />
+
+        <TextView
+            android:id="@+id/btn_skip_step_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_bold"
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
+            android:minHeight="40dp"
+            android:text="@string/welcome_journey_skip_step"
+            android:textColor="@color/grey"
+            android:textSize="13sp"
+            android:visibility="gone"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_step_2" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -287,6 +368,21 @@
             app:layout_constraintStart_toStartOf="@+id/tv_title_step_3"
             app:layout_constraintTop_toBottomOf="@+id/tv_title_step_3" />
 
+        <TextView
+            android:id="@+id/btn_redo_step_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_bold"
+            android:gravity="center"
+            android:minHeight="40dp"
+            android:text="@string/welcome_journey_redo_step"
+            android:textColor="@color/orange_entourage"
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/tv_title_step_3"
+            app:layout_constraintTop_toBottomOf="@+id/tv_desc_step_3" />
+
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_step_3"
             android:layout_width="0dp"
@@ -306,6 +402,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_desc_step_3" />
+
+        <TextView
+            android:id="@+id/btn_skip_step_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_bold"
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
+            android:minHeight="40dp"
+            android:text="@string/welcome_journey_skip_step"
+            android:textColor="@color/grey"
+            android:textSize="13sp"
+            android:visibility="gone"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_step_3" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -371,6 +485,21 @@
             app:layout_constraintStart_toStartOf="@+id/tv_title_step_4"
             app:layout_constraintTop_toBottomOf="@+id/tv_title_step_4" />
 
+        <TextView
+            android:id="@+id/btn_redo_step_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_bold"
+            android:gravity="center"
+            android:minHeight="40dp"
+            android:text="@string/welcome_journey_redo_step"
+            android:textColor="@color/orange_entourage"
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@+id/tv_title_step_4"
+            app:layout_constraintTop_toBottomOf="@+id/tv_desc_step_4" />
+
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_step_4"
             android:layout_width="0dp"
@@ -390,6 +519,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_desc_step_4" />
+
+        <TextView
+            android:id="@+id/btn_skip_step_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_bold"
+            android:gravity="center"
+            android:paddingHorizontal="16dp"
+            android:minHeight="40dp"
+            android:text="@string/welcome_journey_skip_step"
+            android:textColor="@color/grey"
+            android:textSize="13sp"
+            android:visibility="gone"
+            android:textStyle="normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_step_4" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
