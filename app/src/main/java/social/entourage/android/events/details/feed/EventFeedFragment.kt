@@ -863,7 +863,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     }
 
     override fun onDeleteSurveyClick(postId: Int, surveyResponse: MutableList<Boolean>) {
-        //Toast.makeText(requireContext(), "Survey option deleted", Toast.LENGTH_SHORT).show()
+        surveyPresenter.deleteSurveyResponseForEvent(eventId, postId)
     }
 
     override fun showParticipantWhoVote(survey: Survey, postId: Int, question:String) {

@@ -67,6 +67,7 @@ class SurveyPresenter {
                     // La réponse au sondage a été supprimée avec succès
                     Timber.tag("SurveyPresenter").d("Réponse au sondage supprimée avec succès.")
                 } else {
+                    isSurveyVoted.postValue(false)
                     Timber.tag("SurveyPresenter").e("Erreur lors de la suppression de la réponse au sondage.")
                 }
             }
@@ -145,6 +146,7 @@ class SurveyPresenter {
                     // La réponse au sondage a été supprimée avec succès
                     Timber.tag("SurveyPresenter").d("Réponse au sondage supprimée avec succès.")
                 } else {
+                    isSurveyVoted.postValue(false)
                     Timber.tag("SurveyPresenter")
                         .e("Erreur lors de la suppression de la réponse au sondage.")
                 }

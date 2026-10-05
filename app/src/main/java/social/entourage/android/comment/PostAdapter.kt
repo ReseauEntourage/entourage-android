@@ -260,7 +260,6 @@ class PostAdapter(
             bindingChoice.parent.setOnClickListener {
                 val wasSelected = localState[index]
                 if (wasSelected) {
-                    surveyCallback.onDeleteSurveyClick(post.id!!, localState)
                     survey.summary[index] = survey.summary[index] - 1
                 } else {
                     survey.summary[index] = survey.summary[index] + 1
@@ -273,6 +272,10 @@ class PostAdapter(
                     } else {
                         localSummary[index] = (localSummary.getOrNull(index)?.minus(1))?.coerceAtLeast(0) ?: 0
                     }
+                } else if (wasSelected) {
+                    // Choix unique : re-cliquer sur l'option retire le vote
+                    localState[index] = false
+                    localSummary[index] = (localSummary[index] - 1).coerceAtLeast(0)
                 } else {
                     // Choix unique
                     val previouslySelectedIndex = localState.indexOf(true)
@@ -285,7 +288,12 @@ class PostAdapter(
                     localState[index] = true
                     localSummary[index] = localSummary.getOrNull(index)?.plus(1) ?: 1
                 }
-                surveyCallback.onSurveyOptionClicked(post.id!!, localState)
+                if (localState.none { it }) {
+                    // Plus aucune option cochée : on "dévote"
+                    surveyCallback.onDeleteSurveyClick(post.id!!, localState)
+                } else {
+                    surveyCallback.onSurveyOptionClicked(post.id!!, localState)
+                }
 
                 // Mettre à jour l’UI pour tous les choix
                 survey.choices.forEachIndexed { choiceIndex, _ ->
