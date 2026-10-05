@@ -240,8 +240,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         // Récupération des informations de validation via le WS uniquement
         val events = (if (BuildConfig.DEBUG) summaryEventsOverride else null) ?: summary.events
         val states = WelcomeJourneyStep.statesOf(events)
-        val isDone = states.map { it == WelcomeJourneyState.DONE }
-        val allDone = isDone.all { it }
         // Parcours "résolu" : chaque étape est faite ou passée
         val allResolved = states.all { it != WelcomeJourneyState.TODO }
 
@@ -281,13 +279,13 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         welcomeJourneyAdapter.setVisible(true)
         welcomeJourneyAdapter.updateStates(states)
 
-        // Détection du moment où le parcours est terminé pour afficher le Tooltip de célébration
-        val previouslyCompletedSize = completedJourneySteps.size
+        // Détection du moment où le parcours est terminé (étapes faites ou passées) pour afficher la célébration
+        val previouslyResolvedSize = completedJourneySteps.size
         completedJourneySteps.clear()
-        isDone.forEachIndexed { i, done -> if (done) completedJourneySteps.add(i + 1) }
+        states.forEachIndexed { i, state -> if (state != WelcomeJourneyState.TODO) completedJourneySteps.add(i + 1) }
 
         // Si on vient juste de finir les 4 étapes (n'était pas à 4 avant)
-        if (allDone && previouslyCompletedSize < 4 && !forced) {
+        if (allResolved && previouslyResolvedSize < 4 && !forced) {
             showCongratDialog(summary)
         }
         refreshDebugJourneyPanel()

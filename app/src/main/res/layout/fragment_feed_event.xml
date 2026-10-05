@@ -209,20 +209,44 @@
                                 android:layout_height="wrap_content"
                                 tools:text="Dansons ensemble" />
 
-                            <TextView
-                                android:id="@+id/tv_reserved_female"
+                            <LinearLayout
+                                android:id="@+id/layout_event_tags"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:background="@drawable/bg_purple_rounded"
-                                android:paddingHorizontal="12dp"
-                                android:paddingVertical="6dp"
-                                android:text="@string/event_reserved_female_banner"
-                                android:textColor="@color/white"
-                                android:textSize="14sp"
-                                android:fontFamily="@font/quicksand_bold"
+                                android:orientation="horizontal"
                                 android:visibility="gone"
-                                tools:visibility="visible"/>
+                                tools:visibility="visible">
+
+                                <TextView
+                                    android:id="@+id/tv_tag_entourage"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/bg_tag_entourage"
+                                    android:fontFamily="@font/quicksand_bold"
+                                    android:paddingHorizontal="8dp"
+                                    android:paddingVertical="4dp"
+                                    android:text="Événement Entourage"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="11sp"
+                                    android:visibility="gone"
+                                    tools:visibility="visible" />
+
+                                <TextView
+                                    android:id="@+id/tv_reserved_female"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="6dp"
+                                    android:background="@drawable/bg_tag_female"
+                                    android:fontFamily="@font/quicksand_bold"
+                                    android:paddingHorizontal="8dp"
+                                    android:paddingVertical="4dp"
+                                    android:text="Réservé aux femmes"
+                                    android:textColor="#FFFFFF"
+                                    android:textSize="11sp"
+                                    android:visibility="gone"
+                                    tools:visibility="visible" />
+                            </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="match_parent"

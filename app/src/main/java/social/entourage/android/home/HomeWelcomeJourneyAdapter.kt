@@ -117,8 +117,9 @@ class HomeWelcomeJourneyAdapter(
         }
 
         fun bind() {
-            val completedCount = states.count { it == WelcomeJourneyState.DONE }
-            val isCompletedFully = completedCount == steps.size
+            // Parcours terminé quand chaque étape est faite OU passée : même encart de félicitations
+            val isCompletedFully = states.none { it == WelcomeJourneyState.TODO }
+            val completedCount = if (isCompletedFully) steps.size else states.count { it == WelcomeJourneyState.DONE }
 
             tvStepCounter.text = "$completedCount/${steps.size}"
             progressBar.progress = completedCount
