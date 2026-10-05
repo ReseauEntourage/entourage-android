@@ -273,16 +273,22 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 welcomeJourneyAdapter.setVisible(false)
                 return
             }
+
+            // Règle 4: Plus aucune étape à faire mais au moins une passée : pas de félicitations, on masque tout
+            if (allResolved && states.any { it == WelcomeJourneyState.SKIPPED }) {
+                welcomeJourneyAdapter.setVisible(false)
+                return
+            }
         }
 
         // Sinon on affiche le composant et on met à jour les données
         welcomeJourneyAdapter.setVisible(true)
         welcomeJourneyAdapter.updateStates(states)
 
-        // Détection du moment où le parcours est terminé (étapes faites ou passées) pour afficher la célébration
+        // Détection du moment où les 4 étapes sont faites (une étape passée ne déclenche pas la célébration)
         val previouslyResolvedSize = completedJourneySteps.size
         completedJourneySteps.clear()
-        states.forEachIndexed { i, state -> if (state != WelcomeJourneyState.TODO) completedJourneySteps.add(i + 1) }
+        states.forEachIndexed { i, state -> if (state == WelcomeJourneyState.DONE) completedJourneySteps.add(i + 1) }
 
         // Si on vient juste de finir les 4 étapes (n'était pas à 4 avant)
         if (allResolved && previouslyResolvedSize < 4 && !forced) {
