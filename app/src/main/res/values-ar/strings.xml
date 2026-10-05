@@ -2954,4 +2954,13 @@
     <string name="action_cgu_consent_3">La bienveillance et le respect sont au cœur de chaque échange. Tout comportement discriminatoire, violent ou contraire à la loi est strictement interdit.</string>
     <string name="action_cgu_full_charter_url" translatable="false">https://www.entourage.social/app/resources/eMU*InNSSJbE</string>
     <string name="profile_address_radius_format">%1$s - نصف قطر %2$d كم</string>
+    <string name="welcome_journey_skip_step">Passer cette étape</string>
+    <string name="welcome_journey_redo_step">Découvrir cette étape</string>
+    <string name="welcome_journey_badge_skipped">Passée</string>
+    <string name="welcome_journey_options">Options du parcours</string>
+    <string name="welcome_journey_hide_menu">Masquer le parcours</string>
+    <string name="welcome_journey_hide_title">Souhaitez-vous masquer le parcours de bienvenue ?</string>
+    <string name="welcome_journey_hide_message">Cette action est irréversible, mais vous pourrez toujours retrouver ces différents contenus dans votre application.</string>
+    <string name="welcome_journey_hide_confirm">Masquer</string>
+    <string name="welcome_journey_hide_cancel">Annuler</string>
 </resources>

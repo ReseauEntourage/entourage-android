@@ -154,6 +154,12 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     private lateinit var welcomeJourneyAdapter: HomeWelcomeJourneyAdapter
     private val homeSkeletonAdapter = HomeSkeletonAdapter()
     private var completedJourneySteps = mutableSetOf<Int>()
+    private var lastSummary: Summary? = null
+    private var inactivityCheckedForUserId: Int? = null
+    private var debugJourneyForced = false
+    private var debugJourneyPanel: View? = null
+    private var debugJourneyTable: TextView? = null
+    private var debugLastAction: String? = null
 
     // Sensibilisation (Initial Pedago)
     private lateinit var initialPedagoHeaderAdapter: HomeSectionHeaderAdapter
@@ -216,8 +222,9 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         dialog.show(parentFragmentManager, HomeCongratPopFragment.TAG)
     }
 
-    private fun handleWelcomeJourneyState(summary: Summary) {
+    internal fun handleWelcomeJourneyState(summary: Summary) {
         if (!::welcomeJourneyAdapter.isInitialized) return
+        lastSummary = summary
 
         val currentUser = EntourageApplication.me(requireContext())
 
@@ -227,50 +234,236 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             currentUserIdForJourney = currentUser?.id
         }
 
-        // Règle 1: Masquer si l'utilisateur est partenaire
-        if (currentUser?.partner != null) {
-            welcomeJourneyAdapter.setVisible(false)
-            return
-        }
+        // Mode debug (appui long sur le logo) : on affiche le parcours quoi qu'il arrive
+        val forced = BuildConfig.DEBUG && debugJourneyForced
 
         // Récupération des informations de validation via le WS uniquement
-        val events = summary.events
-        val isStep1Done = events?.contains("onboarding.resource.welcome_watched") == true
-        val isStep2Done = events?.contains("onboarding.neighborhood.national") == true
-        val isStep3Done = events?.contains("onboarding.outing.webinar_or_first_steps") == true
-        val isStep4Done = events?.contains("onboarding.outing.papotages") == true
+        val events = (if (BuildConfig.DEBUG) summaryEventsOverride else null) ?: summary.events
+        val states = WelcomeJourneyStep.statesOf(events)
+        // Parcours "résolu" : chaque étape est faite ou passée
+        val allResolved = states.all { it != WelcomeJourneyState.TODO }
 
-        val allCompleted = isStep1Done && isStep2Done && isStep3Done && isStep4Done
-
-        // Règle 2: Initialisation du companion object au premier passage
-        if (hasInitiallyCompletedAll == null) {
-            hasInitiallyCompletedAll = allCompleted
+        if (!forced && currentUser?.id != null && currentUser.partner == null &&
+            !isWelcomeJourneyHidden(currentUser.id) && inactivityCheckedForUserId != currentUser.id
+        ) {
+            inactivityCheckedForUserId = currentUser.id
+            if (autoSkipAfterInactivity(currentUser.id, states)) return
         }
 
-        // Règle 3: Si tout était validé dès le lancement de l'application, on masque tout complètement
-        if (hasInitiallyCompletedAll == true) {
-            welcomeJourneyAdapter.setVisible(false)
-        } else {
-            // Sinon on affiche le composant et on met à jour les données
-            welcomeJourneyAdapter.setVisible(true)
-            welcomeJourneyAdapter.updateAllSteps(isStep1Done, isStep2Done, isStep3Done, isStep4Done)
-
-            // Détection du moment où le parcours est terminé pour afficher le Tooltip de célébration
-            val previouslyCompletedSize = completedJourneySteps.size
-            completedJourneySteps.clear()
-            if (isStep1Done) completedJourneySteps.add(1)
-            if (isStep2Done) completedJourneySteps.add(2)
-            if (isStep3Done) completedJourneySteps.add(3)
-            if (isStep4Done) completedJourneySteps.add(4)
-
-            // Si on vient juste de finir les 4 étapes (n'était pas à 4 avant)
-            if (allCompleted && previouslyCompletedSize < 4) {
-                showCongratDialog(summary)
+        if (!forced) {
+            // Règle 1: Masquer si l'utilisateur est partenaire
+            if (currentUser?.partner != null) {
+                welcomeJourneyAdapter.setVisible(false)
+                return
             }
+
+            // Règle 1 bis: Masqué manuellement par l'utilisateur ("Masquer le parcours")
+            if (isWelcomeJourneyHidden(currentUser?.id)) {
+                welcomeJourneyAdapter.setVisible(false)
+                return
+            }
+
+            // Règle 2: Initialisation du companion object au premier passage
+            if (hasInitiallyCompletedAll == null) {
+                hasInitiallyCompletedAll = allResolved
+            }
+
+            // Règle 3: Si tout était fait ou passé dès le lancement de l'application, on masque tout complètement
+            if (hasInitiallyCompletedAll == true) {
+                welcomeJourneyAdapter.setVisible(false)
+                return
+            }
+        }
+
+        // Sinon on affiche le composant et on met à jour les données
+        welcomeJourneyAdapter.setVisible(true)
+        welcomeJourneyAdapter.updateStates(states)
+
+        // Détection du moment où le parcours est terminé (étapes faites ou passées) pour afficher la célébration
+        val previouslyResolvedSize = completedJourneySteps.size
+        completedJourneySteps.clear()
+        states.forEachIndexed { i, state -> if (state != WelcomeJourneyState.TODO) completedJourneySteps.add(i + 1) }
+
+        // Si on vient juste de finir les 4 étapes (n'était pas à 4 avant)
+        if (allResolved && previouslyResolvedSize < 4 && !forced) {
+            showCongratDialog(summary)
+        }
+        refreshDebugJourneyPanel()
+    }
+
+    /**
+     * Date de dernière connexion stockée en local (SharedPreferences). Si elle remonte à 14 jours
+     * ou plus, on passe toutes les étapes encore à faire. Retourne true si le parcours est masqué.
+     */
+    private fun autoSkipAfterInactivity(userId: Int, states: List<WelcomeJourneyState>): Boolean {
+        val prefs = EntourageApplication.get().sharedPreferences
+        val key = welcomeJourneyLastConnectionKey(userId)
+        val now = System.currentTimeMillis()
+        val last = prefs.getLong(key, 0L)
+        prefs.edit { putLong(key, now) }
+        if (!WelcomeJourneyInactivity.shouldAutoSkip(last, now)) return false
+
+        val todo = WelcomeJourneyStep.entries.filter { states[it.index - 1] == WelcomeJourneyState.TODO }
+        if (todo.isEmpty()) return false
+        // On masque pour cette session : le parcours est considéré comme résolu
+        hasInitiallyCompletedAll = true
+        welcomeJourneyAdapter.setVisible(false)
+        todo.forEach { step ->
+            WelcomeJourneyApi.skipHandler(step) { success ->
+                if (isAdded && success) markStepSkippedLocally(step)
+            }
+        }
+        return true
+    }
+
+    private fun isWelcomeJourneyHidden(userId: Int?): Boolean =
+        userId != null && EntourageApplication.get().sharedPreferences
+            .getBoolean(welcomeJourneyHiddenKey(userId), false)
+
+    private fun onWelcomeJourneySkip(stepIndex: Int) {
+        val step = WelcomeJourneyStep.fromIndex(stepIndex) ?: return
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__HOME__WELCOME_JOURNEY_SKIP_STEP)
+        debugLastAction = "Passer étape $stepIndex → POST ${step.apiStep}…"
+        refreshDebugJourneyPanel()
+        WelcomeJourneyApi.skipHandler(step) { success ->
+            if (!isAdded) return@skipHandler
+            if (success) {
+                markStepSkippedLocally(step)
+                debugLastAction = "Passer étape $stepIndex → OK (${step.skippedEvent})"
+                // Le summary du serveur fait foi, sauf si un faux summary est injecté (debug / tests)
+                if (!(BuildConfig.DEBUG && summaryEventsOverride != null)) homePresenter.getSummary()
+            } else {
+                debugLastAction = "Passer étape $stepIndex → ÉCHEC"
+                android.widget.Toast.makeText(requireContext(), R.string.error_generic, android.widget.Toast.LENGTH_SHORT).show()
+            }
+            refreshDebugJourneyPanel()
         }
     }
 
+    /** Mise à jour optimiste : l'étape apparaît "Passée" sans attendre le rechargement du summary. */
+    private fun markStepSkippedLocally(step: WelcomeJourneyStep) {
+        val summary = lastSummary ?: return
+        if (BuildConfig.DEBUG && summaryEventsOverride != null) {
+            summaryEventsOverride = summaryEventsOverride!! + step.skippedEvent
+        } else {
+            summary.events = ((summary.events ?: mutableListOf()) + step.skippedEvent).toMutableList()
+        }
+        handleWelcomeJourneyState(summary)
+    }
+
+    private fun showWelcomeJourneyMenu(anchor: View) {
+        val popup = android.widget.PopupMenu(requireContext(), anchor)
+        popup.menu.add(0, MENU_HIDE_JOURNEY, 0, R.string.welcome_journey_hide_menu)
+        popup.setOnMenuItemClickListener {
+            if (it.itemId == MENU_HIDE_JOURNEY) showHideWelcomeJourneyConfirmation()
+            true
+        }
+        popup.show()
+    }
+
+    private fun showHideWelcomeJourneyConfirmation() {
+        if (!isAdded) return
+        val dialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme)
+        val view = layoutInflater.inflate(R.layout.dialog_hide_welcome_journey, null)
+        dialog.setContentView(view)
+        view.findViewById<View>(R.id.btn_hide_cancel).setOnClickListener { dialog.dismiss() }
+        view.findViewById<View>(R.id.btn_hide_confirm).setOnClickListener {
+            AnalyticsEvents.logEvent(AnalyticsEvents.ACTION__HOME__WELCOME_JOURNEY_HIDE)
+            EntourageApplication.me(requireContext())?.id?.let { id ->
+                EntourageApplication.get().sharedPreferences.edit {
+                    putBoolean(welcomeJourneyHiddenKey(id), true)
+                }
+            }
+            welcomeJourneyAdapter.setVisible(false)
+            debugLastAction = "Parcours masqué"
+            refreshDebugJourneyPanel()
+            dialog.dismiss()
+        }
+        dialog.show()
+        dialog.behavior.state = com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_EXPANDED
+    }
+
+    // ---- Debug : appui long sur le logo de la home (jamais en prod) ----
+
+    private fun showDebugJourney() {
+        debugJourneyForced = true
+        // Parcours vierge : aucune étape faite ni passée, le vrai summary est ignoré
+        summaryEventsOverride = emptyList()
+        debugLastAction = "Parcours vierge lancé"
+        if (lastSummary == null) lastSummary = Summary()
+        lastSummary?.let { handleWelcomeJourneyState(it) }
+        val offset = concatAdapter.adapters.takeWhile { it !== welcomeJourneyAdapter }.sumOf { it.itemCount }
+        binding.rvHome.scrollToPosition(offset)
+        showDebugJourneyPanel()
+        refreshDebugJourneyPanel()
+    }
+
+    private fun showDebugJourneyPanel() {
+        if (debugJourneyPanel != null) return
+        val content = requireActivity().findViewById<ViewGroup>(android.R.id.content)
+        val density = resources.displayMetrics.density
+        val panel = android.widget.LinearLayout(requireContext()).apply {
+            tag = "debug_journey_panel"
+            orientation = android.widget.LinearLayout.VERTICAL
+            setBackgroundColor(Color.argb(235, 30, 30, 30))
+            val pad = (10 * density).toInt()
+            setPadding(pad, pad, pad, pad)
+        }
+        val table = TextView(requireContext()).apply {
+            tag = "debug_journey_table"
+            setTextColor(Color.WHITE)
+            textSize = 11f
+            typeface = android.graphics.Typeface.MONOSPACE
+        }
+        val close = TextView(requireContext()).apply {
+            text = "✕ fermer le debug"
+            setTextColor(Color.parseColor("#FF9739"))
+            textSize = 12f
+            setOnClickListener {
+                debugJourneyForced = false
+                summaryEventsOverride = null
+                content.removeView(panel)
+                debugJourneyPanel = null
+                debugJourneyTable = null
+                lastSummary?.let { handleWelcomeJourneyState(it) }
+            }
+        }
+        panel.addView(table)
+        panel.addView(close)
+        content.addView(
+            panel,
+            android.widget.FrameLayout.LayoutParams(
+                android.widget.FrameLayout.LayoutParams.WRAP_CONTENT,
+                android.widget.FrameLayout.LayoutParams.WRAP_CONTENT,
+                Gravity.TOP or Gravity.END
+            ).apply { topMargin = (140 * density).toInt() }
+        )
+        debugJourneyPanel = panel
+        debugJourneyTable = table
+    }
+
+    private fun refreshDebugJourneyPanel() {
+        val table = debugJourneyTable ?: return
+        val events = (if (BuildConfig.DEBUG) summaryEventsOverride else null) ?: lastSummary?.events
+        val labels = listOf("Vidéo", "Groupe national", "Visio équipe", "Papotages")
+        val sb = StringBuilder("DEBUG parcours de bienvenue\n")
+        WelcomeJourneyStep.entries.forEach { step ->
+            val state = step.stateOf(events)
+            sb.append("${step.index} ${labels[step.index - 1].padEnd(15)} $state\n")
+        }
+        sb.append("Événements : ${events?.filter { it.startsWith("onboarding") }?.size ?: 0}\n")
+        sb.append("Dernière action : ${debugLastAction ?: "-"}")
+        table.text = sb.toString()
+    }
+
     private fun handleWelcomeJourneyClick(stepIndex: Int) {
+        debugLastAction = "Clic étape $stepIndex → " + when (stepIndex) {
+            1 -> "vidéo de bienvenue"
+            2 -> "NationalGroupsActivity"
+            3 -> "WelcomeEventsListActivity(welcome)"
+            else -> "WelcomeEventsListActivity(papotages)"
+        }
+        refreshDebugJourneyPanel()
         when (stepIndex) {
             1 -> showVideoModal()
             2 -> showNationalGroupsActivity()
@@ -439,9 +632,12 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     }
 
     private fun setupWelcomeJourneyAdapter() {
-        welcomeJourneyAdapter = HomeWelcomeJourneyAdapter(requireContext()) { stepIndex ->
-            handleWelcomeJourneyClick(stepIndex)
-        }
+        welcomeJourneyAdapter = HomeWelcomeJourneyAdapter(
+            requireContext(),
+            onStepClick = { stepIndex -> handleWelcomeJourneyClick(stepIndex) },
+            onSkipClick = { stepIndex -> onWelcomeJourneySkip(stepIndex) },
+            onMoreClick = { anchor -> showWelcomeJourneyMenu(anchor) }
+        )
     }
 
     private fun setupInitialPedagoAdapter(viewPool: RecyclerView.RecycledViewPool) {
@@ -619,18 +815,9 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         userPresenter.user.observe(viewLifecycleOwner, userObserver)
 
         if (BuildConfig.DEBUG) {
-            // Simule le clic sur la notif "Test pour click" (groupe 286, post 54621) pour
-            // vérifier le scroll+highlight du deep link, faute de pouvoir déclencher une vraie
-            // notif avec post_id renseigné depuis le back pour l'instant.
-            binding.ivLogoHome.setOnClickListener {
-                NotificationActionManager.presentAction(
-                    requireActivity(),
-                    parentFragmentManager,
-                    "neighborhood",
-                    286,
-                    54621
-                )
-            }
+            // Clic sur le logo : lance le parcours de bienvenue vierge (faux summary sans événement)
+            // avec un tableau d'état de test, pour vérifier chaque étape sans toucher au compte.
+            binding.ivLogoHome.setOnClickListener { showDebugJourney() }
         }
 
         if (MainActivity.shouldLaunchOnboarding) {
@@ -1473,6 +1660,18 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         private var hasInitiallyCompletedAll: Boolean? = null
         // On stocke l'ID pour réinitialiser l'état si on change de compte
         private var currentUserIdForJourney: Int? = null
+
+        private const val MENU_HIDE_JOURNEY = 1
+
+        private fun welcomeJourneyLastConnectionKey(userId: Int) = "PREF_WELCOME_JOURNEY_LAST_CONNECTION_$userId"
+
+        private fun welcomeJourneyHiddenKey(userId: Int) = "PREF_WELCOME_JOURNEY_HIDDEN_$userId"
+
+        /**
+         * Debug / tests e2e uniquement (ignoré hors BuildConfig.DEBUG) : remplace `summary.events`
+         * par de fausses données pour piloter l'état du parcours de bienvenue.
+         */
+        var summaryEventsOverride: List<String>? = null
     }
 }
 

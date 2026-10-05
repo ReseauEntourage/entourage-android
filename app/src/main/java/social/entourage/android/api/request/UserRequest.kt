@@ -72,6 +72,9 @@ interface UserRequest {
     @POST("users/request_phone_change")
     fun changePhone(@Body userInfo: ArrayMap<String, Any>): Call<ResponseBody>
 
+    @POST("users/onboarding_step_skipped")
+    fun skipOnboardingStep(@Body step: ArrayMap<String, Any>): Call<ResponseBody>
+
     @GET("users/unread")
     fun getUnreadCountForUser(): Call<UnreadCountWrapper>
 }

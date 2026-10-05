@@ -278,7 +278,13 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         with(binding) {
             eventName.text = event?.title
             eventNameToolbar.text = event?.title
-            tvReservedFemale.isVisible = event?.metadata?.reserved_female == true
+            val isReservedFemale = event?.metadata?.reserved_female == true
+            val isEntourageEvent = event?.author?.communityRoles?.let {
+                it.contains("Équipe Entourage") || it.contains("Animateur Entourage")
+            } == true
+            tvReservedFemale.isVisible = isReservedFemale
+            tvTagEntourage.isVisible = isEntourageEvent
+            layoutEventTags.isVisible = isReservedFemale || isEntourageEvent
 
             val membersCount = event?.membersCount ?: 0
             eventMembersNumberLocation.text = if (membersCount > 1) {
