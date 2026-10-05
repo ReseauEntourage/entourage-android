@@ -232,7 +232,7 @@ android {
 
 configurations.all {
     resolutionStrategy {
-        force("com.google.protobuf:protobuf-javalite:3.25.1")
+        force("com.google.protobuf:protobuf-javalite:4.36.2")
     }
     exclude(group = "com.google.android.play", module = "core")
     exclude(group = "com.google.android.play", module = "core-ktx")
