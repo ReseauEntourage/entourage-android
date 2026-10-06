@@ -270,8 +270,14 @@ class DiscussionsMainFragment : Fragment() {
     }
 
     private fun showDetail(conversation: Conversation) {
-        conversation.numberUnreadMessages = 0
         conversation.id?.let { readConversationIds.add(it) }
+        // Mise à jour optimiste : Conversation n'est pas observable par Compose, on remplace donc
+        // l'item par une copie "lue" dans la liste d'état (sans rafraîchissement réseau).
+        if (conversation.hasUnread()) {
+            val index = messagesList.indexOfFirst { it === conversation }
+            if (index >= 0) messagesList[index] = conversation.copyAsRead()
+            else conversation.numberUnreadMessages = 0
+        }
 
         VibrationUtil.vibrate(requireContext())
         DetailConversationActivity.isSmallTalkMode = (conversation.type == "small_talk")

@@ -108,6 +108,15 @@ class Conversation(
         return (numberUnreadMessages ?: 0) > 0
     }
 
+    /** Copie de la conversation avec le compteur de non-lus remis à 0 (mise à jour optimiste de la liste). */
+    fun copyAsRead(): Conversation = Conversation(
+        id = id, uuid_v2 = uuid_v2, uuid = uuid, type = type, title = title, imageUrl = imageUrl,
+        subname = subname, lastMessage = lastMessage, numberUnreadMessages = 0, section = section,
+        user = user, message = message, hasPersonalPost = hasPersonalPost, members = members,
+        member = member, memberCount = memberCount, isCreator = isCreator, blockers = blockers,
+        author = author
+    )
+
     fun isOneToOne() : Boolean {
         return type == "private"
     }
