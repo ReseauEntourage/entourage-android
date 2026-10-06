@@ -102,6 +102,7 @@ fun MessageBubbleItem(
     onSeeReactions: () -> Unit,
     reactions: List<Reaction>,
     reactionTypes: List<ReactionType>,
+    phoneWarning: String? = null,
 ) {
     // Flash de mise en évidence pour le message ciblé par un deep link de notification :
     // apparaît immédiatement (pas de fade-in) puis s'estompe. key(comment.id) évite qu'une
@@ -159,6 +160,18 @@ fun MessageBubbleItem(
                     onLongPress = handleLongPress,
                     onImageClick = onImageClick,
                     onLinkClick = onLinkClick,
+                )
+            }
+
+            // Avertissement non bloquant (EN-8022) : message contenant un numéro de téléphone
+            // dans une conversation privée — texte différent pour l'expéditeur et le destinataire.
+            if (phoneWarning != null) {
+                Text(
+                    text = phoneWarning,
+                    style = EntourageComposeStyles.groupMemberSubtitleBlack.copy(
+                        color = colorResource(R.color.grey_deleted_icon)
+                    ),
+                    modifier = Modifier.padding(top = 4.dp, start = 4.dp, end = 4.dp)
                 )
             }
 

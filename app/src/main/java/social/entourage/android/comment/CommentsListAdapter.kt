@@ -15,6 +15,7 @@ import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.PhoneNumberDetector
 import timber.log.Timber
 import java.text.SimpleDateFormat
 
@@ -182,6 +183,18 @@ class CommentsListAdapter(
             else "le " + SimpleDateFormat(context.getString(R.string.comments_date), locale).format(it)
         }
 
+        // EN-8022 : avertissement sous la bulle si le message contient un numéro de téléphone,
+        // uniquement en conversation privée (1-to-1) — ni groupe, ni événement, ni small talk.
+        val isPrivateConversation = isConversation && isOne2One && !isForEvent && !isForGroup &&
+            !DetailConversationActivity.isSmallTalkMode
+        val phoneWarning = if (isPrivateConversation && !isDeletedOrOffensive &&
+            PhoneNumberDetector.containsFrenchPhoneNumber(comment.content ?: comment.contentHtml)
+        ) {
+            context.getString(
+                if (isMe) R.string.message_phone_warning_sender else R.string.message_phone_warning_receiver
+            )
+        } else null
+
         MessageBubbleItem(
             comment = comment,
             isMe = isMe,
@@ -212,6 +225,7 @@ class CommentsListAdapter(
             onSeeReactions = { onItemClick.onMessageReactionsSeen(comment) },
             reactions = comment.reactions ?: emptyList(),
             reactionTypes = MainActivity.reactionsList ?: emptyList(),
+            phoneWarning = phoneWarning,
         )
     }
 
