@@ -12,6 +12,16 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.URLSpan
 import android.text.util.Linkify
+import android.text.style.BackgroundColorSpan
+import android.text.style.StyleSpan
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+import social.entourage.android.tools.utils.PhoneNumberDetector
+import social.entourage.android.ui.theme.NunitoSansRegular
+import social.entourage.android.ui.theme.NunitoSansSemiBold
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.compose.animation.animateColorAsState
@@ -28,6 +38,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -157,21 +168,10 @@ fun MessageBubbleItem(
                     isDeletedOrOffensive = isDeletedOrOffensive,
                     deletedOrOffensiveLabel = deletedOrOffensiveLabel,
                     contentHtml = contentHtml,
+                    highlightPhoneNumbers = phoneWarning != null,
                     onLongPress = handleLongPress,
                     onImageClick = onImageClick,
                     onLinkClick = onLinkClick,
-                )
-            }
-
-            // Avertissement non bloquant (EN-8022) : message contenant un numéro de téléphone
-            // dans une conversation privée — texte différent pour l'expéditeur et le destinataire.
-            if (phoneWarning != null) {
-                Text(
-                    text = phoneWarning,
-                    style = EntourageComposeStyles.groupMemberSubtitleBlack.copy(
-                        color = colorResource(R.color.grey_deleted_icon)
-                    ),
-                    modifier = Modifier.padding(top = 4.dp, start = 4.dp, end = 4.dp)
                 )
             }
 
@@ -207,6 +207,13 @@ fun MessageBubbleItem(
                     )
                     Text(text = stringResource(R.string.retry_comment), style = EntourageComposeStyles.errorMsg)
                 }
+            }
+
+            // Avertissement non bloquant (EN-8022) : message contenant un numéro de téléphone dans
+            // une conversation privée. Sous la bulle et sa ligne d'infos, au-dessus du bouton
+            // "Réagir" ; texte différent pour l'expéditeur et le destinataire.
+            if (phoneWarning != null) {
+                PhoneWarningBanner(text = phoneWarning)
             }
 
             // Sous la bulle : pastilles des réactions déjà posées (affichage passif) suivies du
@@ -258,6 +265,7 @@ internal fun BubbleContent(
     onLongPress: () -> Unit,
     onImageClick: () -> Unit,
     onLinkClick: (String) -> Unit,
+    highlightPhoneNumbers: Boolean = false,
 ) {
     val hasImage = !comment.imageUrl.isNullOrEmpty() && !isDeletedOrOffensive
     val hasOnlyImage = hasImage && contentHtml.isBlank()
@@ -304,6 +312,7 @@ internal fun BubbleContent(
                     modifier = Modifier.padding(horizontal = 15.dp, vertical = 10.dp),
                     onLinkClick = onLinkClick,
                     onLongClick = longClick,
+                    highlightPhoneNumbers = highlightPhoneNumbers,
                 )
             }
         }
@@ -507,6 +516,7 @@ private fun HtmlMessageText(
     modifier: Modifier = Modifier,
     onLinkClick: (String) -> Unit,
     onLongClick: (() -> Unit)? = null,
+    highlightPhoneNumbers: Boolean = false,
 ) {
     AndroidView(
         modifier = modifier,
@@ -521,7 +531,9 @@ private fun HtmlMessageText(
             }
         },
         update = { tv ->
-            tv.text = buildMessageSpannable(html, onLinkClick)
+            tv.text = buildMessageSpannable(html, onLinkClick).also {
+                if (highlightPhoneNumbers) highlightPhoneNumbers(it)
+            }
             // Long-press posé nativement sur la View (pas via un Modifier Compose ambiant)
             // pour ne pas interférer avec le clic sur les ClickableSpan (liens/mentions).
             tv.setOnLongClickListener {
@@ -642,4 +654,56 @@ private fun makeLinksClickable(spanned: Spanned, onLinkClick: (String) -> Unit):
         }, start, end, flags)
     }
     return sb
+}
+
+/** Surligne (fond orange translucide + semi-gras) les numéros de téléphone du texte rendu (EN-8022). */
+private fun highlightPhoneNumbers(text: Spannable) {
+    PhoneNumberDetector.findFrenchPhoneNumbers(text).forEach { range ->
+        val end = range.last + 1
+        text.setSpan(BackgroundColorSpan(android.graphics.Color.parseColor("#47FF9739")), range.first, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        text.setSpan(StyleSpan(android.graphics.Typeface.BOLD), range.first, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+    }
+}
+
+/**
+ * Bannière beige d'avertissement (EN-8022) : icône ⚠ à gauche, texte à droite dont le premier
+ * segment jusqu'au ":" ("Attention :") est en semi-gras orange. Largeur bornée par la colonne
+ * de la bulle, donc alignée sous elle (à droite pour mes messages, après l'avatar sinon).
+ */
+@Composable
+private fun PhoneWarningBanner(text: String) {
+    val accent = colorResource(R.color.phone_warning_accent)
+    val colon = text.indexOf(':')
+    val annotated = buildAnnotatedString {
+        if (colon >= 0) {
+            withStyle(SpanStyle(color = accent, fontFamily = NunitoSansSemiBold, fontWeight = FontWeight.SemiBold)) {
+                append(text.substring(0, colon + 1))
+            }
+            append(text.substring(colon + 1))
+        } else {
+            append(text)
+        }
+    }
+    val shape = RoundedCornerShape(16.dp)
+    Row(
+        verticalAlignment = Alignment.Top,
+        modifier = Modifier
+            .padding(top = 2.dp, bottom = 14.dp)
+            .clip(shape)
+            .background(colorResource(R.color.phone_warning_background))
+            .border(1.dp, colorResource(R.color.phone_warning_border), shape)
+            .padding(horizontal = 14.dp, vertical = 12.dp)
+    ) {
+        Box(modifier = Modifier.size(22.dp), contentAlignment = Alignment.Center) {
+            Text(text = "⚠", color = accent, fontSize = 18.sp)
+        }
+        Spacer(Modifier.width(11.dp))
+        Text(
+            text = annotated,
+            color = colorResource(R.color.phone_warning_text),
+            fontFamily = NunitoSansRegular,
+            fontSize = 13.sp,
+            lineHeight = 19.5.sp,
+        )
+    }
 }

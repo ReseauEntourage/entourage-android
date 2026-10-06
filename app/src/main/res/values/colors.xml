@@ -176,4 +176,10 @@
     <color name="pedago_text_inspire">#D9A300</color>
     <color name="pedago_bg_understand">#E3F2FD</color>
     <color name="pedago_text_understand">#0063BE</color>
+    <!-- EN-8022 : bannière d'avertissement numéro de téléphone -->
+    <color name="phone_warning_background">#FFF1E3</color>
+    <color name="phone_warning_border">#FFD5A8</color>
+    <color name="phone_warning_accent">#D53F00</color>
+    <color name="phone_warning_text">#5C4632</color>
+    <color name="phone_number_highlight">#47FF9739</color>
 </resources>

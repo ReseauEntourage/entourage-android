@@ -22,4 +22,8 @@ object PhoneNumberDetector {
         val plain = text.replace(HTML_TAG_REGEX, " ")
         return FRENCH_PHONE_REGEX.containsMatchIn(plain)
     }
+
+    /** Plages (début..fin inclus) des numéros trouvés dans un texte brut, pour les mettre en évidence. */
+    fun findFrenchPhoneNumbers(plainText: CharSequence): List<IntRange> =
+        FRENCH_PHONE_REGEX.findAll(plainText).map { it.range }.toList()
 }
