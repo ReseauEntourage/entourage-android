@@ -2832,6 +2832,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="welcome_journey_hide_message">Cette action est irréversible, mais vous pourrez toujours retrouver ces différents contenus dans votre application.</string>
     <string name="welcome_journey_hide_confirm">Masquer</string>
     <string name="welcome_journey_hide_cancel">Annuler</string>
-    <string name="message_phone_warning_sender">Attention : en partageant un numéro, vous sortez du réseau sécurisé d’Entourage. Restez vigilant et assurez-vous de bien connaître votre interlocuteur.</string>
-    <string name="message_phone_warning_receiver">Attention : ce message contient un numéro de téléphone. En échangeant en dehors d’Entourage, vous quittez le réseau sécurisé. Restez vigilant et assurez-vous de bien connaître votre interlocuteur.</string>
+    <string name="message_phone_warning_sender">Attention : en partageant un numéro, vous sortez du cadre d’Entourage. Restez vigilant et assurez-vous de bien connaître votre interlocuteur.</string>
+    <string name="message_phone_warning_receiver">Attention : ce message contient un numéro de téléphone. En échangeant en dehors de l’application, vous sortez du cadre d’Entourage. Restez vigilant et assurez-vous de bien connaître votre interlocuteur.</string>
 </resources>
