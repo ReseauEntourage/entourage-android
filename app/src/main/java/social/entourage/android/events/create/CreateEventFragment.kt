@@ -1,7 +1,9 @@
 package social.entourage.android.events.create
 
+import android.app.Activity
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,75 +13,157 @@ import android.widget.Button
 import android.widget.RadioButton
 import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
-import androidx.viewpager2.widget.ViewPager2
+import com.yalantis.ucrop.UCrop
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.RefreshController
 import social.entourage.android.api.model.Events
-import social.entourage.android.databinding.FragmentCreateEventBinding
+import social.entourage.android.api.model.Group
+import social.entourage.android.api.model.Image
 import social.entourage.android.events.EventsPresenter
+import social.entourage.android.groups.GroupPresenter
+import social.entourage.android.groups.choosePhoto.ChooseGalleryPhotoModalFragment
+import social.entourage.android.groups.choosePhoto.ImagesType
+import social.entourage.android.groups.list.groupPerPage
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
+import social.entourage.android.tools.utils.parcelableCompat
 import social.entourage.android.tools.utils.serializableExtra
 import timber.log.Timber
+import java.io.File
 
 /**
- * Conteneur de l'assistant de création / d'édition : barre du haut, progression, libellé
- * « Étape N sur X » et pied de page Retour / Continuer. Les étapes et l'aperçu sont des pages
- * d'un ViewPager2 qui partagent le [CreateEventViewModel] de l'activité.
+ * Conteneur de l'assistant de création / d'édition. L'interface (barre du haut, progression,
+ * libellé « Étape N sur X », étapes, aperçu et pied de page Retour / Continuer) est entièrement en
+ * Compose ([CreateEventScreen]) ; ce fragment garde ce qui dépend du système : sélecteur de photo et
+ * recadrage, navigation vers le sélecteur d'adresse, appels réseau, brouillon et sortie.
+ * Les étapes partagent le [CreateEventViewModel] de l'activité.
  */
 class CreateEventFragment : Fragment() {
 
-    private var _binding: FragmentCreateEventBinding? = null
-    val binding: FragmentCreateEventBinding get() = _binding!!
-
     private val viewModel: CreateEventViewModel by activityViewModels()
 
-    private lateinit var viewPager: ViewPager2
+    private lateinit var uiState: CreateEventUiState
+
+    private var composeView: ComposeView? = null
+
+    /** Page affichée : étape (0 à N-1) ou aperçu (N). */
+    private var page by mutableIntStateOf(0)
 
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
 
     private var isAlreadySend = false
 
+    // --- Groupes de l'étape 5 (chargés par pages, conservés entre deux affichages) ---------------
+    private val groupsList = mutableStateListOf<Group>()
+    private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
+    private var groupsPage = 0
+
     private val onBackPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            if (_binding != null && viewPager.currentItem > 0) {
-                goToPage(viewPager.currentItem - 1)
+            if (composeView != null && page > 0) {
+                goToPage(page - 1)
             } else {
                 confirmExit()
             }
         }
     }
 
+    // --- Photo : recadrage puis envoi -------------------------------------------------------------
+
+    private val cropLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val data = result.data
+            if (result.resultCode == Activity.RESULT_OK && data != null) {
+                UCrop.getOutput(data)?.path?.let { path ->
+                    viewModel.uploadLocalPhoto(File(path), requireContext().cacheDir)
+                    uiState.refresh()
+                    Utils.showToast(requireContext(), getString(R.string.create_event_photo_uploading_wait))
+                }
+            } else if (result.resultCode == UCrop.RESULT_ERROR && data != null) {
+                UCrop.getError(data)?.printStackTrace()
+            }
+        }
+
+    private val getContent =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                // Nom de fichier unique : empêche Glide de resservir l'ancienne image depuis son cache mémoire.
+                val uniqueFileName = "cropped_event_image_${System.currentTimeMillis()}.jpg"
+                val destinationUri = Uri.fromFile(File(requireContext().cacheDir, uniqueFileName))
+
+                val options = UCrop.Options()
+                options.setToolbarTitle(getString(R.string.group_choose_photo))
+                options.setCircleDimmedLayer(false)
+                options.setHideBottomControls(true)
+                options.setFreeStyleCropEnabled(false)
+
+                val intent = UCrop.of(it, destinationUri)
+                    .withAspectRatio(16f, 9f)
+                    .withOptions(options)
+                    .getIntent(requireContext())
+                cropLauncher.launch(intent)
+            }
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCreateEventBinding.inflate(inflater, container, false)
-
-        updatePaddingForEdgeToEdge(binding.root)
-        return binding.root
+        uiState = CreateEventUiState(viewModel)
+        val view = ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                CreateEventScreen(
+                    state = uiState,
+                    page = page,
+                    groups = groupsList,
+                    actions = CreateEventActions(
+                        onClose = ::confirmExit,
+                        onSaveDraft = ::saveDraftAndExit,
+                        onPrevious = { if (page > 0) goToPage(page - 1) },
+                        onNext = ::onNextClicked,
+                        onChoosePhoto = ::openPhotoChooser,
+                        onPickAddress = ::openAddressPicker,
+                        onGroupsShown = ::loadGroupsIfNeeded,
+                        onLoadMoreGroups = ::loadMoreGroups,
+                    )
+                )
+            }
+        }
+        composeView = view
+        updatePaddingForEdgeToEdge(view)
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initializeViewModel(savedInstanceState == null)
-        initializeViewPager()
-        handleTopBar()
-        handleFooter()
+        // La vue est recréée au retour de la sélection d'adresse : on reprend là où on était.
+        page = viewModel.currentPage.value ?: 0
+        logStepViewed(page)
+        childFragmentManager.setFragmentResultListener(
+            Const.REQUEST_KEY_CHOOSE_PHOTO, viewLifecycleOwner
+        ) { _, bundle -> onPhotoChosen(bundle) }
+        groupPresenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
         eventPresenter.newEventCreated.observe(viewLifecycleOwner, ::handleCreateEventResponse)
         eventPresenter.isEventUpdated.observe(viewLifecycleOwner, ::isEventUpdated)
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
-        binding.title.text =
-            getString(if (viewModel.isEdition) R.string.edit_event else R.string.new_event)
-        binding.save.visibility = if (viewModel.isEdition) View.GONE else View.VISIBLE
     }
 
     private fun initializeViewModel(announceDraft: Boolean) {
@@ -97,67 +181,81 @@ class CreateEventFragment : Fragment() {
         }
     }
 
-    private fun initializeViewPager() {
-        viewPager = binding.viewPager
-        viewPager.isUserInputEnabled = false
-        viewPager.adapter = CreateEventViewPagerAdapter(childFragmentManager, lifecycle, viewModel.steps)
-        binding.progressBar.max = viewModel.steps.size
-        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                viewModel.setCurrentPage(position)
-                updateChrome(position)
-            }
-        })
-        // La vue est recréée au retour de la sélection d'adresse : on reprend là où on était.
-        val page = viewModel.currentPage.value ?: 0
-        viewPager.setCurrentItem(page, false)
-        updateChrome(page)
+    // --- Pages ------------------------------------------------------------------------------------
+
+    private fun showPage(newPage: Int) {
+        page = newPage
+        viewModel.setCurrentPage(newPage)
+        logStepViewed(newPage)
     }
 
-    /** Libellé d'étape, progression et boutons du pied de page pour la page affichée. */
-    private fun updateChrome(page: Int) {
-        val stepCount = viewModel.steps.size
-        val isPreview = page >= viewModel.previewPageIndex
-        binding.stepLabel.text = if (isPreview) {
-            getString(R.string.create_event_last_step)
-        } else {
-            getString(R.string.create_event_step_progress, page + 1, stepCount)
+    /** Trace analytique de l'étape affichée (création uniquement). */
+    private fun logStepViewed(step: Int) {
+        if (viewModel.isEdition) return
+        when (step) {
+            0 -> AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_1)
+            1 -> AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_2)
+            2 -> AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_3)
+            3 -> AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_4)
+            4 -> AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_5)
         }
-        binding.progressBar.setProgress((page + 1).coerceAtMost(stepCount), true)
-        binding.previous.visibility = if (page == 0) View.INVISIBLE else View.VISIBLE
-        binding.next.text = getString(
-            when {
-                !isPreview -> R.string.create_event_continue
-                viewModel.isEdition -> R.string.edit
-                else -> R.string.create_event_publish
-            }
-        )
     }
 
-    private fun handleTopBar() {
-        binding.iconBack.setOnClickListener { confirmExit() }
-        binding.save.setOnClickListener { saveDraftAndExit() }
-    }
-
-    private fun handleFooter() {
-        binding.previous.setOnClickListener {
-            if (viewPager.currentItem > 0) goToPage(viewPager.currentItem - 1)
-        }
-        binding.next.setOnClickListener { onNextClicked() }
-    }
-
-    private fun goToPage(page: Int) {
+    private fun goToPage(newPage: Int) {
         hideKeyboard()
-        viewPager.setCurrentItem(page, true)
+        showPage(newPage)
     }
 
     private fun hideKeyboard() {
         val imm = requireContext().getSystemService(InputMethodManager::class.java)
-        imm?.hideSoftInputFromWindow(binding.root.windowToken, 0)
+        imm?.hideSoftInputFromWindow(composeView?.windowToken, 0)
+    }
+
+    // --- Photo, adresse, groupes -----------------------------------------------------------------
+
+    private fun openPhotoChooser() {
+        ChooseGalleryPhotoModalFragment.newInstance(ImagesType.EVENTS)
+            .show(childFragmentManager, ChooseGalleryPhotoModalFragment.TAG)
+    }
+
+    private fun onPhotoChosen(bundle: Bundle) {
+        if (bundle.getBoolean("is_add_photo", false)) {
+            getContent.launch("image/*")
+        } else {
+            bundle.parcelableCompat<Image>(Const.CHOOSE_PHOTO_PATH)?.let {
+                viewModel.selectCatalogImage(it)
+                uiState.refresh()
+            }
+        }
+    }
+
+    private fun openAddressPicker() {
+        findNavController().navigate(R.id.action_create_event_fragment_to_edit_action_zone_fragment)
+    }
+
+    private fun loadGroupsIfNeeded() {
+        if (groupsPage == 0) loadGroups()
+    }
+
+    private fun loadGroups() {
+        groupsPage++
+        EntourageApplication.me(activity)?.id?.let { groupPresenter.getMyGroups(groupsPage, groupPerPage, it) }
+    }
+
+    /** Charge la page suivante quand on atteint le bas de la liste (même règle qu'avant). */
+    private fun loadMoreGroups() {
+        if (!groupPresenter.isLoading && !groupPresenter.isLastPage && groupsList.size >= groupPerPage) {
+            loadGroups()
+        }
+    }
+
+    private fun handleResponseGetGroups(allGroups: MutableList<Group>?) {
+        // La vue peut être recréée (retour du sélecteur d'adresse) : on ne ré-ajoute pas deux fois un groupe.
+        allGroups?.filter { new -> groupsList.none { it.id == new.id } }?.let { groupsList.addAll(it) }
     }
 
     private fun onNextClicked() {
-        val page = viewPager.currentItem
+        val page = page
         if (page < viewModel.steps.size) {
             if (!viewModel.validateStep(viewModel.steps[page])) return
             val nextIsPreview = page + 1 == viewModel.previewPageIndex
@@ -314,6 +412,6 @@ class CreateEventFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        composeView = null
     }
 }
