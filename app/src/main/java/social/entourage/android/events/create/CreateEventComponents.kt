@@ -39,6 +39,10 @@ import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -102,6 +106,10 @@ internal val CeGreyContour @Composable get() = colorResource(R.color.grey_contou
 internal val CeGreyMiddle @Composable get() = colorResource(R.color.grey_middle)
 internal val CeOrange @Composable get() = colorResource(R.color.orange)
 internal val CeBeige @Composable get() = colorResource(R.color.beige)
+/** Encre (#222) du fond des pastilles sélectionnées. */
+internal val CeInk = Color(0xFF222222)
+/** Teinte claire des cartes sélectionnées. */
+internal val CeSelectedTint = Color(0xFFEFEFEF)
 internal val CeError @Composable get() = colorResource(R.color.create_event_error)
 internal val CeErrorText @Composable get() = colorResource(R.color.create_event_error_text)
 
@@ -268,7 +276,12 @@ internal fun CeTextField(
     maxLines: Int = Int.MAX_VALUE,
     keyboardType: KeyboardType = KeyboardType.Text,
     topAligned: Boolean = false,
+    maxLength: Int? = null,
+    @DrawableRes trailingIcon: Int? = null,
 ) {
+    // État local en TextFieldValue : permet de tronquer la saisie (frappe, collage, clavier) à maxLength.
+    var fieldValue by remember { mutableStateOf(TextFieldValue(value)) }
+    val shown = if (fieldValue.text == value) fieldValue else TextFieldValue(value, TextRange(value.length))
     val interaction = remember { MutableInteractionSource() }
     val focused by interaction.collectIsFocusedAsState()
     val (borderWidth, borderColor) = ceInputBorder(hasError, focused)
@@ -278,8 +291,14 @@ internal fun CeTextField(
         LocalTextSelectionColors provides TextSelectionColors(accent, accent.copy(alpha = 0.4f))
     ) {
         BasicTextField(
-            value = value,
-            onValueChange = onValueChange,
+            value = shown,
+            onValueChange = { incoming ->
+                val text = if (maxLength != null) incoming.text.take(maxLength) else incoming.text
+                fieldValue = if (text.length != incoming.text.length) {
+                    TextFieldValue(text, TextRange(minOf(incoming.selection.end, text.length)))
+                } else incoming
+                if (text != value) onValueChange(text)
+            },
             modifier = modifier.fillMaxWidth(),
             textStyle = CeInputStyle,
             cursorBrush = SolidColor(accent),
@@ -291,18 +310,24 @@ internal fun CeTextField(
                 autoCorrectEnabled = keyboardType == KeyboardType.Text,
             ),
             decorationBox = { inner ->
-                Box(
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .heightIn(min = minHeight)
                         .ceOutlined(InputShape, borderWidth, borderColor, CeWhite)
                         .padding(horizontal = 15.dp, vertical = 13.dp),
-                    contentAlignment = if (topAligned) Alignment.TopStart else Alignment.CenterStart
+                    verticalAlignment = if (topAligned) Alignment.Top else Alignment.CenterVertically
                 ) {
-                    if (value.isEmpty()) {
-                        CeText(hint, ceStyle(NunitoSansRegular, 16f, CeGrey))
+                    Box(Modifier.weight(1f)) {
+                        if (value.isEmpty()) {
+                            CeText(hint, ceStyle(NunitoSansRegular, 16f, CeGrey))
+                        }
+                        inner()
                     }
-                    inner()
+                    if (trailingIcon != null) {
+                        Spacer(Modifier.width(12.dp))
+                        Image(painter = painterResource(trailingIcon), contentDescription = null)
+                    }
                 }
             }
         )
@@ -330,7 +355,8 @@ internal fun CeSelectField(
             .padding(horizontal = 15.dp, vertical = 13.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(Modifier.weight(1f, fill = false)) {
+        // Le texte occupe la largeur restante : l'icône est collée au bord droit du champ.
+        Box(Modifier.weight(1f)) {
             if (text.isNullOrEmpty()) {
                 CeText(hint, ceStyle(NunitoSansRegular, 16f, CeGrey))
             } else {
@@ -440,7 +466,13 @@ internal fun CeOptionCard(
         modifier = modifier
             .fillMaxWidth()
             .padding(bottom = 11.dp)
-            .ceOutlined(shape, if (selected) 2.dp else 1.dp, if (selected) CeBlack else CeGreyContour, CeWhite)
+            // Sélection : bordure épaisse + fond teinté, nettement distincts de l'état repos.
+            .ceOutlined(
+                shape,
+                if (selected) 2.dp else 1.dp,
+                if (selected) CeBlack else CeGreyContour,
+                if (selected) CeSelectedTint else CeWhite
+            )
             .toggleable(
                 value = selected,
                 interactionSource = rememberNoIndication(),
@@ -471,11 +503,10 @@ internal fun CeOptionCard(
     }
 }
 
-/** Pastille de catégorie sélectionnable (étape 4). */
+/** Pastille de catégorie sélectionnable (étape 4) : sélectionnée = fond encre #222 + texte blanc. */
 @Composable
 internal fun CeInterestChip(
     label: String,
-    @DrawableRes icon: Int,
     selected: Boolean,
     onToggle: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -484,7 +515,7 @@ internal fun CeInterestChip(
     Row(
         modifier = modifier
             .heightIn(min = 44.dp)
-            .ceOutlined(shape, if (selected) 2.dp else 1.dp, if (selected) CeBlack else CeGreyContour, CeWhite)
+            .ceOutlined(shape, 1.dp, if (selected) CeInk else CeGreyContour, if (selected) CeInk else CeWhite)
             .toggleable(
                 value = selected,
                 interactionSource = rememberNoIndication(),
@@ -495,14 +526,7 @@ internal fun CeInterestChip(
             .padding(horizontal = 15.dp, vertical = 9.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
-            painter = painterResource(icon),
-            contentDescription = null,
-            modifier = Modifier.size(20.dp),
-            contentScale = ContentScale.Fit
-        )
-        Spacer(Modifier.width(8.dp))
-        CeText(label, ceStyle(NunitoSansSemiBold, 14f, CeBlack))
+        CeText(label, ceStyle(NunitoSansSemiBold, 14f, if (selected) CeWhite else CeBlack))
     }
 }
 
@@ -676,7 +700,7 @@ internal fun CeGlideImage(source: Any, contentDescription: String?, modifier: Mo
 @Composable
 internal fun CePhotoEmpty(
     title: String,
-    hint: String,
+    hint: String?,
     hasError: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -702,12 +726,14 @@ internal fun CePhotoEmpty(
             ceStyle(NunitoSansBold, 14f, CeBlack),
             Modifier.padding(top = 7.dp),
         )
-        CeText(
-            hint,
-            ceStyle(NunitoSansRegular, 12f, CeGrey),
-            Modifier.padding(top = 2.dp),
-            textAlign = TextAlign.Center
-        )
+        if (hint != null) {
+            CeText(
+                hint,
+                ceStyle(NunitoSansRegular, 12f, CeGrey),
+                Modifier.padding(top = 2.dp),
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 
@@ -726,7 +752,7 @@ private fun CeComponentsPreview() {
         CeTextField(value = "", onValueChange = {}, hint = "Ex : Discussion entre voisins", hasError = true)
         CeError(R.string.create_event_error_name)
         Spacer(Modifier.height(16.dp))
-        CeOptionCard(R.drawable.ic_create_event_family, "En famille", "Les enfants sont les bienvenu(e)s.", true, {})
+        CeOptionCard(R.drawable.ic_create_event_family, "En famille", "Les enfants sont les bienvenus.", true, {})
         CeOptionCard(R.drawable.ic_create_event_female, "Réservé aux femmes", null, false, {})
         Spacer(Modifier.height(8.dp))
         CeProgressBar(0.4f)

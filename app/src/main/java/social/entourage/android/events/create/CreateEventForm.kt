@@ -106,8 +106,10 @@ data class CreateEventForm(
         if (title.isBlank() || title.length < Const.GROUP_NAME_MIN_LENGTH) {
             errors[CreateEventField.NAME] = R.string.create_event_error_name
         }
-        if (description.isBlank() || description.length < Const.GROUP_DESCRIPTION_MIN_LENGTH) {
+        if (description.isBlank()) {
             errors[CreateEventField.DESCRIPTION] = R.string.create_event_error_description
+        } else if (description.trim().length < MIN_DESCRIPTION_LENGTH) {
+            errors[CreateEventField.DESCRIPTION] = R.string.create_event_error_description_short
         }
         if (!hasPhoto()) {
             errors[CreateEventField.PHOTO] = R.string.create_event_error_photo
@@ -199,6 +201,11 @@ data class CreateEventForm(
     }
 
     companion object {
+        /** Longueur minimale (hors espaces en bordure) d'une description non vide. */
+        const val MIN_DESCRIPTION_LENGTH = 30
+        /** Longueur maximale de la description, imposée à la saisie. */
+        const val MAX_DESCRIPTION_LENGTH = 900
+
         fun parseDate(value: String?): LocalDate? = try {
             value?.let { LocalDate.parse(it) }
         } catch (e: DateTimeParseException) {

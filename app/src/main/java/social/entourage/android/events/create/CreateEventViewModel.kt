@@ -178,7 +178,8 @@ class CreateEventViewModel : ViewModel(), EventImageUploadView {
         form.entourageImageId = image.id
         form.uploadKey = null
         form.localPhotoPath = null
-        form.photoUrl = image.portraitUrl ?: image.landscapeUrl
+        // Le paysage est la pleine résolution (le portrait est une vignette) : affiché en 16/9 ici.
+        form.photoUrl = image.landscapeUrl ?: image.imageUrl ?: image.portraitUrl
         _isUploading.value = false
         onFormChanged()
     }

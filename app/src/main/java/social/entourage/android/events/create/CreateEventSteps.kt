@@ -20,6 +20,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
+import social.entourage.android.ui.theme.NunitoSansBold
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -51,7 +56,6 @@ import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.model.EventUtils
 import social.entourage.android.api.model.Group
-import social.entourage.android.api.model.Interest
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.ui.theme.NunitoSansRegular
@@ -63,7 +67,6 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 private const val DEFAULT_DURATION_HOURS = 3L
-private const val MAX_DESCRIPTION_LENGTH = 900
 
 // --- Étape 1 : nom, description, photo --------------------------------------------------------
 
@@ -120,7 +123,7 @@ internal fun CreateEventStepPresentation(
         CeTextField(
             value = description,
             onValueChange = {
-                val value = it.take(MAX_DESCRIPTION_LENGTH)
+                val value = it.take(CreateEventForm.MAX_DESCRIPTION_LENGTH)
                 description = value
                 state.form.description = value
                 state.changed()
@@ -129,6 +132,7 @@ internal fun CreateEventStepPresentation(
             hasError = errors[CreateEventField.DESCRIPTION] != null,
             minHeight = 112.dp,
             topAligned = true,
+            maxLength = CreateEventForm.MAX_DESCRIPTION_LENGTH,
             modifier = Modifier.testTag("create_event_description"),
         )
         CeText(
@@ -165,7 +169,7 @@ internal fun CreateEventStepPresentation(
                 title = stringResource(
                     if (alreadyChosen) R.string.create_event_photo_added else R.string.create_event_photo_add
                 ),
-                hint = stringResource(R.string.create_event_photo_hint),
+                hint = null,
                 hasError = errors[CreateEventField.PHOTO] != null,
                 onClick = onChoosePhoto,
                 modifier = Modifier.testTag("create_event_add_photo")
@@ -361,6 +365,7 @@ internal fun CreateEventStepWhere(
                 },
                 hint = stringResource(R.string.create_event_link_hint),
                 hasError = placeError != null,
+                trailingIcon = R.drawable.ic_create_event_link,
                 keyboardType = androidx.compose.ui.text.input.KeyboardType.Uri,
                 modifier = Modifier.testTag("create_event_url"),
             )
@@ -496,7 +501,7 @@ internal fun CreateEventStepCategories(
     CeStepColumn {
         CeTitle(R.string.create_event_step_four_title)
         CeHint(
-            stringResource(R.string.choose_categories_event),
+            stringResource(R.string.create_event_categories_hint),
             Modifier.padding(bottom = 14.dp)
         )
         FlowRow(
@@ -506,9 +511,10 @@ internal fun CreateEventStepCategories(
         ) {
             tags?.interests?.forEach { tag ->
                 val id = tag.id ?: return@forEach
+                // La catégorie « Autre » n'est pas proposée dans ce parcours.
+                if (id.equals("other", ignoreCase = true)) return@forEach
                 CeInterestChip(
                     label = EventUtils.showTagTranslated(context, id),
-                    icon = Interest.getIconFromId(id),
                     selected = form.interests.contains(id),
                     onToggle = {
                         val interests = state.form.interests
@@ -578,7 +584,9 @@ internal fun CreateEventStepSharing(
             contentPadding = androidx.compose.foundation.layout.PaddingValues(start = 22.dp, end = 22.dp, bottom = 16.dp)
         ) {
             items(groups, key = { it.id ?: it.hashCode() }) { group ->
-                val selected = group.id?.let { form.neighborhoodIds.contains(it) } == true
+                // Lecture via state.form (et non le `form` capturé) : abonne cet item à la version
+                // de l'état, pour que la case se mette à jour dès le premier appui.
+                val selected = group.id?.let { state.form.neighborhoodIds.contains(it) } == true
                 GroupRow(
                     name = group.name ?: "",
                     selected = selected,
@@ -706,10 +714,16 @@ internal fun CreateEventPreview(state: CreateEventUiState) {
 
         val count = form.neighborhoodIds.size
         if (count > 0) {
-            CeText(
-                pluralStringResource(R.plurals.create_event_preview_groups_nudge, count, count),
-                ceStyle(NunitoSansRegular, 13f, CeGrey),
-                Modifier
+            val nudge = buildAnnotatedString {
+                withStyle(SpanStyle(fontFamily = NunitoSansBold)) {
+                    append(pluralStringResource(R.plurals.create_event_preview_groups_count, count, count))
+                }
+                append(pluralStringResource(R.plurals.create_event_preview_groups_notify, count))
+            }
+            BasicText(
+                nudge,
+                style = ceStyle(NunitoSansRegular, 13f, CeGrey),
+                modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 22.dp)
                     .ceOutlined(RoundedCornerShape(20.dp), 1.dp, CeGreyContour, CeWhite)

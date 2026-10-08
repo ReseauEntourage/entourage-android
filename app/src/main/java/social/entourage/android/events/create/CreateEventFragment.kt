@@ -38,7 +38,6 @@ import social.entourage.android.groups.choosePhoto.ChooseGalleryPhotoModalFragme
 import social.entourage.android.groups.choosePhoto.ImagesType
 import social.entourage.android.groups.list.groupPerPage
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
@@ -147,7 +146,7 @@ class CreateEventFragment : Fragment() {
             }
         }
         composeView = view
-        updatePaddingForEdgeToEdge(view)
+        // Marges système (barre d'état, encoche, barre de navigation) gérées par CreateEventScreen.
         return view
     }
 
@@ -170,9 +169,8 @@ class CreateEventFragment : Fragment() {
         val activity = requireActivity()
         val edited = activity.intent?.serializableExtra<Events>(Const.EVENT_UI)
         // Pas de brouillon en édition : il n'est ni lu ni écrit.
-        val draft = if (edited == null) {
-            EntourageApplication.me(activity)?.id?.let { CreateEventDraftStore.load(activity, it) }
-        } else null
+        // Les brouillons sont désactivés côté utilisateur : rien n'est restauré (le code reste en place).
+        val draft: CreateEventForm? = null
         val groupId = activity.intent?.getIntExtra(Const.GROUP_ID, Const.DEFAULT_VALUE)
             ?.takeIf { it != Const.DEFAULT_VALUE }
         viewModel.initialize(edited, draft, groupId)

@@ -18,7 +18,7 @@ class CreateEventFormTest {
 
     private fun validForm() = CreateEventForm(
         title = "Discussion entre voisins",
-        description = "Venez nombreux",
+        description = "Venez nombreux partager un moment convivial autour d'un goûter.",
         entourageImageId = 12,
         date = "2026-09-23",
         startTime = "16:00",
@@ -41,6 +41,20 @@ class CreateEventFormTest {
         assertEquals(R.string.create_event_error_date_empty, errors[CreateEventField.DATE])
         assertEquals(R.string.create_event_error_address, errors[CreateEventField.PLACE])
         assertEquals(R.string.create_event_error_categories, errors[CreateEventField.CATEGORIES])
+    }
+
+    @Test
+    fun description_tooShort_hasItsOwnError() {
+        val form = validForm().apply { description = "Venez nombreux" }
+        assertEquals(
+            R.string.create_event_error_description_short,
+            form.validate(today = today)[CreateEventField.DESCRIPTION]
+        )
+        form.description = "   "
+        assertEquals(
+            R.string.create_event_error_description,
+            form.validate(today = today)[CreateEventField.DESCRIPTION]
+        )
     }
 
     @Test

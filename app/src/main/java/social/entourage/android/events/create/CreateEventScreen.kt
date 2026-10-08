@@ -12,6 +12,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.displayCutout
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.union
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -165,6 +173,7 @@ internal fun CreateEventScreen(
                     .background(CeGreyContour)
             )
             Footer(
+                modifier = Modifier.navigationBarsPadding(),
                 page = page,
                 nextLabel = stringResource(
                     when {
@@ -184,7 +193,9 @@ private fun TopBar(isEdition: Boolean, actions: CreateEventActions) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 18.dp, top = 8.dp, end = 18.dp, bottom = 12.dp),
+            // Zone sûre (barre d'état + encoche) puis marge de respiration sous elle.
+            .windowInsetsPadding(WindowInsets.statusBars.union(WindowInsets.displayCutout).only(WindowInsetsSides.Top))
+            .padding(start = 18.dp, top = 12.dp, end = 18.dp, bottom = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         CeRoundButton(
@@ -205,34 +216,16 @@ private fun TopBar(isEdition: Boolean, actions: CreateEventActions) {
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
-        // L'enregistrement de brouillon n'existe qu'en création.
-        if (!isEdition) {
-            Box(
-                modifier = Modifier
-                    .heightIn(min = 36.dp)
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = ripple(),
-                        role = Role.Button,
-                        onClick = actions.onSaveDraft
-                    )
-                    .padding(horizontal = 4.dp)
-                    .testTag("create_event_save"),
-                contentAlignment = Alignment.Center
-            ) {
-                CeText(
-                    stringResource(R.string.create_event_save),
-                    ceStyle(NunitoSansBold, 14f, CeBlack)
-                )
-            }
-        }
+        // Enregistrement de brouillon masqué (actions.onSaveDraft conservé, non atteignable).
+        // Espace de même largeur que le bouton retour pour garder le titre centré.
+        Spacer(Modifier.size(36.dp))
     }
 }
 
 @Composable
-private fun Footer(page: Int, nextLabel: String, actions: CreateEventActions) {
+private fun Footer(modifier: Modifier, page: Int, nextLabel: String, actions: CreateEventActions) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(start = 22.dp, top = 11.dp, end = 22.dp, bottom = 14.dp),
         verticalAlignment = Alignment.CenterVertically
