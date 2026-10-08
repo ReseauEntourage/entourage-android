@@ -1,53 +1,62 @@
-﻿package social.entourage.android.events.create
+package social.entourage.android.events.create
 
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.Matrix
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.RadioButton
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
+import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.RefreshController
 import social.entourage.android.api.model.Events
 import social.entourage.android.databinding.FragmentCreateEventBinding
 import social.entourage.android.events.EventsPresenter
-import social.entourage.android.events.create.CommunicationHandler.canExitEventCreation
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
-import social.entourage.android.tools.utils.nextPage
-import social.entourage.android.tools.utils.previousPage
 import social.entourage.android.tools.utils.serializableExtra
 import timber.log.Timber
 
+/**
+ * Conteneur de l'assistant de création / d'édition : barre du haut, progression, libellé
+ * « Étape N sur X » et pied de page Retour / Continuer. Les étapes et l'aperçu sont des pages
+ * d'un ViewPager2 qui partagent le [CreateEventViewModel] de l'activité.
+ */
 class CreateEventFragment : Fragment() {
 
     private var _binding: FragmentCreateEventBinding? = null
     val binding: FragmentCreateEventBinding get() = _binding!!
-    private var event: Events? = null
+
+    private val viewModel: CreateEventViewModel by activityViewModels()
 
     private lateinit var viewPager: ViewPager2
 
     private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
 
     private var isAlreadySend = false
+
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if (_binding != null && viewPager.currentItem > 0) {
+                goToPage(viewPager.currentItem - 1)
+            } else {
+                confirmExit()
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,103 +70,145 @@ class CreateEventFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initializeViewModel(savedInstanceState == null)
         initializeViewPager()
-        handleBackButton()
+        handleTopBar()
+        handleFooter()
         eventPresenter.newEventCreated.observe(viewLifecycleOwner, ::handleCreateEventResponse)
         eventPresenter.isEventUpdated.observe(viewLifecycleOwner, ::isEventUpdated)
-        event = activity?.intent?.serializableExtra<Events>(Const.EVENT_UI)
-        CommunicationHandler.eventEdited = event
-        setView()
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, onBackPressedCallback)
+        binding.title.text =
+            getString(if (viewModel.isEdition) R.string.edit_event else R.string.new_event)
+        binding.save.visibility = if (viewModel.isEdition) View.GONE else View.VISIBLE
     }
 
-    private fun isEventUpdated(updated: Boolean) {
-        if (updated) {
-            Utils.showToast(requireContext(), getString(R.string.group_updated))
-            activity?.finish()
-            RefreshController.shouldRefreshEventFragment = true
-        } else {
-            isAlreadySend = false
-            Utils.showToast(requireContext(), getString(R.string.group_error_updated))
+    private fun initializeViewModel(announceDraft: Boolean) {
+        val activity = requireActivity()
+        val edited = activity.intent?.serializableExtra<Events>(Const.EVENT_UI)
+        // Pas de brouillon en édition : il n'est ni lu ni écrit.
+        val draft = if (edited == null) {
+            EntourageApplication.me(activity)?.id?.let { CreateEventDraftStore.load(activity, it) }
+        } else null
+        val groupId = activity.intent?.getIntExtra(Const.GROUP_ID, Const.DEFAULT_VALUE)
+            ?.takeIf { it != Const.DEFAULT_VALUE }
+        viewModel.initialize(edited, draft, groupId)
+        if (announceDraft && viewModel.draftRestored) {
+            Utils.showToast(requireContext(), getString(R.string.create_event_draft_restored))
         }
     }
 
     private fun initializeViewPager() {
         viewPager = binding.viewPager
-        val adapter = CreateEventViewPagerAdapter(childFragmentManager, lifecycle)
-        viewPager.adapter = adapter
-        TabLayoutMediator(binding.tabLayout, viewPager) { tab: TabLayout.Tab, _: Int ->
-            tab.view.isClickable = false
-        }.attach()
-        setNextClickListener()
-        setPreviousClickListener()
-        handleNextButtonState()
-    }
-
-    private fun setNextClickListener() {
-        binding.next.setOnClickListener {
-            CommunicationHandler.clickNext.value = true
-        }
-        CommunicationHandler.isCondition.observe(
-            viewLifecycleOwner,
-            ::handleIsCondition
-        )
+        viewPager.isUserInputEnabled = false
+        viewPager.adapter = CreateEventViewPagerAdapter(childFragmentManager, lifecycle, viewModel.steps)
+        binding.progressBar.max = viewModel.steps.size
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                binding.next.text =
-                    getString(
-                        if (position == NB_TABS - 1) {
-                            if (CommunicationHandler.eventEdited != null) {
-                                R.string.edit
-                            } else R.string.create
-                        } else R.string.next
-                    )
+                viewModel.setCurrentPage(position)
+                updateChrome(position)
             }
         })
+        // La vue est recréée au retour de la sélection d'adresse : on reprend là où on était.
+        val page = viewModel.currentPage.value ?: 0
+        viewPager.setCurrentItem(page, false)
+        updateChrome(page)
     }
 
-    private fun handleIsCondition(isCondition: Boolean) {
-        if (isCondition) {
-            if (viewPager.currentItem == NB_TABS - 1) {
-                // Create event here
-                if (CommunicationHandler.eventEdited != null)
-                    if (CommunicationHandler.eventEdited?.recurrence != null) {
-                        showAlertDialogUpdateEventWithRecurrence()
-                    } else {
-                        updateEventWithoutRecurrence()
-                    }
-                else {
-                    if (isAlreadySend) return
-                    isAlreadySend = true
-                    eventPresenter.createEvent(CommunicationHandler.event)
-                }
-            } else {
-                viewPager.nextPage(true)
-                if (viewPager.currentItem > 0) binding.previous.visibility = View.VISIBLE
-                CommunicationHandler.resetValues()
+    /** Libellé d'étape, progression et boutons du pied de page pour la page affichée. */
+    private fun updateChrome(page: Int) {
+        val stepCount = viewModel.steps.size
+        val isPreview = page >= viewModel.previewPageIndex
+        binding.stepLabel.text = if (isPreview) {
+            getString(R.string.create_event_last_step)
+        } else {
+            getString(R.string.create_event_step_progress, page + 1, stepCount)
+        }
+        binding.progressBar.setProgress((page + 1).coerceAtMost(stepCount), true)
+        binding.previous.visibility = if (page == 0) View.INVISIBLE else View.VISIBLE
+        binding.next.text = getString(
+            when {
+                !isPreview -> R.string.create_event_continue
+                viewModel.isEdition -> R.string.edit
+                else -> R.string.create_event_publish
             }
+        )
+    }
+
+    private fun handleTopBar() {
+        binding.iconBack.setOnClickListener { confirmExit() }
+        binding.save.setOnClickListener { saveDraftAndExit() }
+    }
+
+    private fun handleFooter() {
+        binding.previous.setOnClickListener {
+            if (viewPager.currentItem > 0) goToPage(viewPager.currentItem - 1)
+        }
+        binding.next.setOnClickListener { onNextClicked() }
+    }
+
+    private fun goToPage(page: Int) {
+        hideKeyboard()
+        viewPager.setCurrentItem(page, true)
+    }
+
+    private fun hideKeyboard() {
+        val imm = requireContext().getSystemService(InputMethodManager::class.java)
+        imm?.hideSoftInputFromWindow(binding.root.windowToken, 0)
+    }
+
+    private fun onNextClicked() {
+        val page = viewPager.currentItem
+        if (page < viewModel.steps.size) {
+            if (!viewModel.validateStep(viewModel.steps[page])) return
+            val nextIsPreview = page + 1 == viewModel.previewPageIndex
+            if (nextIsPreview && viewModel.isUploading.value == true) {
+                // L'aperçu ne s'ouvre pas tant que la photo n'est pas envoyée.
+                Utils.showToast(requireContext(), getString(R.string.create_event_photo_uploading_wait))
+                return
+            }
+            goToPage(page + 1)
+        } else {
+            publish()
         }
     }
+
+    // --- Envoi ----------------------------------------------------------------------------
+
+    private fun publish() {
+        if (viewModel.isUploading.value == true) {
+            Utils.showToast(requireContext(), getString(R.string.create_event_photo_uploading_wait))
+            return
+        }
+        val edited = viewModel.editedEvent
+        if (edited != null) {
+            if (edited.recurrence != null) {
+                showAlertDialogUpdateEventWithRecurrence()
+            } else {
+                updateEventWithoutRecurrence()
+            }
+        } else {
+            if (isAlreadySend) return
+            isAlreadySend = true
+            eventPresenter.createEvent(requestBody())
+        }
+    }
+
+    private fun requestBody(): CreateEvent =
+        viewModel.buildRequestBody(getString(R.string.event_date_formatter_to_string))
 
     private fun updateEventWithRecurrence() {
         if (isAlreadySend) return
         isAlreadySend = true
-        CommunicationHandler.eventEdited?.id?.let {
-            eventPresenter.updateEventSiblings(
-                it,
-                CommunicationHandler.event
-            )
+        viewModel.editedEvent?.id?.let {
+            eventPresenter.updateEventSiblings(it, requestBody())
         }
     }
 
     private fun updateEventWithoutRecurrence() {
         if (isAlreadySend) return
         isAlreadySend = true
-        CommunicationHandler.eventEdited?.id?.let {
-            eventPresenter.updateEvent(
-                it,
-                CommunicationHandler.event
-            )
+        viewModel.editedEvent?.id?.let {
+            eventPresenter.updateEvent(it, requestBody())
         }
     }
 
@@ -197,40 +248,15 @@ class CreateEventFragment : Fragment() {
         alertDialog.show()
     }
 
-    private fun handleBackButton() {
-        binding.header.iconBack.setOnClickListener {
-            if (canExitEventCreation)
-                requireActivity().finish()
-            else {
-                CustomAlertDialog.showWithCancelFirst(
-                    requireContext(),
-                    getString(R.string.back_create_group_title),
-                    getString(R.string.back_create_event_content),
-                    getString(R.string.exit)
-                ) {
-                    requireActivity().finish()
-                }
-            }
-        }
-    }
-
-    private fun setView() {
-        // Check if the current layout direction is RTL
-        val isRTL = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
-
-        val originalDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.header_profile_orange)
-
-        if (isRTL && originalDrawable != null) {
-            // Create a mirrored version of the drawable
-            val mirroredDrawable = mirrorDrawable(originalDrawable)
-            binding.createEventLayout.background = mirroredDrawable
+    private fun isEventUpdated(updated: Boolean) {
+        if (updated) {
+            Utils.showToast(requireContext(), getString(R.string.group_updated))
+            activity?.finish()
+            RefreshController.shouldRefreshEventFragment = true
         } else {
-            // Use the default background for LTR languages
-            binding.createEventLayout.background = originalDrawable
+            isAlreadySend = false
+            Utils.showToast(requireContext(), getString(R.string.group_error_updated))
         }
-
-        binding.header.title =
-            getString(if (CommunicationHandler.eventEdited != null) R.string.edit_event else R.string.new_event)
     }
 
     private fun handleCreateEventResponse(eventCreated: Events?) {
@@ -238,9 +264,13 @@ class CreateEventFragment : Fragment() {
             isAlreadySend = false
             Utils.showToast(requireContext(), getString(R.string.error_create_group))
         } else {
-            eventPresenter.newEventCreated.value?.id?.let { eventID->
-                if (CommunicationHandler.eventEdited == null) {
+            eventPresenter.newEventCreated.value?.id?.let { eventID ->
+                if (!viewModel.isEdition) {
                     AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_end)
+                    // Publication réussie : le brouillon n'a plus de raison d'être.
+                    EntourageApplication.me(requireContext())?.id?.let {
+                        viewModel.deleteDraft(requireContext(), it)
+                    }
                 }
                 val action =
                     CreateEventFragmentDirections.actionCreateEventFragmentToCreateEventSuccessFragment(
@@ -255,65 +285,35 @@ class CreateEventFragment : Fragment() {
             }
         }
     }
-    private fun mirrorDrawable(drawable: Drawable): Drawable {
-        val matrix = Matrix().apply {
-            preScale(-1f, 1f)
+
+    // --- Sortie ---------------------------------------------------------------------------
+
+    /** Quitter sans enregistrer : les modifications sont perdues (création comme édition). */
+    private fun confirmExit() {
+        if (!viewModel.isDirty()) {
+            requireActivity().finish()
+            return
         }
-
-        val mirroredBitmap = drawableToBitmap(drawable).let {
-            Bitmap.createBitmap(it, 0, 0, it.width, it.height, matrix, true)
-        }
-
-        return BitmapDrawable(resources, mirroredBitmap)
-    }
-
-    private fun drawableToBitmap(drawable: Drawable): Bitmap {
-        if (drawable is BitmapDrawable) {
-            return drawable.bitmap
-        }
-
-        val bitmap = Bitmap.createBitmap(
-            drawable.intrinsicWidth,
-            drawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, canvas.width, canvas.height)
-        drawable.draw(canvas)
-
-        return bitmap
-    }
-
-    private fun handleNextButtonState() {
-        CommunicationHandler.isButtonClickable.observe(
-            viewLifecycleOwner,
-            ::handleButtonState
-        )
-    }
-
-    private fun setPreviousClickListener() {
-        binding.previous.setOnClickListener {
-            CommunicationHandler.resetValues()
-            viewPager.previousPage(true)
-            if (viewPager.currentItem == 0) {
-                binding.previous.visibility = View.INVISIBLE
-            }
-        }
-    }
-
-    private fun handleButtonState(isButtonActive: Boolean) {
-
-        val background = ContextCompat.getDrawable(
+        CustomAlertDialog.showWithCancelFirst(
             requireContext(),
-            if (isButtonActive) R.drawable.bg_button_rounded_light_orange else R.drawable.bg_button_inactive_light_orange
-        )
-        binding.next.background = background
+            getString(R.string.back_create_group_title),
+            getString(R.string.back_create_event_content),
+            getString(R.string.exit)
+        ) {
+            requireActivity().finish()
+        }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        CommunicationHandler.resetValues()
-        CommunicationHandler.event = CreateEvent()
-        CommunicationHandler.canExitEventCreation = true
+    private fun saveDraftAndExit() {
+        if (viewModel.isEdition) return
+        val userId = EntourageApplication.me(requireContext())?.id ?: return
+        viewModel.saveDraft(requireContext(), userId)
+        Utils.showToast(requireContext(), getString(R.string.create_event_draft_saved))
+        requireActivity().finish()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

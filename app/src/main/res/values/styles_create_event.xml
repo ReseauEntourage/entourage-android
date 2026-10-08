@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Parcours de création / d'édition d'événement.
+         Polices de l'app : Quicksand Bold pour les titres, Nunito Sans pour les textes. -->
+
+    <style name="create_event_title">
+        <item name="android:fontFamily">@font/quicksand_bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:layout_marginBottom">24dp</item>
+    </style>
+
+    <style name="create_event_label">
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="create_event_required">
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:layout_marginStart">6dp</item>
+    </style>
+
+    <style name="create_event_hint">
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="create_event_input">
+        <item name="android:background">@drawable/bg_create_event_input</item>
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/grey</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:minHeight">54dp</item>
+        <item name="android:paddingHorizontal">15dp</item>
+        <item name="android:paddingVertical">13dp</item>
+        <item name="android:textCursorDrawable">@null</item>
+    </style>
+
+    <style name="create_event_error">
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@color/create_event_error_text</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:drawableStart">@drawable/ic_create_event_error</item>
+        <item name="android:drawablePadding">6dp</item>
+        <item name="android:layout_marginTop">7dp</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="create_event_card_title">
+        <item name="android:fontFamily">@font/nunitosans_bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="create_event_card_description">
+        <item name="android:fontFamily">@font/nunitosans_regular</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+</resources>

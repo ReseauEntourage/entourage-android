@@ -1,15 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginHorizontal="10dp"
-    android:background="@drawable/bg_rounded_beige">
+    android:clipToPadding="false"
+    android:fillViewport="true">
 
-    <include
-        android:id="@+id/layout"
-        layout="@layout/layout_edit_event_step_three"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="22dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="24dp">
 
+        <TextView
+            style="@style/create_event_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/create_event_step_three_title" />
+
+        <!-- Bascule présentiel / en ligne -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/bg_create_event_toggle"
+            android:orientation="horizontal"
+            android:padding="4dp">
+
+            <TextView
+                android:id="@+id/face_to_face"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/nunitosans_bold"
+                android:gravity="center"
+                android:minHeight="44dp"
+                android:text="@string/face_to_face"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/online"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/nunitosans_bold"
+                android:gravity="center"
+                android:minHeight="44dp"
+                android:text="@string/online"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <!-- Adresse ou lien -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/place_label"
+                style="@style/create_event_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/create_event_address_label" />
+
+            <TextView
+                style="@style/create_event_required"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/create_event_required" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/location"
+            style="@style/create_event_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/ic_location"
+            android:drawablePadding="10dp"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:hint="@string/create_event_address_hint" />
+
+        <EditText
+            android:id="@+id/event_url"
+            style="@style/create_event_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/create_event_link_hint"
+            android:importantForAutofill="no"
+            android:inputType="textUri"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/place_error"
+            style="@style/create_event_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Nombre de places -->
+        <TextView
+            style="@style/create_event_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/create_event_places_label" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:minHeight="48dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/nunitosans_regular"
+                android:text="@string/create_event_places_row"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <ImageButton
+                android:id="@+id/places_minus"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_create_event_round_button"
+                android:contentDescription="@string/create_event_places_minus"
+                android:src="@drawable/ic_create_event_minus" />
+
+            <TextView
+                android:id="@+id/places_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="6dp"
+                android:fontFamily="@font/nunitosans_bold"
+                android:gravity="center"
+                android:minWidth="48dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText"
+                tools:text="Non" />
+
+            <ImageButton
+                android:id="@+id/places_plus"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_create_event_round_button"
+                android:contentDescription="@string/create_event_places_plus"
+                android:src="@drawable/ic_create_event_plus" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/places_error"
+            style="@style/create_event_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- Accessibilité et public -->
+        <TextView
+            android:id="@+id/cards_title"
+            style="@style/create_event_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="12dp"
+            android:text="@string/create_event_access_and_public" />
+
+        <include
+            android:id="@+id/card_wheelchair"
+            layout="@layout/item_create_event_option_card" />
+
+        <include
+            android:id="@+id/card_family"
+            layout="@layout/item_create_event_option_card" />
+
+        <include
+            android:id="@+id/card_female"
+            layout="@layout/item_create_event_option_card" />
+    </LinearLayout>
 </ScrollView>

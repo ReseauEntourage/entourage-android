@@ -1,12 +1,16 @@
 package social.entourage.android.events.create
 
 import android.view.View
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import social.entourage.android.R
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.user.edit.place.UserActionPlaceFragment
 
 class CreateEventActionZoneFragment : UserActionPlaceFragment() {
+
+    private val viewModel: CreateEventViewModel by activityViewModels()
+
     // To be changed
     override fun setupViews() {
         super.setupViews()
@@ -27,16 +31,13 @@ class CreateEventActionZoneFragment : UserActionPlaceFragment() {
     }
 
     private fun validate() {
-        with(CommunicationHandler.event) {
-            metadata?.streetAddress = userAddress?.displayAddress
+        with(viewModel.form) {
+            address = userAddress?.displayAddress
             latitude = userAddress?.latitude
             longitude = userAddress?.longitude
-            metadata?.googlePlaceId = userAddress?.googlePlaceId ?: ""
-            //TODO check if palcename had a utility on back before removing it
-            //metadata?.placeName = userAddress?.displayAddress ?: ""
-            metadata?.placeName = ""
-
+            googlePlaceId = userAddress?.googlePlaceId ?: ""
         }
+        viewModel.onFormChanged()
         findNavController().popBackStack()
     }
 }

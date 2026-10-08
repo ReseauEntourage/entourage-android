@@ -1,4 +1,4 @@
-﻿package social.entourage.android.events.create
+package social.entourage.android.events.create
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -21,35 +21,19 @@ class ChooseGroupEventListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemChooseGroupEventBinding.inflate(
-            LayoutInflater.from(parent.context),  parent, false)
+            LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        with(holder) {
-            if (groupsList[position].isSelected) holder.binding.title.setTypeface(
-                binding.title.typeface,
-                android.graphics.Typeface.BOLD
-            )
-            binding.title.text = groupsList[position].name
-            binding.checkBox.isChecked = groupsList[position].isSelected
-            binding.layout.setOnClickListener {
-                if (groupsList[position].isSelected) {
-                    onItemClick.onItemUncheck(groupsList[position])
-                    binding.title.typeface =
-                        android.graphics.Typeface.create(
-                            binding.title.typeface,
-                            android.graphics.Typeface.NORMAL
-                        )
-                } else {
-                    onItemClick.onItemCheck(groupsList[position])
-                    binding.title.setTypeface(
-                        binding.title.typeface,
-                        android.graphics.Typeface.BOLD
-                    )
-                }
-                groupsList[position].isSelected = !(groupsList[position].isSelected)
-                binding.checkBox.isChecked = !binding.checkBox.isChecked
+        val group = groupsList[position]
+        with(holder.binding) {
+            title.text = group.name
+            check.isSelected = group.isSelected
+            layout.setOnClickListener {
+                if (group.isSelected) onItemClick.onItemUncheck(group) else onItemClick.onItemCheck(group)
+                group.isSelected = !group.isSelected
+                check.isSelected = group.isSelected
             }
         }
     }

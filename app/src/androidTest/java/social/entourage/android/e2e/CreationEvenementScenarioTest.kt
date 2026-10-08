@@ -12,6 +12,8 @@ import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withClassName
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withParent
+import androidx.test.espresso.matcher.ViewMatchers.withParentIndex
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -33,7 +35,7 @@ import java.util.Calendar
 
 /**
  * Scénario E2E "connecté" : création d'un événement simple (en ligne, le lendemain du test)
- * via la liste des événements -> bouton "+" -> assistant en 5 étapes.
+ * via la liste des événements -> bouton "+" -> assistant en 5 étapes -> aperçu -> publication.
  * Un screenshot est pris à chaque vue / action pour vérifier visuellement le déroulé.
  */
 @LargeTest
@@ -96,7 +98,7 @@ class CreationEvenementScenarioTest : EntourageTestAfterLogin() {
         onView(withId(R.id.validate)).perform(click())
         screenshot.shoot("etape1_photo_choisie")
 
-        onView(withText(R.string.next)).perform(click())
+        onView(withText(R.string.create_event_continue)).perform(click())
         screenshot.shoot("etape2_date_et_heure")
 
         val demain = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, 1) }
@@ -125,7 +127,7 @@ class CreationEvenementScenarioTest : EntourageTestAfterLogin() {
         onView(withId(android.R.id.button1)).perform(click())
         screenshot.shoot("etape2_heure_fin_choisie")
 
-        onView(withText(R.string.next)).perform(click())
+        onView(withText(R.string.create_event_continue)).perform(click())
         screenshot.shoot("etape3_lieu")
 
         onView(withId(R.id.online)).perform(click())
@@ -135,21 +137,20 @@ class CreationEvenementScenarioTest : EntourageTestAfterLogin() {
         )
         screenshot.shoot("etape3_en_ligne_rempli")
 
-        onView(withText(R.string.next)).perform(click())
+        onView(withText(R.string.create_event_continue)).perform(click())
         screenshot.shoot("etape4_categories")
 
-        onView(allOf(withId(R.id.egs2_recycler_view), isDisplayed())).perform(
-            actionOnItemAtPosition<ViewHolder>(0, click())
-        )
+        onView(allOf(withParent(withId(R.id.interests_group)), withParentIndex(0))).perform(click())
         screenshot.shoot("etape4_categorie_choisie")
 
-        onView(withText(R.string.next)).perform(click())
+        onView(withText(R.string.create_event_continue)).perform(click())
         screenshot.shoot("etape5_partage")
 
-        onView(withId(R.id.dont_share)).perform(click())
-        screenshot.shoot("etape5_ne_pas_partager")
+        // Aucun groupe coché : l'événement n'est pas partagé.
+        onView(withText(R.string.create_event_continue)).perform(click())
+        screenshot.shoot("apercu")
 
-        onView(withText(R.string.create)).perform(click())
+        onView(withText(R.string.create_event_publish)).perform(click())
         screenshot.shoot("apres_clic_creer")
 
         onView(withText(R.string.event_success_title)).check(matches(isDisplayed()))

@@ -1,39 +1,33 @@
-﻿package social.entourage.android.events.create
+package social.entourage.android.events.create
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentCreateEventStepTwoBinding
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.log.AnalyticsEvents
-import social.entourage.android.tools.utils.transformIntoDatePicker
-import java.text.SimpleDateFormat
-import java.util.Date
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
+/** Étape 2 : date, heures de début et de fin, récurrence. */
 class CreateEventStepTwoFragment : Fragment() {
+
     private var _binding: FragmentCreateEventStepTwoBinding? = null
     val binding: FragmentCreateEventStepTwoBinding get() = _binding!!
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initializeDateEditText()
-        setView()
-        handleNextButtonState()
-        setRecurrence()
-        adjustTextViewsForRTL(binding.layout.root)
-        if (CommunicationHandler.eventEdited == null) {
-            AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_2)
-        }
-    }
+    private val viewModel: CreateEventViewModel by activityViewModels()
+
+    private val locale get() = LanguageManager.getLocaleFromPreferences(requireContext())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,161 +37,127 @@ class CreateEventStepTwoFragment : Fragment() {
         return binding.root
     }
 
-    private fun initializeDateEditText() {
-        binding.layout.eventDate.transformIntoDatePicker(
-            requireContext(),
-            getString(R.string.events_date),
-            minDate = Date()
-        )
-    }
-
-    private fun adjustTextViewsForRTL(view: View) {
-        val isRTL = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
-
-        if (isRTL) {
-            if (view is ViewGroup) {
-                for (i in 0 until view.childCount) {
-                    val child = view.getChildAt(i)
-                    adjustTextViewsForRTL(child) // Récursion pour parcourir toutes les sous-vues
-                }
-            } else if (view is TextView) {
-                // Ajuster la gravité et la direction du texte pour RTL
-                view.gravity = View.TEXT_ALIGNMENT_VIEW_END
-                view.textDirection = View.TEXT_DIRECTION_RTL
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        renderDateAndTimes()
+        setRecurrence()
+        handlePickers()
+        observeViewModel()
+        if (!viewModel.isEdition) {
+            AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_2)
         }
     }
 
-    private fun handleNextButtonState() {
-        handleEditTextChangedTextListener(binding.layout.eventDate)
-        handleEditTextChangedTextListener(binding.layout.eventTime.getStartEditText())
-        handleEditTextChangedTextListener(binding.layout.eventTime.getEndEditText())
+    // --- Affichage ------------------------------------------------------------------------
+
+    private fun renderDateAndTimes() {
+        val form = viewModel.form
+        binding.eventDate.text = CreateEventForm.parseDate(form.date)?.let { formatDate(it) }
+        binding.startTime.text = CreateEventForm.parseTime(form.startTime)?.let { formatTime(it) }
+        binding.endTime.text = CreateEventForm.parseTime(form.endTime)?.let { formatTime(it) }
     }
+
+    private fun formatDate(date: LocalDate): String =
+        DateTimeFormatter.ofPattern(getString(R.string.events_date), locale).format(date)
+
+    private fun formatTime(time: LocalTime): String =
+        DateTimeFormatter.ofPattern(getString(R.string.events_time), locale).format(time)
+
+    // --- Sélecteurs -----------------------------------------------------------------------
+
+    private fun handlePickers() {
+        binding.eventDate.setOnClickListener { pickDate() }
+        binding.startTime.setOnClickListener { pickTime(isStart = true) }
+        binding.endTime.setOnClickListener { pickTime(isStart = false) }
+    }
+
+    private fun pickDate() {
+        val current = CreateEventForm.parseDate(viewModel.form.date) ?: LocalDate.now()
+        DatePickerDialog(
+            requireContext(),
+            { _, year, month, day ->
+                viewModel.form.date = LocalDate.of(year, month + 1, day).toString()
+                renderDateAndTimes()
+                viewModel.onFormChanged()
+            },
+            current.year, current.monthValue - 1, current.dayOfMonth
+        ).run {
+            datePicker.minDate = LocalDate.now().atStartOfDay(ZoneId.systemDefault())
+                .toInstant().toEpochMilli()
+            show()
+        }
+    }
+
+    /**
+     * Ouvre le sélecteur d'heure. Sans valeur saisie, il propose une durée par défaut de
+     * [DEFAULT_DURATION_HOURS] heures autour de l'autre heure, comme avant la refonte.
+     */
+    private fun pickTime(isStart: Boolean) {
+        val form = viewModel.form
+        val own = CreateEventForm.parseTime(if (isStart) form.startTime else form.endTime)
+        val other = CreateEventForm.parseTime(if (isStart) form.endTime else form.startTime)
+        val initial = own ?: other?.plusHours(if (isStart) -DEFAULT_DURATION_HOURS else DEFAULT_DURATION_HOURS)
+            ?: LocalTime.now()
+        TimePickerDialog(
+            requireContext(),
+            { _, hour, minute ->
+                val value = LocalTime.of(hour, minute).toString()
+                if (isStart) form.startTime = value else form.endTime = value
+                renderDateAndTimes()
+                viewModel.onFormChanged()
+            },
+            initial.hour, initial.minute, true
+        ).show()
+    }
+
+    // --- Récurrence -----------------------------------------------------------------------
 
     private fun setRecurrence() {
-        binding.layout.recurrence.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.once -> CommunicationHandler.event.recurrence = null
-                R.id.every_week -> CommunicationHandler.event.recurrence =
-                    Recurrence.EVERY_WEEK.value
-                R.id.every_two_week -> CommunicationHandler.event.recurrence =
-                    Recurrence.EVERY_TWO_WEEKS.value
-            }
-        }
-    }
-
-    private fun handleEditTextChangedTextListener(editText: EditText) {
-        editText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                CommunicationHandler.isButtonClickable.value =
-                    isEndTimeValid() && isStartTimeValid() && isDateValid() && binding.layout.eventTime.checkTimeValidity() == true
-            }
-
-            override fun afterTextChanged(s: Editable) {
-            }
-        })
-    }
-
-    override fun onResume() {
-        super.onResume()
-        CommunicationHandler.resetValues()
-        CommunicationHandler.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
-        CommunicationHandler.isButtonClickable.value =
-            isDateValid() && isStartTimeValid() && isEndTimeValid() && binding.layout.eventTime.checkTimeValidity() == true
-    }
-
-    override fun onDestroy() {
-        if(_binding!=null) {
-            binding.layout.error.root.visibility = View.GONE
-        }
-        super.onDestroy()
-    }
-
-    private fun handleOnClickNext(onClick: Boolean) {
-        if (onClick) {
-            if (isEndTimeValid() && isStartTimeValid() && isDateValid() && binding.layout.eventTime.checkTimeValidity() == true) {
-                binding.layout.error.root.visibility = View.GONE
-                CommunicationHandler.isCondition.value = true
-                CommunicationHandler.clickNext.removeObservers(viewLifecycleOwner)
-                val dateFormatterToDate =
-                    SimpleDateFormat(getString(R.string.event_date_formatter_to_date))
-                val dateFormatterToString =
-                    SimpleDateFormat(getString(R.string.event_date_formatter_to_string))
-                val startDate =
-                    dateFormatterToDate.parse(
-                        binding.layout.eventDate.text.toString() + " " +
-                                binding.layout.eventTime.getStartTime()
-
-                    )
-                val endDate =
-                    dateFormatterToDate.parse(
-                        binding.layout.eventDate.text.toString() + " " +
-                                binding.layout.eventTime.getEndTime()
-                    )
-                startDate?.let {
-                    val startDateString = dateFormatterToString.format(it)
-                    CommunicationHandler.event.metadata?.startsAt(startDateString)
-                }
-                endDate?.let {
-                    val endDateString = dateFormatterToString.format(it)
-                    CommunicationHandler.event.metadata?.endsAt(endDateString)
-                }
-            } else {
-                binding.layout.error.root.visibility = View.VISIBLE
-                binding.layout.error.errorMessage.text =
-                    getString(R.string.error_mandatory_fields)
-                if (binding.layout.eventTime.checkTimeValidity() == false) binding.layout.error.errorMessage.text =
-                    getString(R.string.error_event_end_time)
-                CommunicationHandler.isCondition.value = false
-            }
-        }
-    }
-
-    private fun isEndTimeValid(): Boolean {
-        return binding.layout.eventTime.isEndDateValid() && binding.layout.eventDate.text.isNotBlank()
-    }
-
-    private fun isStartTimeValid(): Boolean {
-        return binding.layout.eventTime.isStartTimeValid() && binding.layout.eventDate.text.isNotBlank()
-    }
-
-    private fun isDateValid(): Boolean {
-        return binding.layout.eventDate.text.isNotEmpty() && binding.layout.eventDate.text.isNotBlank()
-    }
-
-    private fun setView() {
+        // La récurrence reste réservée aux utilisateurs autorisés (ceux qui ont un rôle).
         val me = EntourageApplication.me(requireContext())
-        if(me?.roles?.isEmpty() == true){
-            binding.layout.recurrenceTitle.root.isVisible = false
-            binding.layout.recurrence.isVisible = false
-        }else{
-            binding.layout.recurrenceTitle.root.isVisible = true
-            binding.layout.recurrence.isVisible = true
-        }
-        with(CommunicationHandler.eventEdited) {
-            this?.let {
-                var locale = LanguageManager.getLocaleFromPreferences(requireContext())
-                val sdfDate = SimpleDateFormat(getString(R.string.events_date), locale)
-                val sdfTime = SimpleDateFormat(getString(R.string.events_time), locale)
-                binding.layout.eventDate.setText(this.metadata?.startsAt?.let { it1 ->
-                    sdfDate.format(
-                        it1
-                    )
-                })
-                binding.layout.eventTime.setStartTime(this.metadata?.startsAt?.let { it1 ->
-                    sdfTime.format(
-                        it1
-                    )
-                })
-                binding.layout.eventTime.setEndTime(this.metadata?.endsAt?.let { it1 ->
-                    sdfTime.format(
-                        it1
-                    )
-                })
+        val allowed = me?.roles?.isEmpty() != true
+        binding.recurrenceTitle.isVisible = allowed
+        binding.recurrence.isVisible = allowed
+
+        binding.recurrence.check(
+            when (viewModel.form.recurrence) {
+                Recurrence.EVERY_WEEK.value -> R.id.every_week
+                Recurrence.EVERY_TWO_WEEKS.value -> R.id.every_two_week
+                else -> R.id.once
             }
+        )
+        binding.recurrence.setOnCheckedChangeListener { _, checkedId ->
+            viewModel.form.recurrence = when (checkedId) {
+                R.id.every_week -> Recurrence.EVERY_WEEK.value
+                R.id.every_two_week -> Recurrence.EVERY_TWO_WEEKS.value
+                else -> Recurrence.NO_RECURRENCE.value
+            }
+            viewModel.onFormChanged()
         }
+    }
+
+    // --- Erreurs --------------------------------------------------------------------------
+
+    private fun observeViewModel() {
+        viewModel.errors.observe(viewLifecycleOwner) { errors ->
+            val date = errors[CreateEventField.DATE]
+            binding.eventDateError.bindError(date)
+            binding.eventDate.bindErrorState(date != null)
+
+            val start = errors[CreateEventField.START_TIME]
+            val end = errors[CreateEventField.END_TIME]
+            binding.eventTimeError.bindError(firstErrorOf(errors, CreateEventField.START_TIME, CreateEventField.END_TIME))
+            binding.startTime.bindErrorState(start != null)
+            binding.endTime.bindErrorState(end != null)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private companion object {
+        const val DEFAULT_DURATION_HOURS = 3L
     }
 }

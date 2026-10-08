@@ -22,7 +22,6 @@ import social.entourage.android.RefreshController
 import social.entourage.android.ViewPagerDefaultPageController
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.databinding.FragmentEventsBinding
-import social.entourage.android.events.create.CommunicationHandler
 import social.entourage.android.events.create.CreateEventActivity
 import social.entourage.android.events.list.DiscoverEventsListFragment
 import social.entourage.android.events.list.EventsViewPagerAdapter
@@ -387,7 +386,6 @@ class EventsFragment : Fragment() {
             val viewModel = ViewModelProvider(it)[CommunicationHandlerBadgeViewModel::class.java]
             viewModel.badgeCount.postValue(unreadMessages)
         }
-        CommunicationHandler.resetValues()
     }
 
 

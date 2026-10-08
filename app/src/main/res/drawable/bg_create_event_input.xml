@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Erreur : activé via View.setActivated(true) -->
+    <item android:state_activated="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" />
+            <stroke android:width="2dp" android:color="@color/create_event_error" />
+            <corners android:radius="12dp" />
+        </shape>
+    </item>
+    <item android:state_focused="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" />
+            <stroke android:width="2dp" android:color="@color/black" />
+            <corners android:radius="12dp" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white" />
+            <stroke android:width="1dp" android:color="@color/grey_contour" />
+            <corners android:radius="12dp" />
+        </shape>
+    </item>
+</selector>

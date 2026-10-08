@@ -1,18 +1,15 @@
-﻿package social.entourage.android.events.create
+package social.entourage.android.events.create
 
 import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -25,144 +22,108 @@ import social.entourage.android.groups.choosePhoto.ChooseGalleryPhotoModalFragme
 import social.entourage.android.groups.choosePhoto.ImagesType
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.parcelableCompat
 import social.entourage.android.tools.utils.px
 import java.io.File
 
-class CreateEventStepOneFragment : Fragment(), EventImageUploadView {
+/** Étape 1 : nom, description et photo. */
+class CreateEventStepOneFragment : Fragment() {
 
     private var _binding: FragmentCreateEventStepOneBinding? = null
     val binding: FragmentCreateEventStepOneBinding get() = _binding!!
-    private var selectedImage: Image? = null
-    private var uploadedImageFile: File? = null
-    private lateinit var uploadPresenter: EventImageUploadPresenter
-    private var isUploading = false
+
+    private val viewModel: CreateEventViewModel by activityViewModels()
 
     private val cropLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            val resultCode = result.resultCode
             val data = result.data
-            if (resultCode == Activity.RESULT_OK && data != null) {
-                val resultUri = UCrop.getOutput(data)
-                resultUri?.let { uri ->
-                    val file = File(uri.path!!)
-                    uploadedImageFile = file
-                    selectedImage = null // Clear previously selected default image
-                    CommunicationHandler.event.entourageImageId(null)
-
-                    binding.layout.addPhotoLayout.visibility = View.GONE
-                    binding.layout.addPhoto.visibility = View.VISIBLE
-                    Glide.with(requireActivity())
-                        .load(uri)
-                        .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
-                        .into(binding.layout.addPhoto)
-
-                    CommunicationHandler.isButtonClickable.value =
-                        isGroupNameValid() && isGroupDescriptionValid() && isImageValid()
-
-                    isUploading = true
-                    CommunicationHandler.isButtonClickable.value = false
-                    Toast.makeText(requireContext(), "Upload de l'image en cours...", Toast.LENGTH_SHORT).show()
-                    uploadPresenter.uploadPhoto(file)
+            if (result.resultCode == Activity.RESULT_OK && data != null) {
+                UCrop.getOutput(data)?.path?.let { path ->
+                    viewModel.uploadLocalPhoto(File(path), requireContext().cacheDir)
+                    renderPhoto()
+                    Utils.showToast(requireContext(), getString(R.string.create_event_photo_uploading_wait))
                 }
-            } else if (resultCode == UCrop.RESULT_ERROR && data != null) {
-                val cropError = UCrop.getError(data)
-                cropError?.printStackTrace()
+            } else if (result.resultCode == UCrop.RESULT_ERROR && data != null) {
+                UCrop.getError(data)?.printStackTrace()
             }
         }
 
-    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        uri?.let {
-            // CORRECTION : Générer un nom de fichier unique avec le timestamp
-            // Cela empêche Glide de charger l'ancienne image depuis son cache mémoire
-            val uniqueFileName = "cropped_event_image_${System.currentTimeMillis()}.jpg"
-            val destinationUri = Uri.fromFile(File(requireContext().cacheDir, uniqueFileName))
+    private val getContent =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            uri?.let {
+                // Nom de fichier unique : empêche Glide de resservir l'ancienne image depuis son cache mémoire.
+                val uniqueFileName = "cropped_event_image_${System.currentTimeMillis()}.jpg"
+                val destinationUri = Uri.fromFile(File(requireContext().cacheDir, uniqueFileName))
 
-            val options = UCrop.Options()
-            options.setToolbarTitle(getString(R.string.group_choose_photo))
-            options.setCircleDimmedLayer(false)
+                val options = UCrop.Options()
+                options.setToolbarTitle(getString(R.string.group_choose_photo))
+                options.setCircleDimmedLayer(false)
+                options.setHideBottomControls(true)
+                options.setFreeStyleCropEnabled(false)
 
-            // CORRECTION : Forcer l'affichage des contrôles pour aider l'UI à se redessiner
-            options.setHideBottomControls(true)
-            options.setFreeStyleCropEnabled(false)
-
-            val intent = UCrop.of(it, destinationUri)
-                .withAspectRatio(16f, 9f)
-                .withOptions(options)
-                .getIntent(requireContext())
-            cropLauncher.launch(intent)
+                val intent = UCrop.of(it, destinationUri)
+                    .withAspectRatio(16f, 9f)
+                    .withOptions(options)
+                    .getIntent(requireContext())
+                cropLauncher.launch(intent)
+            }
         }
-    }
-
-    override fun onUploadError() {
-        isUploading = false
-        Toast.makeText(requireContext(), "Erreur lors du chargement de l'image", Toast.LENGTH_SHORT).show()
-        CommunicationHandler.isButtonClickable.value = false
-    }
-
-    override fun onUploadSuccess(uploadKey: String) {
-        isUploading = false
-        CommunicationHandler.event.imageUrl(uploadKey)
-        CommunicationHandler.isButtonClickable.value =
-            isGroupNameValid() && isGroupDescriptionValid() && isImageValid()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentCreateEventStepOneBinding.inflate(inflater, container, false)
-        uploadPresenter = EventImageUploadPresenter(this, EventImageUploadRepository())
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        CommunicationHandler.resetValues()
         setView()
-        initializeDescriptionCounter()
+        handleTexts()
         handleChoosePhoto()
         onFragmentResult()
-        handleNextButtonState()
-        adjustTextViewsForRTL(binding.layout.root)
-        if (CommunicationHandler.eventEdited == null) {
+        observeViewModel()
+        if (!viewModel.isEdition) {
             AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_1)
         }
     }
 
-    private fun adjustTextViewsForRTL(view: View) {
-        val isRTL = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+    private fun setView() {
+        val form = viewModel.form
+        binding.eventName.setText(form.title)
+        binding.eventDescription.setText(form.description)
+        updateCounter(form.description.length)
+        renderPhoto()
+    }
 
-        if (isRTL) {
-            if (view is ViewGroup) {
-                for (i in 0 until view.childCount) {
-                    val child = view.getChildAt(i)
-                    adjustTextViewsForRTL(child) // Récursion pour parcourir toutes les sous-vues
-                }
-            } else if (view is TextView) {
-                // Ajuster la gravité et la direction du texte pour RTL
-                view.gravity = View.TEXT_ALIGNMENT_VIEW_END
-                view.textDirection = View.TEXT_DIRECTION_RTL
-            }
+    private fun handleTexts() {
+        binding.eventName.doAfterTextChanged {
+            viewModel.form.title = it?.toString() ?: ""
+            viewModel.onFormChanged()
         }
+        binding.eventDescription.doAfterTextChanged {
+            viewModel.form.description = it?.toString() ?: ""
+            updateCounter(viewModel.form.description.length)
+            viewModel.onFormChanged()
+        }
+    }
+
+    private fun updateCounter(length: Int) {
+        binding.counter.text = String.format(
+            getString(R.string.events_description_counter),
+            length.toString()
+        )
     }
 
     private fun handleChoosePhoto() {
-        val choosePhotoModalFragment = ChooseGalleryPhotoModalFragment.newInstance(ImagesType.EVENTS)
-        binding.layout.addPhotoLayout.setOnClickListener {
-            choosePhotoModalFragment.show(parentFragmentManager, ChooseGalleryPhotoModalFragment.TAG)
+        val openChooser = View.OnClickListener {
+            ChooseGalleryPhotoModalFragment.newInstance(ImagesType.EVENTS)
+                .show(parentFragmentManager, ChooseGalleryPhotoModalFragment.TAG)
         }
-        binding.layout.addPhoto.setOnClickListener {
-            choosePhotoModalFragment.show(parentFragmentManager, ChooseGalleryPhotoModalFragment.TAG)
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        CommunicationHandler.resetValues()
-        CommunicationHandler.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
-        CommunicationHandler.isButtonClickable.value =
-            isGroupNameValid() && isGroupDescriptionValid() && isImageValid()
+        binding.addPhotoLayout.setOnClickListener(openChooser)
+        binding.addPhoto.setOnClickListener(openChooser)
     }
 
     private fun onFragmentResult() {
@@ -171,122 +132,59 @@ class CreateEventStepOneFragment : Fragment(), EventImageUploadView {
             if (isAddPhoto) {
                 getContent.launch("image/*")
             } else {
-                selectedImage = bundle.parcelableCompat<Image>(Const.CHOOSE_PHOTO_PATH)
-                uploadedImageFile = null
-                CommunicationHandler.isButtonClickable.value = isImageValid()
-                CommunicationHandler.event.entourageImageId(selectedImage?.id)
-                CommunicationHandler.event.imageUrl(null)
-                val imageUrl =
-                    if (selectedImage?.portraitUrl != null) selectedImage?.portraitUrl else selectedImage?.landscapeUrl
-                imageUrl?.let { url ->
-                    CommunicationHandler.isButtonClickable.value =
-                        isGroupNameValid() && isGroupDescriptionValid() && isImageValid()
-                    binding.layout.addPhotoLayout.visibility = View.GONE
-                    binding.layout.addPhoto.visibility = View.VISIBLE
-                    Glide.with(requireActivity())
-                        .load(Uri.parse(url))
-                        .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
-                        .into(binding.layout.addPhoto)
+                bundle.parcelableCompat<Image>(Const.CHOOSE_PHOTO_PATH)?.let {
+                    viewModel.selectCatalogImage(it)
+                    renderPhoto()
                 }
             }
         }
     }
 
-    private fun handleOnClickNext(onClick: Boolean) {
-        if (onClick) {
-            if (isGroupNameValid() && isGroupDescriptionValid() && isImageValid()) {
-                binding.layout.error.root.visibility = View.GONE
-                CommunicationHandler.isCondition.value = true
-                CommunicationHandler.event.title(binding.layout.eventName.text.toString())
-                CommunicationHandler.event.description(binding.layout.eventDescription.text.toString())
-                CommunicationHandler.clickNext.removeObservers(viewLifecycleOwner)
-            } else {
-                binding.layout.error.root.visibility = View.VISIBLE
-                binding.layout.error.errorMessage.text =
-                    getString(R.string.error_mandatory_fields)
-                CommunicationHandler.isCondition.value = false
+    private fun observeViewModel() {
+        viewModel.errors.observe(viewLifecycleOwner) { errors ->
+            val name = errors[CreateEventField.NAME]
+            val description = errors[CreateEventField.DESCRIPTION]
+            val photo = errors[CreateEventField.PHOTO]
+            binding.eventNameError.bindError(name)
+            binding.eventName.bindErrorState(name != null)
+            binding.eventDescriptionError.bindError(description)
+            binding.eventDescription.bindErrorState(description != null)
+            binding.photoError.bindError(photo)
+            binding.addPhotoLayout.bindErrorState(photo != null)
+        }
+        viewModel.uploadFailed.observe(viewLifecycleOwner) { failed ->
+            if (failed) {
+                Utils.showToast(requireContext(), getString(R.string.create_event_photo_upload_error))
+                viewModel.consumeUploadFailed()
+                renderPhoto()
             }
         }
     }
 
-    fun isGroupNameValid(): Boolean {
-        return binding.layout.eventName.text.length >= Const.GROUP_NAME_MIN_LENGTH && binding.layout.eventName.text.isNotBlank()
-    }
-
-    fun isGroupDescriptionValid(): Boolean {
-        return binding.layout.eventDescription.text.length >= Const.GROUP_DESCRIPTION_MIN_LENGTH && binding.layout.eventDescription.text.isNotBlank()
-    }
-
-    fun isImageValid(): Boolean {
-        return (selectedImage != null || uploadedImageFile != null) && !isUploading
-    }
-
-    fun canExitEventCreation(): Boolean {
-        return binding.layout.eventName.text.isEmpty() && binding.layout.eventDescription.text.isEmpty()
-    }
-
-    override fun onDestroy() {
-        binding.layout.error.root.visibility = View.GONE
-        super.onDestroy()
-    }
-
-    private fun handleNextButtonState() {
-        handleEditTextChangedTextListener(binding.layout.eventDescription)
-        handleEditTextChangedTextListener(binding.layout.eventName)
-    }
-
-    private fun handleEditTextChangedTextListener(editText: EditText) {
-        editText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                CommunicationHandler.isButtonClickable.value =
-                    isGroupNameValid() && isGroupDescriptionValid() && isImageValid()
-            }
-
-            override fun afterTextChanged(s: Editable) {
-                CommunicationHandler.canExitEventCreation = canExitEventCreation()
-            }
-        })
-    }
-
-    private fun initializeDescriptionCounter() {
-        binding.layout.counter.text = String.format(
-            getString(R.string.events_description_counter),
-            binding.layout.eventDescription.text?.length.toString()
-        )
-        binding.layout.eventDescription.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-
-            }
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                binding.layout.counter.text = String.format(
-                    getString(R.string.events_description_counter),
-                    s.length.toString()
-                )
-            }
-
-            override fun afterTextChanged(s: Editable) {}
-        })
-    }
-
-    private fun setView() {
-        CommunicationHandler.eventEdited?.let { event ->
-            with(binding.layout) {
-                eventName.setText(event.title)
-                eventDescription.setText(event.description)
-                addPhotoLayout.visibility = View.GONE
-                addPhoto.visibility = View.VISIBLE
-                selectedImage = Image()
-                event.metadata?.landscapeUrl?.let {
-                    Glide.with(requireActivity())
-                        .load(Uri.parse(it))
-                        .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
-                        .into(binding.layout.addPhoto)
-                }
-            }
+    /** Affiche la photo choisie (copie locale, image du catalogue ou de l'événement édité). */
+    private fun renderPhoto() {
+        val form = viewModel.form
+        val source: Any? = form.localPhotoPath?.let { File(it) } ?: form.photoUrl?.let { Uri.parse(it) }
+        if (source != null) {
+            binding.addPhotoLayout.visibility = View.GONE
+            binding.addPhoto.visibility = View.VISIBLE
+            Glide.with(this)
+                .load(source)
+                .transform(CenterCrop(), RoundedCorners(Const.ROUNDED_CORNERS_IMAGES.px))
+                .into(binding.addPhoto)
+        } else {
+            binding.addPhoto.visibility = View.GONE
+            binding.addPhotoLayout.visibility = View.VISIBLE
+            // Photo déjà envoyée mais sans aperçu disponible (brouillon restauré) : on le dit.
+            val alreadyChosen = form.hasPhoto()
+            binding.addPhotoTitle.setText(
+                if (alreadyChosen) R.string.create_event_photo_added else R.string.create_event_photo_add
+            )
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

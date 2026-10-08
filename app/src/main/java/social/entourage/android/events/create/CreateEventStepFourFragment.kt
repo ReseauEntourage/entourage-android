@@ -1,30 +1,30 @@
-﻿package social.entourage.android.events.create
+package social.entourage.android.events.create
 
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.widget.TextView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import social.entourage.android.R
+import androidx.fragment.app.activityViewModels
 import social.entourage.android.api.MetaDataRepository
+import social.entourage.android.api.model.EventUtils
 import social.entourage.android.api.model.Interest
 import social.entourage.android.api.model.Tags
 import social.entourage.android.databinding.FragmentCreateEventStepFourBinding
-import social.entourage.android.profile.editProfile.InterestsListAdapter
-import social.entourage.android.profile.editProfile.OnItemCheckListener
+import social.entourage.android.R
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.px
 
+/** Étape 4 : catégories de l'événement, en pastilles sélectionnables. */
 class CreateEventStepFourFragment : Fragment() {
 
     private var _binding: FragmentCreateEventStepFourBinding? = null
     val binding: FragmentCreateEventStepFourBinding get() = _binding!!
 
-    private var interestsList: MutableList<Interest> = mutableListOf()
-    private var selectedInterestIdList: MutableList<String> = mutableListOf()
-
-    private lateinit var interestsListAdapter: InterestsListAdapter
+    private val viewModel: CreateEventViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,106 +36,48 @@ class CreateEventStepFourFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        MetaDataRepository.metaData.observe(requireActivity(), ::handleMetaData)
-        initializeInterests()
-
-        if (CommunicationHandler.eventEdited == null) {
+        MetaDataRepository.metaData.observe(viewLifecycleOwner, ::renderInterests)
+        viewModel.errors.observe(viewLifecycleOwner) {
+            binding.categoriesError.bindError(it[CreateEventField.CATEGORIES])
+        }
+        if (!viewModel.isEdition) {
             AnalyticsEvents.logEvent(AnalyticsEvents.Event_create_4)
         }
-        adjustTextViewsForRTL(binding.layout.root)
     }
 
-    private fun handleMetaData(tags: Tags?) {
-        interestsList.clear()
-        val eventInterests = CommunicationHandler.eventEdited?.interests
-        tags?.interests?.forEach { interest ->
-            interestsList.add(
-                Interest(
-                    interest.id,
-                    interest.name,
-                    eventInterests?.contains(interest.id) == true
-                )
-            )
-            if (eventInterests?.contains(interest.id) == true) interest.id?.let {
-                selectedInterestIdList.add(it)
+    private fun renderInterests(tags: Tags?) {
+        binding.interestsGroup.removeAllViews()
+        val inflater = LayoutInflater.from(requireContext())
+        tags?.interests?.forEach { tag ->
+            val id = tag.id ?: return@forEach
+            val chip = inflater.inflate(
+                R.layout.item_create_event_interest_chip, binding.interestsGroup, false
+            ) as TextView
+            chip.text = EventUtils.showTagTranslated(requireContext(), id)
+            chip.setCompoundDrawablesRelative(iconFor(id), null, null, null)
+            chip.isSelected = viewModel.form.interests.contains(id)
+            chip.setOnClickListener {
+                val interests = viewModel.form.interests
+                if (interests.contains(id)) interests.remove(id) else interests.add(id)
+                chip.isSelected = interests.contains(id)
+                viewModel.onFormChanged()
             }
-        }
-        binding.layout.egs2RecyclerView.adapter?.notifyDataSetChanged()
-    }
-
-    private fun adjustTextViewsForRTL(view: View) {
-        val isRTL = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
-
-        if (isRTL) {
-            if (view is ViewGroup) {
-                for (i in 0 until view.childCount) {
-                    val child = view.getChildAt(i)
-                    adjustTextViewsForRTL(child) // Récursion pour parcourir toutes les sous-vues
-                }
-            } else if (view is TextView) {
-                // Ajuster la gravité et la direction du texte pour RTL
-                view.gravity = View.TEXT_ALIGNMENT_VIEW_END
-                view.textDirection = View.TEXT_DIRECTION_RTL
-            }
+            binding.interestsGroup.addView(chip)
         }
     }
 
-    private fun initializeInterests() {
-        interestsListAdapter = InterestsListAdapter(interestsList, object : OnItemCheckListener {
-            override fun onItemCheck(item: Interest) {
-                item.id?.let {
-                    selectedInterestIdList.add(it)
-                    CommunicationHandler.isButtonClickable.value = interestHaveBeenSelected()
-                }
-            }
-
-            override fun onItemUncheck(item: Interest) {
-                selectedInterestIdList.remove(item.id)
-                CommunicationHandler.isButtonClickable.value = interestHaveBeenSelected()
-            }
-        }, true)
-        binding.layout.egs2RecyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = interestsListAdapter
+    private fun iconFor(id: String): Drawable? =
+        ContextCompat.getDrawable(requireContext(), Interest.getIconFromId(id))?.mutate()?.apply {
+            val size = ICON_SIZE_DP.px
+            setBounds(0, 0, size, size)
         }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
-    private fun handleOnClickNext(onClick: Boolean) {
-        if (onClick) {
-            when {
-                selectedInterestIdList.isEmpty() -> {
-                    binding.layout.egs2Error.root.visibility = View.VISIBLE
-                    binding.layout.egs2Error.errorMessage.text =
-                        getString(R.string.error_categories_create_group)
-                    CommunicationHandler.isCondition.value = false
-                }
-                else -> {
-                    binding.layout.egs2Error.root.visibility = View.GONE
-                    CommunicationHandler.isCondition.value = true
-                    CommunicationHandler.event.interests(selectedInterestIdList)
-                    interestsListAdapter.getOtherInterestCategory()
-                        ?.let { if (it.isNotEmpty()) CommunicationHandler.event.otherInterest(it) }
-                    CommunicationHandler.clickNext.removeObservers(viewLifecycleOwner)
-
-                }
-            }
-        }
+    private companion object {
+        const val ICON_SIZE_DP = 20
     }
-
-    override fun onResume() {
-        super.onResume()
-        CommunicationHandler.resetValues()
-        CommunicationHandler.clickNext.observe(viewLifecycleOwner, ::handleOnClickNext)
-        CommunicationHandler.isButtonClickable.value = interestHaveBeenSelected()
-    }
-
-    fun interestHaveBeenSelected(): Boolean {
-        return selectedInterestIdList.isNotEmpty()
-    }
-
-    override fun onDestroy() {
-        binding.layout.egs2Error.root.visibility = View.GONE
-        super.onDestroy()
-    }
-
 }

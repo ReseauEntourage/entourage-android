@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Carte sélectionnable (icône, titre, case), dans l'esprit des cartes de l'onboarding enrichi.
+     La sélection se matérialise par View.setSelected(true) sur la racine : bordure noire + case cochée. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="11dp"
+    android:background="@drawable/bg_create_event_card"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_vertical"
+    android:minHeight="72dp"
+    android:orientation="horizontal"
+    android:padding="14dp">
+
+    <ImageView
+        android:id="@+id/card_icon"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:background="@drawable/bg_create_event_icon_tile"
+        android:importantForAccessibility="no"
+        android:padding="9dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="13dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/card_title"
+            style="@style/create_event_card_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/card_description"
+            style="@style/create_event_card_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/card_check"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/bg_create_event_check_circle"
+        android:importantForAccessibility="no" />
+</LinearLayout>

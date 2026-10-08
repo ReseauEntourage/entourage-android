@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="22dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="24dp">
+
+        <TextView
+            style="@style/create_event_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/create_event_preview_title"
+            android:textSize="21sp" />
+
+        <ImageView
+            android:id="@+id/preview_image"
+            android:layout_width="match_parent"
+            android:layout_height="158dp"
+            android:background="@drawable/bg_create_event_icon_tile"
+            android:contentDescription="@string/picture"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/preview_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/quicksand_bold"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            tools:text="Discussion entre voisins du 18e" />
+
+        <TextView
+            android:id="@+id/preview_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:drawableStart="@drawable/ic_event_date"
+            android:drawablePadding="9dp"
+            android:fontFamily="@font/nunitosans_regular"
+            android:gravity="center_vertical"
+            android:textColor="@color/grey"
+            android:textSize="14sp"
+            tools:text="Mer. 23 sept. · 16h00 à 18h00" />
+
+        <TextView
+            android:id="@+id/preview_place"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_location"
+            android:drawablePadding="9dp"
+            android:fontFamily="@font/nunitosans_regular"
+            android:gravity="center_vertical"
+            android:textColor="@color/grey"
+            android:textSize="14sp"
+            tools:text="Place des Fêtes, Paris 18e" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/preview_chips"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:chipSpacingHorizontal="7dp"
+            app:chipSpacingVertical="7dp" />
+
+        <TextView
+            android:id="@+id/preview_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:fontFamily="@font/nunitosans_regular"
+            android:lineSpacingMultiplier="1.1"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            tools:text="Venez nombreux !" />
+
+        <TextView
+            android:id="@+id/preview_groups_nudge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:background="@drawable/bg_create_event_chip_static"
+            android:fontFamily="@font/nunitosans_regular"
+            android:padding="13dp"
+            android:textColor="@color/grey"
+            android:textSize="13sp"
+            android:visibility="gone"
+            tools:text="2 groupes sélectionnés. Les membres de ces groupes recevront une notification." />
+    </LinearLayout>
+</ScrollView>

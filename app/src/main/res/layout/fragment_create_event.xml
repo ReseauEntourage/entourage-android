@@ -1,73 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/create_event_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".events.create.CreateEventFragment">
+
+    <!-- Barre du haut : retour, titre, enregistrer (création uniquement) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="18dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="18dp"
+        android:paddingBottom="12dp">
+
+        <ImageView
+            android:id="@+id/icon_back"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_create_event_round_button"
+            android:contentDescription="@string/back"
+            android:padding="6dp"
+            android:src="@drawable/ic_create_event_back" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:fontFamily="@font/nunitosans_bold"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            tools:text="@string/new_event" />
+
+        <TextView
+            android:id="@+id/save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:fontFamily="@font/nunitosans_bold"
+            android:minHeight="36dp"
+            android:gravity="center"
+            android:paddingHorizontal="4dp"
+            android:text="@string/create_event_save"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Progression : même barre que le parcours de bienvenue de l'accueil -->
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:max="5"
+        android:progress="1"
+        android:progressDrawable="@drawable/bg_progress_bar_welcome" />
+
+    <TextView
+        android:id="@+id/step_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nunitosans_regular"
+        android:paddingStart="22dp"
+        android:paddingTop="20dp"
+        android:paddingEnd="22dp"
+        android:textColor="@color/grey"
+        android:textSize="13sp"
+        tools:text="Étape 1 sur 5" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:overScrollMode="never" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey_contour" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/create_event_layout"
-        android:background="@drawable/header_profile_orange"
-        android:orientation="vertical" >
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="22dp"
+        android:paddingTop="11dp"
+        android:paddingEnd="22dp"
+        android:paddingBottom="14dp">
 
-        <include
-            android:id="@+id/header"
-            layout="@layout/layout_main_header"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/previous"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
-            app:icon="@{@drawable/ic_create_event_header}" />
+            android:background="?attr/selectableItemBackground"
+            android:fontFamily="@font/nunitosans_bold"
+            android:gravity="center"
+            android:minHeight="48dp"
+            android:paddingHorizontal="4dp"
+            android:text="@string/back"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.9"
-            app:userInputEnabled="@{false}" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="32dp"
-            android:gravity="clip_horizontal"
-            android:paddingTop="10dp">
-
-            <Button
-                android:id="@+id/previous"
-                android:fontFamily="@font/quicksand_bold"
-                android:textColor="@color/black"
-                android:textSize="15sp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                android:background="@drawable/shape_button_v9_negative"
-                android:text="@string/previous"
-                android:textAllCaps="false"
-                android:visibility="invisible" />
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_layout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.3"
-                app:tabBackground="@drawable/selector_tab"
-                app:tabGravity="center"
-                app:tabIndicatorHeight="0dp" />
-
-            <Button
-                android:id="@+id/next"
-                style="@style/h2_white"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_weight="0.3"
-                android:background="@drawable/bg_button_inactive_light_orange"
-                android:text="@string/next"
-                android:textAllCaps="false" />
-
-        </LinearLayout>
-
+        <Button
+            android:id="@+id/next"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="52dp"
+            android:background="@drawable/bg_create_event_cta"
+            android:fontFamily="@font/nunitosans_bold"
+            android:minWidth="140dp"
+            android:paddingHorizontal="28dp"
+            android:text="@string/create_event_continue"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
     </LinearLayout>
-</layout>
+</LinearLayout>

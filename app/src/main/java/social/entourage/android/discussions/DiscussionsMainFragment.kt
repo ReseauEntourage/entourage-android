@@ -25,7 +25,6 @@ import social.entourage.android.api.model.ConversationMembership
 import social.entourage.android.api.model.HomeModerator
 import social.entourage.android.api.model.LastMessage
 import social.entourage.android.api.model.SmallTalk
-import social.entourage.android.events.create.CommunicationHandler
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.HomePresenter
 import social.entourage.android.home.UnreadMessages
@@ -309,7 +308,6 @@ class DiscussionsMainFragment : Fragment() {
             val viewModel = ViewModelProvider(it)[CommunicationHandlerBadgeViewModel::class.java]
             viewModel.badgeCount.postValue(unreadMessages)
         }
-        CommunicationHandler.resetValues()
     }
 
     private fun checkNotificationsState() {

@@ -34,7 +34,6 @@ import social.entourage.android.actions.list.ActionsViewPagerAdapter
 import social.entourage.android.api.model.ActionSectionFilters
 import social.entourage.android.api.model.EventActionLocationFilters
 import social.entourage.android.databinding.FragmentActionsBinding
-import social.entourage.android.events.create.CommunicationHandler
 import social.entourage.android.home.CommunicationHandlerBadgeViewModel
 import social.entourage.android.home.HomeState
 import social.entourage.android.home.UnreadMessages
@@ -314,7 +313,6 @@ class ActionsFragment : Fragment() {
             val viewModel = ViewModelProvider(it)[CommunicationHandlerBadgeViewModel::class.java]
             viewModel.badgeCount.postValue(unreadMessages)
         }
-        CommunicationHandler.resetValues()
     }
 
     private fun createAction() {

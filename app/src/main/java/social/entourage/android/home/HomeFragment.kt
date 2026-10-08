@@ -49,7 +49,6 @@ import social.entourage.android.databinding.FragmentHomeBinding
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
-import social.entourage.android.events.create.CommunicationHandler
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.chatbot.ChatBotBottomSheet
 import social.entourage.android.home.pedago.OnItemClick
@@ -1135,7 +1134,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             val viewModel = ViewModelProvider(it)[CommunicationHandlerBadgeViewModel::class.java]
             viewModel.badgeCount.postValue(unreadMessages)
         }
-        CommunicationHandler.resetValues()
     }
 
     private fun callToInitHome() {
