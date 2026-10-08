@@ -46,6 +46,12 @@ data class EventMetadata(
     @field:SerializedName("reserved_female")
     val reserved_female: Boolean? = null,
 
+    @field:SerializedName("pmr")
+    val pmr: Boolean? = null,
+
+    @field:SerializedName("kids_friendly")
+    val kidsFriendly: Boolean? = null,
+
     @field:SerializedName("unsubscribed_participants_offer_help")
     var unsubscribedParticipantsOfferHelp: Int? = 0,
 

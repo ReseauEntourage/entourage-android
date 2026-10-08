@@ -70,9 +70,8 @@ data class CreateEventForm(
     var placeLimit: Int? = null,
 
     // Cartes de public et d'accessibilité.
-    // wheelchairAccessible et familyFriendly sont conservés (formulaire, brouillon, aperçu) mais
-    // ne sont JAMAIS envoyés à l'API tant que le backend ne les porte pas (EN-9582) : voir
-    // [toCreateEvent], seul point à modifier pour les brancher.
+    // wheelchairAccessible -> metadata.pmr, familyFriendly -> metadata.kids_friendly
+    // (voir [toCreateEvent], seul point de sérialisation).
     var wheelchairAccessible: Boolean = false,
     var familyFriendly: Boolean = false,
     var reservedFemale: Boolean = false,
@@ -147,8 +146,8 @@ data class CreateEventForm(
     }
 
     /**
-     * Construit le corps de requête. Les cartes fauteuil et famille n'y figurent volontairement
-     * pas ; `reserved_female` reste envoyé comme avant.
+     * Construit le corps de requête. `pmr` (fauteuil, false en ligne) et `kids_friendly` (famille)
+     * sont toujours envoyés explicitement, comme `reserved_female`.
      *
      * @param datePattern format des champs `starts_at` / `ends_at` (ressource `event_date_formatter_to_string`)
      * @param editedRecurrence récurrence de l'événement édité, ou null en création. En édition, la
@@ -179,6 +178,8 @@ data class CreateEventForm(
         buildDate(date, startTime)?.let { metadata.startsAt = formatter.format(it) }
         buildDate(date, endTime)?.let { metadata.endsAt = formatter.format(it) }
         metadata.reserved_female = reservedFemale
+        metadata.pmr = wheelchairAccessible && !online
+        metadata.kidsFriendly = familyFriendly
         metadata.placeLimit = when {
             placeLimit != null && placeLimit!! > 0 -> placeLimit
             // En édition, 0 efface une limite posée auparavant.

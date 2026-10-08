@@ -114,6 +114,8 @@ class CreateEventViewModel : ViewModel(), EventImageUploadView {
             eventUrl = event.eventUrl ?: "",
             placeLimit = metadata?.placeLimit?.takeIf { it > 0 },
             reservedFemale = metadata?.reserved_female ?: false,
+            wheelchairAccessible = (metadata?.pmr ?: false) && event.online != true,
+            familyFriendly = metadata?.kidsFriendly ?: false,
             interests = event.interests.toMutableList(),
             neighborhoodIds = event.neighborhoods?.mapNotNull { it.id }?.toMutableList()
                 ?: mutableListOf(),

@@ -97,18 +97,32 @@ class CreateEventFormTest {
     }
 
     @Test
-    fun requestBody_neverCarriesWheelchairNorFamily_butKeepsReservedFemale() {
+    fun requestBody_carriesPmrAndKidsFriendly_andKeepsReservedFemale() {
         val form = validForm().apply {
             wheelchairAccessible = true
             familyFriendly = true
             reservedFemale = true
         }
         val json = gson.toJson(CreateEventWrapper(form.toCreateEvent(datePattern)))
-        assertFalse(json.contains("wheelchair", ignoreCase = true))
-        assertFalse(json.contains("fauteuil", ignoreCase = true))
-        assertFalse(json.contains("family", ignoreCase = true))
-        assertFalse(json.contains("famille", ignoreCase = true))
+        assertTrue(json.contains("\"pmr\":true"))
+        assertTrue(json.contains("\"kids_friendly\":true"))
         assertTrue(json.contains("\"reserved_female\":true"))
+    }
+
+    @Test
+    fun requestBody_sendsExplicitFalse_whenCardsUnselected() {
+        val json = gson.toJson(CreateEventWrapper(validForm().toCreateEvent(datePattern)))
+        assertTrue(json.contains("\"pmr\":false"))
+        assertTrue(json.contains("\"kids_friendly\":false"))
+    }
+
+    @Test
+    fun requestBody_sendsPmrFalse_whenOnline() {
+        val form = validForm().apply { wheelchairAccessible = true; familyFriendly = true }
+        form.setOnlineMode(true)
+        val json = gson.toJson(CreateEventWrapper(form.toCreateEvent(datePattern)))
+        assertTrue(json.contains("\"pmr\":false"))
+        assertTrue(json.contains("\"kids_friendly\":true"))
     }
 
     @Test
