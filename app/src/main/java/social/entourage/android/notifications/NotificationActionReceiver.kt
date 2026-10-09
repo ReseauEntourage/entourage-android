@@ -3,7 +3,6 @@ package social.entourage.android.notifications
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import com.google.gson.Gson
 import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.tools.log.AnalyticsEvents

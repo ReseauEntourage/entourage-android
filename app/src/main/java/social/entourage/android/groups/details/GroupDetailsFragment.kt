@@ -2,10 +2,10 @@ package social.entourage.android.groups.details
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.core.widget.TextViewCompat
 import androidx.fragment.app.setFragmentResult
 import com.google.android.flexbox.FlexDirection
@@ -27,6 +27,7 @@ import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.parcelableCompat
 import social.entourage.android.tools.utils.CustomAlertDialog
 
 class GroupDetailsFragment : BottomSheetDialogFragment() {
@@ -36,6 +37,9 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
     private var group: GroupModel? = null
     private var interestsList: ArrayList<String> = ArrayList()
     private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
+    private val activityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -179,7 +183,7 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
             )
             val intent = Intent(context, GroupRulesActivity::class.java)
             intent.putExtra(Const.RULES_TYPE, Const.RULES_GROUP)
-            startActivityForResult(intent, 0)
+            activityResultLauncher.launch(intent)
         }
     }
 
@@ -213,7 +217,7 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
     }
 
     private fun getGroupInformation() {
-        group = arguments?.getParcelable(Const.GROUP_UI)
+        group = arguments?.parcelableCompat(Const.GROUP_UI)
     }
 
     private fun handleEditGroup() {
@@ -223,7 +227,7 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
             )
             val intent = Intent(context, EditGroupActivity::class.java)
             intent.putExtra(Const.GROUP_ID, group?.id)
-            startActivityForResult(intent, 0)
+            activityResultLauncher.launch(intent)
             dismiss()
         }
     }
@@ -232,7 +236,7 @@ class GroupDetailsFragment : BottomSheetDialogFragment() {
         if (hasLeft) {
             setFragmentResult(
                 Const.REQUEST_KEY_SHOULD_REFRESH,
-                bundleOf(Const.SHOULD_REFRESH to true)
+                Bundle().apply { putBoolean(Const.SHOULD_REFRESH, true) }
             )
             dismiss()
         }

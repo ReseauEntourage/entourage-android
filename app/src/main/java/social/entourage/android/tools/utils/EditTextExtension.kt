@@ -1,5 +1,6 @@
 package social.entourage.android.tools.utils
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
@@ -8,9 +9,11 @@ import android.text.Spanned
 import android.text.style.TextAppearanceSpan
 import android.text.style.UnderlineSpan
 import android.view.ViewTreeObserver
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.FragmentManager
 import social.entourage.android.R
 import social.entourage.android.language.LanguageManager
 import java.text.SimpleDateFormat
@@ -50,6 +53,27 @@ fun EditText.transformIntoDatePicker(
     }
 }
 
+/**
+ * Comme [transformIntoDatePicker], mais ouvre le MaterialDatePicker (M3) en mode saisie texte
+ * plutôt que le DatePickerDialog natif — voir [showBirthdateDatePicker].
+ */
+fun EditText.transformIntoMaterialBirthdatePicker(
+    fragmentManager: FragmentManager,
+    titleText: CharSequence
+) {
+    isFocusableInTouchMode = false
+    isClickable = true
+    isFocusable = false
+
+    setOnClickListener {
+        showBirthdateDatePicker(
+            fragmentManager = fragmentManager,
+            currentDateText = text?.toString(),
+            titleText = titleText
+        ) { newDate -> setText(newDate) }
+    }
+}
+
 fun EditText.transformIntoTimePicker(context: Context, format: String) {
     isFocusableInTouchMode = false
     isClickable = true
@@ -85,9 +109,9 @@ fun EditText.focusAndShowKeyboard() {
             post {
                 // We still post the call, just in case we are being notified of the windows focus
                 // but InputMethodManager didn't get properly setup yet.
-                val imm =
-                    context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+                (context as? Activity)?.window?.let { window ->
+                    WindowCompat.getInsetsController(window, this).show(WindowInsetsCompat.Type.ime())
+                }
             }
         }
     }

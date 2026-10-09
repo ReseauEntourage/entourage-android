@@ -24,7 +24,7 @@ internal class CountryCodeAdapter(
     }
 
     override fun onBindViewHolder(viewHolder: CountryCodeViewHolder, i: Int) {
-        val country = mCountries[viewHolder.adapterPosition]
+        val country = mCountries[viewHolder.bindingAdapterPosition]
         viewHolder.setCountry(country)
         viewHolder.binding.root.setOnClickListener { mCallback.onItemCountrySelected(country) }
     }

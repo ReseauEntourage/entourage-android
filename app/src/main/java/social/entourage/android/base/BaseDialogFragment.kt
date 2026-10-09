@@ -3,7 +3,11 @@ package social.entourage.android.base
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
 import androidx.annotation.StyleRes
 import androidx.fragment.app.DialogFragment
 import social.entourage.android.MainActivity
@@ -26,17 +30,11 @@ open class BaseDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as? MainActivity)?.let {DeepLinksManager.handleCurrentDeepLink(it) }
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
         if (dialog == null) {
             //TODO should we use setShowsDialog(false) here
             showsDialog = false
         }
-        super.onActivityCreated(savedInstanceState)
-        dialog?.window?.attributes?.windowAnimations = slideStyle
+        (activity as? MainActivity)?.let {DeepLinksManager.handleCurrentDeepLink(it) }
     }
 
     override fun onStart() {

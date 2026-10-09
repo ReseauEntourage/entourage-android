@@ -5,10 +5,10 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.widget.RemoteViews
 import social.entourage.android.MainActivity
 import social.entourage.android.R
+import timber.log.Timber
 
 class WidgetMainProvider : AppWidgetProvider() {
 
@@ -18,7 +18,6 @@ class WidgetMainProvider : AppWidgetProvider() {
         appWidgetIds: IntArray
     ) {
         for (widgetId in appWidgetIds) {
-            Log.wtf("wtf", "coucou") // ✅ Ce log va maintenant s’afficher
             val views = RemoteViews(context.packageName, R.layout.widget_main)
 
             val intent = Intent(context, MainActivity::class.java).apply {

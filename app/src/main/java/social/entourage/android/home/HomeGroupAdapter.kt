@@ -1,6 +1,5 @@
 package social.entourage.android.home
 
-import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
@@ -53,11 +52,11 @@ class HomeGroupAdapter: RecyclerView.Adapter<HomeGroupAdapter.GroupViewHolder>()
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Group_Detail)
             group.unreadPostsCount = 0
             holder.binding.cardNewsGroup.visibility = View.INVISIBLE
-            (view.context as? Activity)?.startActivityForResult(
+            view.context.startActivity(
                 Intent(view.context, GroupFeedActivity::class.java).putExtra(
                     Const.GROUP_ID,
                     group.id
-                ), 0
+                )
             )
         }
 

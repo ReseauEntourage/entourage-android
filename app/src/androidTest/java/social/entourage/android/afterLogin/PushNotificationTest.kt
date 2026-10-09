@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationManagerCompat
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
@@ -13,30 +12,31 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.RuleChain
 import org.junit.runner.RunWith
-import social.entourage.android.MainActivity
 import social.entourage.android.MockNotificationGenerator
-import social.entourage.android.test.BuildConfig
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
 class PushNotificationTest : EntourageTestAfterLogin() {
 
+    //TODO find a way to see the notif in the screenshot
+    //private val screenshot = E2EScreenshot("push_notification")
     private val isAppStarted = false
     private val NOTIFICATION_TIMEOUT = 1000L
 
     private val context = InstrumentationRegistry.getInstrumentation().targetContext
 
-    @get:Rule
-    var activityRule = ActivityScenarioRule(MainActivity::class.java)
-
     // This rule will grant the POST_NOTIFICATIONS permission before each test in this class
-    @get:Rule
-    var permissionRule: GrantPermissionRule = GrantPermissionRule.grant(
+    private var permissionRule: GrantPermissionRule = GrantPermissionRule.grant(
         Manifest.permission.POST_NOTIFICATIONS
     )
 
-    private val entourageID = if (BuildConfig.BUILD_TYPE == "release") "46569" else "2300"
+    @get:Rule
+    val ruleChain: RuleChain = RuleChain
+        .outerRule(permissionRule)
+
+    //private val entourageID = 2300
 
     private fun checkNotifEnabled(activity: Context) {
         if (!NotificationManagerCompat.from(activity).areNotificationsEnabled()) {
@@ -48,11 +48,8 @@ class PushNotificationTest : EntourageTestAfterLogin() {
     }
 
     @Before
-    fun setUp() {
-        activityRule.scenario.onActivity { activity ->
-            super.setUp(activity)
-            checkNotifEnabled(activity)
-        }
+    fun customSetUp() {
+        checkNotifEnabled(context)
     }
 
     private fun startIntent(intent: Intent) {
@@ -160,6 +157,8 @@ class PushNotificationTest : EntourageTestAfterLogin() {
         notifs.filter({ notification -> notification.id == id }).forEach { notification ->
             notificationId = notification.id
         }
+        //TODO find a way to see the notif in the screenshot
+//        screenshot.shoot("notif_$id")
         Assert.assertNotNull(
             "Notification with id '${id}' not found in shade.",
             notificationId

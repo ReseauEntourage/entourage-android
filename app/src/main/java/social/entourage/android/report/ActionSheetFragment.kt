@@ -17,8 +17,8 @@ import androidx.core.view.isVisible
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
-import social.entourage.android.RefreshController
 import social.entourage.android.R
+import social.entourage.android.RefreshController
 import social.entourage.android.api.model.Events
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.comment.ReactionPickerRow
@@ -192,7 +192,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
     private fun configureUI() {
         binding.header.title = getString(R.string.discussion_settings_title)
-        binding.header.iconBack?.isVisible = false
+        binding.header.iconBack.isVisible = false
         binding.header.hbsIconCross.setOnClickListener { dismiss() }
 
         // Masquer l’item “edit” par défaut
@@ -675,8 +675,6 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                     (activity as? CommentActivity)?.reloadView()
                     dismiss()
                 }
-
-                else -> Unit
             }
         }
 

@@ -1,6 +1,5 @@
 package social.entourage.android.api
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import retrofit2.Call

@@ -36,7 +36,7 @@ class EditPasswordActivity : AppCompatActivity() {
     private fun onSaveButton() {
         if (validatePassword()) {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_PROFILE_EDITPWD)
-            presenter.saveNewPasswordActivity(this, binding.userNewPassword.text.toString().trim { it <= ' ' } ?: "")
+            presenter.saveNewPasswordActivity(this, binding.userNewPassword.text.toString().trim { it <= ' ' })
         }
     }
 

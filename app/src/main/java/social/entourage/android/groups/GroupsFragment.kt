@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -34,6 +35,7 @@ import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.main_filter.MainFilterMode
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
+import social.entourage.android.tools.utils.overrideTransitionCompat
 
 class GroupsFragment : Fragment(), UpdateGroupInter {
 
@@ -60,6 +62,9 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
     private var listSkeletonShownAt: Long = 0L
     private var hasCompletedInitialGroupsLoad = false
     private var hasCompletedInitialMyGroupsLoad = false
+    private val createGroupLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -119,7 +124,7 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
             MainFilterActivity.mod = MainFilterMode.GROUP
             val intent = Intent(activity, MainFilterActivity::class.java)
             startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
         }
         setupSearchView() // Call the method to setup the search view
 
@@ -261,7 +266,7 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
         }
 
 
-        binding.searchEditText.setOnTouchListener { v, event ->
+        binding.searchEditText.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
                 val clearIcon = binding.searchEditText.compoundDrawables[2]
                 val backIcon = binding.searchEditText.compoundDrawables[0]
@@ -283,9 +288,7 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
         binding.searchEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val query = s.toString()
-            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             override fun afterTextChanged(s: Editable?) {
                 val query = s.toString()
@@ -497,13 +500,13 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_PLUS
             )
-            startActivityForResult(Intent(context, CreateGroupActivity::class.java), 0)
+            createGroupLauncher.launch(Intent(context, CreateGroupActivity::class.java))
         }
         binding.createGroupExpanded.setOnClickListener {
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_PLUS
             )
-            startActivityForResult(Intent(context, CreateGroupActivity::class.java), 0)
+            createGroupLauncher.launch(Intent(context, CreateGroupActivity::class.java))
         }
     }
 

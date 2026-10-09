@@ -36,13 +36,12 @@ import social.entourage.android.api.model.Conversation
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.GroupMember
-import social.entourage.android.api.model.ReactionType
-import social.entourage.android.api.model.toUser
 import social.entourage.android.api.model.Post
+import social.entourage.android.api.model.ReactionType
 import social.entourage.android.api.model.SmallTalk
 import social.entourage.android.api.model.User
 import social.entourage.android.api.model.toGroupMember
-import social.entourage.android.sockets.ConversationSocketManager
+import social.entourage.android.api.model.toUser
 import social.entourage.android.comment.CommentActivity
 import social.entourage.android.comment.CommentsListAdapter
 import social.entourage.android.comment.MentionAdapter
@@ -55,6 +54,7 @@ import social.entourage.android.profile.MyProfileFullActivity
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.small_talks.SmallTalkGuidelinesActivity
 import social.entourage.android.small_talks.SmallTalkViewModel
+import social.entourage.android.sockets.ConversationSocketManager
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
@@ -64,10 +64,8 @@ import social.entourage.android.ui.ActionSheetFragment
 import social.entourage.android.ui.SheetMode
 import timber.log.Timber
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 import java.util.UUID
+import kotlin.time.Duration.Companion.milliseconds
 
 class DetailConversationActivity : CommentActivity() {
 
@@ -90,6 +88,9 @@ class DetailConversationActivity : CommentActivity() {
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var galleryLauncher: ActivityResultLauncher<String>
     private lateinit var cameraPermissionLauncher: ActivityResultLauncher<String>
+    private val profileLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
 
     // State
     private var detailConversation: Conversation? = null
@@ -288,7 +289,7 @@ class DetailConversationActivity : CommentActivity() {
             val sheet = when (mode) {
                 SheetMode.DISCUSSION_ONE_TO_ONE -> {
                     val otherUserId = detailConversation?.members
-                        ?.firstOrNull { it?.id != EntourageApplication.get().me()?.id }
+                        ?.firstOrNull { it.id != EntourageApplication.get().me()?.id }
                         ?.id ?: 0
                     ActionSheetFragment.newDiscussion(
                         conversationId = if (isSmallTalkMode) smallTalkId.toIntOrNull() ?: 0 else id,
@@ -315,10 +316,6 @@ class DetailConversationActivity : CommentActivity() {
                     ActionSheetFragment.newGroup(detailConversation?.id ?: id)
                 }
                 SheetMode.MESSAGE_ACTIONS -> {
-                    ActionSheetFragment.newGroup(detailConversation?.id ?: id)
-                }
-                else -> {
-                    Timber.e("Mode non géré : $mode, fallback vers GROUP")
                     ActionSheetFragment.newGroup(detailConversation?.id ?: id)
                 }
             }
@@ -438,7 +435,7 @@ class DetailConversationActivity : CommentActivity() {
     private fun handleMembersSearch(members: List<EntourageUser>?) {
         val currentUserId = EntourageApplication.get().me()?.id
         val filtered = members
-            ?.filter { it?.id != currentUserId?.toLong() }
+            ?.filter { it.id != currentUserId?.toLong() }
             ?.map { it.toGroupMember() }
             ?: emptyList()
         showMentionSuggestions(filtered)
@@ -541,9 +538,9 @@ class DetailConversationActivity : CommentActivity() {
     private fun handleParticipants(participants: List<User>?) {
         val currentUserId = EntourageApplication.get().me()?.id
         val names = participants
-            ?.filter { it?.id != currentUserId }
+            ?.filter { it.id != currentUserId }
             ?.take(5)
-            ?.mapNotNull { it?.displayName }
+            ?.mapNotNull { it.displayName }
             ?.map { if (it.length > 2) it.dropLast(3) else it }
         binding.header.title = names?.joinToString(", ") ?: ""
         allMembers = participants?.map { it.toGroupMember() } ?: emptyList()
@@ -596,12 +593,12 @@ class DetailConversationActivity : CommentActivity() {
         updateView(false)
 
         // Détermine le mode 1-to-1
-        if (conversation.memberCount > 2) isOne2One = false
-        else isOne2One = true
+        isOne2One = if (conversation.memberCount > 2) false
+            else true
 
         val meId = EntourageApplication.get().me()?.id
         val membersStr = conversation.members
-            ?.joinToString { "${it?.id}:${it?.displayName}" } ?: "no-members"
+            ?.joinToString { "${it.id}:${it.displayName}" } ?: "no-members"
 
         Timber.d(
             "[DetailConversation] handleDetailConversation — convId=%s, type=%s, memberCount=%s, meId=%s, members=%s",
@@ -612,7 +609,7 @@ class DetailConversationActivity : CommentActivity() {
         if (isOne2One && conversation.type != "outing") {
             // Résoudre l'autre membre (≠ moi)
             val otherUserId = conversation.members
-                ?.firstOrNull { it?.id != meId }
+                ?.firstOrNull { it.id != meId }
                 ?.id ?: 0
 
             Timber.d(
@@ -634,16 +631,14 @@ class DetailConversationActivity : CommentActivity() {
                 )
 
                 if(isMe) {
-                    startActivityForResult(
-                        Intent(this, MyProfileFullActivity::class.java),
-                        0
+                    profileLauncher.launch(
+                        Intent(this, MyProfileFullActivity::class.java)
                     )
                 } else {
                     //ProfileFullActivity.userId = otherUserId.toString()
-                    startActivityForResult(
+                    profileLauncher.launch(
                         Intent(this, ProfileFullActivity::class.java)
-                            .putExtra(Const.USER_ID, otherUserId),
-                        0
+                            .putExtra(Const.USER_ID, otherUserId)
                     )
                 }
             }
@@ -697,9 +692,9 @@ class DetailConversationActivity : CommentActivity() {
             hasSeveralPeople = true
             val currentUserId = EntourageApplication.get().me()?.id
             val names = conversation.members
-                ?.filter { it?.id != currentUserId }
+                ?.filter { it.id != currentUserId }
                 ?.take(5)
-                ?.mapNotNull { it?.displayName }
+                ?.mapNotNull { it.displayName }
                 ?.map { if (it.length > 2) it.dropLast(3) else it }
                 ?: emptyList()
             binding.header.title = names.joinToString(", ")
@@ -792,11 +787,11 @@ class DetailConversationActivity : CommentActivity() {
         val staffMessage = getString(R.string.staff_out_of_office_banner)
         val spannableStr = android.text.SpannableStringBuilder()
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            spannableStr.append(android.text.Html.fromHtml(staffMessage, android.text.Html.FROM_HTML_MODE_COMPACT))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            spannableStr.append(Html.fromHtml(staffMessage, Html.FROM_HTML_MODE_COMPACT))
         } else {
             @Suppress("DEPRECATION")
-            spannableStr.append(android.text.Html.fromHtml(staffMessage))
+            spannableStr.append(Html.fromHtml(staffMessage))
         }
 
         val spans = spannableStr.getSpans(0, spannableStr.length, android.text.style.URLSpan::class.java)
@@ -1088,7 +1083,7 @@ class DetailConversationActivity : CommentActivity() {
                     lastMentionStartIndex = lastAt
                     mentionSearchJob?.cancel()
                     mentionSearchJob = lifecycleScope.launch {
-                        delay(200) // debounce
+                        delay(200.milliseconds) // debounce
                         if (query.isEmpty()) {
                             showMentionSuggestions(allMembers)
                         } else {

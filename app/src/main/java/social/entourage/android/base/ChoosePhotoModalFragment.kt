@@ -17,7 +17,6 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
-import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.takusemba.cropme.OnCropListener
@@ -104,9 +103,9 @@ class ChoosePhotoModalFragment : BottomSheetDialogFragment() {
                     saveBitmap(bitmap)
                     setFragmentResult(
                         Const.REQUEST_KEY_CHOOSE_PHOTO,
-                        bundleOf(
-                            Const.CHOOSE_PHOTO to photoFileUri
-                        )
+                        Bundle().apply {
+                            putParcelable(Const.CHOOSE_PHOTO, photoFileUri)
+                        }
                     )
                     dismiss()
                 } catch (e: IOException) {

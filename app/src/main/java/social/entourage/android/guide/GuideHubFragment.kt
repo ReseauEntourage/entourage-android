@@ -11,6 +11,7 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.databinding.FragmentGuideHubBinding
+import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.log.AnalyticsEvents
 
 class GuideHubFragment : Fragment() {
@@ -29,34 +30,34 @@ class GuideHubFragment : Fragment() {
 
         val user = EntourageApplication.me(activity)
 
-        user?.let { it ->
+        user?.let {
             if (it.isUserTypeAlone) {
-                binding.uiLayoutCell3?.visibility = View.GONE
-                binding.uiLayoutCell4?.visibility = View.GONE
+                binding.uiLayoutCell3.visibility = View.GONE
+                binding.uiLayoutCell4.visibility = View.GONE
             }
         }
 
-        binding.uiLayoutCell1?.setOnClickListener {
+        binding.uiLayoutCell1.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_SHOWGDS)
             val intent = Intent(activity,GDSMainActivity::class.java)
 
             startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
         }
 
-        binding.uiLayoutCell2?.setOnClickListener {
+        binding.uiLayoutCell2.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_WEBORIENTATION)
             (activity as MainActivity).showWebViewForLinkId(Constants.SLUG_HUB_LINK_1)
         }
-        binding.uiLayoutCell3?.setOnClickListener {
+        binding.uiLayoutCell3.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_WEBGUIDE)
             (activity as MainActivity).showWebViewForLinkId(Constants.SLUG_HUB_LINK_2)
         }
-        binding.uiLayoutCell4?.setOnClickListener {
+        binding.uiLayoutCell4.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_WEBATELIER)
             (activity as MainActivity).showWebViewForLinkId(Constants.SLUG_HUB_LINK_3)
         }
-        binding.uiLayoutCell5?.setOnClickListener {
+        binding.uiLayoutCell5.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GUIDE_WEBFAQ)
             (activity as MainActivity).showWebViewForLinkId(Constants.SLUG_HUB_LINK_FAQ)
         }

@@ -18,6 +18,7 @@ import social.entourage.android.databinding.FragmentCreateActionStepDescriptionB
 import social.entourage.android.groups.choosePhoto.ChooseGalleryPhotoModalFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.parcelableCompat
 import social.entourage.android.tools.utils.px
 
 class CreateActionStepDescriptionFragment : Fragment() {
@@ -174,7 +175,7 @@ class CreateActionStepDescriptionFragment : Fragment() {
             Const.REQUEST_KEY_CHOOSE_PHOTO,
             this
         ) { _, bundle ->
-            viewModel.imageURI = bundle.getParcelable(Const.CHOOSE_PHOTO)
+            viewModel.imageURI = bundle.parcelableCompat(Const.CHOOSE_PHOTO)
             viewModel.imageURI?.let {
                 binding.addPhotoLayout.visibility = View.GONE
                 binding.addPhoto.visibility = View.VISIBLE

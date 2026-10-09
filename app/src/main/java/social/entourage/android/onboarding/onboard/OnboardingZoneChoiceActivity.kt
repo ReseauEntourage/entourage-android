@@ -6,11 +6,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -37,6 +35,7 @@ import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
 import social.entourage.android.databinding.ActivityOnboardingZoneChoiceBinding
 import social.entourage.android.tools.updatePaddingForEdgeToEdge
+import timber.log.Timber
 import kotlin.math.cos
 
 class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -186,7 +185,7 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setupAutocomplete() {
-        val actv = binding.autoCompleteCityName as AutoCompleteTextView
+        val actv = binding.autoCompleteCityName
         actv.threshold = 1
         val baseAdapter = ArrayAdapter<String>(
             this,
@@ -215,9 +214,9 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
             actv.postDelayed({ suppressAutocomplete = false }, 300)
         }
 
-        actv.setOnFocusChangeListener { v, hasFocus ->
+        actv.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
-                (v as AutoCompleteTextView).dismissDropDown()
+                actv.dismissDropDown()
             }
         }
 
@@ -241,10 +240,11 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
 
         placesClient.findAutocompletePredictions(request)
             .addOnSuccessListener { response ->
-                val actv = (binding.autoCompleteCityName as AutoCompleteTextView)
+                val actv = binding.autoCompleteCityName
                 if (suppressAutocomplete || !actv.hasFocus() || myGen != queryGen) return@addOnSuccessListener
                 predictions = response.autocompletePredictions
                 val suggestions = predictions.map { it.getFullText(null).toString() }
+                @Suppress("UNCHECKED_CAST")
                 val adapter = (actv.adapter as? ArrayAdapter<String>)
                     ?: ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, mutableListOf()).also {
                         actv.setAdapter(it)
@@ -256,16 +256,16 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (suggestions.isNotEmpty()) actv.showDropDown()
             }
             .addOnFailureListener { e ->
-                Log.e("ZoneActivity", "findAutocompletePredictions error: ${e.message}", e)
+                Timber.tag("ZoneActivity").e(e, "findAutocompletePredictions error: ${e.message}")
             }
     }
 
     private fun fetchPlaceDetails(placeId: String) {
         val fields = listOf(
             Place.Field.ID,
-            Place.Field.NAME,
-            Place.Field.LAT_LNG,
-            Place.Field.ADDRESS,
+            Place.Field.DISPLAY_NAME,
+            Place.Field.LOCATION,
+            Place.Field.FORMATTED_ADDRESS,
             Place.Field.ADDRESS_COMPONENTS
         )
         val request = FetchPlaceRequest.builder(placeId, fields).build()
@@ -273,8 +273,8 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
         placesClient.fetchPlace(request)
             .addOnSuccessListener { rsp ->
                 val place = rsp.place
-                val latLng = place.latLng ?: return@addOnSuccessListener
-                val label = place.name ?: place.address ?: ""
+                val location = place.location ?: return@addOnSuccessListener
+                val label = place.displayName ?: place.formattedAddress ?: ""
                 lastPlaceId = place.id
                 lastDisplayAddress = label
 
@@ -287,10 +287,10 @@ class OnboardingZoneChoiceActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 binding.autoCompleteCityName.setText(label, false)
                 binding.autoCompleteCityName.setSelection(label.length)
-                placeMarkerAndCircle(latLng, label)
+                placeMarkerAndCircle(location, label)
             }
             .addOnFailureListener { e ->
-                Log.e("ZoneActivity", "fetchPlace error: ${e.message}", e)
+                Timber.tag("ZoneActivity").e(e, "fetchPlace error: ${e.message}")
             }
     }
 

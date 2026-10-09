@@ -15,6 +15,7 @@ import social.entourage.android.groups.details.feed.GroupFeedActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.overrideTransitionCompat
 
 class CreateGroupSuccessFragment : Fragment() {
 
@@ -67,7 +68,7 @@ class CreateGroupSuccessFragment : Fragment() {
             intent.putExtra(Const.GROUP_ID, args.groupID)
             intent.putExtra(Const.FROM_CREATE_GROUP, true)
             startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
             requireActivity().finish()
             RefreshController.shouldRefreshFragment = true
         }

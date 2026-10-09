@@ -3,7 +3,6 @@ package social.entourage.android.guide.poi
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.view.View
 import retrofit2.Call
 import retrofit2.Callback

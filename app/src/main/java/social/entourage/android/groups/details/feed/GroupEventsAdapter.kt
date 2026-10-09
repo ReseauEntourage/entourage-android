@@ -1,6 +1,5 @@
 package social.entourage.android.groups.details.feed
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -51,14 +50,14 @@ class GroupEventsAdapter(
                 .into(holder.binding.image)
         }
         holder.binding.layout.setOnClickListener { view->
-            (view.context as? Activity)?.startActivityForResult(
+            view.context.startActivity(
                 Intent(
                     view.context,
                     EventFeedActivity::class.java
                 ).putExtra(
                     Const.EVENT_ID,
                     eventsList[position].id
-                ), 0
+                )
             )
         }
     }

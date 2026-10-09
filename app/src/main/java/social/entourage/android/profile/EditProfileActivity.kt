@@ -3,7 +3,6 @@ package social.entourage.android.profile
 import android.content.Intent
 import android.graphics.Rect
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -18,6 +17,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.collection.ArrayMap
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.os.ConfigurationCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -41,7 +41,7 @@ import social.entourage.android.profile.editProfile.EditPhotoActivity
 import social.entourage.android.profile.editProfile.EditProfilePresenter
 import social.entourage.android.tools.isValidEmail
 import social.entourage.android.tools.updatePaddingForEdgeToEdge
-import social.entourage.android.tools.utils.transformIntoDatePicker
+import social.entourage.android.tools.utils.transformIntoMaterialBirthdatePicker
 import social.entourage.android.tools.utils.trimEnd
 import social.entourage.android.user.AvatarUploadPresenter
 import social.entourage.android.user.AvatarUploadRepository
@@ -274,11 +274,8 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
 
     private fun updateUserView() {
         val user = EntourageApplication.me(this) ?: return
-        val isArabic = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            resources.configuration.locales[0].language == "ar"
-        } else {
-            resources.configuration.locale.language == "ar"
-        }
+        val isArabic =
+            ConfigurationCompat.getLocales(resources.configuration)[0]?.language == "ar"
 
         with(binding) {
             configureTextDirection(isArabic, firstname.peeiContent)
@@ -309,9 +306,9 @@ class EditProfileActivity : BaseActivity(), AvatarUploadView {
                 }
             }
 
-            birthday.peeiContent.transformIntoDatePicker(
-                this@EditProfileActivity,
-                dateFormatString
+            birthday.peeiContent.transformIntoMaterialBirthdatePicker(
+                supportFragmentManager,
+                getString(R.string.onboard_welcome_title_birthdate)
             )
 
             user.birthday?.let { apiDateStr ->

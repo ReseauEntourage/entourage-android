@@ -1,5 +1,6 @@
 package social.entourage.android.comment
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -9,18 +10,20 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
-import androidx.activity.viewModels
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.drawToBitmap
 import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
@@ -36,17 +39,17 @@ import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.groups.GroupPresenter
+import social.entourage.android.members.MembersActivity
+import social.entourage.android.members.MembersType
 import social.entourage.android.report.ReportModalFragment
 import social.entourage.android.report.ReportTypes
 import social.entourage.android.report.onDissmissFragment
-import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.sockets.ConversationSocketManager
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.VibrationUtil
+import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.scrollToPositionSmooth
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.ui.ActionSheetFragment
@@ -124,7 +127,7 @@ val universalLinkManager = UniversalLinkManager(this)
 var photoUri: Uri? = null
 private val eventPresenter: EventsPresenter by lazy { EventsPresenter() }
 private val discussionsPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
-private val smallTalkViewModel: SmallTalkViewModel by viewModels()
+//private val smallTalkViewModel: SmallTalkViewModel by viewModels()
 private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
 
 override fun onCreate(savedInstanceState: Bundle?) {
@@ -148,13 +151,12 @@ override fun onCreate(savedInstanceState: Bundle?) {
     isFromNotif = intent.getBooleanExtra(Const.IS_FROM_NOTIF, false)
     isConversation = intent.getBooleanExtra(Const.IS_CONVERSATION, false)
     shouldOpenKeyboard = intent.getBooleanExtra(Const.SHOULD_OPEN_KEYBOARD, false)
-    viewModel.isMessageDeleted.observe(this,::handleMessageDeleted)
+    viewModel.isMessageDeleted.observe(this) { handleMessageDeleted() }
     initializeComments()
     handleCommentAction()
     openEditTextKeyboard()
     handleBackButton()
     setSettingsIcon()
-    val postLang = comment?.contentTranslations?.fromLang ?: ""
     binding.layoutStaffBanner.visibility = View.GONE
 
     handleSendButtonState()
@@ -185,8 +187,8 @@ fun startEditingMessage(messageId: Int, messageHtml: String?) {
     binding.commentMessage.setSelection(binding.commentMessage.text?.length ?: 0)
     binding.layoutEditingMessage.visibility = View.VISIBLE
     binding.commentMessage.requestFocus()
-    val imm = getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as? android.view.inputmethod.InputMethodManager
-    imm?.showSoftInput(binding.commentMessage, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT)
+    WindowCompat.getInsetsController(window, binding.commentMessage)
+        .show(WindowInsetsCompat.Type.ime())
 }
 
 fun cancelEditingMessage() {
@@ -279,7 +281,7 @@ companion object {
     private const val HIGHLIGHT_DURATION_MS = 1200L
 }
 
-private fun handleMessageDeleted(isMessageDeleted:Boolean){
+private fun handleMessageDeleted() {
 
 }
 
@@ -291,6 +293,7 @@ private fun handleMessageDeleted(isMessageDeleted:Boolean){
  * remplace l'entrée déjà insérée par le socket au lieu d'en ajouter une deuxième.
  */
 protected fun handleCommentPosted(post: Post?) {
+    reenableCommentInput()
     post?.let {
         mergeIncomingMessage(it)
     } ?: run {
@@ -299,6 +302,15 @@ protected fun handleCommentPosted(post: Post?) {
         binding.comments.scrollToPositionSmooth(commentsList.size)
         updateView(false)
     }
+}
+
+/**
+ * Réactive le bouton d'envoi désactivé dans handleCommentAction() le temps de la requête.
+ * DetailConversationActivity (1-1) n'appelle pas handleCommentPosted — elle observe
+ * commentPosted directement — donc elle doit aussi appeler cette fonction dans son observer.
+ */
+protected fun reenableCommentInput() {
+    binding.comment.isEnabled = true
 }
 
 fun updateView(emptyState: Boolean) {
@@ -412,6 +424,10 @@ private fun setupConversationChips() {
                     override fun onMessageReactionPicked(comment: Post, reactionType: ReactionType) {
                         comment.id?.let { applyReactionFromMessageActions(it, reactionType) }
                     }
+
+                    override fun onMessageReactionsSeen(comment: Post) {
+                        onSeeMessageReactionsClicked(comment)
+                    }
                 }
             )
             (adapter as? CommentsListAdapter)?.initiateList()
@@ -486,7 +502,7 @@ private fun setupConversationChips() {
         } else {
             @Suppress("DEPRECATION") Html.fromHtml(messageHtml.orEmpty()).toString()
         }
-        val cm = getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+        val cm = getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
         cm.setPrimaryClip(android.content.ClipData.newPlainText("message", plain))
     }
 
@@ -552,6 +568,30 @@ private fun setupConversationChips() {
 
     /** Overridden by subclasses to actually send/remove the reaction. */
     protected open fun onMessageReactionClicked(comment: Post, reactionType: ReactionType) {}
+
+    /**
+     * Overridden by subclasses to open the "qui a réagi" screen for [comment] — chaque écran
+     * connaît seul le bon id de contexte (ex. DetailConversationActivity utilise
+     * detailConversation?.id plutôt que `id` pour une conversation de sortie, et n'a rien à
+     * ouvrir pour un smalltalk, cf. onMessageReactionClicked/sendAddReaction plus haut : même
+     * asymétrie que pour poser une réaction).
+     */
+    protected open fun onSeeMessageReactionsClicked(comment: Post) {}
+
+    /**
+     * Ouvre l'écran "qui a réagi avec quoi" (réutilisation de [MembersActivity], comme pour les
+     * posts, cf. GroupFeedFragment.seeMemberReaction / EventFeedFragment.seeMemberReaction).
+     */
+    protected fun openReactionsMembersScreen(containerId: Int, messageId: Int, membersType: MembersType) {
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_MESSAGE_SEE_REACTIONS)
+        MembersActivity.isFromReact = true
+        MembersActivity.postId = messageId
+        startActivity(Intent(this, MembersActivity::class.java).apply {
+            putExtra("ID", containerId)
+            putExtra("TYPE", membersType.code)
+        })
+        overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
+    }
 
     /** Appelé par ActionSheetFragment (barre de réactions en haut du sheet d'actions) quand
      * l'utilisateur choisit/retape une réaction pour [messageId]. */
@@ -866,9 +906,12 @@ private fun setupConversationChips() {
         }
 
         if (message.isNotBlank() || photoUri != null) {
-            // Désactiver le bouton et afficher la progress bar
+            // Désactiver le bouton le temps de l'envoi, pour éviter un double-envoi.
+            // EN-9456 : plus de loader plein écran — réactivé par reenableCommentInput(),
+            // appelée depuis le callback de résultat (succès ou échec) de chaque écran :
+            // handleCommentPosted() pour les commentaires de groupe/événement, l'observer
+            // dédié de DetailConversationActivity pour les conversations 1-1.
             binding.comment.isEnabled = false
-            binding.progressBar.visibility = View.VISIBLE
 
             // Créer l'utilisateur et le commentaire
             val user = EntourageUser().apply {
@@ -885,12 +928,6 @@ private fun setupConversationChips() {
 
             // Envoi du commentaire
             addComment()
-
-            // Simuler un délai de 2 secondes pour la réactivation du bouton
-            binding.comment.postDelayed({
-                binding.comment.isEnabled = true
-                binding.progressBar.visibility = View.GONE
-            }, 2000)
 
             // Nettoyer le champ de saisie et cacher le clavier
             binding.commentMessage.text.clear()

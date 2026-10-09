@@ -2,6 +2,7 @@ package social.entourage.android.onboarding.pre_onboarding
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +17,7 @@ class PreOnboardingRVAdapter(val context: Context, private val myDataset: ArrayL
             binding.uiIvCellPreonboard.setImageResource(res)
 
             // Vérifie si l'interface est en RTL
-            val isRtl = itemView.resources.configuration.layoutDirection == ViewCompat.LAYOUT_DIRECTION_RTL
+            val isRtl = itemView.resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
             if (isRtl) {
                 binding.uiIvCellPreonboard.scaleX = -1f // Applique un effet miroir horizontal en RTL
             } else {

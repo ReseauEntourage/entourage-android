@@ -12,6 +12,9 @@ import social.entourage.android.BuildConfig
 import social.entourage.android.R
 import social.entourage.android.events.EventsPresenter
 
+// IntentService is deprecated (API 30) with no lightweight drop-in replacement; migrating to
+// WorkManager would be a larger widget-refresh redesign, tracked separately. IntentService
+// remains fully functional on all supported API levels.
 class WidgetMainUpdateService : IntentService("WidgetMainUpdateService") {
 
     override fun onHandleIntent(intent: Intent?) {

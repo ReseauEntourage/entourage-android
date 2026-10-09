@@ -45,13 +45,13 @@ class ShareMessageFragment : BaseDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.uiButtonValidateShareEntourage?.visibility = View.GONE
+        binding.uiButtonValidateShareEntourage.visibility = View.GONE
 
         binding.inviteContactsNavigationLayout.binding.titleCloseButton.setOnClickListener {
             dismiss()
         }
 
-        binding.uiButtonValidateShareEntourage?.setOnClickListener {
+        binding.uiButtonValidateShareEntourage.setOnClickListener {
             sendSharing()
         }
 
@@ -111,9 +111,9 @@ class ShareMessageFragment : BaseDialogFragment() {
         }
 
         val linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.uiRecyclerViewShareEntourage?.setHasFixedSize(true)
-        binding.uiRecyclerViewShareEntourage?.layoutManager = linearLayoutManager
-        binding.uiRecyclerViewShareEntourage?.adapter = adapter
+        binding.uiRecyclerViewShareEntourage.setHasFixedSize(true)
+        binding.uiRecyclerViewShareEntourage.layoutManager = linearLayoutManager
+        binding.uiRecyclerViewShareEntourage.adapter = adapter
     }
 
     companion object {

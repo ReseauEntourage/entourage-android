@@ -27,7 +27,7 @@ android {
     val isReleaseOrPreprod = project.gradle.startParameter.taskNames.any { it.contains("release", ignoreCase = true)||it.contains("preprod", ignoreCase = true) }
 
     val versionMajor = 15
-    val versionMinor = 0
+    val versionMinor = 1
 
     // Use a fixed version for debug builds to speed up configuration and enable caching
     val versionPatch = if (isReleaseOrPreprod) {
@@ -49,8 +49,10 @@ android {
     val entourageURLStaging = "https://api-preprod.entourage.social/api/v1/"
     val deepLinksSchemeProd = "entourage"
     val deepLinksSchemeStaging = "entourage-staging"
+    val deepLinksSchemeDebug = "entourage-debug"
     val deepLinksURLProd = "www.entourage.social"
     val deepLinksURLStaging = "preprod.entourage.social"
+    val deepLinksURLDebug = "debug-preprod.entourage.social"
 
     buildFeatures {
         viewBinding = true
@@ -106,6 +108,12 @@ android {
         buildConfigField("String", "ENTOURAGE_URL", "\"${entourageURLProd}\"")
         buildConfigField("String", "TEST_ACCOUNT_LOGIN", localTestAccountLogin)
         buildConfigField("String", "TEST_ACCOUNT_PWD", localTestAccountPwd)
+    }
+
+    testOptions {
+        unitTests.all {
+            it.jvmArgs("-XX:+EnableDynamicAgentLoading")
+        }
     }
 
     signingConfigs {
@@ -175,12 +183,11 @@ android {
             signingConfig = signingConfigs.getAt("debug")
             applicationIdSuffix = ".debug"
             manifestPlaceholders += mapOf(
-                "deepLinksHostName" to deepLinksURLStaging,
-                "deepLinksScheme" to deepLinksSchemeStaging
-            )
+                "deepLinksHostName" to deepLinksURLDebug,
+                "deepLinksScheme" to deepLinksSchemeDebug)
             buildConfigField("String", "ENTOURAGE_URL", "\"${entourageURLStaging}\"")
-            buildConfigField("String", "DEEP_LINKS_SCHEME", "\"${deepLinksSchemeStaging}\"")
-            buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLStaging}\"")
+            buildConfigField("String", "DEEP_LINKS_SCHEME", "\"${deepLinksSchemeDebug}\"")
+            buildConfigField("String", "DEEP_LINKS_URL", "\"${deepLinksURLDebug}\"")
             buildConfigField("int", "PEDAGO_CREATE_EVENT_ID", "32")
             buildConfigField("int", "PEDAGO_CREATE_GROUP_ID", "33")
             buildConfigField("int", "PEDAGO_ACTION_SECTION_ID", "33")
@@ -224,6 +231,9 @@ android {
 }
 
 configurations.all {
+    resolutionStrategy {
+        force("com.google.protobuf:protobuf-javalite:3.25.1")
+    }
     exclude(group = "com.google.android.play", module = "core")
     exclude(group = "com.google.android.play", module = "core-ktx")
 }
@@ -302,6 +312,11 @@ dependencies {
         exclude(group = "com.google.protobuf", module = "protobuf-lite")
     }
     androidTestImplementation(libs.bundles.espresso.test)
+    androidTestImplementation(libs.barista) {
+        exclude(group = "com.google.protobuf", module = "protobuf-lite")
+        exclude(group = "org.jetbrains.kotlin")
+    }
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
     // Unit tests
     testImplementation(libs.junit)
@@ -355,10 +370,21 @@ fun adbExecutable(): String {
     return sdkDir?.let { File(it, "platform-tools/$adbName").absolutePath } ?: adbName
 }
 
+fun adbCommand(vararg args: String): List<String> {
+    val deviceId = (project.findProperty("deviceId") as? String)?.takeIf { it.isNotBlank() }
+    val command = mutableListOf(adbExecutable())
+    if (deviceId != null) {
+        command.add("-s")
+        command.add(deviceId)
+    }
+    command.addAll(args)
+    return command
+}
+
 tasks.register<Exec>("clearSnapshots") {
     group = "verification"
     description = "Vider les snapshots sur le device"
-    commandLine(adbExecutable(), "shell", "rm", "-rf", "/sdcard/Download/entourage_snapshots/*")
+    commandLine(adbCommand("shell", "rm", "-rf", "/sdcard/Download/entourage_snapshots/*"))
     isIgnoreExitValue = true
 }
 
@@ -371,8 +397,30 @@ tasks.register<Exec>("pullSnapshots") {
         if (!localDir.exists()) localDir.mkdirs()
     }
 
-    commandLine(adbExecutable(), "pull", "/sdcard/Download/entourage_snapshots/.", localDir.absolutePath)
+    commandLine(adbCommand("pull", "/sdcard/Download/entourage_snapshots/.", localDir.absolutePath))
 
     isIgnoreExitValue = true
     finalizedBy("clearSnapshots")
+}
+
+tasks.register<Exec>("clearE2EScreenshots") {
+    group = "verification"
+    description = "Vider les screenshots des scénarios E2E sur le device"
+    commandLine(adbCommand("shell", "rm", "-rf", "/sdcard/Download/test_screenshot/*"))
+    isIgnoreExitValue = true
+}
+
+tasks.register<Exec>("pullE2EScreenshots") {
+    group = "verification"
+    description = "Transférer les screenshots des scénarios E2E vers test_screenshot/ à la racine du projet"
+
+    val localDir = File(rootDir, "test_screenshot")
+    doFirst {
+        if (!localDir.exists()) localDir.mkdirs()
+    }
+
+    commandLine(adbCommand("pull", "/sdcard/Download/test_screenshot/.", localDir.absolutePath))
+
+    isIgnoreExitValue = true
+    finalizedBy("clearE2EScreenshots")
 }

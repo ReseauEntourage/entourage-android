@@ -1,6 +1,5 @@
 package social.entourage.android.onboarding.onboard
 
-import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.*
@@ -26,8 +25,9 @@ import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.view.countrycodepicker.Country
 import social.entourage.android.tools.view.countrycodepicker.CountryCodePickerListener
 import social.entourage.android.tools.utils.Utils
+import social.entourage.android.tools.utils.showBirthdateDatePicker
+import social.entourage.android.tools.utils.serializableCompat
 import timber.log.Timber
-import java.util.Calendar
 import java.util.Locale
 
 private const val ARG_FIRST = "firstN"
@@ -68,7 +68,6 @@ class OnboardingPhase1Fragment : Fragment() {
     private data class LabeledOption(val key: String, val label: String)
     private var hearOptions: List<LabeledOption> = emptyList()
     private var enterpriseModeKey: String? = null
-    private var isDatePickerShowing = false
 
     // ------------------ Helpers sûrs ------------------
 
@@ -97,7 +96,7 @@ class OnboardingPhase1Fragment : Fragment() {
             phone = it.getString(ARG_PHONE)
             hasConsent = it.getBoolean(ARG_CONSENT)
             email = it.getString(ARG_EMAIL)
-            country = it.getSerializable(ARG_COUNTRY) as? Country
+            country = it.serializableCompat<Country>(ARG_COUNTRY)
             howDidYouHearKey = it.getString(ARG_HOW_DID_YOU_HEAR)
             company = it.getString(ARG_COMPANY)
             event = it.getString(ARG_EVENT)
@@ -181,9 +180,9 @@ class OnboardingPhase1Fragment : Fragment() {
 
     private fun setupListeners() {
         binding.uiOnboardPhoneCcpCode.countryCodePickerListener = object : CountryCodePickerListener {
-            override fun updatedCountry(newCountry: Country) {
-                country = newCountry
-                updatePlaceholder(newCountry.phoneCode)
+            override fun updatedCountry(country: Country) {
+                this@OnboardingPhase1Fragment.country = country
+                updatePlaceholder(country.phoneCode)
                 updateButtonNext()
             }
         }
@@ -196,6 +195,15 @@ class OnboardingPhase1Fragment : Fragment() {
         }
 
         binding.uiOnboardConsentCheck.setOnCheckedChangeListener { _, _ -> updateButtonNext() }
+
+        val textWatcher = object : android.text.TextWatcher {
+            override fun afterTextChanged(s: android.text.Editable?) { updateButtonNext() }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        }
+        binding.uiOnboardNamesEtFirstname.addTextChangedListener(textWatcher)
+        binding.uiOnboardNamesEtLastname.addTextChangedListener(textWatcher)
+        binding.uiOnboardPhoneEtPhone.addTextChangedListener(textWatcher)
 
         binding.uiOnboardEmail.addTextChangedListener(object : android.text.TextWatcher {
             override fun afterTextChanged(s: android.text.Editable?) {
@@ -348,7 +356,7 @@ class OnboardingPhase1Fragment : Fragment() {
         )
         val labels = fixed.map { it.label }
 
-        val view = binding.uiOnboardSpinnerGender as MaterialAutoCompleteTextView
+        val view = binding.uiOnboardSpinnerGender
         view.setAdapter(ArrayAdapter(ctx, android.R.layout.simple_list_item_1, labels))
 
         val pre = findPreselectIndex(fixed, genderKey)
@@ -365,7 +373,7 @@ class OnboardingPhase1Fragment : Fragment() {
         val ctx = binding.root.context
         val labels = options.map { it.label }
 
-        val view = binding.uiOnboardSpinnerHowDidYouHear as MaterialAutoCompleteTextView
+        val view = binding.uiOnboardSpinnerHowDidYouHear
         view.setAdapter(ArrayAdapter(ctx, android.R.layout.simple_list_item_1, labels))
 
         val pre = findPreselectIndex(options, howDidYouHearKey)
@@ -383,7 +391,7 @@ class OnboardingPhase1Fragment : Fragment() {
         val ctx = binding.root.context
         val names = enterpriseList.map { it.Name }
 
-        val view = binding.uiOnboardSpinnerCompany as MaterialAutoCompleteTextView
+        val view = binding.uiOnboardSpinnerCompany
         view.setAdapter(ArrayAdapter(ctx, android.R.layout.simple_list_item_1, names))
 
         // Préselect par ID (company contient un Id)
@@ -422,7 +430,7 @@ class OnboardingPhase1Fragment : Fragment() {
         val events = eventListByEnterpriseId[enterpriseId] ?: emptyList()
         val names = events.map { it.Name }
 
-        val view = binding.uiOnboardSpinnerEvent as MaterialAutoCompleteTextView
+        val view = binding.uiOnboardSpinnerEvent
         view.setAdapter(ArrayAdapter(ctx, android.R.layout.simple_list_item_1, names))
 
         // préselect par Id (event contient un Id)
@@ -449,75 +457,27 @@ class OnboardingPhase1Fragment : Fragment() {
             company = null
             event = null
             selectedEnterpriseId = null
-            clearDropdown(binding.uiOnboardSpinnerCompany as MaterialAutoCompleteTextView)
-            clearDropdown(binding.uiOnboardSpinnerEvent as MaterialAutoCompleteTextView)
+            clearDropdown(binding.uiOnboardSpinnerCompany)
+            clearDropdown(binding.uiOnboardSpinnerEvent)
         }
     }
 
     // ------------------ Date ------------------
 
     private fun showDatePicker() {
-        if (!isViewUsable() || isDatePickerShowing) return
-        isDatePickerShowing = true
-
-        val ctx = context ?: run { isDatePickerShowing = false; return }
-        val cal = Calendar.getInstance()
-
-        // Pré-remplir depuis le champ si au format dd/MM/yyyy
-        binding.uiOnboardBirthdate.text?.toString()
-            ?.takeIf { it.matches(Regex("""\d{2}/\d{2}/\d{4}""")) }
-            ?.split("/")?.let { (dd, mm, yyyy) ->
-                runCatching { cal.set(yyyy.toInt(), mm.toInt() - 1, dd.toInt()) }
-            }
-
-        val startY = cal.get(Calendar.YEAR)
-        val startM = cal.get(Calendar.MONTH)
-        val startD = cal.get(Calendar.DAY_OF_MONTH)
-
-        val dlg = DatePickerDialog(ctx, null, startY, startM, startD)
-        val dp = dlg.datePicker
-
-        fun commit(y: Int, m: Int, d: Int) {
-            val newDate = String.format(Locale.getDefault(), "%02d/%02d/%04d", d, m + 1, y)
+        if (!isViewUsable()) return
+        showBirthdateDatePicker(
+            fragmentManager = childFragmentManager,
+            currentDateText = binding.uiOnboardBirthdate.text?.toString(),
+            titleText = getString(R.string.onboard_welcome_title_birthdate)
+        ) { newDate ->
             birthdate = newDate
             safeUI {
                 binding.uiOnboardBirthdate.setText(newDate)
                 binding.uiOnboardBirthdate.clearFocus()
                 updateButtonNext()
             }
-            dlg.dismiss()
         }
-
-        // MODE CALENDRIER
-        var calendarHooked = false
-        try {
-            val cv = dp.calendarView
-            if (cv != null && cv.visibility == View.VISIBLE) {
-                calendarHooked = true
-                cv.setOnDateChangeListener { _, y, m, d ->
-                    commit(y, m, d)
-                }
-            }
-        } catch (_: Throwable) {
-            // Certains OEM peuvent lancer si pas de CalendarView
-        }
-
-        // MODE SPINNERS
-        if (!calendarHooked) {
-            dp.init(startY, startM, startD) { _, y, m, d ->
-                if (y == startY && m == startM && d == startD) return@init
-                commit(y, m, d)
-            }
-        }
-
-        dlg.setOnShowListener {
-            dlg.getButton(DatePickerDialog.BUTTON_POSITIVE)?.setOnClickListener {
-                commit(dp.year, dp.month, dp.dayOfMonth)
-            }
-        }
-
-        dlg.setOnDismissListener { isDatePickerShowing = false }
-        dlg.show()
     }
 
     private fun formatBirthdateForAPI(displayDate: String?): String? {

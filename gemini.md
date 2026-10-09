@@ -26,3 +26,17 @@ Pour éviter les timeouts et la surcharge de la mémoire de la machine virtuelle
 ## 5. Style de Code
 - Préférer l'utilisation des standards Kotlin (Coroutines, Flow, fonctions d'extension) plutôt que l'ancien code Java.
 - Respecter l'architecture en place sans suggérer des refontes massives pour des tâches isolées.
+
+## 6. Commande "ent-prepare-commit" (ou "prépare le commit")
+Lorsque l'utilisateur exécute "ent-prepare-commit", "prépare le commit" (ou "/prepare-commit") :
+1. **Vérification "Enable Staging Area" & Récupération des Fichiers :**
+   * Vérifier d'abord les fichiers *staged* via `git --no-pager diff --cached --name-only`.
+   * Si non vide : L'option "Enable staging area" est active dans Android Studio (ou des fichiers sont staged). Utiliser cette liste.
+   * Si vide : Avertir l'utilisateur d'activer l'option **"Enable staging area"** dans Android Studio (**Settings > Version Control > Git > Enable staging area**) pour une transmission automatique des coches d'IHM vers Git. Lire alors le fichier `.idea/workspace.xml` (balises `<change...>` dans `<ChangeListManager>`) et compléter avec `git status --porcelain`.
+2. **Analyse de la Branche :** Extraire le code JIRA si présent dans le nom de la branche (regex `[A-Z]+-[0-9]+`).
+3. **Stratégie de Test :** Proposer comment tester les modifications (unitaires JVM + d'intégration Espresso).
+4. **Implémentation des Tests :** Proposer d'implémenter les tests unitaires et/ou d'intégration avant de commiter.
+5. **Génération du Message de Commit :** Utiliser les préfixes standards (`feat:`, `fix:`, `chore:`, `doc:`) en intégrant le code JIRA s'il existe dans la branche, avec un résumé structuré des modifications.
+
+
+

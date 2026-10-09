@@ -1,7 +1,6 @@
 package social.entourage.android.enhanced_onboarding.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +17,7 @@ import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.list.EVENTS_PER_PAGE
 import social.entourage.android.main_filter.MainFilterActivity
 import social.entourage.android.tools.log.AnalyticsEvents
+import timber.log.Timber
 
 class OnboardingCongratsFragment: Fragment() {
 
@@ -91,10 +91,12 @@ class OnboardingCongratsFragment: Fragment() {
         var contentRes = R.string.onboarding_congrats_content
         var buttonTextRes = R.string.onboarding_congrats_leave
 
-        Log.d("EN9530_DEBUG", "configureOnboardingView: goal=${viewModel.user?.goal} " +
-                "isUserTypeAlone=${viewModel.user?.isUserTypeAlone} " +
-                "EnhancedOnboarding.preference=${EnhancedOnboarding.preference} " +
-                "categoriesList=$categoriesList")
+        Timber.tag("EN9530_DEBUG").d(
+            "configureOnboardingView: goal=${viewModel.user?.goal} " +
+                    "isUserTypeAlone=${viewModel.user?.isUserTypeAlone} " +
+                    "EnhancedOnboarding.preference=${EnhancedOnboarding.preference} " +
+                    "categoriesList=$categoriesList"
+        )
 
         // Priorité 0 : profil "solliciter" (préférence contribution ou personne isolée) -> toujours une demande d'aide,
         // quels que soient les souhaits sélectionnés (ce profil ne peut que solliciter, jamais contribuer)
@@ -163,7 +165,8 @@ class OnboardingCongratsFragment: Fragment() {
             category = "neighborhoods"
         }
 
-        Log.d("EN9530_DEBUG", "configureOnboardingView: resolved category=$category titleRes=${resources.getResourceEntryName(titleRes)}")
+        Timber.tag("EN9530_DEBUG")
+            .d("configureOnboardingView: resolved category=$category titleRes=${resources.getResourceEntryName(titleRes)}")
     }
 
 }

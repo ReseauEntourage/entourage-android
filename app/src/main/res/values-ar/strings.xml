@@ -378,7 +378,7 @@
     <string name="category">فئة</string>
     <string name="associated_groups">المجموعات المرتبطة:</string>
     <string name="associated_group">المجموعة المرتبطة:</string>
-    <string name="start_and_end_time_event">من %s إلى %s</string>
+    <string name="start_and_end_time_event">من %1$s إلى %2$s</string>
     <string name="limited_places">عدد محدود من الأماكن: %d</string>
     <string name="created_at">تم إنشاء %s</string>
     <string name="updated_at">تم تعديل %s</string>
@@ -625,7 +625,7 @@
     <string name="action_created_by">"تم الإنشاء بواسطة %s</string>
     <string name="action_created_by_">"انشأ من قبل</string>
 
-    <string name="atKm">%s، %s كيلومتر مني</string>
+    <string name="atKm">%1$s، %2$s كيلومتر مني</string>
     <string name="AtKm">إلى %s كم مني</string>
 
 
@@ -1474,7 +1474,7 @@
     <string name="entourage_share_intent_title">شارك عبر</string>
     <string name="entourage_share_link">https://www.entourage.social</string>
 
-    <string name="info_share_poi_sms">صباح الخير ! هذا هو عنوان %1$s الذي قد يثير اهتمامك.\n%2$s\n%3$s\n لمزيد من المعلومات حول هذا المكان، ولإنشاء روابط بين الجيران الداعمين، سأحدد لك موعدًا على شبكة Entourage %4 $ س</string>
+    <string name="info_share_poi_sms">صباح الخير ! هذا هو عنوان %1$s الذي قد يثير اهتمامك.\n%2$s\n%3$s\n لمزيد من المعلومات حول هذا المكان، ولإنشاء روابط بين الجيران الداعمين، سأحدد لك موعدًا على شبكة Entourage %4$s</string>
 
     <string name="entourage_share_text_for_entourage">%1$s.\n\nشكرًا جزيلاً لك على تضامنك!</string>
 
@@ -2436,7 +2436,7 @@
     <string name="stepFive">05.</string>
     <string name="title_activity_main">النشاط الرئيسي</string>
     <string name="zero">0</string>
-    <string name="date_recurrence_event">%s . %s</string>
+    <string name="date_recurrence_event">%1$s . %2$s</string>
     <string name="profile_date_format">MM/yyyy</string>
     <string name="entourage_info_metadata_dateStart_hours_format_new">%1$s %2$s</string>
     <string name="entourage_cell_title">%1$s</string>
@@ -2502,7 +2502,7 @@
     <string name="home_v2_no_adress_button">أضف موقعي</string>
     <string name="popup_event_confirm_btn_confirm">سأحضر</string>
     <string name="popup_event_confirm_btn_cancel">لن أحضر</string>
-    <string name="popup_event_confirm_title">لا تنسى: "%s" سيعقد غدًا في %s في %s!</string>
+    <string name="popup_event_confirm_title">لا تنسى: "%1$s" سيعقد غدًا في %2$s في %3$s!</string>
     <string name="popup_event_confirm_content">لتسهيل تنظيم الحدث، هل يمكنك إخبارنا إذا كنت ستحضر غدًا؟</string>
     <string name="onboarding_presentation_title">%s، دعونا نتعرف عليك!</string>
     <string name="onboarding_presentation_content">قبل الغوص في تطبيقنا، دعونا نأخذ لحظة للتعرف عليك بشكل أفضل. ستساعدنا اهتماماتك في اقتراح الأنشطة والمحتويات التي تهمك.</string>
@@ -2586,7 +2586,7 @@
     <string name="popup_ambassador_button_participant">مشارك</string>
     <string name="organizer_label">- منظم</string>
     <string name="animateur_label">- منشط</string>
-    <string name="share_request_group">هل ترغب في مشاركة %s في مجموعتك %s؟</string>
+    <string name="share_request_group">هل ترغب في مشاركة %1$s في مجموعتك %2$s؟</string>
     <string name="share_request_description">لديك إمكانية مشاركة %s في مجموعة الجيران في مدينتك لزيادة وضوحها</string>
 
     <string name="demand_social_title">مثال: نزهة في الحديقة</string>

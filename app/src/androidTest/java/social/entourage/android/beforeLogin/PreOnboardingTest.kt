@@ -13,11 +13,14 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import social.entourage.android.R
+import social.entourage.android.e2e.E2EScreenshot
 import social.entourage.android.onboarding.pre_onboarding.PreOnboardingStartActivity
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
 class PreOnboardingTest : EntourageTestBeforeLogin() {
+
+    private val screenshot = E2EScreenshot("pre_onboarding")
 
     @get:Rule
     val activityRule = ActivityScenarioRule(PreOnboardingStartActivity::class.java)
@@ -57,6 +60,7 @@ class PreOnboardingTest : EntourageTestBeforeLogin() {
         connectButton.perform(ViewActions.click())
 
         checkSignupAndLoginButtonsExist()
+        screenshot.shoot("skip_pre_onboarding")
     }
 
     @Test
@@ -71,6 +75,7 @@ class PreOnboardingTest : EntourageTestBeforeLogin() {
         checkPage3()
         nextButton.perform(ViewActions.click())
         checkSignupAndLoginButtonsExist()
+        screenshot.shoot("skip_pre_onboarding_page_3")
     }
     //TODO
     /*@Test
@@ -89,6 +94,7 @@ class PreOnboardingTest : EntourageTestBeforeLogin() {
     private fun checkPage2() {
         nextButton.perform(ViewActions.click())
         titleTv.check(ViewAssertions.matches(ViewMatchers.withText(R.string.intro_title_2)))
+        screenshot.shoot("page_2")
     }
 
     /*private fun checkPage2WithScrolling() {
@@ -99,6 +105,7 @@ class PreOnboardingTest : EntourageTestBeforeLogin() {
     private fun checkPage3() {
         nextButton.perform(ViewActions.click())
         titleTv.check(ViewAssertions.matches(ViewMatchers.withText(R.string.intro_title_3)))
+        screenshot.shoot("page_3")
     }
 
     /*private fun checkPage3WithScrolling() {

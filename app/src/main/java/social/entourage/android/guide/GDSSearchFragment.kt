@@ -60,21 +60,21 @@ class GDSSearchFragment : BaseDialogFragment(), PoiListFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.uiProgress?.visibility = View.GONE
-        binding.uiBtSearchClose?.visibility = View.INVISIBLE
+        binding.uiProgress.visibility = View.GONE
+        binding.uiBtSearchClose.visibility = View.INVISIBLE
 
-        binding.uiBtBack?.setOnClickListener {
-            binding.uiEtSearch?.hideKeyboard()
+        binding.uiBtBack.setOnClickListener {
+            binding.uiEtSearch.hideKeyboard()
             dismiss()
         }
 
-        binding.uiBtSearchClose?.setOnClickListener {
-            binding.uiEtSearch?.setText("")
+        binding.uiBtSearchClose.setOnClickListener {
+            binding.uiEtSearch.setText("")
             arrayPois.clear()
             rvAdapter?.notifyDataSetChanged()
         }
 
-        binding.uiEtSearch?.setOnEditorActionListener { v, actionId, event ->
+        binding.uiEtSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 sendSearch()
                 return@setOnEditorActionListener true
@@ -86,38 +86,38 @@ class GDSSearchFragment : BaseDialogFragment(), PoiListFragment {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (count > 0) {
-                    binding.uiBtSearchClose?.visibility = View.VISIBLE
+                    binding.uiBtSearchClose.visibility = View.VISIBLE
                 }
                 else {
-                    binding.uiBtSearchClose?.visibility = View.INVISIBLE
+                    binding.uiBtSearchClose.visibility = View.INVISIBLE
                 }
             }
 
             override fun afterTextChanged(s: Editable) {}
         }
 
-        binding.uiEtSearch?.addTextChangedListener(textWatcher)
+        binding.uiEtSearch.addTextChangedListener(textWatcher)
 
         setupRecyclerView()
-        binding.uiEtSearch?.showKeyboard()
+        binding.uiEtSearch.showKeyboard()
     }
 
     fun setupRecyclerView(){
         rvAdapter = GDSSearchAdapter(arrayPois, currentLocation)
-        binding.uiRecyclerView?.setHasFixedSize(true)
+        binding.uiRecyclerView.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
 
-        binding.uiRecyclerView?.layoutManager = layoutManager
-        binding.uiRecyclerView?.adapter = rvAdapter
+        binding.uiRecyclerView.layoutManager = layoutManager
+        binding.uiRecyclerView.adapter = rvAdapter
 
     }
 
     fun sendSearch() {
-        if ((binding.uiEtSearch?.text?.length ?: 0) < MIN_CHARS_SEARCH) return
+        if ((binding.uiEtSearch.text?.length ?: 0) < MIN_CHARS_SEARCH) return
         view?.hideKeyboard()
-        binding.uiEtSearch?.clearFocus()
+        binding.uiEtSearch.clearFocus()
 
-        binding.uiProgress?.visibility = View.VISIBLE
+        binding.uiProgress.visibility = View.VISIBLE
         val poiRequest = EntourageApplication.get().apiModule.poiRequest
         val call = poiRequest.retrievePoisSearch(latitude, longitude, distance, binding.uiEtSearch.text.toString(), "2")
         call.enqueue(object : Callback<PoiResponse> {
@@ -130,13 +130,13 @@ class GDSSearchFragment : BaseDialogFragment(), PoiListFragment {
                         rvAdapter?.updateAdapter(arrayPois)
                     }
                 }
-                binding.uiProgress?.visibility = View.GONE
+                binding.uiProgress.visibility = View.GONE
             }
 
             override fun onFailure(call: Call<PoiResponse>, t: Throwable) {
                 arrayPois.clear()
                 rvAdapter?.notifyDataSetChanged()
-                binding.uiProgress?.visibility = View.GONE
+                binding.uiProgress.visibility = View.GONE
             }
         })
     }

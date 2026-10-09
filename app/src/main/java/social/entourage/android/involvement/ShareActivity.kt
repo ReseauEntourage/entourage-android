@@ -12,7 +12,7 @@ class ShareActivity : BaseActivity() {
         AnalyticsEvents.logEvent(AnalyticsEvents.EVENT_SHORTCUT_SHAREAPP)
         val sharingIntent = Intent(Intent.ACTION_SEND)
         sharingIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or
-                Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET or
+                Intent.FLAG_ACTIVITY_NEW_DOCUMENT or
                 Intent.FLAG_ACTIVITY_MULTIPLE_TASK)
         sharingIntent.type = "text/plain"
         sharingIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.playstore_url, packageName))

@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -137,7 +137,7 @@ class AssociationPresenter {
     ) {
         executor.execute {
             val ok = try {
-                val body = RequestBody.create(contentType.toMediaTypeOrNull(), bytes)
+                val body = bytes.toRequestBody(contentType.toMediaTypeOrNull())
                 val req = Request.Builder()
                     .url(uploadUrl)
                     .put(body)

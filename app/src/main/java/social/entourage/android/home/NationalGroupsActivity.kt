@@ -14,6 +14,7 @@ import social.entourage.android.databinding.ActivityNationalGroupsBinding
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.feed.GroupFeedActivity
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.overrideTransitionCompat
 import timber.log.Timber
 
 class NationalGroupsActivity : AppCompatActivity() {
@@ -36,7 +37,7 @@ class NationalGroupsActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 finish()
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
             }
         })
     }

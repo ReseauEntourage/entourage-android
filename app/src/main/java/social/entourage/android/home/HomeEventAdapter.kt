@@ -1,6 +1,5 @@
 package social.entourage.android.home
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -8,6 +7,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.ConfigurationCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -15,6 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
 import social.entourage.android.R
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.GroupMember
+import social.entourage.android.api.model.Status
 import social.entourage.android.databinding.HomeV2EventItemLayoutBinding
 import social.entourage.android.events.EventsFragment
 import social.entourage.android.events.details.feed.EventFeedActivity
@@ -66,11 +67,8 @@ class HomeEventAdapter(
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         val event = events[position]
 
-        val isArabic = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            holder.binding.root.resources.configuration.locales[0].language == "ar"
-        } else {
-            holder.binding.root.resources.configuration.locale.language == "ar"
-        }
+        val isArabic = ConfigurationCompat
+            .getLocales(holder.binding.root.resources.configuration)[0]?.language == "ar"
 
         if (isArabic) {
             holder.binding.tvTitleEventItem.layoutDirection = View.LAYOUT_DIRECTION_RTL
@@ -108,9 +106,9 @@ class HomeEventAdapter(
             EventsFragment.isFromDetails = true
             AnalyticsEvents.logEvent(AnalyticsEvents.Action_Home_Event_Detail)
             EventFeedActivity.isFromMyEvent = true
-            (view.context as? Activity)?.startActivityForResult(
+            view.context.startActivity(
                 Intent(view.context, EventFeedActivity::class.java)
-                    .putExtra(Const.EVENT_ID, event.id), 0
+                    .putExtra(Const.EVENT_ID, event.id)
             )
         }
 
@@ -161,6 +159,14 @@ class HomeEventAdapter(
         holder.binding.tvTagFemaleHome.visibility = if (isReservedFemale) View.VISIBLE else View.GONE
         holder.binding.tvTagEntourageHome.visibility =
             if (!isReservedFemale && isEntourageEvent) View.VISIBLE else View.GONE
+
+        // EN-9334 : image assombrie + badge "Annulé" + titre grisé, inspiré de la maquette.
+        val isCanceled = event.status == Status.CLOSED || event.status == Status.CANCELLED
+        holder.binding.blackLayoutHomeEvent.visibility = if (isCanceled) View.VISIBLE else View.GONE
+        holder.binding.layoutCanceledBadgeHome.visibility = if (isCanceled) View.VISIBLE else View.GONE
+        holder.binding.tvTitleEventItem.setTextColor(
+            context.getColor(if (isCanceled) R.color.grey else R.color.black)
+        )
 
         bindParticipants(event, holder.binding)
     }

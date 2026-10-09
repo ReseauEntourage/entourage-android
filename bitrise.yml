@@ -42,6 +42,7 @@ workflows:
             - gradle_task: "$GRADLE_TASK"
             - gradle_options: "--stacktrace"
       - slack:
+          is_skippable: true
           inputs:
             - webhook_url: ''
             - from_username: Bitrise
@@ -61,6 +62,7 @@ workflows:
             - api_token: "$SLACK__BOT_API_TOKEN"
             - channel: "#androiddev"
       - post-jira-comment-with-build-details:
+          is_skippable: true
           inputs:
             - base_url: "$JIRA_BASE_URL"
             - api_token: "$JIRA_API_TOKEN"
@@ -117,7 +119,7 @@ workflows:
             - set_java_version: '21'
       - activate-ssh-key:
           run_if: '{{getenv "SSH_RSA_PRIVATE_KEY" | ne ""}}'
-      - git-clone@8:
+      - git-clone:
           inputs:
             - clone_depth: -1
             - merge_pr: "no"

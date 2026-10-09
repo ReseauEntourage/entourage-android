@@ -68,14 +68,14 @@ class AllEventAdapter(var userId: Int?, var context: Context) :
             holder.binding.layout.setOnClickListener { view ->
                 EventsFragment.isFromDetails = true
                 EventFeedActivity.isFromMyEvent = false
-                (view.context as? Activity)?.startActivityForResult(
+                view.context.startActivity(
                     Intent(
                         view.context,
                         EventFeedActivity::class.java
                     ).putExtra(
                         Const.EVENT_ID,
                         event.id
-                    ), 0
+                    )
                 )
             }
             holder.binding.eventName.text = event.title
@@ -120,19 +120,15 @@ class AllEventAdapter(var userId: Int?, var context: Context) :
 
             holder.binding.star.isVisible = event.author?.userID == userId
             holder.binding.admin.isVisible = event.author?.userID == userId
-            holder.binding.canceled.isVisible = event.status == Status.CLOSED
-            holder.binding.ivCanceled.isVisible = event.status == Status.CLOSED
+            holder.binding.canceled.isVisible = event.status == Status.CLOSED || event.status == Status.CANCELLED
+            // EN-9334 : badge "Annulé" (icône + fond sombre) sur l'image, inspiré de la maquette.
+            holder.binding.layoutCanceledBadge.isVisible = event.status == Status.CLOSED || event.status == Status.CANCELLED
 
-            if (event.calculateIfEventPassed()) {
+            if (event.calculateIfEventPassed() || event.status == Status.CLOSED || event.status == Status.CANCELLED) {
                 holder.binding.eventName.setTextColor(ContextCompat.getColor(holder.binding.root.context, R.color.grey))
                 holder.binding.blackLayout.visibility = View.VISIBLE
             } else {
-                holder.binding.eventName.setTextColor(
-                    ContextCompat.getColor(
-                        holder.binding.root.context,
-                        if (event.status == Status.CLOSED) R.color.grey else R.color.black
-                    )
-                )
+                holder.binding.eventName.setTextColor(ContextCompat.getColor(holder.binding.root.context, R.color.black))
                 holder.binding.blackLayout.visibility = View.GONE
             }
         }

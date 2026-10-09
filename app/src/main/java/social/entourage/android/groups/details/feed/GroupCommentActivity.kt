@@ -139,6 +139,7 @@ class GroupCommentActivity : CommentActivity() {
         val fullHtml = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.toHtml(spannedText, Html.FROM_HTML_MODE_LEGACY)
         } else {
+            @Suppress("DEPRECATION")
             Html.toHtml(spannedText)
         }
 

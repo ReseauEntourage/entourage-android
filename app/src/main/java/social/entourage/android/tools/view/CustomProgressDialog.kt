@@ -1,6 +1,8 @@
 package social.entourage.android.tools.view
 
+import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
 import android.view.WindowManager
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -11,11 +13,23 @@ import timber.log.Timber
 /**
  * Created by Jr (MJ-DEVS) on 15/05/2020.
  */
-class CustomProgressDialog(val context:Context) {
+class CustomProgressDialog(val context: Context) {
 
     private var alertDialog: AlertDialog? = null
 
+    private fun Context.findActivity(): Activity? {
+        var ctx = this
+        while (ctx is ContextWrapper) {
+            if (ctx is Activity) return ctx
+            ctx = ctx.baseContext
+        }
+        return null
+    }
+
     fun show(resId: Int?) {
+        val activity = context.findActivity()
+        if (activity?.isFinishing == true || activity?.isDestroyed == true) return
+
         if (alertDialog == null) {
             alertDialog = AlertDialog.Builder(context)
                     .setCancelable(false)

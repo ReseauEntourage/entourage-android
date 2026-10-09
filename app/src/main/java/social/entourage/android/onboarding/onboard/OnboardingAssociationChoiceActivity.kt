@@ -11,6 +11,8 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import social.entourage.android.R
 import social.entourage.android.databinding.ActivityOnboardingAssociationChoiceBinding
@@ -188,8 +190,7 @@ class OnboardingAssociationChoiceActivity : AppCompatActivity() {
     private fun showKeyboard(target: View?) {
         target ?: return
         target.post {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.showSoftInput(target, InputMethodManager.SHOW_IMPLICIT)
+            WindowCompat.getInsetsController(window, target).show(WindowInsetsCompat.Type.ime())
         }
     }
 

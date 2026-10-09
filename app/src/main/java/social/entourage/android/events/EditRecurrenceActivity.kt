@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.ArrayMap
+import androidx.core.content.IntentCompat
 import social.entourage.android.R
 import social.entourage.android.RefreshController
 import social.entourage.android.databinding.ActivityEditRecurrenceBinding
@@ -31,7 +32,7 @@ class EditRecurrenceActivity : AppCompatActivity() {
 
         eventId = intent.getIntExtra(Const.EVENT_ID, Const.DEFAULT_VALUE)
         recurrence = intent.getIntExtra(Const.RECURRENCE, Const.DEFAULT_VALUE)
-        date = intent.getSerializableExtra(Const.EVENT_DATE) as Date?
+        date = IntentCompat.getSerializableExtra(intent, Const.EVENT_DATE, Date::class.java)
         eventPresenter.isEventUpdated.observe(this, ::hasRecurrenceBeenChanged)
 
         setView()

@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -51,6 +51,9 @@ open class MembersFragment : Fragment() {
     private var reactionIterator: Int = 0
     private var reactionList: MutableList<ReactionType> = mutableListOf()
     private var iAmOrganiser: Boolean = false
+    private val activityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -174,8 +177,8 @@ open class MembersFragment : Fragment() {
                         discussionPresenter.createOrGetConversation(userId.toString())
                     }
                     override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean, photoAcceptance: Boolean?) {
-                        if (type == MembersType.EVENT && id != null && isChecked) {
-                            eventPresenter.participateForUser(id, user.userId)
+                        if (type == MembersType.EVENT && this@MembersFragment.id != null && isChecked) {
+                            eventPresenter.participateForUser(this@MembersFragment.id!!, user.userId)
                             if (photoAcceptance == false) {
                                 // TODO: Afficher la pop-up de droit à l'image (à implémenter si nécessaire dans le fragment)
                                 // Exemple : showAcceptPhotoDialog(user.userId)
@@ -203,8 +206,8 @@ open class MembersFragment : Fragment() {
                         discussionPresenter.createOrGetConversation(userId.toString())
                     }
                     override fun onToggleParticipation(user: EntourageUser, isChecked: Boolean, photoAcceptance: Boolean?) {
-                        if (type == MembersType.EVENT && id != null && isChecked) {
-                            eventPresenter.participateForUser(id, user.userId)
+                        if (type == MembersType.EVENT && this@MembersFragment.id != null && isChecked) {
+                            eventPresenter.participateForUser(this@MembersFragment.id!!, user.userId)
                             if (photoAcceptance == false) {
                                 // TODO: Afficher la pop-up de droit à l'image (à implémenter si nécessaire dans le fragment)
                                 // Exemple : showAcceptPhotoDialog(user.userId)
@@ -221,20 +224,20 @@ open class MembersFragment : Fragment() {
     private fun handleGetConversation(conversation: Conversation?) {
         conversation?.let {
             DetailConversationActivity.isSmallTalkMode = false
-            startActivityForResult(
+            activityResultLauncher.launch(
                 Intent(context, DetailConversationActivity::class.java)
                     .putExtras(
-                        bundleOf(
-                            Const.ID to conversation.id,
-                            Const.POST_AUTHOR_ID to conversation.user?.id,
-                            Const.SHOULD_OPEN_KEYBOARD to false,
-                            Const.NAME to conversation.title,
-                            Const.IS_CONVERSATION_1TO1 to true,
-                            Const.IS_MEMBER to true,
-                            Const.IS_CONVERSATION to true,
-                            Const.HAS_TO_SHOW_MESSAGE to conversation.hasToShowFirstMessage()
-                        )
-                    ), 0
+                        Bundle().apply {
+                            conversation.id?.let { putInt(Const.ID, it) }
+                            conversation.user?.id?.let { putInt(Const.POST_AUTHOR_ID, it) }
+                            putBoolean(Const.SHOULD_OPEN_KEYBOARD, false)
+                            putString(Const.NAME, conversation.title)
+                            putBoolean(Const.IS_CONVERSATION_1TO1, true)
+                            putBoolean(Const.IS_MEMBER, true)
+                            putBoolean(Const.IS_CONVERSATION, true)
+                            putBoolean(Const.HAS_TO_SHOW_MESSAGE, conversation.hasToShowFirstMessage())
+                        }
+                    )
             )
         }
     }

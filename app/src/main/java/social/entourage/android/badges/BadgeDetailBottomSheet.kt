@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.card.MaterialCardView
@@ -35,14 +34,14 @@ class BadgeDetailBottomSheet : BottomSheetDialogFragment() {
 
         fun newInstance(progress: UserBadgeProgress, apiBadges: List<ApiBadge> = emptyList()): BadgeDetailBottomSheet {
             return BadgeDetailBottomSheet().apply {
-                arguments = bundleOf(
-                    ARG_BADGE_KEY to progress.definition.key.apiKey,
-                    ARG_IS_OBTAINED to progress.isObtained,
-                    ARG_PROGRESS to progress.progress,
-                    ARG_MAX_PROGRESS to progress.maxProgress,
-                    ARG_OBTAINED_DATE to progress.obtainedDate,
-                    ARG_API_BADGES to ArrayList(apiBadges)
-                )
+                arguments = Bundle().apply {
+                    putString(ARG_BADGE_KEY, progress.definition.key.apiKey)
+                    putBoolean(ARG_IS_OBTAINED, progress.isObtained)
+                    putInt(ARG_PROGRESS, progress.progress)
+                    putInt(ARG_MAX_PROGRESS, progress.maxProgress)
+                    putString(ARG_OBTAINED_DATE, progress.obtainedDate)
+                    putParcelableArrayList(ARG_API_BADGES, ArrayList(apiBadges))
+                }
             }
         }
 
@@ -133,8 +132,8 @@ class BadgeDetailBottomSheet : BottomSheetDialogFragment() {
             binding.cardStatus.setCardBackgroundColor(
                 ContextCompat.getColor(ctx, android.R.color.white)
             )
-            (binding.cardStatus as MaterialCardView).strokeWidth = 2
-            (binding.cardStatus as MaterialCardView).strokeColor =
+            binding.cardStatus.strokeWidth = 2
+            binding.cardStatus.strokeColor =
                 ContextCompat.getColor(ctx, R.color.grey_light)
             binding.layoutObtained.visibility = View.GONE
             binding.layoutNotObtained.visibility = View.VISIBLE

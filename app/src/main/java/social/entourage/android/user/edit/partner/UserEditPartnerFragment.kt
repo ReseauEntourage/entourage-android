@@ -1,13 +1,11 @@
 package social.entourage.android.user.edit.partner
 
-import android.content.Context
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.TextView
 import android.widget.Toast
@@ -24,6 +22,7 @@ import social.entourage.android.api.request.PartnerWrapper
 import social.entourage.android.api.request.PartnersResponse
 import social.entourage.android.base.BaseDialogFragment
 import social.entourage.android.databinding.FragmentUserEditPartnerBinding
+import social.entourage.android.tools.hideKeyboard
 
 /**
  *
@@ -74,12 +73,7 @@ class UserEditPartnerFragment  : BaseDialogFragment() {
                 hideKeyboard = true
             }
             if (hideKeyboard) {
-                // hide virtual keyboard
-                //TODO: use new parameters
-                (activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?)?.hideSoftInputFromWindow(
-                    v.windowToken,
-                    InputMethodManager.RESULT_UNCHANGED_SHOWN
-                )
+                v.hideKeyboard()
                 return@OnEditorActionListener true
             }
             false

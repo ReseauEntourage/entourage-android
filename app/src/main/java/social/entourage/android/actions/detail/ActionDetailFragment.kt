@@ -1,8 +1,7 @@
 package social.entourage.android.actions.detail
 
-import android.app.Activity
+import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
@@ -10,8 +9,9 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.os.bundleOf
+import androidx.core.os.ConfigurationCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -56,6 +56,9 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var actionsPresenter: ActionsPresenter
     private val discussionPresenter: DiscussionsPresenter by lazy { DiscussionsPresenter() }
+    private val actionDetailLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
 
     private var actionId:Int = 0
 
@@ -111,13 +114,9 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onAttach(activity: Activity) {
-        super.onAttach(activity)
-        try {
-            mCallback = activity as? OnDetailActionReceive
-        } catch (e: ClassCastException) {
-        }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mCallback = context as? OnDetailActionReceive
     }
     private fun setupTranslationButton() {
         val sharedPrefs = EntourageApplication.get(context).sharedPreferences
@@ -208,22 +207,22 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun handleGetConversation(conversation: Conversation?) {
-        conversation?.let {
+        conversation?.let { 
             DetailConversationActivity.isSmallTalkMode = false
-            startActivityForResult(
+            actionDetailLauncher.launch(
                 Intent(context, DetailConversationActivity::class.java)
                     .putExtras(
-                        bundleOf(
-                            Const.ID to conversation.id,
-                            Const.POST_AUTHOR_ID to conversation.user?.id,
-                            Const.SHOULD_OPEN_KEYBOARD to false,
-                            Const.NAME to conversation.title,
-                            Const.IS_CONVERSATION_1TO1 to true,
-                            Const.IS_MEMBER to true,
-                            Const.IS_CONVERSATION to true,
-                            Const.HAS_TO_SHOW_MESSAGE to conversation.hasToShowFirstMessage()
-                        )
-                    ), 0
+                        Bundle().apply {
+                            conversation.id?.let { putInt(Const.ID, it) }
+                            conversation.user?.id?.let { putInt(Const.POST_AUTHOR_ID, it) }
+                            putBoolean(Const.SHOULD_OPEN_KEYBOARD, false)
+                            putString(Const.NAME, conversation.title)
+                            putBoolean(Const.IS_CONVERSATION_1TO1, true)
+                            putBoolean(Const.IS_MEMBER, true)
+                            putBoolean(Const.IS_CONVERSATION, true)
+                            putBoolean(Const.HAS_TO_SHOW_MESSAGE, conversation.hasToShowFirstMessage())
+                        }
+                    )
             )
         }
     }
@@ -247,14 +246,14 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
         binding.uiLayoutCharte.setOnClickListener {
             val intent = Intent(context, GroupRulesActivity::class.java)
             intent.putExtra(Const.RULES_TYPE, Const.RULES_ACTION)
-            startActivityForResult(intent, 0)
+            startActivity(intent)
         }
 
         binding.layoutUser.setOnClickListener {
-            startActivityForResult(Intent(context, ProfileFullActivity::class.java).putExtra(
+            startActivity(Intent(context, ProfileFullActivity::class.java).putExtra(
                 Const.USER_ID,
                 action?.author?.userID
-            ),0)
+            ))
         }
 
         binding.uiBtModify.setOnClickListener {
@@ -267,7 +266,7 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
                 intent.putExtra(Const.IS_ACTION_DEMAND, false)
             }
             isFromEdit = true
-            startActivityForResult(intent, 0)
+            startActivity(intent)
         }
 
         binding.uiBtDelete.setOnClickListener {
@@ -317,11 +316,8 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
 
     private fun updateViews() {
         action?.let {
-            val isArabic = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                resources.configuration.locales[0].language == "ar"
-            } else {
-                resources.configuration.locale.language == "ar"
-            }
+            val isArabic =
+                ConfigurationCompat.getLocales(resources.configuration)[0]?.language == "ar"
 
             if (isArabic) {
                 binding.uiUserName.layoutDirection = View.LAYOUT_DIRECTION_RTL

@@ -3,7 +3,6 @@ package social.entourage.android.small_talks
 import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -27,7 +26,9 @@ import social.entourage.android.enhanced_onboarding.fragments.OnboardingInterest
 import social.entourage.android.profile.editProfile.EditPhotoActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingForEdgeToEdge
+import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.user.UserPresenter
+import timber.log.Timber
 
 class SmallTalkActivity : BaseActivity() {
 
@@ -135,7 +136,7 @@ class SmallTalkActivity : BaseActivity() {
             if (shouldLeave) finish()
         }
 
-        viewModel.currentStepIndex.observe(this) { stepIndex ->
+        viewModel.currentStepIndex.observe(this) { _ ->
             binding.buttonStart.text = getString(
                 if (viewModel.isLastStep()) R.string.onboarding_btn_next
                 else R.string.onboarding_btn_next
@@ -158,7 +159,7 @@ class SmallTalkActivity : BaseActivity() {
                 return@setOnClickListener
             }
             if (!viewModel.isLastStep() && selectedItem != null) {
-                userSelectionsByStep[stepIndex] = selectedItem.id ?: ""
+                userSelectionsByStep[stepIndex] = selectedItem.id
             }
 
             when (stepIndex) {
@@ -233,7 +234,7 @@ class SmallTalkActivity : BaseActivity() {
             if (viewModel.isLastStep()) {
                 SmallTalkingSearchingActivity.id = SMALL_TALK_REQUEST_ID
                 startActivity(Intent(this, SmallTalkingSearchingActivity::class.java))
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
                 isFinished = true
                 finish()
             }else{
@@ -260,14 +261,14 @@ class SmallTalkActivity : BaseActivity() {
     override fun onDestroy() {
         if(!isFinished){
             viewModel.deleteRequest()
-            Log.wtf("wtf" , "request deleted" )
+            Timber.d("request deleted")
         }
         super.onDestroy()
 
     }
 
     private fun preselectUserInterests(interests: List<InterestForAdapter>): List<InterestForAdapter> {
-        val currentUser = EntourageApplication.get(this).authenticationController.me
+        val currentUser = EntourageApplication.me(this)
         val userInterests = currentUser?.interests ?: return interests
 
         return interests.map { interest ->

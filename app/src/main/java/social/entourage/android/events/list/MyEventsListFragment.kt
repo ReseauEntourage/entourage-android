@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -35,6 +36,9 @@ class MyEventsListFragment : Fragment() {
     private var currentFilters = EventActionLocationFilters()
 
     private var sections: MutableList<SectionHeader> = mutableListOf()
+    private val createEventLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,9 +82,8 @@ class MyEventsListFragment : Fragment() {
     private fun initializeNoEventCreateButton(){
         binding.btnDiscoverEvent.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.Event_action_create)
-            startActivityForResult(
-                Intent(requireContext(), CreateEventActivity::class.java),
-                0
+            createEventLauncher.launch(
+                Intent(requireContext(), CreateEventActivity::class.java)
             )
         }
     }

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import social.entourage.android.MainActivity
@@ -24,7 +23,7 @@ class ApiErrorBottomSheet : BottomSheetDialogFragment() {
         private const val ARG_CODE = "error_code"
 
         fun newInstance(code: Int) = ApiErrorBottomSheet().apply {
-            arguments = bundleOf(ARG_CODE to code)
+            arguments = Bundle().apply { putInt(ARG_CODE, code) }
         }
     }
 

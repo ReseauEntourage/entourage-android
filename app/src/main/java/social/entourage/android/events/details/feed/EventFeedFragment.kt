@@ -12,10 +12,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -67,6 +67,7 @@ import social.entourage.android.tools.utils.CustomAlertDialog
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.Utils.enableCopyOnLongClick
 import social.entourage.android.tools.utils.VibrationUtil
+import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.utils.px
 import social.entourage.android.tools.utils.underline
 import social.entourage.android.ui.ActionSheetFragment
@@ -92,6 +93,9 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     private var shouldShowPopUp = true
     private var mMap: GoogleMap? = null
     private var iAmOrganiser = false
+    private val activityResultLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
     private var signable = false
 
     private var memberList: MutableList<EntourageUser> = mutableListOf()
@@ -253,7 +257,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                     String.format(getString(R.string.geoUri), event?.metadata?.displayAddress)
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
                 startActivity(intent)
-                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
             }
         }
     }
@@ -355,27 +359,47 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
     private fun setupEventStatus() {
         with(binding) {
-            canceled.isVisible = event?.status == Status.CLOSED
-            if (event?.status == Status.CLOSED) {
+            canceled.isVisible = event?.status == Status.CLOSED || event?.status == Status.CANCELLED
+            if (event?.status == Status.CLOSED || event?.status == Status.CANCELLED) {
                 eventName.setTextColor(getColor(requireContext(), R.color.grey))
                 dateStartsAt.content.setTextColor(getColor(requireContext(), R.color.grey))
                 dateStartsAt.icon = ContextCompat.getDrawable(requireContext(), R.drawable.new_calendar_grey)
                 time.content.setTextColor(getColor(requireContext(), R.color.grey))
                 time.icon = ContextCompat.getDrawable(requireContext(), R.drawable.new_time_grey)
+
+                // EN-9334 : image grisée (désaturée + assombrie), comme sur la maquette.
+                val grayscaleFilter = android.graphics.ColorMatrixColorFilter(
+                    android.graphics.ColorMatrix().apply { setSaturation(0.4f) }
+                )
+                eventImage.colorFilter = grayscaleFilter
+                eventImage.alpha = 0.7f
+                eventImageToolbar.colorFilter = grayscaleFilter
+                eventImageToolbar.alpha = 0.7f
             }
         }
     }
 
     private fun setupEventJoinButton() {
         with(binding.buttonJoin) {
-            setBackgroundResource(R.drawable.shape_button_v9_positive)
-            setTextColor(getColor(requireContext(), R.color.white))
-
-            text = if (event?.member == true) {
-                if (iAmOrganiser) getString(R.string.event_cancel_button)
-                else getString(R.string.event_leave_button)
+            val isCancelled = event?.status == Status.CLOSED || event?.status == Status.CANCELLED
+            if (isCancelled) {
+                setBackgroundResource(R.drawable.shape_button_disabled_grey)
+                setTextColor(getColor(requireContext(), R.color.grey))
+                text = getString(R.string.event_canceled)
+                isEnabled = false
+                isClickable = false
             } else {
-                getString(R.string.share_and_join_event)
+                setBackgroundResource(R.drawable.shape_button_v9_positive)
+                setTextColor(getColor(requireContext(), R.color.white))
+                isEnabled = true
+                isClickable = true
+
+                text = if (event?.member == true) {
+                    if (iAmOrganiser) getString(R.string.event_cancel_button)
+                    else getString(R.string.event_leave_button)
+                } else {
+                    getString(R.string.share_and_join_event)
+                }
             }
         }
     }
@@ -402,7 +426,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 }
                 startActivity(intent)
                 // Animation optionnelle pour correspondre au style de l'app
-                requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+                requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
             }
         }
     }
@@ -412,7 +436,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
         val geoUri =
             String.format(getString(R.string.geoUri), event?.metadata?.displayAddress)
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
-        startActivityForResult(intent, 0)
+        activityResultLauncher.launch(intent)
     }
 
     private fun openLink() {
@@ -424,7 +448,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 url?.let {
                     url = Utils.checkUrlWithHttps(it)
                     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                    startActivityForResult(browserIntent, 0)
+                    activityResultLauncher.launch(browserIntent)
                 }
             }
         }
@@ -601,15 +625,13 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             Intent(context, DetailConversationActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                 .putExtras(
-                    bundleOf(
-                        Const.ID to event?.id,
-                        Const.SHOULD_OPEN_KEYBOARD to false,
-                        Const.IS_CONVERSATION_1TO1 to true,
-                        Const.IS_CONVERSATION_1TO1 to false,
-                        Const.IS_MEMBER to true,
-                        Const.IS_CONVERSATION to true,
-
-                        )
+                    Bundle().apply {
+                        event?.id?.let { putInt(Const.ID, it) }
+                        putBoolean(Const.SHOULD_OPEN_KEYBOARD, false)
+                        putBoolean(Const.IS_CONVERSATION_1TO1, false)
+                        putBoolean(Const.IS_MEMBER, true)
+                        putBoolean(Const.IS_CONVERSATION, true)
+                    }
                 )
         )
     }
@@ -662,16 +684,25 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                         }
                     }, onYes = {
                         if (event?.member==false){
-                            eventPresenter.participate(eventId)
+                            attemptParticipate()
                         }
                     })
             }else{
                 if (event?.member==false){
-                    eventPresenter.participate(eventId)
+                    attemptParticipate()
                 }
             }
         }
 
+    }
+
+    private fun attemptParticipate() {
+        val placeLimit = event?.metadata?.placeLimit
+        if (placeLimit != null && placeLimit != 0) {
+            showLimitPlacePopUp()
+        } else {
+            eventPresenter.participate(eventId)
+        }
     }
 
     private fun handleMembersButton() {
@@ -684,7 +715,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 putExtra("ROLE", (signable && HomeState.signablePermission))
             }
             startActivity(intent)
-            requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
         }
     }
 
@@ -694,16 +725,15 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 event.member = !event.member
                 //handleCreatePostButton()
                 eventPresenter.getEvent(eventId.toString())
+                goDiscussion()
                 if (event.metadata?.placeLimit != null && event.metadata.placeLimit != 0) {
-                    showLimitPlacePopUp()
-                } else {
-                    if (shouldShowPopUp){
-                        goDiscussion()
-                    }else{
-                        goDiscussion()
-                    }
-                    shouldShowPopUp = false
+                    Toast.makeText(
+                        requireContext(),
+                        R.string.event_limited_places_request_sent_toast,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
+                shouldShowPopUp = false
             }
         }
 
@@ -716,15 +746,21 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     }
 
     private fun showLimitPlacePopUp() {
-        CustomAlertDialog.showOnlyOneButton(
+        CustomAlertDialog.showLimitedPlacesEvent(
             requireContext(),
-            getString(R.string.event_limited_places_title),
-            getString(R.string.event_limited_places_subtitle),
-            getString(R.string.button_OK)
-        ) {
-            goDiscussion()
-        }
-
+            badge = getString(R.string.event_limited_places_badge),
+            title = getString(R.string.event_limited_places_modal_title),
+            intro = getString(R.string.event_limited_places_modal_intro),
+            step1 = getString(R.string.event_limited_places_step1),
+            step2 = getString(R.string.event_limited_places_step2),
+            step3 = getString(R.string.event_limited_places_step3),
+            nudge = getString(R.string.event_limited_places_nudge),
+            actionPrimary = getString(R.string.event_limited_places_cta_primary),
+            actionSecondary = getString(R.string.event_limited_places_cta_secondary),
+            onConfirm = {
+                eventPresenter.participate(eventId)
+            }
+        )
     }
 
     private fun handleMetaData(tags: Tags?) {
@@ -798,7 +834,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
             putExtra("TYPE", MembersType.EVENT.code) // Utilise 'code' pour passer l'enum comme un Int
         }
         startActivity(intent)
-        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     override fun deleteReaction(post: Post) {
@@ -834,7 +870,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
 
         }
         startActivity(intent)
-        requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+        requireActivity().overrideTransitionCompat(R.anim.slide_in_right, R.anim.slide_out_left)
     }
 
     companion object {

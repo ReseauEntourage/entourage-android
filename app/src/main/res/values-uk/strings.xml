@@ -392,8 +392,8 @@
     <string name="category">Категорія</string>
     <string name="associated_groups">Асоційовані групи:</string>
     <string name="associated_group">Пов&amp;apos;язана група:</string>
-    <string name="date_recurrence_event">%s . %s</string>
-    <string name="start_and_end_time_event">Від %s до %s</string>
+    <string name="date_recurrence_event">%1$s . %2$s</string>
+    <string name="start_and_end_time_event">Від %1$s до %2$s</string>
     <string name="limited_places">Обмежена кількість місць: %d</string>
     <string name="created_at">Створено %s</string>
     <string name="updated_at">Змінено %s</string>
@@ -643,7 +643,7 @@
     <string name="action_created_by">"Створено %s</string>
     <string name="action_created_by_">"Створений</string>
 
-    <string name="atKm">%s, %s км від мене</string>
+    <string name="atKm">%1$s, %2$s км від мене</string>
     <string name="AtKm">TO %s км від мене</string>
 
 
@@ -1496,7 +1496,7 @@
     <string name="entourage_share_intent_title">Поділитися через</string>
     <string name="entourage_share_link">https://www.entourage.social</string>
 
-    <string name="info_share_poi_sms">Добрий ранок ! Ось адреса %1$s, яка може вас зацікавити.\n%2$s\n%3$s\nДля отримання додаткової інформації про це місце та встановлення зв’язків між сусідами, які підтримують вас, я призначу вам зустріч у мережі Entourage %4 $ с</string>
+    <string name="info_share_poi_sms">Добрий ранок ! Ось адреса %1$s, яка може вас зацікавити.\n%2$s\n%3$s\nДля отримання додаткової інформації про це місце та встановлення зв’язків між сусідами, які підтримують вас, я призначу вам зустріч у мережі Entourage %4$s</string>
 
     <string name="entourage_share_text_for_entourage">%1$s.\n\nЩиро дякуємо за вашу солідарність!</string>
 
@@ -2465,7 +2465,7 @@
     <string name="popup_ambassador_button_participant">Учасник</string>
     <string name="organizer_label">- Організатор</string>
     <string name="animateur_label">- Ведучий</string>
-    <string name="share_request_group">Бажаєте поділитися своєю %s у групі %s?</string>
+    <string name="share_request_group">Бажаєте поділитися своєю %1$s у групі %2$s?</string>
     <string name="share_request_description">Ви можете поділитися своєю %s у групі сусідів вашого міста, щоб підвищити її видимість</string>
     <string name="demand_social_title">Приклад: Прогулянка в парку</string>
     <string name="demand_social_description">Приклад: Пропоную прогулянку в парку цього вихідного, щоб поспілкуватися і розслабитися.</string>

@@ -12,6 +12,7 @@ import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
+import social.entourage.android.base.location.LocationUtils.getFromLocationNameCompat
 import social.entourage.android.groups.create.CommunicationHandlerViewModel
 import social.entourage.android.home.OnHomeChangeLocationUpdate // moved to HomeState.kt
 import social.entourage.android.tools.log.AnalyticsEvents
@@ -101,21 +102,24 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
             try {
                 val geocoder = Geocoder(requireContext())
                 userAddress?.displayAddress?.let { userDisplayAddress->
-                    geocoder.getFromLocationName(userDisplayAddress, 1)?.let { addresses ->
-                        if (addresses.size > 0) {
+                    geocoder.getFromLocationNameCompat(userDisplayAddress, 1) { addresses ->
+                        if (!isAdded) return@getFromLocationNameCompat
+                        if (!addresses.isNullOrEmpty()) {
                             with(viewModel.group) {
                                 latitude = addresses.first().latitude
                                 longitude = addresses.first().longitude
-                                displayAddress = userDisplayAddress.toString()
+                                displayAddress = userDisplayAddress
                             }
                             mListener?.onUserEditActionZoneFragmentAddressSaved()
                             if (isAdded && view != null) {
                                 findNavController().popBackStack()
                             } else {
-                                val intent = Intent(context, MainActivity::class.java)
-                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                intent.putExtra("goDemand", true)
-                                requireContext().startActivity(intent)
+                                context?.let { ctx ->
+                                    val intent = Intent(ctx, MainActivity::class.java)
+                                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    intent.putExtra("goDemand", true)
+                                    ctx.startActivity(intent)
+                                }
                             }
                         }
                     }

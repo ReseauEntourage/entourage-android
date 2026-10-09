@@ -303,6 +303,29 @@
         <item name="colorAccent">@color/accent</item>
     </style>
 
+    <!--
+    Thème dédié au MaterialDatePicker de la date de naissance (voir DatePickerUtils.kt).
+    AppTheme (thème par défaut de l'app, cf. EditProfileActivity) hérite de Theme.AppCompat et
+    ne fournit donc pas l'attribut materialCalendarTheme requis par MaterialDatePicker ; passer
+    ce thème explicitement via Builder.setTheme() évite de changer le thème de toute l'activité.
+    Comme c'est un ThemeOverlay, tout attribut non redéfini ici remonte au thème de l'activité
+    hôte : AppTheme y définit colorPrimary ET colorOnPrimary à @color/primary (blanc), ce qui
+    rendrait le texte de l'en-tête et des boutons du dialogue invisible (blanc sur blanc). On
+    redéfinit donc explicitement tous les rôles de couleur utilisés par le calendrier pour ne
+    dépendre d'aucun thème hôte.
+    -->
+    <style name="ThemeOverlay.App.MaterialCalendar" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorPrimary">@color/accent</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="colorSecondary">@color/accent</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/dark_grey</item>
+        <item name="colorOnBackground">@color/dark_grey</item>
+    </style>
+
     <!--New-->
 
     <style name="profile_name">

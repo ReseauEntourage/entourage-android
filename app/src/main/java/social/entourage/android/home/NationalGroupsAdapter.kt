@@ -67,7 +67,7 @@ class NationalGroupsAdapter(
             updateJoinButton(group.member)
 
             joinButton.setOnClickListener {
-                onJoinClick(group, adapterPosition)
+                onJoinClick(group, bindingAdapterPosition)
             }
 
             // Set click listener on the root view (excluding the join button)
@@ -77,7 +77,7 @@ class NationalGroupsAdapter(
 
             // Prevent join button from triggering item click
             joinButton.setOnClickListener {
-                onJoinClick(group, adapterPosition)
+                onJoinClick(group, bindingAdapterPosition)
             }
         }
 

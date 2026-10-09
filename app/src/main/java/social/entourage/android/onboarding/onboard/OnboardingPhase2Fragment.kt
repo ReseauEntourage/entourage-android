@@ -34,6 +34,8 @@ import social.entourage.android.databinding.FragmentOnboardingPhase2Binding
 import social.entourage.android.tools.hideKeyboard
 import social.entourage.android.tools.hideKeyboardOnDone
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.tools.utils.parcelableCompat
+import social.entourage.android.tools.utils.serializableCompat
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.tools.view.countrycodepicker.Country
 
@@ -54,7 +56,7 @@ class OnboardingPhase2Fragment : Fragment() {
         override fun onReceive(context: Context?, intent: Intent?) {
             if (SmsRetriever.SMS_RETRIEVED_ACTION == intent?.action) {
                 val extras = intent.extras ?: return
-                val consentIntent = extras.getParcelable<Intent>(SmsRetriever.EXTRA_CONSENT_INTENT) ?: return
+                val consentIntent = extras.parcelableCompat<Intent>(SmsRetriever.EXTRA_CONSENT_INTENT) ?: return
                 startSmsConsent.launch(consentIntent)
             }
         }
@@ -73,7 +75,7 @@ class OnboardingPhase2Fragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             phoneNumber = it.getString(ARG_PHONE)
-            country = it.get(ARG_COUNTRY) as? Country
+            country = it.serializableCompat<Country>(ARG_COUNTRY)
         }
     }
 
