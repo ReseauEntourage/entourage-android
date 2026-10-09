@@ -39,6 +39,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -166,12 +167,6 @@ internal fun CreateEventScreen(
                 }
             }
 
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .height(1.dp)
-                    .background(CeGreyContour)
-            )
             Footer(
                 modifier = Modifier.navigationBarsPadding(),
                 page = page,
@@ -224,37 +219,36 @@ private fun TopBar(isEdition: Boolean, actions: CreateEventActions) {
 
 @Composable
 private fun Footer(modifier: Modifier, page: Int, nextLabel: String, actions: CreateEventActions) {
+    // Même barre que le bas des écrans d'onboarding enrichi : fond blanc, élévation 8dp,
+    // padding 20dp, deux boutons de poids égal séparés par 2 x 4dp.
     Row(
         modifier = modifier
+            .shadow(8.dp)
+            .background(CeWhite)
             .fillMaxWidth()
-            .padding(start = 22.dp, top = 11.dp, end = 22.dp, bottom = 14.dp),
+            .padding(20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Invisible (mais encombrant) sur la première page : le CTA reste à droite.
+        // Invisible (mais encombrant) sur la première page : le bouton principal reste à droite.
         val first = page == 0
-        Box(
+        CeFooterButton(
+            label = stringResource(R.string.back),
+            primary = false,
+            onClick = { if (!first) actions.onPrevious() },
             modifier = Modifier
-                .heightIn(min = 48.dp)
+                .weight(1f)
+                .padding(end = 4.dp)
                 .alpha(if (first) 0f else 1f)
-                .let {
-                    if (first) it else it.clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = ripple(),
-                        role = Role.Button,
-                        onClick = actions.onPrevious
-                    )
-                }
-                .padding(horizontal = 4.dp)
-                .testTag("create_event_previous"),
-            contentAlignment = Alignment.Center
-        ) {
-            CeText(stringResource(R.string.back), ceStyle(NunitoSansBold, 15f, CeBlack))
-        }
-        Spacer(Modifier.weight(1f))
-        CeCta(
+                .testTag("create_event_previous")
+        )
+        CeFooterButton(
             label = nextLabel,
+            primary = true,
             onClick = actions.onNext,
-            modifier = Modifier.testTag("create_event_next")
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 4.dp)
+                .testTag("create_event_next")
         )
     }
 }

@@ -630,26 +630,41 @@ internal fun CeRadioRow(label: String, selected: Boolean, onClick: () -> Unit, m
 
 // --- Boutons --------------------------------------------------------------------------------
 
-/** CTA orange (`bg_create_event_cta`) : 52dp, 140dp mini, rayon 12dp, ripple blanc translucide. */
+/**
+ * Boutons du pied de page : identiques à ceux du bas des écrans d'onboarding enrichi
+ * (`shape_button_v9_positive` / `shape_button_v9_negative`) : 47dp de haut, rayon 32dp,
+ * Quicksand Bold 14sp. Primaire : fond orange, texte blanc, ripple blanc 20 %.
+ * Secondaire : fond blanc, trait orange 1dp, texte noir, ripple orange 15 %.
+ */
 @Composable
-internal fun CeCta(label: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    val shape = RoundedCornerShape(12.dp)
+internal fun CeFooterButton(
+    label: String,
+    primary: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val shape = RoundedCornerShape(32.dp)
+    val orange = CeOrange
     Box(
         modifier = modifier
-            .height(52.dp)
-            .defaultMinSize(minWidth = 140.dp)
+            .height(47.dp)
             .clip(shape)
-            .background(CeOrange)
+            .background(if (primary) orange else CeWhite)
+            .let { if (primary) it else it.border(1.dp, orange, shape) }
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
-                indication = ripple(color = Color(0x33FFFFFF)),
+                indication = ripple(color = if (primary) Color(0x33FFFFFF) else Color(0x26FF9739)),
                 role = Role.Button,
                 onClick = onClick
             )
-            .padding(horizontal = 28.dp),
+            .padding(horizontal = 8.dp),
         contentAlignment = Alignment.Center
     ) {
-        CeText(label, ceStyle(NunitoSansBold, 16f, CeWhite), textAlign = TextAlign.Center)
+        CeText(
+            label,
+            ceStyle(QuicksandBold, 14f, if (primary) CeWhite else CeBlack),
+            textAlign = TextAlign.Center
+        )
     }
 }
 
@@ -757,6 +772,6 @@ private fun CeComponentsPreview() {
         Spacer(Modifier.height(8.dp))
         CeProgressBar(0.4f)
         Spacer(Modifier.height(16.dp))
-        CeCta("Continuer", {})
+        CeFooterButton("Continuer", primary = true, onClick = {})
     }
 }
