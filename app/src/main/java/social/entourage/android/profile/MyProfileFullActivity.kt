@@ -35,7 +35,6 @@ import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.home.HomePresenter
-import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.association.AssociationProfileActivity
 import social.entourage.android.profile.editProfile.EditPhotoActivity
 import social.entourage.android.profile.settings.ProfilFullViewModel
@@ -47,7 +46,6 @@ import social.entourage.android.tools.utils.overrideTransitionCompat
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.UserPresenter
 import timber.log.Timber
-import java.text.SimpleDateFormat
 import kotlin.random.Random
 
 class MyProfileFullActivity : BaseSecuredActivity() {
@@ -78,7 +76,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
         profilFullViewModel.hasToUpdate.observe(this, ::updateProfile)
         discussionsPresenter.newConversation.observe(this, ::handleGetConversation)
         binding.progressBar.visibility = View.VISIBLE
-        homePresenter.summary.observe(this, ::handleAmbassadorSection)
+        homePresenter.summary.observe(this, ::handleSummary)
 
         initUserInfo()
         setModifyButton()
@@ -109,6 +107,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
     override fun onResume() {
         super.onResume()
         userPresenter.getUser(id)
+        homePresenter.getSummary()
         if (user == null) {
             binding.progressBar.visibility = View.VISIBLE
             Timber.e("user is null in resume Profile Screen")
@@ -188,9 +187,14 @@ class MyProfileFullActivity : BaseSecuredActivity() {
         this.user = user
         initUserInfo()
         updateBadgesSection(user.badges ?: emptyList())
-        if (user.roles?.contains("Animateur Entourage") == true) {
-            homePresenter.getSummary()
+    }
+
+    private fun handleSummary(summary: Summary?) {
+        summary?.let {
+            binding.layoutAchievement.visibility = View.VISIBLE
+            ProfileImpactHelper.bindOwnImpact(this, binding, it)
         }
+        handleAmbassadorSection(summary)
     }
 
     private fun handleAmbassadorSection(summary: Summary?) {
@@ -417,23 +421,6 @@ class MyProfileFullActivity : BaseSecuredActivity() {
 
     private fun initializeStats() {
         user?.let { user ->
-            user.stats?.let { stats ->
-                if (stats.neighborhoodsCount > 0) {
-                    binding.contribContent.text = stats.neighborhoodsCount.toString()
-                    binding.titleContrib.text = getString(R.string.contributions_group)
-                    binding.contribContent.visibility = View.VISIBLE
-                    binding.titleContrib.visibility = View.VISIBLE
-                }
-                if (stats.outingsCount > 0) {
-                    binding.eventContent.text = stats.outingsCount.toString()
-                    binding.titleEvent.text = getString(R.string.contributions_event)
-                    binding.eventContent.visibility = View.VISIBLE
-                    binding.titleEvent.visibility = View.VISIBLE
-                }
-                binding.iconContrib.setImageResource(R.drawable.icon_navbar_groupe_inactif)
-                binding.iconEvent.setImageResource(R.drawable.icon_navbar_calendrier_inactif)
-            }
-
             user.roles?.let { roles ->
                 binding.tagUser.visibility =
                     if (roles.contains("Animateur Entourage") || roles.contains("Équipe Entourage") || roles.contains(
@@ -461,16 +448,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
                     binding.ivAssoBadge.visibility = View.VISIBLE
                 }
             }
-            user.createdAt?.let { createdAt ->
-                val locale = LanguageManager.getLocaleFromPreferences(this)
-                binding.joined.profileJoinedDate.text = SimpleDateFormat(
-                    this.getString(R.string.profile_date_format),
-                    locale
-                ).format(createdAt)
-                binding.joined.profileJoinedDate.visibility = View.VISIBLE
-            } ?: run {
-                binding.joined.profileJoinedDate.visibility = View.GONE
-            }
+            ProfileImpactHelper.bindMemberSince(this, binding, user.createdAt)
 
             user.about?.let { about ->
                 if (about.isNotBlank()) {
@@ -537,7 +515,6 @@ class MyProfileFullActivity : BaseSecuredActivity() {
         }
         binding.progressBar.visibility = View.GONE
 
-        binding.myActivityTv.text = getString(R.string.my_activity)
         binding.tvBadgesTitle.text = getString(R.string.badges_section_title_me)
         user?.email?.let { email ->
             if (email.isNotBlank()) {

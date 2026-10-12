@@ -85,9 +85,7 @@
     <string name="button_clear_hint">effacer</string>
 
 
-    <string name="my_activity">Mon activité</string>
     <string name="my_information">Mes informations</string>
-    <string name="his_activity">Son activité</string>
     <string name="test">5</string>
     <string name="events">Événements</string>
     <string name="contributions">Contributions</string>
@@ -419,7 +417,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="event_places">Nombre de places</string>
     <string name="event_canceled">Evénement annulé</string>
     <string name="member_since">Membre Entourage depuis</string>
-    <string name="profile_date_format">MM/yyyy</string>
 
     <string name="event_cancel_subtitle_pop">Souhaitez-vous annuler l’événement ? Tous les particpants seront prévenus de l’annulation.</string>
     <string name="event_cancel_recurrent_event">Annuler un événement récurrent</string>
@@ -1799,7 +1796,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="events_button">Voir la liste →</string>
     <string name="actions_solidr">actions\nsolidaires</string>
     <string name="actions_button">Voir la liste →</string>
-    <string name="title_my_activity">👌  MON ACTIVITÉ</string>
     <string name="contribCreated">dons\npubliés</string>
     <string name="askCreated">demandes\n publiées</string>
 

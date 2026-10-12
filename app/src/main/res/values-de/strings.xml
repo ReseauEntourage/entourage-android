@@ -85,9 +85,7 @@
     <string name="button_clear_hint">löschen</string>
 
 
-    <string name="my_activity">Meine Aktivität</string>
     <string name="my_information">Meine Information</string>
-    <string name="his_activity">Seine Tätigkeit</string>
     <string name="test">5</string>
     <string name="events">Veranstaltungen</string>
     <string name="contributions">Beiträge</string>
@@ -406,7 +404,6 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="event_places">Anzahl der Plätze</string>
     <string name="event_canceled">Veranstaltung abgesagt</string>
     <string name="member_since">Seitdem Entourage-Mitglied</string>
-    <string name="profile_date_format">MM/yyyy</string>
     <plurals name="number_of_people">
         <item quantity="one">%1$d Teilnehmer</item>
         <item quantity="other">%1$d Teilnehmer</item>
@@ -1766,7 +1763,6 @@ Sie werden diese Nachricht lesen, sobald sie der Gruppe beitreten.</string>
     <string name="events_button">Liste anzeigen →</string>
     <string name="actions_solidr">Aktionen\nsolidaires</string>
     <string name="actions_button">Liste anzeigen →</string>
-    <string name="title_my_activity">👌 MEINE AKTIVITÄT</string>
     <string name="contribCreated">Spenden\nveröffentlicht</string>
     <string name="askCreated">Anfragen\n veröffentlicht</string>
 
