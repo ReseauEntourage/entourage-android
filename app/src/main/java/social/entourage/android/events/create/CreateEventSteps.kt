@@ -583,7 +583,7 @@ internal fun CreateEventStepSharing(
                 .testTag("create_event_groups"),
             contentPadding = androidx.compose.foundation.layout.PaddingValues(start = 22.dp, end = 22.dp, bottom = 16.dp)
         ) {
-            items(groups, key = { it.id ?: it.hashCode() }) { group ->
+            items(groups.distinctBy { it.id ?: it.hashCode() }, key = { it.id ?: it.hashCode() }) { group ->
                 // Lecture via state.form (et non le `form` capturé) : abonne cet item à la version
                 // de l'état, pour que la case se mette à jour dès le premier appui.
                 val selected = group.id?.let { state.form.neighborhoodIds.contains(it) } == true

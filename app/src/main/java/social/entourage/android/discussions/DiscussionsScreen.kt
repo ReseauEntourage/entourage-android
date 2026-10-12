@@ -166,7 +166,7 @@ fun DiscussionsScreen(
                             ConversationDivider()
                         }
                     }
-                    items(conversations, key = { it.id ?: it.hashCode() }) { conversation ->
+                    items(conversations.distinctBy { it.id ?: it.hashCode() }, key = { it.id ?: it.hashCode() }) { conversation ->
                         ConversationRow(conversation = conversation, onClick = { onConversationClick(conversation) })
                         ConversationDivider()
                     }

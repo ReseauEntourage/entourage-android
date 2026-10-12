@@ -42,6 +42,9 @@ fun TextView.setHyperlinkClickable() {
     val spannable = SpannableString(text)
     // Récupérer tous les URLSpan existants
     val spans = spannable.getSpans(0, spannable.length, URLSpan::class.java)
+    // Sans lien, on garde le TextView en texte statique : le passage en Spannable + movementMethod
+    // force un DynamicLayout, source de crash (ArrayIndexOutOfBounds dans getBlockIndex) sur Android 8.
+    if (spans.isEmpty()) return
     spans.forEach { span ->
         val start = spannable.getSpanStart(span)
         val end = spannable.getSpanEnd(span)
