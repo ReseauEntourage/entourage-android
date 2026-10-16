@@ -1,37 +1,27 @@
 sed -i '' '/<\/resources>/i\
-    <string name="action_cgu_header_title">Avant de commencer</string>\
-    <string name="action_cgu_read_more_prefix">Envie d’en savoir plus ?</string>\
-    <string name="action_cgu_read_more_link">Lire la charte complète</string>\
-    <string name="action_cgu_accept_button">J’ai compris, je continue</string>\
-    <string name="action_cgu_examples_header">Par exemple, vous pouvez :</string>\
-    <string name="action_cgu_limits_header">Ce qui ne passe pas par ici :</string>\
-    <string name="action_cgu_give_eyebrow">Vous proposez</string>\
-    <string name="action_cgu_give_title">Vous offrez un coup de main</string>\
-    <string name="action_cgu_give_subtitle">Un service, un objet ou un moment à partager avec quelqu’un. Toujours gratuit, et avant tout une occasion de se rencontrer dans un lieu public.</string>\
-    <string name="action_cgu_give_example_1">Aider à faire une lessive ou imprimer des documents</string>\
-    <string name="action_cgu_give_example_2">Partager un café, une discussion, une balade</string>\
-    <string name="action_cgu_give_example_3">Proposer un échange pour pratiquer une langue</string>\
-    <string name="action_cgu_give_example_4">Offrir des vêtements en bon état ou des produits d’hygiène neufs</string>\
-    <string name="action_cgu_give_limit_1">La distribution régulière de nourriture</string>\
-    <string name="action_cgu_give_limit_2">L’accompagnement social ou administratif</string>\
-    <string name="action_cgu_give_limit_3">Les services à distance (livraison, drive, bon cadeau, cagnotte…)</string>\
-    <string name="action_cgu_give_limit_4">Se donner rendez-vous chez l’un ou chez l’autre : on se retrouve dans un lieu public</string>\
-    <string name="action_cgu_give_limit_footnote">Pas d’inquiétude : si une proposition sort du cadre, notre équipe vous recontacte pour vous aider à la reformuler ou vous orienter.</string>\
-    <string name="action_cgu_spirit_text">Chez Entourage, la solidarité naît du lien, du sourire et de l’échange. C’est la rencontre qui compte avant tout.</string>\
-    <string name="action_cgu_ask_eyebrow">Vous demandez</string>\
-    <string name="action_cgu_ask_title">Vous sollicitez un coup de main</string>\
-    <string name="action_cgu_ask_subtitle">Un service, un objet ou un moment à partager. Une demande reste gratuite, sans contrepartie attendue.</string>\
-    <string name="action_cgu_ask_example_1">Recevoir des vêtements en bon état ou des produits d’hygiène neufs</string>\
-    <string name="action_cgu_ask_example_2">Demander un coup de main pour une lessive ou une impression</string>\
-    <string name="action_cgu_ask_example_3">Proposer un temps de partage : un café, une balade, une activité</string>\
-    <string name="action_cgu_ask_limit_1">Une aide financière</string>\
-    <string name="action_cgu_ask_limit_2">Un hébergement</string>\
-    <string name="action_cgu_ask_limit_3">Un accompagnement social</string>\
-    <string name="action_cgu_ask_limit_4">Une aide alimentaire régulière</string>\
-    <string name="action_cgu_ask_limit_footnote">Les demandes ne peuvent pas remplacer un accompagnement ou une aide régulière assurée par des professionnels. Une question ? Écrivez à contact@entourage.social.</string>\
-    <string name="action_cgu_consent_header">Le respect de chacun(e) :</string>\
-    <string name="action_cgu_consent_1">Vous publiez pour quelqu’un ? Demandez-lui son accord d’abord.</string>\
-    <string name="action_cgu_consent_2">Ne partagez pas d’infos permettant d’identifier une personne (téléphone, adresse, données sensibles).</string>\
-    <string name="action_cgu_consent_3">La bienveillance et le respect sont au cœur de chaque échange. Tout comportement discriminatoire, violent ou contraire à la loi est strictement interdit.</string>\
-    <string name="action_cgu_full_charter_url" translatable="false">https://www.entourage.social/app/resources/eMU*InNSSJbE</string>
+    <string name="impact_title_mine">Mon impact</string>\
+    <string name="impact_title_other">Son impact</string>\
+    <string name="impact_hero_label_mine">fois engagé</string>\
+    <string name="impact_hero_label_other">actions</string>\
+    <string name="impact_hero_subtitle">au sein de la communauté</string>\
+    <string name="impact_hero_subtitle_low">Chaque geste compte</string>\
+    <string name="impact_section_done">Ce que j’ai fait</string>\
+    <string name="impact_line_events">J’ai participé à des événements</string>\
+    <string name="impact_line_actions">J’ai partagé une entraide</string>\
+    <string name="impact_line_groups">J’ai animé mes groupes de voisins</string>\
+    <string name="impact_line_conversations">J’ai échangé avec d’autres membres</string>\
+    <string name="impact_empty_message">Bienvenue ! Votre histoire commence ici. Dès votre première action (un bonjour, un café, un événement), elle apparaîtra ici. Même les petits gestes comptent.</string>\
+    <string name="impact_empty_button">Découvrir près de chez moi</string>\
+    <string name="impact_other_events">Participation à des événements</string>\
+    <string name="impact_other_actions">Entraides partagées</string>\
+    <string name="impact_other_groups">Groupes de voisins rejoints</string>\
+    <string name="member_since_this_month">Membre depuis %1$s</string>\
+    <plurals name="member_since_years">\
+        <item quantity="one">Membre depuis %1$d an, %2$s</item>\
+        <item quantity="other">Membre depuis %1$d ans, %2$s</item>\
+    </plurals>\
+    <plurals name="member_since_months">\
+        <item quantity="one">Membre depuis %1$d mois, %2$s</item>\
+        <item quantity="other">Membre depuis %1$d mois, %2$s</item>\
+    </plurals>
 ' app/src/main/res/values/strings.xml

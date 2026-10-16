@@ -83,9 +83,7 @@
     <string name="button_clear_hint">لمحو</string>
 
 
-    <string name="my_activity">نشاطي</string>
     <string name="my_information">معلوماتي</string>
-    <string name="his_activity">نشاطه</string>
     <string name="events">الفعالية</string>
     <string name="contributions">مساهمات</string>
     <string name="firstname">الاسم الأول</string>
@@ -1746,7 +1744,6 @@
     <string name="events_button">عرض القائمة →</string>
     <string name="actions_solidr">إجراءات\nsolidaires</string>
     <string name="actions_button">عرض القائمة →</string>
-    <string name="title_my_activity">👌 نشاطي</string>
     <string name="contribCreated">تم نشر التبرعات\</string>
     <string name="askCreated">تم نشر طلب مساعدة\n</string>
 
@@ -2432,7 +2429,6 @@
     <string name="title_activity_main">النشاط الرئيسي</string>
     <string name="zero">0</string>
     <string name="date_recurrence_event">%1$s . %2$s</string>
-    <string name="profile_date_format">MM/yyyy</string>
     <string name="entourage_info_metadata_dateStart_hours_format_new">%1$s %2$s</string>
     <string name="entourage_cell_title">%1$s</string>
     <string name="entourage_cell_author">%1$s</string>

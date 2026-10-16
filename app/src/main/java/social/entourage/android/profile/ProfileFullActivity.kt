@@ -30,7 +30,6 @@ import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
 import social.entourage.android.home.HomePresenter
-import social.entourage.android.language.LanguageManager
 import social.entourage.android.profile.association.AssociationProfileActivity
 import social.entourage.android.profile.settings.ProfilFullViewModel
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
@@ -40,7 +39,6 @@ import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.view.EntSnackbar
 import social.entourage.android.user.UserPresenter
 import timber.log.Timber
-import java.text.SimpleDateFormat
 import kotlin.random.Random
 
 class ProfileFullActivity : BaseSecuredActivity() {
@@ -353,22 +351,7 @@ class ProfileFullActivity : BaseSecuredActivity() {
 
     private fun initializeStats() {
         user?.let { user ->
-            user.stats?.let { stats ->
-                if (stats.neighborhoodsCount > 0) {
-                    binding.contribContent.text = stats.neighborhoodsCount.toString()
-                    binding.titleContrib.text = getString(R.string.contributions_group)
-                    binding.contribContent.visibility = View.VISIBLE
-                    binding.titleContrib.visibility = View.VISIBLE
-                }
-                if (stats.outingsCount > 0) {
-                    binding.eventContent.text = stats.outingsCount.toString()
-                    binding.titleEvent.text = getString(R.string.contributions_event)
-                    binding.eventContent.visibility = View.VISIBLE
-                    binding.titleEvent.visibility = View.VISIBLE
-                }
-                binding.iconContrib.setImageResource(R.drawable.icon_navbar_groupe_inactif)
-                binding.iconEvent.setImageResource(R.drawable.icon_navbar_calendrier_inactif)
-            }
+            ProfileImpactHelper.bindPublicImpact(this, binding, user.stats)
 
             user.roles?.let { roles ->
                 binding.tagUser.visibility =
@@ -397,16 +380,7 @@ class ProfileFullActivity : BaseSecuredActivity() {
                     binding.ivAssoBadge.visibility = View.VISIBLE
                 }
             }
-            user.createdAt?.let { createdAt ->
-                val locale = LanguageManager.getLocaleFromPreferences(this)
-                binding.joined.profileJoinedDate.text = SimpleDateFormat(
-                    this.getString(R.string.profile_date_format),
-                    locale
-                ).format(createdAt)
-                binding.joined.profileJoinedDate.visibility = View.VISIBLE
-            } ?: run {
-                binding.joined.profileJoinedDate.visibility = View.GONE
-            }
+            ProfileImpactHelper.bindMemberSince(this, binding, user.createdAt)
 
             user.about?.let { about ->
                 if (about.isNotBlank()) {
@@ -470,7 +444,6 @@ class ProfileFullActivity : BaseSecuredActivity() {
         }
         binding.progressBar.visibility = View.GONE
 
-        binding.myActivityTv.text = getString(R.string.his_activity)
         binding.tvMail.visibility = View.GONE
         binding.tvPhone.visibility = View.GONE
         user?.address?.let { address ->

@@ -126,6 +126,19 @@
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="Name" />
 
+                    <TextView
+                        android:id="@+id/tv_member_since"
+                        style="@style/left_courant_black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textSize="12sp"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_name"
+                        tools:text="Membre depuis 2 ans, mars 2024" />
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/tag_user"
                         android:layout_width="wrap_content"
@@ -135,7 +148,7 @@
                         android:paddingHorizontal="15dp"
                         android:paddingVertical="6dp"
 
-                        app:layout_constraintTop_toBottomOf="@+id/tv_name"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_member_since"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent">
 
@@ -241,6 +254,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/layout_achievement"
+                        android:visibility="gone"
                         android:background="@drawable/rounded_bcknd_beige_profile_achievement"
                         app:layout_constraintTop_toBottomOf="@+id/button_modify"
                         app:layout_constraintStart_toStartOf="parent"
@@ -249,128 +263,106 @@
                         android:layout_marginTop="10dp"
                         app:layout_constraintEnd_toEndOf="parent">
                         <TextView
-                            android:id="@+id/my_activity_tv"
+                            android:id="@+id/tv_impact_title"
                             style="@style/h2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:layout_marginBottom="18dp"
+                            android:layout_marginBottom="8dp"
                             android:textSize="18sp"
-                            android:text="@string/my_activity"
-                            app:layout_constraintBottom_toTopOf="@id/joined"
+                            android:text="@string/impact_title_mine"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             />
-                        <include
-                            android:id="@+id/joined"
-                            layout="@layout/profile_joined_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="12dp"
+                        <LinearLayout
+                            android:id="@+id/layout_impact_filled"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:visibility="gone"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/my_activity_tv" />
-                        <androidx.constraintlayout.widget.ConstraintLayout
+                            app:layout_constraintTop_toBottomOf="@+id/tv_impact_title">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_impact_hero"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/quicksand_bold"
+                                    android:textColor="@color/orange"
+                                    android:textSize="36sp"
+                                    tools:text="42" />
+
+                                <TextView
+                                    android:id="@+id/tv_impact_hero_label"
+                                    style="@style/left_courant_bold_black"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="8dp"
+                                    tools:text="fois engagé" />
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tv_impact_hero_subtitle"
+                                style="@style/left_courant_black"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                tools:text="au sein de la communauté" />
+
+                            <TextView
+                                android:id="@+id/tv_impact_section_title"
+                                style="@style/left_courant_bold_black"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:text="@string/impact_section_done" />
+
+                            <LinearLayout
+                                android:id="@+id/layout_impact_lines"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:orientation="vertical" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/layout_impact_empty"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:id="@+id/stat_contrib"
-                            android:layout_marginEnd="8dp"
-                            android:layout_marginTop="12dp"
-                            app:layout_constraintTop_toBottomOf="@+id/joined"
-                            app:layout_constraintStart_toStartOf="@+id/joined"
-                            app:layout_constraintEnd_toStartOf="@+id/stat_event"
-                            android:elevation="2dp"
-                            android:background="@drawable/bg_rounded_statistics"
-                            >
-                            <TextView
-                                android:id="@+id/contrib_content"
-                                style="@style/left_courant_bold_black"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                android:layout_marginTop="8dp"
-                                android:textAlignment="center"
-                                tools:text="4" />
-                            <TextView
-                                android:id="@+id/title_contrib"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@android:color/black"
-                                android:fontFamily="@font/nunitosans_regular"
-                                android:textAlignment="center"
-                                app:layout_constraintTop_toBottomOf="@+id/contrib_content"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                android:layout_marginBottom="8dp"
-                                android:text="@string/contributions_group"
-                                />
+                            android:orientation="vertical"
+                            android:visibility="gone"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/layout_impact_filled">
 
-                            <ImageView
-                                android:id="@+id/icon_contrib"
-                                android:layout_width="35dp"
-                                android:layout_height="20dp"
-                                android:adjustViewBounds="true"
-                                android:cropToPadding="true"
-                                android:src="@drawable/icon_navbar_groupe_inactif"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toStartOf="@+id/title_contrib"
-                                />
-
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/stat_event"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="12dp"
-                            app:layout_constraintTop_toBottomOf="@+id/joined"
-                            app:layout_constraintStart_toEndOf="@+id/stat_contrib"
-                            app:layout_constraintEnd_toEndOf="@+id/joined"
-                            android:elevation="2dp"
-                            android:background="@drawable/bg_rounded_statistics"
-                            >
                             <TextView
-                                android:id="@+id/event_content"
-                                style="@style/left_courant_bold_black"
-                                android:layout_width="wrap_content"
+                                android:id="@+id/tv_impact_empty"
+                                style="@style/left_courant_black"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintTop_toTopOf="parent"
-                                android:layout_marginTop="8dp"
-                                tools:text="4" />
-                            <TextView
-                                android:id="@+id/title_event"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@android:color/black"
-                                android:textAlignment="center"
-                                android:fontFamily="@font/nunitosans_regular"
-                                app:layout_constraintTop_toBottomOf="@+id/event_content"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                android:layout_marginBottom="8dp"
-                                android:text="@string/contributions_event"
-                                />
-                            <ImageView
-                                android:id="@+id/icon_event"
-                                android:layout_width="35dp"
-                                android:layout_height="20dp"
-                                android:adjustViewBounds="true"
-                                android:cropToPadding="true"
-                                android:src="@drawable/icon_navbar_calendrier_inactif"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toStartOf="@+id/title_event"
-                                />
+                                android:text="@string/impact_empty_message" />
 
-                        </androidx.constraintlayout.widget.ConstraintLayout>
+                            <Button
+                                android:id="@+id/button_impact_discover"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:background="@drawable/shape_button_v9_positive"
+                                android:elevation="0dp"
+                                android:fontFamily="@font/quicksand_bold"
+                                android:paddingHorizontal="10dp"
+                                android:paddingVertical="10dp"
+                                android:text="@string/impact_empty_button"
+                                android:textAllCaps="false"
+                                android:textColor="@android:color/white"
+                                android:textSize="14sp" />
+                        </LinearLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 

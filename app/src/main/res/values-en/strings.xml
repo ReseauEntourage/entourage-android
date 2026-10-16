@@ -68,9 +68,7 @@
     <string name="equip_mod">The moderation team of Entourage</string>
     <string name="back_button_hint">back</string>
     <string name="button_clear_hint">clear</string>
-    <string name="my_activity">My activity</string>
     <string name="my_information">My information</string>
-    <string name="his_activity">Member activity</string>
     <string name="test">5</string>
     <string name="events">Events</string>
     <string name="contributions">Contributions</string>
@@ -379,7 +377,6 @@
     <string name="event_places">Number of places</string>
     <string name="event_canceled">Event canceled</string>
     <string name="member_since">Entourage member since</string>
-    <string name="profile_date_format">MM/yyyy</string>
     <string name="event_cancel_subtitle_pop">Do you want to cancel the event? All participants will be notified of the cancellation.</string>
     <string name="event_cancel_recurrent_event">Cancel a recurring event</string>
     <string name="this_event">This event</string>
@@ -994,7 +991,6 @@
     <string name="events_button">View list →</string>
     <string name="actions_solidr">actions\nsolidaires</string>
     <string name="actions_button">View list →</string>
-    <string name="title_my_activity">👌 MY ACTIVITY</string>
     <string name="contribCreated">donations\npublished</string>
     <string name="askCreated">requests\n published</string>
     <string name="menu_info_first_title">👋 TAKE THE FIRST STEP</string>
