@@ -75,7 +75,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
         discussionsPresenter.getBlockedUsers.observe(this, ::handleResponseBlocked)
         profilFullViewModel.hasToUpdate.observe(this, ::updateProfile)
         discussionsPresenter.newConversation.observe(this, ::handleGetConversation)
-        binding.progressBar.visibility = View.VISIBLE
+        binding.setProfileLoading(true)
         homePresenter.summary.observe(this, ::handleSummary)
 
         initUserInfo()
@@ -89,6 +89,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
             window.decorView.isForceDarkAllowed = false
         }
         updatePaddingTopForEdgeToEdge(binding.profileContent)
+        updatePaddingTopForEdgeToEdge(binding.profileSkeleton.skeletonContent)
     }
 
     private fun initUserInfo() {
@@ -109,7 +110,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
         userPresenter.getUser(id)
         homePresenter.getSummary()
         if (user == null) {
-            binding.progressBar.visibility = View.VISIBLE
+            binding.setProfileLoading(true)
             Timber.e("user is null in resume Profile Screen")
         }
         EnhancedOnboarding.isFromSettingsWishes = false
@@ -172,6 +173,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
         }
         setupRecyclerView()
         binding.containerProfile.visibility = View.VISIBLE
+        binding.setProfileLoading(false)
     }
 
     private fun setConfettiView() {
@@ -513,7 +515,6 @@ class MyProfileFullActivity : BaseSecuredActivity() {
                 )
             )
         }
-        binding.progressBar.visibility = View.GONE
 
         binding.tvBadgesTitle.text = getString(R.string.badges_section_title_me)
         user?.email?.let { email ->

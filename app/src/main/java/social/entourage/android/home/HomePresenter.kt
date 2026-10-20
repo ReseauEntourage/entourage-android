@@ -350,9 +350,10 @@ class HomePresenter: ViewModel() {
                     call: Call<NotificationPermissionsResponse>,
                     response: Response<NotificationPermissionsResponse>
                 ) {
-                    if (response.isSuccessful) {
-                        notificationsPermission.value = response.body()?.notifsPermission
-                    }
+                    // Réponse en erreur (4xx/5xx) : on publie aussi null, sinon l'écran profil, qui attend cette
+                    // valeur pour s'afficher, restait indéfiniment sur son squelette.
+                    notificationsPermission.value =
+                        if (response.isSuccessful) response.body()?.notifsPermission else null
                 }
 
                 override fun onFailure(call: Call<NotificationPermissionsResponse>, t: Throwable) {
@@ -370,9 +371,10 @@ class HomePresenter: ViewModel() {
                     call: Call<NotificationPermissionsResponse>,
                     response: Response<NotificationPermissionsResponse>
                 ) {
-                    if (response.isSuccessful) {
-                        notificationsPermission.value = response.body()?.notifsPermission
-                    }
+                    // Réponse en erreur (4xx/5xx) : on publie aussi null, sinon l'écran profil, qui attend cette
+                    // valeur pour s'afficher, restait indéfiniment sur son squelette.
+                    notificationsPermission.value =
+                        if (response.isSuccessful) response.body()?.notifsPermission else null
                 }
 
                 override fun onFailure(call: Call<NotificationPermissionsResponse>, t: Throwable) {
@@ -389,9 +391,10 @@ class HomePresenter: ViewModel() {
                     call: Call<NotificationPermissionsResponse>,
                     response: Response<NotificationPermissionsResponse>
                 ) {
-                    if (response.isSuccessful) {
-                        notificationsPermission.value = response.body()?.notifsPermission
-                    }
+                    // Réponse en erreur (4xx/5xx) : on publie aussi null, sinon l'écran profil, qui attend cette
+                    // valeur pour s'afficher, restait indéfiniment sur son squelette.
+                    notificationsPermission.value =
+                        if (response.isSuccessful) response.body()?.notifsPermission else null
                 }
 
                 override fun onFailure(call: Call<NotificationPermissionsResponse>, t: Throwable) {

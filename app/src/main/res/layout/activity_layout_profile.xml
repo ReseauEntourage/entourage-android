@@ -6,16 +6,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:fitsSystemWindows="false">
 
-    <ProgressBar
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/progress_bar"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:elevation="30dp"
-        />
+    <!-- Squelette affiché tant que le profil n'est pas prêt (remplace l'ancien ProgressBar + écran blanc) -->
+    <include
+        android:id="@+id/profile_skeleton"
+        layout="@layout/layout_profile_skeleton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
