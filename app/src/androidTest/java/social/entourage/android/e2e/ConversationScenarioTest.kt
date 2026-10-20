@@ -24,12 +24,19 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.espresso.IdlingPolicies
 import androidx.test.filters.LargeTest
+import androidx.test.uiautomator.By
+import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.Until
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
+import social.entourage.android.discussions.DetailConversationActivity
+import social.entourage.android.tools.utils.Const
+import timber.log.Timber
 import org.hamcrest.Matchers.allOf
 import org.junit.After
+import org.junit.Assume.assumeTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -68,6 +75,10 @@ import java.util.concurrent.TimeUnit
 @RunWith(AndroidJUnit4::class)
 class ConversationScenarioTest : EntourageTestAfterLogin() {
 
+    private val device: UiDevice by lazy {
+        UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
+    }
+
     private val screenshot = E2EScreenshot("conversation")
 
     @get:Rule
@@ -94,9 +105,41 @@ class ConversationScenarioTest : EntourageTestAfterLogin() {
         }
     }
 
+    private var conversationId = -1
+
     @After
     fun tearDownScenario() {
+        deleteLeftoverTestMessages()
         scenario.close()
+    }
+
+    /**
+     * Garde-fou si le scenario echoue avant l'etape "Supprimer" : supprime par l'API les messages
+     * "Unit test message ..." laisses dans la conversation (le prefixe permet aussi un menage
+     * en masse cote staging).
+     */
+    private fun deleteLeftoverTestMessages() {
+        if (conversationId < 0) return
+        try {
+            val request = EntourageApplication.get().apiModule.discussionsRequest
+            val mine = EntourageApplication.get().me()?.id
+            request.getMessagesFor(conversationId, 1, 50).execute().body()?.posts
+                ?.filter { it.content?.startsWith("Unit test message") == true && it.user?.userId == mine }
+                ?.forEach { post -> post.id?.let { request.deleteMessage(conversationId, it).execute() } }
+        } catch (e: Exception) {
+            Timber.tag("E2E").e(e, "Echec du nettoyage des messages de test")
+        }
+    }
+
+    private fun openedConversationId(): Int {
+        var id = -1
+        InstrumentationRegistry.getInstrumentation().runOnMainSync {
+            id = ActivityLifecycleMonitorRegistry.getInstance()
+                .getActivitiesInStage(Stage.RESUMED)
+                .firstOrNull { it is DetailConversationActivity }
+                ?.intent?.getIntExtra(Const.ID, -1) ?: -1
+        }
+        return id
     }
 
     private fun ensureLoggedIn() {
@@ -188,6 +231,38 @@ class ConversationScenarioTest : EntourageTestAfterLogin() {
         onIdle()
     }
 
+    /**
+     * Creation seule : ouvre la premiere conversation, envoie un message et verifie, via l'API, qu'il
+     * existe cote serveur. Le message est supprime par le nettoyage (@After). Le scenario complet
+     * `conversation` ci-dessous ajoute les actions du menu 3-points, dont le ciblage par coordonnees
+     * est fragile et doit etre recale sur appareil.
+     */
+    @Test
+    fun envoiDunMessage() {
+        checkNoPopUpOnHome()
+        onView(withId(R.id.navigation_messages)).perform(click())
+        onIdle()
+
+        val opened = device.wait(Until.hasObject(By.res("conversation_item")), 15_000)
+        assumeTrue("E2E: aucune conversation dans la liste du compte de test", opened)
+        device.findObject(By.res("conversation_item")).click()
+        onIdle()
+        conversationId = openedConversationId()
+
+        val message = "Unit test message ${System.currentTimeMillis()}"
+        typeMessageReliably(message)
+        shoot("envoi_message_saisi")
+        onView(withId(R.id.comment)).perform(click())
+        onIdle()
+        SystemClock.sleep(2_000)
+        shoot("envoi_message_envoye")
+
+        val request = EntourageApplication.get().apiModule.discussionsRequest
+        val sent = request.getMessagesFor(conversationId, 1, 50).execute().body()?.posts
+            ?.any { it.content == message } == true
+        org.junit.Assert.assertTrue("Le message n'existe pas cote serveur", sent)
+    }
+
     @Test
     fun conversation() {
         checkNoPopUpOnHome()
@@ -197,13 +272,16 @@ class ConversationScenarioTest : EntourageTestAfterLogin() {
         onIdle()
         shoot("liste_conversations")
 
-        onView(allOf(withId(R.id.recycler_view), isDisplayed())).perform(
-            actionOnItemAtPosition<ViewHolder>(0, click())
-        )
+        // La liste des discussions est en Compose (DiscussionsScreen) : on la pilote via UiAutomator,
+        // les testTag etant exposes en resource-id (cf. DiscussionsListScenarioTest).
+        val opened = device.wait(Until.hasObject(By.res("conversation_item")), 15_000)
+        assumeTrue("E2E: aucune conversation dans la liste du compte de test", opened)
+        device.findObject(By.res("conversation_item")).click()
         onIdle()
+        conversationId = openedConversationId()
         shoot("conversation_ouverte")
 
-        val message = "Message test e2e ${System.currentTimeMillis()}"
+        val message = "Unit test message ${System.currentTimeMillis()}"
         typeMessageReliably(message)
         shoot("message_saisi")
 

@@ -32,6 +32,9 @@ class E2EScreenshot(private val scenario: String) {
             } else {
                 Timber.tag("E2E").e("Failed to take screenshot: $scenario/$fileName")
             }
+            // takeScreenshot fait perdre brievement le focus a la fenetre : sans cette pause, l'action
+            // Espresso suivante peut echouer en RootViewWithoutFocusException.
+            Thread.sleep(500)
         } catch (e: Exception) {
             Timber.tag("E2E").e(e, "Error taking screenshot: $scenario/$fileName")
         }

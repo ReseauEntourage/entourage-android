@@ -22,6 +22,7 @@ import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.Until
 import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
@@ -69,6 +70,10 @@ class CreateActionFullFlowScenarioTest : EntourageTestAfterLogin() {
         Manifest.permission.POST_NOTIFICATIONS
     )
 
+    companion object {
+        private const val TITLE_PREFIX = "Unit test "
+    }
+
     private var createdActionTitle: String? = null
     private var createdActionIsDemand: Boolean = false
 
@@ -84,23 +89,44 @@ class CreateActionFullFlowScenarioTest : EntourageTestAfterLogin() {
 
     @After
     fun cleanupCreatedAction() {
-        val title = createdActionTitle ?: return
+        if (createdActionTitle == null) return
         try {
             val actionsRequest = EntourageApplication.get().apiModule.actionsRequest
-            val myActions = actionsRequest.getMyActions(1, 50).execute().body()?.allActions
-            val created = myActions?.firstOrNull { it.title == title }
-            val id = created?.id ?: return
-            if (createdActionIsDemand) {
-                actionsRequest.cancelDemand(id, DemandCancelWrapper(ActionCancel(outcome = true))).execute()
-            } else {
-                actionsRequest.cancelContribution(id, ContribCancelWrapper(ActionCancel(outcome = true))).execute()
+            // Annule l'action creee par ce test, ainsi que les restes d'executions interrompues
+            // ("Unit test Demande ..." / "Unit test Contribution ...") : le prefixe permet aussi
+            // un nettoyage en masse cote staging.
+            val leftovers = (1..3).flatMap { page ->
+                actionsRequest.getMyActions(page, 50).execute().body()?.allActions ?: emptyList()
+            }.filter { it.title?.startsWith(TITLE_PREFIX) == true && !it.isCancel() }
+            leftovers.forEach { action ->
+                val id = action.id ?: return@forEach
+                if (action.isDemand()) {
+                    actionsRequest.cancelDemand(id, DemandCancelWrapper(ActionCancel(outcome = true))).execute()
+                } else {
+                    actionsRequest.cancelContribution(id, ContribCancelWrapper(ActionCancel(outcome = true))).execute()
+                }
             }
         } catch (e: Exception) {
             Timber.tag("E2E").e(e, "Echec du nettoyage de l'action creee par le test")
         }
     }
 
-    private fun runFullCreationFlow(isDemand: Boolean, successTitleRes: Int) {
+    private fun waitForLocationText() {
+        val deadline = System.currentTimeMillis() + 30_000
+        while (System.currentTimeMillis() < deadline) {
+            try {
+                onView(allOf(withId(R.id.ui_onboard_place_tv_location), isDisplayed(), withText(not(""))))
+                    .check(matches(isDisplayed()))
+                return
+            } catch (e: androidx.test.espresso.NoMatchingViewException) {
+                Thread.sleep(1_000)
+            } catch (e: AssertionError) {
+                Thread.sleep(1_000)
+            }
+        }
+    }
+
+    private fun runFullCreationFlow(isDemand: Boolean) {
         val screenshot = E2EScreenshot(if (isDemand) "creation_demande" else "creation_contribution")
         createdActionIsDemand = isDemand
 
@@ -116,7 +142,7 @@ class CreateActionFullFlowScenarioTest : EntourageTestAfterLogin() {
         screenshot.shoot("categorie_choisie")
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click())
 
-        val uniqueTitle = "Test E2E ${System.currentTimeMillis()}"
+        val uniqueTitle = "$TITLE_PREFIX${if (isDemand) "Demande" else "Contribution"} ${System.currentTimeMillis()}"
         createdActionTitle = uniqueTitle
         onView(allOf(withId(R.id.action_name), isDisplayed())).perform(
             typeText(uniqueTitle), closeSoftKeyboard()
@@ -130,13 +156,15 @@ class CreateActionFullFlowScenarioTest : EntourageTestAfterLogin() {
 
         onView(allOf(withId(R.id.location), isDisplayed())).perform(click())
         onView(allOf(withId(R.id.ui_onboard_bt_location), isDisplayed())).perform(click())
-        // Attente deliberee de la callback asynchrone de geolocalisation (FusedLocationProviderClient)
-        // avant de valider : aucune idling resource n'est branchee sur ce callback.
-        Thread.sleep(3_000)
+        // La geolocalisation est asynchrone (FusedLocationProviderClient, aucune idling resource) :
+        // on attend que l'adresse soit affichee avant de valider (jusqu'a 30 s, le premier fix
+        // d'un emulateur fraichement demarre est lent).
+        waitForLocationText()
         onView(withText(R.string.validate)).check(matches(isDisplayed())).perform(click())
         screenshot.shoot("localisation_validee")
         onView(withText(R.string.next)).check(matches(isDisplayed())).perform(click())
 
+        screenshot.shoot("avant_partage")
         onView(withText(R.string.no)).check(matches(isDisplayed())).perform(click())
         screenshot.shoot("partage_refuse")
 
@@ -144,7 +172,9 @@ class CreateActionFullFlowScenarioTest : EntourageTestAfterLogin() {
         onIdle()
         screenshot.shoot("creation_soumise")
 
-        onView(withText(successTitleRes)).check(matches(isDisplayed()))
+        // Le titre de succes est un gabarit ("Votre %s a bien ete creee !") : on s'appuie sur le bouton
+        // de fin, propre a l'ecran de succes.
+        onView(withText(R.string.action_create_end_finish_bt)).check(matches(isDisplayed()))
         screenshot.shoot("succes")
         onView(withText(R.string.action_create_end_finish_bt)).perform(click())
 
@@ -155,11 +185,11 @@ class CreateActionFullFlowScenarioTest : EntourageTestAfterLogin() {
 
     @Test
     fun creationDemande() {
-        runFullCreationFlow(isDemand = true, successTitleRes = R.string.action_create_demand_title)
+        runFullCreationFlow(isDemand = true)
     }
 
     @Test
     fun creationContribution() {
-        runFullCreationFlow(isDemand = false, successTitleRes = R.string.action_create_contrib_title)
+        runFullCreationFlow(isDemand = false)
     }
 }

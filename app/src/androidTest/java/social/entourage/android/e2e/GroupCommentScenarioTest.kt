@@ -204,7 +204,7 @@ class GroupCommentScenarioTest : EntourageTestAfterLogin() {
     fun editAndDeleteOwnComment() {
         shoot("post_ouvert")
 
-        val message = "Message test e2e ${System.currentTimeMillis()}"
+        val message = "Unit test message ${System.currentTimeMillis()}"
         typeMessageReliably(message)
         shoot("commentaire_saisi")
 

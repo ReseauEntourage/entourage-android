@@ -23,9 +23,11 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.GrantPermissionRule
 import org.hamcrest.Matchers.allOf
 import org.hamcrest.Matchers.`is`
+import org.junit.Assert.assertFalse
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -35,7 +37,9 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.afterLogin.EntourageTestAfterLogin
+import social.entourage.android.api.MetaDataRepository
 import social.entourage.android.api.OnboardingAPI
+import timber.log.Timber
 import java.util.Calendar
 
 /**
@@ -102,8 +106,19 @@ class CreationEvenementScenarioTest : EntourageTestAfterLogin() {
         }
     }
 
+    /** Le catalogue de photos de l'etape 1 vient de l'API : on le charge et on attend sa disponibilite. */
+    private fun preloadEventImages() {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync { MetaDataRepository.getEventsImages() }
+        val deadline = System.currentTimeMillis() + 20_000
+        while (MetaDataRepository.eventsImages.value.isNullOrEmpty() && System.currentTimeMillis() < deadline) {
+            Thread.sleep(250)
+        }
+        assertFalse("Catalogue de photos d'evenement vide", MetaDataRepository.eventsImages.value.isNullOrEmpty())
+    }
+
     @Test
     fun creationEvenement() {
+        preloadEventImages()
         checkNoPopUpOnHome()
         screenshot.shoot("accueil")
 
@@ -113,17 +128,20 @@ class CreationEvenementScenarioTest : EntourageTestAfterLogin() {
         onView(allOf(withId(R.id.create_event_expanded), isDisplayed())).perform(click())
         screenshot.shoot("etape1_vide")
 
-        val titre = "Evenement test ${System.currentTimeMillis()}"
+        val titre = "Unit test Event ${System.currentTimeMillis()}"
         type("create_event_name", titre)
         type("create_event_description", "Evenement cree automatiquement par le test E2E.")
         screenshot.shoot("etape1_texte_rempli")
 
         tap("create_event_add_photo")
         screenshot.shoot("etape1_choix_photo")
+        // Position 0 = tuile "+" (photo de la galerie de l'appareil, selecteur systeme) : on choisit
+        // la position 1, premiere image du catalogue Entourage, puis on valide.
         onView(allOf(withId(R.id.recycler_view), isDisplayed())).perform(
-            actionOnItemAtPosition<ViewHolder>(0, click())
+            actionOnItemAtPosition<ViewHolder>(1, click())
         )
         onView(withId(R.id.validate)).perform(click())
+        Thread.sleep(1_500)
         screenshot.shoot("etape1_photo_choisie")
 
         tap("create_event_next")
