@@ -1,9 +1,8 @@
 package social.entourage.android.events.create
 
 import android.content.Context
-import com.google.gson.Gson
-import com.google.gson.JsonParseException
 import timber.log.Timber
+import social.entourage.android.api.json.AppJson
 
 /**
  * Brouillon local de création d'événement : un seul par utilisateur, stocké sur l'appareil dans
@@ -14,14 +13,13 @@ object CreateEventDraftStore {
 
     private const val PREFS_NAME = "create_event_draft"
     private const val KEY_PREFIX = "draft_user_"
-    private val gson = Gson()
 
     private fun key(userId: Int) = "$KEY_PREFIX$userId"
 
     fun save(context: Context, userId: Int, form: CreateEventForm) {
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             .edit()
-            .putString(key(userId), gson.toJson(form))
+            .putString(key(userId), AppJson.encode(form))
             .apply()
     }
 
@@ -29,8 +27,8 @@ object CreateEventDraftStore {
         val json = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             .getString(key(userId), null) ?: return null
         return try {
-            gson.fromJson(json, CreateEventForm::class.java)
-        } catch (e: JsonParseException) {
+            AppJson.decode<CreateEventForm>(json)
+        } catch (e: IllegalArgumentException) { // SerializationException en est une sous-classe
             Timber.e(e, "Brouillon d'événement illisible, ignoré")
             null
         }

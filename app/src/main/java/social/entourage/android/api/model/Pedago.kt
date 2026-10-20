@@ -1,19 +1,21 @@
 package social.entourage.android.api.model
 
-import com.google.gson.annotations.SerializedName
 import social.entourage.android.R
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
-enum class Category(val id: Int) {
-    @SerializedName("all")
+@KSerializable
+enum class Category(val id: Int = 0) {
+    @SerialName("all")
     ALL(R.string.all),
 
-    @SerializedName("act")
+    @SerialName("act")
     ACT(R.string.act),
 
-    @SerializedName("inspire")
+    @SerialName("inspire")
     INSPIRE(R.string.inspire),
 
-    @SerializedName("understand")
+    @SerialName("understand")
     UNDERSTAND(R.string.understand);
 
     override fun toString(): String {
@@ -21,39 +23,40 @@ enum class Category(val id: Int) {
     }
 }
 
+@KSerializable
 data class Pedago(
 
-    @field:SerializedName("duration")
+    @SerialName("duration")
     val duration: Long? = null,
 
-    @field:SerializedName("is_video")
+    @SerialName("is_video")
     val isVideo: Boolean? = null,
 
-    @field:SerializedName("watched")
+    @SerialName("watched")
     val watched: Boolean? = null,
 
-    @field:SerializedName("image_url")
+    @SerialName("image_url")
     val imageUrl: String? = null,
 
-    @field:SerializedName("name")
+    @SerialName("name")
     val name: String? = null,
 
-    @field:SerializedName("description")
+    @SerialName("description")
     val description: String? = null,
 
-    @field:SerializedName("html")
+    @SerialName("html")
     val html: String? = null,
 
-    @field:SerializedName("id")
+    @SerialName("id")
     val id: Int? = null,
 
-    @field:SerializedName("uuid_v2")
+    @SerialName("uuid_v2")
     var uuid_v2: String? = null,
 
-    @field:SerializedName("category")
+    @SerialName("category")
     val category: Category? = null,
 
-    @field:SerializedName("url")
+    @SerialName("url")
     val url: String? = null
 
 ) {

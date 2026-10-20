@@ -33,7 +33,6 @@ import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.messaging.FirebaseMessaging
-import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import social.entourage.android.actions.create.CreateActionActivity
 import social.entourage.android.api.MetaDataRepository
@@ -67,6 +66,7 @@ import social.entourage.android.tools.utils.parcelableExtra
 import social.entourage.android.tools.view.WebViewFragment
 import social.entourage.android.user.UserPresenter
 import timber.log.Timber
+import social.entourage.android.api.json.AppJson
 
 class MainActivity : BaseSecuredActivity() {
     private lateinit var navController: NavController
@@ -409,10 +409,7 @@ class MainActivity : BaseSecuredActivity() {
 
     private fun checkIntentAction(action: String, extras: Bundle?) {
         extras?.getString(PushNotificationManager.KEY_CONTENT)?.let { rawContent ->
-            val pushContent = Gson().fromJson(
-                rawContent,
-                social.entourage.android.api.model.notification.PushNotificationContent::class.java
-            )
+            val pushContent = AppJson.decode<social.entourage.android.api.model.notification.PushNotificationContent>(rawContent)
 
             pushContent?.extra?.let { extra ->
                 // 1. GESTION SPÉCIALE ANNIVERSAIRE (ou tout autre "stage" sans instance)

@@ -1,7 +1,6 @@
 package social.entourage.android.api
 
 import androidx.lifecycle.MutableLiveData
-import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,7 +32,7 @@ object MetaDataRepository {
                     MainActivity.concerns = response.body()?.concerns
                     MainActivity.involvements = response.body()?.involvements
                     MainActivity.orientations = response.body()?.orientations
-                    Timber.wtf("wtf orientations ${Gson().toJson(MainActivity.orientations)}")
+                    Timber.d("orientations=${MainActivity.orientations?.size}")
                 }
             }
             override fun onFailure(call: Call<MetaDataResponse>, t: Throwable) {

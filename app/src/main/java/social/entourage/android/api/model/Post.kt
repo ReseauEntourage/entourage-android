@@ -1,57 +1,71 @@
+@file:UseSerializers(ApiDateSerializer::class)
+
 package social.entourage.android.api.model
 
-import com.google.gson.TypeAdapter
-import com.google.gson.annotations.JsonAdapter
-import com.google.gson.annotations.SerializedName
-import com.google.gson.stream.JsonReader
-import com.google.gson.stream.JsonToken
-import com.google.gson.stream.JsonWriter
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Transient
+import kotlinx.serialization.descriptors.PrimitiveKind
+import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.nullable
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
+import kotlinx.serialization.json.JsonDecoder
+import kotlinx.serialization.json.JsonNull
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.booleanOrNull
+import kotlinx.serialization.json.intOrNull
 import social.entourage.android.api.model.notification.Translation
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
+import kotlinx.serialization.UseSerializers
+import social.entourage.android.api.json.ApiDateSerializer
 
+@KSerializable
 class Post(
-    @SerializedName("id")
+    @SerialName("id")
     val id: Int? = null,
-    @SerializedName("content")
+    @SerialName("content")
     val content: String? = null,
-    @SerializedName("content_html")
+    @SerialName("content_html")
     val contentHtml: String? = null,
-    @SerializedName("content_translations")
+    @SerialName("content_translations")
     val contentTranslations: Translation? = null,
-    @SerializedName("content_translations_html")
+    @SerialName("content_translations_html")
     val contentTranslationsHtml: Translation? = null,
-    @SerializedName("user")
+    @SerialName("user")
     var user: EntourageUser? = null,
-    @SerializedName("created_at")
+    @SerialName("created_at")
     var createdTime: Date? = null,
-    @SerializedName("message_type")
+    @SerialName("message_type")
     val messageType: String? = null,
-    @SerializedName("post_id")
+    @SerialName("post_id")
     val postId: Int? = null,
-    @SerializedName("has_comments")
+    @SerialName("has_comments")
     val hasComments: Boolean? = null,
-    @SerializedName("comments_count")
+    @SerialName("comments_count")
     val commentsCount: Int? = null,
-    @SerializedName("image_url")
+    @SerialName("image_url")
     val imageUrl: String? = null,
-    @SerializedName("status")
+    @SerialName("status")
     val status: String? = null,
-    @SerializedName("reactions")
+    @SerialName("reactions")
     var reactions: MutableList<Reaction>? = mutableListOf(),
-    @SerializedName("read")
+    @SerialName("read")
     val read: Boolean? = null,
-    @SerializedName("reaction_id")
-    @JsonAdapter(NullableBooleanTolerantIntAdapter::class)
+    @SerialName("reaction_id")
+    @KSerializable(with = NullableBooleanTolerantIntSerializer::class)
     var reactionId: Int? = null,
+    @Transient
     val idInternal: UUID? = null,
-    @SerializedName("survey")
+    @SerialName("survey")
     val survey: Survey? = null,
-    @SerializedName("survey_response")
+    @SerialName("survey_response")
     var surveyResponse: MutableList<Boolean>? = mutableListOf(),
-    @SerializedName("auto_post_from")
-    val autoPostFrom: AutoPostFrom? = null,
-) {
+    @SerialName("auto_post_from")
+    val autoPostFrom: AutoPostFrom? = null) {
     var datePostText = ""
     var isDatePostOnly = false
 
@@ -66,19 +80,21 @@ class Post(
 }
 
 
+@KSerializable
 data class Survey(
-    @SerializedName("choices")
-    var choices: List<String>,
-    @SerializedName("multiple")
-    var multiple: Boolean,
-    @SerializedName("summary")
-    var summary: MutableList<Int>
+    @SerialName("choices")
+    var choices: List<String> = emptyList(),
+    @SerialName("multiple")
+    var multiple: Boolean = false,
+    @SerialName("summary")
+    var summary: MutableList<Int> = mutableListOf()
 )
 
+@KSerializable
 data class AutoPostFrom(
-    @SerializedName("instance_type")
-    val instanceType: String, // ou Entourage, selon ce que tu as besoin de représenter
-    @SerializedName("instance_id")
+    @SerialName("instance_type")
+    val instanceType: String = "", // ou Entourage, selon ce que tu as besoin de représenter
+    @SerialName("instance_id")
     val instanceId: Int
 )
 
@@ -89,14 +105,21 @@ data class AutoPostFrom(
  * faisait échouer tout le parsing de Post et donc croire à un échec de publication alors que le
  * post était bien créé côté serveur.
  */
-class NullableBooleanTolerantIntAdapter : TypeAdapter<Int?>() {
-    override fun write(out: JsonWriter, value: Int?) {
-        if (value == null) out.nullValue() else out.value(value)
+object NullableBooleanTolerantIntSerializer : KSerializer<Int?> {
+    override val descriptor: SerialDescriptor =
+        PrimitiveSerialDescriptor("NullableBooleanTolerantInt", PrimitiveKind.INT).nullable
+
+    override fun serialize(encoder: Encoder, value: Int?) {
+        if (value == null) encoder.encodeNull() else encoder.encodeInt(value)
     }
 
-    override fun read(reader: JsonReader): Int? = when (reader.peek()) {
-        JsonToken.NULL -> { reader.nextNull(); null }
-        JsonToken.BOOLEAN -> { reader.nextBoolean(); null }
-        else -> reader.nextInt()
+    override fun deserialize(decoder: Decoder): Int? {
+        val element = (decoder as JsonDecoder).decodeJsonElement()
+        return when {
+            element is JsonNull -> null
+            element is JsonPrimitive && element.booleanOrNull != null -> null
+            element is JsonPrimitive -> element.intOrNull ?: element.content.toDoubleOrNull()?.toInt()
+            else -> null
+        }
     }
 }

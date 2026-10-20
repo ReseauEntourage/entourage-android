@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.google.gson.Gson
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -67,6 +66,7 @@ import timber.log.Timber
 import java.io.File
 import java.util.UUID
 import kotlin.time.Duration.Companion.milliseconds
+import social.entourage.android.api.json.AppJson
 
 class DetailConversationActivity : CommentActivity() {
 
@@ -505,7 +505,7 @@ class DetailConversationActivity : CommentActivity() {
 
     // ===== SmallTalk =====
     private fun handleSmallTalkDetail(smallTalk: SmallTalk?) {
-        Timber.d("SmallTalk detail: ${Gson().toJson(smallTalk)}")
+        Timber.d("SmallTalk detail: ${AppJson.encode(smallTalk)}")
         binding.postBlocked.isVisible = false
         smallTalkId = smallTalk?.id.toString()
         this.smallTalk = smallTalk

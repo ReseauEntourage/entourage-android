@@ -1,7 +1,6 @@
 package social.entourage.android.api.request
 
 import androidx.collection.ArrayMap
-import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
@@ -20,17 +19,24 @@ import social.entourage.android.api.model.ConversationMembershipsWrapper
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.ReactionWrapper
 import social.entourage.android.api.model.UserBlockedUser
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
 /**
  * Created by - on 15/11/2022.
  */
 
-class DiscussionsListWrapper(@field:SerializedName("conversations") val allConversations: MutableList<Conversation>)
-class DiscussionDetailWrapper(@field:SerializedName("conversation") val conversation: Conversation)
-class UserBlockedWrapper(@field:SerializedName("user_blocked_user") val blockedUser: UserBlockedUser)
-class UsersBlockedWrapper(@field:SerializedName("user_blocked_users") val blockedUsers: MutableList<UserBlockedUser>)
+@KSerializable
+class DiscussionsListWrapper(@SerialName("conversations") val allConversations: MutableList<Conversation> = mutableListOf())
+@KSerializable
+class DiscussionDetailWrapper(@SerialName("conversation") val conversation: Conversation)
+@KSerializable
+class UserBlockedWrapper(@SerialName("user_blocked_user") val blockedUser: UserBlockedUser)
+@KSerializable
+class UsersBlockedWrapper(@SerialName("user_blocked_users") val blockedUsers: MutableList<UserBlockedUser> = mutableListOf())
+@KSerializable
 class UserListWithConversationWrapper(
-    @SerializedName("users") val users: MutableList<GroupMember>
+    @SerialName("users") val users: MutableList<GroupMember> = mutableListOf()
 )
 
 interface DiscussionsRequest {

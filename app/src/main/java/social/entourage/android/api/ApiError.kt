@@ -1,13 +1,15 @@
 package social.entourage.android.api
 
-import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
 import retrofit2.Response
 import java.io.IOException
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerializationException
+import social.entourage.android.api.json.AppJson
 
-class ApiError private constructor(code: String) {
-    val code: String?
+@Serializable
+class ApiError private constructor(val code: String? = null) {
 
+    @Serializable
     private class ApiErrorContainer {
         val error: ApiError? = null
     }
@@ -16,12 +18,12 @@ class ApiError private constructor(code: String) {
         fun fromResponse(response: Response<*>): ApiError {
             response.errorBody()?.string()?.let {
                 try {
-                    val error: ApiError? = Gson().fromJson(it, ApiErrorContainer::class.java).error
+                    val error: ApiError? = AppJson.decode<ApiErrorContainer>(it).error
                     if (error?.code != null) {
                         return error
                     }
                 } catch (e: IOException) {
-                } catch (e: JsonSyntaxException) {
+                } catch (e: SerializationException) {
                 } catch (e: NullPointerException) {
                 }
             }
@@ -29,7 +31,4 @@ class ApiError private constructor(code: String) {
         }
     }
 
-    init {
-        this.code = code
-    }
 }

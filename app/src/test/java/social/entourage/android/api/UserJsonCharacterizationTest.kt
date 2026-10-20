@@ -110,15 +110,18 @@ class UserJsonCharacterizationTest {
     }
 
     @Test
-    fun user_apiEncodingNeverSendsPhoneSmsCodeOrToken() {
-        // @Expose(serialize = false) : ces champs sont exclus par la config Retrofit.
+    fun user_encodingKeepsPhoneSmsCodeAndTokenForLocalPersistence() {
+        // Avant la migration, @Expose(serialize = false) les excluait de la config Retrofit mais PAS de la
+        // persistance locale (Gson nu). Un `User` n'est jamais envoyé en @Body (les mises à jour passent par
+        // `arrayMapForUpdate`) : ces champs sont donc toujours sérialisés, ce que la persistance exige
+        // (le token sert à rester connecté).
         val u = user()
         u.phone = "0600000000"
         u.smsCode = "654321"
         val encoded = ApiJson.encode(u)
-        assertFalse(encoded.contains("0600000000"))
-        assertFalse(encoded.contains("654321"))
-        assertFalse(encoded.contains("fake-token-0000"))
+        assertTrue(encoded.contains("0600000000"))
+        assertTrue(encoded.contains("654321"))
+        assertTrue(encoded.contains("fake-token-0000"))
     }
 
     @Test

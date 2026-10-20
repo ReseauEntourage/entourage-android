@@ -1,73 +1,77 @@
+@file:UseSerializers(ApiDateSerializer::class)
+
 package social.entourage.android.api.model
 
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.util.*
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
+import kotlinx.serialization.UseSerializers
+import social.entourage.android.api.json.ApiDateSerializer
 
+@KSerializable
 data class EventMetadata(
 
-    @field:SerializedName("previous_at")
+    @SerialName("previous_at")
     val previousAt: Date? = null,
 
-    @field:SerializedName("place_name")
+    @SerialName("place_name")
     val placeName: String? = null,
 
-    @field:SerializedName("street_address")
+    @SerialName("street_address")
     val streetAddress: String? = null,
 
-    @field:SerializedName("starts_at")
+    @SerialName("starts_at")
     val startsAt: Date? = null,
 
-    @field:SerializedName("place_limit")
+    @SerialName("place_limit")
     val placeLimit: Int? = null,
 
-    @field:SerializedName("landscape_thumbnail_url")
+    @SerialName("landscape_thumbnail_url")
     val landscapeThumbnailUrl: String? = null,
 
-    @field:SerializedName("portrait_thumbnail_url")
+    @SerialName("portrait_thumbnail_url")
     val portraitThumbnailUrl: String? = null,
 
-    @field:SerializedName("display_address")
+    @SerialName("display_address")
     val displayAddress: String? = null,
 
-    @field:SerializedName("ends_at")
+    @SerialName("ends_at")
     val endsAt: Date? = null,
 
-    @field:SerializedName("google_place_id")
+    @SerialName("google_place_id")
     val googlePlaceId: String? = null,
 
-    @field:SerializedName("portrait_url")
+    @SerialName("portrait_url")
     val portraitUrl: String? = null,
 
 
-    @field:SerializedName("landscape_url")
+    @SerialName("landscape_url")
     val landscapeUrl: String? = null,
 
-    @field:SerializedName("reserved_female")
+    @SerialName("reserved_female")
     val reserved_female: Boolean? = null,
 
-    @field:SerializedName("pmr")
+    @SerialName("pmr")
     val pmr: Boolean? = null,
 
-    @field:SerializedName("kids_friendly")
+    @SerialName("kids_friendly")
     val kidsFriendly: Boolean? = null,
 
-    @field:SerializedName("unsubscribed_participants_offer_help")
+    @SerialName("unsubscribed_participants_offer_help")
     var unsubscribedParticipantsOfferHelp: Int? = 0,
 
-    @field:SerializedName("unsubscribed_participants_ask_for_help")
+    @SerialName("unsubscribed_participants_ask_for_help")
     var unsubscribedParticipantsAskForHelp: Int? = 0,
 
-    @field:SerializedName("unsubscribed_participants_female")
-    var unsubscribedParticipantsFemale: Int? = 0,
-) : Serializable
+    @SerialName("unsubscribed_participants_female")
+    var unsubscribedParticipantsFemale: Int? = 0) : Serializable
 
+@KSerializable
 data class ActionMetadata(
 
-    @field:SerializedName("city")
+    @SerialName("city")
     val city: String? = null,
 
-    @field:SerializedName("display_address")
-    val displayAddress: String? = null,
-
-) : Serializable
+    @SerialName("display_address")
+    val displayAddress: String? = null) : Serializable

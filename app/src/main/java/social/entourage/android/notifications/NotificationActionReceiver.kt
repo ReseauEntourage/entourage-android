@@ -3,9 +3,9 @@ package social.entourage.android.notifications
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.google.gson.Gson
 import social.entourage.android.api.model.notification.PushNotificationContent
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.api.json.AppJson
 
 class NotificationActionReceiver : BroadcastReceiver() {
 
@@ -17,7 +17,7 @@ class NotificationActionReceiver : BroadcastReceiver() {
                 val notificationContent = intent.getStringExtra("notification_content") // null si l'extra "notification_content" n'existe pas
 
                 try {
-                    val pushNotif = Gson().fromJson(notificationContent, PushNotificationContent::class.java)
+                    val pushNotif = AppJson.decode<PushNotificationContent>(notificationContent ?: "")
                     val stage = pushNotif.extra?.stage
                     if(stage.equals("h1")){AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__OfferHelp__WDay1)}
                     if(stage.equals("j2")){AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__OfferHelp__WDay2)}
@@ -50,7 +50,7 @@ class NotificationActionReceiver : BroadcastReceiver() {
                 // Gérer l'action de swipe pour supprimer la notification
                 val notificationContent = intent.getStringExtra("notification_content") // null si l'extra "notification_content" n'existe pas
                 try {
-                    val pushNotif = Gson().fromJson(notificationContent, PushNotificationContent::class.java)
+                    val pushNotif = AppJson.decode<PushNotificationContent>(notificationContent ?: "")
                     val instance = pushNotif.extra?.instance
                 }catch (e:Exception){
 

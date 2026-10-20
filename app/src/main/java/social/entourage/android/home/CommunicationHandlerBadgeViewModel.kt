@@ -2,7 +2,8 @@ package social.entourage.android.home
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
 class CommunicationHandlerBadgeViewModel : ViewModel() {
     var badgeCount = MutableLiveData<UnreadMessages>()
@@ -12,11 +13,11 @@ class CommunicationHandlerBadgeViewModel : ViewModel() {
     }
 }
 
+@KSerializable
 class UnreadMessages(
-    @SerializedName("unread_count")
+    @SerialName("unread_count")
     var unreadCount: Int? = null,
-    @SerializedName("unread_conversations_count")
+    @SerialName("unread_conversations_count")
     var unreadConversationsCount: Int? = null,
-    @SerializedName("unread_neighborhoods_count")
-    var unreadNeighborhoodsCount: Int? = null,
-)
+    @SerialName("unread_neighborhoods_count")
+    var unreadNeighborhoodsCount: Int? = null)

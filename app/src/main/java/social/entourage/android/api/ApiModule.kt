@@ -1,19 +1,14 @@
 package social.entourage.android.api
 
-import com.google.gson.ExclusionStrategy
-import com.google.gson.FieldAttributes
-import com.google.gson.GsonBuilder
-import com.google.gson.annotations.Expose
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import social.entourage.android.api.json.AnyMapConverterFactory
+import social.entourage.android.api.json.AppJson
 import timber.log.Timber
-import retrofit2.converter.gson.GsonConverterFactory
 import social.entourage.android.BuildConfig
-import social.entourage.android.api.model.BaseEntourage
-import social.entourage.android.api.model.BaseEntourage.BaseEntourageJsonAdapter
-import social.entourage.android.api.model.feed.NewsfeedItem
-import social.entourage.android.api.model.feed.NewsfeedItem.NewsfeedItemJsonAdapter
 import social.entourage.android.api.request.ActionsRequest
 import social.entourage.android.api.request.AppLinksRequest
 import social.entourage.android.api.request.ApplicationInfoRequest
@@ -112,12 +107,11 @@ class ApiModule {
     }
 
     fun providesRestAdapter(client: OkHttpClient): Retrofit {
-        val gson = createApiGson()
-
         return Retrofit.Builder()
             .baseUrl(BuildConfig.ENTOURAGE_URL)
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create(gson))
+            .addConverterFactory(AnyMapConverterFactory())
+            .addConverterFactory(AppJson.json.asConverterFactory(AppJson.CONTENT_TYPE.toMediaType()))
             .build()
     }
 

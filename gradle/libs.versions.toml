@@ -104,7 +104,7 @@ firebase-database = { module = "com.google.firebase:firebase-database" }
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "play-services-maps" }
 play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "play-services-location" }
 places = { module = "com.google.android.libraries.places:places", version.ref = "places" }
-retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+retrofit-converter-kotlinx-serialization = { module = "com.squareup.retrofit2:converter-kotlinx-serialization", version.ref = "retrofit" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 okhttp = { module = "com.squareup.okhttp3:okhttp" }
 logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor" }

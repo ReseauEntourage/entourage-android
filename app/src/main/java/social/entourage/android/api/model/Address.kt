@@ -1,14 +1,16 @@
 package social.entourage.android.api.model
 
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
+@KSerializable
 data class Address(
-    @SerializedName("latitude")
+    @SerialName("latitude")
     var latitude: Double = 0.0,
-    @SerializedName("longitude")
+    @SerialName("longitude")
     var longitude: Double = 0.0,
-    @SerializedName("display_address")
+    @SerialName("display_address")
     var displayAddress: String = ""
 ) : Serializable {
     override fun toString(): String {

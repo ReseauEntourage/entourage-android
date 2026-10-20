@@ -1,6 +1,5 @@
 package social.entourage.android.api.request
 
-import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -8,6 +7,8 @@ import retrofit2.http.POST
 import social.entourage.android.api.model.Partner
 import social.entourage.android.api.model.PartnerCreateWrapper
 import social.entourage.android.api.model.PartnerResponse
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
 /**
  * Created by mihaiionescu on 17/01/2017.
@@ -24,13 +25,15 @@ interface PartnerRequest {
 /**
  * Wrapper pour les requêtes qui attendent un objet Partner dans un champ "partner"
  */
+@KSerializable
 class PartnerWrapper(
-    @field:SerializedName("partner") var partner: Partner
+    @SerialName("partner") var partner: Partner
 )
 
 /**
  * Réponse liste : { "partners": [ ... ] }
  */
+@KSerializable
 class PartnersResponse(
-    @field:SerializedName("partners") var partners: List<Partner>
+    @SerialName("partners") var partners: List<Partner> = emptyList()
 )

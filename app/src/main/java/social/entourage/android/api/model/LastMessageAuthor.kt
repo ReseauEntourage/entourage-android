@@ -1,22 +1,24 @@
 package social.entourage.android.api.model
 
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
 /**
  * Created by mihaiionescu on 13/10/16.
  */
+@KSerializable
 class LastMessageAuthor : Serializable {
-    @SerializedName("first_name")
+    @SerialName("first_name")
     var firstName: String? = null
 
-    @SerializedName("last_name")
+    @SerialName("last_name")
     var lastName: String? = null
 
-    @SerializedName("display_name")
+    @SerialName("display_name")
     var displayName: String? = null
 
-    @SerializedName("id")
+    @SerialName("id")
     var authorId: Int = 0
 
     companion object {

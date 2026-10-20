@@ -1,7 +1,6 @@
 package social.entourage.android.api.request
 
 import androidx.collection.ArrayMap
-import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -11,29 +10,41 @@ import social.entourage.android.api.model.Image
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.CompleteReactionsResponse
 import social.entourage.android.api.model.ReactionWrapper
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
-class GroupImagesResponse(@field:SerializedName("neighborhood_images") val groupImages: ArrayList<Image>)
-class GroupWrapper(@field:SerializedName("neighborhood") val group: Group)
-class GroupsListWrapper(@field:SerializedName("neighborhoods") val allGroups: MutableList<Group>)
-class RequestContent internal constructor(private val content_type: String)
+@KSerializable
+class GroupImagesResponse(@SerialName("neighborhood_images") val groupImages: ArrayList<Image> = ArrayList())
+@KSerializable
+class GroupWrapper(@SerialName("neighborhood") val group: Group)
+@KSerializable
+class GroupsListWrapper(@SerialName("neighborhoods") val allGroups: MutableList<Group> = mutableListOf())
+@KSerializable
+class RequestContent internal constructor(private val content_type: String = "")
 
-class Report(var message: String, var signals: MutableList<String>)
+@KSerializable
+class Report(var message: String = "", var signals: MutableList<String> = mutableListOf())
+@KSerializable
 class ReportWrapper(
-    @field:SerializedName("report") var Report: Report
+    @SerialName("report") var Report: Report
 )
 
+@KSerializable
 class PrepareAddPostResponse(
-    @field:SerializedName("upload_key") var uploadKey: String,
-    @field:SerializedName("presigned_url") val presignedUrl: String
+    @SerialName("upload_key") var uploadKey: String = "",
+    @SerialName("presigned_url") val presignedUrl: String = ""
 ) {
     override fun toString(): String {
         return "PrepareAddPostResponse(avatarKey='$uploadKey', presignedUrl='$presignedUrl')"
     }
 }
 
-class MembersWrapper(@field:SerializedName("users") val users: MutableList<EntourageUser>)
-class PostListWrapper(@field:SerializedName("chat_messages") val posts: MutableList<Post>)
-class PostWrapper(@field:SerializedName("chat_message") val post: Post)
+@KSerializable
+class MembersWrapper(@SerialName("users") val users: MutableList<EntourageUser> = mutableListOf())
+@KSerializable
+class PostListWrapper(@SerialName("chat_messages") val posts: MutableList<Post> = mutableListOf())
+@KSerializable
+class PostWrapper(@SerialName("chat_message") val post: Post)
 
 interface GroupRequest {
     @GET("neighborhood_images")

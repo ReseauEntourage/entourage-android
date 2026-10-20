@@ -1,18 +1,19 @@
 package social.entourage.android.api.model
 
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
+@KSerializable
 data class GroupMember(
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null,
-    @SerializedName("display_name")
+    @SerialName("display_name")
     var displayName: String? = null,
-    @SerializedName("avatar_url")
+    @SerialName("avatar_url")
     var avatarUrl: String? = null,
-    @SerializedName("is_birthday")
-    var isBirthday: Boolean = false,
-) : Serializable {
+    @SerialName("is_birthday")
+    var isBirthday: Boolean = false) : Serializable {
     override fun toString(): String {
         return "GroupMember(id=$id, displayName=$displayName, avatarUrl=$avatarUrl)"
     }

@@ -1,13 +1,11 @@
 package social.entourage.android.api.model
 
-import com.google.gson.annotations.Expose
 import java.util.*
 
 /**
  * Created by mihaiionescu on 26/02/16.
  */
 abstract class TimestampedObject {
-    @Expose(serialize = false)
     private var hashCode = 0
     abstract val timestamp: Date?
     abstract fun hashString(): String

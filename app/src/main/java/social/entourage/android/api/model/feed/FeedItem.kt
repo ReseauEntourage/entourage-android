@@ -4,8 +4,6 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.annotation.ColorRes
 import androidx.annotation.StringRes
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 import social.entourage.android.R
 import social.entourage.android.api.model.LocationPoint
 import social.entourage.android.api.model.TimestampedObject
@@ -22,10 +20,8 @@ abstract class FeedItem : TimestampedObject(), Serializable {
     // ----------------------------------
     // Attributes
     // ----------------------------------
-    @Expose(serialize = false)
     override var id: Long = 0
 
-    @Expose(serialize = false)
     var uuid: String? = null
         get()  = field ?:""
         private set
@@ -34,45 +30,30 @@ abstract class FeedItem : TimestampedObject(), Serializable {
 
     var author: FeedItemAuthor? = null
 
-    @SerializedName("updated_at")
     var updatedTime: Date = Date()
 
-    @Expose(serialize = false)
-    @SerializedName("number_of_people")
     var numberOfPeople = 0
 
-    @Expose(serialize = false)
-    @SerializedName("number_of_unread_messages")
     var numberOfUnreadMessages = 0
 
-    @Expose(serialize = false)
-    @SerializedName("join_status")
     lateinit var joinStatus: String
 
-    @Expose(serialize = false)
-    @SerializedName("last_message")
     var lastMessage: FeedLastMessage? = null
         protected set
 
-    @Expose(serialize = false)
-    @SerializedName("share_url")
     var shareURL: String? = null
 
     //number of notifs received that should be added to number of unread messages
-    @Expose(serialize = false, deserialize = false)
     protected var badgeCount = 0
 
     //CardInfo cache support
-    @Expose(serialize = false, deserialize = false)
     @Transient
     lateinit var cachedCardInfoList: MutableList<TimestampedObject>
 
-    @Expose(serialize = false, deserialize = false)
     @Transient
     lateinit var addedCardInfoList: MutableList<TimestampedObject>
 
     //Flag to indicate a newly created feed item
-    @Expose(serialize = false, deserialize = false)
     var isNewlyCreated = false
 
     var postal_code:String? = null

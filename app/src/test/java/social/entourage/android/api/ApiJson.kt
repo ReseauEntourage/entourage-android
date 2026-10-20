@@ -6,7 +6,11 @@ import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.Json as KxJson
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.serializer
 import org.junit.Assert.fail
+import social.entourage.android.api.json.AnyMapConverterFactory
+import social.entourage.android.api.json.AppJson
 
 /**
  * Point d'entrée unique des tests de parsing JSON : seul ce fichier connaît la bibliothèque
@@ -16,15 +20,19 @@ import org.junit.Assert.fail
  * Les comparaisons structurelles passent par kotlinx.serialization.json pour ne pas dépendre de Gson.
  */
 object ApiJson {
-    // Instance neuve a chaque appel : Gson fige le fuseau horaire par defaut a sa creation, et les tests
-    // changent ce fuseau (UTC / Europe-Paris) ; un singleton rendrait les resultats dependants de l'ordre.
-    private fun gson() = createApiGson()
-
-    fun <T> decode(json: String, type: Class<T>): T = gson().fromJson(json, type)
+    @Suppress("UNCHECKED_CAST")
+    fun <T> decode(json: String, type: Class<T>): T =
+        AppJson.json.decodeFromString(serializer(type) as KSerializer<T>, json)
 
     inline fun <reified T> decode(json: String): T = decode(json, T::class.java)
 
-    fun encode(value: Any): String = gson().toJson(value)
+    fun encode(value: Any): String =
+        if (value is Map<*, *>) {
+            AppJson.json.encodeToString(JsonElement.serializer(), AnyMapConverterFactory.toJsonElement(value))
+        } else {
+            @Suppress("UNCHECKED_CAST")
+            AppJson.json.encodeToString(serializer(value.javaClass) as KSerializer<Any>, value)
+        }
 
     fun fixture(name: String): String =
         checkNotNull(ApiJson::class.java.classLoader?.getResourceAsStream("api/$name")) {

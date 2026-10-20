@@ -1,7 +1,6 @@
 package social.entourage.android.api.request
 
 import androidx.collection.ArrayMap
-import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -10,13 +9,20 @@ import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Image
 import social.entourage.android.api.model.CompleteReactionsResponse
 import social.entourage.android.api.model.ReactionWrapper
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
-class EventsImagesResponse(@field:SerializedName("entourage_images") val eventImages: ArrayList<Image>)
-class EventsListWrapper(@field:SerializedName("outings") val allEvents: MutableList<Events>)
+@KSerializable
+class EventsImagesResponse(@SerialName("entourage_images") val eventImages: ArrayList<Image> = ArrayList())
+@KSerializable
+class EventsListWrapper(@SerialName("outings") val allEvents: MutableList<Events> = mutableListOf())
 
-class CreateEventWrapper(@field:SerializedName("outing") val event: CreateEvent)
-class EventWrapper(@field:SerializedName("outing") val event: Events)
-class EventWeekAverageResponse(@field:SerializedName("average") val average: Float)
+@KSerializable
+class CreateEventWrapper(@SerialName("outing") val event: CreateEvent)
+@KSerializable
+class EventWrapper(@SerialName("outing") val event: Events)
+@KSerializable
+class EventWeekAverageResponse(@SerialName("average") val average: Float = 0f)
 
 interface EventsRequest {
     @POST("outings/{id}/users/unsubscribed_participants")
@@ -295,7 +301,8 @@ interface EventsRequest {
 
 }
 
+@KSerializable
 data class JoinRoleBody(
-    @com.google.gson.annotations.SerializedName("role")
+    @SerialName("role")
     val role: String
 )

@@ -1,10 +1,10 @@
 package social.entourage.android.user
 
-import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Callback
 import social.entourage.android.EntourageApplication
 import social.entourage.android.api.request.UserRequest
+import kotlinx.serialization.SerialName
 
 class PrepareAvatarUploadRepository (private var callback: Callback?) :
     Callback<PrepareAvatarUploadRepository.Response> {
@@ -37,6 +37,6 @@ class PrepareAvatarUploadRepository (private var callback: Callback?) :
 
     inner class Request internal constructor(private val content_type: String)
 
-    inner class Response(@field:SerializedName("avatar_key") var avatarKey: String, @field:SerializedName("presigned_url") val presignedUrl: String)
+    inner class Response(@SerialName("avatar_key") var avatarKey: String, @SerialName("presigned_url") val presignedUrl: String)
 
 }

@@ -1,7 +1,6 @@
 package social.entourage.android.api.request
 
 import androidx.collection.ArrayMap
-import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -13,6 +12,8 @@ import social.entourage.android.api.model.ReactionWrapper
 import social.entourage.android.api.model.SmallTalk
 import social.entourage.android.api.model.UserSmallTalkRequest
 import social.entourage.android.api.model.UserSmallTalkRequestWithMatchDataWrapper
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
 /*
  * -------------------------------------------------
@@ -20,34 +21,40 @@ import social.entourage.android.api.model.UserSmallTalkRequestWithMatchDataWrapp
  * -------------------------------------------------
  */
 
+@KSerializable
 class UserSmallTalkRequestWrapper(
-    @field:SerializedName("user_smalltalk")
+    @SerialName("user_smalltalk")
     val request: UserSmallTalkRequest
 )
 
+@KSerializable
 class UserSmallTalkRequestListWrapper(
-    @field:SerializedName("user_smalltalks")
-    val requests: MutableList<UserSmallTalkRequest>
+    @SerialName("user_smalltalks")
+    val requests: MutableList<UserSmallTalkRequest> = mutableListOf()
 )
 
+@KSerializable
 class SmallTalkWrapper(
-    @field:SerializedName("smalltalk")
+    @SerialName("smalltalk")
     val smallTalk: SmallTalk
 )
 
+@KSerializable
 class SmallTalkListWrapper(
-    @field:SerializedName("smalltalks")
-    val smallTalks: MutableList<SmallTalk>
+    @SerialName("smalltalks")
+    val smallTalks: MutableList<SmallTalk> = mutableListOf()
 )
 
+@KSerializable
 class ChatMessageListWrapper(
-    @field:SerializedName("chat_messages")
-    val messages: MutableList<Post>
+    @SerialName("chat_messages")
+    val messages: MutableList<Post> = mutableListOf()
 )
 
+@KSerializable
 class SmallTalkMatchResponse(
-    @field:SerializedName("match")        val match: Boolean,
-    @field:SerializedName("smalltalk_id") val smalltalkId: Int?
+    @SerialName("match")        val match: Boolean = false,
+    @SerialName("smalltalk_id") val smalltalkId: Int? = null
 )
 
 /*

@@ -1,15 +1,17 @@
 package social.entourage.android.api.model.notification
 
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
+@KSerializable
 data class Translation(
-    @SerializedName("translation")
+    @SerialName("translation")
     val translation: String? = null,
-    @SerializedName("original")
+    @SerialName("original")
     val original: String? = null,
-    @SerializedName("from_lang")
+    @SerialName("from_lang")
     val fromLang: String? = null,
-    @SerializedName("to_lang")
+    @SerialName("to_lang")
     val toLang: String? = null
 ) : Serializable

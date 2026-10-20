@@ -1,17 +1,19 @@
 package social.entourage.android.api.model.feed
 
-import com.google.gson.annotations.SerializedName
 import social.entourage.android.api.model.Partner
 import java.io.Serializable
 import java.util.ArrayList
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
+@KSerializable
 class FeedItemAuthor (
-    @field:SerializedName("avatar_url") var avatarURLAsString: String?,
-    @field:SerializedName("id") var userID: Int,
-    @field:SerializedName("display_name") var userName: String?,
-    @field:SerializedName("community_roles") var communityRoles: ArrayList<String>?,
-    @field:SerializedName("partner") var partner: Partner?,
-    @field:SerializedName("is_birthday") var isBirthday: Boolean = false) : Serializable {
+    @SerialName("avatar_url") var avatarURLAsString: String? = null,
+    @SerialName("id") var userID: Int = 0,
+    @SerialName("display_name") var userName: String? = null,
+    @SerialName("community_roles") var communityRoles: ArrayList<String>? = null,
+    @SerialName("partner") var partner: Partner? = null,
+    @SerialName("is_birthday") var isBirthday: Boolean = false) : Serializable {
 
     fun isSame(author: FeedItemAuthor?): Boolean {
         if (author == null) return false

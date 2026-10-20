@@ -2,41 +2,43 @@ package social.entourage.android.entourage.category
 
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
-import com.google.gson.annotations.SerializedName
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
 import java.io.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
 /**
  * Created by Mihai Ionescu on 20/09/2017.
  */
+@KSerializable
 class EntourageCategory : Serializable {
     // ----------------------------------
     // Attributes from JSON
     // ----------------------------------
-    @SerializedName("entourage_type")
+    @SerialName("entourage_type")
     var groupType: String? = null
 
-    @SerializedName("display_category")
+    @SerialName("display_category")
     var category: String? = null
     var key: String? = null
 
-    @SerializedName("display_category_title")
+    @SerialName("display_category_title")
     var title: String? = null
 
-    @SerializedName("title_example")
+    @SerialName("title_example")
     var titleExample: String? = null
 
-    @SerializedName("description_example")
+    @SerialName("description_example")
     var descriptionExample: String? = null
 
-    @SerializedName("hidden")
+    @SerialName("hidden")
     val isHidden = false
 
-    @SerializedName("default")
+    @SerialName("default")
     var isDefault = false
 
-    @SerializedName("display_category_title_list")
+    @SerialName("display_category_title_list")
     var title_list: String? = null
 
     // ----------------------------------

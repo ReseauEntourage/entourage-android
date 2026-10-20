@@ -17,7 +17,6 @@ import androidx.core.content.edit
 import androidx.core.content.res.ResourcesCompat
 import androidx.preference.PreferenceManager
 import com.google.firebase.messaging.RemoteMessage
-import com.google.gson.Gson
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
@@ -29,6 +28,7 @@ import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import timber.log.Timber
+import social.entourage.android.api.json.AppJson
 
 /**
  * Singleton that handles the push notifications
@@ -233,16 +233,15 @@ object PushNotificationManager {
         if(count>0) {
             pushNotificationMessageList?.firstOrNull()?.let {pushNotificationMessage.pushNotificationId = it.pushNotificationId}
         }
-        val pushNotifString = Gson().toJson(pushNotificationMessage)
-        val pushNotif = Gson().fromJson(pushNotifString, PushNotificationContent::class.java)
-        pushNotif.extra?.stage.let {
+        val pushNotif = pushNotificationMessage.content
+        pushNotif?.extra?.stage.let {
             if(it.equals("h1")){AnalyticsEvents.logEventWithContext(context, AnalyticsEvents.NotificationReceived__OfferHelp__WDay1)}
             if(it.equals("j2")){AnalyticsEvents.logEventWithContext(context, AnalyticsEvents.NotificationReceived__OfferHelp__WDay2)}
             if(it.equals("j5")){AnalyticsEvents.logEventWithContext(context, AnalyticsEvents.NotificationReceived__OfferHelp__WDay5)}
             if(it.equals("j!")){AnalyticsEvents.logEventWithContext(context, AnalyticsEvents.NotificationReceived__OfferHelp__WDay8)}
             if(it.equals("j11")){AnalyticsEvents.logEventWithContext(context, AnalyticsEvents.NotificationReceived__OfferHelp__WDay11)}
         }
-        pushNotif.extra?.tracking.let {
+        pushNotif?.extra?.tracking.let {
             if(it.equals("join_request_on_create")){
                 AnalyticsEvents.logEvent(AnalyticsEvents.NotificationReceived__MemberEvent)}
             if(it.equals("outing_on_update")){
@@ -275,12 +274,12 @@ object PushNotificationManager {
 
         val clickedIntent = Intent(context, NotificationActionReceiver::class.java).apply {
             action = NotificationActionReceiver.ACTION_CLICKED
-            putExtra("notification_content", Gson().toJson(pushNotificationMessage))
+            putExtra("notification_content", AppJson.encode(pushNotificationMessage.content))
         }
 
         val dismissedIntent = Intent(context, NotificationActionReceiver::class.java).apply {
             action = NotificationActionReceiver.ACTION_DISMISSED
-            putExtra("notification_content", Gson().toJson(pushNotificationMessage)) // ou n'importe quelle autre information que vous voulez passer
+            putExtra("notification_content", AppJson.encode(pushNotificationMessage.content)) // ou n'importe quelle autre information que vous voulez passer
         }
 
         val requestCode = pushNotificationMessage.pushNotificationId
@@ -398,7 +397,7 @@ object PushNotificationManager {
             val intent = Intent(context, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             intent.putExtra("goBirthday", true)
-            intent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
+            intent.putExtra("notification_content", AppJson.encode(pushNotificationMessage.content))
             return PendingIntent.getActivity(
                 context,
                 pushNotificationMessage.pushNotificationId,
@@ -444,7 +443,7 @@ object PushNotificationManager {
                         putBoolean(Const.IS_MEMBER, true)
                         putBoolean(Const.IS_CONVERSATION, true)
                         putBoolean(Const.HAS_TO_SHOW_MESSAGE, true)
-                        putString("notification_content", Gson().toJson(pushNotificationMessage.content))
+                        putString("notification_content", AppJson.encode(pushNotificationMessage.content))
                     }
                 )
             }
@@ -472,7 +471,7 @@ object PushNotificationManager {
         }
         messageIntent.action = messageType
         messageIntent.putExtras(args)
-        messageIntent.putExtra("notification_content", Gson().toJson(pushNotificationMessage.content))
+        messageIntent.putExtra("notification_content", AppJson.encode(pushNotificationMessage.content))
         return PendingIntent.getActivity(context, pushNotificationMessage.pushNotificationId, messageIntent, PendingIntent.FLAG_IMMUTABLE)
     }
 
@@ -513,7 +512,7 @@ object PushNotificationManager {
 
     private fun doTracking(notificationContent:String){
         try {
-            val pushNotif = Gson().fromJson(notificationContent, PushNotificationContent::class.java)
+            val pushNotif = AppJson.decode<PushNotificationContent>(notificationContent)
             val stage = pushNotif.extra?.stage
             if(stage.equals("h1")){AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__OfferHelp__WDay1)}
             if(stage.equals("j2")){AnalyticsEvents.logEvent(AnalyticsEvents.NotificationClicked__OfferHelp__WDay2)}

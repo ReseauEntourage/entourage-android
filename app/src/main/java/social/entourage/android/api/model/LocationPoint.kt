@@ -1,11 +1,17 @@
+@file:UseSerializers(ApiDateSerializer::class)
+
 package social.entourage.android.api.model
 
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.util.Date
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
+import kotlinx.serialization.UseSerializers
+import social.entourage.android.api.json.ApiDateSerializer
 
+@KSerializable
 class LocationPoint : Serializable {
     // ----------------------------------
     // ATTRIBUTES
@@ -14,7 +20,7 @@ class LocationPoint : Serializable {
     var longitude: Double
     var accuracy: Float
 
-    @SerializedName("passing_time")
+    @SerialName("passing_time")
     private var passingTime: Date
 
     // ----------------------------------

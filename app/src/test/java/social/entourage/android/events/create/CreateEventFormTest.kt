@@ -1,6 +1,6 @@
 package social.entourage.android.events.create
 
-import com.google.gson.Gson
+import social.entourage.android.api.json.AppJson
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -12,7 +12,6 @@ import java.time.LocalDate
 
 class CreateEventFormTest {
 
-    private val gson = Gson()
     private val today = LocalDate.of(2026, 9, 1)
     private val datePattern = "yyyy-MM-dd HH:mm:ss Z"
 
@@ -117,7 +116,7 @@ class CreateEventFormTest {
             familyFriendly = true
             reservedFemale = true
         }
-        val json = gson.toJson(CreateEventWrapper(form.toCreateEvent(datePattern)))
+        val json = AppJson.encode(CreateEventWrapper(form.toCreateEvent(datePattern)))
         assertTrue(json.contains("\"pmr\":true"))
         assertTrue(json.contains("\"kids_friendly\":true"))
         assertTrue(json.contains("\"reserved_female\":true"))
@@ -125,7 +124,7 @@ class CreateEventFormTest {
 
     @Test
     fun requestBody_sendsExplicitFalse_whenCardsUnselected() {
-        val json = gson.toJson(CreateEventWrapper(validForm().toCreateEvent(datePattern)))
+        val json = AppJson.encode(CreateEventWrapper(validForm().toCreateEvent(datePattern)))
         assertTrue(json.contains("\"pmr\":false"))
         assertTrue(json.contains("\"kids_friendly\":false"))
     }
@@ -134,7 +133,7 @@ class CreateEventFormTest {
     fun requestBody_sendsPmrFalse_whenOnline() {
         val form = validForm().apply { wheelchairAccessible = true; familyFriendly = true }
         form.setOnlineMode(true)
-        val json = gson.toJson(CreateEventWrapper(form.toCreateEvent(datePattern)))
+        val json = AppJson.encode(CreateEventWrapper(form.toCreateEvent(datePattern)))
         assertTrue(json.contains("\"pmr\":false"))
         assertTrue(json.contains("\"kids_friendly\":true"))
     }
@@ -170,7 +169,7 @@ class CreateEventFormTest {
             uploadKey = "key-123"
             localPhotoPath = "/cache/photo.jpg"
         }
-        val restored = gson.fromJson(gson.toJson(form), CreateEventForm::class.java)
+        val restored = AppJson.decode<CreateEventForm>(AppJson.encode(form))
         assertEquals("Discussion entre voisins", restored.title)
         assertTrue(restored.wheelchairAccessible)
         assertTrue(restored.reservedFemale)

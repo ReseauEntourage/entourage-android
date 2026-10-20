@@ -1,6 +1,5 @@
 package social.entourage.android.api.request
 
-import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -9,15 +8,24 @@ import social.entourage.android.api.model.notification.InAppNotificationPermissi
 import social.entourage.android.api.model.Pedago
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.*
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
-class SummaryResponse(@field:SerializedName("user") val summary: Summary)
-class PedagogicResponse(@field:SerializedName("resources") val pedago: MutableList<Pedago>)
-class PedagogicSingleResponse(@field:SerializedName("resource") val pedago: Pedago)
+@KSerializable
+class SummaryResponse(@SerialName("user") val summary: Summary)
+@KSerializable
+class PedagogicResponse(@SerialName("resources") val pedago: MutableList<Pedago> = mutableListOf())
+@KSerializable
+class PedagogicSingleResponse(@SerialName("resource") val pedago: Pedago)
 
-class NotificationsCountResponse(@field:SerializedName("count") val count: Int)
-class NotificationPermissionsResponse(@field:SerializedName("notification_permissions") val notifsPermission: InAppNotificationPermission)
-class NotificationsInAppResponse(@field:SerializedName("inapp_notifications") val notifs: MutableList<InAppNotification>)
-class NotificationInAppResponse(@field:SerializedName("inapp_notification") val notif: InAppNotification)
+@KSerializable
+class NotificationsCountResponse(@SerialName("count") val count: Int = 0)
+@KSerializable
+class NotificationPermissionsResponse(@SerialName("notification_permissions") val notifsPermission: InAppNotificationPermission)
+@KSerializable
+class NotificationsInAppResponse(@SerialName("inapp_notifications") val notifs: MutableList<InAppNotification> = mutableListOf())
+@KSerializable
+class NotificationInAppResponse(@SerialName("inapp_notification") val notif: InAppNotification)
 
 interface HomeRequest {
     @GET("home/summary")

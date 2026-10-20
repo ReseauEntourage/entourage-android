@@ -1,30 +1,32 @@
+@file:UseSerializers(ApiDateSerializer::class)
+
 package social.entourage.android.api.model
 
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.util.*
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
+import kotlinx.serialization.Transient
+import kotlinx.serialization.UseSerializers
+import social.entourage.android.api.json.ApiDateSerializer
 
 /**
  * Created by mihaiionescu on 25/02/16.
  */
-class ChatMessage (var content: String) : TimestampedObject(), Serializable {
-    @Expose(serialize = false)
-    @SerializedName("id")
+@KSerializable
+class ChatMessage (var content: String = "") : TimestampedObject(), Serializable {
+    @SerialName("id")
     var chatId: Long = 0
 
-    @Expose(serialize = false)
-    @SerializedName("created_at")
+    @SerialName("created_at")
     var creationDate = Date()
 
-    @Expose(serialize = false)
      private val user: User? = null
 
-    @Expose(serialize = false, deserialize = false)
+    @Transient
     var isMe = false
 
-    @Expose(serialize = false)
-    @SerializedName("message_type")
+    @SerialName("message_type")
     val messageType: String? = null
     val metadata: Metadata? = null
 
@@ -70,20 +72,21 @@ class ChatMessage (var content: String) : TimestampedObject(), Serializable {
     // ----------------------------------
     // INNER CLASSES
     // ----------------------------------
+    @KSerializable
     class Metadata : Serializable {
         val uuid: String? = null
         val title: String? = null
         val operation: String? = null
         val type: String? = null
 
-        @SerializedName("starts_at")
+        @SerialName("starts_at")
         val startsAt: Date? = null
 
-        @SerializedName("display_address")
+        @SerialName("display_address")
         val displayAddress: String? = null
         val status: String? = null
 
-        @SerializedName("outcome_success")
+        @SerialName("outcome_success")
         val isOutcomeSuccess = false
 
         companion object {

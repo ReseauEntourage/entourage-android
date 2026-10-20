@@ -1,11 +1,17 @@
+@file:UseSerializers(ApiDateSerializer::class)
+
 package social.entourage.android.api.model.guide
 
 import com.google.android.gms.maps.model.LatLng
-import com.google.gson.annotations.SerializedName
 import social.entourage.android.api.model.TimestampedObject
 import java.io.Serializable
 import java.util.*
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
+import kotlinx.serialization.UseSerializers
+import social.entourage.android.api.json.ApiDateSerializer
 
+@KSerializable
 class Poi : TimestampedObject(), Serializable {
     // ----------------------------------
     // ATTRIBUTES
@@ -20,30 +26,30 @@ class Poi : TimestampedObject(), Serializable {
     var email: String? = null
     var audience: String? = null
 
-    @SerializedName("category_id")
+    @SerialName("category_id")
     var categoryId = 0
     var longitude = 0.0
     var latitude = 0.0
 
     var partner_id:Int? = null
 
-    @SerializedName("category_ids")
+    @SerialName("category_ids")
     var categories = ArrayList<Int>()
 
     var isSoliguide = false
-    @SerializedName("hours")
+    @SerialName("hours")
     var openTimeTxt:String? = null
-    @SerializedName("languages")
+    @SerialName("languages")
     var languagesTxt:String? = null
-    @SerializedName("source_url")
+    @SerialName("source_url")
     var soliguideUrl:String? = null
-    @SerializedName("source_category_id")
+    @SerialName("source_category_id")
     var soliguideId:Int? = null
 
     var source = ""
     var uuid = ""
 
-    @SerializedName("air_conditioned")
+    @SerialName("air_conditioned")
     var airConditioned: Boolean? = null
     // ----------------------------------
     // GETTERS & SETTERS

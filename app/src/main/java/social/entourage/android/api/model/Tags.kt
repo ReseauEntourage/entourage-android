@@ -1,17 +1,19 @@
 package social.entourage.android.api.model
 
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
+@KSerializable
 class Tags : Serializable {
-    @SerializedName("interests")
+    @SerialName("interests")
     var interests: ArrayList<TagMetaData>? = null
 
-    @SerializedName("signals")
+    @SerialName("signals")
     var signals: ArrayList<TagMetaData>? = null
 
 
-    @SerializedName("sections")
+    @SerialName("sections")
     var sections: ArrayList<TagMetaData>? = null
     override fun toString(): String {
         return "Tags(interests=$interests, signals=$signals, sections=$sections)"

@@ -1,175 +1,183 @@
 package social.entourage.android.api.model
 
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
+@KSerializable
 class SummaryAction{
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null
-    @SerializedName("action_type")
+    @SerialName("action_type")
     var actionType: String? = null
-    @SerializedName("title")
+    @SerialName("title")
     var title: String? = null
 
 }
 
+@KSerializable
 class Summary : Serializable {
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null
 
-    @SerializedName("display_name")
+    @SerialName("display_name")
     var displayName: String? = null
 
-    @SerializedName("avatar_url")
+    @SerialName("avatar_url")
     var avatarURL: String? = null
 
-    @SerializedName("meetings_count")
+    @SerialName("meetings_count")
     var meetingsCount: Int? = null
 
-    @SerializedName("chat_messages_count")
+    @SerialName("chat_messages_count")
     var chatMessagesCount: Int? = null
 
-    @SerializedName("outing_participations_count")
+    @SerialName("outing_participations_count")
     var outingParticipationsCount: Int? = null
 
-    @SerializedName("past_outing_participations_count")
+    @SerialName("past_outing_participations_count")
     var pastOutingParticipationsCount: Int? = null
 
-    @SerializedName("action_creations_count")
+    @SerialName("action_creations_count")
     var actionCreationsCount: Int? = null
 
-    @SerializedName("neighborhood_messages_count")
+    @SerialName("neighborhood_messages_count")
     var neighborhoodMessagesCount: Int? = null
 
-    @SerializedName("conversation_members_count")
+    @SerialName("conversation_members_count")
     var conversationMembersCount: Int? = null
 
-    @SerializedName("signable_permission")
+    @SerialName("signable_permission")
     var signablePermission : Boolean? = null
 
-    @SerializedName("association")
+    @SerialName("association")
     var association : Boolean? = null
 
-    @SerializedName("neighborhood_participations_count")
+    @SerialName("neighborhood_participations_count")
     var neighborhoodParticipationsCount: Int? = null
 
-    @SerializedName("recommandations")
+    @SerialName("recommandations")
     var recommendations: MutableList<HomeAction>? = null
 
-    @SerializedName("moderator")
+    @SerialName("moderator")
     var moderator: HomeModerator? = null
 
-    @SerializedName("referent_benevole")
+    @SerialName("referent_benevole")
     var referentBenevole: HomeModerator? = null
 
-    @SerializedName("congratulations")
+    @SerialName("congratulations")
     var congratulations: MutableList<HomeAction>? = null
 
-    @SerializedName("unclosed_action")
+    @SerialName("unclosed_action")
     var unclosedAction: SummaryAction? = null
 
 
-    @SerializedName("preference")
+    @SerialName("preference")
     var preference: String? = null
 
-    @SerializedName("events")
+    @SerialName("events")
     var events: MutableList<String>? = null
 
 
 }
 
+@KSerializable
 class HomeAction : Serializable {
-    @SerializedName("name")
+    @SerialName("name")
     var name: String? = null
 
-    @SerializedName("type")
+    @SerialName("type")
     var homeType: HomeType? = null
 
-    @SerializedName("action")
+    @SerialName("action")
     var action: ActionSummary? = null
 
-    @SerializedName("image_url")
+    @SerialName("image_url")
     var imageURL: String? = null
 
-    @SerializedName("params")
+    @SerialName("params")
     var params: HomeActionParams? = null
 }
 
+@KSerializable
 class HomeActionParams : Serializable {
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null
 
-    @SerializedName("uuid")
+    @SerialName("uuid")
     var uuid: String? = null
 
-    @SerializedName("url")
+    @SerialName("url")
     var url: String? = null
 
-    @SerializedName("post_id")
+    @SerialName("post_id")
     var postId: Int? = null
 
-    @SerializedName("chat_message_id")
+    @SerialName("chat_message_id")
     var chatMessageId: Int? = null
 
 }
 
+@KSerializable
 class HomeModerator : Serializable {
-    @SerializedName("display_name")
+    @SerialName("display_name")
     var displayName: String? = null
 
-    @SerializedName("id")
+    @SerialName("id")
     val id: Int? = null
 
-    @SerializedName("avatar_url")
+    @SerialName("avatar_url")
     val imageURL: String? = null
 
 }
 
+@KSerializable
 enum class HomeType {
-    @SerializedName("conversation")
+    @SerialName("conversation")
     CONVERSATION,
 
-    @SerializedName("neighborhood")
+    @SerialName("neighborhood")
     NEIGHBORHOOD,
 
-    @SerializedName("neighborhood_post")
+    @SerialName("neighborhood_post")
     NEIGHBORHOOD_POST,
 
-    @SerializedName("profile")
+    @SerialName("profile")
     PROFILE,
 
-    @SerializedName("poi")
+    @SerialName("poi")
     POI,
 
-    @SerializedName("user")
+    @SerialName("user")
     USER,
 
-    @SerializedName("outing_post")
+    @SerialName("outing_post")
     OUTING_POST,
 
-    @SerializedName("outing")
+    @SerialName("outing")
     OUTING,
 
-    @SerializedName("webview")
+    @SerialName("webview")
     WEBVIEW,
 
-    @SerializedName("contribution")
+    @SerialName("contribution")
     CONTRIBUTION,
 
-    @SerializedName("solicitation")
+    @SerialName("solicitation")
     SOLICITATION,
 
-    @SerializedName("resource")
+    @SerialName("resource")
     RESOURCE;
 }
 
+@KSerializable
 enum class ActionSummary {
-    @SerializedName("show")
+    @SerialName("show")
     SHOW,
 
-    @SerializedName("index")
+    @SerialName("index")
     INDEX,
 
-    @SerializedName("create")
+    @SerialName("create")
     CREATE;
 }

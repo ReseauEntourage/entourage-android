@@ -1,10 +1,12 @@
 package social.entourage.android.api.model
 
 import android.content.Context
-import com.google.gson.annotations.SerializedName
 import social.entourage.android.R
 import java.io.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
+@KSerializable
 class Organization : BaseOrganization(), Serializable {
 
     override var name: String? = null
@@ -12,7 +14,7 @@ class Organization : BaseOrganization(), Serializable {
     var description: String? = null
     var phone: String? = null
     var address: String? = null
-    @SerializedName("logo_url")
+    @SerialName("logo_url")
     override var largeLogoUrl: String? = null
 
     // ----------------------------------

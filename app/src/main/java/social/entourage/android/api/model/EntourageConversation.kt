@@ -2,11 +2,9 @@ package social.entourage.android.api.model
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 class EntourageConversation : BaseEntourage, Serializable {
-    @SerializedName("display_report_prompt")
     var isDisplay_report_prompt:Boolean = false
 
     companion object {

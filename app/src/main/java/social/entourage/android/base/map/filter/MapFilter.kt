@@ -4,10 +4,12 @@ import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.entourage.category.EntourageCategory
 import social.entourage.android.entourage.category.EntourageCategoryManager
 import java.io.Serializable
+import kotlinx.serialization.Serializable as KSerializable
 
 /**
  * Created by mihaiionescu on 17/05/16.
  */
+@KSerializable
 class MapFilter : MapFilterInterface, Serializable {
     var entourageTypeOuting = true
     var showPastEvents = false

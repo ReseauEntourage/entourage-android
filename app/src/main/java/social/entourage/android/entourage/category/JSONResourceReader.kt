@@ -1,43 +1,24 @@
 package social.entourage.android.entourage.category
 
 import android.content.res.Resources
-import com.google.gson.GsonBuilder
 import timber.log.Timber
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.StringWriter
 import java.io.Writer
-import java.lang.reflect.Type
 import java.nio.charset.StandardCharsets
+import social.entourage.android.api.json.AppJson
 
 /**
  * Created by mihaiionescu on 20/09/2017.
  */
 class JSONResourceReader(resources: Resources, id: Int) {
     // Our JSON, in string form.
-    private val jsonString: String
+    @PublishedApi
+    internal val jsonString: String
 
-    /**
-     * Build an object from the specified JSON resource using Gson.
-     *
-     * @param type The type of the object to build.
-     *
-     * @return An object of type T, with member fields populated using Gson.
-     */
-    fun <T> constructUsingGson(type: Class<T>?): T {
-        return GsonBuilder().create().fromJson(jsonString, type)
-    }
-
-    /**
-     * Build an object from the specified JSON resource using Gson.
-     *
-     * @param type The type of the object to build.
-     *
-     * @return An object of type T, with member fields populated using Gson.
-     */
-    fun <T> constructUsingGson(type: Type?): T {
-        return GsonBuilder().create().fromJson(jsonString, type)
-    }
+    /** Décode la ressource JSON en liste d'objets de type [T]. */
+    inline fun <reified T> decodeList(): List<T> = AppJson.decode(jsonString)
 
     /**
      * Read from a resources file and create a [JSONResourceReader] object that will allow the creation of other

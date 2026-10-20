@@ -1,9 +1,9 @@
+@file:UseSerializers(ApiDateSerializer::class)
+
 package social.entourage.android.api.model
 
 import android.content.Context
 import androidx.collection.ArrayMap
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 import social.entourage.android.R.string
 import social.entourage.android.api.model.feed.FeedItemAuthor
 import timber.log.Timber
@@ -13,7 +13,12 @@ import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.io.Serializable
 import java.util.Date
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
+import kotlinx.serialization.UseSerializers
+import social.entourage.android.api.json.ApiDateSerializer
 
+@KSerializable
 class User : Serializable {
     // ----------------------------------
     // ATTRIBUTES (Serialized)
@@ -21,87 +26,84 @@ class User : Serializable {
     var id: Int
     var email: String? = null
 
-    @SerializedName("first_name")
+    @SerialName("first_name")
     var firstName: String? = null
 
-    @SerializedName("last_name")
+    @SerialName("last_name")
     var lastName: String? = null
 
-    @SerializedName("birthdate")
+    @SerialName("birthdate")
     var birthday: String? = null
-    @SerializedName("gender")
+    @SerialName("gender")
     var gender: String? = null
 
-    @SerializedName("interests")
+    @SerialName("interests")
     var interests: ArrayList<String> = ArrayList()
 
-    @SerializedName("involvements")
+    @SerialName("involvements")
     var involvements: ArrayList<String> = ArrayList()
 
-    @SerializedName("orientations")
+    @SerialName("orientations")
     var orientations: ArrayList<String> = ArrayList()
 
-    @SerializedName("concerns")
+    @SerialName("concerns")
     var concerns: ArrayList<String> = ArrayList()
 
-    @SerializedName("display_name")
+    @SerialName("display_name")
     val displayName: String?
     var partner: Partner?
 
-    @SerializedName("avatar_url")
+    @SerialName("avatar_url")
     var avatarURL: String?
 
-    @SerializedName("availability")
-    var availability: ArrayMap<String, List<String>> = ArrayMap()
+    @SerialName("availability")
+    var availability: Map<String, List<String>> = emptyMap()
 
-    @SerializedName("firebase_properties")
-    val firebaseProperties: UserFirebaseProperties? = null
+    @SerialName("firebase_properties")
+    val firebaseProperties: Map<String, String>? = null
     var about: String? = ""
         get() = field ?: ""
     val roles: ArrayList<String>? = null
     val conversation: UserConversation? = null
     var address: Address? = null
 
-    @SerializedName("address_2")
+    @SerialName("address_2")
     var addressSecondary: Address? = null
     var goal: String? = null
     var stats: Stats? = null
     var organization: Organization? = null
 
-    @SerializedName("engaged")
+    @SerialName("engaged")
     var isEngaged: Boolean = false
 
-    @SerializedName("unread_count")
+    @SerialName("unread_count")
     var unreadCount: Int? = null
 
-    @SerializedName("permissions")
-    private var permissions: UserPermissions? = null
+    @SerialName("permissions")
+    private var permissions: Map<String, Map<String, Boolean>>? = null
 
-    @SerializedName("travel_distance")
+    @SerialName("travel_distance")
     var travelDistance: Int? = null
 
-    @SerializedName("willing_to_engage_locally")
+    @SerialName("willing_to_engage_locally")
     var willingToEngageLocally: Boolean? = null
 
-    @SerializedName("created_at")
+    @SerialName("created_at")
     var createdAt: Date? = null
 
-    @SerializedName("is_birthday")
+    @SerialName("is_birthday")
     var isBirthday: Boolean = false
 
-    @SerializedName("badges")
+    @SerialName("badges")
     var badges: MutableList<social.entourage.android.badges.ApiBadge>? = null
 
     // ----------------------------------
     // ATTRIBUTES (Not Serialized)
     // ----------------------------------
-    @Expose(serialize = false)
     var phone: String? = null
 
-    @Expose(serialize = false)
     var smsCode: String? = null
 
-    @Expose(serialize = false)
     val token: String?
 
     // ----------------------------------
@@ -152,7 +154,7 @@ class User : Serializable {
     // Other methods
     // ----------------------------------
     fun isCreateEventActive(): Boolean {
-        return permissions?.isEventCreationActive() ?: false
+        return permissions?.get("outing")?.get("creation") ?: false
     }
 
     fun asAuthor(): FeedItemAuthor {
@@ -228,6 +230,7 @@ class User : Serializable {
     // ----------------------------------
     // User Conversation
     // ----------------------------------
+    @KSerializable
     class UserConversation : Serializable {
         val uuid: String? = null
 
@@ -237,25 +240,17 @@ class User : Serializable {
     }
 
     // ----------------------------------
-    // User Firebase Properties
-    // ----------------------------------
-    class UserFirebaseProperties : HashMap<String, String>(), Serializable {
-        companion object {
-            private const val serialVersionUID: Long = -90000095L
-        }
-    }
-
-    // ----------------------------------
     // User Address
     // ----------------------------------
+    @KSerializable
     class Address : Serializable {
         var latitude = 0.0
         var longitude = 0.0
 
-        @SerializedName("display_address")
+        @SerialName("display_address")
         var displayAddress: String = ""
 
-        @SerializedName("google_place_id")
+        @SerialName("google_place_id")
         var googlePlaceId: String? = null
 
         constructor(googlePlaceId: String?) {

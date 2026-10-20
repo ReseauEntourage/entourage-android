@@ -1,8 +1,8 @@
 package social.entourage.android.api.model.notification
 
 import android.content.Context
-import com.google.gson.Gson
 import java.io.Serializable
+import social.entourage.android.api.json.AppJson
 
 class PushNotificationMessage(var author: String, var msgObject: String?, content: String, pushNotificationId: Int, pushNotificationTag: String?) : Serializable {
     // ----------------------------------
@@ -80,8 +80,7 @@ class PushNotificationMessage(var author: String, var msgObject: String?, conten
     // CONSTRUCTOR
     // ----------------------------------
     init {
-        val gson = Gson()
-        this.content = gson.fromJson(content, PushNotificationContent::class.java)
+        this.content = AppJson.decode<PushNotificationContent>(content)
         this.pushNotificationId = pushNotificationId
         this.pushNotificationTag = pushNotificationTag
         isVisible = true

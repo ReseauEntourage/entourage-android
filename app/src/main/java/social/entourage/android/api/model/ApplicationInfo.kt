@@ -1,21 +1,23 @@
 package social.entourage.android.api.model
 
 import android.os.Build
-import com.google.gson.annotations.SerializedName
 import social.entourage.android.BuildConfig
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
 /**
  * Created by mihaiionescu on 09/03/16.
  */
-class ApplicationInfo(@field:SerializedName("push_token") private val pushToken: String) {
+@KSerializable
+class ApplicationInfo(@SerialName("push_token") private val pushToken: String = "") {
 
-    @SerializedName("device_os")
+    @SerialName("device_os")
     private val deviceOS: String
 
-    @SerializedName("device_family")
+    @SerialName("device_family")
     private val deviceFamily = "ANDROID"
 
-    @SerializedName("notifications_permissions")
+    @SerialName("notifications_permissions")
     var notificationsPermissions: String
 
     private val version: String

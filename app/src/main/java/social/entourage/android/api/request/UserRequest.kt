@@ -1,7 +1,6 @@
 package social.entourage.android.api.request
 
 import androidx.collection.ArrayMap
-import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -10,9 +9,13 @@ import social.entourage.android.api.model.User
 import social.entourage.android.api.model.UserReportWrapper
 import social.entourage.android.home.UnreadMessages
 import social.entourage.android.user.PrepareAvatarUploadRepository
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
+@KSerializable
 class UserResponse(val user: User)
-class UnreadCountWrapper(@field:SerializedName("user") val unreadMessages: UnreadMessages)
+@KSerializable
+class UnreadCountWrapper(@SerialName("user") val unreadMessages: UnreadMessages)
 
 interface UserRequest {
     @PATCH("users/me.json")

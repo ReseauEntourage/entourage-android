@@ -2,14 +2,16 @@ package social.entourage.android.badges
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
 import social.entourage.android.tools.utils.readParcelableCompat
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
+@KSerializable
 data class ApiBadge(
-    @SerializedName("name") val name: String,
-    @SerializedName("active") val active: Boolean = false,
-    @SerializedName("awarded_at") val awardedAt: String?,
-    @SerializedName("metadata") val metadata: ApiBadgeMetadata?
+    @SerialName("name") val name: String = "",
+    @SerialName("active") val active: Boolean = false,
+    @SerialName("awarded_at") val awardedAt: String? = null,
+    @SerialName("metadata") val metadata: ApiBadgeMetadata? = null
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString() ?: "",
@@ -30,9 +32,10 @@ data class ApiBadge(
     }
 }
 
+@KSerializable
 data class ApiBadgeMetadata(
-    @SerializedName("target") val target: Int?,
-    @SerializedName("current") val current: Int?
+    @SerialName("target") val target: Int? = null,
+    @SerialName("current") val current: Int? = null
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         if (parcel.readByte() != 0.toByte()) parcel.readInt() else null,

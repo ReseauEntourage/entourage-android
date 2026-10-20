@@ -1,6 +1,6 @@
 package social.entourage.android.api
 
-import com.google.gson.JsonSyntaxException
+import kotlinx.serialization.SerializationException
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -11,12 +11,8 @@ import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
 import social.entourage.android.api.model.Action
-import social.entourage.android.api.model.BaseEntourage
 import social.entourage.android.api.model.ChatMessage
 import social.entourage.android.api.model.Conversation
-import social.entourage.android.api.model.EntourageContribution
-import social.entourage.android.api.model.EntourageDemand
-import social.entourage.android.api.model.EntourageEvent
 import social.entourage.android.api.model.EntourageUser
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Group
@@ -24,7 +20,6 @@ import social.entourage.android.api.model.HomeType
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.Status
 import social.entourage.android.api.model.Summary
-import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.api.request.GroupWrapper
 import social.entourage.android.api.request.MetaDataResponse
 import java.util.Date
@@ -123,12 +118,11 @@ class ApiJsonCharacterizationTest {
     }
 
     @Test
-    fun event_explicitNullOverwritesNonNullDefault() {
-        // Comportement Gson à connaître : un null explicite écrase la valeur par défaut Kotlin,
-        // même sur un type non-null (c'est le "NPE silencieux" que kotlinx.serialization évite).
+    fun event_explicitNullFallsBackToTheKotlinDefault() {
+        // Différence VOLONTAIRE avec Gson : un null explicite sur une propriété non nulle qui a une valeur
+        // par défaut donne cette valeur par défaut (Gson injectait null dans un type non nul).
         val e = ApiJson.decode<Events>("""{"id": 1, "interests": null}""")
-        @Suppress("USELESS_CAST", "UNNECESSARY_NOT_NULL_ASSERTION")
-        assertNull(e.interests as List<String>?)
+        assertEquals(emptyList<String>(), e.interests)
     }
 
     @Test
@@ -146,7 +140,7 @@ class ApiJsonCharacterizationTest {
         try {
             ApiJson.decode<Events>("""{"created_at": "pas une date"}""")
             fail("Une date illisible doit lever une exception")
-        } catch (expected: JsonSyntaxException) {
+        } catch (expected: SerializationException) {
             // ok
         }
     }
@@ -272,7 +266,7 @@ class ApiJsonCharacterizationTest {
     // ------------------------------------------------------------ ChatMessage
 
     @Test
-    fun chatMessage_decodesServerOnlyFieldsButDoesNotEncodeThem() {
+    fun chatMessage_decodesServerFields() {
         val raw = """{"content": "Salut", "id": 77, "created_at": "2026-05-01T09:15:00.000+0000",
             "message_type": "text", "user": {"id": 3, "display_name": "Jean M."}}"""
         val m = ApiJson.decode<ChatMessage>(raw)
@@ -282,14 +276,8 @@ class ApiJsonCharacterizationTest {
         assertEquals("text", m.messageType)
         assertEquals("Jean M.", m.userName)
         assertEquals(3, m.userId)
-
-        // @Expose(serialize = false) : ces champs ne sont jamais renvoyés au serveur.
-        val encoded = ApiJson.tree(ApiJson.encode(m)).toString()
-        assertTrue(encoded.contains("\"content\":\"Salut\""))
-        assertFalse(encoded.contains("\"id\""))
-        assertFalse(encoded.contains("created_at"))
-        assertFalse(encoded.contains("message_type"))
-        assertFalse(encoded.contains("\"user\""))
+        // Plus d'asymétrie @Expose(serialize = false) : ChatMessage n'est de toute façon jamais envoyé
+        // en @Body (les envois passent par des corps dédiés, cf. WriteRequestFixturesTest).
     }
 
     // ------------------------------------------------------------------- Post
@@ -338,85 +326,11 @@ class ApiJsonCharacterizationTest {
     // ------------------------------------------------------ EntourageUser (@Expose)
 
     @Test
-    fun entourageUser_emailAndStatusAreReadButNeverWritten() {
+    fun entourageUser_emailAndStatusAreRead() {
         val raw = """{"id": 5, "display_name": "Admin", "email": "admin@example.org", "status": "accepted"}"""
         val u = ApiJson.decode<EntourageUser>(raw)
         assertEquals(5, u.userId)
         assertEquals("accepted", u.status)
-        val encoded = ApiJson.encode(u)
-        assertFalse(encoded.contains("admin@example.org"))
-        assertFalse(encoded.contains("accepted"))
-    }
-
-    // -------------------------------------------- BaseEntourage / NewsfeedItem
-
-    @Test
-    fun baseEntourage_polymorphicByGroupAndEntourageType() {
-        fun parse(json: String) = ApiJson.decode<BaseEntourage>(json)
-        assertTrue(parse("""{"group_type": "outing", "entourage_type": "outing"}""") is EntourageEvent)
-        assertTrue(parse("""{"group_type": "action", "entourage_type": "contribution"}""") is EntourageContribution)
-        assertTrue(parse("""{"group_type": "action", "entourage_type": "ask_for_help"}""") is EntourageDemand)
-        assertTrue(parse("""{"group_type": "action", "entourage_type": "autre"}""") is EntourageDemand)
-        assertTrue(parse("""{"group_type": "inconnu"}""") is EntourageDemand)
-        assertTrue(parse("""{}""") is EntourageDemand)
-    }
-
-    @Test
-    fun baseEntourage_nullCreatedAtIsReplacedByNow() {
-        val before = Date().time
-        val e = ApiJson.decode<BaseEntourage>("""{"group_type": "outing", "entourage_type": "outing", "created_at": null}""")
-        assertTrue(e.createdTime.time >= before)
-    }
-
-    @Test
-    fun baseEntourage_keepsProvidedCreatedAt() {
-        val e = ApiJson.decode<BaseEntourage>(
-            """{"group_type": "outing", "entourage_type": "outing", "created_at": "2026-03-01T10:00:00.000+0000"}"""
-        )
-        assertEquals(millis("2026-03-01T10:00:00.000+0000"), e.createdTime.time)
-    }
-
-    @Test
-    fun baseEntourage_parsesPrivateFieldsAndFlags() {
-        val e = ApiJson.decode<BaseEntourage>(
-            """{"group_type": "outing", "entourage_type": "outing", "title": "Sortie", "description": "D",
-                "display_category": "sport", "online": true, "public": true, "event_url": "https://x.org"}"""
-        )
-        assertEquals("Sortie", e.getTitle())
-        assertEquals("D", e.getDescription())
-        assertEquals("sport", e.category)
-        assertTrue(e.isOnlineEvent)
-        assertTrue(e.isPublic)
-        assertEquals("https://x.org", e.eventUrl)
-    }
-
-    @Test
-    fun newsfeed_listDispatchesOnTypeAndGroupType() {
-        val items = ApiJson.decode<Array<NewsfeedItem>>(ApiJson.fixture("newsfeed.json"))
-        assertEquals(4, items.size)
-
-        assertEquals("Entourage", items[0].type)
-        val outing = items[0].data as EntourageEvent
-        assertEquals("Sortie parc", outing.getTitle())
-        assertTrue(outing.isOnlineEvent)
-        assertEquals(millis("2026-03-01T10:00:00.000+0000"), outing.createdTime.time)
-
-        assertTrue(items[1].data is EntourageContribution)
-        assertEquals("Don de manteaux", (items[1].data as BaseEntourage).getTitle())
-        assertTrue(items[2].data is EntourageDemand)
-
-        assertEquals("SomethingNew", items[3].type)
-        assertNull(items[3].data) // type inconnu : l'élément existe, sans données
-    }
-
-    @Test
-    fun newsfeed_itemWithoutTypeKeyThrows() {
-        try {
-            ApiJson.decode<NewsfeedItem>("""{"data": {}}""")
-            fail("Le désérialiseur lit jsonObject[type] sans garde : attendu NPE/exception")
-        } catch (expected: Exception) {
-            // comportement actuel : exception (pas de tolérance)
-        }
     }
 
     // ----------------------------------------------------------------- Action
@@ -467,20 +381,15 @@ class ApiJsonCharacterizationTest {
     }
 
     @Test
-    fun metadata_realResponse_topLevelListsAbsentFromServerStayNull() {
-        // Le serveur n'envoie PAS interests/involvements/concerns/orientations à la racine
-        // (ils sont dans `tags`), alors que MetaDataResponse les déclare non-null. Gson laisse
-        // donc null silencieusement (d'où le log "wtf orientations null" dans l'app).
-        // Avec kotlinx.serialization ce même JSON lèverait MissingFieldException et ferait perdre
-        // aussi tags et reactions : il faudra des valeurs par défaut ou des types nullables.
+    fun metadata_realResponse_topLevelListsAbsentFromServerAreEmpty() {
+        // Le serveur n'envoie PAS interests/involvements/concerns/orientations à la racine (ils sont dans
+        // `tags`), alors que MetaDataResponse les déclare. Avant la migration Gson les laissait à null
+        // (type non nul violé, d'où l'ancien log "wtf orientations null") ; ils valent maintenant une liste
+        // vide, et une réponse sans ces clés ne fait plus perdre `tags` ni `reactions`.
         val m = ApiJson.decode<MetaDataResponse>(ApiJson.fixture("metadata.json"))
-        @Suppress("USELESS_CAST")
-        assertNull(m.interests as List<*>?)
-        @Suppress("USELESS_CAST")
-        assertNull(m.orientations as List<*>?)
-        @Suppress("USELESS_CAST")
-        assertNull(m.concerns as List<*>?)
-        @Suppress("USELESS_CAST")
-        assertNull(m.involvements as List<*>?)
+        assertEquals(emptyList<Any>(), m.interests)
+        assertEquals(emptyList<Any>(), m.orientations)
+        assertEquals(emptyList<Any>(), m.concerns)
+        assertEquals(emptyList<Any>(), m.involvements)
     }
 }

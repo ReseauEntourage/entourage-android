@@ -1,17 +1,19 @@
 package social.entourage.android.api.model.feed
 
-import com.google.gson.annotations.SerializedName
 import social.entourage.android.api.model.LastMessageAuthor
 import java.io.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
 /**
  * Created by mihaiionescu on 13/10/16.
  */
+@KSerializable
 class FeedLastMessage : Serializable {
-    @SerializedName("text")
+    @SerialName("text")
     private var text: String? = null
 
-    @SerializedName("author")
+    @SerialName("author")
     private var author: LastMessageAuthor? = null
 
     fun getText(userId:Int): String? {

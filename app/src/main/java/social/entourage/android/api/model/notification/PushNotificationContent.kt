@@ -1,11 +1,15 @@
 package social.entourage.android.api.model.notification
 
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.JsonNames
 
 /**
  * Created by mihaiionescu on 18/03/16.
  */
+@KSerializable
 class PushNotificationContent : Serializable {
     var extra: Extra? = null
     var message: String? = null
@@ -46,58 +50,61 @@ class PushNotificationContent : Serializable {
             return null
         }
 
+    @KSerializable
     class Extra : Serializable {
-        @SerializedName(value = "joinable_id", alternate = ["feed_id"])
+        @SerialName("joinable_id")
+        @JsonNames("feed_id")
         var joinableId: Long = 0
 
-        @SerializedName(value = "joinable_type", alternate = ["feed_type"])
+        @SerialName("joinable_type")
+        @JsonNames("feed_type")
         var joinableType: String? = null
 
-        @SerializedName("user_id")
+        @SerialName("user_id")
         var userId = 0
 
-        @SerializedName("entourage_id")
+        @SerialName("entourage_id")
         var entourageId: Long = 0
 
-        @SerializedName("inviter_id")
+        @SerialName("inviter_id")
         var inviterId = 0
 
-        @SerializedName("invitee_id")
+        @SerialName("invitee_id")
         var inviteeId = 0
 
-        @SerializedName("popup")
+        @SerialName("popup")
         var popup:String? = null
 
-        @SerializedName("invitation_id")
+        @SerialName("invitation_id")
         var invitationId = 0
         var type: String? = null
 
-        @SerializedName("instance")
+        @SerialName("instance")
         var instance:String? = null
 
-        @SerializedName("instance_id")
+        @SerialName("instance_id")
         var instanceId:Int? = null
 
-        @SerializedName("post_id")
+        @SerialName("post_id")
         var postId:Int? = null
 
-        @SerializedName("chat_message_id")
+        @SerialName("chat_message_id")
         var chatMessageId:Int? = null
 
-        @SerializedName("welcome")
+        @SerialName("welcome")
         val welcome: Boolean? = false
         //value = h1, j2, j8, j11
 
-        @SerializedName("stage")
+        @SerialName("stage")
         val stage: String? = null
 
-        @SerializedName("badge")
+        @SerialName("badge")
         val badge: String? = null
 
-        @SerializedName("tracking")
+        @SerialName("tracking")
         val tracking: String? = null
 
-        @SerializedName("url")
+        @SerialName("url")
         val url: String? = null
 
         companion object {

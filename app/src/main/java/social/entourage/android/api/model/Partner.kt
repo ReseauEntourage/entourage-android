@@ -1,12 +1,14 @@
 package social.entourage.android.api.model
 
 import android.content.Context
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
 /**
  * Created by mihaiionescu on 17/01/2017.
  */
+@KSerializable
 class Partner : BaseOrganization(), Serializable {
     // ----------------------------------
     // ATTRIBUTES
@@ -15,37 +17,37 @@ class Partner : BaseOrganization(), Serializable {
 
     override var name: String? = null
 
-    @SerializedName("small_logo_url")
+    @SerialName("small_logo_url")
     var smallLogoUrl: String? = null
 
-    @SerializedName("large_logo_url")
+    @SerialName("large_logo_url")
     override var largeLogoUrl: String? = null
-    @SerializedName("image_url")
+    @SerialName("image_url")
     var imageUrl: String? = null
-    @SerializedName("default")
+    @SerialName("default")
     var isDefault = false
     val description: String? = null
     val phone: String? = null
     val address: String? = null
     val email: String? = null
 
-    @SerializedName("website_url")
+    @SerialName("website_url")
     val websiteUrl: String? = null
 
-    @SerializedName("user_role_title")
+    @SerialName("user_role_title")
     var userRoleTitle: String? = null
 
-    @SerializedName("postal_code")
+    @SerialName("postal_code")
     var postalCode: String? = null
     var isCreation = false
 
-    @SerializedName("donations_needs")
+    @SerialName("donations_needs")
     var donationsNeeds: String? = null
 
-    @SerializedName("volunteers_needs")
+    @SerialName("volunteers_needs")
     var volunteersNeeds: String? = null
 
-    @SerializedName("following")
+    @SerialName("following")
     var isFollowing = false
 
     // ----------------------------------
@@ -66,94 +68,103 @@ class Partner : BaseOrganization(), Serializable {
     }
 }
 
+@KSerializable
 data class PartnerResponse(
-    @SerializedName("partner") val partner: Partner
+    @SerialName("partner") val partner: Partner
 )
 
+@KSerializable
 data class PartnerCreateBody(
-    @SerializedName("name")
-    val name: String,
+    @SerialName("name")
+    val name: String = "",
 
-    @SerializedName("image_url")
+    @SerialName("image_url")
     var imageUrl: String? = null,
 
-    @SerializedName("description")
+    @SerialName("description")
     val description: String? = null,
 
-    @SerializedName("phone")
+    @SerialName("phone")
     val phone: String? = null,
 
-    @SerializedName("address")
+    @SerialName("address")
     val address: String? = null,
 
-    @SerializedName("latitude")
+    @SerialName("latitude")
     val latitude: Double? = null,
 
-    @SerializedName("longitude")
+    @SerialName("longitude")
     val longitude: Double? = null,
 
-    @SerializedName("website_url")
+    @SerialName("website_url")
     val websiteUrl: String? = null,
 
-    @SerializedName("email")
+    @SerialName("email")
     val email: String? = null,
 
-    @SerializedName("donations_needs")
+    @SerialName("donations_needs")
     val donationsNeeds: String? = null,
 
-    @SerializedName("volunteers_needs")
+    @SerialName("volunteers_needs")
     val volunteersNeeds: String? = null,
 
-    @SerializedName("staff")
+    @SerialName("staff")
     val staff: Boolean = false
 )
 
+@KSerializable
 data class PartnerCreateWrapper(
-    @SerializedName("partner")
+    @SerialName("partner")
     val partner: PartnerCreateBody
 )
 
 // Wrapper pour la mise à jour du partenaire
+@KSerializable
 data class PartnerUpdateWrapper(
-    @SerializedName("partner")
+    @SerialName("partner")
     val partner: PartnerUpdateData
 )
 
 // Données pour la mise à jour du partenaire
 // CORRECTION ICI : image_url recevra la key
+@KSerializable
 data class PartnerUpdateData(
-    @SerializedName("name") val name: String? = null,
-    @SerializedName("description") val description: String? = null,
-    @SerializedName("phone") val phone: String? = null,
-    @SerializedName("address") val address: String? = null,
-    @SerializedName("website_url") val websiteUrl: String? = null,
-    @SerializedName("email") val email: String? = null,
-    @SerializedName("latitude") val latitude: Double? = null,
-    @SerializedName("longitude") val longitude: Double? = null,
-    @SerializedName("donations_needs") val donationsNeeds: String? = null,
-    @SerializedName("volunteers_needs") val volunteersNeeds: String? = null,
+    @SerialName("name") val name: String? = null,
+    @SerialName("description") val description: String? = null,
+    @SerialName("phone") val phone: String? = null,
+    @SerialName("address") val address: String? = null,
+    @SerialName("website_url") val websiteUrl: String? = null,
+    @SerialName("email") val email: String? = null,
+    @SerialName("latitude") val latitude: Double? = null,
+    @SerialName("longitude") val longitude: Double? = null,
+    @SerialName("donations_needs") val donationsNeeds: String? = null,
+    @SerialName("volunteers_needs") val volunteersNeeds: String? = null,
 
-    @SerializedName("image_url") val imageUrl: String? = null
+    @SerialName("image_url") val imageUrl: String? = null
 )
 
 // Classes pour le presigned URL upload
+@KSerializable
 data class PresignedUploadBody(
-    @SerializedName("content_type")
-    val contentType: String
+    @SerialName("content_type")
+    val contentType: String = ""
 )
 
+@KSerializable
 data class PresignedUrlResponse(
-    @SerializedName("upload_key")
+    @SerialName("upload_key")
     val uploadKey: String? = null,
-    @SerializedName("presigned_url")
+    @SerialName("presigned_url")
     val presignedUrl: String? = null
 )
 
+@KSerializable
 data class PartnersWrapper(
-    @SerializedName("partners")
+    @SerialName("partners")
     val partners: List<Partner> = emptyList()
 )
 
+@KSerializable
 class Event<out T>(private val content: T) {
     private var handled = false
     fun getContentIfNotHandled(): T? {

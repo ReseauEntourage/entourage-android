@@ -1,46 +1,51 @@
+@file:UseSerializers(ApiDateSerializer::class)
+
 package social.entourage.android.api.model.notification
 
-import com.google.gson.annotations.SerializedName
 import social.entourage.android.R
 import social.entourage.android.tools.utils.Utils
 import java.util.*
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
+import kotlinx.serialization.UseSerializers
+import social.entourage.android.api.json.ApiDateSerializer
 
 /**
  * Created by Me on 23/11/2022.
  */
+@KSerializable
 class InAppNotification (
-    @SerializedName("id")
+    @SerialName("id")
     val id: Int? = null,
-    @SerializedName("instance_id")
+    @SerialName("instance_id")
     val instanceId: Int? = null,
-    @SerializedName("post_id")
+    @SerialName("post_id")
     val postId: Int? = null,
-    @SerializedName("chat_message_id")
+    @SerialName("chat_message_id")
     val chatMessageId: Int? = null,
-    @SerializedName("welcome")
+    @SerialName("welcome")
     val welcome: Boolean? = false,
     //value = h1, j2, j8, j11
-    @SerializedName("stage")
+    @SerialName("stage")
     val stage: String? = null,
-    @SerializedName("badge")
+    @SerialName("badge")
     val badge: String? = null,
-    @SerializedName("context")
+    @SerialName("context")
     val context: String? = null,
-    @SerializedName("url")
+    @SerialName("url")
     val url: String? = null,
-    @SerializedName("instance")
+    @SerialName("instance")
     val instanceType: String? = null,
-    @SerializedName("title")
+    @SerialName("title")
     val title: String? = null,
-    @SerializedName("content")
+    @SerialName("content")
     val content: String? = null,
-    @SerializedName("created_at")
+    @SerialName("created_at")
     val createdAt: Date? = null,
-    @SerializedName("completed_at")
+    @SerialName("completed_at")
     var completedAt: Date? = null,
-    @SerializedName("image_url")
-    val imageUrl: String? = null,
-) {
+    @SerialName("image_url")
+    val imageUrl: String? = null) {
 
     fun isRead() : Boolean {
         return  completedAt != null

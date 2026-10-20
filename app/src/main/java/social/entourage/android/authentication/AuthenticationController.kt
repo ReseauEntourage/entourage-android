@@ -1,6 +1,5 @@
 package social.entourage.android.authentication
 
-import com.google.gson.reflect.TypeToken
 import social.entourage.android.EntourageApplication
 import social.entourage.android.RefreshController
 import social.entourage.android.api.model.User
@@ -18,7 +17,7 @@ class AuthenticationController() {
         get() = EntourageApplication.get().complexPreferences
 
     init {
-        user = appSharedPref.getObject(PREF_KEY_USER, User::class.java)
+        user = appSharedPref.getObject<User>(PREF_KEY_USER)
         if (user?.token == null) {
             logOutUser()
         }
@@ -66,12 +65,9 @@ class AuthenticationController() {
         get() = user != null
 
     private fun loadUserPreferences() {
-        val type = object : TypeToken<Map<Int?, UserPreferences?>?>() {}.type
         userPreferencesHashMap =
-            (appSharedPref.getObjectFromType<MutableMap<Int, UserPreferences?>>(
-                PREF_KEY_USER_PREFERENCES,
-                type
-            ) ?: HashMap()).toMutableMap()
+            (appSharedPref.getObject<Map<Int, UserPreferences?>>(PREF_KEY_USER_PREFERENCES)
+                ?: HashMap()).toMutableMap()
 
         // since we save the user preferences for all the users
         // we just need to check for an existing user preferences to see if it's a new user or not
@@ -79,27 +75,23 @@ class AuthenticationController() {
             userPreferencesHashMap[user.id]
         } ?: UserPreferences()
         // Check if we have an old version of saving the map filter with hashmap
-        val typeMapFilterHashMap = object : TypeToken<Map<Int?, MapFilter?>?>() {}.type
-        appSharedPref.getObjectFromType<Map<Int, MapFilter>>(
-            PREF_KEY_MAP_FILTER_HASHMAP,
-            typeMapFilterHashMap
-        )?.let { mapFilterHashMap ->
+        appSharedPref.getObject<Map<Int, MapFilter>>(PREF_KEY_MAP_FILTER_HASHMAP)?.let { mapFilterHashMap ->
             // save it to user preferences
             user?.let { user ->
                 userPreferences.mapFilter = mapFilterHashMap[user.id]
                 saveUserPreferences()
             }
             // delete it
-            appSharedPref.putObject(PREF_KEY_MAP_FILTER_HASHMAP, null)
+            appSharedPref.removeObject(PREF_KEY_MAP_FILTER_HASHMAP)
         }
         if (user != null) {
             // Check if we have the old version of saving map filter
-            appSharedPref.getObject(PREF_KEY_MAP_FILTER, MapFilter::class.java)?.let { mapFilter ->
+            appSharedPref.getObject<MapFilter>(PREF_KEY_MAP_FILTER)?.let { mapFilter ->
                 // Found old version, save it to the new structure
                 userPreferences.mapFilter = mapFilter
                 saveUserPreferences()
                 // Delete it
-                appSharedPref.putObject(PREF_KEY_MAP_FILTER, null)
+                appSharedPref.removeObject(PREF_KEY_MAP_FILTER)
             }
         }
     }

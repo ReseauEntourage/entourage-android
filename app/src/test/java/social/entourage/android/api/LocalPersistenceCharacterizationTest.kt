@@ -2,7 +2,6 @@ package social.entourage.android.api
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.google.gson.reflect.TypeToken
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -64,7 +63,7 @@ class LocalPersistenceCharacterizationTest {
         cp.putObject("user", loggedUser())
         cp.commit()
 
-        val restored = mem.complex().getObject("user", User::class.java)!!
+        val restored = mem.complex().getObject<User>("user")!!
         assertEquals(4079, restored.id)
         assertEquals("fake-token-0000", restored.token)
         assertEquals("0600000000", restored.phone)
@@ -101,7 +100,7 @@ class LocalPersistenceCharacterizationTest {
     fun user_legacyStoredJson_canStillBeRead() {
         val mem = MemoryPrefs()
         mem.store["user"] = legacyStoredUser
-        val u = mem.complex().getObject("user", User::class.java)!!
+        val u = mem.complex().getObject<User>("user")!!
         assertEquals(4079, u.id)
         assertEquals("fake-token-0000", u.token)
         assertEquals("654321", u.smsCode)
@@ -113,22 +112,22 @@ class LocalPersistenceCharacterizationTest {
 
     @Test
     fun missingKey_returnsNull() {
-        assertNull(MemoryPrefs().complex().getObject("user", User::class.java))
+        assertNull(MemoryPrefs().complex().getObject<User>("user"))
     }
 
     @Test
     fun nullObjectIsStoredAsEmptyString_andReadsBackAsNull() {
         val mem = MemoryPrefs()
-        mem.complex().putObject("user", null)
+        mem.complex().removeObject("user")
         assertEquals("", mem.store["user"])
-        assertNull(mem.complex().getObject("user", User::class.java))
+        assertNull(mem.complex().getObject<User>("user"))
     }
 
     @Test
     fun corruptedJson_isSwallowedAndReturnsNull() {
         val mem = MemoryPrefs()
         mem.store["user"] = "{pas du json"
-        assertNull(mem.complex().getObject("user", User::class.java))
+        assertNull(mem.complex().getObject<User>("user"))
     }
 
     @Test
@@ -138,8 +137,7 @@ class LocalPersistenceCharacterizationTest {
         mem.complex().putObject("prefs", mapOf(4079 to prefs))
         assertTrue(mem.store["prefs"]!!.startsWith("{\"4079\":"))
 
-        val type = object : TypeToken<Map<Int?, UserPreferences?>?>() {}.type
-        val back = mem.complex().getObjectFromType<Map<Int, UserPreferences?>>("prefs", type)!!
+        val back = mem.complex().getObject<Map<Int, UserPreferences?>>("prefs")!!
         assertEquals(setOf(4079), back.keys)
         assertFalse(back[4079]!!.isShowInfoPOIsPopup)
     }
@@ -148,8 +146,7 @@ class LocalPersistenceCharacterizationTest {
     fun userPreferencesMap_legacyJsonIsReadable() {
         val mem = MemoryPrefs()
         mem.store["prefs"] = """{"4079":{"isShowInfoPOIsPopup":true,"isShowNoEntouragesPopup":false},"12":{"isShowInfoPOIsPopup":false}}"""
-        val type = object : TypeToken<Map<Int?, UserPreferences?>?>() {}.type
-        val back = mem.complex().getObjectFromType<Map<Int, UserPreferences?>>("prefs", type)!!
+        val back = mem.complex().getObject<Map<Int, UserPreferences?>>("prefs")!!
         assertEquals(setOf(4079, 12), back.keys)
         assertNotNull(back[12])
         assertFalse(back[12]!!.isShowInfoPOIsPopup)

@@ -8,6 +8,8 @@ import java.time.LocalDate
 import java.time.LocalTime
 import java.time.format.DateTimeParseException
 import java.util.Locale
+import kotlinx.serialization.Serializable as KSerializable
+import kotlinx.serialization.Transient
 
 /**
  * Liste unique des étapes de l'assistant. Le nombre d'étapes affiché ("Étape N sur X"), le
@@ -40,6 +42,7 @@ enum class CreateEventField(val step: CreateEventStep) {
  * (sérialisé en JSON) : tout champ ajouté ici est donc conservé dans le brouillon, sauf s'il est
  * marqué `@Transient`.
  */
+@KSerializable
 data class CreateEventForm(
     var title: String = "",
     var description: String = "",

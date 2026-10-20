@@ -2,10 +2,6 @@ package social.entourage.android.sockets
 
 import android.os.Handler
 import android.os.Looper
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -20,6 +16,14 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.api.model.Post
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
+import kotlinx.serialization.json.JsonNull
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.intOrNull
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.put
+import social.entourage.android.api.json.AppJson
 
 /**
  * ActionCable client for the `ConversationChannel` (see backend doc: subscribes with
@@ -44,7 +48,6 @@ object ConversationSocketManager {
         object Reconnected : ChatEvent()
     }
 
-    private val gson: Gson = GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").create()
 
     private val _events = MutableSharedFlow<ChatEvent>(extraBufferCapacity = 32)
     val events: SharedFlow<ChatEvent> = _events.asSharedFlow()
@@ -258,19 +261,18 @@ object ConversationSocketManager {
             return
         }
         val identifier = """{"channel":"ConversationChannel","instance_type":"$type","instance_id":$id}"""
-        val payload = JsonObject().apply {
-            addProperty("command", "subscribe")
-            addProperty("identifier", identifier)
-        }
-        val frame = gson.toJson(payload)
+        val frame = buildJsonObject {
+            put("command", "subscribe")
+            put("identifier", identifier)
+        }.toString()
         val sent = webSocket?.send(frame)
         Timber.tag(TAG).d(">> subscribe sent (queued=%s): %s", sent, frame)
     }
 
     private fun handleMessage(text: String) {
         try {
-            val root = JsonParser.parseString(text).asJsonObject
-            val topLevelType = root.get("type")?.takeIf { it.isJsonPrimitive }?.asString
+            val root = AppJson.json.parseToJsonElement(text).jsonObject
+            val topLevelType = root.str("type")
             when (topLevelType) {
                 "welcome" -> {
                     reconnectAttempts = 0
@@ -291,7 +293,7 @@ object ConversationSocketManager {
                 "reject_subscription" -> Timber.tag(TAG).w("subscription REJECTED for %s/%s: %s", currentInstanceType, currentInstanceId, text)
                 "disconnect" -> Timber.tag(TAG).w("server requested disconnect: %s", text)
                 else -> {
-                    val messageObj = root.getAsJsonObject("message")
+                    val messageObj = root.obj("message")
                     if (messageObj == null) {
                         Timber.tag(TAG).w("frame has no top-level 'type' and no 'message' key, ignoring: %s", text)
                         return
@@ -305,16 +307,16 @@ object ConversationSocketManager {
     }
 
     private fun handleChannelMessage(messageObj: JsonObject, rawText: String) {
-        val eventType = messageObj.get("type")?.asString
+        val eventType = messageObj.str("type")
         if (eventType == null) {
             Timber.tag(TAG).w("channel message has no 'type', ignoring: %s", rawText)
             return
         }
         Timber.tag(TAG).d("channel event received: type=%s", eventType)
-        val dataObj = messageObj.getAsJsonObject("data")
+        val dataObj = messageObj.obj("data")
         when (eventType) {
             "chat_message_created" -> {
-                val post = dataObj?.let { gson.fromJson(it, Post::class.java) }
+                val post = dataObj?.let { decodePost(it) }
                 if (post == null) {
                     Timber.tag(TAG).w("chat_message_created with no/unparseable data: %s", rawText)
                     return
@@ -327,11 +329,11 @@ object ConversationSocketManager {
                 // pour user_reaction_added/removed ci-dessous (chat_message_id vs
                 // chat_message.id), le backend nichait parfois les champs du message sous une
                 // clé "chat_message" au lieu de les mettre à plat sur "data" — sans ce fallback,
-                // gson.fromJson renvoie silencieusement un Post entièrement null (id inclus),
+                // un décodage lâche renvoyait silencieusement un Post entièrement null (id inclus),
                 // qui ne matche jamais rien dans commentsList : l'édition semble alors ignorée
                 // par le websocket alors que l'event est bien reçu.
-                val postJson = dataObj?.takeIf { it.has("id") } ?: dataObj?.getAsJsonObject("chat_message")
-                val post = postJson?.let { gson.fromJson(it, Post::class.java) }
+                val postJson = dataObj?.takeIf { it.containsKey("id") } ?: dataObj?.obj("chat_message")
+                val post = postJson?.let { decodePost(it) }
                 if (post?.id == null) {
                     Timber.tag(TAG).w("chat_message_updated with no/unparseable data: %s", rawText)
                     return
@@ -340,15 +342,15 @@ object ConversationSocketManager {
                 _events.tryEmit(ChatEvent.MessageUpdated(post))
             }
             "user_reaction_added", "user_reaction_removed" -> {
-                val actingUserId = messageObj.get("user_id")?.takeIf { it.isJsonPrimitive }?.asInt
+                val actingUserId = messageObj.int("user_id")
                 val currentUserId = EntourageApplication.get().me()?.id
                 if (actingUserId != null && currentUserId != null && actingUserId == currentUserId) {
                     Timber.tag(TAG).d("%s: echo of our own action (user_id=%d), ignoring", eventType, actingUserId)
                     return
                 }
-                val chatMessageId = dataObj?.get("chat_message_id")?.takeIf { it.isJsonPrimitive }?.asInt
-                    ?: dataObj?.getAsJsonObject("chat_message")?.get("id")?.takeIf { it.isJsonPrimitive }?.asInt
-                val reactionId = dataObj?.get("reaction_id")?.takeIf { it.isJsonPrimitive }?.asInt
+                val chatMessageId = dataObj?.int("chat_message_id")
+                    ?: dataObj?.obj("chat_message")?.int("id")
+                val reactionId = dataObj?.int("reaction_id")
                 if (chatMessageId != null && reactionId != null) {
                     val event = if (eventType == "user_reaction_added") {
                         ChatEvent.ReactionAdded(chatMessageId, reactionId, actingUserId ?: 0)
@@ -368,4 +370,20 @@ object ConversationSocketManager {
             else -> Timber.tag(TAG).d("Unhandled channel event type=%s, raw=%s", eventType, rawText)
         }
     }
+}
+
+private fun JsonObject.obj(key: String): JsonObject? = this[key] as? JsonObject
+
+private fun JsonObject.str(key: String): String? =
+    (this[key] as? JsonPrimitive)?.takeIf { it !is JsonNull }?.content
+
+private fun JsonObject.int(key: String): Int? =
+    (this[key] as? JsonPrimitive)?.takeIf { it !is JsonNull }?.intOrNull
+
+/** Un message non décodable (champ mal typé) est ignoré plutôt que de faire planter la socket. */
+private fun decodePost(element: JsonObject): Post? = try {
+    AppJson.json.decodeFromJsonElement(Post.serializer(), element)
+} catch (e: kotlinx.serialization.SerializationException) {
+    Timber.tag("ConversationSocket").w(e, "Post illisible dans un message de socket")
+    null
 }

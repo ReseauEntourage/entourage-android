@@ -282,7 +282,7 @@ dependencies {
     implementation(libs.places)
 
     //implementation networkDependencies.values()
-    implementation(libs.retrofit.converter.gson)
+    implementation(libs.retrofit.converter.kotlinx.serialization)
     implementation(libs.retrofit)
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)

@@ -1,21 +1,29 @@
 package social.entourage.android.api.request
 
-import com.google.gson.annotations.SerializedName
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionCancel
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
-class MyActionsListWrapper(@field:SerializedName("actions") val allActions: MutableList<Action>)
-class DemandsListWrapper(@field:SerializedName("solicitations") val allActions: MutableList<Action>)
-class ContribsListWrapper(@field:SerializedName("contributions") val allActions: MutableList<Action>)
+@KSerializable
+class MyActionsListWrapper(@SerialName("actions") val allActions: MutableList<Action> = mutableListOf())
+@KSerializable
+class DemandsListWrapper(@SerialName("solicitations") val allActions: MutableList<Action> = mutableListOf())
+@KSerializable
+class ContribsListWrapper(@SerialName("contributions") val allActions: MutableList<Action> = mutableListOf())
 
-class ContribWrapper(@field:SerializedName("contribution") val action: Action)
-class DemandWrapper(@field:SerializedName("solicitation") val action: Action)
+@KSerializable
+class ContribWrapper(@SerialName("contribution") val action: Action)
+@KSerializable
+class DemandWrapper(@SerialName("solicitation") val action: Action)
 
-class ContribCancelWrapper(@field:SerializedName("contribution") val action: ActionCancel)
-class DemandCancelWrapper(@field:SerializedName("solicitation") val action: ActionCancel)
+@KSerializable
+class ContribCancelWrapper(@SerialName("contribution") val action: ActionCancel)
+@KSerializable
+class DemandCancelWrapper(@SerialName("solicitation") val action: ActionCancel)
 
 interface ActionsRequest {
     @GET("contributions")

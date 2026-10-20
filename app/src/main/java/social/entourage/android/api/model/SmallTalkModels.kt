@@ -1,66 +1,72 @@
+@file:UseSerializers(ApiDateSerializer::class)
+
 package social.entourage.android.api.model
 
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.util.Date
 import java.util.*
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
+import kotlinx.serialization.UseSerializers
+import social.entourage.android.api.json.ApiDateSerializer
 
 /**
  * SmallTalk represents a chat room returned by the Entourage “smalltalks” endpoints.
  * Includes all matching‑related flags and nested members.
  */
+@KSerializable
 data class SmallTalk(
-    @SerializedName("id")
+    @SerialName("id")
     val id: Int? = null,
 
-    @SerializedName("uuid_v2")
+    @SerialName("uuid_v2")
     val uuid: String? = null,
 
-    @SerializedName("type")
+    @SerialName("type")
     val type: String? = null,
 
-    @SerializedName("name")
+    @SerialName("name")
     val name: String? = null,
 
-    @SerializedName("subname")
+    @SerialName("subname")
     val subname: String? = null,
 
-    @SerializedName("image_url")
+    @SerialName("image_url")
     val imageUrl: String? = null,
 
-    @SerializedName("meeting_url")
+    @SerialName("meeting_url")
     val meetingUrl: String? = null,
 
-    @SerializedName("members_count")
+    @SerialName("members_count")
     val membersCount: Int? = null,
 
-    @SerializedName("last_message")
+    @SerialName("last_message")
     val lastMessage: LastMessage? = null,
 
-    @SerializedName("number_of_unread_messages")
+    @SerialName("number_of_unread_messages")
     val numberOfUnreadMessages: Int? = null,
 
-    @SerializedName("has_personal_post")
+    @SerialName("has_personal_post")
     val hasPersonalPost: Boolean? = null,
 
-    @SerializedName("members")
+    @SerialName("members")
     val members: ArrayList<GroupMember>? = null,
 
 
 
-    @SerializedName("match_format")
+    @SerialName("match_format")
     val matchFormat: String? = null, // "one" or "many"
 
-    @SerializedName("match_locality")
+    @SerialName("match_locality")
     val matchLocality: Boolean? = null,
 
-    @SerializedName("match_gender")
+    @SerialName("match_gender")
     val matchGender: Boolean? = null,
 
-    @SerializedName("created_at")
+    @SerialName("created_at")
     val createdAt: Date? = null,
 
-    @SerializedName("updated_at")
+    @SerialName("updated_at")
     val updatedAt: Date? = null
 ) : Serializable {
     companion object { private const val serialVersionUID = 42L }
@@ -69,8 +75,9 @@ data class SmallTalk(
 /**
  * Wrapper for a **single** participant returned by some endpoints (rarely used).
  */
+@KSerializable
 data class MemberWrapper(
-    @SerializedName("user") val user: User
+    @SerialName("user") val user: User
 ) : Serializable {
     companion object { private const val serialVersionUID = 43L }
 }
@@ -79,8 +86,9 @@ data class MemberWrapper(
  * Wrapper for the list of participants of a SmallTalk.
  * The API serialises participants under a top‑level key `users`.
  */
+@KSerializable
 data class MembersWrapper(
-    @SerializedName("users") val users: MutableList<User>
+    @SerialName("users") val users: MutableList<User> = mutableListOf()
 ) : Serializable {
     companion object { private const val serialVersionUID = 44L }
 }
@@ -89,51 +97,52 @@ data class MembersWrapper(
  * Represents a user’s request to join or create a SmallTalk,
  * now also includes full smalltalk and user objects.
  */
+@KSerializable
 data class UserSmallTalkRequest(
-    @SerializedName("id")
+    @SerialName("id")
     val id: Int? = null,
 
-    @SerializedName("uuid_v2")
+    @SerialName("uuid_v2")
     val uuid: String? = null,
 
-    @SerializedName("smalltalk_id")
+    @SerialName("smalltalk_id")
     val smalltalkId: Int? = null,
 
-    @SerializedName("number_of_unread_messages")
+    @SerialName("number_of_unread_messages")
     val numberOfUnreadMessages: Int? = null,
 
-    @SerializedName("match_format")
+    @SerialName("match_format")
     val matchFormat: String? = null, // "one" ou "many"
 
-    @SerializedName("match_locality")
+    @SerialName("match_locality")
     val matchLocality: Boolean? = null,
 
-    @SerializedName("match_gender")
+    @SerialName("match_gender")
     val matchGender: Boolean? = null,
 
-    @SerializedName("user_gender")
+    @SerialName("user_gender")
     val userGender: String? = null,
 
 
-    @SerializedName("created_at")
+    @SerialName("created_at")
     val createdAt: Date? = null,
 
-    @SerializedName("matched_at")
+    @SerialName("matched_at")
     val matchedAt: Date? = null,
 
-    @SerializedName("updated_at")
+    @SerialName("updated_at")
     val updatedAt: Date? = null,
 
-    @SerializedName("deleted_at")
+    @SerialName("deleted_at")
     val deletedAt: Date? = null,
 
-    @SerializedName("last_match_computation_at")
+    @SerialName("last_match_computation_at")
     val lastMatchComputationAt: Date? = null,
 
-    @SerializedName("user")
+    @SerialName("user")
     val user: User? = null,
 
-    @SerializedName("smalltalk")
+    @SerialName("smalltalk")
     val smallTalk: SmallTalk? = null
 ) : Serializable {
     companion object {
@@ -141,18 +150,20 @@ data class UserSmallTalkRequest(
     }
 }
 
+@KSerializable
 data class UserSmallTalkRequestWithMatchData(
-    @SerializedName("user_smalltalk_id") val userSmallTalkId: Int,
-    @SerializedName("smalltalk_id") val smallTalkId: Int?,
-    @SerializedName("users") val users: List<User>,
-    @SerializedName("has_matched_format") val hasMatchedFormat: Boolean,
-    @SerializedName("has_matched_gender") val hasMatchedGender: Boolean,
-    @SerializedName("has_matched_locality") val hasMatchedLocality: Boolean,
-    @SerializedName("has_matched_interest") val hasMatchedInterest: Boolean,
-    @SerializedName("has_matched_profile") val hasMatchedProfile: Boolean,
-    @SerializedName("unmatch_count") val unmatchCount: Int
+    @SerialName("user_smalltalk_id") val userSmallTalkId: Int = 0,
+    @SerialName("smalltalk_id") val smallTalkId: Int? = null,
+    @SerialName("users") val users: List<User> = emptyList(),
+    @SerialName("has_matched_format") val hasMatchedFormat: Boolean = false,
+    @SerialName("has_matched_gender") val hasMatchedGender: Boolean = false,
+    @SerialName("has_matched_locality") val hasMatchedLocality: Boolean = false,
+    @SerialName("has_matched_interest") val hasMatchedInterest: Boolean = false,
+    @SerialName("has_matched_profile") val hasMatchedProfile: Boolean = false,
+    @SerialName("unmatch_count") val unmatchCount: Int = 0
 )
 
+@KSerializable
 data class UserSmallTalkRequestWithMatchDataWrapper(
-    @SerializedName("user_smalltalks") val requests: List<UserSmallTalkRequestWithMatchData>
+    @SerialName("user_smalltalks") val requests: List<UserSmallTalkRequestWithMatchData> = emptyList()
 )

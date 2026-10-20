@@ -8,12 +8,6 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.BlendModeColorFilterCompat
 import androidx.core.graphics.BlendModeCompat
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonDeserializationContext
-import com.google.gson.JsonDeserializer
-import com.google.gson.JsonElement
-import com.google.gson.JsonParseException
-import com.google.gson.annotations.SerializedName
 import social.entourage.android.R
 import social.entourage.android.api.model.feed.FeedItem
 import social.entourage.android.entourage.category.EntourageCategoryManager
@@ -32,17 +26,13 @@ open class BaseEntourage : FeedItem, Serializable {
     // ----------------------------------
     // Attributes
     // ----------------------------------
-    @SerializedName("created_at")
     var createdTime: Date = Date()
         private set
 
-    @SerializedName("group_type")
     private var groupType: String
 
-    @SerializedName("entourage_type")
     var actionGroupType: String
 
-    @SerializedName("display_category")
     var category: String? = null
     private var title: String? = null
     private var description: String? = null
@@ -50,17 +40,12 @@ open class BaseEntourage : FeedItem, Serializable {
     var outcome: EntourageCloseOutcome? = null
     var metadata: Metadata? = null
 
-    @SerializedName("recipient_consent_obtained")
     var isRecipientConsentObtained = true
 
-    @SerializedName("public")
     var isPublic = false
 
-    @SerializedName("image_url")
     var eventImageUrl:String? = null
-    @SerializedName("online")
     var isOnlineEvent:Boolean = false
-    @SerializedName("event_url")
     var eventUrl:String? = null
 
     // ----------------------------------
@@ -207,31 +192,23 @@ open class BaseEntourage : FeedItem, Serializable {
 
     class Metadata : Serializable {
 
-        @SerializedName("starts_at")
         var startDate: Date? = null
             private set
 
-        @SerializedName("ends_at")
         var endDate: Date? = null
             private set
 
-        @SerializedName("display_address")
         var displayAddress: String? = null
 
-        @SerializedName("place_name")
         var placeName: String? = null
 
-        @SerializedName("street_address")
         var streetAddress: String? = null
 
-        @SerializedName("google_place_id")
         var googlePlaceId: String? = null
             private set
 
-        @SerializedName("portrait_url")
         var portrait_url: String? = null
 
-        @SerializedName("landscape_url")
         var landscape_url: String? = null
 
         var close_message:String? = null
@@ -334,30 +311,6 @@ open class BaseEntourage : FeedItem, Serializable {
         }
 
     }
-    class BaseEntourageJsonAdapter : JsonDeserializer<BaseEntourage> {
-        @Throws(JsonParseException::class)
-        override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): BaseEntourage? {
-            val jsonData = json.asJsonObject
-            try {
-                    val entourageClass = getClassFromString(
-                            jsonData["group_type"]?.asString,
-                            jsonData["entourage_type"]?.asString)
-                        val gson = GsonBuilder()
-                                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-                                .create()
-                        val entourage = gson.fromJson<BaseEntourage>(jsonData, entourageClass)
-                        //HACK we force Date when API gives us NULL created_at
-                        if(entourage.createdTime == null) {
-                            entourage.createdTime = Date()
-                        }
-                        return entourage
-                } catch (e: Exception) {
-                    Timber.e(e)
-                }
-            return null
-        }
-    }
-
     companion object {
         private const val HASH_STRING_HEAD = "Entourage-"
         const val GROUPTYPE_ACTION_CONTRIBUTION = "contribution"

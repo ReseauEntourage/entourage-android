@@ -1,79 +1,81 @@
 package social.entourage.android.api.model
 
 import android.content.Context
-import com.google.gson.annotations.SerializedName
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.notification.Translation
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
+@KSerializable
 data class Group(
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null,
-    @field:SerializedName("uuid_v2")
+    @SerialName("uuid_v2")
     var uuid_v2: String? = null,
-    @SerializedName("zone")
+    @SerialName("zone")
     var zone: String? = null,
-    @SerializedName("name")
+    @SerialName("name")
     var name: String? = null,
-    @SerializedName("name_translations")
+    @SerialName("name_translations")
     val nameTranslations: Translation? = null,
-    @SerializedName("description")
+    @SerialName("description")
     var description: String? = null,
-    @SerializedName("description_translations")
+    @SerialName("description_translations")
     val descriptionTranslations: Translation? = null,
-    @SerializedName("welcome_message")
+    @SerialName("welcome_message")
     var welcomeMessage: String? = null,
-    @SerializedName("ethics")
+    @SerialName("ethics")
     var ethics: String? = null,
-    @SerializedName("address")
+    @SerialName("address")
     var address: Address? = null,
-    @SerializedName("neighborhood_image_id")
+    @SerialName("neighborhood_image_id")
     var neighborhoodImageId: Int? = null,
-    @SerializedName("other_interest")
+    @SerialName("other_interest")
     var otherInterest: String? = null,
-    @SerializedName("interests")
+    @SerialName("interests")
     var interests: MutableList<String> = mutableListOf(),
-    @SerializedName("image_url")
+    @SerialName("image_url")
     var imageUrl: String? = null,
-    @SerializedName("members")
+    @SerialName("members")
     var members: MutableList<GroupMember>? = mutableListOf(),
-    @SerializedName("future_outings_count")
+    @SerialName("future_outings_count")
     var futureOutingsCount: Int? = null,
-    @SerializedName("user")
+    @SerialName("user")
     var admin: GroupMember? = null,
-    @SerializedName("members_count")
+    @SerialName("members_count")
     var members_count: Int? = null,
-    @SerializedName("member")
+    @SerialName("member")
     var member: Boolean = false,
-    @SerializedName("national")
+    @SerialName("national")
     var national: Boolean = false,
-    @SerializedName("future_outings")
+    @SerialName("future_outings")
     var futureEvents: MutableList<Events>? = mutableListOf(),
-    @SerializedName("latitude")
+    @SerialName("latitude")
     var latitude: Double? = null,
-    @SerializedName("longitude")
+    @SerialName("longitude")
     var longitude: Double? = null,
-    @SerializedName("radius")
+    @SerialName("radius")
     var radius: Int? = null,
-    @SerializedName("created_at")
+    @SerialName("created_at")
     var createdAt: String? = null,
-    @SerializedName("updated_at")
+    @SerialName("updated_at")
     var updatedAt: String? = null,
-    @SerializedName("slug")
+    @SerialName("slug")
     var slug: String? = null,
-    @SerializedName("default_group")
+    @SerialName("default_group")
     var defaultGroup: Boolean = false,
-    @SerializedName("group_type")
+    @SerialName("group_type")
     var groupType: String? = null,
-    @SerializedName("parent_id")
+    @SerialName("parent_id")
     var parentId: Int? = null,
-    @SerializedName("children")
+    @SerialName("children")
     var children: MutableList<Group>? = mutableListOf(),
-    @SerializedName("ancestors")
+    @SerialName("ancestors")
     var ancestors: MutableList<Group>? = mutableListOf(),
-    @SerializedName("display_address")
+    @SerialName("display_address")
     var displayAddress: String? = null,
-    @SerializedName("unread_posts_count")
+    @SerialName("unread_posts_count")
     var unreadPostsCount: Int? = null,
     var isSelected: Boolean = false
 ) {

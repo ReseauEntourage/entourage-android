@@ -1,7 +1,6 @@
 package social.entourage.android.entourage.category
 
 import androidx.annotation.StringRes
-import com.google.gson.reflect.TypeToken
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.BaseEntourage
@@ -67,8 +66,7 @@ object EntourageCategoryManager {
         // Load our JSON file.
         val reader =
             JSONResourceReader(EntourageApplication.get().resources, R.raw.display_categories)
-        val listType = object : TypeToken<ArrayList<EntourageCategory?>?>() {}.type
-        val readEntourageCategories = reader.constructUsingGson<List<EntourageCategory>>(listType)
+        val readEntourageCategories = reader.decodeList<EntourageCategory>()
         val tempGroup: HashMap<String, MutableList<EntourageCategory>> = HashMap()
         for (category in readEntourageCategories) {
             val group = category.groupType ?: continue

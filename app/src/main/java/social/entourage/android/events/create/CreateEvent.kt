@@ -1,6 +1,7 @@
 package social.entourage.android.events.create
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
-import com.google.gson.annotations.SerializedName
 
 enum class Recurrence(val value: Int) {
     NO_RECURRENCE(0),
@@ -10,38 +11,38 @@ enum class Recurrence(val value: Int) {
     EVERY_TWO_WEEKS(14),
 }
 
+@KSerializable
 data class Metadata(
 
-    @field:SerializedName("street_address")
+    @SerialName("street_address")
     var streetAddress: String? = "",
 
-    @field:SerializedName("place_name")
+    @SerialName("place_name")
     var placeName: String? = "",
 
-    @field:SerializedName("starts_at")
+    @SerialName("starts_at")
     var startsAt: String? = null,
 
-    @field:SerializedName("place_limit")
+    @SerialName("place_limit")
     var placeLimit: Int? = null,
 
-    @field:SerializedName("display_address")
+    @SerialName("display_address")
     val displayAddress: String? = null,
 
-    @field:SerializedName("ends_at")
+    @SerialName("ends_at")
     var endsAt: String? = null,
 
-    @field:SerializedName("google_place_id")
+    @SerialName("google_place_id")
     var googlePlaceId: String? = "",
 
-    @SerializedName("reserved_female")
+    @SerialName("reserved_female")
     var reserved_female: Boolean? = null,
 
-    @SerializedName("pmr")
+    @SerialName("pmr")
     var pmr: Boolean? = null,
 
-    @SerializedName("kids_friendly")
-    var kidsFriendly: Boolean? = null,
-) {
+    @SerialName("kids_friendly")
+    var kidsFriendly: Boolean? = null) {
     fun endsAt(value: String) = apply {
         endsAt = value
     }
@@ -64,49 +65,48 @@ data class Metadata(
 
 }
 
+@KSerializable
 data class CreateEvent(
-    @field:SerializedName("metadata")
+    @SerialName("metadata")
     var metadata: Metadata? = Metadata(),
 
-    @field:SerializedName("description")
+    @SerialName("description")
     var description: String? = null,
 
-    @field:SerializedName("title")
+    @SerialName("title")
     var title: String? = null,
 
-    @field:SerializedName("event_url")
+    @SerialName("event_url")
     var eventUrl: String? = null,
 
-    @field:SerializedName("online")
+    @SerialName("online")
     var online: Boolean? = null,
 
-    @field:SerializedName("latitude")
+    @SerialName("latitude")
     var latitude: Double? = null,
 
-    @field:SerializedName("longitude")
+    @SerialName("longitude")
     var longitude: Double? = null,
 
-    @SerializedName("other_interest")
+    @SerialName("other_interest")
     var otherInterest: String? = null,
 
-    @SerializedName("interests")
+    @SerialName("interests")
     var interests: MutableList<String> = mutableListOf(),
 
-    @SerializedName("entourage_image_id")
+    @SerialName("entourage_image_id")
     var entourageImageId: Int? = null,
 
-    @SerializedName("image_url")
+    @SerialName("image_url")
     var imageUrl: String? = null,
 
-    @SerializedName("neighborhood_ids")
+    @SerialName("neighborhood_ids")
     var neighborhoodIds: MutableList<Int> = mutableListOf(),
 
-    @SerializedName("recurrency")
+    @SerialName("recurrency")
     var recurrence: Int? = null,
 
-    var displayAddress: String? = null,
-
-    ) {
+    var displayAddress: String? = null) {
     fun title(value: String) = apply {
         title = value
     }

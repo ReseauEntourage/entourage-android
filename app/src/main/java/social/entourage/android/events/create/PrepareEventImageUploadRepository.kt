@@ -1,9 +1,9 @@
 package social.entourage.android.events.create
 
-import com.google.gson.annotations.SerializedName
 import retrofit2.Call
 import retrofit2.Callback
 import social.entourage.android.EntourageApplication
+import kotlinx.serialization.SerialName
 
 class PrepareEventImageUploadRepository(private var callback: Callback?) :
     Callback<PrepareEventImageUploadRepository.Response> {
@@ -33,12 +33,12 @@ class PrepareEventImageUploadRepository(private var callback: Callback?) :
     }
 
     inner class Request internal constructor(
-        @field:SerializedName("content_type")
+        @SerialName("content_type")
         private val contentType: String
     )
 
     inner class Response(
-        @field:SerializedName("upload_key") var uploadKey: String,
-        @field:SerializedName("presigned_url") val presignedUrl: String
+        @SerialName("upload_key") var uploadKey: String,
+        @SerialName("presigned_url") val presignedUrl: String
     )
 }

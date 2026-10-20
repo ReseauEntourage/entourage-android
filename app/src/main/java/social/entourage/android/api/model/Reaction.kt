@@ -1,37 +1,43 @@
 package social.entourage.android.api.model
 
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
+@KSerializable
 class ReactionType(
-    @SerializedName("id")
-    val id: Int,
-    @SerializedName("key")
-    val key: String?,
-    @SerializedName("image_url")
-    val imageUrl: String?
+    @SerialName("id")
+    val id: Int = 0,
+    @SerialName("key")
+    val key: String? = null,
+    @SerialName("image_url")
+    val imageUrl: String? = null
 ) : Serializable
 
+@KSerializable
 class Reaction: Serializable {
-    @SerializedName("reaction_id")
+    @SerialName("reaction_id")
     var reactionId:Int = 0
-    @SerializedName("chat_message_id")
+    @SerialName("chat_message_id")
     val chatMessageId:Int = 0
-    @SerializedName("reactions_count")
+    @SerialName("reactions_count")
     var reactionsCount:Int = 0
 }
 
+@KSerializable
 class ReactionWrapper: Serializable {
-    @SerializedName("reaction_id")
+    @SerialName("reaction_id")
     var reactionId:Int? = null
 }
 
+@KSerializable
 data class CompleteReactionsResponse(
-    val user_reactions: List<UserReaction>
+    val user_reactions: List<UserReaction> = emptyList()
 )
 
+@KSerializable
 data class UserReaction(
-    val reaction_id: Int,
+    val reaction_id: Int = 0,
     val user: EntourageUser
 )
 

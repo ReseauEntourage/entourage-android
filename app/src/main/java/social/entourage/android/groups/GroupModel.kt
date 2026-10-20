@@ -2,40 +2,41 @@ package social.entourage.android.groups
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
 import social.entourage.android.api.model.GroupMember
 import social.entourage.android.api.model.Status
 import social.entourage.android.api.model.notification.Translation
 import social.entourage.android.tools.utils.readListCompat
 import social.entourage.android.tools.utils.readSerializableCompat
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
+@KSerializable
 data class GroupModel(
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null,
-    @SerializedName("name")
+    @SerialName("name")
     var name: String? = null,
-    @SerializedName("name_translations")
+    @SerialName("name_translations")
     val nameTranslations: Translation? = null,
-    @SerializedName("uuid_v2")
+    @SerialName("uuid_v2")
     var uuid_v2: String? = null,
-    @SerializedName("members_count")
+    @SerialName("members_count")
     var members_count: Int? = null,
-    @SerializedName("address")
+    @SerialName("address")
     var address: String? = null,
-    @SerializedName("interests")
+    @SerialName("interests")
     var interests: MutableList<String> = mutableListOf(),
-    @SerializedName("description")
+    @SerialName("description")
     var description: String? = null,
-    @SerializedName("description_translations")
+    @SerialName("description_translations")
     val descriptionTranslations: Translation? = null,
-    @SerializedName("members")
+    @SerialName("members")
     var members: MutableList<GroupMember>? = mutableListOf(),
-    @SerializedName("member")
+    @SerialName("member")
     var member: Boolean = false,
     var admin: Boolean = false,
     var recurrence: Int? = 0,
-    val status: Status? = null,
-) : Parcelable {
+    val status: Status? = null) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readValue(Int::class.java.classLoader) as? Int, // id
         parcel.readString(), // name

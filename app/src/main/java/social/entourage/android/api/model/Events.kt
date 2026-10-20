@@ -1,7 +1,8 @@
+@file:UseSerializers(ApiDateSerializer::class)
+
 package social.entourage.android.api.model
 
 import android.content.Context
-import com.google.gson.annotations.SerializedName
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.model.feed.FeedItemAuthor
@@ -11,143 +12,147 @@ import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
+import kotlinx.serialization.UseSerializers
+import social.entourage.android.api.json.ApiDateSerializer
 
-enum class Status(val value: String) {
-    @SerializedName("open")
+@KSerializable
+enum class Status(val value: String = "") {
+    @SerialName("open")
     OPEN("open"),
 
-    @SerializedName("closed")
+    @SerialName("closed")
     CLOSED("closed"),
 
-    @SerializedName("cancelled")
+    @SerialName("cancelled")
     CANCELLED("cancelled"),
 }
 
+@KSerializable
 data class GroupEvent(
-    @field:SerializedName("id")
+    @SerialName("id")
     val id: Int? = null,
 
-    @field:SerializedName("name")
-    val name: String? = null,
-) : Serializable
+    @SerialName("name")
+    val name: String? = null) : Serializable
 
+@KSerializable
 data class Events(
 
-    @field:SerializedName("metadata")
+    @SerialName("metadata")
     val metadata: EventMetadata? = null,
 
-    @field:SerializedName("entourage_type")
+    @SerialName("entourage_type")
     val entourageType: String? = null,
 
-    @field:SerializedName("image_url")
+    @SerialName("image_url")
     val imageUrl: String? = null,
 
-    @field:SerializedName("author")
+    @SerialName("author")
     val author: FeedItemAuthor? = null,
 
-    @field:SerializedName("created_at")
+    @SerialName("created_at")
     val createdAt: Date? = null,
 
-    @field:SerializedName("description")
+    @SerialName("description")
     val description: String? = null,
 
-    @SerializedName("description_translations")
+    @SerialName("description_translations")
     val descriptionTranslations: Translation? = null,
 
-    @field:SerializedName("group_type")
+    @SerialName("group_type")
     val groupType: String? = null,
 
-    @field:SerializedName("title")
+    @SerialName("title")
     val title: String? = null,
 
-    @field:SerializedName("confirmed_member")
+    @SerialName("confirmed_member")
     val confirmedMember : Boolean? = null,
 
-    @field:SerializedName("signable")
+    @SerialName("signable")
     val signable: Boolean? = null,
 
-    @field:SerializedName("confirmed_members_count")
+    @SerialName("confirmed_members_count")
     val confirmedMembersCount: Int? = null,
 
-    @SerializedName("title_translations")
+    @SerialName("title_translations")
     val titleTranslations: Translation? = null,
 
-    @field:SerializedName("uuid")
+    @SerialName("uuid")
     val uuid: String? = null,
 
-    @field:SerializedName("uuid_v2")
+    @SerialName("uuid_v2")
     var uuid_v2: String? = null,
 
-    @field:SerializedName("event_url")
+    @SerialName("event_url")
     val eventUrl: String? = null,
 
-    @field:SerializedName("number_of_people")
+    @SerialName("number_of_people")
     val numberOfPeople: Int? = null,
 
-    @field:SerializedName("public")
+    @SerialName("public")
     val jsonMemberPublic: Boolean? = null,
 
-    @field:SerializedName("manageable_by_current_user")
+    @SerialName("manageable_by_current_user")
     val manageableByCurrentUser: Boolean? = null,
 
-    @field:SerializedName("updated_at")
+    @SerialName("updated_at")
     val updatedAt: Date? = null,
 
-    @field:SerializedName("share_url")
+    @SerialName("share_url")
     val shareUrl: String? = null,
 
-    @field:SerializedName("online")
+    @SerialName("online")
     val online: Boolean? = null,
 
-    @field:SerializedName("location")
+    @SerialName("location")
     val location: Address? = null,
 
-    @field:SerializedName("distance")
+    @SerialName("distance")
     val distance: Double? = null,
 
-    @field:SerializedName("id")
+    @SerialName("id")
     val id: Int? = null,
 
-    @field:SerializedName("members_count")
+    @SerialName("members_count")
     val membersCount: Int? = null,
 
-    @SerializedName("members")
+    @SerialName("members")
     var members: MutableList<GroupMember>? = mutableListOf(),
 
-    @SerializedName("member")
+    @SerialName("member")
     var member: Boolean = false,
 
-    @SerializedName("interests")
+    @SerialName("interests")
     var interests: MutableList<String> = mutableListOf(),
 
-    @field:SerializedName("number_of_unread_messages")
+    @SerialName("number_of_unread_messages")
     val numberOfUnreadMessages: Int? = null,
 
-    @field:SerializedName("postal_code")
+    @SerialName("postal_code")
     val postalCode: String? = null,
 
-    @field:SerializedName("join_status")
+    @SerialName("join_status")
     val joinStatus: String? = null,
 
-    @field:SerializedName("display_report_prompt")
+    @SerialName("display_report_prompt")
     val displayReportPrompt: Boolean? = null,
 
-    @field:SerializedName("display_category")
+    @SerialName("display_category")
     val displayCategory: String? = null,
 
-    @field:SerializedName("status")
+    @SerialName("status")
     val status: Status? = null,
 
-    @field:SerializedName("address")
+    @SerialName("address")
     var displayAddress: String? = null,
 
-    @SerializedName("recurrency")
+    @SerialName("recurrency")
     var recurrence: Int? = 0,
 
-    @SerializedName("neighborhoods")
-    var neighborhoods: MutableList<GroupEvent>? = mutableListOf(),
-
-) : Serializable
+    @SerialName("neighborhoods")
+    var neighborhoods: MutableList<GroupEvent>? = mutableListOf()) : Serializable
 
 fun Events.toEventUi(context: Context): EventModel {
     return EventModel(

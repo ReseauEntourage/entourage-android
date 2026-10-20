@@ -1,11 +1,13 @@
 package social.entourage.android.api.model
 
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
 /**
  * Created by Jr (MJ-DEVS) on 09/09/2020.
  */
+@KSerializable
 class SharingEntourage: Serializable {
 
     var id = 0
@@ -13,16 +15,17 @@ class SharingEntourage: Serializable {
     var title = ""
     var group_type = ""
     var entourage_type = ""
-    @SerializedName("display_category")
+    @SerialName("display_category")
     var category:String? = ""
 
-    @SerializedName("author")
+    @SerialName("author")
     var author: SharingAuthor? = null
 
     var isSelected = false
 }
 
+@KSerializable
 class SharingAuthor: Serializable {
-    @SerializedName("avatar_url")
+    @SerialName("avatar_url")
     var avatarUrl:String? = null
 }

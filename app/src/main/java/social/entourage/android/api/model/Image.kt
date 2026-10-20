@@ -2,22 +2,24 @@ package social.entourage.android.api.model
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
+@KSerializable
 class Image() : Parcelable {
-    @SerializedName("id")
+    @SerialName("id")
     var id: Int? = null
 
-    @SerializedName("title")
+    @SerialName("title")
     var title: String? = null
 
-    @SerializedName("image_url")
+    @SerialName("image_url")
     var imageUrl: String? = null
 
-    @SerializedName("portrait_url")
+    @SerialName("portrait_url")
     var portraitUrl: String? = null
 
-    @SerializedName("landscape_url")
+    @SerialName("landscape_url")
     var landscapeUrl: String? = null
 
     var isSelected: Boolean? = false

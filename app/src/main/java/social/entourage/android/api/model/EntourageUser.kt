@@ -1,72 +1,76 @@
+@file:UseSerializers(ApiDateSerializer::class)
+
 package social.entourage.android.api.model
 
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
 import social.entourage.android.api.model.feed.FeedItem
 import java.io.Serializable
 import java.util.Date
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
+import kotlinx.serialization.Transient
+import kotlinx.serialization.UseSerializers
+import social.entourage.android.api.json.ApiDateSerializer
 
 /**
  * Created by mihaiionescu on 24/02/16.
  */
+@KSerializable
 class EntourageUser : TimestampedObject(), Serializable {
-    @SerializedName("id")
+    @SerialName("id")
     var userId = 0
 
-    @SerializedName("display_name")
+    @SerialName("display_name")
     var displayName: String? = null
 
-    @SerializedName("requested_at")
+    @SerialName("requested_at")
     private var requestDate: Date? = null
     var message: String? = null
 
-    @SerializedName("confirmed_at")
+    @SerialName("confirmed_at")
     var confirmedAt : Boolean? = null
 
-    @SerializedName("participate_at")
+    @SerialName("participate_at")
     var participateAt : String? = null
 
-    @SerializedName("avatar_url")
+    @SerialName("avatar_url")
     var avatarURLAsString: String? = null
 
-    @SerializedName("partner")
+    @SerialName("partner")
     var partner: Partner? = null
         private set
 
-    @SerializedName("group_role")
+    @SerialName("group_role")
     var groupRole: String? = null
         private set
 
-    @SerializedName("photo_acceptance")
+    @SerialName("photo_acceptance")
     var photoAcceptance: Boolean? = null
         private set
 
-    @SerializedName("community_roles")
+    @SerialName("community_roles")
     var communityRoles: List<String>? = null
         private set
-    @SerializedName("roles")
+    @SerialName("roles")
     var roles: List<String>? = null
         private set
 
-    @SerializedName("birthday")
+    @SerialName("birthday")
     var birthday: Boolean = false
 
-    @SerializedName("birthday_today")
+    @SerialName("birthday_today")
     var birthdayToday: Boolean = false
 
 
-    @SerializedName("birthdate")
+    @SerialName("birthdate")
     var birthdate: String? = null
 
     var isDisplayedAsMember = false
 
-    @Expose(serialize = false, deserialize = true)
     private var email: String? = null
 
-    @Expose(serialize = false, deserialize = true)
     var status: String? = null
 
-    @Expose(serialize = false, deserialize = false)
+    @Transient
     var feedItem: FeedItem? = null
 
     var partner_role_title:String? = null

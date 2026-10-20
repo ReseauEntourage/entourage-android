@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.gson.Gson
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Image
 import timber.log.Timber
@@ -12,6 +11,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.Locale
+import social.entourage.android.api.json.AppJson
 
 /**
  * État partagé de l'assistant de création / d'édition d'événement. Il est porté par l'activité et
@@ -38,7 +38,7 @@ class CreateEventViewModel : ViewModel(), EventImageUploadView {
     var form: CreateEventForm = CreateEventForm()
         private set
 
-    private var initialSnapshot: String = gson.toJson(form)
+    private var initialSnapshot: String = AppJson.encode(form)
     private var initialized = false
 
     /** Date de l'événement édité (ISO), pour ne pas refuser une date passée laissée telle quelle. */
@@ -89,7 +89,7 @@ class CreateEventViewModel : ViewModel(), EventImageUploadView {
         if (edited == null && preselectedGroupId != null && !form.neighborhoodIds.contains(preselectedGroupId)) {
             form.neighborhoodIds.add(preselectedGroupId)
         }
-        initialSnapshot = gson.toJson(form)
+        initialSnapshot = AppJson.encode(form)
     }
 
     private fun formFromEvent(event: Events): CreateEventForm {
@@ -170,7 +170,7 @@ class CreateEventViewModel : ViewModel(), EventImageUploadView {
     private fun isUploading() = _isUploading.value == true
 
     /** Vrai si le formulaire a été modifié depuis l'ouverture (sert à confirmer la sortie). */
-    fun isDirty(): Boolean = gson.toJson(form) != initialSnapshot
+    fun isDirty(): Boolean = AppJson.encode(form) != initialSnapshot
 
     // --- Photo ----------------------------------------------------------------------------
 
@@ -244,7 +244,4 @@ class CreateEventViewModel : ViewModel(), EventImageUploadView {
         CreateEventDraftStore.delete(context, userId)
     }
 
-    companion object {
-        private val gson = Gson()
-    }
 }

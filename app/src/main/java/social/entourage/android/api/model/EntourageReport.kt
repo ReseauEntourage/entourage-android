@@ -1,16 +1,19 @@
 package social.entourage.android.api.model
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
-import com.google.gson.annotations.SerializedName
 
 /**
  * Created by Jr (MJ-DEVS) on 26/06/2020.
  */
 
-class EntourageReport(var message: String) {
+@KSerializable
+class EntourageReport(var message: String = "") {
 
     // ----------------------------------
     // WRAPPER
     // ----------------------------------
-    class EntourageReportWrapper(@field:SerializedName("entourage_report") var entourageReport: EntourageReport)
+    @KSerializable
+    class EntourageReportWrapper(@SerialName("entourage_report") var entourageReport: EntourageReport)
 
 }
