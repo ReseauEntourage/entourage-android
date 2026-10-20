@@ -18,45 +18,51 @@ fun String.runCommand(currentWorkingDir: File = file("./")): String {
     }.standardOutput.asText.get().trim()
 }
 
-android {
+// Valeurs calculées une fois, au niveau du script (et non dans `android { }`, dont le receveur est
+// ApplicationExtension) : elles servent à android { }, base { } et androidComponents { }.
 // Java versions
-    val sourceCompatibilityVersion = JavaVersion.VERSION_21
-    val targetCompatibilityVersion = JavaVersion.VERSION_21
+val sourceCompatibilityVersion = JavaVersion.VERSION_21
+val targetCompatibilityVersion = JavaVersion.VERSION_21
 
-    // App versions
-    val isReleaseOrPreprod = project.gradle.startParameter.taskNames.any { it.contains("release", ignoreCase = true)||it.contains("preprod", ignoreCase = true) }
+// App versions
+val isReleaseOrPreprod = project.gradle.startParameter.taskNames.any { it.contains("release", ignoreCase = true)||it.contains("preprod", ignoreCase = true) }
 
-    val versionMajor = 15
-    val versionMinor = 1
+val versionMajor = 15
+val versionMinor = 1
 
-    // Use a fixed version for debug builds to speed up configuration and enable caching
-    val versionPatch = if (isReleaseOrPreprod) {
-        "git rev-list HEAD --count".runCommand().toIntOrNull() ?: 0
-    } else {
-        1000
-    }
+// Use a fixed version for debug builds to speed up configuration and enable caching
+val versionPatch = if (isReleaseOrPreprod) {
+    "git rev-list HEAD --count".runCommand().toIntOrNull() ?: 0
+} else {
+    1000
+}
 
-    val versionBranchName = if (isReleaseOrPreprod) {
-        "git rev-parse --abbrev-ref HEAD".runCommand()
-    } else {
-        "debug"
-    }
-    val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
-    val versionNameProd = "${versionMajor}.${versionMinor}.${versionPatch}"
-    // Utilisées aussi par androidComponents (hors du bloc android) : on les expose via les extras du projet.
-    project.extra["appVersionCode"] = versionCodeInt
-    project.extra["appVersionName"] = versionNameProd
-    val appBundleName = System.getenv("APPBUNDLE_NAME") ?: "app"
+val versionBranchName = if (isReleaseOrPreprod) {
+    "git rev-parse --abbrev-ref HEAD".runCommand()
+} else {
+    "debug"
+}
+val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
+val versionNameProd = "${versionMajor}.${versionMinor}.${versionPatch}"
+val appBundleName = System.getenv("APPBUNDLE_NAME") ?: "app"
 
-    val entourageURLProd = "https://api.entourage.social/api/v1/"
-    val entourageURLStaging = "https://api-preprod.entourage.social/api/v1/"
-    val deepLinksSchemeProd = "entourage"
-    val deepLinksSchemeStaging = "entourage-staging"
-    val deepLinksSchemeDebug = "entourage-debug"
-    val deepLinksURLProd = "www.entourage.social"
-    val deepLinksURLStaging = "preprod.entourage.social"
-    val deepLinksURLDebug = "debug-preprod.entourage.social"
+val entourageURLProd = "https://api.entourage.social/api/v1/"
+val entourageURLStaging = "https://api-preprod.entourage.social/api/v1/"
+val deepLinksSchemeProd = "entourage"
+val deepLinksSchemeStaging = "entourage-staging"
+val deepLinksSchemeDebug = "entourage-debug"
+val deepLinksURLProd = "www.entourage.social"
+val deepLinksURLStaging = "preprod.entourage.social"
+val deepLinksURLDebug = "debug-preprod.entourage.social"
 
+val localTestAccountLogin = System.getenv("TEST_ACCOUNT_LOGIN")?.let { login -> "\""+ login+ "\"" }
+    ?: findProperty("entourageTestLogin") as String?
+    ?: "\"\""
+val localTestAccountPwd = System.getenv("TEST_ACCOUNT_PWD")?.let { login -> "\""+ login+ "\"" }
+    ?: findProperty("entourageTestPwd") as String?
+    ?: "\"\""
+
+android {
     buildFeatures {
         viewBinding = true
         dataBinding = true
@@ -71,20 +77,11 @@ android {
     compileSdk = 37
     buildToolsVersion = "36.1.0"
 
-    val localTestAccountLogin = System.getenv("TEST_ACCOUNT_LOGIN")?.let { login -> "\""+ login+ "\"" }
-        ?: findProperty("entourageTestLogin") as String?
-        ?: "\"\""
-    val localTestAccountPwd = System.getenv("TEST_ACCOUNT_PWD")?.let { login -> "\""+ login+ "\"" }
-        ?: findProperty("entourageTestPwd") as String?
-        ?: "\"\""
 
     buildFeatures.buildConfig = true
 
     androidResources{
         localeFilters.addAll(listOf("en", "fr", "de", "pl", "es","uk", "ro", "ar"))
-    }
-    base {
-        archivesName.set("$appBundleName-$versionNameProd")
     }
 
     defaultConfig {
@@ -222,19 +219,23 @@ android {
     namespace = "social.entourage.android"
 }
 
-// androidComponents et aboutLibraries sont des extensions du PROJET, pas de `android { }` : les déclarer
+// androidComponents, aboutLibraries et base sont des extensions du PROJET, pas de `android { }` : les déclarer
 // dans ce bloc ne marchait que par résolution implicite sur le receveur englobant (alerte "Suspicious receiver").
 androidComponents {
     onVariants { variant ->
         variant.outputs.forEach { output ->
-            output.versionCode.set(project.extra["appVersionCode"] as Int)
-            output.versionName.set(project.extra["appVersionName"] as String)
+            output.versionCode.set(versionCodeInt)
+            output.versionName.set(versionNameProd)
         }
     }
 }
 
 aboutLibraries {
     offlineMode.set(true)
+}
+
+base {
+    archivesName.set("$appBundleName-$versionNameProd")
 }
 
 configurations.all {
