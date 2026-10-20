@@ -43,6 +43,9 @@ android {
     }
     val versionCodeInt = (versionMajor * 100 + versionMinor) * 10000 + versionPatch % 10000
     val versionNameProd = "${versionMajor}.${versionMinor}.${versionPatch}"
+    // Utilisées aussi par androidComponents (hors du bloc android) : on les expose via les extras du projet.
+    project.extra["appVersionCode"] = versionCodeInt
+    project.extra["appVersionName"] = versionNameProd
     val appBundleName = System.getenv("APPBUNDLE_NAME") ?: "app"
 
     val entourageURLProd = "https://api.entourage.social/api/v1/"
@@ -209,14 +212,6 @@ android {
         }
     }
 
-    androidComponents.onVariants { variant ->
-        variant.outputs.all { output ->
-            output.versionCode.set(versionCodeInt)
-            output.versionName.set(versionNameProd)
-            return@all true
-        }
-    }
-
     lint {
         checkReleaseBuilds = isReleaseOrPreprod
         abortOnError = false
@@ -224,10 +219,22 @@ android {
         ignoreTestSources = true
         checkDependencies = false
     }
-    aboutLibraries {
-        offlineMode.set(true)
-    }
     namespace = "social.entourage.android"
+}
+
+// androidComponents et aboutLibraries sont des extensions du PROJET, pas de `android { }` : les déclarer
+// dans ce bloc ne marchait que par résolution implicite sur le receveur englobant (alerte "Suspicious receiver").
+androidComponents {
+    onVariants { variant ->
+        variant.outputs.forEach { output ->
+            output.versionCode.set(project.extra["appVersionCode"] as Int)
+            output.versionName.set(project.extra["appVersionName"] as String)
+        }
+    }
+}
+
+aboutLibraries {
+    offlineMode.set(true)
 }
 
 configurations.all {
