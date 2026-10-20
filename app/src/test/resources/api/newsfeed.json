@@ -1,0 +1,22 @@
+[
+  {
+    "type": "Entourage",
+    "data": {
+      "id": 1, "uuid": "u1", "group_type": "outing", "entourage_type": "outing",
+      "title": "Sortie parc", "description": "Balade", "display_category": "sport",
+      "created_at": "2026-03-01T10:00:00.000+0000", "online": true, "public": true
+    }
+  },
+  {
+    "type": "Entourage",
+    "data": {
+      "id": 2, "uuid": "u2", "group_type": "action", "entourage_type": "contribution",
+      "title": "Don de manteaux", "created_at": "2026-03-02T10:00:00.000+0000"
+    }
+  },
+  {
+    "type": "Entourage",
+    "data": { "id": 3, "uuid": "u3", "group_type": "action", "entourage_type": "ask_for_help", "title": "Besoin d'aide" }
+  },
+  { "type": "SomethingNew", "data": { "foo": "bar" } }
+]

@@ -112,30 +112,7 @@ class ApiModule {
     }
 
     fun providesRestAdapter(client: OkHttpClient): Retrofit {
-        val gson = GsonBuilder()
-            .addSerializationExclusionStrategy(object : ExclusionStrategy {
-                override fun shouldSkipField(fieldAttributes: FieldAttributes): Boolean {
-                    val expose = fieldAttributes.getAnnotation(Expose::class.java) ?: return false
-                    return !expose.serialize
-                }
-
-                override fun shouldSkipClass(aClass: Class<*>?): Boolean {
-                    return false
-                }
-            }).addDeserializationExclusionStrategy(object : ExclusionStrategy {
-                override fun shouldSkipField(fieldAttributes: FieldAttributes): Boolean {
-                    val expose = fieldAttributes.getAnnotation(Expose::class.java) ?: return false
-                    return !expose.deserialize
-                }
-
-                override fun shouldSkipClass(aClass: Class<*>?): Boolean {
-                    return false
-                }
-            })
-            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-            .registerTypeAdapter(NewsfeedItem::class.java, NewsfeedItemJsonAdapter())
-            .registerTypeAdapter(BaseEntourage::class.java, BaseEntourageJsonAdapter())
-            .create()
+        val gson = createApiGson()
 
         return Retrofit.Builder()
             .baseUrl(BuildConfig.ENTOURAGE_URL)
