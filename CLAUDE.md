@@ -41,6 +41,12 @@ Current user: `EntourageApplication.get().me()` or `EntourageApplication.me(acti
 
 **Network layer**: Retrofit 2 + OkHttp. Each feature has its own `*Request` interface in `api/request/`. All requests go through `ApiModule`, which applies `AuthenticationInterceptor` (adds the user token header) and `HmacInterceptor` (signs account-creation calls). Base URLs are injected via `BuildConfig.ENTOURAGE_URL` — staging vs prod differ only here.
 
+**Serialization**: JSON goes through kotlinx.serialization (Gson is gone). Shared config is `AppJson` (`api/json/`): unknown keys ignored, lenient numbers, `null`/unknown enum → Kotlin default (`coerceInputValues`), defaults written, nulls omitted. Rules for models:
+- Annotate with `@KSerializable` (import `kotlinx.serialization.Serializable as KSerializable`, to avoid the clash with `java.io.Serializable`) and `@SerialName("json_key")`; `Date` properties work through `@file:UseSerializers(ApiDateSerializer::class)`.
+- **Give every property a default** (`= null`, `= emptyList()`, `= 0`…): a missing key without default throws `MissingFieldException`, and the app swallows parse failures in `onFailure`. Wrapper roots (`class FooWrapper(@SerialName("foo") val foo: Foo)`) are deliberately required.
+- Request bodies: prefer a `@Serializable` DTO. Legacy `@Body ArrayMap<String, Any>` still works (converted by `AnyMapConverterFactory`; nulls are dropped), but new code should not add more.
+- No `@Expose`-style asymmetry: a property is read *and* written (`@Transient` to exclude it from both).
+
 **Deep links / universal links**: `UniversalLinkManager` (`deeplinks/`) handles all `entourage://` and `https://www.entourage.social/app/…` URLs. Entry point is `MainActivity.handleUniversalLinkFromMain()`. When adding a new screen reachable from a link, add a `pathSegments.contains("your-path")` branch there.
 
 **User roles** drive feature visibility in the UI. Key role strings:
@@ -88,6 +94,9 @@ app/src/main/java/social/entourage/android/
 **Whenever you modify code for a screen/view, update or add that screen's end-to-end scenario test.** This applies even when the task itself wasn't described as a testing task — a UI/behavior change without a matching e2e update is incomplete.
 
 E2E scenarios live under `app/src/androidTest/java/social/entourage/android/e2e/`, directly on `develop`. Compile with `:app:compileEntourageDebugAndroidTestKotlin`.
+- JSON safety net (JVM, `app/src/test/.../api/`): `ApiJsonCharacterizationTest` / `UserJsonCharacterizationTest` (read fixtures in `src/test/resources/api/`), `WriteRequestFixturesTest` (real request bodies captured from the creation scenarios, in `resources/api/requests/`), `LocalPersistenceCharacterizationTest` (on-disk format). When you change a model or a request body, update the matching fixture — a failing fixture test means the wire format changed.
+- `ApiReadEndpointsSmokeTest` (e2e) calls ~50 read endpoints with the test account and fails if a real response no longer decodes into the models. Run it after touching `api/model` or `api/request`.
+- Creation scenarios create real objects named `Unit test …` (group, event, action, post, message) and clean up after themselves where the API allows it (groups and events remain: purge by the `Unit test` prefix). They need `adb emu geo fix 2.3522 48.8566` and a French device/app locale.
 - These tests log into a real staging account and act on its real conversations/events (see `E2E_TEST_ACCOUNT.md`, gitignored) — keep scenarios self-cleaning (e.g. delete/undo what they created) and use `org.junit.Assume` to skip gracefully when a precondition (e.g. "a message from someone else exists") isn't guaranteed.
 - Message/post bubbles are rendered in Compose inside a plain `ComposeView` (no `ComposeTestRule`), so Espresso can't reach their content via `withText`/`withContentDescription` — targeting relies on fractional-position `GeneralClickAction`/`GeneralLocation` hacks (see `ConversationScenarioTest.longClickOnMessageBubble()`). Tune these against a real device/emulator; a value that merely compiles is not verified to hit the right element.
 
