@@ -26,6 +26,7 @@ import social.entourage.android.api.model.Status
 import social.entourage.android.api.model.Summary
 import social.entourage.android.api.model.feed.NewsfeedItem
 import social.entourage.android.api.request.GroupWrapper
+import social.entourage.android.api.request.MetaDataResponse
 import java.util.Date
 import java.util.TimeZone
 
@@ -444,5 +445,42 @@ class ApiJsonCharacterizationTest {
         val a = ApiJson.decode<Action>("""{"status": "closed"}""")
         assertTrue(a.isCancel())
         ApiJson.assertContainsAll("""{"status": "closed"}""", ApiJson.encode(a))
+    }
+
+    // --------------------------------------------- MetaData (capture réelle preprod)
+
+    @Test
+    fun metadata_realResponse_parsesTagsAndReactions() {
+        // metadata.json = vraie réponse de GET home/metadata (référentiels publics, sans donnée perso).
+        val m = ApiJson.decode<MetaDataResponse>(ApiJson.fixture("metadata.json"))
+        assertEquals(
+            listOf("social", "services", "clothes", "equipment", "hygiene"),
+            m.tags.sections!!.map { it.id }
+        )
+        assertEquals("Temps de partage", m.tags.sections!![0].name)
+        assertEquals("café, activité...", m.tags.sections!![0].subname)
+        assertEquals("activites", m.tags.interests!![0].id)
+        assertEquals(5, m.reactions.size)
+        assertEquals(2, m.reactions[0].id)
+        assertEquals("thumbup", m.reactions[0].key)
+        assertTrue(m.reactions[0].imageUrl!!.startsWith("https://"))
+    }
+
+    @Test
+    fun metadata_realResponse_topLevelListsAbsentFromServerStayNull() {
+        // Le serveur n'envoie PAS interests/involvements/concerns/orientations à la racine
+        // (ils sont dans `tags`), alors que MetaDataResponse les déclare non-null. Gson laisse
+        // donc null silencieusement (d'où le log "wtf orientations null" dans l'app).
+        // Avec kotlinx.serialization ce même JSON lèverait MissingFieldException et ferait perdre
+        // aussi tags et reactions : il faudra des valeurs par défaut ou des types nullables.
+        val m = ApiJson.decode<MetaDataResponse>(ApiJson.fixture("metadata.json"))
+        @Suppress("USELESS_CAST")
+        assertNull(m.interests as List<*>?)
+        @Suppress("USELESS_CAST")
+        assertNull(m.orientations as List<*>?)
+        @Suppress("USELESS_CAST")
+        assertNull(m.concerns as List<*>?)
+        @Suppress("USELESS_CAST")
+        assertNull(m.involvements as List<*>?)
     }
 }
