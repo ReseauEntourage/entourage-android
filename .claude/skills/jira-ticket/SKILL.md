@@ -44,7 +44,7 @@ Fais le travail décrit dans le ticket, dans le respect strict des specs d'origi
 
 Vérifie la compilation avec `./gradlew :app:compileEntourageDebugKotlin` (nécessitera une confirmation, cette commande n'est pas pré-approuvée par ce skill).
 
-Si le ticket modifie un écran/une vue existante : selon [CLAUDE.md](CLAUDE.md), le test e2e correspondant doit être mis à jour. Ces tests vivent sur la branche `end_to_end_test` (pas `develop`) — signale ce suivi dans le commentaire Jira de l'étape 3/5 plutôt que de le faire silencieusement en dehors du scope de ce ticket, sauf si l'utilisateur demande explicitement de traiter aussi l'e2e dans cette même passe.
+Si le ticket modifie un écran/une vue existante : selon [CLAUDE.md](CLAUDE.md), le test e2e correspondant (`app/src/androidTest/.../e2e/`, sur `develop`) doit être mis à jour dans le même commit, et compilé avec `./gradlew :app:compileEntourageDebugAndroidTestKotlin`.
 
 ## Étape 5 — Commit
 
