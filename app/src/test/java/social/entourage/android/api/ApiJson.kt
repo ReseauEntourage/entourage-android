@@ -16,13 +16,15 @@ import org.junit.Assert.fail
  * Les comparaisons structurelles passent par kotlinx.serialization.json pour ne pas dépendre de Gson.
  */
 object ApiJson {
-    private val gson = createApiGson()
+    // Instance neuve a chaque appel : Gson fige le fuseau horaire par defaut a sa creation, et les tests
+    // changent ce fuseau (UTC / Europe-Paris) ; un singleton rendrait les resultats dependants de l'ordre.
+    private fun gson() = createApiGson()
 
-    fun <T> decode(json: String, type: Class<T>): T = gson.fromJson(json, type)
+    fun <T> decode(json: String, type: Class<T>): T = gson().fromJson(json, type)
 
     inline fun <reified T> decode(json: String): T = decode(json, T::class.java)
 
-    fun encode(value: Any): String = gson.toJson(value)
+    fun encode(value: Any): String = gson().toJson(value)
 
     fun fixture(name: String): String =
         checkNotNull(ApiJson::class.java.classLoader?.getResourceAsStream("api/$name")) {
