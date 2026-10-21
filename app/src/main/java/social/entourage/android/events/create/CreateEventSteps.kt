@@ -51,6 +51,33 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import kotlinx.coroutines.flow.drop
+import social.entourage.android.ui.create.CfBeige
+import social.entourage.android.ui.create.CfBlack
+import social.entourage.android.ui.create.CfCheckSquare
+import social.entourage.android.ui.create.CfError
+import social.entourage.android.ui.create.CfGlideImage
+import social.entourage.android.ui.create.CfGrey
+import social.entourage.android.ui.create.CfGreyContour
+import social.entourage.android.ui.create.CfHint
+import social.entourage.android.ui.create.CfHintStyle
+import social.entourage.android.ui.create.CfInterestChip
+import social.entourage.android.ui.create.CfLabelRow
+import social.entourage.android.ui.create.CfLabelStyle
+import social.entourage.android.ui.create.CfOptionCard
+import social.entourage.android.ui.create.CfPhotoEmpty
+import social.entourage.android.ui.create.CfPreviewChip
+import social.entourage.android.ui.create.CfRadioRow
+import social.entourage.android.ui.create.CfRoundButton
+import social.entourage.android.ui.create.CfSelectField
+import social.entourage.android.ui.create.CfStepColumn
+import social.entourage.android.ui.create.CfText
+import social.entourage.android.ui.create.CfTextField
+import social.entourage.android.ui.create.CfTitle
+import social.entourage.android.ui.create.CfWhite
+import social.entourage.android.ui.create.cfDim
+import social.entourage.android.ui.create.cfOutlined
+import social.entourage.android.ui.create.cfStyle
+import social.entourage.android.ui.create.nunitoLineHeight
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
 import social.entourage.android.api.MetaDataRepository
@@ -92,12 +119,12 @@ internal fun CreateEventStepPresentation(
     var title by remember { mutableStateOf(state.form.title) }
     var description by remember { mutableStateOf(state.form.description) }
 
-    CeStepColumn {
-        CeTitle(R.string.create_event_step_one_title)
+    CfStepColumn {
+        CfTitle(R.string.create_event_step_one_title)
 
         // Nom
-        CeLabelRow(stringResource(R.string.event_name), Modifier.padding(bottom = 8.dp))
-        CeTextField(
+        CfLabelRow(stringResource(R.string.event_name), Modifier.padding(bottom = 8.dp))
+        CfTextField(
             value = title,
             onValueChange = {
                 title = it
@@ -109,18 +136,18 @@ internal fun CreateEventStepPresentation(
             maxLines = 3,
             modifier = Modifier.testTag("create_event_name"),
         )
-        CeError(errors[CreateEventField.NAME], tag = "create_event_name_error")
+        CfError(errors[CreateEventField.NAME], tag = "create_event_name_error")
 
         // Description
-        CeLabelRow(
+        CfLabelRow(
             stringResource(R.string.create_event_description_label),
             Modifier.padding(top = 20.dp, bottom = 4.dp)
         )
-        CeHint(
+        CfHint(
             stringResource(R.string.create_event_description_hint),
             Modifier.padding(bottom = 9.dp)
         )
-        CeTextField(
+        CfTextField(
             value = description,
             onValueChange = {
                 val value = it.take(CreateEventForm.MAX_DESCRIPTION_LENGTH)
@@ -135,25 +162,25 @@ internal fun CreateEventStepPresentation(
             maxLength = CreateEventForm.MAX_DESCRIPTION_LENGTH,
             modifier = Modifier.testTag("create_event_description"),
         )
-        CeText(
+        CfText(
             stringResource(R.string.events_description_counter, description.length.toString()),
-            ceStyle(NunitoSansRegular, 11f, CeGrey),
+            cfStyle(NunitoSansRegular, 11f, CfGrey),
             Modifier
                 .fillMaxWidth()
                 .padding(top = 6.dp),
             textAlign = TextAlign.End
         )
-        CeError(errors[CreateEventField.DESCRIPTION], tag = "create_event_description_error")
+        CfError(errors[CreateEventField.DESCRIPTION], tag = "create_event_description_error")
 
         // Photo
-        CeLabelRow(
+        CfLabelRow(
             stringResource(R.string.picture),
             Modifier.padding(top = 20.dp, bottom = 8.dp)
         )
         val form = state.form
         val source: Any? = form.localPhotoPath?.let { File(it) } ?: form.photoUrl?.let { Uri.parse(it) }
         if (source != null) {
-            CeGlideImage(
+            CfGlideImage(
                 source = source,
                 contentDescription = stringResource(R.string.picture),
                 modifier = Modifier
@@ -165,7 +192,7 @@ internal fun CreateEventStepPresentation(
         } else {
             // Photo déjà envoyée mais sans aperçu disponible (brouillon restauré) : on le dit.
             val alreadyChosen = form.hasPhoto()
-            CePhotoEmpty(
+            CfPhotoEmpty(
                 title = stringResource(
                     if (alreadyChosen) R.string.create_event_photo_added else R.string.create_event_photo_add
                 ),
@@ -175,7 +202,7 @@ internal fun CreateEventStepPresentation(
                 modifier = Modifier.testTag("create_event_add_photo")
             )
         }
-        CeError(errors[CreateEventField.PHOTO], tag = "create_event_photo_error")
+        CfError(errors[CreateEventField.PHOTO], tag = "create_event_photo_error")
     }
 }
 
@@ -238,12 +265,12 @@ internal fun CreateEventStepWhen(
     val start = errors[CreateEventField.START_TIME]
     val end = errors[CreateEventField.END_TIME]
 
-    CeStepColumn {
-        CeTitle(R.string.create_event_step_two_title)
+    CfStepColumn {
+        CfTitle(R.string.create_event_step_two_title)
 
         // Date
-        CeLabelRow(stringResource(R.string.date), Modifier.padding(bottom = 8.dp))
-        CeSelectField(
+        CfLabelRow(stringResource(R.string.date), Modifier.padding(bottom = 8.dp))
+        CfSelectField(
             text = CreateEventForm.parseDate(form.date)?.let { formatDate(it) },
             hint = stringResource(R.string.date_hint),
             trailingIcon = R.drawable.ic_event_date,
@@ -251,7 +278,7 @@ internal fun CreateEventStepWhen(
             onClick = ::pickDate,
             modifier = Modifier.testTag("create_event_date")
         )
-        CeError(errors[CreateEventField.DATE], tag = "create_event_date_error")
+        CfError(errors[CreateEventField.DATE], tag = "create_event_date_error")
 
         // Heures
         Row(Modifier.padding(top = 20.dp)) {
@@ -260,8 +287,8 @@ internal fun CreateEventStepWhen(
                     .weight(1f)
                     .padding(end = 6.dp)
             ) {
-                CeLabelRow(stringResource(R.string.start_time), Modifier.padding(bottom = 8.dp), required = false)
-                CeSelectField(
+                CfLabelRow(stringResource(R.string.start_time), Modifier.padding(bottom = 8.dp), required = false)
+                CfSelectField(
                     text = CreateEventForm.parseTime(form.startTime)?.let { formatTime(it) },
                     hint = stringResource(R.string.time_hint),
                     trailingIcon = R.drawable.ic_event_time,
@@ -275,8 +302,8 @@ internal fun CreateEventStepWhen(
                     .weight(1f)
                     .padding(start = 6.dp)
             ) {
-                CeLabelRow(stringResource(R.string.end_time), Modifier.padding(bottom = 8.dp), required = false)
-                CeSelectField(
+                CfLabelRow(stringResource(R.string.end_time), Modifier.padding(bottom = 8.dp), required = false)
+                CfSelectField(
                     text = CreateEventForm.parseTime(form.endTime)?.let { formatTime(it) },
                     hint = stringResource(R.string.time_hint),
                     trailingIcon = R.drawable.ic_event_time,
@@ -286,13 +313,13 @@ internal fun CreateEventStepWhen(
                 )
             }
         }
-        CeError(firstErrorOf(errors, CreateEventField.START_TIME, CreateEventField.END_TIME), tag = "create_event_time_error")
+        CfError(firstErrorOf(errors, CreateEventField.START_TIME, CreateEventField.END_TIME), tag = "create_event_time_error")
 
         // Récurrence
         if (recurrenceAllowed) {
-            CeText(
+            CfText(
                 stringResource(R.string.recurrence),
-                CeLabelStyle,
+                CfLabelStyle,
                 Modifier.padding(top = 24.dp)
             )
             Column(
@@ -310,7 +337,7 @@ internal fun CreateEventStepWhen(
                         Recurrence.EVERY_TWO_WEEKS.value -> value == Recurrence.EVERY_TWO_WEEKS.value
                         else -> value == Recurrence.NO_RECURRENCE.value
                     }
-                    CeRadioRow(
+                    CfRadioRow(
                         label = stringResource(label),
                         selected = selected,
                         onClick = {
@@ -338,11 +365,11 @@ internal fun CreateEventStepWhere(
     var eventUrl by remember { mutableStateOf(state.form.eventUrl) }
     val placeError = errors[CreateEventField.PLACE]
 
-    CeStepColumn {
-        CeTitle(R.string.create_event_step_three_title)
+    CfStepColumn {
+        CfTitle(R.string.create_event_step_three_title)
 
         // Bascule présentiel / en ligne : passer en ligne annule la carte fauteuil (sans objet).
-        CeModeToggle(
+        CreateEventModeToggle(
             online = online,
             onSelect = { isOnline ->
                 state.form.setOnlineMode(isOnline)
@@ -351,12 +378,12 @@ internal fun CreateEventStepWhere(
         )
 
         // Adresse ou lien
-        CeLabelRow(
+        CfLabelRow(
             stringResource(if (online) R.string.create_event_link_label else R.string.create_event_address_label),
             Modifier.padding(bottom = 8.dp)
         )
         if (online) {
-            CeTextField(
+            CfTextField(
                 value = eventUrl,
                 onValueChange = {
                     eventUrl = it
@@ -370,7 +397,7 @@ internal fun CreateEventStepWhere(
                 modifier = Modifier.testTag("create_event_url"),
             )
         } else {
-            CeSelectField(
+            CfSelectField(
                 text = form.address,
                 hint = stringResource(R.string.create_event_address_hint),
                 trailingIcon = R.drawable.ic_location,
@@ -380,12 +407,12 @@ internal fun CreateEventStepWhere(
                 modifier = Modifier.testTag("create_event_location")
             )
         }
-        CeError(placeError, tag = "create_event_place_error")
+        CfError(placeError, tag = "create_event_place_error")
 
         // Nombre de places
-        CeText(
+        CfText(
             stringResource(R.string.create_event_places_label),
-            CeLabelStyle,
+            CfLabelStyle,
             Modifier.padding(top = 20.dp)
         )
         val limit = form.placeLimit
@@ -396,17 +423,17 @@ internal fun CreateEventStepWhere(
                 .heightIn(min = 48.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            CeText(
+            CfText(
                 stringResource(R.string.create_event_places_row),
-                ceStyle(NunitoSansRegular, 15f, CeBlack),
+                cfStyle(NunitoSansRegular, 15f, CfBlack),
                 Modifier.weight(1f)
             )
-            CeRoundButton(
+            CfRoundButton(
                 size = 40.dp,
                 icon = R.drawable.ic_create_event_minus,
                 description = stringResource(R.string.create_event_places_minus),
                 modifier = Modifier
-                    .ceDim(limit != null)
+                    .cfDim(limit != null)
                     .testTag("create_event_places_minus"),
                 onClick = {
                     val f = state.form
@@ -418,16 +445,16 @@ internal fun CreateEventStepWhere(
                     }
                 }
             )
-            CeText(
+            CfText(
                 text = limit?.toString() ?: stringResource(R.string.create_event_places_none),
-                style = ceStyle(social.entourage.android.ui.theme.NunitoSansBold, 16f, CeBlack),
+                style = cfStyle(social.entourage.android.ui.theme.NunitoSansBold, 16f, CfBlack),
                 modifier = Modifier
                     .padding(horizontal = 6.dp)
                     .defaultMinSize(minWidth = 48.dp)
                     .testTag("create_event_places_value"),
                 textAlign = TextAlign.Center
             )
-            CeRoundButton(
+            CfRoundButton(
                 size = 40.dp,
                 icon = R.drawable.ic_create_event_plus,
                 description = stringResource(R.string.create_event_places_plus),
@@ -439,17 +466,17 @@ internal fun CreateEventStepWhere(
                 }
             )
         }
-        CeError(errors[CreateEventField.PLACE_LIMIT], tag = "create_event_places_error")
+        CfError(errors[CreateEventField.PLACE_LIMIT], tag = "create_event_places_error")
 
         // Accessibilité et public
-        CeText(
+        CfText(
             stringResource(if (online) R.string.create_event_public else R.string.create_event_access_and_public),
-            CeLabelStyle,
+            CfLabelStyle,
             Modifier.padding(top = 24.dp, bottom = 12.dp)
         )
         // La carte fauteuil n'a pas de sens pour un événement en ligne.
         if (!online) {
-            CeOptionCard(
+            CfOptionCard(
                 icon = R.drawable.ic_create_event_wheelchair,
                 title = stringResource(R.string.create_event_card_wheelchair),
                 description = stringResource(R.string.create_event_card_wheelchair_desc),
@@ -461,7 +488,7 @@ internal fun CreateEventStepWhere(
                 modifier = Modifier.testTag("create_event_card_wheelchair")
             )
         }
-        CeOptionCard(
+        CfOptionCard(
             icon = R.drawable.ic_create_event_family,
             title = stringResource(R.string.create_event_card_family),
             description = stringResource(R.string.create_event_card_family_desc),
@@ -472,7 +499,7 @@ internal fun CreateEventStepWhere(
             },
             modifier = Modifier.testTag("create_event_card_family")
         )
-        CeOptionCard(
+        CfOptionCard(
             icon = R.drawable.ic_create_event_female,
             title = stringResource(R.string.create_event_card_female),
             description = null,
@@ -498,9 +525,9 @@ internal fun CreateEventStepCategories(
     val tags by MetaDataRepository.metaData.observeAsState()
     val form = state.form
 
-    CeStepColumn {
-        CeTitle(R.string.create_event_step_four_title)
-        CeHint(
+    CfStepColumn {
+        CfTitle(R.string.create_event_step_four_title)
+        CfHint(
             stringResource(R.string.create_event_categories_hint),
             Modifier.padding(bottom = 14.dp)
         )
@@ -513,7 +540,7 @@ internal fun CreateEventStepCategories(
                 val id = tag.id ?: return@forEach
                 // La catégorie « Autre » n'est pas proposée dans ce parcours.
                 if (id.equals("other", ignoreCase = true)) return@forEach
-                CeInterestChip(
+                CfInterestChip(
                     label = EventUtils.showTagTranslated(context, id),
                     selected = form.interests.contains(id),
                     onToggle = {
@@ -525,7 +552,7 @@ internal fun CreateEventStepCategories(
                 )
             }
         }
-        CeError(errors[CreateEventField.CATEGORIES], topMargin = 12.dp, tag = "create_event_categories_error")
+        CfError(errors[CreateEventField.CATEGORIES], topMargin = 12.dp, tag = "create_event_categories_error")
     }
 }
 
@@ -561,16 +588,16 @@ internal fun CreateEventStepSharing(
             .fillMaxSize()
             .padding(top = 6.dp)
     ) {
-        CeText(
+        CfText(
             stringResource(R.string.create_event_step_five_title),
-            ceStyle(QuicksandBold, 24f, CeBlack),
+            cfStyle(QuicksandBold, 24f, CfBlack),
             Modifier
                 .fillMaxWidth()
                 .padding(start = 22.dp, end = 22.dp, bottom = 10.dp)
         )
-        CeText(
+        CfText(
             stringResource(R.string.create_event_step_five_hint),
-            CeHintStyle,
+            CfHintStyle,
             Modifier
                 .fillMaxWidth()
                 .padding(start = 22.dp, end = 22.dp, bottom = 8.dp)
@@ -619,13 +646,13 @@ private fun GroupRow(name: String, selected: Boolean, onToggle: () -> Unit) {
             .padding(horizontal = 2.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        CeText(
+        CfText(
             name,
-            ceStyle(NunitoSansRegular, 14f, CeBlack, lineHeight = nunitoLineHeight(14f)),
+            cfStyle(NunitoSansRegular, 14f, CfBlack, lineHeight = nunitoLineHeight(14f)),
             Modifier.weight(1f)
         )
         Spacer(Modifier.width(12.dp))
-        CeCheckSquare(selected)
+        CfCheckSquare(selected)
     }
 }
 
@@ -668,21 +695,21 @@ internal fun CreateEventPreview(state: CreateEventUiState) {
         form.interests.forEach { add(EventUtils.showTagTranslated(context, it)) }
     }
 
-    CeStepColumn {
-        CeTitle(R.string.create_event_preview_title, sizeSp = 21f)
+    CfStepColumn {
+        CfTitle(R.string.create_event_preview_title, sizeSp = 21f)
 
-        CeGlideImage(
+        CfGlideImage(
             source = source,
             contentDescription = stringResource(R.string.picture),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(158.dp)
-                .background(CeBeige, RoundedCornerShape(12.dp))
+                .background(CfBeige, RoundedCornerShape(12.dp))
         )
 
-        CeText(
+        CfText(
             form.title,
-            ceStyle(QuicksandBold, 18f, CeBlack),
+            cfStyle(QuicksandBold, 18f, CfBlack),
             Modifier
                 .fillMaxWidth()
                 .padding(top = 14.dp, bottom = 8.dp)
@@ -700,13 +727,13 @@ internal fun CreateEventPreview(state: CreateEventUiState) {
                 horizontalArrangement = Arrangement.spacedBy(7.dp),
                 verticalArrangement = Arrangement.spacedBy(7.dp)
             ) {
-                chips.forEach { CePreviewChip(it) }
+                chips.forEach { CfPreviewChip(it) }
             }
         }
 
-        CeText(
+        CfText(
             form.description,
-            ceStyle(NunitoSansRegular, 15f, CeBlack, lineHeight = nunitoLineHeight(15f)),
+            cfStyle(NunitoSansRegular, 15f, CfBlack, lineHeight = nunitoLineHeight(15f)),
             Modifier
                 .fillMaxWidth()
                 .padding(top = 14.dp)
@@ -722,11 +749,11 @@ internal fun CreateEventPreview(state: CreateEventUiState) {
             }
             BasicText(
                 nudge,
-                style = ceStyle(NunitoSansRegular, 13f, CeGrey),
+                style = cfStyle(NunitoSansRegular, 13f, CfGrey),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 22.dp)
-                    .ceOutlined(RoundedCornerShape(20.dp), 1.dp, CeGreyContour, CeWhite)
+                    .cfOutlined(RoundedCornerShape(20.dp), 1.dp, CfGreyContour, CfWhite)
                     .padding(13.dp)
             )
         }
@@ -741,6 +768,6 @@ private fun PreviewLine(icon: Int, text: String, modifier: Modifier = Modifier) 
     ) {
         Image(painter = painterResource(icon), contentDescription = null)
         Spacer(Modifier.width(9.dp))
-        CeText(text, ceStyle(NunitoSansRegular, 14f, CeGrey))
+        CfText(text, cfStyle(NunitoSansRegular, 14f, CfGrey))
     }
 }
