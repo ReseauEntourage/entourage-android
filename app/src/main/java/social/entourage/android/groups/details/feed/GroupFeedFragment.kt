@@ -155,6 +155,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         groupPresenter.hasUserJoinedGroup.observe(viewLifecycleOwner, ::handleJoinResponse)
         groupPresenter.hasUserLeftGroup.observe(viewLifecycleOwner, ::handleLeftResponse)
         groupPresenter.isPostDeleted.observe(requireActivity(), ::handleDeletedResponse)
+        groupPresenter.messageUpdated.observe(viewLifecycleOwner) { it?.let(::applyEditedPost) }
         groupPresenter.haveReacted.observe(requireActivity(), ::handleReactionGroupPost)
         surveyPresenter.isSurveyVoted.observe(requireActivity(), ::handleSurveyPostResponse)
 
@@ -620,6 +621,44 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
             page = max(0, page - 1)
             loadPosts()
         }
+    }
+
+    override fun onEditPost(id: Int) {
+        val post = allPostsList.find { it.id == id } ?: return
+        val ctx = context ?: return
+        val input = android.widget.EditText(ctx).apply {
+            setText(android.text.Html.fromHtml(post.contentHtml ?: post.content ?: "", android.text.Html.FROM_HTML_MODE_LEGACY).toString().trim())
+            setSelection(text.length)
+            minLines = 3
+            gravity = android.view.Gravity.TOP
+        }
+        val padding = (20 * resources.displayMetrics.density).toInt()
+        val container = android.widget.FrameLayout(ctx).apply {
+            setPadding(padding, padding / 2, padding, 0)
+            addView(input)
+        }
+        AlertDialog.Builder(ctx)
+            .setTitle(getString(R.string.edit))
+            .setView(container)
+            .setNegativeButton(getString(R.string.cancel), null)
+            .setPositiveButton(getString(R.string.validate)) { _, _ ->
+                val rawText = input.text.toString().trim()
+                if (rawText.isNotEmpty()) {
+                    val html = android.text.Html.toHtml(input.text, android.text.Html.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
+                    group?.id?.let { groupPresenter.updatePost(it, id, html) }
+                }
+            }
+            .show()
+    }
+
+    private fun applyEditedPost(edited: Post) {
+        val id = edited.id ?: return
+        listOf(newPostsList, oldPostsList, allPostsList).forEach { list ->
+            val index = list.indexOfFirst { it.id == id }
+            if (index != -1) list[index] = edited
+        }
+        (binding.postsNewRecyclerview.adapter as? PostAdapter)?.notifyDataSetChanged()
+        (binding.postsOldRecyclerview.adapter as? PostAdapter)?.notifyDataSetChanged()
     }
 
     override fun onTranslatePost(id: Int) {
@@ -1206,4 +1245,5 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
 interface CallbackReportFragment {
     fun onSuppressPost(id: Int)
     fun onTranslatePost(id: Int)
+    fun onEditPost(id: Int) {}
 }

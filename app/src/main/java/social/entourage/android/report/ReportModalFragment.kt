@@ -227,8 +227,19 @@ class ReportModalFragment : BottomSheetDialogFragment() {
             return
         }
 
+        setupEditOption()
         setupDeleteOption()
         setupReportInteraction()
+    }
+
+    private fun setupEditOption() {
+        val canEdit = reportType == ReportTypes.REPORT_POST.code && isFromMe == true && callback != null
+        binding.layoutChooseEdit.isVisible = canEdit
+        binding.layoutChooseEdit.setOnClickListener {
+            reportedId?.let { id -> callback?.onEditPost(id) }
+            onClose()
+            dismiss()
+        }
     }
 
     private fun setupReportFlags() {
