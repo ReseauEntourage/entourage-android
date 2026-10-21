@@ -264,7 +264,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:layout_marginBottom="8dp"
+                            android:layout_marginBottom="18dp"
                             android:textSize="18sp"
                             android:text="@string/impact_title_mine"
                             app:layout_constraintStart_toStartOf="parent"
