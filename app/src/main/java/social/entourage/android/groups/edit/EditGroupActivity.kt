@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import social.entourage.android.R
 import social.entourage.android.databinding.ActivityEditGroupBinding
-import social.entourage.android.tools.updatePaddingBottomForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 
 class EditGroupActivity : AppCompatActivity() {
@@ -16,7 +15,6 @@ class EditGroupActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityEditGroupBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        updatePaddingBottomForEdgeToEdge(binding.root)
         val id = intent.getIntExtra(Const.GROUP_ID, Const.DEFAULT_VALUE)
         val bundle = Bundle().apply {
             putInt(Const.GROUP_ID, id)

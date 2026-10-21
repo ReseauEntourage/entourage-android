@@ -2139,4 +2139,16 @@
         <item quantity="one">%1$d group selected. The members of this group will receive a notification.</item>
         <item quantity="other">%1$d groups selected. The members of these groups will receive a notification.</item>
     </plurals>
+    <!-- Group creation / edition flow (flux-creation-unifie) -->
+    <string name="create_flow_optional">optional</string>
+    <string name="create_group_step_one_title">Introduce your group</string>
+    <string name="create_group_description_hint">Say in a few words what your group is about and who it is for.</string>
+    <string name="create_group_description_placeholder">E.g. A group for neighbours to meet, share good tips and help each other.</string>
+    <string name="create_group_step_two_title">What is your group about?</string>
+    <string name="create_group_step_three_title">Add a photo to your group</string>
+    <string name="create_group_preview_title">Preview of your group</string>
+    <string name="create_group_error_name">Give your group a name to continue.</string>
+    <string name="create_group_error_description">Add a few words to introduce your group.</string>
+    <string name="create_group_error_location">Enter a location to continue.</string>
+    <string name="back_edit_group_content">If you leave, the changes made to the group will be lost.</string>
 </resources>

@@ -3679,4 +3679,16 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
         <item quantity="one">Membre depuis %1$d mois, %2$s</item>
         <item quantity="other">Membre depuis %1$d mois, %2$s</item>
     </plurals>
+    <!-- Parcours de création / d’édition de groupe (flux-creation-unifie) -->
+    <string name="create_flow_optional">facultatif</string>
+    <string name="create_group_step_one_title">Présentez votre groupe</string>
+    <string name="create_group_description_hint">Dites en quelques mots de quoi parle votre groupe et à qui il s’adresse.</string>
+    <string name="create_group_description_placeholder">Ex : Un groupe pour se retrouver entre voisins, partager des bons plans et s’entraider.</string>
+    <string name="create_group_step_two_title">De quoi parle votre groupe\u00a0?</string>
+    <string name="create_group_step_three_title">Ajoutez une photo à votre groupe</string>
+    <string name="create_group_preview_title">Aperçu de votre groupe</string>
+    <string name="create_group_error_name">Donnez un nom à votre groupe pour continuer.</string>
+    <string name="create_group_error_description">Ajoutez quelques mots pour présenter votre groupe.</string>
+    <string name="create_group_error_location">Indiquez un lieu pour continuer.</string>
+    <string name="back_edit_group_content">Si vous quittez, les modifications apportées au groupe seront perdues.</string>
 </resources>

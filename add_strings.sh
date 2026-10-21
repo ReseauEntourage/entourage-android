@@ -1,27 +1,30 @@
 sed -i '' '/<\/resources>/i\
-    <string name="impact_title_mine">Mon impact</string>\
-    <string name="impact_title_other">Son impact</string>\
-    <string name="impact_hero_label_mine">fois engagé</string>\
-    <string name="impact_hero_label_other">actions</string>\
-    <string name="impact_hero_subtitle">au sein de la communauté</string>\
-    <string name="impact_hero_subtitle_low">Chaque geste compte</string>\
-    <string name="impact_section_done">Ce que j’ai fait</string>\
-    <string name="impact_line_events">J’ai participé à des événements</string>\
-    <string name="impact_line_actions">J’ai partagé une entraide</string>\
-    <string name="impact_line_groups">J’ai animé mes groupes de voisins</string>\
-    <string name="impact_line_conversations">J’ai échangé avec d’autres membres</string>\
-    <string name="impact_empty_message">Bienvenue ! Votre histoire commence ici. Dès votre première action (un bonjour, un café, un événement), elle apparaîtra ici. Même les petits gestes comptent.</string>\
-    <string name="impact_empty_button">Découvrir près de chez moi</string>\
-    <string name="impact_other_events">Participation à des événements</string>\
-    <string name="impact_other_actions">Entraides partagées</string>\
-    <string name="impact_other_groups">Groupes de voisins rejoints</string>\
-    <string name="member_since_this_month">Membre depuis %1$s</string>\
-    <plurals name="member_since_years">\
-        <item quantity="one">Membre depuis %1$d an, %2$s</item>\
-        <item quantity="other">Membre depuis %1$d ans, %2$s</item>\
-    </plurals>\
-    <plurals name="member_since_months">\
-        <item quantity="one">Membre depuis %1$d mois, %2$s</item>\
-        <item quantity="other">Membre depuis %1$d mois, %2$s</item>\
-    </plurals>
+    <!-- Parcours de création / d’édition de groupe (flux-creation-unifie) -->\
+    <string name="create_flow_optional">facultatif</string>\
+    <string name="create_group_step_one_title">Présentez votre groupe</string>\
+    <string name="create_group_description_hint">Dites en quelques mots de quoi parle votre groupe et à qui il s’adresse.</string>\
+    <string name="create_group_description_placeholder">Ex : Un groupe pour se retrouver entre voisins, partager des bons plans et s’entraider.</string>\
+    <string name="create_group_step_two_title">De quoi parle votre groupe\\u00a0?</string>\
+    <string name="create_group_step_three_title">Ajoutez une photo à votre groupe</string>\
+    <string name="create_group_preview_title">Aperçu de votre groupe</string>\
+    <string name="create_group_error_name">Donnez un nom à votre groupe pour continuer.</string>\
+    <string name="create_group_error_description">Ajoutez quelques mots pour présenter votre groupe.</string>\
+    <string name="create_group_error_location">Indiquez un lieu pour continuer.</string>\
+    <string name="back_edit_group_content">Si vous quittez, les modifications apportées au groupe seront perdues.</string>
 ' app/src/main/res/values/strings.xml
+if [ -f "app/src/main/res/values-en/strings.xml" ]; then
+sed -i '' '/<\/resources>/i\
+    <!-- Group creation / edition flow (flux-creation-unifie) -->\
+    <string name="create_flow_optional">optional</string>\
+    <string name="create_group_step_one_title">Introduce your group</string>\
+    <string name="create_group_description_hint">Say in a few words what your group is about and who it is for.</string>\
+    <string name="create_group_description_placeholder">E.g. A group for neighbours to meet, share good tips and help each other.</string>\
+    <string name="create_group_step_two_title">What is your group about?</string>\
+    <string name="create_group_step_three_title">Add a photo to your group</string>\
+    <string name="create_group_preview_title">Preview of your group</string>\
+    <string name="create_group_error_name">Give your group a name to continue.</string>\
+    <string name="create_group_error_description">Add a few words to introduce your group.</string>\
+    <string name="create_group_error_location">Enter a location to continue.</string>\
+    <string name="back_edit_group_content">If you leave, the changes made to the group will be lost.</string>
+' app/src/main/res/values-en/strings.xml
+fi

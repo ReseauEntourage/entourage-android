@@ -1,30 +1,22 @@
 package social.entourage.android.user.edit.place
 
 import android.content.Intent
-import android.location.Geocoder
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import social.entourage.android.EntourageApplication
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
 import social.entourage.android.api.model.User
-import social.entourage.android.base.location.LocationUtils.getFromLocationNameCompat
-import social.entourage.android.groups.create.CommunicationHandlerViewModel
 import social.entourage.android.home.OnHomeChangeLocationUpdate // moved to HomeState.kt
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
-import java.io.IOException
 
 class UserEditActionZoneFragment : UserActionPlaceFragment() {
     private var mListener: FragmentListener? = null
 
-    private val viewModel: CommunicationHandlerViewModel by activityViewModels()
-
-    private var setGroupLocation = false
     private var listener: OnHomeChangeLocationUpdate? = null
 
     //**********//**********//**********
@@ -33,10 +25,6 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            setGroupLocation = it.getBoolean("setGroupLocation")
-        }
-
         //mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
     }
 
@@ -98,95 +86,58 @@ class UserEditActionZoneFragment : UserActionPlaceFragment() {
     //**********//**********//**********
 
     private fun sendNetwork() {
-        if (setGroupLocation) {
-            try {
-                val geocoder = Geocoder(requireContext())
-                userAddress?.displayAddress?.let { userDisplayAddress->
-                    geocoder.getFromLocationNameCompat(userDisplayAddress, 1) { addresses ->
-                        if (!isAdded) return@getFromLocationNameCompat
-                        if (!addresses.isNullOrEmpty()) {
-                            with(viewModel.group) {
-                                latitude = addresses.first().latitude
-                                longitude = addresses.first().longitude
-                                displayAddress = userDisplayAddress
-                            }
-                            mListener?.onUserEditActionZoneFragmentAddressSaved()
-                            if (isAdded && view != null) {
-                                findNavController().popBackStack()
-                            } else {
-                                context?.let { ctx ->
-                                    val intent = Intent(ctx, MainActivity::class.java)
+        userAddress?.let { userAddress ->
+            AnalyticsEvents.logEvent(
+                if (isSecondaryAddress) AnalyticsEvents.EVENT_ACTION_PROFILE_ACTION_ZONE2_SUBMIT
+                else AnalyticsEvents.EVENT_ACTION_PROFILE_ACTION_ZONE_SUBMIT
+            )
+            OnboardingAPI.getInstance()
+                .updateAddress(userAddress, isSecondaryAddress) { isOK, userResponse ->
+                    if (isOK) {
+                        userResponse?.user?.let { newUser ->
+                            val authenticationController =
+                                EntourageApplication.get().authenticationController
+                            authenticationController.me?.phone?.let { phone ->
+                                newUser.phone = phone
+                                authenticationController.saveUser(newUser)
+                                mListener?.onUserEditActionZoneFragmentAddressSaved()
+                                if(listener != null) {
+                                    val intent = Intent(context, MainActivity::class.java)
+                                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK )
+                                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                    requireContext().startActivity(intent)
+                                }
+                                if (isAdded && view != null) {
+                                    findNavController().popBackStack()
+                                } else {
+                                    val intent = Intent(context, MainActivity::class.java)
                                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                                     intent.putExtra("goDemand", true)
-                                    ctx.startActivity(intent)
+                                    requireContext().startActivity(intent)
                                 }
+                                dismissAllowingStateLoss()
                             }
                         }
-                    }
-                }
-            } catch(e: IOException) {
-                activity?.let {
-                    Toast.makeText(
-                        it,
-                        R.string.user_action_zone_send_failed,
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            }
-        } else {
-            userAddress?.let { userAddress ->
-                AnalyticsEvents.logEvent(
-                    if (isSecondaryAddress) AnalyticsEvents.EVENT_ACTION_PROFILE_ACTION_ZONE2_SUBMIT
-                    else AnalyticsEvents.EVENT_ACTION_PROFILE_ACTION_ZONE_SUBMIT
-                )
-                OnboardingAPI.getInstance()
-                    .updateAddress(userAddress, isSecondaryAddress) { isOK, userResponse ->
-                        if (isOK) {
-                            userResponse?.user?.let { newUser ->
-                                val authenticationController =
-                                    EntourageApplication.get().authenticationController
-                                authenticationController.me?.phone?.let { phone ->
-                                    newUser.phone = phone
-                                    authenticationController.saveUser(newUser)
-                                    mListener?.onUserEditActionZoneFragmentAddressSaved()
-                                    if(listener != null) {
-                                        val intent = Intent(context, MainActivity::class.java)
-                                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK )
-                                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                                        requireContext().startActivity(intent)
-                                    }
-                                    if (isAdded && view != null) {
-                                        findNavController().popBackStack()
-                                    } else {
-                                        val intent = Intent(context, MainActivity::class.java)
-                                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                        intent.putExtra("goDemand", true)
-                                        requireContext().startActivity(intent)
-                                    }
-                                    dismissAllowingStateLoss()
-                                }
-                            }
-                            activity?.let {
-                                Toast.makeText(
-                                    it,
-                                    R.string.user_action_zone_send_ok,
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
-                        } else {
-                            activity?.let {
-                                Toast.makeText(
-                                    it,
-                                    R.string.user_action_zone_send_failed,
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
-                            mListener?.onUserEditActionZoneFragmentIgnore()
+                        activity?.let {
+                            Toast.makeText(
+                                it,
+                                R.string.user_action_zone_send_ok,
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
+                    } else {
+                        activity?.let {
+                            Toast.makeText(
+                                it,
+                                R.string.user_action_zone_send_failed,
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        mListener?.onUserEditActionZoneFragmentIgnore()
                     }
-            } ?: run {
-                mListener?.onUserEditActionZoneFragmentIgnore()
-            }
+                }
+        } ?: run {
+            mListener?.onUserEditActionZoneFragmentIgnore()
         }
     }
 

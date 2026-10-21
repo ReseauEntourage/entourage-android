@@ -215,12 +215,13 @@ internal fun CfLabelRow(
     label: String,
     modifier: Modifier = Modifier,
     required: Boolean = true,
+    optional: Boolean = false,
 ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         CfText(label, CfLabelStyle)
-        if (required) {
+        if (required || optional) {
             CfText(
-                stringResource(R.string.create_event_required),
+                stringResource(if (required) R.string.create_event_required else R.string.create_flow_optional),
                 CfRequiredStyle,
                 Modifier.padding(start = 6.dp)
             )

@@ -9,6 +9,7 @@ import social.entourage.android.api.model.Action
 import social.entourage.android.api.model.ActionCancel
 import social.entourage.android.api.model.Address
 import social.entourage.android.api.model.Group
+import social.entourage.android.groups.create.CreateGroupForm
 import social.entourage.android.api.request.ContribCancelWrapper
 import social.entourage.android.api.request.ContribWrapper
 import social.entourage.android.api.request.CreateEventWrapper
@@ -53,13 +54,17 @@ class WriteRequestFixturesTest {
 
     @Test
     fun createGroup() {
-        // CreateGroupFragment -> GroupPresenter.createGroup(GroupWrapper(group))
-        val group = Group().name("Unit test group 1").description("Groupe cree automatiquement par le test E2E.")
-        group.interests = mutableListOf("activites")
-        group.latitude = 48.8566
-        group.longitude = 2.3522
-        group.displayAddress = "Paris - 75004"
-        group.neighborhoodImageId = 15
+        // CreateGroupFragment -> GroupPresenter.createGroup(GroupWrapper(CreateGroupForm.toGroup()))
+        val group = CreateGroupForm(
+            name = "Unit test group 1",
+            description = "Groupe cree automatiquement par le test E2E.",
+            address = "Paris - 75004",
+            latitude = 48.8566,
+            longitude = 2.3522,
+            interests = mutableListOf("activites"),
+            imageId = 15,
+            photoUrl = "https://example.org/image.jpg",
+        ).toGroup()
         assertMatchesFixture("create_group.json", GroupWrapper(group))
     }
 
