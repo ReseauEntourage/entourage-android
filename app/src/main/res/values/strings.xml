@@ -3691,4 +3691,15 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="create_group_error_description">Ajoutez quelques mots pour présenter votre groupe.</string>
     <string name="create_group_error_location">Indiquez un lieu pour continuer.</string>
     <string name="back_edit_group_content">Si vous quittez, les modifications apportées au groupe seront perdues.</string>
+    <!-- Parcours de création / d’édition d’entraide (flux-creation-unifie) -->
+    <string name="create_action_category_label">Catégorie</string>
+    <string name="create_action_step_description_title">Dites-nous en plus</string>
+    <string name="create_action_title_label">Titre</string>
+    <string name="create_action_photo_label">Photo</string>
+    <string name="create_action_description_counter">%s /800</string>
+    <string name="create_action_preview_title">Aperçu de votre %s</string>
+    <string name="create_action_error_title">Donnez un titre pour continuer.</string>
+    <string name="create_action_error_description">Ajoutez une description pour continuer.</string>
+    <string name="create_action_error_location">Indiquez une adresse pour continuer.</string>
+    <string name="create_action_error_sharing">Répondez par oui ou par non pour continuer.</string>
 </resources>

@@ -7,13 +7,17 @@ import social.entourage.android.R
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.user.edit.place.UserActionPlaceFragment
 
+/** Sélecteur d'adresse de l'entraide : écrit le lieu dans le formulaire de l'assistant. */
 class CreateActionPlaceFragment : UserActionPlaceFragment() {
 
-    private val viewModel: CommunicationActionHandlerViewModel by activityViewModels()
+    private val viewModel: CreateActionViewModel by activityViewModels()
 
     override fun setupViews() {
         super.setupViews()
-        binding.uiOnboardPlaceTvTitle.text = getString(R.string.action_create_location_title, if (viewModel.isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib))
+        binding.uiOnboardPlaceTvTitle.text = getString(
+            R.string.action_create_location_title,
+            if (viewModel.isDemand) getString(R.string.action_name_demand) else getString(R.string.action_name_contrib)
+        )
         binding.uiOnboardPlaceTvInfo.text = getString(R.string.action_create_location_subtitle)
 
         binding.editPlaceTitleLayout.setTitle("")
@@ -32,15 +36,12 @@ class CreateActionPlaceFragment : UserActionPlaceFragment() {
     }
 
     private fun validate() {
-        with(viewModel.metadata.value) {
-            this?.streetAddress = userAddress?.displayAddress
-            this?.latitude = userAddress?.latitude
-            this?.longitude = userAddress?.longitude
-            this?.googlePlaceId = userAddress?.googlePlaceId ?: ""
-            //TODO check if placename had a utility on back before removing it
-            //this?.placeName = userAddress?.displayAddress ?: ""
-            this?.placeName = ""
+        with(viewModel.form) {
+            address = userAddress?.displayAddress
+            latitude = userAddress?.latitude
+            longitude = userAddress?.longitude
         }
+        viewModel.onFormChanged()
         findNavController().popBackStack()
     }
 }

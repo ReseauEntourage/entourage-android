@@ -199,9 +199,14 @@ internal fun CfStepColumn(modifier: Modifier = Modifier, content: @Composable Co
 
 /** `create_event_title` : Quicksand Bold 24sp, 24dp d'espace dessous. */
 @Composable
-internal fun CfTitle(@StringRes text: Int, sizeSp: Float = 24f, modifier: Modifier = Modifier) {
+internal fun CfTitle(@StringRes text: Int, sizeSp: Float = 24f, modifier: Modifier = Modifier) =
+    CfTitle(stringResource(text), sizeSp, modifier)
+
+/** Variante de [CfTitle] pour un titre déjà composé (gabarit avec arguments). */
+@Composable
+internal fun CfTitle(text: String, sizeSp: Float = 24f, modifier: Modifier = Modifier) {
     CfText(
-        text = stringResource(text),
+        text = text,
         style = cfStyle(QuicksandBold, sizeSp, CfBlack),
         modifier = modifier
             .fillMaxWidth()

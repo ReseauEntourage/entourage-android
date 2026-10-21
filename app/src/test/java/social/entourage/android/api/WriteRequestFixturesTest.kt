@@ -16,6 +16,7 @@ import social.entourage.android.api.request.CreateEventWrapper
 import social.entourage.android.api.request.DemandCancelWrapper
 import social.entourage.android.api.request.DemandWrapper
 import social.entourage.android.api.request.GroupWrapper
+import social.entourage.android.actions.create.CreateActionForm
 import social.entourage.android.events.create.CreateEventForm
 import java.util.TimeZone
 
@@ -77,14 +78,15 @@ class WriteRequestFixturesTest {
         assertMatchesFixture("create_group_post.json", request)
     }
 
-    private fun action(title: String) = Action(
+    /** CreateActionFragment -> CreateActionForm.toCreateAction(autoPost) (l'adresse affichée n'est pas envoyée). */
+    private fun action(title: String) = CreateActionForm(
+        sectionId = "social",
         title = title,
         description = "Action creee automatiquement par le test E2E.",
-        sectionName = "social",
-        location = Address(48.8566, 2.3521983, ""),
-        autoPostAtCreate = false,
-        hasConsent = true
-    )
+        address = "Paris - 75004",
+        latitude = 48.8566,
+        longitude = 2.3521983,
+    ).toCreateAction(autoPost = false)
 
     @Test
     fun createDemand() = assertMatchesFixture("create_demand.json", DemandWrapper(action("Unit test Demande 1")))

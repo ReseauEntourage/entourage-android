@@ -43,11 +43,7 @@
 
     <fragment
         android:id="@+id/edit_action_place_fragment"
-        android:name="social.entourage.android.actions.create.CreateActionPlaceFragment">
-        <argument
-            android:name="setGroupLocation"
-            app:argType="boolean" />
-    </fragment>
+        android:name="social.entourage.android.actions.create.CreateActionPlaceFragment" />
 
     <fragment
         android:id="@+id/create_action_success_fragment"

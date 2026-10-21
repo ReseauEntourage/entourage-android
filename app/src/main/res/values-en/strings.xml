@@ -2151,4 +2151,15 @@
     <string name="create_group_error_description">Add a few words to introduce your group.</string>
     <string name="create_group_error_location">Enter a location to continue.</string>
     <string name="back_edit_group_content">If you leave, the changes made to the group will be lost.</string>
+    <!-- Solidarity action creation / edition flow (flux-creation-unifie) -->
+    <string name="create_action_category_label">Category</string>
+    <string name="create_action_step_description_title">Tell us more</string>
+    <string name="create_action_title_label">Title</string>
+    <string name="create_action_photo_label">Photo</string>
+    <string name="create_action_description_counter">%s /800</string>
+    <string name="create_action_preview_title">Preview of your %s</string>
+    <string name="create_action_error_title">Give a title to continue.</string>
+    <string name="create_action_error_description">Add a description to continue.</string>
+    <string name="create_action_error_location">Enter an address to continue.</string>
+    <string name="create_action_error_sharing">Answer yes or no to continue.</string>
 </resources>

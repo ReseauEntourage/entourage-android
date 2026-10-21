@@ -73,8 +73,7 @@
                 layout="@layout/layout_error"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/group_location" />
+                android:visibility="gone" />
 
         </LinearLayout>
 
