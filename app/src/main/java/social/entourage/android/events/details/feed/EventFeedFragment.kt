@@ -789,7 +789,12 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
     }
 
     private fun initializeInterests() {
-        if (interestsList.isEmpty()) binding.interests.visibility = View.GONE
+        // Accessibilité et public, au même niveau que les catégories (comme dans l'aperçu de création).
+        val extraLabels = buildList {
+            if (event?.metadata?.pmr == true && event?.online != true) add(getString(R.string.create_event_preview_chip_wheelchair))
+            if (event?.metadata?.kidsFriendly == true) add(getString(R.string.create_event_preview_chip_family))
+        }
+        if (interestsList.isEmpty() && extraLabels.isEmpty()) binding.interests.visibility = View.GONE
         else {
             binding.interests.visibility = View.VISIBLE
             binding.interests.apply {
@@ -797,7 +802,7 @@ class EventFeedFragment : Fragment(), CallbackReportFragment, ReactionInterface,
                 layoutManagerFlex.flexDirection = FlexDirection.ROW
                 layoutManagerFlex.justifyContent = JustifyContent.FLEX_START
                 layoutManager = layoutManagerFlex
-                adapter = InterestsAdapter(interestsList)
+                adapter = InterestsAdapter(interestsList, extraLabels)
             }
         }
     }
