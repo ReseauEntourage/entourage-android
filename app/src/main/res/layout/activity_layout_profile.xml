@@ -317,7 +317,7 @@
 
                                 <TextView
                                     android:id="@+id/tv_impact_hero_subtitle"
-                                    style="@style/left_courant_black"
+                                    style="@style/left_courant_bold_black"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:gravity="center"
