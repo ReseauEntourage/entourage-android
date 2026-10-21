@@ -3,22 +3,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/bg_impact_line_card"
     android:gravity="center_vertical"
+    android:minHeight="44dp"
     android:orientation="horizontal"
-    android:paddingVertical="4dp">
+    android:paddingHorizontal="14dp"
+    android:paddingVertical="12dp">
 
     <TextView
-        android:id="@+id/tv_impact_line_count"
-        style="@style/left_courant_bold_black"
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
-        tools:text="12" />
+        android:id="@+id/tv_impact_line_icon"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:background="@drawable/bg_circle_light_orange"
+        android:gravity="center"
+        android:textSize="18sp"
+        tools:text="🎉" />
 
     <TextView
         android:id="@+id/tv_impact_line_label"
         style="@style/left_courant_black"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
         android:layout_weight="1"
         tools:text="J’ai participé à des événements" />
+
+    <TextView
+        android:id="@+id/tv_impact_line_count"
+        style="@style/left_courant_bold_black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textSize="20sp"
+        tools:text="12" />
 </LinearLayout>

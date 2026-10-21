@@ -19,12 +19,14 @@ object ProfileImpactHelper {
 
     private const val LOW_ACTIVITY_MAX_TYPES = 2
 
+    private data class ImpactLine(val label: Int, val emoji: String)
+
     fun bindOwnImpact(context: Context, binding: ActivityLayoutProfileBinding, summary: Summary) {
         val lines = listOf(
-            R.string.impact_line_events to (summary.pastOutingParticipationsCount ?: 0),
-            R.string.impact_line_actions to (summary.actionCreationsCount ?: 0),
-            R.string.impact_line_groups to (summary.neighborhoodMessagesCount ?: 0),
-            R.string.impact_line_conversations to (summary.conversationMembersCount ?: 0)
+            ImpactLine(R.string.impact_line_events, "🎉") to (summary.pastOutingParticipationsCount ?: 0),
+            ImpactLine(R.string.impact_line_actions, "🤝") to (summary.actionCreationsCount ?: 0),
+            ImpactLine(R.string.impact_line_groups, "🏘️") to (summary.neighborhoodMessagesCount ?: 0),
+            ImpactLine(R.string.impact_line_conversations, "💬") to (summary.conversationMembersCount ?: 0)
         ).filter { it.second > 0 }
 
         binding.tvImpactTitle.text = context.getString(R.string.impact_title_mine)
@@ -50,9 +52,9 @@ object ProfileImpactHelper {
 
     fun bindPublicImpact(context: Context, binding: ActivityLayoutProfileBinding, stats: Stats?) {
         val lines = listOf(
-            R.string.impact_other_events to (stats?.outingsCount ?: 0),
-            R.string.impact_other_actions to ((stats?.contribCreationCount ?: 0) + (stats?.askCreationCount ?: 0)),
-            R.string.impact_other_groups to (stats?.neighborhoodsCount ?: 0)
+            ImpactLine(R.string.impact_other_events, "🎉") to (stats?.outingsCount ?: 0),
+            ImpactLine(R.string.impact_other_actions, "🤝") to ((stats?.contribCreationCount ?: 0) + (stats?.askCreationCount ?: 0)),
+            ImpactLine(R.string.impact_other_groups, "🏘️") to (stats?.neighborhoodsCount ?: 0)
         ).filter { it.second > 0 }
 
         binding.tvImpactTitle.text = context.getString(R.string.impact_title_other)
@@ -71,14 +73,15 @@ object ProfileImpactHelper {
     private fun showLines(
         context: Context,
         binding: ActivityLayoutProfileBinding,
-        lines: List<Pair<Int, Int>>
+        lines: List<Pair<ImpactLine, Int>>
     ) {
         binding.tvImpactHero.text = lines.sumOf { it.second }.toString()
         binding.layoutImpactLines.removeAllViews()
-        lines.forEach { (label, count) ->
+        lines.forEach { (impactLine, count) ->
             val line = ItemImpactLineBinding.inflate(LayoutInflater.from(context), binding.layoutImpactLines, false)
             line.tvImpactLineCount.text = count.toString()
-            line.tvImpactLineLabel.text = context.getString(label)
+            line.tvImpactLineLabel.text = context.getString(impactLine.label)
+            line.tvImpactLineIcon.text = impactLine.emoji
             binding.layoutImpactLines.addView(line.root)
         }
         binding.layoutImpactFilled.visibility = View.VISIBLE
