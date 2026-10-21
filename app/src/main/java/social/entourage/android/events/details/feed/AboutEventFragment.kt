@@ -403,18 +403,24 @@ class AboutEventFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun initializeInterests() {
+        // Accessibilité et public, au même niveau que les catégories (comme dans l'aperçu de création).
+        val extraLabels = buildList {
+            if (event?.metadata?.pmr == true && event?.online != true) add(getString(R.string.create_event_preview_chip_wheelchair))
+            if (event?.metadata?.kidsFriendly == true) add(getString(R.string.create_event_preview_chip_family))
+        }
         binding.categories.text =
             getString(if (interestsList.size == 1) R.string.category else R.string.categories)
-        if (interestsList.isEmpty()) {
-            binding.categories.visibility = View.GONE
+        binding.categories.visibility = if (interestsList.isEmpty()) View.GONE else View.VISIBLE
+        if (interestsList.isEmpty() && extraLabels.isEmpty()) {
             binding.interests.visibility = View.GONE
         } else {
             with(binding.interests) {
+                visibility = View.VISIBLE
                 layoutManager = FlexboxLayoutManager(context).apply {
                     flexDirection = FlexDirection.ROW
                     justifyContent = JustifyContent.FLEX_START
                 }
-                adapter = InterestsAdapter(interestsList)
+                adapter = InterestsAdapter(interestsList, extraLabels)
             }
         }
     }

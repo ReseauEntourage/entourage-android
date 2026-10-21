@@ -8,7 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.R
 import social.entourage.android.api.model.EventUtils
 
-class InterestsAdapter(private val mList: List<String>) :
+/** [extraLabels] : pastilles déjà traduites, affichées avant les centres d'intérêt. */
+class InterestsAdapter(
+    private val mList: List<String>,
+    private val extraLabels: List<String> = emptyList(),
+) :
     RecyclerView.Adapter<InterestsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -19,11 +23,15 @@ class InterestsAdapter(private val mList: List<String>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val context = holder.label.context
-        holder.label.text = EventUtils.showTagTranslated(context, mList[position].lowercase())
+        holder.label.text = if (position < extraLabels.size) {
+            extraLabels[position]
+        } else {
+            EventUtils.showTagTranslated(context, mList[position - extraLabels.size].lowercase())
+        }
     }
 
     override fun getItemCount(): Int {
-        return mList.size
+        return extraLabels.size + mList.size
     }
 
     // Holds the views for adding it to image and text
