@@ -74,7 +74,8 @@ class ChoosePhotoAdapter(
                     var imageUrl: String?
 
                     if (isEvent) {
-                        imageUrl = if (this.portraitUrl != null) this.portraitUrl else this.landscapeUrl
+                        // Le portrait est une vignette basse résolution : le paysage est la pleine résolution.
+                        imageUrl = this.landscapeUrl ?: this.imageUrl ?: this.portraitUrl
                     } else {
                         imageUrl = this.imageUrl
                     }

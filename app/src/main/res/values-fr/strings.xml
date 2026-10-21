@@ -164,7 +164,7 @@ Découvrez les initiatives de votre quartier et tissez des liens avec vos voisin
     <string name="write_description">Rédiger un descriptif</string>
     <string name="write_description_hint">Pour se rencontrer entre voisins du 18e</string>
     <string name="add_location">Ajouter un lieu</string>
-    <string name="add_location_hint">Adresse, ville ou département</string>
+    <string name="add_location_hint">Ex : 12 rue de la Paix, 75002 Paris</string>
     <string name="mandatory"> obligatoire</string>
     <string name="optional"> facultatif</string>
     <string name="step">Étape</string>
@@ -2852,7 +2852,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="create_event_step_two_title">Quand a lieu votre événement\u00a0?</string>
     <string name="create_event_step_three_title">Où et pour qui\u00a0?</string>
     <string name="create_event_address_label">Adresse</string>
-    <string name="create_event_address_hint">Adresse, ville ou département</string>
+    <string name="create_event_address_hint">Ex : 12 rue de la Paix, 75002 Paris</string>
     <string name="create_event_link_label">Lien de connexion</string>
     <string name="create_event_link_hint">Ex : https://zoom.us/j/…</string>
     <string name="create_event_places_label">Nombre de places limité\u00a0?</string>

@@ -4,6 +4,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import social.entourage.android.EntourageApplication
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable as KSerializable
 
 class PrepareEventImageUploadRepository(private var callback: Callback?) :
     Callback<PrepareEventImageUploadRepository.Response> {
@@ -32,13 +33,15 @@ class PrepareEventImageUploadRepository(private var callback: Callback?) :
         fun onRepositoryError()
     }
 
-    inner class Request internal constructor(
+    @KSerializable
+    class Request internal constructor(
         @SerialName("content_type")
-        private val contentType: String
+        val contentType: String
     )
 
-    inner class Response(
-        @SerialName("upload_key") var uploadKey: String,
-        @SerialName("presigned_url") val presignedUrl: String
+    @KSerializable
+    class Response(
+        @SerialName("upload_key") var uploadKey: String = "",
+        @SerialName("presigned_url") val presignedUrl: String = ""
     )
 }

@@ -141,7 +141,7 @@
     <string name="write_description">Add a description</string>
     <string name="write_description_hint">Meet neighbors from the 18th</string>
     <string name="add_location">Add a place</string>
-    <string name="add_location_hint">Address, city or department</string>
+    <string name="add_location_hint">E.g. 12 rue de la Paix, 75002 Paris</string>
     <string name="mandatory"> required</string>
     <string name="optional"> optional</string>
     <string name="step">Step</string>
@@ -2089,7 +2089,7 @@
     <string name="create_event_step_two_title">When is your event taking place?</string>
     <string name="create_event_step_three_title">Where and for whom?</string>
     <string name="create_event_address_label">Address</string>
-    <string name="create_event_address_hint">Address, city or department</string>
+    <string name="create_event_address_hint">E.g. 12 rue de la Paix, 75002 Paris</string>
     <string name="create_event_link_label">Connection link</string>
     <string name="create_event_link_hint">E.g. https://zoom.us/j/…</string>
     <string name="create_event_places_label">Limited number of places?</string>
