@@ -24,6 +24,11 @@ class CreatePostGroupActivity : CreatePostActivity() {
             handlePost(hasPost)
         }
 
+        // Observe la réussite de la modification (mode édition)
+        groupPresenter.messageUpdated.observe(this) { post ->
+            if (post != null) finish()
+        }
+
         // 1) Observe le résultat distant pour les mentions
         groupPresenter.getMembersSearch.observe(this) { members ->
             // On met à jour la liste => c'est la méthode de CreatePostActivity
@@ -67,6 +72,11 @@ class CreatePostGroupActivity : CreatePostActivity() {
         // Appelle la route de recherche asynchrone du groupPresenter
         // (query vide => tous les membres, si le back l'autorise)
         groupPresenter.searchGroupMembers(groupId, query)
+    }
+
+    // Modification d'un post existant (mode édition)
+    override fun updatePost(postId: Int, contentHtml: String) {
+        groupPresenter.updatePost(groupId, postId, contentHtml)
     }
 
     // Publication d'un post avec image

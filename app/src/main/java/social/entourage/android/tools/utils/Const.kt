@@ -6,6 +6,7 @@ object Const {
     const val IS_NOT_TRANSLATABLE = "is_not_translatable"
     const val IS_MY_LANGUAGE = "is_my_language"
     const val CONTENT_COPIED = "content_copied"
+    const val POST_CONTENT_HTML = "post_content_html"
     const val GROUP_NAME_MIN_LENGTH = 2
     const val GROUP_DESCRIPTION_MIN_LENGTH = 1
     const val DEFAULT_VALUE = -1

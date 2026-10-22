@@ -48,6 +48,9 @@ abstract class CreatePostActivity : AppCompatActivity() {
     // ID du "groupe" ou "événement" récupéré via l’Intent
     protected var groupId = Const.DEFAULT_VALUE
 
+    // Id de la publication en cours de modification (mode édition), null en création
+    protected var editingPostId: Int? = null
+
     // Doit-on fermer l’Activity après la création ?
     private var shouldClose = false
 
@@ -92,8 +95,35 @@ abstract class CreatePostActivity : AppCompatActivity() {
         // Ecoute du '@' dans l'EditText
         setupMentionTextWatcher()
 
+        setupEditMode()
+
         updatePaddingForEdgeToEdge(binding.root)
     }
+
+    /**
+     * Mode édition : même écran que la création, prérempli avec la publication, bouton
+     * « Modifier » et appel de modification au lieu de la création. L'image n'est pas modifiable.
+     */
+    private fun setupEditMode() {
+        val postId = intent.getIntExtra(Const.POST_ID, Const.DEFAULT_VALUE)
+        if (postId == Const.DEFAULT_VALUE) return
+        editingPostId = postId
+
+        binding.header.headerTitle.text = getString(R.string.edit_post)
+        binding.validate.button.text = getString(R.string.edit)
+        binding.chipsSection.visibility = View.GONE
+        binding.addImageLabel.visibility = View.GONE
+        binding.addPhotoLayout.visibility = View.GONE
+        binding.photoLayout.visibility = View.GONE
+
+        val html = intent.getStringExtra(Const.POST_CONTENT_HTML).orEmpty()
+        binding.message.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY).trimEnd())
+        binding.message.setSelection(binding.message.text.length)
+        handleSaveButtonState(isMessageValid())
+    }
+
+    /** Appelé en mode édition à la place de la création. */
+    protected open fun updatePost(postId: Int, contentHtml: String) {}
 
     /**
      * Retourne les chips d'inspiration à afficher (label, draft).
@@ -304,6 +334,13 @@ abstract class CreatePostActivity : AppCompatActivity() {
     private fun validatePost() {
         binding.validate.button.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST_VALIDATE)
+
+            editingPostId?.let { postId ->
+                if (isMessageValid()) {
+                    updatePost(postId, Html.toHtml(binding.message.text, Html.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL))
+                }
+                return@setOnClickListener
+            }
 
             // Cas 1 : pas d'image, uniquement texte
             if (imageURI == null && isMessageValid()) {
