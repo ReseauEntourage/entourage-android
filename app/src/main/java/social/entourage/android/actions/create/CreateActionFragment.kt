@@ -20,6 +20,7 @@ import androidx.navigation.fragment.findNavController
 import social.entourage.android.BuildConfig
 import social.entourage.android.R
 import social.entourage.android.RefreshController
+import social.entourage.android.actions.detail.ActionDetailActivity
 import social.entourage.android.actions.ActionsPresenter
 import social.entourage.android.api.model.Action
 import social.entourage.android.base.ChoosePhotoModalFragment
@@ -238,11 +239,19 @@ class CreateActionFragment : Fragment() {
                     )
                 }
                 try {
-                    val action =
-                        CreateActionFragmentDirections.actionCreateActionFragmentToCreateActionSuccessFragment(
-                            it.id!!, it.title!!, it.isDemand()
-                        )
-                    findNavController().navigate(action)
+                    Utils.showToast(
+                        requireContext(),
+                        getString(R.string.action_create_success_title, actionName()).replace("\n", " ")
+                    )
+                    RefreshController.shouldRefreshFragment = true
+                    startActivity(
+                        Intent(requireContext(), ActionDetailActivity::class.java)
+                            .putExtra(Const.ACTION_ID, it.id ?: 0)
+                            .putExtra(Const.ACTION_TITLE, it.title)
+                            .putExtra(Const.IS_ACTION_DEMAND, it.isDemand())
+                            .putExtra(Const.IS_ACTION_MINE, true)
+                    )
+                    requireActivity().finish()
                 } catch (e: Exception) {
                     Timber.e(e)
                 }
