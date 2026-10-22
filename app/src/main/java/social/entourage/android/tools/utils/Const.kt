@@ -26,6 +26,8 @@ object Const {
     const val GROUP_UI = "groupUI"
     const val CONVERSATION_ID = "conversation_id"
     const val EVENT_UI = "eventUI"
+    /** Extra booléen : [EVENT_UI] sert de modèle à un nouvel événement (duplication), pas à une édition. */
+    const val EVENT_DUPLICATE = "eventDuplicate"
     const val DATE_FORMAT_FILE_NAME = "yyyyMMdd_HHmmss"
     const val AMBASSADOR = "ambassador"
     const val SHOULD_REFRESH = "should_refresh"

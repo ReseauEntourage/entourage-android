@@ -392,6 +392,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="notification_new_publications">Les nouvelles publications</string>
     <string name="notification_new_participants">L\'arrivée de nouveaux participants</string>
     <string name="edit_event_information">Modifier l’événement</string>
+    <string name="duplicate_event">Dupliquer l’événement</string>
     <string name="rules_event">Charte éthique des événements</string>
     <string name="report_event">Signaler l’événement</string>
     <string name="cancel_event">Annuler l’événement</string>

@@ -159,6 +159,7 @@ class CreateEventFragment : Fragment() {
         childFragmentManager.setFragmentResultListener(
             Const.REQUEST_KEY_CHOOSE_PHOTO, viewLifecycleOwner
         ) { _, bundle -> onPhotoChosen(bundle) }
+        viewModel.photoCopied.observe(viewLifecycleOwner) { uiState.refresh() }
         groupPresenter.getAllMyGroups.observe(viewLifecycleOwner, ::handleResponseGetGroups)
         eventPresenter.newEventCreated.observe(viewLifecycleOwner, ::handleCreateEventResponse)
         eventPresenter.isEventUpdated.observe(viewLifecycleOwner, ::isEventUpdated)
@@ -173,7 +174,11 @@ class CreateEventFragment : Fragment() {
         val draft: CreateEventForm? = null
         val groupId = activity.intent?.getIntExtra(Const.GROUP_ID, Const.DEFAULT_VALUE)
             ?.takeIf { it != Const.DEFAULT_VALUE }
-        viewModel.initialize(edited, draft, groupId)
+        val duplicated = if (activity.intent?.getBooleanExtra(Const.EVENT_DUPLICATE, false) == true) edited else null
+        viewModel.initialize(if (duplicated != null) null else edited, draft, groupId, duplicated)
+        if (announceDraft) {
+            viewModel.duplicatedPhotoUrl?.let { viewModel.copyPhotoFromUrl(requireContext(), it) }
+        }
         if (announceDraft && viewModel.draftRestored) {
             Utils.showToast(requireContext(), getString(R.string.create_event_draft_restored))
         }

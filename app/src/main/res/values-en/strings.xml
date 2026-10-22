@@ -354,6 +354,7 @@
     <string name="notification_new_publications">New posts</string>
     <string name="notification_new_participants">Arrival of new participants</string>
     <string name="edit_event_information">Edit event</string>
+    <string name="duplicate_event">Duplicate event</string>
     <string name="rules_event">Charter of events</string>
     <string name="report_event">Report the event</string>
     <string name="cancel_event">Cancel event</string>

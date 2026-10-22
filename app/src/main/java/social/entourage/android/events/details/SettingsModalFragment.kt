@@ -65,6 +65,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         handleCloseButton()
         handleRulesButton()
         handleEditEvent()
+        handleDuplicateEvent()
         handleEditRecurrenceEvent()
         handleShareButton()
         handleReportEvent()
@@ -92,6 +93,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
             notificationNewMembers.label = getString(R.string.notification_new_members)
 
             edit.profileSettingsItemLabel.text = getString(R.string.edit_event_information)
+            duplicate.profileSettingsItemLabel.text = getString(R.string.duplicate_event)
             rules.profileSettingsItemLabel.text = getString(R.string.rules_event)
             share.profileSettingsItemLabel.text = getString(R.string.share_event_settings)
             editRecurrence.profileSettingsItemLabel.text = getString(R.string.modify_recurrence)
@@ -113,6 +115,7 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         with(binding) {
             rules.profileSettingsItemDivider.visibility = View.GONE
             edit.profileSettingsItemDivider.visibility = View.GONE
+            duplicate.profileSettingsItemDivider.visibility = View.GONE
             editRecurrence.profileSettingsItemDivider.visibility = View.GONE
             notificationNewMembers.notificationsCardDivider.visibility = View.GONE
 
@@ -177,6 +180,16 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
         }
     }
 
+    private fun handleDuplicateEvent() {
+        binding.duplicate.root.setOnClickListener {
+            val intent = Intent(context, CreateEventActivity::class.java)
+            intent.putExtra(Const.EVENT_UI, event)
+            intent.putExtra(Const.EVENT_DUPLICATE, true)
+            activityResultLauncher.launch(intent)
+            dismiss()
+        }
+    }
+
     private fun handleEditRecurrenceEvent() {
         binding.editRecurrence.root.setOnClickListener {
             val intent = Intent(context, social.entourage.android.events.EditRecurrenceActivity::class.java).apply {
@@ -235,6 +248,8 @@ class SettingsModalFragment : BottomSheetDialogFragment() {
             val isAuthor = meId == event?.author?.userID
 
             if (isAuthor) {
+                duplicate.root.visibility = View.VISIBLE
+                duplicateDivider.visibility = View.VISIBLE
                 if (event?.status == Status.OPEN) {
                     edit.root.visibility = View.VISIBLE
                     cancel.visibility = View.VISIBLE

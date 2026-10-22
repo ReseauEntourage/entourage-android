@@ -4,6 +4,11 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import social.entourage.android.api.model.Events
 import social.entourage.android.api.model.Image
 import timber.log.Timber
@@ -73,11 +78,19 @@ class CreateEventViewModel : ViewModel(), EventImageUploadView {
      * @param draft brouillon à restaurer (création uniquement)
      * @param preselectedGroupId groupe d'où l'on vient (création depuis un groupe), ou null
      */
-    fun initialize(edited: Events?, draft: CreateEventForm?, preselectedGroupId: Int?) {
+    fun initialize(
+        edited: Events?,
+        draft: CreateEventForm?,
+        preselectedGroupId: Int?,
+        duplicated: Events? = null
+    ) {
         if (initialized) return
         initialized = true
         editedEvent = edited
-        if (edited != null) {
+        if (edited == null && duplicated != null) {
+            form = formForDuplicate(duplicated)
+            duplicatedPhotoUrl = form.photoUrl
+        } else if (edited != null) {
             form = formFromEvent(edited)
             originalDate = form.date
         } else if (draft != null) {
@@ -91,6 +104,57 @@ class CreateEventViewModel : ViewModel(), EventImageUploadView {
         }
         initialSnapshot = AppJson.encode(form)
     }
+
+    /**
+     * Copie d'un événement existant : tout est repris sauf les dates, la récurrence et les groupes,
+     * à saisir de nouveau. La photo est reprise à part ([copyPhotoFromUrl]) : l'API de création
+     * attend un identifiant du catalogue ou une clé d'envoi, pas l'URL d'une image existante.
+     */
+    private fun formForDuplicate(source: Events): CreateEventForm =
+        formFromEvent(source).also {
+            it.date = null
+            it.startTime = null
+            it.endTime = null
+            it.recurrence = Recurrence.NO_RECURRENCE.value
+            it.neighborhoodIds = mutableListOf()
+        }
+
+    /** URL de la photo de l'événement dupliqué, à renvoyer une fois l'assistant ouvert. */
+    var duplicatedPhotoUrl: String? = null
+        private set
+
+    /**
+     * Télécharge la photo de l'événement dupliqué puis la renvoie comme une photo choisie par
+     * l'utilisateur. Pendant ce temps l'URL sert d'aperçu et l'étape ne peut pas être validée ;
+     * en cas d'échec la photo est retirée et l'utilisateur en choisit une autre.
+     */
+    fun copyPhotoFromUrl(context: Context, url: String) {
+        duplicatedPhotoUrl = null // une seule copie, même si l'assistant est rouvert (retour du sélecteur d'adresse)
+        val appContext = context.applicationContext
+        _isUploading.value = true
+        viewModelScope.launch {
+            val file = withContext(Dispatchers.IO) {
+                try {
+                    Glide.with(appContext).downloadOnly().load(url).submit().get()
+                } catch (e: Exception) {
+                    Timber.e(e, "Copie de la photo de l'événement dupliqué impossible")
+                    null
+                }
+            }
+            if (file != null) {
+                uploadLocalPhoto(file, appContext.cacheDir)
+            } else {
+                form.photoUrl = null
+                _isUploading.value = false
+                onFormChanged()
+            }
+            _photoCopied.value = true
+        }
+    }
+
+    private val _photoCopied = MutableLiveData(false)
+    /** Passe à true quand la copie de la photo est terminée (réussie ou non) : l'écran se rafraîchit. */
+    val photoCopied: LiveData<Boolean> = _photoCopied
 
     private fun formFromEvent(event: Events): CreateEventForm {
         val metadata = event.metadata
