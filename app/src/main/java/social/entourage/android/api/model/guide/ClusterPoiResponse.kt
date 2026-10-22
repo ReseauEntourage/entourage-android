@@ -1,16 +1,20 @@
 package social.entourage.android.api.model.guide
 
+import kotlinx.serialization.Serializable as KSerializable
+
+@KSerializable
 class ClusterPoiResponse(
     var clusters: List<ClusterPoi>
 )
 
+@KSerializable
 class ClusterPoi(
-    var id: Int?,
-    var uuid: String?,
-    var type: String,
-    var count: Int,
-    var name: String?,
-    var category_id: Int?,
-    var latitude: Double,
-    var longitude: Double
+    var id: Int? = null,
+    var uuid: String? = null,
+    var type: String = "",
+    var count: Int = 0,
+    var name: String? = null,
+    var category_id: Int? = null,
+    var latitude: Double = 0.0,
+    var longitude: Double = 0.0
 )

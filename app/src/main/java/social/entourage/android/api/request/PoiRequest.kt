@@ -1,5 +1,6 @@
 package social.entourage.android.api.request
 
+import kotlinx.serialization.Serializable as KSerializable
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -7,7 +8,9 @@ import retrofit2.http.Query
 import social.entourage.android.api.model.guide.ClusterPoiResponse
 import social.entourage.android.api.model.guide.Poi
 
+@KSerializable
 class PoiResponse (var pois: List<Poi>)
+@KSerializable
 class PoiDetailResponse (var poi: Poi)
 
 interface PoiRequest {
