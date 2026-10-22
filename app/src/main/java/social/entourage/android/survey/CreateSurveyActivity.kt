@@ -2,6 +2,7 @@ package social.entourage.android.survey
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.Html
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.TextWatcher
@@ -12,6 +13,7 @@ import androidx.activity.enableEdgeToEdge
 import social.entourage.android.R
 import social.entourage.android.base.BaseActivity
 import social.entourage.android.databinding.CreateSurveyActivityBinding
+import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.updatePaddingForEdgeToEdge
 import social.entourage.android.tools.utils.Const
@@ -23,6 +25,11 @@ class CreateSurveyActivity: BaseActivity() {
     private var groupId:Int? = 0
     private var eventId:Int? = 0
     private lateinit var surveyPresenter: SurveyPresenter
+    private val groupPresenter: GroupPresenter by lazy { GroupPresenter() }
+
+    // Mode édition : seule la question est modifiable (le back n'accepte que `content` à
+    // l'update) ; choix et choix multiple sont affichés en lecture seule.
+    private var editingPostId: Int? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +42,42 @@ class CreateSurveyActivity: BaseActivity() {
         groupId = intent.getIntExtra(Const.GROUP_ID, 0) // Utilise 0 comme valeur par défaut si GROUP_ID n'est pas fourni
         eventId = intent.getIntExtra(Const.EVENT_ID, 0) // Utilise 0 comme valeur par défaut si GROUP_ID n'est pas fourni
         setContentView(binding.root)
+        setupEditMode()
         updatePaddingForEdgeToEdge(binding.root)
+    }
+
+    private fun setupEditMode() {
+        val postId = intent.getIntExtra(Const.POST_ID, Const.DEFAULT_VALUE)
+        if (postId == Const.DEFAULT_VALUE) return
+        editingPostId = postId
+
+        binding.headerTitle.text = getString(R.string.edit_survey)
+        binding.validateBtn.text = getString(R.string.edit)
+
+        val html = intent.getStringExtra(Const.POST_CONTENT_HTML).orEmpty()
+        binding.editTextQuestion.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY).toString().trim())
+
+        val choices = intent.getStringArrayListExtra(Const.SURVEY_CHOICES).orEmpty()
+        val optionFields = listOf(
+            binding.editTextOption1, binding.editTextOption2, binding.editTextOption3,
+            binding.editTextOption4, binding.editTextOption5
+        )
+        optionFields.forEachIndexed { index, field ->
+            if (index < choices.size) {
+                field.setText(choices[index])
+                field.visibility = View.VISIBLE
+            } else {
+                field.visibility = View.GONE
+            }
+            field.isEnabled = false
+        }
+        binding.switchMultipleChoice.isChecked = intent.getBooleanExtra(Const.SURVEY_MULTIPLE, false)
+        binding.switchMultipleChoice.isEnabled = false
+
+        groupPresenter.messageUpdated.observe(this) { post ->
+            if (post != null) finish()
+            else Toast.makeText(this, getString(R.string.api_error_desc_default), Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun setObserver(){
@@ -70,6 +112,14 @@ class CreateSurveyActivity: BaseActivity() {
 
     private fun validateSurvey(){
         val content = binding.editTextQuestion.text.toString()
+        editingPostId?.let { postId ->
+            if (content.isBlank()) {
+                Toast.makeText(this, "Veuillez entrer une question pour le sondage.", Toast.LENGTH_LONG).show()
+            } else {
+                groupPresenter.updatePost(groupId ?: 0, postId, content.trim())
+            }
+            return
+        }
         val choices = getChoices()
 
         if (choices.size < 2) {

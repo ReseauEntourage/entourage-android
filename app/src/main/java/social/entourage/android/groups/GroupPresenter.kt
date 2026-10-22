@@ -632,9 +632,48 @@ class GroupPresenter: ViewModel() {
             })
     }
 
-    fun updatePost(groupId: Int, postId: Int, newContent: String) {
+    /** Mode édition d'une publication avec nouvelle photo : upload S3 puis PATCH (content + image_url). */
+    fun updatePostWithImage(groupId: Int, postId: Int, file: File, newContent: String) {
+        val request = RequestContent("image/jpeg")
+        EntourageApplication.get().apiModule.groupRequest.prepareAddPost(groupId, request)
+            .enqueue(object : Callback<PrepareAddPostResponse> {
+                override fun onResponse(call: Call<PrepareAddPostResponse>, response: Response<PrepareAddPostResponse>) {
+                    val presignedUrl = response.body()?.presignedUrl
+                    val uploadKey = response.body()?.uploadKey
+                    if (!response.isSuccessful || presignedUrl == null || uploadKey == null) {
+                        messageUpdated.value = null
+                        return
+                    }
+                    val client: OkHttpClient = EntourageApplication.get().apiModule.okHttpClient
+                    val upload = Request.Builder()
+                        .url(presignedUrl)
+                        .put(file.asRequestBody("image/jpeg".toMediaTypeOrNull()))
+                        .build()
+                    client.newCall(upload).enqueue(object : okhttp3.Callback {
+                        override fun onFailure(call: okhttp3.Call, e: IOException) {
+                            Timber.e("updatePostWithImage upload failed: ${e.message}")
+                            messageUpdated.postValue(null)
+                        }
+
+                        override fun onResponse(call: okhttp3.Call, response: okhttp3.Response) {
+                            val ok = response.isSuccessful
+                            response.close()
+                            if (ok) updatePost(groupId, postId, newContent, uploadKey)
+                            else messageUpdated.postValue(null)
+                        }
+                    })
+                }
+
+                override fun onFailure(call: Call<PrepareAddPostResponse>, t: Throwable) {
+                    messageUpdated.value = null
+                }
+            })
+    }
+
+    fun updatePost(groupId: Int, postId: Int, newContent: String, imageKey: String? = null) {
         val params = ArrayMap<String, Any>()
         params["content"] = newContent
+        imageKey?.let { params["image_url"] = it }
         EntourageApplication.get().apiModule.groupRequest.updatePost(groupId, postId, params)
             .enqueue(object : Callback<PostWrapper> {
                 override fun onResponse(call: Call<PostWrapper>, response: Response<PostWrapper>) {

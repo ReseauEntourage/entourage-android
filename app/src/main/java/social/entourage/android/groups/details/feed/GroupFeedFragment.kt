@@ -626,11 +626,24 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         val post = allPostsList.find { it.id == id } ?: return
         if (!isAdded) return
         isFromCreation = true
+        val survey = post.survey
+        if (survey != null) {
+            // Sondage : même écran qu'à la création, prérempli ; seule la question est modifiable.
+            val intent = Intent(context, CreateSurveyActivity::class.java)
+            intent.putExtra(Const.GROUP_ID, groupId)
+            intent.putExtra(Const.POST_ID, id)
+            intent.putExtra(Const.POST_CONTENT_HTML, post.contentHtml ?: post.content ?: "")
+            intent.putStringArrayListExtra(Const.SURVEY_CHOICES, ArrayList(survey.choices))
+            intent.putExtra(Const.SURVEY_MULTIPLE, survey.multiple)
+            activityResultLauncher.launch(intent)
+            return
+        }
         val intent = Intent(context, CreatePostGroupActivity::class.java)
         intent.putExtra(Const.ID, groupId)
         intent.putExtra(Const.IS_NATIONAL_GROUP, group?.zone == null)
         intent.putExtra(Const.POST_ID, id)
         intent.putExtra(Const.POST_CONTENT_HTML, post.contentHtml ?: post.content ?: "")
+        intent.putExtra(Const.POST_IMAGE_URL, post.imageUrl)
         activityResultLauncher.launch(intent)
     }
 

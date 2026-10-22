@@ -7,6 +7,9 @@ object Const {
     const val IS_MY_LANGUAGE = "is_my_language"
     const val CONTENT_COPIED = "content_copied"
     const val POST_CONTENT_HTML = "post_content_html"
+    const val POST_IMAGE_URL = "post_image_url"
+    const val SURVEY_CHOICES = "survey_choices"
+    const val SURVEY_MULTIPLE = "survey_multiple"
     const val GROUP_NAME_MIN_LENGTH = 2
     const val GROUP_DESCRIPTION_MIN_LENGTH = 1
     const val DEFAULT_VALUE = -1

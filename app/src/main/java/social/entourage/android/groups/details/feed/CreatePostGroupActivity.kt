@@ -79,6 +79,10 @@ class CreatePostGroupActivity : CreatePostActivity() {
         groupPresenter.updatePost(groupId, postId, contentHtml)
     }
 
+    override fun updatePostWithImage(postId: Int, contentHtml: String, file: File) {
+        groupPresenter.updatePostWithImage(groupId, postId, file, contentHtml)
+    }
+
     // Publication d'un post avec image
     override fun addPostWithImage(file: File) {
         val messageText = binding.message.text.toString().trim()

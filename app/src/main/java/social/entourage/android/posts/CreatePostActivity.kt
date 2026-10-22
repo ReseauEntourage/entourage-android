@@ -50,6 +50,7 @@ abstract class CreatePostActivity : AppCompatActivity() {
 
     // Id de la publication en cours de modification (mode édition), null en création
     protected var editingPostId: Int? = null
+    private var editingHasImage = false
 
     // Doit-on fermer l’Activity après la création ?
     private var shouldClose = false
@@ -112,18 +113,29 @@ abstract class CreatePostActivity : AppCompatActivity() {
         binding.header.headerTitle.text = getString(R.string.edit_post)
         binding.validate.button.text = getString(R.string.edit)
         binding.chipsSection.visibility = View.GONE
-        binding.addImageLabel.visibility = View.GONE
-        binding.addPhotoLayout.visibility = View.GONE
-        binding.photoLayout.visibility = View.GONE
+        // Photo actuelle affichée et remplaçable (pas supprimable : le back ne retire pas l'image)
+        editingHasImage = !intent.getStringExtra(Const.POST_IMAGE_URL).isNullOrBlank()
+        intent.getStringExtra(Const.POST_IMAGE_URL)?.takeIf { it.isNotBlank() }?.let { url ->
+            binding.addPhotoLayout.visibility = View.GONE
+            binding.photoLayout.visibility = View.VISIBLE
+            Glide.with(this)
+                .load(url)
+                .transform(CenterCrop(), RoundedCorners(14.px))
+                .into(binding.addPhoto)
+        }
+        binding.deleteImage.visibility = View.GONE
 
         val html = intent.getStringExtra(Const.POST_CONTENT_HTML).orEmpty()
         binding.message.setText(Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY).trimEnd())
         binding.message.setSelection(binding.message.text.length)
-        handleSaveButtonState(isMessageValid())
+        handleSaveButtonState(isMessageValid() || editingHasImage)
     }
 
     /** Appelé en mode édition à la place de la création. */
     protected open fun updatePost(postId: Int, contentHtml: String) {}
+
+    /** Mode édition avec une nouvelle photo choisie. */
+    protected open fun updatePostWithImage(postId: Int, contentHtml: String, file: File) {}
 
     /**
      * Retourne les chips d'inspiration à afficher (label, draft).
@@ -336,8 +348,16 @@ abstract class CreatePostActivity : AppCompatActivity() {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST_VALIDATE)
 
             editingPostId?.let { postId ->
-                if (isMessageValid()) {
-                    updatePost(postId, Html.toHtml(binding.message.text, Html.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL))
+                if (isMessageValid() || imageURI != null || editingHasImage) {
+                    val html = if (isMessageValid()) {
+                        Html.toHtml(binding.message.text, Html.TO_HTML_PARAGRAPH_LINES_INDIVIDUAL)
+                    } else ""
+                    val newImage = imageURI
+                    if (newImage != null) {
+                        updatePostWithImage(postId, html, Utils.getFile(this, newImage))
+                    } else {
+                        updatePost(postId, html)
+                    }
                 }
                 return@setOnClickListener
             }
@@ -381,7 +401,7 @@ abstract class CreatePostActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                handleSaveButtonState(isMessageValid() || imageURI != null)
+                handleSaveButtonState(isMessageValid() || imageURI != null || editingHasImage)
                 deselectAllChips()
             }
         })

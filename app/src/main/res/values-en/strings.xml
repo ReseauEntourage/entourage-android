@@ -188,6 +188,7 @@
     <string name="pass">Skip</string>
     <string name="create_post">Create a post</string>
     <string name="edit_post">Edit post</string>
+    <string name="edit_survey">Edit poll</string>
     <string name="create_event">Create an event</string>
     <string name="create_event_if_no_event">Create event</string>
     <string name="create_event_btn_title">Create event</string>

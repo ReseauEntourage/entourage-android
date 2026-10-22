@@ -254,6 +254,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="pass">Passer</string>
     <string name="create_post">Créer une publication</string>
     <string name="edit_post">Modifier la publication</string>
+    <string name="edit_survey">Modifier le sondage</string>
 
     <string name="create_event">Créer un événement</string>
     <string name="create_event_if_no_event">Créer un événement</string>
