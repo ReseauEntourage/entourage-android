@@ -29,6 +29,13 @@ class UserJsonCharacterizationTest {
     private fun user(): User = ApiJson.decode<LoginResponse>(ApiJson.fixture("login.json")).user
 
     @Test
+    fun registerResponse_withOnlyPhone_decodes() {
+        val u = ApiJson.decode<UserResponse>("""{"user":{"phone":"+33622100953"}}""").user
+        assertEquals("+33622100953", u.phone)
+        assertEquals(0, u.id)
+    }
+
+    @Test
     fun user_parsesIdentityAndProfile() {
         val u = user()
         assertEquals(4079, u.id)

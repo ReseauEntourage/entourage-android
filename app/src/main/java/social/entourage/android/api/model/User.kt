@@ -23,7 +23,7 @@ class User : Serializable {
     // ----------------------------------
     // ATTRIBUTES (Serialized)
     // ----------------------------------
-    var id: Int
+    var id: Int = 0
     var email: String? = null
 
     @SerialName("first_name")
@@ -50,11 +50,11 @@ class User : Serializable {
     var concerns: ArrayList<String> = ArrayList()
 
     @SerialName("display_name")
-    val displayName: String?
-    var partner: Partner?
+    val displayName: String? = ""
+    var partner: Partner? = null
 
     @SerialName("avatar_url")
-    var avatarURL: String?
+    var avatarURL: String? = null
 
     @SerialName("availability")
     var availability: Map<String, List<String>> = emptyMap()
@@ -104,21 +104,16 @@ class User : Serializable {
 
     var smsCode: String? = null
 
-    val token: String?
+    val token: String? = null
 
     // ----------------------------------
     // CONSTRUCTOR
     // ----------------------------------
     constructor() {
-        id = 0
         email = ""
-        displayName = ""
         about = ""
         stats = null
         organization = null
-        partner = null
-        token = null
-        avatarURL = null
     }
 
     private constructor(
@@ -132,12 +127,9 @@ class User : Serializable {
     ) {
         this.id = id
         this.email = email
-        this.displayName = displayName
         this.stats = stats
         this.organization = organization
         about = ""
-        partner = null
-        this.token = token
         this.avatarURL = avatarURL
     }
 

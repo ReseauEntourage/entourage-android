@@ -95,7 +95,7 @@ data class AutoPostFrom(
     @SerialName("instance_type")
     val instanceType: String = "", // ou Entourage, selon ce que tu as besoin de représenter
     @SerialName("instance_id")
-    val instanceId: Int
+    val instanceId: Int = 0
 )
 
 /**
