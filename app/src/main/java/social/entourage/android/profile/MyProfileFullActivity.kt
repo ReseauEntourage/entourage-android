@@ -528,16 +528,8 @@ class MyProfileFullActivity : BaseSecuredActivity() {
             binding.tvMail.visibility = View.GONE
         }
 
-        user?.phone?.let { phone ->
-            if (phone.isNotBlank()) {
-                binding.tvPhone.text = phone
-                binding.tvPhone.visibility = View.VISIBLE
-            } else {
-                binding.tvPhone.visibility = View.GONE
-            }
-        } ?: run {
-            binding.tvPhone.visibility = View.GONE
-        }
+        // EN-9469 : le numéro de téléphone n'est plus affiché sur mon profil
+        binding.tvPhone.visibility = View.GONE
 
         user?.address?.let { address ->
             if (address.displayAddress.isNotBlank() && user?.travelDistance != null) {

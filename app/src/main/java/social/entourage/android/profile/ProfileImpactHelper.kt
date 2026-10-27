@@ -50,7 +50,7 @@ object ProfileImpactHelper {
         showLines(context, binding, lines)
     }
 
-    fun bindPublicImpact(context: Context, binding: ActivityLayoutProfileBinding, stats: Stats?) {
+    fun bindPublicImpact(context: Context, binding: ActivityLayoutProfileBinding, stats: Stats?, firstName: String?) {
         val lines = listOf(
             ImpactLine(R.string.impact_other_events, "🎉") to (stats?.outingsCount ?: 0),
             ImpactLine(R.string.impact_other_actions, "🤝") to ((stats?.contribCreationCount ?: 0) + (stats?.askCreationCount ?: 0)),
@@ -64,9 +64,11 @@ object ProfileImpactHelper {
             return
         }
         binding.layoutAchievement.visibility = View.VISIBLE
-        binding.tvImpactSectionTitle.visibility = View.GONE
+        binding.tvImpactSectionTitle.visibility = View.VISIBLE
+        binding.tvImpactSectionTitle.text = context.getString(R.string.impact_section_done_other, firstName.orEmpty())
         binding.tvImpactHeroLabel.text = context.getString(R.string.impact_hero_label_other)
-        binding.tvImpactHeroSubtitle.visibility = View.GONE
+        binding.tvImpactHeroSubtitle.text = context.getString(R.string.impact_hero_subtitle)
+        binding.tvImpactHeroSubtitle.visibility = View.VISIBLE
         showLines(context, binding, lines)
     }
 
@@ -88,7 +90,7 @@ object ProfileImpactHelper {
     }
 
     fun bindMemberSince(context: Context, binding: ActivityLayoutProfileBinding, createdAt: Date?) {
-        val text = createdAt?.let { memberSinceText(context, it) }
+        val text = createdAt?.let { "❤️ " + memberSinceText(context, it) }
         binding.tvMemberSince.text = text
         binding.tvMemberSince.visibility = if (text == null) View.GONE else View.VISIBLE
     }

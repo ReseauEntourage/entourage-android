@@ -353,7 +353,7 @@ class ProfileFullActivity : BaseSecuredActivity() {
 
     private fun initializeStats() {
         user?.let { user ->
-            ProfileImpactHelper.bindPublicImpact(this, binding, user.stats)
+            ProfileImpactHelper.bindPublicImpact(this, binding, user.stats, user.firstName ?: user.displayName)
 
             user.roles?.let { roles ->
                 binding.tagUser.visibility =

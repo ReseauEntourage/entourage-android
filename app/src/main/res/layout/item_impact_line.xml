@@ -17,6 +17,7 @@
         android:layout_height="38dp"
         android:background="@drawable/bg_circle_light_orange"
         android:gravity="center"
+        android:textColor="#FF000000"
         android:textSize="18sp"
         tools:text="🎉" />
 
