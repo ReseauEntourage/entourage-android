@@ -142,7 +142,9 @@ interface GroupRequest {
         @Query("per")  per:  Int? = null
     ): Call<MembersWrapper>
 
-    @GET("neighborhoods/{neighborhood_id}/chat_messages")
+    // image_size=high : le backend le prend en compte sur la liste (EN-9671) pour servir la variante
+    // pleine largeur des images des publications
+    @GET("neighborhoods/{neighborhood_id}/chat_messages?image_size=high")
     fun getGroupPosts(
         @Path("neighborhood_id") groupId: Int,
         @Query("page") page: Int,

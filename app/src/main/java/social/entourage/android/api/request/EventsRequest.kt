@@ -188,7 +188,9 @@ interface EventsRequest {
         @Body event: ArrayMap<String, Any>
     ): Call<EventWrapper>
 
-    @GET("outings/{event_id}/chat_messages")
+    // image_size=high : le backend le prend en compte sur la liste (EN-9671) pour servir la variante
+    // pleine largeur des images des discussions
+    @GET("outings/{event_id}/chat_messages?image_size=high")
     fun getEventPosts(
         @Path("event_id") eventId: Int,
         @Query("page") page: Int,
