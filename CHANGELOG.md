@@ -1,5 +1,354 @@
 # Changelog
 
+## Version_15015828 — 2026-10-09
+
+### Commits
+- versionName : 15.0 -> 15.1 (023b12f5b)
+- fix(discussions): corrige les retours de recette Gwen sur l'écran conversations (EN-9489) (ac694aa50)
+- chore: ajout et mise à jour des tests d'intégration Espresso (1757d5da5)
+- fix(actions): réouvre l'ancienne vue charte au lieu du lien cassé (eeb5bc5ed)
+- fix(profile): unifie le date picker de naissance sur MaterialDatePicker (profil + inscription) (61cdb59b9)
+- test: update conversation scenario test with compose test rule and debug deeplinks host (e10267b97)
+- fix(events): affiche l'indicateur visuel d'annulation d'événement (EN-9333) (3744e2cc6)
+- fix(strings): renomme les libellés de commentaires (Messages -> Commentaires) (1a3a0aa1f)
+- fix(events): souligne le bouton de refus et corrige l'inscription sur les événements à places limitées (3a17a8a2f)
+- test: migrate CGU/charter interactions in Android UI tests to Compose Test Rule (7a7575bec)
+- chore(e2e): restore e2e scenario helpers removed on develop (5d766434c)
+- test(e2e): add conversation scenario with send + long-press actions (cb13838bd)
+- Revert "chore: [Tier 3] replace overridePendingTransition with overrideTransitionCompat" (4ec9aaae6)
+- feat(MainActivity,MyProfileFullActivity): handle action contribution navigation and clean up code (c12dd6cd2)
+- chore: Relocate and enable CreateActionActivityTest (c825ff0d4)
+- chore: Refactor ImageListActivity tests and improve login test utility (3572da569)
+- test: add unit tests for LanguageManager persistence (21193f1a1)
+- test: flatten afterLogin package, move unverified tests to unchecked (7e12c0272)
+- test: replace ImageDialogActivityTest with ImageViewerActivityTest (af031e3d1)
+- test: rewrite GDSMainActivityTest to wait on map-ready LiveData (57e2d95fe)
+- test: migrate MyEntouragesTest to a Barista-based robot pattern (e2678de5d)
+- test: migrate SignUpTest to a Barista-based robot pattern (be86eb8ee)
+- test: migrate LoginTest to an Espresso robot pattern (47de71b06)
+- test: harden androidTest stability and activity-scenario lifecycle (814d0b272)
+- chore: add Barista androidTest dependency (17325a5a8)
+- chore: [Tier 3] replace overridePendingTransition with overrideTransitionCompat (2e2209039)
+- refactor: clean up unused variables, lambda parameters, and resource calls (b929d5d0d)
+- Revert "ci(bitrise): pin step versions (2de0fb3bf)
+- ci(bitrise): pin step versions and make pr check notifications skippable (524d8431c)
+- refactor: clean up unused variables, lambda parameters, and resource calls (c66105dbf)
+- refactor: clean up unused variables, lambda parameters, and resource calls (e5bca90a1)
+- refactor: remove unused imports in CommentActivity (df7437309)
+- Revert "ci(bitrise): pin step versions (3e5408513)
+- ci(bitrise): pin step versions and make pr check notifications skippable (b4ad0425d)
+- refactor: clean up unused variables, lambda parameters, and resource calls (485aac549)
+- refactor: clean up unused variables, lambda parameters, and resource calls (56c52d82d)
+- chore(deps): bump androidx.constraintlayout:constraintlayout (4c9baded0)
+- refactor: simplify clipboard service retrieval and remove redundant scope function (52ecff5e5)
+- Revert "Merge branch 'develop'" (d1044a234)
+- Update date format to include timezone offset (3c5415b1a)
+- Request focus on search input in CountryCodeDialog (cbeff6a9d)
+- Update geocoding error handling for Android Tiramisu (bfcdc57f5)
+- fix(discussions): coins arrondis en tête de liste et dernier message du contact dédié (EN-9489) (635fa0b4e)
+- fix(badges): clarifie le texte d'obtention du badge Tisseur de liens (23dc7404d)
+- fix(report): observe la suppression du post/événement depuis la modale de signalement (bf459ccf4)
+- fix(api): tolère un reaction_id booléen renvoyé par le back (4dd27544b)
+- debug(api): ajoute des logs Timber sur la signature HMAC (80ec84e98)
+- docs(jira-ticket): précise la règle de transition To Merge et l'ajout du numéro de ticket (e3c0921a6)
+- fix(charte): fix edge to edge for Compose screen (3847e8c64)
+- feat(release-tag): add skill for promoting Bitrise deploy tags to production releases (1e62c875c)
+- feat(bitrise): add version extractor step and update git tag format (d8d56083d)
+- fix(onboarding): passe le rayon d'action par défaut à 40km (EN-9203) (3a8529d6d)
+- feat(reactions): fusionne les réactions multiples et ajoute la liste des utilisateurs ayant réagi (EN-9594) (6f32bcf51)
+- fix(actions): corrige le crash Compose sur l'écran charte demande/contribution (d193a9798)
+- fix(discussions): remplace tout Nunito Sans Bold par Quicksand Bold (EN-9487) (34e52f488)
+- fix(discussions): vrai cercle pour le badge non lu (EN-9487) (483c12514)
+- fix(discussions): badge non lu, date des MP 1-1 et typo DS (EN-9487) (098ed8564)
+- fix(discussions): ajuste le header et le placement du contact dédié (EN-9487) (419fb91de)
+- feat(actions): refonte de l'écran charte contribution/demande en Compose (EN-9620) (fb0d21905)
+- refactor(discussions): réécriture de l'onglet Discussions en Compose (EN-9489) (cf7186d06)
+- Revert "ci(bitrise): pin step versions (948414daf)
+- fix: corrige des régressions détectées sur la branche de nettoyage des warnings (b0de8006f)
+- doc(prepare-commit): ajoute la détection des changes OpenSpec non archivées (7a6a1d66d)
+- chore: supprime onActivityCreated déprécié dans BaseDialogFragment et corrige une indentation (5f4885acc)
+- ci(bitrise): pin step versions and make pr check notifications skippable (702fb73de)
+- fix(geolocation): prévenir les crashs sur callbacks Geocoder après destruction de la vue (353c86051)
+- chore(ai-skills): add ent-prepare-commit skill and configure --no-pager for git commands (a3b9cfcba)
+- chore(tests): add unit and UI tests for location utils, compat extensions, onboarding and event filters (5d205ea9a)
+- refactor(tests): replace Android Log with Timber (ada04e11d)
+- Fix joinableId extraction in push notification (f4cbe7847)
+- Refactor image click handling in PostAdapter (bb08a3336)
+- refactor: modernize deprecated APIs and window insets handling (624c0bb46)
+- fix(manifest): disable export for GroupCommentActivity (6e76c595e)
+- refactor(EventFiltersActivity): use non-null assertion instead of toString() (c9f5d311d)
+- refactor: resolve and suppress SDK deprecation warnings (3905d529a)
+- Fix GroupModel parcel order (b691c4437)
+- refactor: clean up deprecated APIs and compat extensions (9ce1a95ff)
+- refactor(navigation): use startActivity instead of unused startActivityForResult (eb8be2571)
+- refactor(BaseEntourage): replace deprecated setColorFilter with BlendModeColorFilterCompat (0692969ad)
+- chore(build): remove obsolete Android Gradle properties (d44619ce0)
+- chore(build): remove obsolete Android Gradle properties (1e3d64c6a)
+- refactor(UserEditPartnerFragment): simplify keyboard hiding logic (81572772d)
+- fix(ui): update focusability in onboarding and action item layouts (897c64962)
+- refactor(onboarding): replace android.util.Log with Timber logging (8de742725)
+- test: add unit tests for CompatExtensions and DeepLinksManager (5aee38569)
+- fix: give entourageDebug build type its own deep link scheme (b3c7c89ab)
+- chore: bump AGP to 9.3.2 and Gradle wrapper to 9.7.1 (650b70148)
+- refactor: clean up unused variables, lambda parameters, and resource calls (d8b0c1158)
+- refactor(discussions,main): clean up code and fix typo in intent redirection (6e41ece3e)
+- chore(manifest): disable Facebook SDK auto-init in debug and preprod builds (77c067d59)
+- refactor(facebook): restrict Facebook SDK tracking to release builds (b280e3ba7)
+- chore: remove unused pfp client entries from google-services.json (5ec337e8d)
+- fix: prevent dialog crashes and leaks on destroyed activities (29f864138)
+- chore: remove unused network_security_config and profile layout (9db7943d3)
+- fix: re-evaluate onboarding Next button on name/phone edits (5a7068b1b)
+- refactor: migrate android.util.Log calls to Timber (d8517ba58)
+- refactor: migrate Android Log to Timber and clean up unused imports (8cf6a3ee1)
+- refactor(home): replace deprecated transitions and clean up code (da0f0685f)
+- refactor(home): clean up unused variables and simplify URI parsing (7cf785fc8)
+- refactor: replace deprecated transition and color retrieval methods (ca6cf48e2)
+- refactor(PostAdapter): remove inner keyword from view holders (faddb858c)
+- refactor: migrate to compat extension methods for Serializable and Parcelable (be8872e99)
+- refactor(ActionDetailFragment): replace deprecated onAttach(Activity) with onAttach(Context) (2ce5f894d)
+- refactor: replace deprecated startActivityForResult with ActivityResultLauncher (2b0429ee9)
+- refactor(notifications): set notification defaults via builder (2223ddc99)
+- refactor: clean up unused variables, lambda parameters, and resource calls (826a93fed)
+- refactor: clean up unused variables, lambda parameters, and resource calls (540662d97)
+- refactor: replace bundleOf with explicit Bundle().apply blocks (ac915cfcb)
+- fix(i18n): fix string format placeholder in info_share_poi_sms (954db9f22)
+- refactor(MyProfileFullActivity): clean up intent extras and string formatting (4a4bb9aba)
+- fix(i18n): specify positional indices for string format placeholders (dfe5251db)
+- refactor(UserActionPlaceFragment): migrate place autocomplete to ActivityResultLauncher (542c465cf)
+- refactor(UserActionPlaceFragment): migrate place autocomplete to ActivityResultLauncher (23b49c66b)
+- refactor(home): remove unused onActivityResult callback (f0378811f)
+- refactor: migrate deprecated startActivityForResult to ActivityResultLauncher (c960c8cdd)
+- refactor: replace deprecated startActivityForResult with ActivityResultLauncher (cadc1e846)
+- docs: update OpenSpec tasks tracking (f1ebb19fa)
+- refactor: [Tier 4] migrate actions area to Activity Result API (d011b5e2c)
+- chore: [Tier 3] clean up long-tail LocationRequest and Locale deprecations (0c40bd9e2)
+- chore: [Tier 3] migrate getColor and adapterPosition deprecations (a3b56408b)
+- chore: [Tier 3] replace bundleOf calls with platform Bundle construction (f2cf0c39a)
+- chore: [Tier 3] migrate parcel and serializable extra call sites to AndroidX compat (592296f9a)
+- chore: [Tier 3] replace overridePendingTransition with overrideTransitionCompat (9f7ce10b8)
+- chore: [Tier 2] remove unnecessary safe calls on non-null receivers (848475cd2)
+- chore: [Tier 3] add centralised compat helpers for transitions and intent/bundle extras (00d319894)
+- chore: [Tier 2] fix safe calls, casts, and Elvis operators in main UI flows (feb173acd)
+- chore: [Tier 2] clean up redundant conversions (0a9997af0)
+- chore: [Tier 2] remove always-left Elvis operators (faab7271d)
+- chore: [Tier 2] remove needless casts (daafbce3d)
+- chore: [Tier 1] resolve constant condition warnings and unnecessary null assertions (868966b69)
+- fix(comment): retirer le toast de confirmation à la publication (EN-9456) (b4e3b658b)
+- fix(comment,events,discussions): toast confirmation, modale places limitées, refonte discussions (86f5411d6)
+- fix(ui): unify constraint spacing between title and scrollview in main filter (d0533fbf0)
+- feat(openspec): setup openspec workflow and proposal for bitrise pr check fix (9dac853d9)
+- fix(ui): pin header title and back icon outside scrollview in main filter layout (b26091d4b)
+- Revert "fix(comment): remplacer le loader plein écran par un toast de confirmation" (e70454432)
+- fix(events): badge "Annulé" + image assombrie sur les cartes événements (03f299ebb)
+- fix(events): griser l'image de l'événement annulé sur l'écran détail (9315c51c4)
+- docs(agent): documenter la convention typographique (Quicksand Bold / Nunito Sans) (fed550f8c)
+- fix(events): refondre le bandeau "événement annulé" sur l'écran détail (22d3bce2c)
+- fix(events): clarifier le wording de la modale d'inscription à places limitées (092f151b9)
+- fix(badges): harmoniser le critère du badge Tisseur de liens (95baa6901)
+- fix(onboarding): remplacer le DatePickerDialog natif par MaterialDatePicker (09cc44cff)
+- fix(comment): remplacer le loader plein écran par un toast de confirmation (fa382b4fb)
+- chore(onboarding): retirer les logs de debug EN9530_DEBUG (736876cc0)
+- fix(home): supprimer la card Hors Zone (f7b53cf31)
+
+
+### Code structure & content changes
+
+- **Discussions tab rewritten in Compose (EN-9487 / EN-9489)**: `DiscussionsMainFragment` shrank by ~400 lines and now hosts a new `DiscussionsScreen.kt` (516 lines) Compose screen. Several follow-up commits apply the design review feedback: header and dedicated-contact placement, a true-circle unread badge, 1-to-1 message dates, Quicksand Bold replacing Nunito Sans Bold, and rounded corners at the top of the list. `DetailConversationActivity` was adjusted to match.
+- **Contribution/request charter**: `CreateActionCGUFragment` was rewritten in Compose (EN-9620) and then fixed after a Compose crash. In the end it drops its RecyclerView/ViewBinding implementation and reopens the existing `GroupRulesActivity` charter view (via `Const.RULES_TYPE`) instead of a broken link.
+- **Events**: Cancelled events are now clearly flagged (EN-9333): an "Annulé" badge and darkened image on event cards (`AllEventAdapter`, `MyEventRVAdapter`, `GroupEventsListAdapter`, home adapters), plus a redesigned cancellation banner and greyed-out image on `EventFeedFragment`. Signing up for limited-capacity events was fixed, the confirmation modal reworded and the decline button underlined. `EventsPresenter`, `CreateEventStepOneFragment` and `EventFiltersActivity` were also touched by the deprecation cleanup.
+- **Home cleanup**: `HomeFragment` lost ~200 lines. The inline Small Talk section (`HomeSmallTalkAdapter` and four `item_home_small_talk_*.xml` layouts), the moderator card (`HomeModeratorAdapter`, `home_moderator_item.xml`) and the "Hors Zone" card were all deleted.
+- **Date pickers and onboarding**: A new `DatePickerUtils.kt` makes `MaterialDatePicker` the single birth-date picker for both profile editing and sign-up, replacing the native `DatePickerDialog`. Onboarding now defaults the action radius to 40 km (EN-9203) and re-checks the "Next" button whenever the name or phone number is edited. The `EN9530_DEBUG` logs were removed.
+- **Smaller UX fixes**: Comment labels renamed "Messages" → "Commentaires". A full-screen loader → toast change on comment publish was tried and then reverted (EN-9456). The "Tisseur de liens" badge criterion and text were clarified. The report modal now observes post/event deletion. The main-filter header and back icon are pinned outside the scroll view. `CountryCodeDialog` focuses its search field on open.
+- **Deprecation and warnings sweep (OpenSpec `remove-compilation-warnings`)**: This is a large, tiered cleanup across about 150 files:
+  - Tier 1–2: constant conditions, needless casts, safe calls and Elvis operators.
+  - Tier 3: a new `tools/utils/CompatExtensions.kt` centralises helpers for transitions and Parcelable/Serializable extras. `bundleOf`, `getColor`, `adapterPosition`, `LocationRequest` and `Locale` deprecations were migrated, and `setColorFilter` was replaced with `BlendModeColorFilterCompat`. The `overridePendingTransition` → `overrideTransitionCompat` migration was reverted.
+  - Tier 4: `startActivityForResult`/`onActivityResult` were replaced with `ActivityResultLauncher` (actions area, place autocomplete in `UserActionPlaceFragment`, navigation).
+  - `android.util.Log` was replaced by Timber throughout, and the deprecated `onActivityCreated` was removed from `BaseDialogFragment`.
+  - Follow-up commits fixed regressions the sweep introduced.
+- **Stability and security fixes**:
+  - `CustomAlertDialog` (+166 lines) and `CustomProgressDialog` now guard against showing or dismissing dialogs on destroyed activities.
+  - `LocationUtils` stops Geocoder callbacks from crashing after the view is destroyed, and handles Geocoder errors on Tiramisu+.
+  - `GroupModel` Parcelable field order was fixed.
+  - `joinableId` is now extracted correctly from push notifications.
+  - The API layer tolerates a boolean `reaction_id` from the back end.
+  - Timber logs were added around the HMAC signature.
+  - `GroupCommentActivity` is no longer exported.
+  - String format placeholders now use positional indices in every locale.
+- **Build types and third parties**:
+  - `entourageDebug` gets its own deep-link scheme and host (`entourage-debug://`, `debug-preprod.entourage.social`).
+  - New `debug` and `preprod` manifest overlays remove `FacebookInitProvider`, so the Facebook SDK only runs in release builds (`LibrariesSupport` was updated to match). The `AD_ID` permission is stripped from the merged manifest.
+  - Unused `google-services.json` client entries were removed (−168 lines).
+  - The unused `network_security_config.xml`, which allowed cleartext traffic to `simplecommebonjour.org`, was deleted, along with `activity_user_profile.xml` and `Skeleton` helpers.
+- **Tooling and dependencies**: AGP 9.3.1 → 9.4.0, Gradle wrapper → 9.7.1, ConstraintLayout 2.2.1 → 2.2.2, and obsolete properties removed from `gradle.properties`. Bitrise gains a version-extractor step with a new git-tag format. Steps were pinned and the change reverted several times; PR-check notifications are now skippable. `versionName` is 15.0 → 15.1.
+- **Tests**:
+  - The instrumentation suite was overhauled. Barista and the Compose `ui-test-junit4` dependency were added (protobuf-javalite forced to avoid conflicts).
+  - Login, SignUp and MyEntourages tests moved to a robot pattern (`LoginRobot`, `SignUpRobot`, `MyEntouragesRobot`), and CGU/charter interactions now use the Compose test rule.
+  - The `afterLogin` package was flattened. About 45 not-yet-verified smoke tests were added under a new `unchecked/` package, and image viewer, GDS and partner tests were rewritten.
+  - E2E scenarios (`ConnexionScenarioTest`, `ConversationScenarioTest`, `CreationEvenementScenarioTest`, plus `E2ECredentials`/`E2EScreenshot` helpers) were added. `build.gradle.kts` gained a `-PdeviceId`-aware `adbCommand` helper and a `clearE2EScreenshots` task.
+  - New JVM unit tests cover `LocationUtils`, `DeepLinksManager`, `LanguageManager` and `CompatExtensions`.
+- **AI and agent docs**: Added the `release-tag` and `ent-prepare-commit` skills (Claude and Gemini), clarified the `jira-ticket` transition rule, and documented the typography convention. OpenSpec was set up, with change proposals for the Bitrise PR check, warning removal and integration-test verification.
+- **Note**: Commit `6f32bcf51` (merged reactions and "who reacted" list, EN-9594) appears in this range's log, but its changes produce no net diff. That work had already reached Version_15005680 through another merge path.
+
+---
+
+## Version_15005680 — 2026-09-19
+
+### Commits
+- version : 14.5 ->15.0 (ae2f6606f)
+- fix(config): sortir HMAC/API key du code, câbler Bitrise Secrets par env (e76b2deb1)
+- fix(comments,discussions): réactions incohérentes après changement/annulation (e417f9c44)
+- fix(some reparations) : fixed hmac and addde d new skill and so on (90b91b96e)
+- fix(comments,discussions): retouches du panneau d'actions + doublon d'envoi et scroll sur les commentaires (d9833eb9a)
+- style(profile): emoji 📚 et 📝 pour les cartes ressources ambassadeur (57bd0c232)
+- feat(claude): ajoute le skill jira-ticket (24a2d1de4)
+- feat(comments,discussions): panneau d'actions unifié (long-clic + 3-points) avec réactions et flou en place (ae7e22b38)
+- fix(groups,events): log the swallowed exception on addPost/addComment/updatePost failure (fa54e2328)
+- feat(groups,events): 3 points + reactions inline + edition sur les commentaires de publication (152963bfe)
+- fix(onboarding): le bouton "Plus tard" ferme l'onboarding vers la home (0340e9aab)
+- fix(onboarding): écran de fin adapté au profil précaire + logs debug EN-9530 (e953aef81)
+- fix(discussions): édition de message qui ne s'affichait pas + 3-points manquant sur smalltalk (6472a5c29)
+- docs: exiger la mise à jour du test e2e à chaque modif de vue (5556c57d8)
+- feat(discussions): 3 points + barre de réactions inline sur les messages (7f0b3aa9a)
+- fix(members): recherche en direct et bouton croix fiabilisé (7399be700)
+- fix(events): annuler la recherche précédente pour éviter les réponses obsolètes (9f49a0a53)
+- fix(members): restaurer la liste complète quand la recherche est vidée (6bcaba654)
+- fix(onboarding): rediriger vers le funnel de création de contribution (7103e6a59)
+- fix(ambassador_resources): agrandir les icônes des cartes d'outils (679991a9a)
+- fix(main_filter): restaurer l'ombre du bandeau de boutons sticky (5a44a0554)
+- fix(main_filter): retirer l'ombre du bandeau de boutons sticky (327a5a09e)
+- fix(profile): remplacer l'ombre de la card référent par un contour (71be52ce4)
+- fix(main_filter): edge-to-edge et correction du badge de filtres (37ebf815b)
+- fix(main_filter): modernize keyboard handling and scrolling behavior (2173a6d6f)
+- fix(profile): modernize soft keyboard layout adjustments in EditProfileActivity (4622f6996)
+- chore: [Tier 1] migrate Places SDK fields and handle nullable receivers (89155d8cd)
+- chore: [Tier 1] fix Date nullability handling in event creation (cc25db889)
+- chore: [Tier 1] resolve constant condition warnings and unnecessary null assertions (950ad4ff7)
+- chore: [Tier 1] delete unreachable duplicate when branches in Events.kt (e09b7a013)
+- fix(ActionSheetFragment) : fix block / unblock people (6e79dc11a)
+- fix(onboarding): corriger la redirection du funnel entraide en fin d'onboarding (80da52ac1)
+- fix(profile): adoucir l'ombre portée de la card référent (22f47d9b4)
+- feat(discussions): reconnect ConversationChannel websocket, rework reactions UX (9b6c305f9)
+- chore: remove e2e test scenarios merged from end_to_end_test (5833c53f4)
+- Reapply "Merge branch 'end_to_end_test' into develop" (5ecfe4baf)
+- Revert "Merge branch 'end_to_end_test' into develop" (024ab478e)
+- feat(notifications): deep link to and highlight a specific comment (019529e3c)
+- feat(events): replace single event-type filter with reserved_female/format/entourage_only (aa38277aa)
+- fix(profile): connect ambassador referent card to the real referent_benevole field (8a1a47595)
+- chore: Update preprod build configuration and dependency management (0130c77ae)
+- chore: make all resource files available for right flavors + renaming validation apps (EntDebug + EntPreprod) (b13323e65)
+- test(e2e): add login and event creation scenarios with screenshots (926850a9a)
+- fix(discussions): restore mention and plain-URL links in messages (fee28b3a7)
+- feat: replace discussion polling with websocket, add edit/reactions (bf23dc578)
+- feat: show a loading skeleton on the actions (entraide) list while it loads (2d410f1a5)
+- feat: show a loading skeleton on the groups list while it loads (3e54d306f)
+- feat: show a loading skeleton on the events list while it loads (187a12c2b)
+- feat: show a loading skeleton on the group feed instead of a scroll anim (c0ee359db)
+- feat: add debug trigger on home logo to test the notif->post deep link (7f23d8988)
+- feat: deep link notifications to a specific group feed post (72a800fbd)
+- fix: add ripple feedback to filter chips and purple style for female-only events (0aaca8cd3)
+- fix: apply edge-to-edge bottom padding to the right feed container (e3ef07cd0)
+- fix: correct onboarding highlight bubble positioning under edge-to-edge (436119800)
+- fix: make logout reliable on any 401 and don't block it on cleanup call (4f2c65716)
+- docs: fix build variant docs after the 3-build-type migration (9903949af)
+- fix: center text in availability day chip (b2c13906f)
+- fix: hide zone label on profile when the address is blank (49301e44d)
+- fix: clear member search results when the query is cleared (00e74abbd)
+- fix: return to pre-onboarding choice when backing out of first steps (c6aee49a8)
+- feat: adapt onboarding flow for isolated-person users (81bd5dfd6)
+- fix: onboarding interest selection was adding/removing inverted (8b4de2ad3)
+- fix: check "Animateur Entourage" role instead of stale "Ambassadeur" (58cf07b13)
+- chore: backfill missing badge translations across locales (ec8e46471)
+- feat: add event type and format filters to the events filter screen (8a540b89c)
+- fix: guard against platform text-selection touch crash (c94369f6a)
+- refactor: replace PhotoView with custom ZoomableImageView (0b4bbd9b1)
+- refactor: replace sectioned-recyclerview with custom RecyclerView adapters (12b787de4)
+- fix: Crashlytics FATAL crashes Android (#283) (2ee23f328)
+- chore: get all pedago resources (7e49ee55d)
+- chore: optimizing gradle properties (d31105a2b)
+- chore: adding some content descriptions (4f16e570f)
+- chore: removing agent artifacts (f838b2a6b)
+- feat: finalisation de l'onboarding et stabilisation des écrans de flux (b6eff0520)
+- feat: finalisation de l'onboarding et stabilisation des écrans de flux (f190848ae)
+- chore: optimizing HomeFragment (and others) for faster rendering and debug (6822716e7)
+- chore: move to 3 build types (prod, preprod and debug) (e918bd256)
+- chore: Update pedagogical resources request parameter (8410e02e9)
+- chore: update ViewPager2 height to 0dp in fragment_create_action (ddc3d2a6e)
+- chore: Refactor logging to Timber and improve network log handling (bfcdf9455)
+- chore: add round back arrow to settings screen (f2c11f88c)
+- chore: renaming new_back to ic_back_round (df61a8298)
+- chore: Refactor HelpAboutActivity to Jetpack Compose (6777c165d)
+- chore: Remove legacy welcome journey tests and update OSS metadata (b3ada8d27)
+- feat: Refactor OSS licenses screen to Jetpack Compose (dbd9fee31)
+- chore: Upgrade project to Java 21 (5210dd553)
+- chore: Refactor OSSLibsActivity to include standard header and use BaseActivity (45f8d9e20)
+- Update AboutLibraries to v14 and refactor gradle configurations (eabfa67c0)
+- chore: configure ProGuard mapping and NDK debug symbols for release (3e6028a35)
+- chore: upgrade AGP to 9.3.1 and refactor build configuration (faf198325)
+- chore make stagingDebug the default flavor (fef9c1c29)
+- Reapply "chore: upgrade Gradle to 9.6.1 and update dependency versions" (d90903ef2)
+- chore: optimisatiopn of compilation (27957f6c9)
+- fix(SettingProfileFullAdapter) : fix buttons (f630f31ee)
+- chore: Migrate to OnBackPressedDispatcher (4611ac1f0)
+- fix: wrong margin in CreateGroupSuccess screen (65f2608b1)
+- fix: fix running Heart blocking startup (96a74b230)
+- chore: fix bottom margin for EditProfile screen (aa7d18276)
+- fix: EN-8105 fix crash: androidx.navigation.fragment.FragmentNavigator$onAttach$2.onBackStackChangeCommitted (ae6c5d962)
+- fix: EN-8909: fix crash in social.entourage.android.base.BaseActivity.onCreate (bc11f21c8)
+- chore: Update edge-to-edge padding in GroupFeedFragment (29b1ee231)
+- chore: Initialize CHANGELOG.md and add changelog automation skill (467b67d7e)
+- chore: enable offline mode for aboutLibraries and rename discussion string keys (8d30f3626)
+- fix: fix language selection screen, createPost screen for 3 buttons (779c03969)
+- fix: fix language selection screen for 3 buttons (4582c7199)
+
+
+### Code structure & content changes
+
+- **Comments and messaging overhaul**:
+  - `CommentsListAdapter` shrank by about 900 lines, and its row layouts (`layout_comment_item_left/right/date.xml`, `layout_comment_detail_post_top.xml`) were deleted. Comments and messages are now drawn by a new Compose `CommentComposeItems.kt` (629 lines).
+  - A new `MessageActionsOverlay.kt` (307 lines) provides one actions panel, opened by long-press or the 3-dot menu, with inline reactions and an in-place blur. It applies to private messages, group/event post comments and Small Talk.
+  - `CommentActivity` grew by about 650 lines and gains message editing, reactions, a fix for duplicate sends and better scrolling.
+  - New endpoints in `DiscussionsRequest`, `GroupRequest` and `SmallTalkRequest` support editing messages and reacting.
+  - Mention and plain-URL links in messages were restored.
+- **Real-time discussions**: Polling was replaced by a WebSocket, through a new `sockets/ConversationSocketManager.kt` (371 lines) that reconnects the `ConversationChannel`. `DiscussionsPresenter` and `DetailConversationActivity` were rewired around it.
+- **Configuration secrets**: The HMAC secret and API key were taken out of the source code. `app/build.gradle.kts` now injects `API_KEY` and `HMAC_SECRET` into `BuildConfig` from environment variables (Bitrise Secrets, per environment) or Gradle properties. `ApiModule` and `EntourageApplication` were updated to match.
+- **Build variants**:
+  - The old `app` × `env` flavor matrix (`prod`/`staging`, `src/entourageStaging/`) became a single `entourage` flavor with three build types: `debug`, `preprod` and `release`. Resource folders were moved to match, and the validation apps renamed (EntDebug / EntPreprod).
+  - Debug builds use a fixed `versionPatch` and branch name so configuration can be cached.
+  - Release builds now upload ProGuard mappings and NDK debug symbols.
+- **Toolchain**: Java 17 → 21; Gradle 9.6.1 reapplied, with a new wrapper and regenerated `gradlew`/`gradlew.bat`; AGP 9.2.1 → 9.3.1; Kotlin 2.3.10 → 2.4.10. The Compose compiler plugin is enabled, with Compose UI 1.11.4, Material3 1.4.0 and Activity Compose. AboutLibraries 13 → 15 with offline mode. Firebase BOM, AndroidX Core, Material, OkHttp, Ktor, Glide, Facebook SDK and the test libraries were also bumped, and `gradle.properties` was tuned for compile speed.
+- **Compose screens**: A new shared `ui/theme/ComposeStyles.kt` (426 lines) holds common Compose styles. `HelpAboutActivity` and `OSSLibsActivity` were rewritten in Compose, which deleted `activity_help_about.xml`, `item_about.xml` and `layout_header_help_about.xml`.
+- **Events and filters**:
+  - The single event-type filter became three filters: `reserved_female`, format and `entourage_only` (`EventsRequest`, `EventsPresenter`, `EventFiltersActivity`).
+  - `MainFilterActivity` and `activity_main_filter.xml` were reworked: edge-to-edge, keyboard and scroll handling, the filter-count badge, chip ripples, and a purple style for women-only events.
+  - Event search now cancels the previous request so stale results can't overwrite newer ones.
+- **Notifications and deep links**: Notifications can open a specific group-feed post or a specific comment and highlight it (`NotificationActionManager`, `PushNotificationContent`, `InAppNotification`, `groups_feed.xml`). A hidden debug trigger on the home logo tests this flow.
+- **Loading skeletons**: The action, group, event and group-feed lists now show skeleton placeholders while loading, using new `layout_*_skeleton.xml` layouts.
+- **Onboarding**:
+  - The flow is adapted for isolated and precarious users, including a dedicated end screen.
+  - "Plus tard" now returns to home, and the end of onboarding redirects to the contribution-creation funnel.
+  - Interest selection, which added and removed items the wrong way round, was fixed. Highlight bubbles are positioned correctly under edge-to-edge.
+  - Backing out of the first steps returns to the pre-onboarding choice screen.
+- **Profile and ambassador section**: The referent card is wired to the real `referent_benevole` field (new in `Summary`). It now has an outline instead of a shadow, larger tool icons, and 📚/📝 emojis. Role checks use "Animateur Entourage" instead of the outdated "Ambassadeur". The zone label is hidden when the address is blank. The soft-keyboard layout in `EditProfileActivity` was modernised.
+- **Members and reports**: Member search is now live, restores the full list when cleared, and its clear (×) button works reliably. Blocking and unblocking in `ActionSheetFragment` was fixed, and `ReportModalFragment` was reworked.
+- **Crash and stability fixes**:
+  - Crashlytics FATAL crashes were fixed (#283, EN-8105 `FragmentNavigator`, EN-8909 `BaseActivity.onCreate`).
+  - A new `SafeTouchWindowCallback` guards against crashes from the platform's text-selection touch handling.
+  - Logout is now reliable on any 401 and no longer waits on the cleanup call.
+  - The "running heart" animation no longer blocks startup.
+  - Back handling moved to `OnBackPressedDispatcher`.
+  - `PhotoView` was replaced by a custom `ZoomableImageView`, and the `sectioned-recyclerview` library by in-house adapters.
+  - Logging moved to Timber.
+  - The first "[Tier 1]" warning-cleanup commits landed (Places SDK fields, Date nullability, unreachable `when` branches in `Events.kt`).
+- **Performance**: `HomeFragment` (and `HomePresenter`) were optimised so the home screen renders faster.
+- **Translations**: Missing badge translations and the new comment/reaction strings were added in every locale (ar, de, en, es, pl, ro, uk). Discussion string keys were renamed.
+- **Docs, AI tooling and tests**:
+  - Added the `CHANGELOG.md` file itself, the `changelog-tag` and `jira-ticket` skills, and `agent.md`.
+  - `CLAUDE.md` was expanded and now requires updating the matching e2e test whenever a screen changes.
+  - E2E login, event-creation and conversation scenarios were added, then moved back to the `end_to_end_test` branch. Their reference screenshots (`test_screenshot/conversation/*.png`, about 2.3 MB) are still committed.
+  - The legacy welcome-journey tests were removed.
+
+---
+
 ## Version_14045570 — 2026-07-28
 
 ### Commits
