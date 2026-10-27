@@ -11,8 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_above="@+id/layout_unsubscribed_participants">
+        android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,6 +35,24 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/chip_unsubscribed_participants"
+            style="@style/left_courant_bold_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/padding_horizontal"
+            android:background="@drawable/bg_rounded_14_orange_light"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
+            android:textSize="14sp"
+            android:visibility="gone" />
 
     </LinearLayout>
 
@@ -166,148 +183,6 @@
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/layout_unsubscribed_participants"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="@dimen/padding_horizontal"
-            android:text="@string/participants_ajoutes_sur_place"
-            android:textColor="@color/black"
-            style="@style/left_courant_bold_black"
-            android:textSize="14sp"
-            android:textAllCaps="true" />
-
-        <LinearLayout
-            android:id="@+id/layout_isoles"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:background="@color/beige_clair"
-            android:paddingVertical="16dp"
-            android:paddingHorizontal="@dimen/padding_horizontal"
-            android:orientation="horizontal"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/placeholder_user" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_isoles_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/h2"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ajoutes_sur_place"
-                    style="@style/left_courant_black"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout_femmes_isolees"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:background="@color/beige_clair"
-            android:paddingVertical="16dp"
-            android:paddingHorizontal="@dimen/padding_horizontal"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/placeholder_user" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_femmes_isolees_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/h2"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ajoutes_sur_place"
-                    style="@style/left_courant_black"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/layout_riverains"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:background="@color/beige_clair"
-            android:paddingVertical="16dp"
-            android:paddingHorizontal="@dimen/padding_horizontal"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/placeholder_user" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_riverains_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    style="@style/h2"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ajoutes_sur_place"
-                    style="@style/left_courant_black"
-                    android:textColor="@color/black"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </LinearLayout>
     </LinearLayout>
 
     <com.leinardi.android.speeddial.SpeedDialView
