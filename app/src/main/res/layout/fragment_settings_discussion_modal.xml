@@ -89,6 +89,14 @@
                     android:layout_marginStart="25dp"
                     android:layout_marginEnd="25dp"
                     app:icon='@{@drawable/ic_edit_event}' />
+                <include
+                    android:id="@+id/duplicate"
+                    layout="@layout/layout_settings_item"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="25dp"
+                    android:layout_marginEnd="25dp"
+                    app:icon='@{@drawable/ic_copy_texte}' />
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_report"
                     android:layout_width="match_parent"

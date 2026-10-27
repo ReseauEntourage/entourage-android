@@ -197,6 +197,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
 
         // Masquer l’item “edit” par défaut
         binding.edit.profileSettingsItemLayout.isVisible = false
+        binding.duplicate.profileSettingsItemLayout.isVisible = false
 
         when (mode) {
             SheetMode.DISCUSSION_ONE_TO_ONE -> {
@@ -327,6 +328,14 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.edit.profileSettingsItemLayout.isVisible = showEdit
                 if (showEdit) {
                     binding.edit.setLabel(getString(R.string.edit_event_information))
+                }
+
+                // « Dupliquer » : réservé à l’organisateur, et il faut l’événement complet pour
+                // pré-remplir l’assistant (le repli par identifiant seul ne l’a pas).
+                val showDuplicate = eventObj != null && isEventCreator
+                binding.duplicate.profileSettingsItemLayout.isVisible = showDuplicate
+                if (showDuplicate) {
+                    binding.duplicate.setLabel(getString(R.string.duplicate_event))
                 }
             }
 
@@ -486,6 +495,17 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                     .putExtra(Const.EVENT_ID, eventId)
             )
             dismiss()
+        }
+
+        binding.duplicate.profileSettingsItemLayout.setOnClickListener {
+            eventObj?.let { ev ->
+                startActivity(
+                    Intent(requireContext(), CreateEventActivity::class.java)
+                        .putExtra(Const.EVENT_UI, ev)
+                        .putExtra(Const.EVENT_DUPLICATE, true)
+                )
+                dismiss()
+            }
         }
 
         binding.photos.profileSettingsItemLayout.setOnClickListener {
