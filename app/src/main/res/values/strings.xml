@@ -3706,5 +3706,4 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="create_action_error_description">Ajoutez une description pour continuer.</string>
     <string name="create_action_error_location">Indiquez une adresse pour continuer.</string>
     <string name="create_action_error_sharing">Répondez par oui ou par non pour continuer.</string>
-    <string name="participants_sur_place_chip">+%1$d sur place</string>
 </resources>

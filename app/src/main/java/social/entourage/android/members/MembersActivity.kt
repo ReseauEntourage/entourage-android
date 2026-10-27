@@ -441,34 +441,55 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
             binding.fabAddUnsubscribed.visibility = android.view.View.VISIBLE
             binding.fabAddUnsubscribed.setOnChangeListener(object : SpeedDialView.OnChangeListener {
                 override fun onMainActionSelected(): Boolean {
-                    showAddUnsubscribedBottomSheet()
+                    val bottomSheet = AddUnsubscribedParticipantsBottomSheet.newInstance(isolesCount, riverainsCount, femmesIsoleesCount)
+                    bottomSheet.onValidateCounts = { newIsole, newRiverain, newFemmesIsolees ->
+                        eventPresenter.updateUnsubscribedParticipants(id, newRiverain, newIsole, newFemmesIsolees)
+                    }
+                    bottomSheet.show(supportFragmentManager, "AddUnsubscribedBottomSheet")
                     return true
                 }
                 override fun onToggleChanged(isOpen: Boolean) {}
             })
 
-            // Le chip remplace l'ancien bloc « Participants ajoutés sur place » : il n'apparaît que
-            // si au moins un participant a été ajouté (les femmes isolées sont comprises dans les isolés).
-            val onSiteTotal = isolesCount + riverainsCount
-            if (onSiteTotal > 0) {
-                binding.chipUnsubscribedParticipants.text =
-                    getString(R.string.participants_sur_place_chip, onSiteTotal)
-                binding.chipUnsubscribedParticipants.visibility = android.view.View.VISIBLE
-                binding.chipUnsubscribedParticipants.setOnClickListener { showAddUnsubscribedBottomSheet() }
-            } else {
-                binding.chipUnsubscribedParticipants.visibility = android.view.View.GONE
-            }
-        } else {
-            binding.chipUnsubscribedParticipants.visibility = android.view.View.GONE
-        }
-    }
+            if (isolesCount > 0 || riverainsCount > 0 || femmesIsoleesCount > 0) {
+                binding.layoutUnsubscribedParticipants.visibility = android.view.View.VISIBLE
 
-    private fun showAddUnsubscribedBottomSheet() {
-        val bottomSheet = AddUnsubscribedParticipantsBottomSheet.newInstance(isolesCount, riverainsCount, femmesIsoleesCount)
-        bottomSheet.onValidateCounts = { newIsole, newRiverain, newFemmesIsolees ->
-            eventPresenter.updateUnsubscribedParticipants(id, newRiverain, newIsole, newFemmesIsolees)
+                if (isolesCount > 0) {
+                    binding.layoutIsoles.visibility = android.view.View.VISIBLE
+                    binding.tvIsolesCount.text = if (isolesCount > 1) {
+                        getString(R.string.personnes_isolees, isolesCount)
+                    } else {
+                        getString(R.string.personne_isolee, isolesCount)
+                    }
+                } else {
+                    binding.layoutIsoles.visibility = android.view.View.GONE
+                }
+
+                if (riverainsCount > 0) {
+                    binding.layoutRiverains.visibility = android.view.View.VISIBLE
+                    binding.tvRiverainsCount.text = if (riverainsCount > 1) {
+                        getString(R.string.riverains, riverainsCount)
+                    } else {
+                        getString(R.string.riverain, riverainsCount)
+                    }
+                } else {
+                    binding.layoutRiverains.visibility = android.view.View.GONE
+                }
+
+                if (femmesIsoleesCount > 0) {
+                    binding.layoutFemmesIsolees.visibility = android.view.View.VISIBLE
+                    binding.tvFemmesIsoleesCount.text = if (femmesIsoleesCount > 1) {
+                        getString(R.string.femmes_isolees, femmesIsoleesCount)
+                    } else {
+                        getString(R.string.femme_isolee, femmesIsoleesCount)
+                    }
+                } else {
+                    binding.layoutFemmesIsolees.visibility = android.view.View.GONE
+                }
+            } else {
+                binding.layoutUnsubscribedParticipants.visibility = android.view.View.GONE
+            }
         }
-        bottomSheet.show(supportFragmentManager, "AddUnsubscribedBottomSheet")
     }
 
     companion object {
