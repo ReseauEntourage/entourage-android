@@ -466,7 +466,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             1 -> "vidéo de bienvenue"
             2 -> "NationalGroupsActivity"
             3 -> "WelcomeEventsListActivity(welcome)"
-            else -> "WelcomeEventsListActivity(papotages)"
+            else -> "page événements"
         }
         refreshDebugJourneyPanel()
         when (stepIndex) {
@@ -477,11 +477,8 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 intent.putExtra("TYPE", "welcome")
                 startActivity(intent)
             }
-            4 -> {
-                val intent = Intent(requireContext(), social.entourage.android.events.list.WelcomeEventsListActivity::class.java)
-                intent.putExtra("TYPE", "papotages")
-                startActivity(intent)
-            }
+            // Étape « premier événement » : page événements classique, sans filtre
+            4 -> (requireActivity() as? MainActivity)?.goEvent()
         }
     }
 

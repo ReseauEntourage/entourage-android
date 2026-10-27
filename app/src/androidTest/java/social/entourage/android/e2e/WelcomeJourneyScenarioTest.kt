@@ -21,6 +21,8 @@ import androidx.test.espresso.matcher.RootMatchers.isPlatformPopup
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast
 import androidx.test.espresso.matcher.ViewMatchers.isEnabled
+import androidx.test.espresso.matcher.ViewMatchers.isSelected
+import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.rules.ActivityScenarioRule
@@ -133,16 +135,6 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
 
         stubDestinations()
 
-        // Étape 4 (jadis verrouillée tant que les précédentes n'étaient pas faites)
-        scrollTo(R.id.btn_step_4)
-        onView(withId(R.id.btn_step_4)).perform(click())
-        intended(
-            allOf(
-                hasComponent(WelcomeEventsListActivity::class.java.name),
-                hasExtra("TYPE", "papotages")
-            )
-        )
-
         scrollTo(R.id.btn_step_3)
         onView(withId(R.id.btn_step_3)).perform(click())
         intended(
@@ -166,6 +158,11 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
         )
         screenshot.shoot("video_bienvenue")
         device.pressBack()
+
+        // Étape 4 « premier événement » : page événements classique (onglet Événements), sans filtre
+        scrollTo(R.id.btn_step_4)
+        onView(withId(R.id.btn_step_4)).perform(click())
+        onView(withId(R.id.navigation_events)).check(matches(isSelected()))
     }
 
     @Test
@@ -193,7 +190,7 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
         )
         // Tout est passé : même encart de félicitations que si tout était réussi
         scrollToJourneyTop()
-        onView(withId(R.id.tv_step_counter)).check(matches(withText("4/4")))
+        onView(withId(R.id.layout_progress_bars)).check(matches(withContentDescription("4 étapes faites sur 4")))
         onView(withText(containsString("Intégration complète"))).check(matches(isDisplayed()))
         screenshot.shoot("tout_passe_encart_vert")
     }
@@ -209,7 +206,7 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
         screenshot.shoot("une_faite_une_passee")
 
         scrollToJourneyTop()
-        onView(withId(R.id.tv_step_counter)).check(matches(withText("1/4")))
+        onView(withId(R.id.layout_progress_bars)).check(matches(withContentDescription("1 étape faite sur 4")))
         onView(withId(R.id.tv_badge_step_1)).check(matches(withText("Terminé")))
         scrollTo(R.id.tv_badge_step_2)
         onView(withId(R.id.tv_badge_step_2)).check(matches(withText(R.string.welcome_journey_badge_skipped)))
@@ -295,7 +292,7 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
     fun parcoursCompletAfficheLEncartDeReussite() {
         showJourney(WelcomeJourneyStep.entries.map { it.doneEvent })
         scrollToJourneyTop()
-        onView(withId(R.id.tv_step_counter)).check(matches(withText("4/4")))
+        onView(withId(R.id.layout_progress_bars)).check(matches(withContentDescription("4 étapes faites sur 4")))
         onView(withText(containsString("Intégration complète"))).check(matches(isDisplayed()))
         screenshot.shoot("parcours_termine")
     }

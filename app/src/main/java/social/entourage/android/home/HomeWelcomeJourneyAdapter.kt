@@ -1,11 +1,11 @@
 package social.entourage.android.home
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -70,8 +70,11 @@ class HomeWelcomeJourneyAdapter(
     )
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val tvStepCounter: TextView = view.findViewById(R.id.tv_step_counter)
-        private val progressBar: ProgressBar = view.findViewById(R.id.progress_bar)
+        private val progressBars: View = view.findViewById(R.id.layout_progress_bars)
+        private val progressSegments: List<View> = listOf(
+            view.findViewById(R.id.progress_segment_1), view.findViewById(R.id.progress_segment_2),
+            view.findViewById(R.id.progress_segment_3), view.findViewById(R.id.progress_segment_4)
+        )
         private val tvMicrocopy: TextView = view.findViewById(R.id.tv_microcopy)
         private val layoutSuccess: ConstraintLayout = view.findViewById(R.id.layout_success)
 
@@ -95,7 +98,7 @@ class HomeWelcomeJourneyAdapter(
             context.getString(R.string.welcome_video_cta),
             "Voir les groupes",
             "Voir les prochaines dates",
-            "Voir les prochaines sessions"
+            context.getString(R.string.welcome_step4_cta)
         )
 
         init {
@@ -121,35 +124,42 @@ class HomeWelcomeJourneyAdapter(
             val isCompletedFully = states.all { it == WelcomeJourneyState.DONE }
             val completedCount = states.count { it == WelcomeJourneyState.DONE }
 
-            tvStepCounter.text = "$completedCount/${steps.size}"
-            progressBar.progress = completedCount
-
-            tvMicrocopy.text = when (completedCount) {
-                0 -> "À votre rythme, dans l'ordre que vous voulez."
-                1 -> "C'est bien parti ! Continuez à votre rythme."
-                2 -> "Vous faites partie d'une communauté 🙌"
-                3 -> "Plus qu'une étape pour rejoindre la communauté 🎉"
-                else -> "Parcours terminé !"
+            // Une barre par étape, remplie seulement quand l'étape est faite (jamais quand elle est passée)
+            states.forEachIndexed { i, state ->
+                progressSegments[i].setBackgroundResource(
+                    if (state == WelcomeJourneyState.DONE) R.drawable.bg_welcome_progress_segment_on
+                    else R.drawable.bg_welcome_progress_segment_off
+                )
             }
+            progressBars.contentDescription = context.resources.getQuantityString(
+                R.plurals.welcome_journey_progress_a11y, completedCount, completedCount, steps.size
+            )
+
+            tvMicrocopy.text = context.getString(
+                if (completedCount == 0) R.string.welcome_journey_subtitle_start
+                else R.string.welcome_journey_subtitle_progress
+            )
 
             layoutSuccess.visibility = if (isCompletedFully) View.VISIBLE else View.GONE
             steps.forEach { it.card.visibility = if (isCompletedFully) View.GONE else View.VISIBLE }
             if (isCompletedFully) return
 
             // Plus de verrouillage : chaque étape est accessible quel que soit l'état des autres
+            // Ordre suggéré sans verrou : seule la prochaine étape à faire a le bouton plein
+            val nextTodo = states.indexOf(WelcomeJourneyState.TODO)
             steps.forEachIndexed { i, views ->
                 val n = i + 1
                 when (states[i]) {
                     WelcomeJourneyState.DONE -> bindDone(views, i, n)
                     WelcomeJourneyState.SKIPPED -> bindSkipped(views, i, n)
-                    WelcomeJourneyState.TODO -> bindTodo(views, i, n)
+                    WelcomeJourneyState.TODO -> bindTodo(views, i, n, isPrimary = i == nextTodo)
                 }
             }
         }
 
         private fun color(res: Int) = ContextCompat.getColor(context, res)
 
-        private fun bindTodo(v: StepViews, i: Int, n: Int) {
+        private fun bindTodo(v: StepViews, i: Int, n: Int, isPrimary: Boolean) {
             v.card.alpha = 1.0f
             v.card.setBackgroundResource(R.drawable.bg_welcome_step_active)
             v.title.setTextColor(color(R.color.black))
@@ -161,8 +171,16 @@ class HomeWelcomeJourneyAdapter(
             v.button.visibility = View.VISIBLE
             v.button.isEnabled = true
             v.button.text = todoButtonLabels[i]
-            v.button.setBackgroundColor(color(R.color.orange))
-            v.button.setTextColor(color(R.color.white))
+            if (isPrimary) {
+                v.button.setBackgroundColor(color(R.color.orange))
+                v.button.setTextColor(color(R.color.white))
+                v.button.strokeWidth = 0
+            } else {
+                v.button.setBackgroundColor(color(R.color.white))
+                v.button.setTextColor(color(R.color.orange))
+                v.button.strokeColor = ColorStateList.valueOf(color(R.color.orange))
+                v.button.strokeWidth = (1.5f * context.resources.displayMetrics.density).toInt()
+            }
             v.button.setOnClickListener { onStepClick(n) }
             v.skip.visibility = View.VISIBLE
             v.skip.setOnClickListener { onSkipClick(n) }
@@ -183,6 +201,7 @@ class HomeWelcomeJourneyAdapter(
             v.badge.text = "Terminé"
             v.badge.setTextColor(color(R.color.green))
             v.badge.setBackgroundResource(R.drawable.bg_badge_completed)
+            v.button.strokeWidth = 0
             v.skip.visibility = View.GONE
             v.redo.visibility = View.GONE
             // Les étapes 1 et 4 gardent un bouton vert (revoir la vidéo / message de fin)

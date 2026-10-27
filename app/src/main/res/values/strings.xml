@@ -3583,6 +3583,16 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="welcome_journey_hide_message">Cette action est irréversible, mais vous pourrez toujours retrouver ces différents contenus dans votre application.</string>
     <string name="welcome_journey_hide_confirm">Masquer</string>
     <string name="welcome_journey_hide_cancel">Annuler</string>
+    <string name="welcome_step4_title">Participez à un premier événement</string>
+    <string name="welcome_step4_desc">Un café, une balade, un atelier ou un papotage en visio : choisissez ce qui vous fait envie.</string>
+    <string name="welcome_step4_cta">Voir les événements</string>
+    <string name="welcome_journey_complete">Intégration complète ! Vous faites maintenant partie de la communauté !</string>
+    <string name="welcome_journey_subtitle_start">À votre rythme, dans l\'ordre que vous voulez.</string>
+    <string name="welcome_journey_subtitle_progress">C\'est bien parti ! Continuez à votre rythme.</string>
+    <plurals name="welcome_journey_progress_a11y">
+        <item quantity="one">%1$d étape faite sur %2$d</item>
+        <item quantity="other">%1$d étapes faites sur %2$d</item>
+    </plurals>
     <string name="message_phone_warning_sender">Attention : en partageant un numéro, vous sortez du cadre d’Entourage. Restez vigilant et assurez-vous de bien connaître votre interlocuteur.</string>
     <string name="message_phone_warning_receiver">Attention : ce message contient un numéro de téléphone. En échangeant en dehors de l’application, vous sortez du cadre d’Entourage. Restez vigilant et assurez-vous de bien connaître votre interlocuteur.</string>
     <!-- Parcours de création / édition d'événement (EN-9578) -->

@@ -17,21 +17,9 @@
         android:text="Votre parcours de bienvenue"
         android:textColor="@color/grey_dark"
         android:textSize="@dimen/entourage_font_large"
-        app:layout_constraintEnd_toStartOf="@+id/tv_step_counter"
+        app:layout_constraintEnd_toStartOf="@+id/btn_more"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_step_counter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/quicksand_bold"
-        android:text="0/4"
-        android:textColor="@color/orange"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_title"
-        app:layout_constraintEnd_toStartOf="@+id/btn_more"
-        app:layout_constraintTop_toTopOf="@+id/tv_title" />
 
     <TextView
         android:id="@+id/btn_more"
@@ -48,18 +36,48 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tv_title" />
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="?android:attr/progressBarStyleHorizontal"
+    <LinearLayout
+        android:id="@+id/layout_progress_bars"
         android:layout_width="0dp"
-        android:layout_height="8dp"
+        android:layout_height="6dp"
         android:layout_marginTop="12dp"
-        android:max="4"
-        android:progress="0"
-        android:progressDrawable="@drawable/bg_progress_bar_welcome"
+        android:importantForAccessibility="yes"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_title">
+
+        <View
+            android:id="@+id/progress_segment_1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/bg_welcome_progress_segment_off" />
+
+        <View
+            android:id="@+id/progress_segment_2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_welcome_progress_segment_off" />
+
+        <View
+            android:id="@+id/progress_segment_3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_welcome_progress_segment_off" />
+
+        <View
+            android:id="@+id/progress_segment_4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="6dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_welcome_progress_segment_off" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_microcopy"
@@ -72,7 +90,7 @@
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/progress_bar" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_progress_bars" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/card_step_1"
@@ -449,7 +467,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/quicksand_bold"
-            android:text="@string/welcome_step3_title"
+            android:text="@string/welcome_step4_title"
             android:textColor="@color/black"
             android:textSize="15sp"
             app:layout_constraintEnd_toStartOf="@+id/tv_badge_step_4"
@@ -478,7 +496,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:fontFamily="@font/nunitosans_regular"
-            android:text="Chaque mardi à 18h, en petits groupes animés, pour discuter de tout et de rien. Pas d'ordre du jour, pas de pression — juste une conversation."
+            android:text="@string/welcome_step4_desc"
             android:textColor="@color/grey"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -509,7 +527,7 @@
             android:textAlignment="center"
             android:paddingHorizontal="24dp"
             android:paddingVertical="10dp"
-            android:text="Voir les prochaines sessions"
+            android:text="@string/welcome_step4_cta"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="14sp"
@@ -555,7 +573,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/quicksand_bold"
             android:gravity="center"
-            android:text="Intégration complète ! Tu fais maintenant partie de la communauté !"
+            android:text="@string/welcome_journey_complete"
             android:textColor="@color/green"
             android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
