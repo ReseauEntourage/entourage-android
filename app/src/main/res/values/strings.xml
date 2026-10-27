@@ -3668,7 +3668,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="impact_line_actions">J’ai partagé une entraide</string>
     <string name="impact_line_groups">J’ai animé mes groupes de voisins</string>
     <string name="impact_line_conversations">J’ai échangé avec d’autres membres</string>
-    <string name="impact_empty_message">Bienvenue ! Votre histoire commence ici. Dès votre première action (un bonjour, un café, un événement), elle apparaîtra ici. Même les petits gestes comptent.</string>
+    <string name="impact_empty_title">Bienvenue ! Votre histoire commence ici.</string>
+    <string name="impact_empty_message">Dès votre première action — un bonjour, un café, un événement — elle apparaîtra ici. Même les petits gestes comptent.</string>
     <string name="impact_empty_button">Découvrir près de chez moi</string>
     <string name="impact_other_events">Participation à des événements</string>
     <string name="impact_other_actions">Entraides partagées</string>

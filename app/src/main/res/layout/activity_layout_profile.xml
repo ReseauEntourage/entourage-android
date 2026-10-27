@@ -349,28 +349,51 @@
                             android:id="@+id/layout_impact_empty"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:background="@drawable/bg_impact_hero_card"
+                            android:gravity="center_horizontal"
                             android:orientation="vertical"
+                            android:paddingHorizontal="16dp"
+                            android:paddingVertical="20dp"
                             android:visibility="gone"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/layout_impact_filled">
 
                             <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="🌱"
+                                android:textSize="36sp" />
+
+                            <TextView
+                                style="@style/left_courant_bold_black"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="12dp"
+                                android:gravity="center"
+                                android:text="@string/impact_empty_title"
+                                android:textSize="18sp" />
+
+                            <TextView
                                 android:id="@+id/tv_impact_empty"
                                 style="@style/left_courant_black"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="6dp"
+                                android:gravity="center"
+                                android:textColor="@color/grey"
                                 android:text="@string/impact_empty_message" />
 
                             <Button
                                 android:id="@+id/button_impact_discover"
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="12dp"
+                                android:layout_marginTop="16dp"
                                 android:background="@drawable/shape_button_v9_positive"
                                 android:elevation="0dp"
                                 android:fontFamily="@font/quicksand_bold"
-                                android:paddingHorizontal="10dp"
+                                android:paddingHorizontal="24dp"
                                 android:paddingVertical="10dp"
                                 android:text="@string/impact_empty_button"
                                 android:textAllCaps="false"

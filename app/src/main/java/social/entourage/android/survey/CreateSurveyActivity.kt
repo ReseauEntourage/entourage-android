@@ -51,7 +51,7 @@ class CreateSurveyActivity: BaseActivity() {
         if (postId == Const.DEFAULT_VALUE) return
         editingPostId = postId
 
-        binding.headerTitle.text = getString(R.string.edit_survey)
+        binding.headerTitle.text = getString(R.string.edit_post)
         binding.validateBtn.text = getString(R.string.edit)
 
         val html = intent.getStringExtra(Const.POST_CONTENT_HTML).orEmpty()
