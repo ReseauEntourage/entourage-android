@@ -135,7 +135,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
                     android:visibility="gone"
-                    app:icon='@{@drawable/ic_edit_event}' />
+                    app:icon='@{@drawable/ic_copy}' />
 
                 <View
                     android:id="@+id/duplicate_divider"

@@ -96,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="25dp"
                     android:layout_marginEnd="25dp"
-                    app:icon='@{@drawable/ic_copy_texte}' />
+                    app:icon='@{@drawable/ic_copy}' />
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/layout_report"
                     android:layout_width="match_parent"
