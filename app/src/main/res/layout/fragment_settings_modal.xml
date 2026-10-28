@@ -151,7 +151,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="25dp"
                     android:visibility="gone"
-                    app:icon='@{@drawable/ic_notification}' />
+                    app:icon='@{@drawable/ic_edit_recurrence}' />
 
                 <View
                     android:id="@+id/edit_recurrence_divider"

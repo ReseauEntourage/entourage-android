@@ -26,8 +26,10 @@ import social.entourage.android.databinding.FragmentSettingsDiscussionModalBindi
 import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.discussions.DiscussionsPresenter
 import social.entourage.android.discussions.members.MembersConversationFragment
+import social.entourage.android.events.EditRecurrenceActivity
 import social.entourage.android.events.EventsPresenter
 import social.entourage.android.events.create.CreateEventActivity
+import social.entourage.android.events.create.Recurrence
 import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.rules.GroupRulesActivity
@@ -198,6 +200,7 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
         // Masquer l’item “edit” par défaut
         binding.edit.profileSettingsItemLayout.isVisible = false
         binding.duplicate.profileSettingsItemLayout.isVisible = false
+        binding.editRecurrence.profileSettingsItemLayout.isVisible = false
 
         when (mode) {
             SheetMode.DISCUSSION_ONE_TO_ONE -> {
@@ -336,6 +339,16 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                 binding.duplicate.profileSettingsItemLayout.isVisible = showDuplicate
                 if (showDuplicate) {
                     binding.duplicate.setLabel(getString(R.string.duplicate_event))
+                }
+
+                // « Modifier la récurrence » : organisateur d’un événement récurrent, comme dans
+                // les paramètres de l’événement.
+                val recurrence = eventObj?.recurrence
+                val showEditRecurrence = isEventCreator && recurrence != null &&
+                    recurrence != Recurrence.NO_RECURRENCE.value
+                binding.editRecurrence.profileSettingsItemLayout.isVisible = showEditRecurrence
+                if (showEditRecurrence) {
+                    binding.editRecurrence.setLabel(getString(R.string.modify_recurrence))
                 }
             }
 
@@ -503,6 +516,19 @@ class ActionSheetFragment : BottomSheetDialogFragment() {
                     Intent(requireContext(), CreateEventActivity::class.java)
                         .putExtra(Const.EVENT_UI, ev)
                         .putExtra(Const.EVENT_DUPLICATE, true)
+                )
+                dismiss()
+            }
+        }
+
+        binding.editRecurrence.profileSettingsItemLayout.setOnClickListener {
+            eventObj?.let { ev ->
+                startActivity(
+                    Intent(requireContext(), EditRecurrenceActivity::class.java).apply {
+                        ev.id?.let { putExtra(Const.EVENT_ID, it) }
+                        ev.metadata?.startsAt?.let { putExtra(Const.EVENT_DATE, it) }
+                        ev.recurrence?.let { putExtra(Const.RECURRENCE, it) }
+                    }
                 )
                 dismiss()
             }
