@@ -110,10 +110,13 @@ abstract class CreatePostActivity : AppCompatActivity() {
         if (postId == Const.DEFAULT_VALUE) return
         editingPostId = postId
 
-        // Passer par les variables du data binding : un texte posé directement sur les vues est
-        // écrasé au premier passage du binding (titre « Créer une publication », CTA « Partager »)
+        // Les libellés de création (« Créer une publication », « Partager ») sont des constantes du
+        // layout, appliquées au premier passage du binding, qui n'a lieu qu'après onCreate : on le
+        // force d'abord, sinon il écraserait les libellés d'édition posés juste après.
+        binding.executePendingBindings()
         binding.header.title = getString(R.string.edit_post)
         binding.validate.content = getString(R.string.edit)
+        binding.executePendingBindings()
         binding.chipsSection.visibility = View.GONE
         // Photo actuelle affichée et remplaçable (pas supprimable : le back ne retire pas l'image)
         editingHasImage = !intent.getStringExtra(Const.POST_IMAGE_URL).isNullOrBlank()

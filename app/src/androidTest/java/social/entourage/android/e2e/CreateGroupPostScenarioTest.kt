@@ -10,8 +10,11 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.replaceText
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.rule.GrantPermissionRule
@@ -101,6 +104,32 @@ class CreateGroupPostScenarioTest : EntourageTestAfterLogin() {
         screenshot.shoot("publie")
 
         assertTrue("Le post n'existe pas côté serveur", findPostId() != null)
+        scenario.close()
+    }
+
+    /**
+     * Mode édition (options d'une publication -> Modifier) : même écran que la création, mais avec
+     * le titre « Modifier une publication » et le CTA « Modifier » (et non « Créer une publication »
+     * / « Partager »). Ne valide rien : aucun appel serveur, rien à nettoyer.
+     */
+    @Test
+    fun editionAfficheLesLibellesDeModification() {
+        checkUserIsLoggedIn()
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val intent = Intent(context, CreatePostGroupActivity::class.java).apply {
+            putExtra(Const.ID, 1)
+            putExtra(Const.POST_ID, 1)
+            putExtra(Const.POST_CONTENT_HTML, "<p>Unit test édition</p>")
+        }
+        val scenario = ActivityScenario.launch<CreatePostGroupActivity>(intent)
+        scenario.onActivity { activity -> setUp(activity) }
+        onIdle()
+
+        onView(withText(R.string.edit_post)).check(matches(isDisplayed()))
+        onView(withText(R.string.edit)).check(matches(isDisplayed()))
+        onView(withText(R.string.create_post)).check(doesNotExist())
+        onView(withText(R.string.share_post)).check(doesNotExist())
+        screenshot.shoot("edition")
         scenario.close()
     }
 }
