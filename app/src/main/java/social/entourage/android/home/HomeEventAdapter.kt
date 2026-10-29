@@ -175,6 +175,11 @@ class HomeEventAdapter(
         val members = event.members ?: emptyList()
         val totalCount = event.membersCount ?: 0
 
+        // Pas de « 0 participant » : la ligne n'apparaît que s'il y a au moins un participant
+        // (comme dans les listes d'événements), et se réaffiche sur une vue recyclée.
+        binding.layoutSocialRowHome.visibility = if (totalCount > 0) View.VISIBLE else View.GONE
+        if (totalCount == 0) return
+
         val avatarViews = listOf(binding.ivMember1Home, binding.ivMember2Home, binding.ivMember3Home)
         for (i in avatarViews.indices) {
             val member = members.getOrNull(i)
