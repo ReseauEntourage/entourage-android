@@ -723,17 +723,20 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 } catch (_: Exception) {
                 }
             },
-            onClimateMapClick = {
-                AnalyticsEvents.logEvent(AnalyticsEvents.Action__Home__Map)
-                val intent = Intent(requireContext(), GDSMainActivity::class.java)
-                intent.putExtra(GDSMainActivity.EXTRA_AIR_CONDITIONED, true)
-                activityResultLauncher.launch(intent)
+            onDonateClick = {
+                AnalyticsEvents.logEvent(AnalyticsEvents.Click_Home_Donation_Banner)
+                try {
+                    val intent = Intent(Intent.ACTION_VIEW, "http://don.entourage.social/?cid=97".toUri())
+                    startActivity(intent)
+                } catch (_: Exception) {
+                }
             }
         )
     }
 
     private fun setupPedagoAdapter() {
         pedagoHeaderAdapter = HomeSectionHeaderAdapter()
+        pedagoHeaderAdapter.update(getString(R.string.home_title_discover_contents), null, true)
         homePedagoAdapter = HomePedagoAdapter(object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
                 if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
@@ -1175,6 +1178,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 concatAdapter.addAdapter(groupWrapperAdapter)
                 concatAdapter.addAdapter(groupButtonAdapter)
                 concatAdapter.addAdapter(homeToolsAdapter)
+                concatAdapter.addAdapter(pedagoHeaderAdapter)
                 concatAdapter.addAdapter(homePedagoAdapter)
                 binding.rvHome.scheduleLayoutAnimation()
             }

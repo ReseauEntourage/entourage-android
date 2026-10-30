@@ -3369,13 +3369,14 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="guide_help_orientation_button">Aide &amp; orientation</string>
 
 
-    <string name="home_title_tools">Tes outils solidaires</string>
+    <string name="home_title_tools">Vos outils solidaires</string>
     <string name="home_tools_map">Carte des lieux solidaires</string>
     <string name="home_tools_pedago">Ressources utiles</string>
     <string name="home_tools_charter">Charte éthique Entourage</string>
-    <string name="home_climate_banner_title">Lieux solidaires climatisés</string>
-    <string name="home_climate_banner_subtitle">Trouvez un endroit frais près de chez vous pendant la canicule.</string>
-    <string name="home_climate_banner_badge">Spécial canicule</string>
+    <string name="home_donation_banner_title">Entourage vit grâce à vous</string>
+    <string name="home_donation_banner_text">Entourage est une association financée par la générosité du public. Vous pouvez nous soutenir en faisant un don.</string>
+    <string name="home_donation_banner_button">Faire un don</string>
+    <string name="home_title_discover_contents">Contenus à découvrir</string>
     <string name="welcome_video_cta">Regarder la vidéo</string>
     <string name="welcome_step3_title">Papotages entre membres</string>
     <string name="welcome_welcome_list_title">Premiers pas sur Entourage</string>

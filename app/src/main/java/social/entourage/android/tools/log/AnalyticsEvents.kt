@@ -684,6 +684,7 @@ object AnalyticsEvents {
     const val   Action_Home_Group_Detail = "Action_Home_Group_Detail"
     const val   Action_Home_Group_All = "Action_Home_Group_All"
     const val   Action__Home__Map = "Action__Home__Map"
+    const val   Click_Home_Donation_Banner = "click_home_donation_banner"
     const val   Action_Home_Article = "Action_Home_Article"
     const val   Action__Home__Pedago = "Action__Home__Pedago"
     const val   Action_Home_CreateEvent = "Action_Home_CreateEvent"
