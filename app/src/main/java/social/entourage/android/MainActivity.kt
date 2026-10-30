@@ -313,6 +313,7 @@ class MainActivity : BaseSecuredActivity() {
 
         val isFromWidget = intent.getBooleanExtra("isFromWidget", false)
         if (isFromWidget) {
+            intent.removeExtra("isFromWidget")
             goEvent()
             return
         }

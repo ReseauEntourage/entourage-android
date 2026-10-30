@@ -2,8 +2,14 @@ package social.entourage.android.profile
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.content.ContextCompat
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.Stats
