@@ -789,7 +789,11 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 viewModel = ViewModelProvider(requireActivity())[HomeSuggestionViewModel::class.java],
                 snackbarAnchor = binding.root,
                 onSayHello = { userId -> discussionsPresenter.createOrGetConversation(userId.toString()) },
-            ).also { it.start() }
+            ).also {
+                it.start()
+                it.setSuppressed(welcomeJourneyAdapter.isShown)
+                welcomeJourneyAdapter.onVisibilityChanged = { journeyVisible -> suggestionSection?.setSuppressed(journeyVisible) }
+            }
         }
         homeSuggestionConnectionAdapter = HomeSuggestionConnectionAdapter(
             onActionClicked = { suggestion ->
@@ -1204,21 +1208,23 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 concatAdapter.removeAdapter(homeSkeletonAdapter)
                 concatAdapter.addAdapter(welcomeJourneyAdapter)
                 suggestionSection?.adapters?.forEach { concatAdapter.addAdapter(it) }
-                concatAdapter.addAdapter(initialPedagoHeaderAdapter)
-                concatAdapter.addAdapter(initialPedagoWrapperAdapter)
-                concatAdapter.addAdapter(actionHeaderAdapter)
-                concatAdapter.addAdapter(actionWrapperAdapter)
-                concatAdapter.addAdapter(actionButtonAdapter)
-                concatAdapter.addAdapter(eventHeaderAdapter)
-                concatAdapter.addAdapter(eventWrapperAdapter)
-                concatAdapter.addAdapter(eventButtonAdapter)
+                // Avec le moteur de suggestion, la home ne garde que le parcours de bienvenue OU les
+                // suggestions, puis la partie basse : plus de sections entraides, événements, groupes.
                 if (suggestionSection == null) {
+                    concatAdapter.addAdapter(initialPedagoHeaderAdapter)
+                    concatAdapter.addAdapter(initialPedagoWrapperAdapter)
+                    concatAdapter.addAdapter(actionHeaderAdapter)
+                    concatAdapter.addAdapter(actionWrapperAdapter)
+                    concatAdapter.addAdapter(actionButtonAdapter)
+                    concatAdapter.addAdapter(eventHeaderAdapter)
+                    concatAdapter.addAdapter(eventWrapperAdapter)
+                    concatAdapter.addAdapter(eventButtonAdapter)
                     concatAdapter.addAdapter(homeSuggestionConnectionAdapter)
                     concatAdapter.addAdapter(homeSuggestionNextStepAdapter)
+                    concatAdapter.addAdapter(groupHeaderAdapter)
+                    concatAdapter.addAdapter(groupWrapperAdapter)
+                    concatAdapter.addAdapter(groupButtonAdapter)
                 }
-                concatAdapter.addAdapter(groupHeaderAdapter)
-                concatAdapter.addAdapter(groupWrapperAdapter)
-                concatAdapter.addAdapter(groupButtonAdapter)
                 concatAdapter.addAdapter(homeToolsAdapter)
                 concatAdapter.addAdapter(pedagoHeaderAdapter)
                 concatAdapter.addAdapter(homePedagoAdapter)

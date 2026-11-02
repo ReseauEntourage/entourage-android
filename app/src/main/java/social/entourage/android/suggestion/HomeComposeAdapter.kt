@@ -21,11 +21,22 @@ class HomeComposeAdapter<S>(
 ) : RecyclerView.Adapter<HomeComposeAdapter.ViewHolder>() {
 
     private var state by mutableStateOf(initial)
+    private var suppressed = false
     private var shown = isVisible(initial)
 
     fun submit(newState: S) {
         state = newState
-        val nowVisible = isVisible(newState)
+        refreshShown()
+    }
+
+    /** Masque l'item sans perdre son état (ex. le parcours de bienvenue prend la place). */
+    fun setSuppressed(value: Boolean) {
+        suppressed = value
+        refreshShown()
+    }
+
+    private fun refreshShown() {
+        val nowVisible = !suppressed && isVisible(state)
         if (nowVisible != shown) {
             shown = nowVisible
             if (nowVisible) notifyItemInserted(0) else notifyItemRemoved(0)

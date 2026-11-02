@@ -72,6 +72,12 @@ class HomeSuggestionSection(
 
     val adapters: List<RecyclerView.Adapter<*>> get() = listOf(heroAdapter, explorerAdapter)
 
+    /** Parcours de bienvenue et suggestions ne s'affichent jamais ensemble. */
+    fun setSuppressed(value: Boolean) {
+        heroAdapter.setSuppressed(value)
+        explorerAdapter.setSuppressed(value)
+    }
+
     private fun open(s: NextStepSuggestion) {
         // Au retour sur la home, la card est rafraîchie (le moteur remplace une suggestion traitée).
         needsRefresh = true

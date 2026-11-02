@@ -2166,7 +2166,7 @@
     <string name="create_action_error_location">Enter an address to continue.</string>
     <string name="create_action_error_sharing">Answer yes or no to continue.</string>
     <!-- "Your next step" card (EN-9483) -->
-    <string name="home_suggestion_hero_title">Your next step</string>
+    <string name="home_suggestion_hero_title">Our suggestion for you</string>
     <string name="home_suggestion_badge_entraide">Mutual aid</string>
     <string name="home_suggestion_badge_event">Event</string>
     <string name="home_suggestion_badge_group">Group</string>
@@ -2207,7 +2207,7 @@
     <string name="home_suggestion_why_footer">You can ignore a suggestion at any time.</string>
     <string name="home_suggestion_why_close">Got it</string>
     <!-- "For you today" area (EN-9493) -->
-    <string name="home_suggestion_explorer_title">For you today</string>
+    <string name="home_suggestion_explorer_title">More ideas for you today</string>
     <string name="home_suggestion_explorer_opens">Opens %1$s</string>
     <string name="home_suggestion_explorer_target_entraide">the Mutual aid tab</string>
     <string name="home_suggestion_explorer_target_events">the Events tab</string>

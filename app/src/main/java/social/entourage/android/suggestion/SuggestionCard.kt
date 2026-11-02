@@ -99,9 +99,9 @@ private fun initials(name: String?): String =
 
 /**
  * Conteneur polymorphe unique : rend n'importe quel type de suggestion du moteur avec l'anatomie
- * commune (badge, ⓘ, média optionnel, titre, 1 à 3 métas optionnelles, CTA, action secondaire).
+ * commune (badge, « ? », média optionnel, titre, 1 à 3 métas optionnelles, CTA, action secondaire).
  *
- * @param onWhy ouvre « Pourquoi cette suggestion ? » ; le bouton ⓘ est masqué si null.
+ * @param onWhy ouvre « Pourquoi cette suggestion ? » ; le bouton « ? » est masqué si null.
  */
 @Composable
 fun SuggestionCard(
@@ -194,7 +194,7 @@ fun SuggestionCard(
                             .background(ColorOrange.copy(alpha = 0.18f)),
                         contentAlignment = Alignment.Center,
                     ) {
-                        Text("ⓘ", color = Color(0xFFD53F00), fontSize = 15.sp)
+                        Text("?", color = Color(0xFFD53F00), fontSize = 15.sp, fontWeight = FontWeight.Bold)
                     }
                 }
             } else {
