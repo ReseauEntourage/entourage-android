@@ -2165,28 +2165,4 @@
     <string name="create_action_error_description">Add a description to continue.</string>
     <string name="create_action_error_location">Enter an address to continue.</string>
     <string name="create_action_error_sharing">Answer yes or no to continue.</string>
-    <!-- "Your next step" card (EN-9483) -->
-    <string name="home_suggestion_hero_title">Your next step</string>
-    <string name="home_suggestion_badge_entraide">Mutual aid</string>
-    <string name="home_suggestion_badge_event">Event</string>
-    <string name="home_suggestion_badge_group">Group</string>
-    <string name="home_suggestion_badge_connection">Connection</string>
-    <string name="home_suggestion_badge_place">Solidarity place</string>
-    <string name="home_suggestion_badge_understand">Understand</string>
-    <string name="home_suggestion_badge_act">Act</string>
-    <string name="home_suggestion_chip_remote">Online</string>
-    <string name="home_suggestion_chip_local">Neighbourhood</string>
-    <string name="home_suggestion_chip_national">National</string>
-    <string name="home_suggestion_cta_answer">Reply</string>
-    <string name="home_suggestion_cta_read">Read</string>
-    <string name="home_suggestion_cta_participate">I\'m in!</string>
-    <string name="home_suggestion_cta_register">Sign me up</string>
-    <string name="home_suggestion_cta_join">Join</string>
-    <string name="home_suggestion_cta_say_hello">Say hello</string>
-    <string name="home_suggestion_cta_see_place">See the place</string>
-    <string name="home_suggestion_later">Later</string>
-    <string name="home_suggestion_why_button_description">Why this suggestion?</string>
-    <string name="home_suggestion_open_details">Open details</string>
-    <string name="home_suggestion_later_snackbar">Suggestion set aside. We won\'t offer it again right away.</string>
-    <string name="home_suggestion_later_undo">Undo</string>
 </resources>

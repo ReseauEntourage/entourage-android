@@ -3718,28 +3718,4 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="create_action_error_description">Ajoutez une description pour continuer.</string>
     <string name="create_action_error_location">Indiquez une adresse pour continuer.</string>
     <string name="create_action_error_sharing">Répondez par oui ou par non pour continuer.</string>
-    <!-- Card « Votre prochain pas » (EN-9483) -->
-    <string name="home_suggestion_hero_title">Votre prochain pas</string>
-    <string name="home_suggestion_badge_entraide">Entraide</string>
-    <string name="home_suggestion_badge_event">Événement</string>
-    <string name="home_suggestion_badge_group">Groupe</string>
-    <string name="home_suggestion_badge_connection">Connexion</string>
-    <string name="home_suggestion_badge_place">Lieu solidaire</string>
-    <string name="home_suggestion_badge_understand">Comprendre</string>
-    <string name="home_suggestion_badge_act">Agir</string>
-    <string name="home_suggestion_chip_remote">En visio</string>
-    <string name="home_suggestion_chip_local">Quartier</string>
-    <string name="home_suggestion_chip_national">National</string>
-    <string name="home_suggestion_cta_answer">Répondre</string>
-    <string name="home_suggestion_cta_read">Lire</string>
-    <string name="home_suggestion_cta_participate">Je participe !</string>
-    <string name="home_suggestion_cta_register">Je m\'inscris</string>
-    <string name="home_suggestion_cta_join">Rejoindre</string>
-    <string name="home_suggestion_cta_say_hello">Dire bonjour</string>
-    <string name="home_suggestion_cta_see_place">Voir le lieu</string>
-    <string name="home_suggestion_later">Plus tard</string>
-    <string name="home_suggestion_why_button_description">Pourquoi cette suggestion ?</string>
-    <string name="home_suggestion_open_details">Ouvrir le détail</string>
-    <string name="home_suggestion_later_snackbar">Suggestion mise de côté. Nous ne vous la proposerons pas tout de suite.</string>
-    <string name="home_suggestion_later_undo">Annuler</string>
 </resources>
