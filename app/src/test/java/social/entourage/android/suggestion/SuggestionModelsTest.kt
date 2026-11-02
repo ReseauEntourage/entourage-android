@@ -39,7 +39,7 @@ class SuggestionModelsTest {
 
     @Test
     fun reasonsAreCappedAtThree() {
-        val reasons = ReasonKind.entries.map { SuggestionReason(it) }
+        val reasons = ReasonKind.entries.map { SuggestionReason(it, "x") }
         assertEquals(3, suggestion("event", reasons).displayableReasons().size)
     }
 
@@ -49,5 +49,11 @@ class SuggestionModelsTest {
         val shown = suggestion("group", reasons, isolated = true).displayableReasons()
         assertEquals(listOf(ReasonKind.PROXIMITY), shown.map { it.kind })
         assertEquals(2, suggestion("group", reasons, isolated = false).displayableReasons().size)
+    }
+
+    @Test
+    fun reasonWithoutRequiredValueIsNotDisplayed() {
+        val reasons = listOf(SuggestionReason(ReasonKind.PROXIMITY), SuggestionReason(ReasonKind.ACCESSIBILITY))
+        assertEquals(listOf(ReasonKind.ACCESSIBILITY), suggestion("event", reasons).displayableReasons().map { it.kind })
     }
 }
