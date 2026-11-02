@@ -690,8 +690,6 @@ object AnalyticsEvents {
     const val   Click_Home_Suggestion_Body = "click_home_suggestion_body"
     const val   Click_Home_Suggestion_Later = "click_home_suggestion_later"
     const val   Click_Home_Suggestion_Why = "click_home_suggestion_why"
-    const val   View_Home_Explorer = "view_home_explorer"
-    const val   Click_Home_Explorer_Access = "click_home_explorer_access"
     const val   Action_Home_Article = "Action_Home_Article"
     const val   Action__Home__Pedago = "Action__Home__Pedago"
     const val   Action_Home_CreateEvent = "Action_Home_CreateEvent"

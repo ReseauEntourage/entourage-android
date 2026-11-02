@@ -2206,12 +2206,4 @@
     <string name="home_suggestion_why_reason_social_proof">Neighbours are already taking part.</string>
     <string name="home_suggestion_why_footer">You can ignore a suggestion at any time.</string>
     <string name="home_suggestion_why_close">Got it</string>
-    <!-- "For you today" area (EN-9493) -->
-    <string name="home_suggestion_explorer_title">For you today</string>
-    <string name="home_suggestion_explorer_opens">Opens %1$s</string>
-    <string name="home_suggestion_explorer_target_entraide">the Mutual aid tab</string>
-    <string name="home_suggestion_explorer_target_events">the Events tab</string>
-    <string name="home_suggestion_explorer_target_groups">the Groups tab</string>
-    <string name="home_suggestion_explorer_target_content">content to understand and act</string>
-    <string name="home_suggestion_explorer_target_places">solidarity places</string>
 </resources>
