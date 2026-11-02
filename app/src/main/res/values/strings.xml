@@ -3742,4 +3742,21 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_suggestion_open_details">Ouvrir le détail</string>
     <string name="home_suggestion_later_snackbar">Suggestion mise de côté. Nous ne vous la proposerons pas tout de suite.</string>
     <string name="home_suggestion_later_undo">Annuler</string>
+    <!-- Écran « Pourquoi cette suggestion ? » (EN-9480) -->
+    <string name="home_suggestion_why_title_default">Pourquoi cette suggestion ?</string>
+    <string name="home_suggestion_why_title_entraide">Pourquoi cette entraide ?</string>
+    <string name="home_suggestion_why_title_content">Pourquoi ce contenu ?</string>
+    <string name="home_suggestion_why_title_event">Pourquoi cet événement ?</string>
+    <string name="home_suggestion_why_title_group">Pourquoi ce groupe ?</string>
+    <string name="home_suggestion_why_title_connection">Pourquoi cette personne ?</string>
+    <string name="home_suggestion_why_title_place">Pourquoi ce lieu ?</string>
+    <string name="home_suggestion_why_reason_proximity">C\'est à %1$s de chez vous.</string>
+    <string name="home_suggestion_why_reason_interests">Vous avez indiqué aimer %1$s.</string>
+    <string name="home_suggestion_why_reason_moment">C\'est %1$s, l\'occasion est proche.</string>
+    <string name="home_suggestion_why_reason_history">Vous avez participé à un moment similaire en %1$s.</string>
+    <string name="home_suggestion_why_reason_need">Vous cherchiez %1$s.</string>
+    <string name="home_suggestion_why_reason_accessibility">C\'est gratuit et sans rendez-vous.</string>
+    <string name="home_suggestion_why_reason_social_proof">Des voisins y participent déjà.</string>
+    <string name="home_suggestion_why_footer">Vous pouvez ignorer une suggestion à tout moment.</string>
+    <string name="home_suggestion_why_close">J\'ai compris</string>
 </resources>
