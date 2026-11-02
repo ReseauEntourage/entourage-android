@@ -56,7 +56,21 @@ class HomeSuggestionSection(
         )
     }
 
-    val adapters: List<RecyclerView.Adapter<*>> get() = listOf(heroAdapter)
+    private val explorerAdapter = HomeComposeAdapter<ExplorerUi>(
+        initial = ExplorerUi.Loading,
+        isVisible = { it !is ExplorerUi.Hidden },
+    ) { ui ->
+        SuggestionExplorerZone(
+            ui = ui,
+            onAccess = { access ->
+                AnalyticsEvents.logEvent(AnalyticsEvents.Click_Home_Explorer_Access)
+                navigator.open(access)
+            },
+            onShown = { AnalyticsEvents.logEvent(AnalyticsEvents.View_Home_Explorer) },
+        )
+    }
+
+    val adapters: List<RecyclerView.Adapter<*>> get() = listOf(heroAdapter, explorerAdapter)
 
     private fun open(s: NextStepSuggestion) {
         // Au retour sur la home, la card est rafraîchie (le moteur remplace une suggestion traitée).
@@ -68,7 +82,10 @@ class HomeSuggestionSection(
         fragment.viewLifecycleOwner.lifecycleScope.launch {
             fragment.viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.state.collect { state -> heroAdapter.submit(state.toHeroUi()) }
+                    viewModel.state.collect { state ->
+                        heroAdapter.submit(state.toHeroUi())
+                        explorerAdapter.submit(state.toExplorerUi())
+                    }
                 }
                 launch { viewModel.laterEvents.collect { showLaterSnackbar() } }
             }

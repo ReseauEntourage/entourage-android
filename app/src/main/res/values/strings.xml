@@ -3759,4 +3759,12 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_suggestion_why_reason_social_proof">Des voisins y participent déjà.</string>
     <string name="home_suggestion_why_footer">Vous pouvez ignorer une suggestion à tout moment.</string>
     <string name="home_suggestion_why_close">J\'ai compris</string>
+    <!-- Zone « Pour vous aujourd'hui » (EN-9493) -->
+    <string name="home_suggestion_explorer_title">Pour vous aujourd\'hui</string>
+    <string name="home_suggestion_explorer_opens">Ouvre %1$s</string>
+    <string name="home_suggestion_explorer_target_entraide">l\'onglet Entraide</string>
+    <string name="home_suggestion_explorer_target_events">l\'onglet Événements</string>
+    <string name="home_suggestion_explorer_target_groups">l\'onglet Groupes</string>
+    <string name="home_suggestion_explorer_target_content">les contenus pour comprendre et agir</string>
+    <string name="home_suggestion_explorer_target_places">les lieux solidaires</string>
 </resources>
