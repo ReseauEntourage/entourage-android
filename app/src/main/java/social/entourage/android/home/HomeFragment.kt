@@ -61,6 +61,9 @@ import social.entourage.android.onboarding.onboard.OnboardingStartActivity
 import social.entourage.android.onboarding.onboard.OnboardingZoneChoiceActivity
 import social.entourage.android.profile.MyProfileFullActivity
 import social.entourage.android.tools.log.AnalyticsEvents
+import social.entourage.android.suggestion.HomeSuggestionSection
+import social.entourage.android.suggestion.HomeSuggestionViewModel
+import social.entourage.android.suggestion.SuggestionFeature
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
@@ -193,6 +196,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     // Suggestions
     private lateinit var homeSuggestionConnectionAdapter: HomeSuggestionConnectionAdapter
     private lateinit var homeSuggestionNextStepAdapter: HomeSuggestionNextStepAdapter
+    private var suggestionSection: HomeSuggestionSection? = null
 
     // Gère uniquement le cycle de vie du fragment pour ne pas lancer plusieurs popups en même temps
     private var hasRunEntryGating = false
@@ -779,6 +783,14 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     }
 
     private fun setupSuggestionsAdapters() {
+        if (SuggestionFeature.ENABLED) {
+            suggestionSection = HomeSuggestionSection(
+                fragment = this,
+                viewModel = ViewModelProvider(requireActivity())[HomeSuggestionViewModel::class.java],
+                snackbarAnchor = binding.root,
+                onSayHello = { userId -> discussionsPresenter.createOrGetConversation(userId.toString()) },
+            ).also { it.start() }
+        }
         homeSuggestionConnectionAdapter = HomeSuggestionConnectionAdapter(
             onActionClicked = { suggestion ->
                 suggestion.suggestedUserInfo?.id?.let { userId ->
@@ -859,6 +871,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         super.onResume()
         resetFilter()
         callToInitHome()
+        suggestionSection?.onResume()
         actionsPresenter.getUnreadCount()
         sendUserDiscussionStatus()
 
@@ -873,6 +886,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         heartHandler?.removeCallbacks(heartRunnable)
         heartHandler = null
         userPresenter.user.removeObserver(userObserver)
+        suggestionSection = null
         super.onDestroyView()
     }
 
@@ -1189,6 +1203,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             if (concatAdapter.adapters.contains(homeSkeletonAdapter)) {
                 concatAdapter.removeAdapter(homeSkeletonAdapter)
                 concatAdapter.addAdapter(welcomeJourneyAdapter)
+                suggestionSection?.adapters?.forEach { concatAdapter.addAdapter(it) }
                 concatAdapter.addAdapter(initialPedagoHeaderAdapter)
                 concatAdapter.addAdapter(initialPedagoWrapperAdapter)
                 concatAdapter.addAdapter(actionHeaderAdapter)
@@ -1197,8 +1212,10 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 concatAdapter.addAdapter(eventHeaderAdapter)
                 concatAdapter.addAdapter(eventWrapperAdapter)
                 concatAdapter.addAdapter(eventButtonAdapter)
-                concatAdapter.addAdapter(homeSuggestionConnectionAdapter)
-                concatAdapter.addAdapter(homeSuggestionNextStepAdapter)
+                if (suggestionSection == null) {
+                    concatAdapter.addAdapter(homeSuggestionConnectionAdapter)
+                    concatAdapter.addAdapter(homeSuggestionNextStepAdapter)
+                }
                 concatAdapter.addAdapter(groupHeaderAdapter)
                 concatAdapter.addAdapter(groupWrapperAdapter)
                 concatAdapter.addAdapter(groupButtonAdapter)
