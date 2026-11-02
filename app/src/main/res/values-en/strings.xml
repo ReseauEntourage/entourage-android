@@ -2189,21 +2189,4 @@
     <string name="home_suggestion_open_details">Open details</string>
     <string name="home_suggestion_later_snackbar">Suggestion set aside. We won\'t offer it again right away.</string>
     <string name="home_suggestion_later_undo">Undo</string>
-    <!-- "Why this suggestion?" screen (EN-9480) -->
-    <string name="home_suggestion_why_title_default">Why this suggestion?</string>
-    <string name="home_suggestion_why_title_entraide">Why this request for help?</string>
-    <string name="home_suggestion_why_title_content">Why this content?</string>
-    <string name="home_suggestion_why_title_event">Why this event?</string>
-    <string name="home_suggestion_why_title_group">Why this group?</string>
-    <string name="home_suggestion_why_title_connection">Why this person?</string>
-    <string name="home_suggestion_why_title_place">Why this place?</string>
-    <string name="home_suggestion_why_reason_proximity">It\'s %1$s from your home.</string>
-    <string name="home_suggestion_why_reason_interests">You said you enjoy %1$s.</string>
-    <string name="home_suggestion_why_reason_moment">It\'s %1$s, so the chance is close.</string>
-    <string name="home_suggestion_why_reason_history">You took part in something similar in %1$s.</string>
-    <string name="home_suggestion_why_reason_need">You were looking for %1$s.</string>
-    <string name="home_suggestion_why_reason_accessibility">It\'s free and no appointment is needed.</string>
-    <string name="home_suggestion_why_reason_social_proof">Neighbours are already taking part.</string>
-    <string name="home_suggestion_why_footer">You can ignore a suggestion at any time.</string>
-    <string name="home_suggestion_why_close">Got it</string>
 </resources>

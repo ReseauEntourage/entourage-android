@@ -11,10 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -49,9 +45,8 @@ fun SuggestionHeroZone(
     onLater: (NextStepSuggestion) -> Unit,
     onBody: (NextStepSuggestion) -> Unit,
     onShown: (NextStepSuggestion) -> Unit,
-    onWhyOpened: (NextStepSuggestion) -> Unit = {},
+    onWhy: ((NextStepSuggestion) -> Unit)? = null,
 ) {
-    var whyFor by remember { mutableStateOf<NextStepSuggestion?>(null) }
     if (ui is HeroUi.Hidden) return
     Column(
         modifier = Modifier
@@ -85,14 +80,10 @@ fun SuggestionHeroZone(
                     onCta = { onCta(s) },
                     onLater = { onLater(s) },
                     onBody = { onBody(s) },
-                    onWhy = if (s.displayableReasons().isEmpty()) null else {
-                        { whyFor = s; onWhyOpened(s) }
-                    },
+                    onWhy = onWhy?.takeIf { s.displayableReasons().isNotEmpty() }?.let { why -> { why(s) } },
                 )
             }
             HeroUi.Hidden -> Unit
         }
     }
-
-    whyFor?.let { WhySuggestionSheet(it, onDismiss = { whyFor = null }) }
 }

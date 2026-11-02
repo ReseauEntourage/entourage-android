@@ -52,7 +52,6 @@ class HomeSuggestionSection(
                 viewModel.later(s)
             },
             onShown = { AnalyticsEvents.logEvent(AnalyticsEvents.View_Home_Suggestion_Hero) },
-            onWhyOpened = { AnalyticsEvents.logEvent(AnalyticsEvents.Click_Home_Suggestion_Why) },
         )
     }
 

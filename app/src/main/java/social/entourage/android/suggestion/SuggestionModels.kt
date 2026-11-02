@@ -31,11 +31,7 @@ enum class ContentTag { UNDERSTAND, ACT }
 enum class ReasonKind { PROXIMITY, INTERESTS, MOMENT, HISTORY, NEED, ACCESSIBILITY, SOCIAL_PROOF }
 
 /** Une raison du « Pourquoi cette suggestion ? » : un signal réellement utilisé par le moteur. */
-data class SuggestionReason(val kind: ReasonKind, val param: String? = null) {
-    /** Une raison qui cite une valeur (distance, intérêt, date…) est inutilisable sans elle. */
-    val isRenderable: Boolean
-        get() = param != null || kind == ReasonKind.ACCESSIBILITY || kind == ReasonKind.SOCIAL_PROOF
-}
+data class SuggestionReason(val kind: ReasonKind, val param: String? = null)
 
 /** Ligne de méta optionnelle de la card (date, lieu, distance, durée…). */
 data class SuggestionMeta(val icon: String? = null, val text: String)
@@ -68,7 +64,6 @@ data class NextStepSuggestion(
     /** 2 à 3 raisons maximum, sans preuve sociale pour une personne isolée. */
     fun displayableReasons(): List<SuggestionReason> =
         reasons
-            .filter { it.isRenderable }
             .filterNot { isolatedAudience && it.kind == ReasonKind.SOCIAL_PROOF }
             .take(MAX_REASONS)
 
