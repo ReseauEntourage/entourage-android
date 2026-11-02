@@ -205,6 +205,11 @@ class ApiJsonCharacterizationTest {
         assertEquals(false, s.association)
         assertEquals("contribution", s.preference)
         assertEquals(listOf("evt-1", "evt-2"), s.events)
+        val journey = s.onboardingJourney!!
+        assertEquals(true, journey.removed)
+        assertEquals("inactivity", journey.removedReason)
+        assertEquals("skipped", journey.steps!!["neighborhood_national"])
+        assertEquals(1, journey.doneStepsCount)
         assertEquals("Modo", s.moderator!!.displayName)
         assertEquals(55, s.unclosedAction!!.id)
         assertEquals(emptyList<Any>(), s.congratulations)

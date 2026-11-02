@@ -14,6 +14,12 @@
   "neighborhood_participations_count": 3,
   "preference": "contribution",
   "events": ["evt-1", "evt-2"],
+  "onboarding_journey": {
+    "removed": true,
+    "removed_reason": "inactivity",
+    "steps": { "welcome_watched": "done", "neighborhood_national": "skipped", "webinar_or_first_steps": "todo", "papotages": "todo" },
+    "done_steps_count": 1
+  },
   "moderator": { "id": 3, "display_name": "Modo", "avatar_url": "https://cdn.example.org/avatars/3.png" },
   "unclosed_action": { "id": 55, "action_type": "contribution", "title": "Don de vêtements" },
   "recommandations": [

@@ -78,6 +78,9 @@ interface UserRequest {
     @POST("users/onboarding_step_skipped")
     fun skipOnboardingStep(@Body step: ArrayMap<String, Any>): Call<ResponseBody>
 
+    @POST("users/onboarding_journey_hidden")
+    fun hideOnboardingJourney(): Call<ResponseBody>
+
     @GET("users/unread")
     fun getUnreadCountForUser(): Call<UnreadCountWrapper>
 }

@@ -15,6 +15,26 @@ class SummaryAction{
 
 }
 
+/**
+ * État du parcours de bienvenue porté par le back (`user.onboarding_journey`). `steps` est indexé par
+ * l'argument de `POST users/onboarding_step_skipped` (todo | done | skipped), `removedReason` vaut
+ * completed | hidden | inactivity | ceiling quand `removed` est vrai.
+ */
+@KSerializable
+class OnboardingJourney : Serializable {
+    @SerialName("removed")
+    var removed: Boolean? = null
+
+    @SerialName("removed_reason")
+    var removedReason: String? = null
+
+    @SerialName("steps")
+    var steps: Map<String, String>? = null
+
+    @SerialName("done_steps_count")
+    var doneStepsCount: Int? = null
+}
+
 @KSerializable
 class Summary : Serializable {
     @SerialName("id")
@@ -64,6 +84,9 @@ class Summary : Serializable {
 
     @SerialName("referent_benevole")
     var referentBenevole: HomeModerator? = null
+
+    @SerialName("onboarding_journey")
+    var onboardingJourney: OnboardingJourney? = null
 
     @SerialName("congratulations")
     var congratulations: MutableList<HomeAction>? = null

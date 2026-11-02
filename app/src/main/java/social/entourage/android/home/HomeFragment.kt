@@ -242,11 +242,15 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
         // Récupération des informations de validation via le WS uniquement
         val events = (if (BuildConfig.DEBUG) summaryEventsOverride else null) ?: summary.events
-        val states = WelcomeJourneyStep.statesOf(events)
+        // Un faux summary injecté (debug / tests) l'emporte sur l'état du back
+        val journey = if (BuildConfig.DEBUG && summaryEventsOverride != null) null else summary.onboardingJourney
+        // Le back porte l'état du parcours (retrait, étapes) : il fait foi, les règles locales ne servent qu'en repli
+        val serverDriven = WelcomeJourneyServerState.isServerDriven(journey)
+        val states = WelcomeJourneyStep.statesOf(events, journey)
         // Parcours "résolu" : chaque étape est faite ou passée
         val allResolved = states.all { it != WelcomeJourneyState.TODO }
 
-        if (!forced && currentUser?.id != null && currentUser.partner == null &&
+        if (!serverDriven && !forced && currentUser?.id != null && currentUser.partner == null &&
             !isWelcomeJourneyHidden(currentUser.id) && inactivityCheckedForUserId != currentUser.id
         ) {
             inactivityCheckedForUserId = currentUser.id
@@ -260,8 +264,23 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 return
             }
 
+            // Règle serveur : parcours retiré par le back (terminé, masqué, inactivité, plafond), définitif
+            if (serverDriven && WelcomeJourneyServerState.isRemoved(journey)) {
+                if (WelcomeJourneyServerState.shouldCongratulateOnRemoval(journey, states, journeyShownThisSession)) {
+                    showCongratDialog(summary)
+                }
+                journeyShownThisSession = false
+                welcomeJourneyAdapter.setVisible(false)
+                return
+            }
+
             // Règle 1 bis: Masqué manuellement par l'utilisateur ("Masquer le parcours")
             if (isWelcomeJourneyHidden(currentUser?.id)) {
+                // Le back ne le sait pas encore (appel échoué) : on le lui redit une fois par session
+                if (serverDriven && currentUser?.id != null && hideSyncedForUserId != currentUser.id) {
+                    hideSyncedForUserId = currentUser.id
+                    WelcomeJourneyApi.hideHandler { }
+                }
                 welcomeJourneyAdapter.setVisible(false)
                 return
             }
@@ -285,6 +304,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         }
 
         // Sinon on affiche le composant et on met à jour les données
+        journeyShownThisSession = true
         welcomeJourneyAdapter.setVisible(true)
         welcomeJourneyAdapter.updateStates(states)
 
@@ -356,6 +376,7 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
             summaryEventsOverride = summaryEventsOverride!! + step.skippedEvent
         } else {
             summary.events = ((summary.events ?: mutableListOf()) + step.skippedEvent).toMutableList()
+            WelcomeJourneyServerState.withSkipped(summary.onboardingJourney, step.apiStep)
         }
         handleWelcomeJourneyState(summary)
     }
@@ -384,6 +405,10 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 }
             }
             welcomeJourneyAdapter.setVisible(false)
+            // Le back garde la raison « masqué » (survit à la réinstallation) ; en cas d'échec le masquage local reste
+            WelcomeJourneyApi.hideHandler { success ->
+                if (success) hideSyncedForUserId = EntourageApplication.get().me()?.id
+            }
             debugLastAction = "Parcours masqué"
             refreshDebugJourneyPanel()
             dialog.dismiss()
@@ -1682,6 +1707,10 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         private var hasInitiallyCompletedAll: Boolean? = null
         // On stocke l'ID pour réinitialiser l'état si on change de compte
         private var currentUserIdForJourney: Int? = null
+        // Le parcours a été affiché pendant cette session (félicitations quand le back le retire car terminé)
+        private var journeyShownThisSession = false
+        // Le back a été informé du masquage manuel pour cet utilisateur (sinon on le lui redit une fois)
+        private var hideSyncedForUserId: Int? = null
 
         private const val MENU_HIDE_JOURNEY = 1
 

@@ -93,7 +93,9 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
         .around(activityRule)
 
     private val originalSkipHandler = WelcomeJourneyApi.skipHandler
+    private val originalHideHandler = WelcomeJourneyApi.hideHandler
     private val skipRequests = mutableListOf<String>()
+    private var hideRequests = 0
 
     @Before
     fun setUp() {
@@ -102,6 +104,12 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
             super.setUp(activity)
         }
         skipRequests.clear()
+        hideRequests = 0
+        // POST users/onboarding_journey_hidden est intercepté : pas de masquage réel du compte de test
+        WelcomeJourneyApi.hideHandler = { onResult ->
+            hideRequests++
+            onResult(true)
+        }
         WelcomeJourneyApi.skipHandler = { step, onResult ->
             skipRequests += step.apiStep
             onResult(true)
@@ -114,6 +122,7 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
     @After
     override fun tearDown() {
         WelcomeJourneyApi.skipHandler = originalSkipHandler
+        WelcomeJourneyApi.hideHandler = originalHideHandler
         HomeFragment.summaryEventsOverride = null
         clearHiddenFlag()
         super.tearDown()
@@ -268,6 +277,7 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
         onView(withId(R.id.btn_hide_confirm)).perform(click())
         onIdle()
         onView(withId(R.id.btn_more)).check(doesNotExist())
+        assertEquals("Appels à POST users/onboarding_journey_hidden", 1, hideRequests)
         screenshot.shoot("parcours_masque")
     }
 
