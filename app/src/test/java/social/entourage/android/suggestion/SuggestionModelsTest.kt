@@ -57,3 +57,27 @@ class SuggestionModelsTest {
         assertEquals(listOf(ReasonKind.ACCESSIBILITY), suggestion("event", reasons).displayableReasons().map { it.kind })
     }
 }
+
+class SuggestionExplorerUiTest {
+    private val access = ExplorerAccess("a", "event", "l", tab = ExplorerTab.EVENTS)
+
+    @Test
+    fun zeroAccessHidesTheWholeZone() {
+        org.junit.Assert.assertEquals(
+            ExplorerUi.Hidden,
+            SuggestionUiState(loading = false, payload = SuggestionPayload(explorer = emptyList())).toExplorerUi(),
+        )
+    }
+
+    @Test
+    fun loadingWithoutDataShowsSkeletonAndKeepsContentWhileRefreshing() {
+        org.junit.Assert.assertEquals(ExplorerUi.Loading, SuggestionUiState().toExplorerUi())
+        val refreshing = SuggestionUiState(loading = true, payload = SuggestionPayload(explorer = listOf(access)))
+        org.junit.Assert.assertEquals(ExplorerUi.Ready(listOf(access)), refreshing.toExplorerUi())
+    }
+
+    @Test
+    fun errorWithoutDataHidesTheZone() {
+        org.junit.Assert.assertEquals(ExplorerUi.Hidden, SuggestionUiState(loading = false, payload = null).toExplorerUi())
+    }
+}
