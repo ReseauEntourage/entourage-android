@@ -126,13 +126,15 @@ class WelcomeJourneyStepTest {
     }
 
     @Test
-    fun `felicitations seulement si retire car termine, affiche pendant la session et au moins une etape faite`() {
-        val done = listOf(
+    fun `felicitations seulement si retire car termine, affiche pendant la session et toutes les etapes faites sans aucune passee`() {
+        val done = List(4) { WelcomeJourneyState.DONE }
+        val oneSkipped = listOf(
             WelcomeJourneyState.DONE, WelcomeJourneyState.SKIPPED, WelcomeJourneyState.DONE, WelcomeJourneyState.DONE
         )
         val allSkipped = List(4) { WelcomeJourneyState.SKIPPED }
         val completed = journey(removed = true, reason = "completed")
         assertTrue(WelcomeJourneyServerState.shouldCongratulateOnRemoval(completed, done, true))
+        assertFalse(WelcomeJourneyServerState.shouldCongratulateOnRemoval(completed, oneSkipped, true))
         assertFalse(WelcomeJourneyServerState.shouldCongratulateOnRemoval(completed, allSkipped, true))
         assertFalse(WelcomeJourneyServerState.shouldCongratulateOnRemoval(completed, done, false))
         assertFalse(WelcomeJourneyServerState.shouldCongratulateOnRemoval(journey(removed = true, reason = "hidden"), done, true))

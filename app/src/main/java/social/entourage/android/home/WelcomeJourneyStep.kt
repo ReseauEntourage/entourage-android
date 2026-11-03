@@ -128,10 +128,10 @@ object WelcomeJourneyServerState {
 
     fun isRemoved(journey: OnboardingJourney?): Boolean = journey?.removed == true
 
-    /** Félicitations à la sortie « terminé » : seulement si au moins une étape a été faite (pas toutes passées). */
+    /** Félicitations à la sortie « terminé » : seulement si les 4 étapes ont été faites, aucune passée. */
     fun shouldCongratulateOnRemoval(journey: OnboardingJourney?, states: List<WelcomeJourneyState>, shownThisSession: Boolean): Boolean =
         isRemoved(journey) && journey?.removedReason == "completed" && shownThisSession &&
-            states.any { it == WelcomeJourneyState.DONE }
+            states.all { it == WelcomeJourneyState.DONE }
 
     /** Reporte localement une étape passée (mise à jour optimiste) sans écraser une étape déjà faite. */
     fun withSkipped(journey: OnboardingJourney?, apiStep: String) {
