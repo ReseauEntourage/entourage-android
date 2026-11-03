@@ -204,10 +204,9 @@ class HomeWelcomeJourneyAdapter(
             v.button.strokeWidth = 0
             v.skip.visibility = View.GONE
             v.redo.visibility = View.GONE
-            // Les étapes 1 et 4 gardent un bouton vert (revoir la vidéo / message de fin)
+            // Seule l'étape 1 garde un bouton vert (revoir la vidéo)
             when (n) {
                 1 -> showDoneButton(v, "Revoir la vidéo")
-                4 -> showDoneButton(v, "Vous faites partie d'une communauté 🙌")
                 else -> v.button.visibility = View.GONE
             }
             v.button.setOnClickListener { onStepClick(n) }

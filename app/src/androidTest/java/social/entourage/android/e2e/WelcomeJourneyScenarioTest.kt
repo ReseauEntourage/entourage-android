@@ -230,6 +230,17 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
     }
 
     @Test
+    fun derniereEtapeFaiteNAffichePlusDeBouton() {
+        showJourney(listOf(WelcomeJourneyStep.PAPOTAGES.doneEvent))
+        screenshot.shoot("derniere_etape_faite")
+
+        scrollTo(R.id.tv_badge_step_4)
+        onView(withId(R.id.tv_badge_step_4)).check(matches(withText("Terminé")))
+        onView(withId(R.id.btn_step_4)).check(matches(not(isDisplayed())))
+        onView(withId(R.id.btn_skip_step_4)).check(matches(not(isDisplayed())))
+    }
+
+    @Test
     fun decouvrirUneEtapePasseeOuvreLeBonEcran() {
         showJourney(
             listOf(

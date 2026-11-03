@@ -44,7 +44,7 @@ interface DiscussionsRequest {
     @GET("conversations/{convId}")
     fun getDetailConversation(@Path("convId") conversationId: Int): Call<DiscussionDetailWrapper>
 
-    @GET("conversations/{convId}/chat_messages")
+    @GET("conversations/{convId}/chat_messages?image_size=high")
     fun getMessagesFor(@Path("convId") conversationId: Int,
                        @Query("page") page: Int,
                        @Query("per") per: Int): Call<PostListWrapper>
