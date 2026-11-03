@@ -56,15 +56,15 @@ class RequestBodyCharacterizationTest {
     }
 
     @Test
-    fun imagePost_withEmojiFallbackContent() {
+    fun imagePost_withoutContent() {
+        // Photo sans légende : pas de content par défaut (le backend l'accepte avec une image)
         val chatMessageMap = map().apply {
             put("image_url", "uploads/a.jpg")
             put("message_type", "image")
-            put("content", "📷")
         }
         val root = map().apply { put("chat_message", chatMessageMap) }
         assertJson(
-            """{"chat_message":{"image_url":"uploads/a.jpg","message_type":"image","content":"📷"}}""",
+            """{"chat_message":{"image_url":"uploads/a.jpg","message_type":"image"}}""",
             ApiJson.encode(root)
         )
     }

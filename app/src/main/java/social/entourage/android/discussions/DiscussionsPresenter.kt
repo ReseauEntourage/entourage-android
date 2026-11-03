@@ -479,7 +479,8 @@ class DiscussionsPresenter : ViewModel() {
                 val chatMessageMap = ArrayMap<String, Any>()
                 chatMessageMap["image_url"] = uploadKey
                 chatMessageMap["message_type"] = "image"
-                chatMessageMap["content"] = message ?: "📷"
+                // Pas de texte par défaut : le backend accepte un message image sans contenu
+                if (!message.isNullOrBlank()) chatMessageMap["content"] = message
 
                 val rootMap = ArrayMap<String, Any>()
                 rootMap["chat_message"] = chatMessageMap
