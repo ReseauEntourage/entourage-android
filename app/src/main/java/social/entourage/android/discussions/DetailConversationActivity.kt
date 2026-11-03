@@ -564,10 +564,10 @@ class DetailConversationActivity : CommentActivity() {
         }
         if (isSmallTalkMode) {
             smallTalkViewModel.addMessageWithImage(smallTalkId, caption, file)
-        } else if (detailConversation?.type == "outing") {
-            val eventId: Int = detailConversation?.id ?: return
-            eventPresenter.addPost(caption, file, eventId)
         } else {
+            // Événement compris : comme pour le texte (addComment), l'envoi passe par la ressource
+            // conversations pour que commentPosted fusionne le message complet (image_url) dans la liste
+            // — eventPresenter.addPost n'est observé par personne ici et la photo n'apparaissait qu'au retour.
             val conversationId: Int = detailConversation?.id ?: return
             discussionsPresenter.addCommentWithImage(conversationId, caption, file)
         }
