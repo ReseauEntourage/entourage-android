@@ -96,7 +96,7 @@ object ProfileImpactHelper {
     }
 
     fun bindMemberSince(context: Context, binding: ActivityLayoutProfileBinding, createdAt: Date?) {
-        val text = createdAt?.let { "❤️ " + memberSinceText(context, it) }
+        val text = createdAt?.let { "🧡 " + memberSinceText(context, it) }
         binding.tvMemberSince.text = text
         binding.tvMemberSince.visibility = if (text == null) View.GONE else View.VISIBLE
     }
