@@ -25,6 +25,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ui_pop_close"
         app:lottie_autoPlay="true"
+        app:lottie_ignoreDisabledSystemAnimations="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/congrat_short_anim" />
 
