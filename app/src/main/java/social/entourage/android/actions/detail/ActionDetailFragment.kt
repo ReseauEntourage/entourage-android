@@ -121,7 +121,8 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     private fun setupTranslationButton() {
         val sharedPrefs = EntourageApplication.get(context).sharedPreferences
 
-        if(DataLanguageStock.userLanguage == action?.descriptionTranslations?.fromLang){
+        val fromLang = action?.descriptionTranslations?.fromLang
+        if(fromLang == null || DataLanguageStock.userLanguage == fromLang){
             binding.layoutCsTranslate.visibility = View.GONE
         }else{
             binding.layoutCsTranslate.visibility = View.VISIBLE
@@ -139,14 +140,16 @@ class ActionDetailFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun updateTranslationText() {
+        // Les traductions peuvent être absentes (ex. action tout juste créée) :
+        // on retombe alors sur le titre / la description bruts.
         if(isTranslated){
             binding.titleActionTranslate.text = getString(R.string.layout_translate_title_translation_title)
-            binding.uiActionDescription.text = action?.descriptionTranslations?.translation
-            binding.uiTitleMain.text = action?.titleTranslations?.translation
+            binding.uiActionDescription.text = action?.descriptionTranslations?.translation ?: action?.description
+            binding.uiTitleMain.text = action?.titleTranslations?.translation ?: action?.title
         }else{
             binding.titleActionTranslate.text = getString(R.string.layout_translate_title_original_title)
-            binding.uiActionDescription.text = action?.descriptionTranslations?.original
-            binding.uiTitleMain.text = action?.titleTranslations?.original
+            binding.uiActionDescription.text = action?.descriptionTranslations?.original ?: action?.description
+            binding.uiTitleMain.text = action?.titleTranslations?.original ?: action?.title
         }
         val text = if (isTranslated) {
             // Si la traduction est activée
