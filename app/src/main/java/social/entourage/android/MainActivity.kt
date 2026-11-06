@@ -207,6 +207,9 @@ class MainActivity : BaseSecuredActivity() {
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
 
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            // Le callback est asynchrone : l'activité peut avoir été détruite entre-temps,
+            // auquel cas le launcher est désenregistré et launch() lèverait une IllegalStateException.
+            if (isFinishing || isDestroyed) return@addOnSuccessListener
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                 && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
             ) {
@@ -219,6 +222,8 @@ class MainActivity : BaseSecuredActivity() {
                     )
                 } catch (e: IntentSender.SendIntentException) {
                     e.printStackTrace()
+                } catch (e: IllegalStateException) {
+                    Timber.tag("Update").e(e, "Launcher de mise à jour non enregistré")
                 }
             }
         }
