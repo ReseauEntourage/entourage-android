@@ -179,7 +179,7 @@
                 app:fabSize="auto"
                 android:textSize="15sp"
                 android:fontFamily="@font/nunitosans_bold"
-                app:backgroundTint="@color/orange"
+                app:backgroundTint="@color/orange_button"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:visibility="visible"/>

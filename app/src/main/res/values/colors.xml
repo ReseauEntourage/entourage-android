@@ -187,4 +187,7 @@
     <!-- Accessibilité : texte orange/gris conforme WCAG AA (>= 4.5:1) sur fonds clairs -->
     <color name="orange_text">#A8530A</color>
     <color name="grey_text_accessible">#6B6B6B</color>
+    <!-- Accessibilité : fonds sous texte blanc (>= 4.5:1) -->
+    <color name="orange_button">#B35900</color>
+    <color name="tomato_accessible">#D32F2F</color>
 </resources>
