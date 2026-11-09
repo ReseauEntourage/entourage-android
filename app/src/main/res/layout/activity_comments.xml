@@ -302,10 +302,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:src="@drawable/icon_cross"
                 app:tint="@color/orange"
-                android:background="@drawable/bg_beige_round_15"
+                android:background="@drawable/bg_beige_round_15_inset9"
                 android:padding="17dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="20dp"/>
+                android:layout_marginTop="31dp"
+                android:layout_marginEnd="11dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

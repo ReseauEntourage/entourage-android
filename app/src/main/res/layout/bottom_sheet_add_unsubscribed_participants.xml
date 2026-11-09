@@ -45,7 +45,7 @@
         android:contentDescription="@string/a11y_decrease"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/bg_circle_orange_button"
+            android:background="@drawable/bg_circle_orange_button_inset8"
             android:padding="16dp"
             android:src="@drawable/ic_minus"
             app:tint="@color/white" />
@@ -65,7 +65,7 @@
         android:contentDescription="@string/a11y_increase"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/bg_circle_orange_button"
+            android:background="@drawable/bg_circle_orange_button_inset8"
             android:padding="16dp"
             android:src="@drawable/ic_fab_plus"
             app:tint="@color/white" />
@@ -93,7 +93,7 @@
         android:contentDescription="@string/a11y_decrease"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/bg_circle_orange_button"
+            android:background="@drawable/bg_circle_orange_button_inset8"
             android:padding="16dp"
             android:src="@drawable/ic_minus"
             app:tint="@color/white" />
@@ -113,7 +113,7 @@
         android:contentDescription="@string/a11y_increase"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/bg_circle_orange_button"
+            android:background="@drawable/bg_circle_orange_button_inset8"
             android:padding="16dp"
             android:src="@drawable/ic_fab_plus"
             app:tint="@color/white" />
@@ -140,7 +140,7 @@
         android:contentDescription="@string/a11y_decrease"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/bg_circle_orange_button"
+            android:background="@drawable/bg_circle_orange_button_inset8"
             android:padding="16dp"
             android:src="@drawable/ic_minus"
             app:tint="@color/white" />
@@ -160,7 +160,7 @@
         android:contentDescription="@string/a11y_increase"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/bg_circle_orange_button"
+            android:background="@drawable/bg_circle_orange_button_inset8"
             android:padding="16dp"
             android:src="@drawable/ic_fab_plus"
             app:tint="@color/white" />

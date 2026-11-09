@@ -15,9 +15,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/iconcross"
         android:scaleType="centerCrop"
-        android:background="@drawable/white_round_imagebutton"
-        android:layout_marginEnd="25dp"
-        android:layout_marginTop="25dp"
+        android:background="@drawable/white_round_imagebutton_inset11"
+        android:layout_marginEnd="14dp"
+        android:layout_marginTop="14dp"
         android:padding="15dp"
         android:elevation="10dp"/>
     <social.entourage.android.tools.view.ZoomableImageView

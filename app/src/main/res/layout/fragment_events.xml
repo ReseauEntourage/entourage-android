@@ -47,10 +47,10 @@
                 android:contentDescription="@string/a11y_filter"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:background="@drawable/bg_partner_logo"
+                android:background="@drawable/bg_partner_logo_inset6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="@dimen/entourage_margin_end">
 
                 <ImageView
@@ -70,11 +70,11 @@
                 android:contentDescription="@string/a11y_search"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:background="@drawable/bg_partner_logo"
+                android:background="@drawable/bg_partner_logo_inset6"
                 app:layout_constraintEnd_toStartOf="@+id/ui_layout_filter"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp">
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="2dp">
                 <ImageView
         android:importantForAccessibility="no"
                     android:id="@+id/ui_bell_search"

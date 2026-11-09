@@ -81,10 +81,10 @@
             android:contentDescription="@string/notifications"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/bg_partner_logo"
+            android:background="@drawable/bg_partner_logo_inset6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="@dimen/entourage_margin_end">
 
             <ImageView
