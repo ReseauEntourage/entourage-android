@@ -2187,4 +2187,6 @@
     <string name="a11y_post_photo">Post photo</string>
     <string name="a11y_fullscreen_photo">Full screen photo</string>
     <string name="a11y_report_message_hint">Describe the problem</string>
+    <string name="a11y_add_reaction">React</string>
+    <string name="a11y_open_profile">View profile</string>
 </resources>

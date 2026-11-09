@@ -1,6 +1,7 @@
 ﻿package social.entourage.android.actions.create
 
 import androidx.compose.foundation.Image
+import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -213,12 +214,12 @@ private fun CharterHeader(onBackClick: () -> Unit) {
     ) {
         Image(
             painter = painterResource(R.drawable.ic_arrow_back_white),
-            contentDescription = null,
+            contentDescription = stringResource(R.string.back),
             modifier = Modifier
                 .testTag("icon_back")
-                .size(40.dp)
-                .clickable(onClick = onBackClick)
-                .padding(10.dp)
+                .size(48.dp)
+                .clickable(role = Role.Button, onClick = onBackClick)
+                .padding(14.dp)
         )
         Spacer(Modifier.width(10.dp))
         Text(

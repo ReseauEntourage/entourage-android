@@ -1,6 +1,10 @@
 ﻿package social.entourage.android.comment
 
 import android.graphics.drawable.GradientDrawable
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.Role
 import android.view.Gravity
 import android.widget.FrameLayout
 import android.widget.LinearLayout
@@ -199,7 +203,7 @@ fun MessageBubbleItem(
             } else {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.clickable(onClick = onRetryClick)
+                    modifier = Modifier.clickable(role = Role.Button, onClick = onRetryClick)
                 ) {
                     Image(
                         painter = painterResource(R.drawable.ic_retry),
@@ -335,12 +339,12 @@ private fun MessageActionsTriggerButton(showLabel: Boolean, onClick: () -> Unit,
             .clip(RoundedCornerShape(20.dp))
             .background(colorResource(R.color.white))
             .border(1.dp, colorResource(R.color.grey_border_light), RoundedCornerShape(20.dp))
-            .clickable(onClick = onClick)
+            .clickable(role = Role.Button, onClick = onClick)
             .padding(horizontal = if (showLabel) 12.dp else 6.dp, vertical = 6.dp)
     ) {
         Image(
             painter = painterResource(R.drawable.ic_reaction_smiley),
-            contentDescription = null,
+            contentDescription = if (showLabel) null else stringResource(R.string.a11y_add_reaction),
             colorFilter = ColorFilter.tint(colorResource(R.color.orange)),
             modifier = Modifier.size(16.dp)
         )
@@ -456,7 +460,11 @@ fun ReactionPickerRow(types: List<ReactionType>, selectedTypeId: Int, onPicked: 
                 modifier = Modifier
                     .clip(CircleShape)
                     .background(if (isSelected) colorResource(R.color.light_orange_opacity_50) else Color.Transparent)
-                    .clickable { onPicked(type) }
+                    .semantics {
+                        contentDescription = type.key ?: ""
+                        selected = isSelected
+                    }
+                    .clickable(role = Role.Button) { onPicked(type) }
                     .padding(6.dp)
             ) {
                 GlideIcon(url = type.imageUrl, size = 26.dp)
@@ -548,11 +556,13 @@ private fun HtmlMessageText(
 
 @Composable
 private fun GlideCircleAvatar(url: String?, size: Dp, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    val openProfileDescription = stringResource(R.string.a11y_open_profile)
     AndroidView(
         modifier = modifier
             .size(size)
             .clip(CircleShape)
-            .clickable(onClick = onClick),
+            .semantics { contentDescription = openProfileDescription }
+            .clickable(role = Role.Button, onClick = onClick),
         factory = { ImageView(it) },
         update = { iv ->
             Glide.with(iv)

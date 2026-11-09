@@ -3740,4 +3740,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="a11y_post_photo">Photo de la publication</string>
     <string name="a11y_fullscreen_photo">Photo en plein écran</string>
     <string name="a11y_report_message_hint">Décrivez le problème</string>
+    <string name="a11y_add_reaction">Réagir</string>
+    <string name="a11y_open_profile">Voir le profil</string>
 </resources>
