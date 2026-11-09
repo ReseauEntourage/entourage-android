@@ -40,6 +40,7 @@
 
   <androidx.appcompat.widget.AppCompatTextView
       android:id="@+id/no_result_tv"
+        android:accessibilityLiveRegion="polite"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_below="@+id/search_edt"

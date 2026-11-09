@@ -58,6 +58,7 @@
 
     <TextView
         android:id="@+id/tv_error_title"
+        android:accessibilityLiveRegion="polite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
@@ -70,6 +71,7 @@
 
     <TextView
         android:id="@+id/tv_error_description"
+        android:accessibilityLiveRegion="polite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="12dp"

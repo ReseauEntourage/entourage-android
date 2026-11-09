@@ -1,6 +1,8 @@
 package social.entourage.android.ui.create
 
 import android.widget.ImageView
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Canvas
@@ -247,7 +249,8 @@ internal fun CfError(@StringRes message: Int?, modifier: Modifier = Modifier, to
         modifier = modifier
             .fillMaxWidth()
             .padding(top = topMargin)
-            .let { if (tag != null) it.testTag(tag) else it },
+            .let { if (tag != null) it.testTag(tag) else it }
+            .semantics { liveRegion = LiveRegionMode.Polite },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
