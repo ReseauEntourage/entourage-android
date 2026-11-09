@@ -115,7 +115,7 @@
                 android:layout_height="48dp"
                 android:layout_margin="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:background="@drawable/bg_white_selected_filter"
+                android:background="@drawable/bg_white_selected_filter_inset_h0_v9"
                 android:paddingHorizontal="4dp"
                 android:paddingVertical="6dp"
                 app:layout_constraintBottom_toBottomOf="parent"

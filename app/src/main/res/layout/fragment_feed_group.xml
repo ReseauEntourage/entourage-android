@@ -194,7 +194,7 @@
                                 android:fontFamily="@font/nunitosans_bold"
                                 android:text="@string/event_btn_share_title"
                                 android:textColor="@color/black"
-                                android:background="@drawable/shape_button_v9_negative"
+                                android:background="@drawable/shape_button_v9_negative_inset_h0_v4"
                                 android:drawablePadding="16dp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:drawableTint="@color/black"
