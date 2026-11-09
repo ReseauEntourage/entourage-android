@@ -270,6 +270,7 @@
 
                 <EditText
                     android:id="@+id/message"
+                    android:hint="@string/a11y_report_message_hint"
                     style="@style/input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -63,6 +63,7 @@
 
             <ImageView
                 android:id="@+id/image"
+        android:importantForAccessibility="no"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 tools:src="@drawable/illu_header_group" />
@@ -134,6 +135,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
 
         <ImageView
             android:id="@+id/photo_post"
+        android:contentDescription="@string/a11y_post_photo"
             android:layout_width="match_parent"
             android:layout_height="185dp"
             android:layout_marginTop="16dp"

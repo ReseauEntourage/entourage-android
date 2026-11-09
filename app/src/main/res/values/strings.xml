@@ -3736,4 +3736,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="a11y_contact">Contacter</string>
     <string name="a11y_delete_image">Supprimer l’image</string>
     <string name="a11y_comments">Commentaires</string>
+    <string name="a11y_asso_logo">Logo de l’association</string>
+    <string name="a11y_post_photo">Photo de la publication</string>
+    <string name="a11y_fullscreen_photo">Photo en plein écran</string>
+    <string name="a11y_report_message_hint">Décrivez le problème</string>
 </resources>

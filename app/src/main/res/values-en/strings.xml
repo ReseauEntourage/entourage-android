@@ -2183,4 +2183,8 @@
     <string name="a11y_contact">Contact</string>
     <string name="a11y_delete_image">Delete image</string>
     <string name="a11y_comments">Comments</string>
+    <string name="a11y_asso_logo">Association logo</string>
+    <string name="a11y_post_photo">Post photo</string>
+    <string name="a11y_fullscreen_photo">Full screen photo</string>
+    <string name="a11y_report_message_hint">Describe the problem</string>
 </resources>

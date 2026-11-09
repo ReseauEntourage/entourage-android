@@ -15,6 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
     <ImageView
         android:id="@+id/report_user_image"
+        android:importantForAccessibility="no"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="16dp"
@@ -38,6 +39,7 @@
          />
     <ImageView
         android:id="@+id/block_user_image"
+        android:importantForAccessibility="no"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="30dp"

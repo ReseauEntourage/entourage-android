@@ -53,6 +53,7 @@
 
             <ImageView
                 android:id="@+id/iv_logo"
+        android:contentDescription="@string/a11y_asso_logo"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_marginTop="32dp"

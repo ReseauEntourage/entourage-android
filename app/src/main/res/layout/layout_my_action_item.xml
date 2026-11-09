@@ -15,6 +15,7 @@
 
         <ImageView
             android:id="@+id/image"
+        android:importantForAccessibility="no"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginStart="0dp"

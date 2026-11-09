@@ -9,6 +9,7 @@
 
         <ImageView
             android:id="@+id/image"
+        android:importantForAccessibility="no"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@drawable/illu_event_success"
