@@ -18,6 +18,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:id="@+id/btn_cross"
+        android:contentDescription="@string/close"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintTop_toTopOf="parent"

@@ -159,6 +159,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
 
             <ImageView
                 android:id="@+id/imageViewComments"
+        android:contentDescription="@string/a11y_comments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_comments"

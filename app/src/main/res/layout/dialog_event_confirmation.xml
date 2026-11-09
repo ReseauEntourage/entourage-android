@@ -19,6 +19,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:id="@+id/close_button"
+        android:contentDescription="@string/close"
         android:src="@drawable/ic_close_whith_round"
         android:background="@color/transparent"
         android:layout_marginTop="20dp"

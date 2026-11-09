@@ -179,6 +179,7 @@
 
                         <ImageView
                             android:id="@+id/delete_image"
+        android:contentDescription="@string/a11y_delete_image"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="17dp"

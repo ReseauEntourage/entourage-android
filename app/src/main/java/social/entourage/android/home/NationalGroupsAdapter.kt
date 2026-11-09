@@ -86,7 +86,7 @@ class NationalGroupsAdapter(
                 // Style "rejoint" - bouton secondaire avec tick (comme EnhancedOnboarding)
                 joinButton.text = "Rejoint ✓"
                 joinButton.setBackgroundColor(itemView.context.getColor(R.color.beige))
-                joinButton.setTextColor(itemView.context.getColor(R.color.orange))
+                joinButton.setTextColor(itemView.context.getColor(R.color.orange_text))
                 //joinButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check, 0)
                 joinButton.compoundDrawablePadding = 8
             } else {

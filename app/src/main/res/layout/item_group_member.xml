@@ -82,6 +82,7 @@
             />
         <ImageView
             android:id="@+id/contact"
+        android:contentDescription="@string/a11y_contact"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:padding="10dp"

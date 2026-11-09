@@ -40,6 +40,7 @@
 
         <ImageView
             android:id="@+id/btn_minus_isoles"
+        android:contentDescription="@string/a11y_decrease"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:background="@drawable/bg_circle_orange_button"
@@ -58,6 +59,7 @@
 
         <ImageView
             android:id="@+id/btn_plus_isoles"
+        android:contentDescription="@string/a11y_increase"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:background="@drawable/bg_circle_orange_button"
@@ -85,6 +87,7 @@
 
         <ImageView
             android:id="@+id/btn_minus_femmes_isolees"
+        android:contentDescription="@string/a11y_decrease"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:background="@drawable/bg_circle_orange_button"
@@ -103,6 +106,7 @@
 
         <ImageView
             android:id="@+id/btn_plus_femmes_isolees"
+        android:contentDescription="@string/a11y_increase"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:background="@drawable/bg_circle_orange_button"
@@ -129,6 +133,7 @@
 
         <ImageView
             android:id="@+id/btn_minus_riverains"
+        android:contentDescription="@string/a11y_decrease"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:background="@drawable/bg_circle_orange_button"
@@ -147,6 +152,7 @@
 
         <ImageView
             android:id="@+id/btn_plus_riverains"
+        android:contentDescription="@string/a11y_increase"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:background="@drawable/bg_circle_orange_button"

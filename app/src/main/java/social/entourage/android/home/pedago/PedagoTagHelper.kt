@@ -15,7 +15,7 @@ fun TextView.setPedagoCategory(category: Category?) {
     when (category) {
         Category.ALL -> {
             this.text = context.getString(R.string.home_v2_pedago_item_tag_all)
-            this.setTextColor(ContextCompat.getColor(context, R.color.light_orange))
+            this.setTextColor(ContextCompat.getColor(context, R.color.orange_text))
             (shapeDrawable as? GradientDrawable)?.setColor(ContextCompat.getColor(context, R.color.beige_clair))
         }
         Category.ACT -> {
@@ -35,7 +35,7 @@ fun TextView.setPedagoCategory(category: Category?) {
         }
         null -> {
             this.text = ""
-            this.setTextColor(ContextCompat.getColor(context, R.color.light_orange))
+            this.setTextColor(ContextCompat.getColor(context, R.color.orange_text))
             (shapeDrawable as? GradientDrawable)?.setColor(ContextCompat.getColor(context, R.color.beige_clair))
         }
     }

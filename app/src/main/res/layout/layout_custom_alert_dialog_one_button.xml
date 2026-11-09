@@ -13,6 +13,7 @@
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:id="@+id/btn_cross"
+        android:contentDescription="@string/close"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/iconcross"
@@ -33,6 +34,7 @@
 
     <ImageView
         android:id="@+id/ui_pop_close"
+        android:contentDescription="@string/close"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:paddingTop="4dp"

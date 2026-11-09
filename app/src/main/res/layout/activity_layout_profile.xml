@@ -48,6 +48,7 @@
                 />
             <ImageView
                 android:id="@+id/icon_option"
+        android:contentDescription="@string/a11y_more_options"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="20dp"

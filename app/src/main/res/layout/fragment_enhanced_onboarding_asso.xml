@@ -64,6 +64,7 @@
 
             <ImageView
                 android:id="@+id/btn_upload_logo"
+        android:contentDescription="@string/a11y_edit_logo"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginEnd="0dp"

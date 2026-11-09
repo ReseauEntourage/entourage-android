@@ -54,6 +54,7 @@
 
                 <ImageView
                     android:id="@+id/ui_iv_close_new"
+        android:contentDescription="@string/close"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginTop="16dp"
@@ -293,6 +294,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/btn_quit_photo"
+        android:contentDescription="@string/close"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:src="@drawable/icon_cross"
@@ -353,6 +355,7 @@
 
             <ImageView
                 android:id="@+id/btn_cancel_edit_message"
+        android:contentDescription="@string/cancel"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:padding="2dp"
@@ -377,6 +380,7 @@
                 android:layout_width="46dp"
                 android:layout_height="46dp"
                 android:id="@+id/option_button"
+        android:contentDescription="@string/a11y_more_options"
                 android:layout_gravity="start"
                 android:background="@drawable/ic_conversation_more_option"
                 android:visibility="gone"/>
@@ -501,6 +505,7 @@
 
             <ImageView
                 android:id="@+id/btn_close_staff_banner"
+        android:contentDescription="@string/close"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:padding="12dp"

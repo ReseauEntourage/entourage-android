@@ -388,7 +388,7 @@ class PostAdapter(
             } else {
                 // pouce orange
                 surveyHolder.binding.ivILike.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_pouce_orange))
-                surveyHolder.binding.tvTitleILike.setTextColor(context.getColor(R.color.orange))
+                surveyHolder.binding.tvTitleILike.setTextColor(context.getColor(R.color.orange_text))
             }
 
             surveyHolder.binding.btnILike.setOnClickListener {
@@ -634,7 +634,7 @@ class PostAdapter(
             binding.tvTitleILike.setTextColor(context.getColor(R.color.black))
         } else {
             binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_orange))
-            binding.tvTitleILike.setTextColor(context.getColor(R.color.orange))
+            binding.tvTitleILike.setTextColor(context.getColor(R.color.orange_text))
         }
 
         // Clique rapide sur "like" => applique la 1ère réaction

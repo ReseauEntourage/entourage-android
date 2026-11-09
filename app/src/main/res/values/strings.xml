@@ -3726,4 +3726,14 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="a11y_send_comment">Envoyer le commentaire</string>
     <string name="a11y_my_profile">Mon profil</string>
     <string name="a11y_map">Carte</string>
+    <string name="a11y_more_options">Plus d’options</string>
+    <string name="a11y_add_to_calendar">Ajouter à mon agenda</string>
+    <string name="a11y_use_my_location">Utiliser ma position</string>
+    <string name="a11y_download_photo">Télécharger la photo</string>
+    <string name="a11y_decrease">Diminuer</string>
+    <string name="a11y_increase">Augmenter</string>
+    <string name="a11y_edit_logo">Modifier le logo</string>
+    <string name="a11y_contact">Contacter</string>
+    <string name="a11y_delete_image">Supprimer l’image</string>
+    <string name="a11y_comments">Commentaires</string>
 </resources>

@@ -11,6 +11,7 @@
 
     <ImageButton
         android:id="@+id/btn_cross"
+        android:contentDescription="@string/close"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:background="@color/transparent"
