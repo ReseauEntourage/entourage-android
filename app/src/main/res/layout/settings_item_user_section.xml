@@ -6,6 +6,7 @@
     xmlns:tool="http://schemas.android.com/tools">
     
     <ImageView
+        android:importantForAccessibility="no"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:id="@+id/iv_user_section"
@@ -60,6 +61,7 @@
         />
     
     <ImageView
+        android:importantForAccessibility="no"
         android:layout_width="15dp"
         android:layout_height="15dp"
         android:id="@+id/iv_arrow_user_section"

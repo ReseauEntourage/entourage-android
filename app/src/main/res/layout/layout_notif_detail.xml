@@ -11,6 +11,7 @@
         android:orientation="horizontal">
 
         <ImageView
+        android:importantForAccessibility="no"
             android:id="@+id/image_card"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -47,6 +48,7 @@
             tools:text="Votre guide dans l'app" />
 
         <ImageView
+        android:importantForAccessibility="no"
             android:id="@+id/next_icon"
             android:layout_width="13dp"
             android:layout_height="13dp"

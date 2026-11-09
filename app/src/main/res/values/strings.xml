@@ -3742,4 +3742,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="a11y_report_message_hint">Décrivez le problème</string>
     <string name="a11y_add_reaction">Réagir</string>
     <string name="a11y_open_profile">Voir le profil</string>
+    <string name="a11y_profile_photo">Photo de profil</string>
+    <string name="a11y_photo_preview">Aperçu de la photo</string>
 </resources>

@@ -19,6 +19,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
     <ImageView
+        android:importantForAccessibility="no"
         android:id="@+id/author_image"
         android:layout_width="25dp"
         android:layout_height="25dp"
@@ -238,6 +239,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_react_one"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
@@ -248,6 +250,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_react_two"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
@@ -258,6 +261,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_react_three"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
@@ -268,6 +272,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_react_four"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
@@ -278,6 +283,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_react_five"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
@@ -373,6 +379,7 @@
             app:layout_constraintEnd_toStartOf="@+id/btn_i_comment"
             android:layout_marginTop="15dp">
             <ImageView
+        android:importantForAccessibility="no"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:id="@+id/iv_i_like"
@@ -405,6 +412,7 @@
             app:layout_constraintStart_toEndOf="@+id/btn_i_like"
             android:layout_marginTop="15dp">
             <ImageView
+        android:importantForAccessibility="no"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:id="@+id/iv_i_comment"

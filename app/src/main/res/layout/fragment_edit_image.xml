@@ -41,6 +41,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
+        android:contentDescription="@string/a11y_profile_photo"
                     android:id="@+id/image_profile"
                     android:layout_width="110dp"
                     android:layout_height="110dp"

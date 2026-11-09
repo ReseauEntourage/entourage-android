@@ -116,6 +116,7 @@
                     app:layout_constraintStart_toStartOf="parent"/>
                 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:id="@+id/iv_btn_event"
@@ -159,6 +160,7 @@
                 android:layout_marginBottom="20dp">
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
@@ -282,6 +284,7 @@
             app:layout_constraintBottom_toTopOf="@+id/post_comment"
             android:visibility="gone">
             <ImageView
+        android:contentDescription="@string/a11y_photo_preview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/iv_photo_preview"
@@ -426,6 +429,7 @@
             android:visibility="gone">
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_thumbnail"
                 android:layout_width="50dp"
                 android:layout_height="50dp"

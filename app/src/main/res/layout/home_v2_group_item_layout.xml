@@ -17,6 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent">
         <ImageView
+        android:importantForAccessibility="no"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:id="@+id/iv_group_item"

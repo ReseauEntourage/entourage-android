@@ -93,6 +93,7 @@
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:id="@+id/imageView14"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -157,6 +158,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/ui_description_2">
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:id="@+id/imageView15"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
@@ -168,6 +170,7 @@
                         app:srcCompat="@drawable/bg_hub_number2" />
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:id="@+id/imageView181"
                         android:layout_width="80dp"
                         android:layout_height="wrap_content"
@@ -244,6 +247,7 @@
                     app:layout_constraintEnd_toEndOf="parent" />
 
                 <com.google.android.material.imageview.ShapeableImageView
+        android:importantForAccessibility="no"
                     android:id="@+id/ui_image_3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -296,6 +300,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/ui_description_4">
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:id="@+id/imageView154"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
@@ -307,6 +312,7 @@
                         app:srcCompat="@drawable/bg_hub_number4" />
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:id="@+id/imageView1814"
                         android:layout_width="80dp"
                         android:layout_height="90dp"
@@ -385,6 +391,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/ui_description_5">
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:id="@+id/imageView155"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
@@ -396,6 +403,7 @@
                         app:srcCompat="@drawable/bg_hub_number2" />
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:id="@+id/imageView185"
                         android:layout_width="90dp"
                         android:layout_height="wrap_content"

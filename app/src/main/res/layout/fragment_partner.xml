@@ -34,6 +34,7 @@
                 android:visibility="visible">
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:id="@+id/ui_asso_iv_banner"
                     android:layout_width="0dp"
                     android:layout_height="60dp"
@@ -116,6 +117,7 @@
                         android:layout_height="wrap_content">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:id="@+id/iv_1"
                             android:layout_width="14dp"
                             android:layout_height="14dp"
@@ -148,6 +150,7 @@
                         android:layout_height="match_parent">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:id="@+id/iv_2"
                             android:layout_width="14dp"
                             android:layout_height="14dp"
@@ -220,6 +223,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:id="@+id/imageView20"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -228,6 +232,7 @@
                         app:srcCompat="@drawable/ic_bottom_right_corner" />
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:id="@+id/imageView18"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -439,6 +444,7 @@
                         android:layout_height="50dp">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:id="@+id/imageView49"
                             android:layout_width="20dp"
                             android:layout_height="wrap_content"
@@ -470,6 +476,7 @@
                         android:layout_marginTop="5dp">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:id="@+id/imageView491"
                             android:layout_width="20dp"
                             android:layout_height="wrap_content"
@@ -519,6 +526,7 @@
                             tools:visibility="visible" />
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:id="@+id/imageView492"
                             android:layout_width="20dp"
                             android:layout_height="wrap_content"
@@ -550,6 +558,7 @@
                             tools:text="Address" />
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:id="@+id/imageView493"
                             android:layout_width="20dp"
                             android:layout_height="wrap_content"

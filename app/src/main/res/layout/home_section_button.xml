@@ -19,6 +19,7 @@
         android:textSize="@dimen/entourage_font_small" />
 
     <ImageView
+        android:importantForAccessibility="no"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:src="@drawable/arrow_light_orange" />

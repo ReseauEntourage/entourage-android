@@ -46,6 +46,7 @@
         tools:text="Rejoignez le groupe «Dansons ensemble»" />
 
     <ImageView
+        android:importantForAccessibility="no"
         android:id="@+id/moderator_icon"
         android:layout_width="13dp"
         android:layout_height="13dp"

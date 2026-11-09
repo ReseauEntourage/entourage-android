@@ -54,6 +54,7 @@
                 tools:text="Notifications" />
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/icon_bell"
                 android:layout_width="26dp"
                 android:layout_height="wrap_content"

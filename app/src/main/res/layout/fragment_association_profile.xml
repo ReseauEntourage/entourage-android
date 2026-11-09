@@ -10,6 +10,7 @@
         android:background="@drawable/header_profile_orange">
 
         <ImageView
+        android:contentDescription="@string/a11y_asso_logo"
             android:id="@+id/asso_profile_image_association"
             android:layout_width="110dp"
             android:layout_height="110dp"

@@ -15,6 +15,7 @@
         android:weightSum="100">
 
         <ImageView
+        android:importantForAccessibility="no"
             android:id="@+id/picture"
             android:layout_width="50dp"
             android:layout_height="50dp"

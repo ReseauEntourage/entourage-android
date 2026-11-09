@@ -149,6 +149,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="17dp"
@@ -169,6 +170,7 @@
                         android:visibility="gone">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:id="@+id/add_photo"
                             android:layout_width="match_parent"
                             android:layout_height="200dp"

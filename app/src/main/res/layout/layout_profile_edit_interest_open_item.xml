@@ -9,6 +9,7 @@
         android:paddingBottom="15dp">
 
         <ImageView
+        android:importantForAccessibility="no"
             android:id="@+id/icon"
             android:layout_width="30dp"
             android:layout_height="30dp"

@@ -247,6 +247,7 @@
                         tools:visibility="visible">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             style="@style/group_member_subtitle_black"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

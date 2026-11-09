@@ -180,6 +180,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
                             <ImageView
+        android:importantForAccessibility="no"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
@@ -213,6 +214,7 @@
 
                         </LinearLayout>
                         <ImageView
+        android:importantForAccessibility="no"
                             android:id="@+id/arrow"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

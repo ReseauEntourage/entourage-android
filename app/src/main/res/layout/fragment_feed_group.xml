@@ -11,6 +11,7 @@
         android:background="@color/beige">
 
         <ImageView
+        android:importantForAccessibility="no"
             android:id="@+id/group_image"
             android:layout_width="match_parent"
             android:layout_height="120dp"
@@ -42,6 +43,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/group_image_toolbar"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
@@ -300,6 +302,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             android:text="@string/show_more_lined" />
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:id="@+id/arrow_events"
                             style="@style/left_courant_bold_black"
                             android:layout_width="wrap_content"
@@ -322,6 +325,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         app:layout_constraintTop_toBottomOf="@id/events">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/illu_header_group" />
@@ -399,6 +403,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
@@ -432,6 +437,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             app:layout_constraintTop_toBottomOf="@+id/title" />
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:id="@+id/arrow"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

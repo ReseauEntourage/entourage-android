@@ -31,6 +31,7 @@
                 android:text="@string/onboarding_title" />
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:layout_width="122dp"
                 android:layout_height="122dp"
                 android:layout_gravity="center"

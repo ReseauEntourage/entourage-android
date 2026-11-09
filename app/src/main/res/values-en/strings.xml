@@ -2189,4 +2189,6 @@
     <string name="a11y_report_message_hint">Describe the problem</string>
     <string name="a11y_add_reaction">React</string>
     <string name="a11y_open_profile">View profile</string>
+    <string name="a11y_profile_photo">Profile photo</string>
+    <string name="a11y_photo_preview">Photo preview</string>
 </resources>

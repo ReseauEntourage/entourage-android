@@ -72,6 +72,7 @@
                         android:layout_marginEnd="8dp">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:id="@+id/ui_bell_filter"
                             android:layout_width="24dp"
                             android:layout_height="22dp"
@@ -94,6 +95,7 @@
                         android:layout_marginEnd="8dp">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:id="@+id/ui_bell_search"
                             android:layout_width="24dp"
                             android:layout_height="22dp"
@@ -271,6 +273,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
@@ -305,6 +308,7 @@
                     </LinearLayout>
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:id="@+id/arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -22,6 +22,7 @@
             android:layout_height="150dp">
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_event_item"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -50,6 +51,7 @@
                 android:visibility="gone">
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:layout_width="10dp"
                     android:layout_height="10dp"
                     android:layout_marginEnd="4dp"
@@ -150,6 +152,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_marginEnd="6dp"
@@ -173,6 +176,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:layout_marginEnd="6dp"
@@ -213,6 +217,7 @@
                     android:layout_marginEnd="8dp">
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:id="@+id/iv_member3_home"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
@@ -222,6 +227,7 @@
                         android:visibility="gone" />
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:id="@+id/iv_member2_home"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
@@ -231,6 +237,7 @@
                         android:visibility="gone" />
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:id="@+id/iv_member1_home"
                         android:layout_width="24dp"
                         android:layout_height="24dp"

@@ -37,6 +37,7 @@
             android:minHeight="140dp">
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_tools_map_bg"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
@@ -75,6 +76,7 @@
             android:minHeight="140dp">
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_tools_pedago_bg"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
@@ -112,6 +114,7 @@
             android:minHeight="140dp">
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_tools_charter_bg"
                 android:layout_width="48dp"
                 android:layout_height="48dp"

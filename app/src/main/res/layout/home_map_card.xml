@@ -5,6 +5,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
+        android:importantForAccessibility="no"
         android:id="@+id/iv_map"
         android:layout_width="match_parent"
         android:layout_height="150dp"
@@ -32,6 +33,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
+        android:importantForAccessibility="no"
             android:id="@+id/icon_hom_v2_map_button"
             android:layout_width="29dp"
             android:layout_height="29dp"

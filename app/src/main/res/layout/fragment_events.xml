@@ -54,6 +54,7 @@
                 android:layout_marginEnd="@dimen/entourage_margin_end">
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:id="@+id/ui_bell_filter"
                     android:layout_width="24dp"
                     android:layout_height="22dp"
@@ -75,6 +76,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp">
                 <ImageView
+        android:importantForAccessibility="no"
                     android:id="@+id/ui_bell_search"
                     android:layout_width="24dp"
                     android:layout_height="22dp"
@@ -121,6 +123,7 @@
                 android:visibility="gone">
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:id="@+id/imageView26"
                     android:layout_width="20dp"
                     android:layout_height="wrap_content"

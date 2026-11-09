@@ -29,6 +29,7 @@
                 android:paddingHorizontal="@dimen/padding_horizontal"
                 android:paddingTop="8dp">
                 <ImageView
+        android:importantForAccessibility="no"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -71,6 +72,7 @@
                 android:paddingHorizontal="@dimen/padding_horizontal"
                 android:paddingTop="8dp">
                 <ImageView
+        android:importantForAccessibility="no"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -114,6 +116,7 @@
                 android:paddingHorizontal="@dimen/padding_horizontal"
                 android:paddingTop="8dp">
                 <ImageView
+        android:importantForAccessibility="no"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -163,6 +166,7 @@
                 android:paddingHorizontal="@dimen/padding_horizontal"
                 android:visibility="gone">
                 <ImageView
+        android:importantForAccessibility="no"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -193,6 +197,7 @@
                 android:paddingHorizontal="@dimen/padding_horizontal"
                 android:visibility="gone">
                 <ImageView
+        android:importantForAccessibility="no"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     app:layout_constraintStart_toStartOf="parent"

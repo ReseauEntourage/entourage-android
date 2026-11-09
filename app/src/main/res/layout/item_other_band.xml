@@ -16,6 +16,7 @@
 
         <!-- 📸 Avatars empilés 2x2 + 1 -->
         <ImageView
+        android:importantForAccessibility="no"
             android:id="@+id/avatar1"
             android:layout_width="33dp"
             android:layout_height="33dp"
@@ -26,6 +27,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
+        android:importantForAccessibility="no"
             android:id="@+id/avatar2"
             android:layout_width="33dp"
             android:layout_height="33dp"
@@ -38,6 +40,7 @@
             app:layout_constraintStart_toEndOf="@id/avatar1" />
 
         <ImageView
+        android:importantForAccessibility="no"
             android:id="@+id/avatar3"
             android:layout_width="33dp"
             android:layout_height="33dp"
@@ -49,6 +52,7 @@
             app:layout_constraintStart_toStartOf="@id/avatar1" />
 
         <ImageView
+        android:importantForAccessibility="no"
             android:id="@+id/avatar4"
             android:layout_width="33dp"
             android:layout_height="33dp"
@@ -61,6 +65,7 @@
             app:layout_constraintStart_toEndOf="@id/avatar3" />
 
         <ImageView
+        android:importantForAccessibility="no"
             android:id="@+id/avatar5"
             android:layout_width="33dp"
             android:layout_height="33dp"

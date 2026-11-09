@@ -21,6 +21,7 @@
         app:layout_constraintBottom_toTopOf="@id/separator"
         app:layout_constraintStart_toStartOf="parent">
         <ImageView
+        android:importantForAccessibility="no"
             android:id="@+id/ivInterestIcon"
             android:layout_width="80dp"
             android:layout_height="80dp"
@@ -96,6 +97,7 @@
 
 
     <ImageView
+        android:importantForAccessibility="no"
         android:id="@+id/ivInterestCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

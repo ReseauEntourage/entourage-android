@@ -13,6 +13,7 @@
 
     <!-- Avatar -->
     <ImageView
+        android:importantForAccessibility="no"
         android:id="@+id/iv_suggestion_avatar"
         android:layout_width="48dp"
         android:layout_height="48dp"

@@ -22,6 +22,7 @@
         android:paddingTop="25dp">
 
         <ImageView
+        android:importantForAccessibility="no"
             android:id="@+id/peci_icon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

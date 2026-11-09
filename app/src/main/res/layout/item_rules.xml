@@ -7,6 +7,7 @@
     android:layout_marginTop="20dp">
 
     <ImageView
+        android:importantForAccessibility="no"
         android:id="@+id/position_bg"
         android:layout_width="34dp"
         android:layout_height="34dp"

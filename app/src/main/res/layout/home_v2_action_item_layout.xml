@@ -12,6 +12,7 @@
 
     <!-- Avatar -->
     <ImageView
+        android:importantForAccessibility="no"
         android:id="@+id/iv_action_item"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -89,6 +90,7 @@
 
     <!-- Location Pin Icon -->
     <ImageView
+        android:importantForAccessibility="no"
         android:id="@+id/iv_action_item_dist_icon"
         android:layout_width="14dp"
         android:layout_height="14dp"

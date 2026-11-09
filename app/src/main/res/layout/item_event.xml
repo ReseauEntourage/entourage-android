@@ -105,6 +105,7 @@
                 android:visibility="gone">
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:id="@+id/iv_canceled"
                     android:layout_width="10dp"
                     android:layout_height="10dp"
@@ -149,6 +150,7 @@
                     tools:text="Le réveil musculaire du Club Colette - Gym" />
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:id="@+id/star"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -187,6 +189,7 @@
                 android:gravity="center_vertical">
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
@@ -210,6 +213,7 @@
                 android:gravity="center_vertical">
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
@@ -237,15 +241,19 @@
                 android:visibility="gone">
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:src="@drawable/ic_participants_grey" />
 
                 <!-- Hidden avatars — reserved for when back sends member data -->
-                <ImageView android:id="@+id/iv_member1" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
-                <ImageView android:id="@+id/iv_member2" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
-                <ImageView android:id="@+id/iv_member3" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
+                <ImageView
+        android:importantForAccessibility="no" android:id="@+id/iv_member1" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
+                <ImageView
+        android:importantForAccessibility="no" android:id="@+id/iv_member2" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
+                <ImageView
+        android:importantForAccessibility="no" android:id="@+id/iv_member3" android:layout_width="0dp" android:layout_height="0dp" android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/participants"

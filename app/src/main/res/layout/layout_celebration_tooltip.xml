@@ -10,6 +10,7 @@
     android:padding="16dp">
 
     <ImageView
+        android:importantForAccessibility="no"
         android:id="@+id/iv_star"
         android:layout_width="32dp"
         android:layout_height="32dp"
