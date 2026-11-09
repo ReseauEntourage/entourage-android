@@ -807,7 +807,7 @@ class DetailConversationActivity : CommentActivity() {
 
                 override fun updateDrawState(ds: android.text.TextPaint) {
                     super.updateDrawState(ds)
-                    ds.color = ContextCompat.getColor(this@DetailConversationActivity, R.color.orange)
+                    ds.color = ContextCompat.getColor(this@DetailConversationActivity, R.color.orange_text)
                     ds.isUnderlineText = true
                 }
             }

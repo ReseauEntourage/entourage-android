@@ -24,6 +24,8 @@ val ColorPrimaryDark = Color(0xFF717171)
 val ColorAccent = Color(0xFFFF9739)
 val ColorOrange = Color(0xFFFF9739)
 val ColorLightOrange = Color(0xFFFF9C5D)
+// Orange foncé pour du texte sur fond clair (contraste >= 4.5:1)
+val ColorOrangeText = Color(0xFFA8530A)
 val ColorBlack = Color(0xFF000000)
 val ColorWhite = Color(0xFFFFFFFF)
 val ColorGrey = Color(0xFF707070)
@@ -71,7 +73,7 @@ object EntourageComposeStyles {
     val mapActionMenu = TextStyle(
         fontSize = 16.sp, // @dimen/entourage_font_medium
         fontWeight = FontWeight.Bold,
-        color = ColorAccent
+        color = ColorOrangeText
     )
 
     val plusImageSubtitle = TextStyle(
@@ -100,7 +102,7 @@ object EntourageComposeStyles {
     val associationName = TextStyle(
         fontFamily = NunitoSansRegular,
         fontSize = 13.sp, // @dimen/profile_labels
-        color = ColorOrange
+        color = ColorOrangeText
     )
 
     val profileDescription = TextStyle(
@@ -112,25 +114,25 @@ object EntourageComposeStyles {
     val profileInformationTitle = TextStyle(
         fontFamily = NunitoSansRegular,
         fontSize = 13.sp, // @dimen/profile_labels
-        color = ColorOrange
+        color = ColorOrangeText
     )
 
     val profileInterest = TextStyle(
         fontFamily = NunitoSansBold,
         fontSize = 13.sp, // @dimen/profile_labels
-        color = ColorOrange
+        color = ColorOrangeText
     )
 
     val orangeButton = TextStyle(
         fontFamily = NunitoSansBold,
         fontSize = 15.sp, // @dimen/profile_description
-        color = ColorOrange
+        color = ColorOrangeText
     )
 
     val profileSubtitles = TextStyle(
         fontFamily = NunitoSansLight,
         fontSize = 14.sp, // @dimen/profile_titles
-        color = ColorOrange
+        color = ColorOrangeText
     )
 
     val profileActivityStatistics = TextStyle(
@@ -201,7 +203,7 @@ object EntourageComposeStyles {
     val leftH2Orange = TextStyle(
         fontFamily = QuicksandBold,
         fontSize = 15.sp, // @dimen/profile_description
-        color = ColorOrange
+        color = ColorOrangeText
     )
 
     val buttonCreateGroup = TextStyle(
@@ -219,7 +221,7 @@ object EntourageComposeStyles {
     val h2Orange = TextStyle(
         fontFamily = NunitoSansBold,
         fontSize = 15.sp, // @dimen/profile_description
-        color = ColorOrange
+        color = ColorOrangeText
     )
 
     val h3Orange = TextStyle(
@@ -237,25 +239,25 @@ object EntourageComposeStyles {
     val selectedFilterOrange = TextStyle(
         fontFamily = NunitoSansBold,
         fontSize = 13.sp, // @dimen/profile_labels
-        color = ColorOrange
+        color = ColorOrangeText
     )
 
     val unselectedFilter = TextStyle(
         fontFamily = NunitoSansBold,
         fontSize = 13.sp, // @dimen/profile_labels
-        color = ColorOrange
+        color = ColorOrangeText
     )
 
     val h2SeekBarProgression = TextStyle(
         fontFamily = NunitoSansBold,
         fontSize = 13.sp, // @dimen/profile_labels
-        color = ColorOrange
+        color = ColorOrangeText
     )
 
     val editImage = TextStyle(
         fontFamily = QuicksandBold,
         fontSize = 14.sp, // @dimen/profile_titles
-        color = ColorOrange
+        color = ColorOrangeText
     )
 
     val headerCreateGroup = TextStyle(
@@ -267,7 +269,7 @@ object EntourageComposeStyles {
     val headerCreateGroupOrange = TextStyle(
         fontFamily = QuicksandBold,
         fontSize = 24.sp, // @dimen/header_title
-        color = ColorLightOrange
+        color = ColorOrangeText
     )
 
     val errorMsg = TextStyle(
@@ -279,7 +281,7 @@ object EntourageComposeStyles {
     val report = TextStyle(
         fontFamily = NunitoSansBold,
         fontSize = 15.sp, // @dimen/profile_description
-        color = ColorLightOrange
+        color = ColorOrangeText
     )
 
     val leftLegend = TextStyle(
@@ -303,7 +305,7 @@ object EntourageComposeStyles {
     val leftCourantLightOrange = TextStyle(
         fontFamily = NunitoSansRegular,
         fontSize = 15.sp, // @dimen/profile_description
-        color = ColorLightOrange
+        color = ColorOrangeText
     )
 
     val leftCourantOrange = TextStyle(
@@ -315,7 +317,7 @@ object EntourageComposeStyles {
     val groupMemberSubtitle = TextStyle(
         fontFamily = NunitoSansRegular,
         fontSize = 13.sp, // @dimen/group_member_subtitle
-        color = ColorLightOrange
+        color = ColorOrangeText
     )
 
     val groupMemberSubtitleBlack = TextStyle(
@@ -327,7 +329,7 @@ object EntourageComposeStyles {
     val leftCourantBoldOrange = TextStyle(
         fontFamily = QuicksandBold,
         fontSize = 15.sp, // @dimen/profile_description
-        color = ColorOrange
+        color = ColorOrangeText
     )
 
     val leftCourantBlack = TextStyle(
@@ -375,25 +377,25 @@ object EntourageComposeStyles {
     val leftDateOrange = TextStyle(
         fontFamily = NunitoSansExtraLight,
         fontSize = 9.sp, // @dimen/version_number
-        color = ColorOrange
+        color = ColorOrangeText
     )
 
     val readItem = TextStyle(
         fontFamily = NunitoSansRegular,
         fontSize = 13.sp, // @dimen/error_msg
-        color = ColorOrange
+        color = ColorOrangeText
     )
 
     val watchedPedagogical = TextStyle(
         fontFamily = NunitoSansRegular,
         fontSize = 13.sp, // @dimen/group_member_subtitle
-        color = ColorOrange
+        color = ColorOrangeText
     )
 
     val leftCourantBoldLightOrange = TextStyle(
         fontFamily = QuicksandBold,
         fontSize = 15.sp, // @dimen/profile_description
-        color = ColorLightOrange
+        color = ColorOrangeText
     )
 
     val leftCourantBoldWhite = TextStyle(

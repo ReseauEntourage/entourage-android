@@ -242,7 +242,7 @@
                                 android:layout_height="wrap_content"
                                 android:id="@+id/btn_more_desc"
                                 android:text="@string/see_more"
-                                android:textColor="@color/orange"
+                                android:textColor="@color/orange_text"
                                 android:fontFamily="@font/quicksand_bold"
                                 android:textSize="13sp"
                                 android:layout_marginTop="8dp"

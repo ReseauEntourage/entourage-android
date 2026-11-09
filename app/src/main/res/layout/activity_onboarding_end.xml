@@ -32,7 +32,7 @@
         android:layout_marginBottom="24dp"
         android:fontFamily="@font/quicksand_bold"
         android:text="@string/onboard_end_title"
-        android:textColor="@color/orange"
+        android:textColor="@color/orange_text"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/ui_tv_title4"
         app:layout_constraintEnd_toEndOf="parent"

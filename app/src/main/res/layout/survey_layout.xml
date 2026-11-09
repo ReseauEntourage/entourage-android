@@ -104,7 +104,7 @@
         android:layout_marginTop="20dp"
         android:fontFamily="@font/nunitosans_regular"
         android:textSize="13sp"
-        android:textColor="@color/grey_vote"
+        android:textColor="@color/grey_text_accessible"
         android:text="@string/title_switch_mutiples_choices"
         />
 

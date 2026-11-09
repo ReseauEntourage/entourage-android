@@ -133,7 +133,7 @@
                         android:text="@string/badges_empty_start_label"
                         android:fontFamily="@font/nunitosans_bold"
                         android:textSize="10sp"
-                        android:textColor="@color/orange"
+                        android:textColor="@color/orange_text"
                         android:letterSpacing="0.08" />
 
                     <TextView

@@ -212,7 +212,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:text="@string/discussion_choose_supress"
                     android:fontFamily="@font/nunitosans_bold"
-                    android:textColor="@color/orange"
+                    android:textColor="@color/orange_text"
                     />
             </androidx.constraintlayout.widget.ConstraintLayout>
             <LinearLayout

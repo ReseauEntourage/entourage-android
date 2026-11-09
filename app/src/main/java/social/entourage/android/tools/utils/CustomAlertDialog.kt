@@ -248,7 +248,7 @@ object CustomAlertDialog {
 
         with(customDialog.findViewById<TextView>(R.id.title)){
             text = title
-            setTextColor(context.getColor(R.color.light_orange))
+            setTextColor(context.getColor(R.color.orange_text))
         }
         customDialog.findViewById<TextView>(R.id.content).text = content
         customDialog.findViewById<Button>(R.id.yes).visibility = View.GONE
@@ -288,7 +288,7 @@ object CustomAlertDialog {
 
         with(customDialog.findViewById<TextView>(R.id.title)){
             text = title
-            setTextColor(context.getColor(R.color.light_orange))
+            setTextColor(context.getColor(R.color.orange_text))
         }
         customDialog.findViewById<TextView>(R.id.content).text = content
         customDialog.findViewById<Button>(R.id.yes).visibility = View.GONE
@@ -328,7 +328,7 @@ object CustomAlertDialog {
 
         with(customDialog.findViewById<TextView>(R.id.title)){
             text = title
-            setTextColor(context.getColor(R.color.light_orange))
+            setTextColor(context.getColor(R.color.orange_text))
         }
         customDialog.findViewById<TextView>(R.id.content).text = content
         customDialog.findViewById<Button>(R.id.no).visibility = View.GONE

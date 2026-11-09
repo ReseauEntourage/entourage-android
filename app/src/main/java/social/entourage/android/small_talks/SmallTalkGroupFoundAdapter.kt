@@ -48,7 +48,7 @@ class SmallTalkGroupFoundAdapter(
                 text = interest
                 setPadding(24, 8, 24, 8)
                 background = ContextCompat.getDrawable(context, R.drawable.chip_background_selector)
-                setTextColor(ContextCompat.getColor(context, R.color.orange))
+                setTextColor(ContextCompat.getColor(context, R.color.orange_text))
                 textSize = 12f
                 typeface = ResourcesCompat.getFont(context, R.font.quicksand_bold)
                 layoutParams = FlexboxLayout.LayoutParams(

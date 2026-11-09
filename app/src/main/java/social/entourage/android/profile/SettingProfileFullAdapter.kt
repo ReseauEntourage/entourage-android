@@ -92,8 +92,8 @@ class SettingProfileFullAdapter(
 
             //Deconnexion et suppression en orange
             if (item.title == context.getString(R.string.delete_account_button) || item.title == context.getString(R.string.logout_button)) {
-                binding.tvTitleUserSection.setTextColor(ContextCompat.getColor(context, R.color.orange))
-                binding.tvSubtitleUserSection.setTextColor(ContextCompat.getColor(context, R.color.orange))
+                binding.tvTitleUserSection.setTextColor(ContextCompat.getColor(context, R.color.orange_text))
+                binding.tvSubtitleUserSection.setTextColor(ContextCompat.getColor(context, R.color.orange_text))
                 binding.ivArrowUserSection.setColorFilter(ContextCompat.getColor(context, R.color.orange))
             }
             if (ConfigurationCompat.getLocales(context.resources.configuration)[0]?.language == "ar") {

@@ -92,7 +92,7 @@
                 android:textAlignment="textEnd"
                 android:fontFamily="@font/nunitosans_semibold"
                 android:textSize="12sp"
-                android:textColor="@color/orange"
+                android:textColor="@color/orange_text"
                 android:layout_marginTop="4dp"
                 android:visibility="gone"
                 tools:text="2/3" />

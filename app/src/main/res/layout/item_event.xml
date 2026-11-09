@@ -87,7 +87,7 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:padding="6dp"
                 android:text="Inscrit.e"
-                android:textColor="@color/orange"
+                android:textColor="@color/orange_text"
                 android:textSize="11sp"
                 android:visibility="gone" />
 
@@ -163,7 +163,7 @@
                     android:layout_marginStart="4dp"
                     android:fontFamily="@font/quicksand_bold"
                     android:text="@string/admin"
-                    android:textColor="@color/orange"
+                    android:textColor="@color/orange_text"
                     android:textSize="12sp"
                     android:visibility="gone" />
 

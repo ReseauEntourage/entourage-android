@@ -152,7 +152,7 @@
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/nunitosans_bold"
                                 android:textSize="15sp"
-                                android:textColor="@color/orange"
+                                android:textColor="@color/orange_text"
                                 tools:text="0 / 3" />
                         </LinearLayout>
 
@@ -280,7 +280,7 @@
                 android:layout_marginTop="16dp"
                 android:textAlignment="center"
                 android:text="@string/badge_see_all_mine"
-                android:textColor="@color/orange"
+                android:textColor="@color/orange_text"
                 android:fontFamily="@font/nunitosans_semibold"
                 android:textSize="14sp" />
 

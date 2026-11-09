@@ -81,7 +81,7 @@
                 android:hint="@string/create_question_hint"
                 android:inputType="textCapSentences|textMultiLine"
                 android:maxLength="500"
-                android:textColorHint="@color/grey_vote"
+                android:textColorHint="@color/grey_text_accessible"
                 android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title_question" />
@@ -111,7 +111,7 @@
                 android:hint="@string/create_option_hint"
                 android:inputType="textCapSentences|textMultiLine"
                 android:maxLength="500"
-                android:textColorHint="@color/grey_vote"
+                android:textColorHint="@color/grey_text_accessible"
                 android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_title_option" />
@@ -128,7 +128,7 @@
                 android:hint="@string/create_option_hint"
                 android:inputType="textCapSentences|textMultiLine"
                 android:maxLength="500"
-                android:textColorHint="@color/grey_vote"
+                android:textColorHint="@color/grey_text_accessible"
                 android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_text_option_1" />
@@ -145,7 +145,7 @@
                 android:hint="@string/create_option_hint"
                 android:inputType="textCapSentences|textMultiLine"
                 android:maxLength="500"
-                android:textColorHint="@color/grey_vote"
+                android:textColorHint="@color/grey_text_accessible"
                 android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_text_option_2" />
@@ -162,7 +162,7 @@
                 android:hint="@string/create_option_hint"
                 android:inputType="textCapSentences|textMultiLine"
                 android:maxLength="500"
-                android:textColorHint="@color/grey_vote"
+                android:textColorHint="@color/grey_text_accessible"
                 android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_text_option_3" />
@@ -179,7 +179,7 @@
                 android:hint="@string/create_option_hint"
                 android:inputType="textCapSentences|textMultiLine"
                 android:maxLength="500"
-                android:textColorHint="@color/grey_vote"
+                android:textColorHint="@color/grey_text_accessible"
                 android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_text_option_4" />
@@ -247,7 +247,7 @@
         android:padding="10dp"
         android:text="@string/btn_survey_cancel"
         android:textAllCaps="false"
-        android:textColor="@color/orange"
+        android:textColor="@color/orange_text"
         android:textSize="15sp"
         android:visibility="visible"
         app:layout_constraintTop_toTopOf="@+id/validate_btn"

@@ -17,7 +17,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/nunitosans_bold"
-        android:textColor="@color/orange"
+        android:textColor="@color/orange_text"
         android:textSize="@dimen/entourage_font_very_small"
         android:text="@string/suggestion_next_step_title"
         android:textAllCaps="true"

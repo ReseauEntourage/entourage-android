@@ -707,7 +707,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
                 }
                 progress.progress > 0 -> {
                     tvProgress.text = getString(R.string.progress_fraction_format, progress.progress, progress.maxProgress)
-                    tvProgress.setTextColor(ContextCompat.getColor(this, R.color.orange))
+                    tvProgress.setTextColor(ContextCompat.getColor(this, R.color.orange_text))
                     tvProgress.visibility = View.VISIBLE
                     cardView.alpha = 1f
                 }
