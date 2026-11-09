@@ -36,6 +36,7 @@
 
         <TextView
             android:id="@+id/title_text"
+        android:accessibilityHeading="true"
             style="@style/EntourageTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -53,6 +53,7 @@
 
             <TextView
                 android:id="@+id/group_name_toolbar"
+        android:accessibilityHeading="true"
                 style="@style/h2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -134,6 +135,7 @@
 
                         <TextView
                             android:id="@+id/group_name"
+        android:accessibilityHeading="true"
                             style="@style/h1_black"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -155,6 +157,7 @@
                                 android:layout_marginEnd="5dp" />
 
                             <TextView
+        android:accessibilityHeading="true"
                                 style="@style/h1_black"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -224,6 +227,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/tv_know_more"
+        android:accessibilityHeading="true"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toTopOf="@+id/tags_container"
@@ -258,6 +262,7 @@
 
                         <TextView
                             android:id="@+id/to_know"
+        android:accessibilityHeading="true"
                             style="@style/h2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -294,6 +299,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
 
                         <TextView
                             android:id="@+id/see_more_events"
+        android:accessibilityHeading="true"
                             style="@style/left_h2_orange"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
@@ -337,6 +343,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             android:orientation="vertical">
 
                             <TextView
+        android:accessibilityHeading="true"
                                 style="@style/h2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

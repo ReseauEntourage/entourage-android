@@ -32,6 +32,7 @@
 
         <TextView
             android:id="@+id/header_title"
+        android:accessibilityHeading="true"
             style="@style/h2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -217,6 +218,7 @@
 
                 <TextView
                     android:id="@+id/tv_isoles_count"
+        android:accessibilityHeading="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/h2"
@@ -258,6 +260,7 @@
 
                 <TextView
                     android:id="@+id/tv_femmes_isolees_count"
+        android:accessibilityHeading="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/h2"
@@ -299,6 +302,7 @@
 
                 <TextView
                     android:id="@+id/tv_riverains_count"
+        android:accessibilityHeading="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/h2"

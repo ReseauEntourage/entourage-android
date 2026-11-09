@@ -22,6 +22,7 @@
             app:layout_constraintTop_toTopOf="parent">
             <TextView
                 android:id="@+id/tv_small_talk_title"
+        android:accessibilityHeading="true"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
@@ -96,6 +97,7 @@
             android:background="@color/white">
             <TextView
                 android:id="@+id/tv_small_talk_ethics_title"
+        android:accessibilityHeading="true"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/small_talk_ethics_title"

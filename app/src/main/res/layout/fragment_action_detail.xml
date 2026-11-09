@@ -460,6 +460,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
 
                         <TextView
                             android:id="@+id/title_charte"
+        android:accessibilityHeading="true"
                             style="@style/left_h2_orange"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -472,6 +473,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
 
                         <TextView
                             android:id="@+id/title_signal"
+        android:accessibilityHeading="true"
                             style="@style/left_h2_orange"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

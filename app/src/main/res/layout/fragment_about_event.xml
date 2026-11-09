@@ -67,6 +67,7 @@
 
                 <TextView
                     android:id="@+id/event_name"
+        android:accessibilityHeading="true"
                     style="@style/h1_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -95,6 +96,7 @@
                         android:layout_marginEnd="5dp" />
 
                     <TextView
+        android:accessibilityHeading="true"
                         style="@style/h1_black"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -213,6 +215,7 @@
 
                 <TextView
                     android:id="@+id/to_know"
+        android:accessibilityHeading="true"
                     style="@style/h2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -231,6 +234,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
 
                 <TextView
                     android:id="@+id/groups"
+        android:accessibilityHeading="true"
                     style="@style/h2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -248,6 +252,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
 
                 <TextView
                     android:id="@+id/categories"
+        android:accessibilityHeading="true"
                     style="@style/h2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -24,6 +24,7 @@
 
     <TextView
         android:id="@+id/title"
+        android:accessibilityHeading="true"
         style="@style/h2_orange"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

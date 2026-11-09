@@ -1,6 +1,7 @@
 ﻿package social.entourage.android.actions.create
 
 import androidx.compose.foundation.Image
+import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -225,7 +226,7 @@ private fun CharterHeader(onBackClick: () -> Unit) {
         Text(
             text = stringResource(R.string.action_cgu_header_title),
             style = EntourageComposeStyles.h1,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f).semantics { heading() }
         )
         // EN-9620 : retour Gwen — picto "mains dans le cœur" retiré du header.
     }

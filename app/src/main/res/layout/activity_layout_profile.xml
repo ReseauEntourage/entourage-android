@@ -271,6 +271,7 @@
                         app:layout_constraintEnd_toEndOf="parent">
                         <TextView
                             android:id="@+id/tv_impact_title"
+        android:accessibilityHeading="true"
                             style="@style/h2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -338,6 +339,7 @@
 
                             <TextView
                                 android:id="@+id/tv_impact_section_title"
+        android:accessibilityHeading="true"
                                 style="@style/left_courant_bold_black"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -435,6 +437,7 @@
 
                             <TextView
                                 android:id="@+id/tv_badges_title"
+        android:accessibilityHeading="true"
                                 style="@style/h2"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
