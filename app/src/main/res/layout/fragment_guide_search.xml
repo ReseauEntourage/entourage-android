@@ -19,12 +19,12 @@
 
         <ImageButton
             android:id="@+id/ui_bt_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_centerVertical="true"
             android:background="?attr/selectableItemBackground"
             android:contentDescription="@string/back_button_hint"
-            android:padding="5dp"
+            android:padding="9dp"
             app:tint="@color/accent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,12 +34,12 @@
 
         <ImageButton
             android:id="@+id/ui_bt_search_close"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_centerVertical="true"
             android:background="?attr/selectableItemBackground"
             android:contentDescription="@string/button_clear_hint"
-            android:padding="12dp"
+            android:padding="16dp"
             android:scaleType="centerInside"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

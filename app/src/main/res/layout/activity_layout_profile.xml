@@ -49,10 +49,10 @@
             <ImageView
                 android:id="@+id/icon_option"
         android:contentDescription="@string/a11y_more_options"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_marginStart="20dp"
-                android:padding="10dp"
+                android:padding="14dp"
                 android:src="@drawable/ic_option_profile"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"

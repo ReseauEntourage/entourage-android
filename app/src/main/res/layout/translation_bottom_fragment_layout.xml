@@ -7,9 +7,10 @@
     xmlns:tools="http://schemas.android.com/tools">
     <ImageView
         android:id="@+id/icon_cross"
+        android:padding="11dp"
         android:contentDescription="@string/close"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginTop="@dimen/entourage_margin_section"
         android:layout_marginBottom="16dp"
         android:layout_marginStart="@dimen/entourage_marginstart"

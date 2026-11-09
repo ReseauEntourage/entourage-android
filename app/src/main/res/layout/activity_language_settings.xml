@@ -9,9 +9,10 @@
     <!-- Bouton fermeture -->
     <ImageView
         android:id="@+id/icon_cross"
+        android:padding="11dp"
         android:contentDescription="@string/back"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginTop="@dimen/entourage_margin_section"
         android:layout_marginEnd="@dimen/entourage_marginstart"
         android:layout_marginStart="@dimen/entourage_marginstart"

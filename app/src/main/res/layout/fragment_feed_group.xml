@@ -33,10 +33,10 @@
             <ImageView
                 android:id="@+id/icon_back"
         android:contentDescription="@string/back"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:elevation="1dp"
-                android:padding="10dp"
+                android:padding="14dp"
                 android:src="@drawable/ic_back_round"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -199,7 +199,7 @@
                                 android:id="@+id/join"
                                 style="@style/h2_white"
                                 android:layout_width="wrap_content"
-                                android:layout_height="40dp"
+                                android:layout_height="48dp"
                                 android:drawablePadding="10dp"
                                 android:paddingStart="16dp"
                                 android:paddingEnd="16dp"

@@ -9,9 +9,10 @@
     android:paddingTop="28dp"
     android:paddingBottom="18dp">
     <ImageButton
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:id="@+id/btn_cross"
+        android:padding="11dp"
         android:contentDescription="@string/close"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

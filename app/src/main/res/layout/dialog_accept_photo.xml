@@ -67,7 +67,7 @@
                     <Button
                         android:id="@+id/btn_decline"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_height="48dp"
                         android:minWidth="0dp"
                         android:paddingHorizontal="16dp"
                         android:text="@string/photo_right_decline"
@@ -79,7 +79,7 @@
                     <Button
                         android:id="@+id/btn_accept"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_height="48dp"
                         android:minWidth="0dp"
                         android:layout_marginStart="8dp"
                         android:paddingHorizontal="16dp"

@@ -69,7 +69,7 @@
                 <Button
                     android:id="@+id/button_configure_later"
                     android:layout_width="0dp"
-                    android:layout_height="47dp"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:background="@drawable/shape_button_v9_negative"
                     android:text="@string/enhanced_onboarding_time_disponibility_btn_finish_later"
@@ -83,7 +83,7 @@
                 <Button
                     android:id="@+id/button_next"
                     android:layout_width="0dp"
-                    android:layout_height="47dp"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:background="@drawable/shape_button_v9_positive"
                     android:text="@string/enhanced_onboarding_time_disponibility_btn_next"

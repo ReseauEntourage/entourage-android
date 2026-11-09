@@ -41,10 +41,10 @@
         <ImageView
             android:id="@+id/btn_minus_isoles"
         android:contentDescription="@string/a11y_decrease"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="@drawable/bg_circle_orange_button"
-            android:padding="8dp"
+            android:padding="16dp"
             android:src="@drawable/ic_minus"
             app:tint="@color/white" />
 
@@ -60,10 +60,10 @@
         <ImageView
             android:id="@+id/btn_plus_isoles"
         android:contentDescription="@string/a11y_increase"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="@drawable/bg_circle_orange_button"
-            android:padding="8dp"
+            android:padding="16dp"
             android:src="@drawable/ic_fab_plus"
             app:tint="@color/white" />
     </LinearLayout>
@@ -88,10 +88,10 @@
         <ImageView
             android:id="@+id/btn_minus_femmes_isolees"
         android:contentDescription="@string/a11y_decrease"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="@drawable/bg_circle_orange_button"
-            android:padding="8dp"
+            android:padding="16dp"
             android:src="@drawable/ic_minus"
             app:tint="@color/white" />
 
@@ -107,10 +107,10 @@
         <ImageView
             android:id="@+id/btn_plus_femmes_isolees"
         android:contentDescription="@string/a11y_increase"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="@drawable/bg_circle_orange_button"
-            android:padding="8dp"
+            android:padding="16dp"
             android:src="@drawable/ic_fab_plus"
             app:tint="@color/white" />
     </LinearLayout>
@@ -134,10 +134,10 @@
         <ImageView
             android:id="@+id/btn_minus_riverains"
         android:contentDescription="@string/a11y_decrease"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="@drawable/bg_circle_orange_button"
-            android:padding="8dp"
+            android:padding="16dp"
             android:src="@drawable/ic_minus"
             app:tint="@color/white" />
 
@@ -153,10 +153,10 @@
         <ImageView
             android:id="@+id/btn_plus_riverains"
         android:contentDescription="@string/a11y_increase"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="@drawable/bg_circle_orange_button"
-            android:padding="8dp"
+            android:padding="16dp"
             android:src="@drawable/ic_fab_plus"
             app:tint="@color/white" />
     </LinearLayout>
@@ -165,7 +165,7 @@
         android:id="@+id/btn_validate"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
-        android:layout_height="47dp"
+        android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/shape_button_v9_positive"
         android:fontFamily="@font/quicksand_bold"

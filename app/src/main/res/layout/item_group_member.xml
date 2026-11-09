@@ -83,9 +83,9 @@
         <ImageView
             android:id="@+id/contact"
         android:contentDescription="@string/a11y_contact"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="10dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="14dp"
             android:src="@drawable/ic_contact"
             app:layout_constraintBottom_toTopOf="@id/divider"
             app:layout_constraintEnd_toEndOf="parent"

@@ -231,7 +231,7 @@
                     <LinearLayout
                         android:id="@+id/ui_layout_help"
                         android:layout_width="wrap_content"
-                        android:layout_height="32dp"
+                        android:layout_height="48dp"
                         android:orientation="horizontal"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -592,7 +592,7 @@
             android:id="@+id/poi_report_button"
             style="@style/WhiteButtonTransparent"
             android:layout_width="wrap_content"
-            android:layout_height="38dp"
+            android:layout_height="48dp"
             android:layout_marginTop="10dp"
             android:text="@string/poi_report_button"
             android:textSize="@dimen/entourage_font_medium"/>

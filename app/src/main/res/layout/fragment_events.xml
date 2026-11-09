@@ -110,7 +110,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ui_layout_location_bt"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="48dp"
                 android:layout_margin="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:background="@drawable/bg_white_selected_filter"

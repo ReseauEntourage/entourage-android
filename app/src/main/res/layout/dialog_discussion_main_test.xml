@@ -16,9 +16,10 @@
         />
 
     <ImageButton
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:id="@+id/close_button"
+        android:padding="9dp"
         android:contentDescription="@string/close"
         android:src="@drawable/ic_close_whith_round"
         android:background="@color/transparent"

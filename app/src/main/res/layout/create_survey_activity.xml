@@ -18,9 +18,9 @@
         <ImageView
             android:id="@+id/icon_back"
         android:contentDescription="@string/back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:padding="10dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="14dp"
             android:src="@drawable/ic_arrow_back_white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
