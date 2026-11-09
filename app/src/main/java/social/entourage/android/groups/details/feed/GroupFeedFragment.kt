@@ -1101,6 +1101,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
 
     private fun setupSpeedDialMenu() {
         val speedDialView: SpeedDialView = binding.createPost
+        speedDialView.mainFab.contentDescription = getString(R.string.create_post)
         val orange = ContextCompat.getColor(requireContext(), R.color.orange)
         val white = ContextCompat.getColor(requireContext(), R.color.white)
 

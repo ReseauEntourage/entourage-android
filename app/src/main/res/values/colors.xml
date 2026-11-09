@@ -184,4 +184,7 @@
     <color name="phone_number_highlight">#47FF9739</color>
     <color name="create_event_error">#E5484D</color>
     <color name="create_event_error_text">#C42B30</color>
+    <!-- Accessibilité : texte orange/gris conforme WCAG AA (>= 4.5:1) sur fonds clairs -->
+    <color name="orange_text">#A8530A</color>
+    <color name="grey_text_accessible">#6B6B6B</color>
 </resources>

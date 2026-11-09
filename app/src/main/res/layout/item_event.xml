@@ -252,7 +252,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:fontFamily="@font/nunitosans_regular"
-                    android:textColor="@color/grey"
+                    android:textColor="@color/grey_text_accessible"
                     android:textSize="15sp"
                     tools:text="Lounès, Myriam et 18 autres y vont" />
 

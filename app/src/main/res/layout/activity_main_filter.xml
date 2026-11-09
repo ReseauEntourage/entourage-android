@@ -22,10 +22,11 @@
 
     <ImageView
         android:id="@+id/icon_back"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:contentDescription="@string/back"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:elevation="1dp"
-        android:padding="10dp"
+        android:padding="14dp"
         android:src="@drawable/ic_back_onboarding"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

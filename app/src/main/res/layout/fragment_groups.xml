@@ -62,8 +62,9 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/ui_layout_filter"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:contentDescription="@string/a11y_filter"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:background="@drawable/bg_partner_logo"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -83,8 +84,9 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/ui_layout_search"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
+                        android:contentDescription="@string/a11y_search"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:background="@drawable/bg_partner_logo"
                         app:layout_constraintEnd_toStartOf="@+id/ui_layout_filter"
                         app:layout_constraintTop_toTopOf="parent"

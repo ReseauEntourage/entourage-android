@@ -157,7 +157,7 @@
                     android:paddingVertical="4dp"
                     android:layout_marginStart="20dp"
                     android:textSize="15sp"
-                    android:textColor="@color/orange"
+                    android:textColor="@color/orange_text"
                     android:fontFamily="@font/nunitosans_regular"
                     android:visibility="gone"/>
 
@@ -172,6 +172,7 @@
 
                     <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/mapView"
+                        android:contentDescription="@string/a11y_map"
                         android:layout_width="match_parent"
                         android:layout_height="190dp"
                         android:background="#00000000"

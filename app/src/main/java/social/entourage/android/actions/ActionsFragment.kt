@@ -317,6 +317,7 @@ class ActionsFragment : Fragment() {
 
     private fun createAction() {
         val speedDialView: SpeedDialView = binding.createAction
+        speedDialView.mainFab.contentDescription = getString(R.string.add)
         speedDialView.addActionItem(
             SpeedDialActionItem.Builder(R.id.fab_create_demand, R.drawable.ic_create_demand)
                 .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))

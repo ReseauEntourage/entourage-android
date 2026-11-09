@@ -16,8 +16,9 @@
 
         <ImageView
             android:id="@+id/icon_back"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:contentDescription="@string/back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             app:tint="@color/black"
             android:src="@drawable/ic_arrow_left_black"
             app:layout_constraintBottom_toBottomOf="parent"

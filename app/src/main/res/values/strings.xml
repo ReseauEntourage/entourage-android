@@ -3718,4 +3718,12 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="create_action_error_description">Ajoutez une description pour continuer.</string>
     <string name="create_action_error_location">Indiquez une adresse pour continuer.</string>
     <string name="create_action_error_sharing">Répondez par oui ou par non pour continuer.</string>
+    <!-- Accessibilité (rapport TalkBack) -->
+    <string name="a11y_take_photo">Prendre une photo</string>
+    <string name="a11y_search">Rechercher</string>
+    <string name="a11y_filter">Filtrer</string>
+    <string name="a11y_modify_profile_photo">Modifier la photo de profil</string>
+    <string name="a11y_send_comment">Envoyer le commentaire</string>
+    <string name="a11y_my_profile">Mon profil</string>
+    <string name="a11y_map">Carte</string>
 </resources>

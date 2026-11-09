@@ -392,14 +392,15 @@
                 android:padding="13dp"
                 android:layout_marginStart="7dp"
                 android:inputType="textCapSentences|textMultiLine"
-                android:textColorHint="@color/grey_onboarding_item_border"
+                android:textColorHint="@color/grey_text_accessible"
                 android:textColor="@color/black"
                 />
 
             <ImageButton
                 android:id="@+id/comment"
-                android:layout_width="46dp"
-                android:layout_height="46dp"
+                android:contentDescription="@string/a11y_send_comment"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_marginStart="7dp"
                 android:background="@drawable/bg_button_inactive_light_orange"
                 android:gravity="end"

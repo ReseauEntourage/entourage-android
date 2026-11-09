@@ -2165,4 +2165,12 @@
     <string name="create_action_error_description">Add a description to continue.</string>
     <string name="create_action_error_location">Enter an address to continue.</string>
     <string name="create_action_error_sharing">Answer yes or no to continue.</string>
+    <!-- Accessibility (TalkBack report) -->
+    <string name="a11y_take_photo">Take a photo</string>
+    <string name="a11y_search">Search</string>
+    <string name="a11y_filter">Filter</string>
+    <string name="a11y_modify_profile_photo">Change profile photo</string>
+    <string name="a11y_send_comment">Send comment</string>
+    <string name="a11y_my_profile">My profile</string>
+    <string name="a11y_map">Map</string>
 </resources>
