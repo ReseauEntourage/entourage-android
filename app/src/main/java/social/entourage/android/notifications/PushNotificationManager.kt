@@ -448,12 +448,22 @@ object PushNotificationManager {
                 )
             }
 
-            return PendingIntent.getActivity(
-                context,
-                pushNotificationMessage.pushNotificationId,
-                intent,
-                PendingIntent.FLAG_IMMUTABLE
-            )
+            // Pile de navigation : le back depuis la discussion revient sur l'onglet Événements de MainActivity
+            val parentIntent = Intent(context, MainActivity::class.java)
+                .putExtra(MainActivity.EXTRA_BADGE_NAV_TAB, "events")
+            return androidx.core.app.TaskStackBuilder.create(context)
+                .addNextIntent(parentIntent)
+                .addNextIntent(intent)
+                .getPendingIntent(
+                    pushNotificationMessage.pushNotificationId,
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+                )
+                ?: PendingIntent.getActivity(
+                    context,
+                    pushNotificationMessage.pushNotificationId,
+                    intent,
+                    PendingIntent.FLAG_IMMUTABLE
+                )
         }
 
 

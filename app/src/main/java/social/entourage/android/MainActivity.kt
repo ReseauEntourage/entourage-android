@@ -312,7 +312,13 @@ class MainActivity : BaseSecuredActivity() {
         }
 
         intent.action?.let { action ->
-            checkIntentAction(action, intent.extras)
+            // La push doit être consommée une seule fois : onResume() rappelle cette méthode avec le même
+            // intent à chaque retour sur MainActivity (ex. back depuis le groupe ouvert), ce qui rouvrait
+            // l'écran en boucle.
+            val extras = intent.extras
+            intent.removeExtra(PushNotificationManager.KEY_CONTENT)
+            intent.action = null
+            checkIntentAction(action, extras)
         }
 
 
@@ -433,6 +439,21 @@ class MainActivity : BaseSecuredActivity() {
 
                 // 3. GESTION CLASSIQUE (avec instance)
                 extra.instance?.let { instance ->
+                    // Le back depuis l'écran ouvert doit revenir sur l'onglet du bon contexte
+                    if (extra.popup != "outing_on_day_before") {
+                        when (NotificationActionManager.getInstanceTypeFromName(instance)) {
+                            NotificationActionManager.InstanceType.NEIGHBORHOODS,
+                            NotificationActionManager.InstanceType.NEIGHBORHOODS_POSTS -> goGroup()
+                            NotificationActionManager.InstanceType.OUTINGS,
+                            NotificationActionManager.InstanceType.OUTING_POSTS -> goEvent()
+                            NotificationActionManager.InstanceType.CONVERSATIONS,
+                            NotificationActionManager.InstanceType.OUTINGS_MESSAGE,
+                            NotificationActionManager.InstanceType.SMALLTALK -> goConv()
+                            NotificationActionManager.InstanceType.CONTRIBUTIONS -> goContrib()
+                            NotificationActionManager.InstanceType.SOLICITATIONS -> goDemand()
+                            else -> {}
+                        }
+                    }
                     NotificationActionManager.presentAction(
                         this,
                         supportFragmentManager,
