@@ -466,10 +466,18 @@ class ProfileFullActivity : BaseSecuredActivity() {
                 ivProfile.let { photoView ->
                     user.avatarURL?.let { avatarURL ->
                         Timber.e("avatarURL: $avatarURL")
+                        // La miniature 300x300 est déjà recadrée au centre (trop zoomée) :
+                        // on charge l'original, avec repli sur la miniature.
+                        val originalURL = avatarURL.replace("/300x300/", "/")
                         Glide.with(photoView)
-                            .load(avatarURL)
+                            .load(originalURL)
                             .placeholder(R.drawable.placeholder_user)
-                            .error(R.drawable.placeholder_user)
+                            .error(
+                                Glide.with(photoView)
+                                    .load(avatarURL)
+                                    .error(R.drawable.placeholder_user)
+                                    .circleCrop()
+                            )
                             .circleCrop()
                             .into(photoView)
                     } ?: run {
