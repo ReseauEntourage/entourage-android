@@ -1,6 +1,7 @@
 package social.entourage.android
 
 import android.app.Activity
+import social.entourage.android.accessibility.AccessibilitySettings
 import android.app.Application
 import android.content.Context
 import android.content.Intent
@@ -32,6 +33,7 @@ import timber.log.Timber
  */
 class EntourageApplication : Application() {
     private val activities: ArrayList<BaseActivity> = ArrayList()
+    private val highContrastAppliedTo = java.util.WeakHashMap<Activity, Boolean>()
     //lateinit var sharedPreferences: SharedPreferences
     private lateinit var librariesSupport: LibrariesSupport
     lateinit var authenticationController: AuthenticationController
@@ -44,6 +46,9 @@ class EntourageApplication : Application() {
     // ----------------------------------
     override fun onCreate() {
         super.onCreate()
+        // Thème de l'app sur le contexte d'application : les attributs ?attr/a11y... y ont leur valeur par défaut
+        setTheme(R.style.AppTheme)
+        AccessibilitySettings.init(this)
         activities.clear()
         instance = this
         complexPreferences = ComplexPreferences(this, "userPref", Context.MODE_PRIVATE)
@@ -54,9 +59,18 @@ class EntourageApplication : Application() {
         registerActivityLifecycleCallbacks(object : ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
                 activity.window.callback = SafeTouchWindowCallback(activity.window.callback)
+                // Mode "contraste amélioré" : thème superposé appliqué avant l'inflation des vues
+                AccessibilitySettings.applyTo(activity)
+                highContrastAppliedTo[activity] = AccessibilitySettings.highContrast
             }
             override fun onActivityStarted(activity: Activity) {}
-            override fun onActivityResumed(activity: Activity) {}
+            override fun onActivityResumed(activity: Activity) {
+                // Une activité restée en arrière-plan pendant un changement de mode se recrée au retour
+                val applied = highContrastAppliedTo[activity]
+                if (applied != null && applied != AccessibilitySettings.highContrast) {
+                    activity.recreate()
+                }
+            }
             override fun onActivityPaused(activity: Activity) {}
             override fun onActivityStopped(activity: Activity) {}
             override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}

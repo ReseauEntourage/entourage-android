@@ -7,6 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import social.entourage.android.R
+import social.entourage.android.accessibility.AccessibilitySettings
 import social.entourage.android.databinding.ActivityProfileSettingsBinding
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
@@ -54,6 +55,14 @@ class ProfileSettingsActivity : AppCompatActivity() {
             iconRes = R.drawable.ic_profile_language,
             title = getString(R.string.settings_language_title),
             subtitle = currentLanguageName
+        ))
+        items.add(ProfileSectionItem.Item(
+            iconRes = R.drawable.ic_profile_accessibility,
+            title = getString(R.string.settings_accessibility_title),
+            subtitle = getString(
+                if (AccessibilitySettings.highContrast) R.string.accessibility_state_on
+                else R.string.accessibility_state_off
+            )
         ))
         items.add(ProfileSectionItem.Item(
             iconRes = R.drawable.ic_profile_notifications,

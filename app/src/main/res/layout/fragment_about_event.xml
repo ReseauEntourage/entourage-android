@@ -160,7 +160,7 @@
                     android:paddingVertical="4dp"
                     android:layout_marginStart="20dp"
                     android:textSize="15sp"
-                    android:textColor="@color/orange_text"
+                    android:textColor="?attr/a11yTextOrange"
                     android:fontFamily="@font/nunitosans_regular"
                     android:visibility="gone"/>
 

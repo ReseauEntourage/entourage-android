@@ -1,6 +1,7 @@
 ﻿package social.entourage.android.comment
 
 import android.app.Activity
+import social.entourage.android.accessibility.a11yColor
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -388,7 +389,7 @@ class PostAdapter(
             } else {
                 // pouce orange
                 surveyHolder.binding.ivILike.setImageDrawable(AppCompatResources.getDrawable(context, R.drawable.ic_pouce_orange))
-                surveyHolder.binding.tvTitleILike.setTextColor(context.getColor(R.color.orange_text))
+                surveyHolder.binding.tvTitleILike.setTextColor(context.a11yColor(R.attr.a11yTextOrange, R.color.orange))
             }
 
             surveyHolder.binding.btnILike.setOnClickListener {
@@ -634,7 +635,7 @@ class PostAdapter(
             binding.tvTitleILike.setTextColor(context.getColor(R.color.black))
         } else {
             binding.ivILike.setImageDrawable(context.getDrawable(R.drawable.ic_pouce_orange))
-            binding.tvTitleILike.setTextColor(context.getColor(R.color.orange_text))
+            binding.tvTitleILike.setTextColor(context.a11yColor(R.attr.a11yTextOrange, R.color.orange))
         }
 
         // Clique rapide sur "like" => applique la 1ère réaction

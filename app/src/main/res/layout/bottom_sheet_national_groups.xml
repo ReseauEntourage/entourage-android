@@ -52,7 +52,7 @@
         android:layout_margin="16dp"
         android:text="Fermer"
         android:textAllCaps="false"
-        android:textColor="@color/orange_text"
+        android:textColor="?attr/a11yTextOrange"
         android:backgroundTint="@android:color/white"
         app:cornerRadius="24dp"
         app:strokeColor="@color/orange"

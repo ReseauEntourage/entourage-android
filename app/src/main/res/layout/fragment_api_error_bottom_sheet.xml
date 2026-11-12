@@ -39,7 +39,7 @@
             android:letterSpacing="0.08"
             android:text="@string/api_error_badge_label"
             android:textAllCaps="true"
-            android:textColor="@color/orange_text"
+            android:textColor="?attr/a11yTextOrange"
             android:textSize="11sp"
             android:textStyle="bold" />
 

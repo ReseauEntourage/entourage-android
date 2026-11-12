@@ -49,7 +49,7 @@
         android:layout_height="24dp"
         android:id="@+id/card_news_group"
         app:cardCornerRadius="12dp"
-        app:cardBackgroundColor="@color/tomato_accessible"
+        app:cardBackgroundColor="?attr/a11yBadgeFill"
         app:layout_constraintTop_toTopOf="@+id/layout_card"
         app:layout_constraintEnd_toEndOf="@+id/layout_card"
         android:layout_marginTop="-10dp"

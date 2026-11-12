@@ -400,7 +400,7 @@
                 android:padding="13dp"
                 android:layout_marginStart="7dp"
                 android:inputType="textCapSentences|textMultiLine"
-                android:textColorHint="@color/grey_text_accessible"
+                android:textColorHint="?attr/a11yTextGreyLight"
                 android:textColor="@color/black"
                 />
 

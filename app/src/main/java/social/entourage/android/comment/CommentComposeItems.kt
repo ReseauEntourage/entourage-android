@@ -83,7 +83,7 @@ import social.entourage.android.api.model.ReactionType
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.px
 import social.entourage.android.ui.theme.ColorBlack
-import social.entourage.android.ui.theme.ColorOrangeText
+import social.entourage.android.ui.theme.accessibleOrange
 import social.entourage.android.ui.theme.ColorLightOrange
 import kotlin.math.roundToInt
 import social.entourage.android.ui.theme.EntourageComposeStyles
@@ -186,7 +186,7 @@ fun MessageBubbleItem(
                         Text(
                             text = displayName,
                             style = EntourageComposeStyles.groupMemberSubtitleBlack.copy(
-                                color = if (isConversation) ColorOrangeText else ColorBlack
+                                color = if (isConversation) accessibleOrange(ColorLightOrange) else ColorBlack
                             ),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
@@ -196,7 +196,7 @@ fun MessageBubbleItem(
                     Text(
                         text = dateText,
                         style = EntourageComposeStyles.groupMemberSubtitleBlack.copy(
-                            color = if (isConversation) ColorOrangeText else ColorBlack
+                            color = if (isConversation) accessibleOrange(ColorLightOrange) else ColorBlack
                         )
                     )
                 }

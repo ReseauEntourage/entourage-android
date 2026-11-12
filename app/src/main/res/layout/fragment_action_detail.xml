@@ -130,7 +130,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 android:fontFamily="@font/quicksand_bold"
                                 android:textSize="13sp"
-                                android:textColor="@color/orange_text"
+                                android:textColor="?attr/a11yTextOrange"
                                 android:layout_marginStart="10dp"
                                 />
 
@@ -196,7 +196,7 @@
                                     android:layout_marginEnd="8dp"
                                     android:ellipsize="middle"
                                     android:fontFamily="@font/nunitosans_semibold"
-                                    android:textColor="@color/orange_text"
+                                    android:textColor="?attr/a11yTextOrange"
                                     android:textSize="13sp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
@@ -248,7 +248,7 @@
                                     android:layout_marginEnd="8dp"
                                     android:ellipsize="middle"
                                     android:fontFamily="@font/quicksand_bold"
-                                    android:textColor="@color/orange_text"
+                                    android:textColor="?attr/a11yTextOrange"
                                     android:textSize="13sp"
                                     android:layout_marginStart="8dp"
                                     app:layout_constraintBottom_toBottomOf="parent"

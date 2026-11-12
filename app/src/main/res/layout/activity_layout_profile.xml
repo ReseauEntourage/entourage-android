@@ -163,7 +163,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:ellipsize="middle"
-                            android:textColor="@color/orange_text"
+                            android:textColor="?attr/a11yTextOrange"
                             android:fontFamily="@font/quicksand_bold"
                             android:textSize="12sp"
                             app:layout_constraintStart_toStartOf="parent"
@@ -314,7 +314,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:fontFamily="@font/quicksand_bold"
-                                        android:textColor="@color/orange_text"
+                                        android:textColor="?attr/a11yTextOrange"
                                         android:textSize="46sp"
                                         tools:text="87" />
 
@@ -450,7 +450,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/badges_see_all"
-                                android:textColor="@color/orange_text"
+                                android:textColor="?attr/a11yTextOrange"
                                 android:fontFamily="@font/nunitosans_semibold"
                                 android:textSize="13sp"
                                 android:paddingStart="8dp" />

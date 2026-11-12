@@ -3744,4 +3744,10 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="a11y_open_profile">Voir le profil</string>
     <string name="a11y_profile_photo">Photo de profil</string>
     <string name="a11y_photo_preview">Aperçu de la photo</string>
+    <string name="settings_accessibility_title">Accessibilité</string>
+    <string name="accessibility_sheet_title">Accessibilité</string>
+    <string name="accessibility_high_contrast_title">Contraste amélioré</string>
+    <string name="accessibility_high_contrast_description">Des couleurs plus foncées pour rendre les textes et les boutons plus lisibles.</string>
+    <string name="accessibility_state_on">Contraste amélioré activé</string>
+    <string name="accessibility_state_off">Contraste amélioré désactivé</string>
 </resources>

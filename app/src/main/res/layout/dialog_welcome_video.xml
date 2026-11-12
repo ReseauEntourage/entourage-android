@@ -47,7 +47,7 @@
             android:paddingHorizontal="8dp"
             android:paddingVertical="2dp"
             android:text="1 min"
-            android:textColor="@color/orange_text"
+            android:textColor="?attr/a11yTextOrange"
             android:textSize="11sp" />
     </LinearLayout>
 

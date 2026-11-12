@@ -91,7 +91,7 @@
             android:textAlignment="center"
             android:fontFamily="@font/nunitosans_bold"
             android:textSize="18sp"
-            android:textColor="@color/orange_text"
+            android:textColor="?attr/a11yTextOrange"
             android:layout_marginTop="2dp"
             tools:text="Premier pas" />
 

@@ -86,7 +86,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginBottom="20dp"
             android:text="@string/onboarding_congrats_skip"
-            android:textColor="@color/orange_text"
+            android:textColor="?attr/a11yTextOrange"
             android:textAllCaps="false"
             android:textSize="14sp"
             android:fontFamily="@font/quicksand_bold"

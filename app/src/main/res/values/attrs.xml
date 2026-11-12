@@ -54,4 +54,12 @@
     <declare-styleable name="ProgressBarView">
         <attr name="percent" format="float"/>
     </declare-styleable>
+    <!-- Couleurs qui changent en mode "contraste amélioré" (Profil > Paramètres > Accessibilité).
+         Valeurs par défaut = couleurs d'origine, définies dans AppTheme et AppMaterial. -->
+    <attr name="a11yTextOrange" format="color" />
+    <attr name="a11yTextLightOrange" format="color" />
+    <attr name="a11yTextGreyVote" format="color" />
+    <attr name="a11yTextGreyLight" format="color" />
+    <attr name="a11yButtonFill" format="color" />
+    <attr name="a11yBadgeFill" format="color" />
 </resources>

@@ -1,6 +1,7 @@
 package social.entourage.android.small_talks
 
 import android.graphics.Color
+import social.entourage.android.accessibility.a11yColor
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,7 +49,7 @@ class SmallTalkGroupFoundAdapter(
                 text = interest
                 setPadding(24, 8, 24, 8)
                 background = ContextCompat.getDrawable(context, R.drawable.chip_background_selector)
-                setTextColor(ContextCompat.getColor(context, R.color.orange_text))
+                setTextColor(context.a11yColor(R.attr.a11yTextOrange, R.color.orange))
                 textSize = 12f
                 typeface = ResourcesCompat.getFont(context, R.font.quicksand_bold)
                 layoutParams = FlexboxLayout.LayoutParams(

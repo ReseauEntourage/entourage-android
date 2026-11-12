@@ -2,6 +2,7 @@
 package social.entourage.android.profile
 
 import android.app.Activity
+import social.entourage.android.accessibility.a11yColor
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.core.os.ConfigurationCompat
 import androidx.recyclerview.widget.RecyclerView
 import social.entourage.android.EntourageApplication
 import social.entourage.android.R
+import social.entourage.android.accessibility.AccessibilityBottomSheet
 import social.entourage.android.databinding.SettingItemSeparatorBinding
 import social.entourage.android.databinding.SettingsItemUserSectionBinding
 import social.entourage.android.enhanced_onboarding.EnhancedOnboarding
@@ -92,8 +94,8 @@ class SettingProfileFullAdapter(
 
             //Deconnexion et suppression en orange
             if (item.title == context.getString(R.string.delete_account_button) || item.title == context.getString(R.string.logout_button)) {
-                binding.tvTitleUserSection.setTextColor(ContextCompat.getColor(context, R.color.orange_text))
-                binding.tvSubtitleUserSection.setTextColor(ContextCompat.getColor(context, R.color.orange_text))
+                binding.tvTitleUserSection.setTextColor(context.a11yColor(R.attr.a11yTextOrange, R.color.orange))
+                binding.tvSubtitleUserSection.setTextColor(context.a11yColor(R.attr.a11yTextOrange, R.color.orange))
                 binding.ivArrowUserSection.setColorFilter(ContextCompat.getColor(context, R.color.orange))
             }
             if (ConfigurationCompat.getLocales(context.resources.configuration)[0]?.language == "ar") {
@@ -115,6 +117,9 @@ class SettingProfileFullAdapter(
                         context.getString(R.string.settings_language_title) -> {
                             val intent = Intent(context, LanguageSettingsActivity::class.java)
                             context.startActivity(intent)
+                        }
+                        context.getString(R.string.settings_accessibility_title) -> {
+                            AccessibilityBottomSheet.newInstance().show(parentFragmentManager, AccessibilityBottomSheet.TAG)
                         }
                         context.getString(R.string.translation_auto_title) -> {
                             TranslationBottomFragment.newInstance().show(parentFragmentManager, TranslationBottomFragment.TAG)

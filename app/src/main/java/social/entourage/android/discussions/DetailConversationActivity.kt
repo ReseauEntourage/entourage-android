@@ -1,6 +1,7 @@
 ﻿package social.entourage.android.discussions
 
 import android.content.Intent
+import social.entourage.android.accessibility.a11yColor
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -807,7 +808,7 @@ class DetailConversationActivity : CommentActivity() {
 
                 override fun updateDrawState(ds: android.text.TextPaint) {
                     super.updateDrawState(ds)
-                    ds.color = ContextCompat.getColor(this@DetailConversationActivity, R.color.orange_text)
+                    ds.color = this@DetailConversationActivity.a11yColor(R.attr.a11yTextOrange, R.color.orange)
                     ds.isUnderlineText = true
                 }
             }

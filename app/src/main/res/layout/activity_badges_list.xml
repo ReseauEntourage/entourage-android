@@ -77,7 +77,7 @@
                 android:layout_marginBottom="24dp"
                 android:textAlignment="center"
                 android:text="@string/badges_faq_link"
-                android:textColor="@color/orange_text"
+                android:textColor="?attr/a11yTextOrange"
                 android:fontFamily="@font/nunitosans_semibold"
                 android:textSize="14sp"
                 android:paddingVertical="8dp" />

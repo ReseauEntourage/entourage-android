@@ -1,6 +1,7 @@
 package social.entourage.android.profile
 
 import android.animation.Animator
+import social.entourage.android.accessibility.a11yColor
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.ClipboardManager
@@ -707,7 +708,7 @@ class MyProfileFullActivity : BaseSecuredActivity() {
                 }
                 progress.progress > 0 -> {
                     tvProgress.text = getString(R.string.progress_fraction_format, progress.progress, progress.maxProgress)
-                    tvProgress.setTextColor(ContextCompat.getColor(this, R.color.orange_text))
+                    tvProgress.setTextColor(this.a11yColor(R.attr.a11yTextOrange, R.color.orange))
                     tvProgress.visibility = View.VISIBLE
                     cardView.alpha = 1f
                 }

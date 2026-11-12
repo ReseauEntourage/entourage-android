@@ -41,7 +41,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="28dp"
-        android:textColor="@color/orange_text"
+        android:textColor="?attr/a11yTextLightOrange"
         />
     <TextView
         android:layout_width="0dp"

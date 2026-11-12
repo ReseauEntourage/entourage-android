@@ -46,7 +46,7 @@
         android:layout_marginEnd="32dp"
         android:fontFamily="@font/quicksand_bold"
         android:text="@string/pre_onboard_choice_description_title"
-        android:textColor="@color/orange_text"
+        android:textColor="?attr/a11yTextOrange"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/ui_button_signup"
         app:layout_constraintEnd_toEndOf="parent"

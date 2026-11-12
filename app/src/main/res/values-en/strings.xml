@@ -2191,4 +2191,10 @@
     <string name="a11y_open_profile">View profile</string>
     <string name="a11y_profile_photo">Profile photo</string>
     <string name="a11y_photo_preview">Photo preview</string>
+    <string name="settings_accessibility_title">Accessibility</string>
+    <string name="accessibility_sheet_title">Accessibility</string>
+    <string name="accessibility_high_contrast_title">Enhanced contrast</string>
+    <string name="accessibility_high_contrast_description">Darker colors to make text and buttons easier to read.</string>
+    <string name="accessibility_state_on">Enhanced contrast on</string>
+    <string name="accessibility_state_off">Enhanced contrast off</string>
 </resources>

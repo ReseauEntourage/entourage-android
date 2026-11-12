@@ -38,7 +38,7 @@
         android:textSize="15dp"
         android:text="@string/popup_ambassador_title"
         android:fontFamily="@font/quicksand_bold"
-        android:textColor="@color/orange_text"
+        android:textColor="?attr/a11yTextOrange"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_popup"

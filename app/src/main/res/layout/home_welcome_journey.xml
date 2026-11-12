@@ -135,7 +135,7 @@
             android:paddingHorizontal="8dp"
             android:paddingVertical="2dp"
             android:text="À faire"
-            android:textColor="@color/orange_text"
+            android:textColor="?attr/a11yTextOrange"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_title_step_1"
             app:layout_constraintEnd_toEndOf="parent"

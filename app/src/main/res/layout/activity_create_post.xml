@@ -105,7 +105,7 @@
                             android:text="@string/create_post_inspiration_label"
                             android:textSize="12sp"
                             android:fontFamily="@font/nunitosans_semibold"
-                            android:textColor="@color/orange_text"
+                            android:textColor="?attr/a11yTextLightOrange"
                             android:layout_marginBottom="8dp" />
 
                         <com.google.android.flexbox.FlexboxLayout

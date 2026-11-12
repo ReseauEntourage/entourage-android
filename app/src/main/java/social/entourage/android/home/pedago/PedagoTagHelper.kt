@@ -1,6 +1,7 @@
 package social.entourage.android.home.pedago
 
 import android.graphics.drawable.GradientDrawable
+import social.entourage.android.accessibility.a11yColor
 import android.graphics.drawable.LayerDrawable
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -15,7 +16,7 @@ fun TextView.setPedagoCategory(category: Category?) {
     when (category) {
         Category.ALL -> {
             this.text = context.getString(R.string.home_v2_pedago_item_tag_all)
-            this.setTextColor(ContextCompat.getColor(context, R.color.orange_text))
+            this.setTextColor(context.a11yColor(R.attr.a11yTextLightOrange, R.color.light_orange))
             (shapeDrawable as? GradientDrawable)?.setColor(ContextCompat.getColor(context, R.color.beige_clair))
         }
         Category.ACT -> {
@@ -35,7 +36,7 @@ fun TextView.setPedagoCategory(category: Category?) {
         }
         null -> {
             this.text = ""
-            this.setTextColor(ContextCompat.getColor(context, R.color.orange_text))
+            this.setTextColor(context.a11yColor(R.attr.a11yTextLightOrange, R.color.light_orange))
             (shapeDrawable as? GradientDrawable)?.setColor(ContextCompat.getColor(context, R.color.beige_clair))
         }
     }

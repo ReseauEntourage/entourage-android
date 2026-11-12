@@ -1,6 +1,7 @@
 ﻿package social.entourage.android.home
 
 import android.view.LayoutInflater
+import social.entourage.android.accessibility.a11yColor
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -86,7 +87,7 @@ class NationalGroupsAdapter(
                 // Style "rejoint" - bouton secondaire avec tick (comme EnhancedOnboarding)
                 joinButton.text = "Rejoint ✓"
                 joinButton.setBackgroundColor(itemView.context.getColor(R.color.beige))
-                joinButton.setTextColor(itemView.context.getColor(R.color.orange_text))
+                joinButton.setTextColor(itemView.context.a11yColor(R.attr.a11yTextOrange, R.color.orange))
                 //joinButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_check, 0)
                 joinButton.compoundDrawablePadding = 8
             } else {

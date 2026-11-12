@@ -399,7 +399,7 @@
             android:textColor="@color/white"
             android:textSize="15sp"
             android:visibility="visible"
-            app:backgroundTint="@color/orange_button"
+            app:backgroundTint="?attr/a11yButtonFill"
             app:fabSize="auto"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

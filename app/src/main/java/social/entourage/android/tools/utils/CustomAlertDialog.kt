@@ -1,6 +1,7 @@
 package social.entourage.android.tools.utils
 
 import android.app.Activity
+import social.entourage.android.accessibility.a11yColor
 import android.content.Context
 import android.content.ContextWrapper
 import android.graphics.Color
@@ -248,7 +249,7 @@ object CustomAlertDialog {
 
         with(customDialog.findViewById<TextView>(R.id.title)){
             text = title
-            setTextColor(context.getColor(R.color.orange_text))
+            setTextColor(context.a11yColor(R.attr.a11yTextLightOrange, R.color.light_orange))
         }
         customDialog.findViewById<TextView>(R.id.content).text = content
         customDialog.findViewById<Button>(R.id.yes).visibility = View.GONE
@@ -288,7 +289,7 @@ object CustomAlertDialog {
 
         with(customDialog.findViewById<TextView>(R.id.title)){
             text = title
-            setTextColor(context.getColor(R.color.orange_text))
+            setTextColor(context.a11yColor(R.attr.a11yTextLightOrange, R.color.light_orange))
         }
         customDialog.findViewById<TextView>(R.id.content).text = content
         customDialog.findViewById<Button>(R.id.yes).visibility = View.GONE
@@ -328,7 +329,7 @@ object CustomAlertDialog {
 
         with(customDialog.findViewById<TextView>(R.id.title)){
             text = title
-            setTextColor(context.getColor(R.color.orange_text))
+            setTextColor(context.a11yColor(R.attr.a11yTextLightOrange, R.color.light_orange))
         }
         customDialog.findViewById<TextView>(R.id.content).text = content
         customDialog.findViewById<Button>(R.id.no).visibility = View.GONE

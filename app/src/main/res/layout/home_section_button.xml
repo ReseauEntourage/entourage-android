@@ -15,7 +15,7 @@
         android:layout_marginEnd="@dimen/entourage_little_margin_end"
         android:fontFamily="@font/quicksand_bold"
         android:text="@string/home_btn_more_event"
-        android:textColor="@color/orange_text"
+        android:textColor="?attr/a11yTextLightOrange"
         android:textSize="@dimen/entourage_font_small" />
 
     <ImageView
