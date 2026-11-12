@@ -14,6 +14,7 @@ import social.entourage.android.api.ApiErrorBus
 import social.entourage.android.deeplinks.UniversalLinkManager
 import social.entourage.android.language.LanguageManager
 import social.entourage.android.report.DataLanguageStock
+import social.entourage.android.tools.utils.SystemOpenedLinks
 import social.entourage.android.tools.view.ApiErrorBottomSheet
 import social.entourage.android.tools.view.WebViewFragment
 
@@ -64,6 +65,8 @@ abstract class BaseActivity : AppCompatActivity() {
             universalLinkManager.handleUniversalLink(uri)
             return
         }
+        // Visio (Google Meet…) : confiée au système (app Meet ou navigateur), jamais à un navigateur embarqué
+        if (SystemOpenedLinks.openIfSystemLink(this, url)) return
         if(shareMessageRes!=0 || !WebViewFragment.launchURL(this, url, shareMessageRes)) {
             WebViewFragment.newInstance(url, shareMessageRes, false)
                 .show(supportFragmentManager, WebViewFragment.TAG)

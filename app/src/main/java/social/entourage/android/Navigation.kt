@@ -26,6 +26,7 @@ import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.profile.MyProfileFullActivity
 import social.entourage.android.profile.ProfileFullActivity
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.SystemOpenedLinks
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.view.WebViewFragment
 
@@ -148,8 +149,13 @@ object Navigation {
                     return Intent(context, CreateEventActivity::class.java)
             }
             HomeType.WEBVIEW -> when (action) {
-                ActionSummary.SHOW -> WebViewFragment.newInstance(params.url, 0, true)
-                    .show(fragmentManager, WebViewFragment.TAG)
+                ActionSummary.SHOW -> {
+                    // Visio (Google Meet…) : confiée au système, pas à la WebView embarquée
+                    if (!SystemOpenedLinks.openIfSystemLink(context, params.url)) {
+                        WebViewFragment.newInstance(params.url, 0, true)
+                            .show(fragmentManager, WebViewFragment.TAG)
+                    }
+                }
                 else -> {}
             }
             HomeType.CONTRIBUTION -> when (action) {

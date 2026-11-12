@@ -47,6 +47,7 @@ import social.entourage.android.report.onDissmissFragment
 import social.entourage.android.sockets.ConversationSocketManager
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.SystemOpenedLinks
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.utils.overrideTransitionCompat
@@ -405,6 +406,8 @@ private fun setupConversationChips() {
                             universalLinkManager.handleUniversalLink(uri)
                             return
                         }
+                        // Visio (Google Meet…) : confiée au système, pas à la WebView embarquée
+                        if (SystemOpenedLinks.openIfSystemLink(this@CommentActivity, fullUrl)) return
                         WebViewFragment.newInstance(fullUrl, 0, true)
                             .show(supportFragmentManager, WebViewFragment.TAG)
                     }

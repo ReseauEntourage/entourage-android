@@ -57,6 +57,7 @@ import social.entourage.android.small_talks.SmallTalkViewModel
 import social.entourage.android.sockets.ConversationSocketManager
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.utils.SystemOpenedLinks
 import social.entourage.android.tools.utils.Utils
 import social.entourage.android.tools.utils.VibrationUtil
 import social.entourage.android.tools.view.WebViewFragment
@@ -369,7 +370,9 @@ class DetailConversationActivity : CommentActivity() {
         binding.header.headerIconCamera.setOnClickListener {
             Timber.d("SmallTalk meeting url: ${smallTalk?.meetingUrl}")
             AnalyticsEvents.logEvent(AnalyticsEvents.CLIC__SMALLTALK__VISIO_ICON)
-            smallTalk?.meetingUrl?.let { url -> WebViewFragment.launchURL(this, url) }
+            smallTalk?.meetingUrl?.let { url ->
+                if (!SystemOpenedLinks.openIfSystemLink(this, url)) WebViewFragment.launchURL(this, url)
+            }
         }
     }
 
