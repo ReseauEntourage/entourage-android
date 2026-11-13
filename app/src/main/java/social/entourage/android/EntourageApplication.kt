@@ -48,7 +48,6 @@ class EntourageApplication : Application() {
         super.onCreate()
         // Thème de l'app sur le contexte d'application : les attributs ?attr/a11y... y ont leur valeur par défaut
         setTheme(R.style.AppTheme)
-        AccessibilitySettings.init(this)
         activities.clear()
         instance = this
         complexPreferences = ComplexPreferences(this, "userPref", Context.MODE_PRIVATE)
@@ -65,6 +64,7 @@ class EntourageApplication : Application() {
             }
             override fun onActivityStarted(activity: Activity) {}
             override fun onActivityResumed(activity: Activity) {
+                AccessibilitySettings.refresh(activity)
                 // Une activité restée en arrière-plan pendant un changement de mode se recrée au retour
                 val applied = highContrastAppliedTo[activity]
                 if (applied != null && applied != AccessibilitySettings.highContrast) {
