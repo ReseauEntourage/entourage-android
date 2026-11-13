@@ -195,7 +195,7 @@
                 android:src="@drawable/ic_fab_plus"
                 android:textColor="@color/white"
                 android:padding="10dp"
-                app:backgroundTint="@color/orange"
+                app:backgroundTint="?attr/a11yButtonFill"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:visibility="gone"/>

@@ -173,7 +173,7 @@ class HomeWelcomeJourneyAdapter(
             v.button.isEnabled = true
             v.button.text = todoButtonLabels[i]
             if (isPrimary) {
-                v.button.setBackgroundColor(color(R.color.orange))
+                v.button.setBackgroundColor(context.a11yColor(R.attr.a11yButtonFill, R.color.orange))
                 v.button.setTextColor(color(R.color.white))
                 v.button.strokeWidth = 0
             } else {

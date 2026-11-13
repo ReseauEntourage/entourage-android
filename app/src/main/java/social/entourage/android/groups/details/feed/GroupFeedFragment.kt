@@ -1,6 +1,7 @@
 ﻿package social.entourage.android.groups.details.feed
 
 import android.app.Activity
+import social.entourage.android.accessibility.a11yColor
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -1102,7 +1103,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
     private fun setupSpeedDialMenu() {
         val speedDialView: SpeedDialView = binding.createPost
         speedDialView.mainFab.contentDescription = getString(R.string.create_post)
-        val orange = ContextCompat.getColor(requireContext(), R.color.orange)
+        val orange = requireContext().a11yColor(R.attr.a11yButtonFill, R.color.orange)
         val white = ContextCompat.getColor(requireContext(), R.color.white)
 
         speedDialView.addActionItem(

@@ -1,6 +1,7 @@
 package social.entourage.android.ui.create
 
 import android.widget.ImageView
+import social.entourage.android.ui.theme.accessibleButtonFill
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.liveRegion
 import androidx.annotation.DrawableRes
@@ -600,7 +601,7 @@ internal fun CfFooterButton(
         modifier = modifier
             .height(47.dp)
             .clip(shape)
-            .background(if (primary) orange else CfWhite)
+            .background(if (primary) accessibleButtonFill(orange) else CfWhite)
             .let { if (primary) it else it.border(1.dp, orange, shape) }
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },

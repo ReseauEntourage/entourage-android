@@ -1,6 +1,7 @@
 ﻿package social.entourage.android.actions
 
 import android.content.Context
+import social.entourage.android.accessibility.a11yColor
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -320,7 +321,7 @@ class ActionsFragment : Fragment() {
         speedDialView.mainFab.contentDescription = getString(R.string.add)
         speedDialView.addActionItem(
             SpeedDialActionItem.Builder(R.id.fab_create_demand, R.drawable.ic_create_demand)
-                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setFabBackgroundColor(requireContext().a11yColor(R.attr.a11yButtonFill, R.color.orange))
                 .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
                 .setLabel(getString(R.string.action_menu_create_demand))
                 .setLabelColor(ContextCompat.getColor(requireContext(), R.color.white))
@@ -329,7 +330,7 @@ class ActionsFragment : Fragment() {
         )
         speedDialView.addActionItem(
             SpeedDialActionItem.Builder(R.id.fab_create_contrib, R.drawable.ic_create_contrib)
-                .setFabBackgroundColor(ContextCompat.getColor(requireContext(), R.color.orange))
+                .setFabBackgroundColor(requireContext().a11yColor(R.attr.a11yButtonFill, R.color.orange))
                 .setFabImageTintColor(ContextCompat.getColor(requireContext(), R.color.white))
                 .setLabel(getString(R.string.action_menu_create_contrib))
                 .setLabelColor(ContextCompat.getColor(requireContext(), R.color.white))

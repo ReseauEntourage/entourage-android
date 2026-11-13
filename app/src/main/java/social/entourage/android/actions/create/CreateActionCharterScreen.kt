@@ -1,6 +1,7 @@
 ﻿package social.entourage.android.actions.create
 
 import androidx.compose.foundation.Image
+import social.entourage.android.ui.theme.accessibleButtonFill
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.background
@@ -248,7 +249,7 @@ private fun CharterBanner(isDemand: Boolean) {
         Box(
             modifier = Modifier
                 .size(46.dp)
-                .background(colorResource(R.color.orange), CircleShape),
+                .background(accessibleButtonFill(colorResource(R.color.orange)), CircleShape),
             contentAlignment = Alignment.Center
         ) {
             Text(text = icon, fontSize = 22.sp)
@@ -437,7 +438,7 @@ private fun CharterFooter(onReadFullCharterClick: () -> Unit, onAcceptClick: () 
         )
         Button(
             onClick = onAcceptClick,
-            colors = ButtonDefaults.buttonColors(containerColor = colorResource(R.color.orange)),
+            colors = ButtonDefaults.buttonColors(containerColor = accessibleButtonFill(colorResource(R.color.orange))),
             shape = RoundedCornerShape(32.dp),
             modifier = Modifier.testTag("accept").heightIn(min = 48.dp)
         ) {

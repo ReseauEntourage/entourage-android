@@ -57,7 +57,7 @@
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="14sp"
-        app:backgroundTint="@color/orange"
+        app:backgroundTint="?attr/a11yButtonFill"
         app:cornerRadius="24dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>

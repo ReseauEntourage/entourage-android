@@ -1,6 +1,7 @@
 package social.entourage.android.profile.oss
 
 import android.os.Bundle
+import social.entourage.android.ui.theme.accessibleButtonFill
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -135,7 +136,7 @@ fun OSSLibContent(lib: Library) {
             Button(
                 onClick = { uriHandler.openUri(url) },
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.orange))
+                colors = ButtonDefaults.buttonColors(containerColor = accessibleButtonFill(colorResource(id = R.color.orange)))
             ) {
                 Text(text = "Website", color = Color.White, fontFamily = quicksandBold)
             }

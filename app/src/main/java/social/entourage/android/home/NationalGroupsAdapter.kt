@@ -93,7 +93,7 @@ class NationalGroupsAdapter(
             } else {
                 // Style "rejoindre" - bouton primaire orange
                 joinButton.text = "Rejoindre"
-                joinButton.setBackgroundColor(itemView.context.getColor(R.color.orange))
+                joinButton.setBackgroundColor(itemView.context.a11yColor(R.attr.a11yButtonFill, R.color.orange))
                 joinButton.setTextColor(itemView.context.getColor(android.R.color.white))
                 joinButton.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
             }

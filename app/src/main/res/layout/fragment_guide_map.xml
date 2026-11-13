@@ -121,7 +121,7 @@
                 android:text="@string/guide_filters_activated"
                 android:textColor="@color/white"
                 android:textSize="@dimen/entourage_font_large"
-                app:backgroundTint="@color/accent"
+                app:backgroundTint="?attr/a11yButtonFill"
                 app:icon="@drawable/ic_filter_list_white_24dp"
                 app:iconPadding="0dp"
                 app:layout_anchorGravity="start"
@@ -286,7 +286,7 @@
             android:text="@string/guide_help_orientation_button"
             android:textColor="@color/white"
             android:visibility="visible"
-            app:backgroundTint="@color/accent"
+            app:backgroundTint="?attr/a11yButtonFill"
             app:icon="@drawable/ic_info_white_24dp"
             app:iconPadding="5dp"
             app:iconTint="@color/white" />

@@ -27,6 +27,10 @@ val ColorLightOrange = Color(0xFFFF9C5D)
 // Orange foncé pour du texte sur fond clair, utilisé seulement en mode "contraste amélioré" (contraste >= 4.5:1)
 val ColorOrangeText = Color(0xFFA8530A)
 
+/** Fond orange sous texte blanc : couleur d'origine, ou marron plus lisible en mode contraste amélioré. */
+fun accessibleButtonFill(original: Color): Color =
+    if (social.entourage.android.accessibility.AccessibilitySettings.highContrast) Color(0xFFB35900) else original
+
 /** Texte orange sur fond clair : couleur d'origine, ou orange foncé en mode contraste amélioré. */
 fun accessibleOrange(original: Color): Color =
     if (social.entourage.android.accessibility.AccessibilitySettings.highContrast) ColorOrangeText else original
