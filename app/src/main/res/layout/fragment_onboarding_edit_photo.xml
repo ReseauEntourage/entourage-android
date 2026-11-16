@@ -37,8 +37,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:cropme_background_alpha="80%"
-            app:cropme_frame_height_percent="50%"
-            app:cropme_frame_width_percent="50%"
+            app:cropme_frame_height_percent="90%"
+            app:cropme_frame_width_percent="90%"
             app:cropme_max_scale="2.0"
             app:cropme_overlay_shape="circle"
             app:cropme_with_border="false" />
