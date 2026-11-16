@@ -485,6 +485,7 @@ object AnalyticsEvents {
     const val ACTION_GROUP_FEED_PLUS = "Action__GroupFeed__Plus"
     const val ACTION_GROUP_FEED_NEW_EVENT = "Action__GroupFeed__NewEvent"
     const val ACTION_GROUP_FEED_NEW_POST = "Action__GroupFeed__NewPost"
+    const val ACTION_GROUP_FEED_PRESENT_YOURSELF = "Action__GroupFeed__PresentYourself"
     const val ACTION_GROUP_FEED_PLUS_CLOSE = "Action__GroupFeed__Plus_Close"
     const val VIEW_GROUP_FEED_NEW_POST_SCREEN = "View__GroupFeed__NewPost_Screen"
     const val ACTION_GROUP_FEED_NEW_POST_ADD_PIC = "Action__GroupFeed__NewPost_AddPic"

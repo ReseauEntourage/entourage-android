@@ -56,6 +56,7 @@ import social.entourage.android.groups.GroupModel
 import social.entourage.android.groups.GroupPresenter
 import social.entourage.android.groups.details.GroupDetailsFragment
 import social.entourage.android.groups.details.members.MembersType
+import social.entourage.android.groups.presentation.GroupPresentationActivity
 import social.entourage.android.home.HomeEventAdapter
 import social.entourage.android.members.MembersActivity
 import social.entourage.android.report.DataLanguageStock
@@ -762,8 +763,18 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
             message,
             getString(R.string.welcome_message_btn_title)
         ) {
-            this.createAPost()
+            this.presentYourself()
         }
+    }
+
+    /** « Je me présente » : parcours guidé (profil, intentions, aperçu) plutôt que le formulaire de post. */
+    private fun presentYourself() {
+        if (!isAdded) return
+        isFromCreation = true
+        AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_PRESENT_YOURSELF)
+        activityResultLauncher.launch(
+            GroupPresentationActivity.intent(requireContext(), groupId, group?.name)
+        )
     }
 
     private fun handleBackButton() {
@@ -960,6 +971,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         val intent = Intent(context, CreatePostGroupActivity::class.java)
         intent.putExtra(Const.ID, groupId)
         intent.putExtra(Const.IS_NATIONAL_GROUP, group?.zone == null)
+        intent.putExtra(GroupPresentationActivity.EXTRA_GROUP_NAME, group?.name.orEmpty())
         if (!isAdded) return
         activityResultLauncher.launch(intent)
     }

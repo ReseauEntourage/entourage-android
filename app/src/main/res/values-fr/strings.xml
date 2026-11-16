@@ -2903,4 +2903,33 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
         <item quantity="one">%1$d groupe sélectionné. Les membres de ce groupe recevront une notification.</item>
         <item quantity="other">%1$d groupes sélectionnés. Les membres de ces groupes recevront une notification.</item>
     </plurals>
+    <!-- Parcours de présentation au groupe -->
+    <string name="group_presentation_close">Fermer</string>
+    <string name="group_presentation_progress">%1$d / %2$d</string>
+    <string name="group_presentation_next">Continuer</string>
+    <string name="group_presentation_skip">Continuer sans</string>
+    <string name="group_presentation_publish">Publier ma présentation</string>
+    <string name="group_presentation_profile_title">Faisons connaissance, %1$s !</string>
+    <string name="group_presentation_profile_title_no_name">Faisons connaissance !</string>
+    <string name="group_presentation_profile_subtitle">Voici ce que vous aimez, d’après votre profil. Cela aidera les membres de « %1$s » à échanger avec vous.</string>
+    <string name="group_presentation_profile_empty">Dites-nous ce que vous aimez : cela aide les autres membres à vous répondre. Vous pouvez compléter votre profil en 2 minutes, ou continuer et l’écrire vous-même.</string>
+    <string name="group_presentation_complete_profile">Compléter mon profil</string>
+    <string name="group_presentation_intents_title">Qu’êtes-vous venu chercher ?</string>
+    <string name="group_presentation_intents_subtitle">Plusieurs réponses possibles. Pas de bonne ou de mauvaise réponse.</string>
+    <string name="group_presentation_intent_talk">💬 Échanger avec les membres du groupe</string>
+    <string name="group_presentation_intent_events">📅 Trouver des événements près de chez moi</string>
+    <string name="group_presentation_intent_help">🤝 Donner ou recevoir un coup de main</string>
+    <string name="group_presentation_about_hint">Un mot sur vous (facultatif) : ce que vous aimez faire, vos envies…</string>
+    <string name="group_presentation_preview_title">Voici votre message</string>
+    <string name="group_presentation_preview_subtitle">Relisez-le et modifiez-le comme vous voulez. Il sera publié dans le groupe.</string>
+    <string name="group_presentation_empty_error">Écrivez quelques mots pour continuer.</string>
+    <string name="group_presentation_msg_greeting">Bonjour à tous ! Je rejoins « %1$s » et je voulais me présenter 😊</string>
+    <string name="group_presentation_msg_intro_name">Moi, c’est %1$s.</string>
+    <string name="group_presentation_msg_interests">J’aime : %1$s.</string>
+    <string name="group_presentation_msg_about">%1$s</string>
+    <string name="group_presentation_msg_intents_intro">Je suis là pour :</string>
+    <string name="group_presentation_msg_talk">discuter et faire connaissance avec vous</string>
+    <string name="group_presentation_msg_events">trouver des événements à rejoindre près de chez moi</string>
+    <string name="group_presentation_msg_help">donner ou recevoir un coup de main entre voisins</string>
+    <string name="group_presentation_msg_closing">Et vous, qu’est-ce qui vous a amené ici ? Au plaisir de vous lire !</string>
 </resources>

@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.collection.ArrayMap
 import social.entourage.android.R
 import social.entourage.android.groups.GroupPresenter
+import social.entourage.android.groups.presentation.GroupPresentationActivity
 import social.entourage.android.posts.CreatePostActivity
 import social.entourage.android.tools.utils.Const
 import java.io.File
@@ -63,6 +64,21 @@ class CreatePostGroupActivity : CreatePostActivity() {
                 R.string.post_chip_hello        to R.string.post_draft_hello,
             )
         }
+    }
+
+    /**
+     * « Dire bonjour au groupe » ouvre le parcours de présentation guidé plutôt que d'insérer
+     * un brouillon générique ; cet écran est refermé, le résultat remonte au fil du groupe.
+     */
+    override fun onChipClicked(labelRes: Int): Boolean {
+        if (labelRes != R.string.post_chip_hello || editingPostId != null) return false
+        startActivity(
+            GroupPresentationActivity.intent(
+                this, groupId, intent.getStringExtra(GroupPresentationActivity.EXTRA_GROUP_NAME)
+            )
+        )
+        finish()
+        return true
     }
 
     // --------------------------------------------------------------------------------

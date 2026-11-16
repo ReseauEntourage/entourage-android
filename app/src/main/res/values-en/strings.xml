@@ -2165,4 +2165,33 @@
     <string name="create_action_error_description">Add a description to continue.</string>
     <string name="create_action_error_location">Enter an address to continue.</string>
     <string name="create_action_error_sharing">Answer yes or no to continue.</string>
+    <!-- Group presentation flow -->
+    <string name="group_presentation_close">Close</string>
+    <string name="group_presentation_progress">%1$d / %2$d</string>
+    <string name="group_presentation_next">Continue</string>
+    <string name="group_presentation_skip">Continue without</string>
+    <string name="group_presentation_publish">Post my introduction</string>
+    <string name="group_presentation_profile_title">Let’s get to know you, %1$s!</string>
+    <string name="group_presentation_profile_title_no_name">Let’s get to know you!</string>
+    <string name="group_presentation_profile_subtitle">Here is what you like, from your profile. It will help the members of “%1$s” talk to you.</string>
+    <string name="group_presentation_profile_empty">Tell us what you like: it helps other members reply to you. You can complete your profile in 2 minutes, or continue and write it yourself.</string>
+    <string name="group_presentation_complete_profile">Complete my profile</string>
+    <string name="group_presentation_intents_title">What are you here for?</string>
+    <string name="group_presentation_intents_subtitle">You can choose several. There are no wrong answers.</string>
+    <string name="group_presentation_intent_talk">💬 Chat with the group’s members</string>
+    <string name="group_presentation_intent_events">📅 Find events near me</string>
+    <string name="group_presentation_intent_help">🤝 Give or receive a helping hand</string>
+    <string name="group_presentation_about_hint">A word about you (optional): what you like to do, your wishes…</string>
+    <string name="group_presentation_preview_title">Here is your message</string>
+    <string name="group_presentation_preview_subtitle">Read it and edit it however you like. It will be posted in the group.</string>
+    <string name="group_presentation_empty_error">Write a few words to continue.</string>
+    <string name="group_presentation_msg_greeting">Hello everyone! I’m joining “%1$s” and wanted to introduce myself 😊</string>
+    <string name="group_presentation_msg_intro_name">I’m %1$s.</string>
+    <string name="group_presentation_msg_interests">I like: %1$s.</string>
+    <string name="group_presentation_msg_about">%1$s</string>
+    <string name="group_presentation_msg_intents_intro">I’m here to:</string>
+    <string name="group_presentation_msg_talk">chat and get to know you</string>
+    <string name="group_presentation_msg_events">find events to join near me</string>
+    <string name="group_presentation_msg_help">give or receive a helping hand between neighbours</string>
+    <string name="group_presentation_msg_closing">And you, what brought you here? Looking forward to reading you!</string>
 </resources>

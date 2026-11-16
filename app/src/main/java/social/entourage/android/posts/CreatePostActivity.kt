@@ -148,6 +148,12 @@ abstract class CreatePostActivity : AppCompatActivity() {
      */
     protected open fun getInspirationChips(): List<Pair<Int, Int>>? = null
 
+    /**
+     * Appelé au clic sur une chip d'inspiration. Retourne true si la sous-classe a pris la main
+     * (le brouillon n'est alors pas inséré dans le message).
+     */
+    protected open fun onChipClicked(labelRes: Int): Boolean = false
+
     private fun setupChips(chips: List<Pair<Int, Int>>?) {
         if (chips.isNullOrEmpty()) return
         binding.chipsSection.visibility = View.VISIBLE
@@ -172,6 +178,7 @@ abstract class CreatePostActivity : AppCompatActivity() {
                     bottomMargin = 6.px
                 }
                 setOnClickListener {
+                    if (onChipClicked(labelRes)) return@setOnClickListener
                     chipViews.forEach { c -> c.setBackgroundResource(R.drawable.bg_chip_conversation_suggestion) }
                     setBackgroundResource(R.drawable.bg_chip_conversation_suggestion_selected)
                     binding.message.setText(getString(draftRes))
