@@ -81,6 +81,28 @@ class NextStepMapperTest {
         assertEquals(10, s.targetId)
     }
 
+    /** Réponse réelle de préprod (artifact du 16/11) : cible `action`, sans clé racine, `metadata` vide. */
+    @Test
+    fun realPreprodActionTargetDecodes() {
+        val target = """{"id":149820,"uuid":"eWaSLFcwbiFk","uuid_v2":"eWaSLFcwbiFk","status":"open","section":"clothes","title":"Je cherche chaussure d'hiver homme 42","title_translations":null,"description":"Je cherche chaussure d'hiver homme 42","description_translations":null,"image_url":null,"action_type":"solicitation","author":{"id":5100,"display_name":"Clem T.","avatar_url":null,"created_at":"2025-11-05T16:45:40.360+01:00"},"metadata":{},"member":false,"members":[{"id":1,"lang":"fr","avatar_url":"n/a","display_name":"n/a"}],"members_count":1,"created_at":"2026-10-01T16:38:03.150+02:00","updated_at":"2026-10-15T16:14:58.639+02:00","status_changed_at":null,"distance":2.5,"location":{"latitude":48.85298008272297,"longitude":2.415879454243083}}"""
+        val s = map(envelope("action", id = null, target = target))!!
+        assertEquals(SuggestionType.ENTRAIDE.key, s.typeKey)
+        assertEquals(149820, s.targetId)
+        assertEquals("Je cherche chaussure d'hiver homme 42", s.title)
+        assertEquals("Clem T.", s.personName)
+    }
+
+    /** Réponse réelle de préprod (artifact du 16/11) : cible `poi`, `category_ids`, `partner_id` nul. */
+    @Test
+    fun realPreprodPoiTargetDecodes() {
+        val target = """{"id":145042,"name":"Maison Béthanie - Secours Catholique","description":"Accueil de jour","longitude":5.371295,"latitude":43.304681,"phone":"488087670","website":null,"email":"accueildejour.131@secours-catholique.org","audience":"Accueil inconditionnel","partner_id":null,"address":"11 Rue malaval, 13002 Marseille","hours":"lun : 8h30 à 11h00\nmar : Fermé","languages":"","air_conditioned":false,"source_url":"https://soliguide.fr/fiche/13977","uuid":"s13977","source":"soliguide","category_ids":[6,41,42,43,3,1,7,5]}"""
+        val s = map(envelope("poi", id = null, target = target))!!
+        assertEquals(SuggestionType.PLACE.key, s.typeKey)
+        assertEquals(145042, s.targetId)
+        assertEquals("Maison Béthanie - Secours Catholique", s.title)
+        assertTrue(s.metas.any { it.text == "11 Rue malaval, 13002 Marseille" })
+    }
+
     @Test
     fun contentPathKeepsItsThreeContentsAndOpensTheFirst() {
         val s = map(
