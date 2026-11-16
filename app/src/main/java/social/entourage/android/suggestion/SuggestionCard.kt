@@ -55,6 +55,18 @@ internal fun SuggestionType.style(): TypeStyle = when (this) {
     SuggestionType.GROUP -> TypeStyle(Color(0xFF1E7F51), Color(0xFFDEF1E8), "👥")
     SuggestionType.CONNECTION -> TypeStyle(Color(0xFF47A8B9), Color(0xFFECF8FB), "👋")
     SuggestionType.PLACE -> TypeStyle(Color(0xFFB84D0E), Color(0xFFEAF2FB), "📍")
+    SuggestionType.CONTENT_PATH -> TypeStyle(Color(0xFF2F6DB5), Color(0xFFEAF2FB), "📘")
+    SuggestionType.SMALL_TALK -> TypeStyle(Color(0xFF47A8B9), Color(0xFFECF8FB), "💬")
+    SuggestionType.POST_MESSAGE -> TypeStyle(Color(0xFF1E7F51), Color(0xFFDEF1E8), "✉️")
+    SuggestionType.AMBASSADOR -> TypeStyle(Color(0xFFD53F00), Color(0xFFFEEAE3), "🌟")
+}
+
+/** Titre par défaut des types dont le moteur n'envoie pas de champ saisi (libellé fixe de l'app). */
+internal fun SuggestionType.defaultTitleRes(): Int? = when (this) {
+    SuggestionType.SMALL_TALK -> R.string.home_suggestion_title_smalltalk
+    SuggestionType.CONTENT_PATH -> R.string.home_suggestion_title_content_path
+    SuggestionType.AMBASSADOR -> R.string.home_suggestion_title_ambassador
+    else -> null
 }
 
 @Composable
@@ -68,6 +80,10 @@ private fun SuggestionType.badgeText(tag: ContentTag?): String = when (this) {
     SuggestionType.GROUP -> "👥 " + stringResource(R.string.home_suggestion_badge_group)
     SuggestionType.CONNECTION -> "👋 " + stringResource(R.string.home_suggestion_badge_connection)
     SuggestionType.PLACE -> "📍 " + stringResource(R.string.home_suggestion_badge_place)
+    SuggestionType.CONTENT_PATH -> "📘 " + stringResource(R.string.home_suggestion_badge_content_path)
+    SuggestionType.SMALL_TALK -> "💬 " + stringResource(R.string.home_suggestion_badge_smalltalk)
+    SuggestionType.POST_MESSAGE -> "✉️ " + stringResource(R.string.home_suggestion_badge_post_message)
+    SuggestionType.AMBASSADOR -> "🌟 " + stringResource(R.string.home_suggestion_badge_ambassador)
 }
 
 @Composable
@@ -80,6 +96,9 @@ internal fun SuggestionCta.label(): String = stringResource(
         SuggestionCta.JOIN -> R.string.home_suggestion_cta_join
         SuggestionCta.SAY_HELLO -> R.string.home_suggestion_cta_say_hello
         SuggestionCta.SEE_PLACE -> R.string.home_suggestion_cta_see_place
+        SuggestionCta.TRY -> R.string.home_suggestion_cta_smalltalk
+        SuggestionCta.WRITE -> R.string.home_suggestion_cta_write
+        SuggestionCta.LEARN_MORE -> R.string.home_suggestion_cta_learn_more
     }
 )
 
@@ -116,16 +135,18 @@ fun SuggestionCard(
     val style = type.style()
     val badge = type.badgeText(suggestion.contentTag)
     val chip = suggestion.chipText()
+    val title = suggestion.title.ifBlank { type.defaultTitleRes()?.let { stringResource(it) }.orEmpty() }
+    val metaTexts = suggestion.metas.take(3).map { m -> m.textRes?.let { stringResource(it) } ?: m.text }
     val ctaLabel = suggestion.cta.label()
     val laterLabel = stringResource(R.string.home_suggestion_later)
     val whyLabel = stringResource(R.string.home_suggestion_why_button_description)
     val openDetails = stringResource(R.string.home_suggestion_open_details)
 
     // Un seul élément de lecture, dans l'ordre : type, titre, méta, actions.
-    val readout = remember(suggestion, badge, chip) {
+    val readout = remember(suggestion, badge, chip, title, metaTexts) {
         listOfNotNull(
-            badge, chip, suggestion.personName, suggestion.title, suggestion.body,
-        ).plus(suggestion.metas.map { it.text }).joinToString(". ")
+            badge, chip, suggestion.personName, title, suggestion.body,
+        ).plus(metaTexts).joinToString(". ")
     }
 
     Column(
@@ -221,7 +242,7 @@ fun SuggestionCard(
                     )
                 }
                 Text(
-                    suggestion.title,
+                    title,
                     color = TitleColor,
                     fontFamily = NunitoSansBold,
                     fontSize = 17.sp,
@@ -243,9 +264,9 @@ fun SuggestionCard(
                     )
                 }
                 // Chaque méta est optionnelle : pas d'emplacement fixe pour la distance.
-                suggestion.metas.take(3).forEach { meta ->
+                suggestion.metas.take(3).forEachIndexed { index, meta ->
                     Text(
-                        text = if (meta.icon != null) "${meta.icon} ${meta.text}" else meta.text,
+                        text = if (meta.icon != null) "${meta.icon} ${metaTexts[index]}" else metaTexts[index],
                         color = MetaColor,
                         fontFamily = NunitoSansRegular,
                         fontSize = 13.sp,

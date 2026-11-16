@@ -7,11 +7,8 @@ import org.junit.Test
 
 class SuggestionModelsTest {
 
-    private fun suggestion(typeKey: String, reasons: List<SuggestionReason> = emptyList(), isolated: Boolean = false) =
-        NextStepSuggestion(
-            id = "s", typeKey = typeKey, title = "t", cta = SuggestionCta.JOIN,
-            reasons = reasons, isolatedAudience = isolated,
-        )
+    private fun suggestion(typeKey: String, reasons: List<SuggestionReason> = emptyList()) =
+        NextStepSuggestion(id = "s", typeKey = typeKey, title = "t", cta = SuggestionCta.JOIN, reasons = reasons)
 
     @Test
     fun unknownTypeIsDroppedWithoutCrashing() {
@@ -19,7 +16,7 @@ class SuggestionModelsTest {
             hero = suggestion("hologram"),
             explorer = listOf(
                 ExplorerAccess("a", "hologram", "x", tab = ExplorerTab.EVENTS),
-                ExplorerAccess("b", "event", "y", tab = ExplorerTab.EVENTS),
+                ExplorerAccess("b", "outing", "y", tab = ExplorerTab.EVENTS),
             ),
         ).sanitized()
         assertNull(payload.hero)
@@ -27,39 +24,44 @@ class SuggestionModelsTest {
     }
 
     @Test
+    fun everyEngineKindIsAKnownType() {
+        listOf(
+            "outing", "neighborhood", "action", "content_path", "smalltalk", "poi", "post_message", "become_ambassador",
+        ).forEach { assertNotNull(it, SuggestionType.fromKey(it)) }
+    }
+
+    @Test
     fun knownTypeIsKept() {
-        assertNotNull(SuggestionPayload(hero = suggestion("group")).sanitized().hero)
+        assertNotNull(SuggestionPayload(hero = suggestion("neighborhood")).sanitized().hero)
     }
 
     @Test
     fun explorerIsBoundedToFour() {
-        val accesses = (1..6).map { ExplorerAccess("$it", "event", "l", tab = ExplorerTab.EVENTS) }
+        val accesses = (1..6).map { ExplorerAccess("$it", "outing", "l", tab = ExplorerTab.EVENTS) }
         assertEquals(4, SuggestionPayload(explorer = accesses).sanitized().explorer.size)
     }
 
     @Test
-    fun reasonsAreCappedAtThree() {
-        val reasons = ReasonKind.entries.map { SuggestionReason(it, "x") }
-        assertEquals(3, suggestion("event", reasons).displayableReasons().size)
+    fun reasonsAreTheEngineSentencesCappedAtThree() {
+        val reasons = (1..5).map { SuggestionReason("near_you", "phrase $it") }
+        assertEquals(listOf("phrase 1", "phrase 2", "phrase 3"), suggestion("outing", reasons).displayableReasons().map { it.text })
     }
 
     @Test
-    fun socialProofIsHiddenForIsolatedAudience() {
-        val reasons = listOf(SuggestionReason(ReasonKind.SOCIAL_PROOF), SuggestionReason(ReasonKind.PROXIMITY, "1 km"))
-        val shown = suggestion("group", reasons, isolated = true).displayableReasons()
-        assertEquals(listOf(ReasonKind.PROXIMITY), shown.map { it.kind })
-        assertEquals(2, suggestion("group", reasons, isolated = false).displayableReasons().size)
+    fun emptyReasonIsNotDisplayed() {
+        val reasons = listOf(SuggestionReason("near_you", " "), SuggestionReason("popular", "D'autres personnes y participent déjà."))
+        assertEquals(listOf("popular"), suggestion("outing", reasons).displayableReasons().map { it.code })
     }
 
     @Test
-    fun reasonWithoutRequiredValueIsNotDisplayed() {
-        val reasons = listOf(SuggestionReason(ReasonKind.PROXIMITY), SuggestionReason(ReasonKind.ACCESSIBILITY))
-        assertEquals(listOf(ReasonKind.ACCESSIBILITY), suggestion("event", reasons).displayableReasons().map { it.kind })
+    fun reasonIconDependsOnTheCodeWithADefaultForUnknownCodes() {
+        assertEquals("📍", SuggestionReason("near_you", "x").icon)
+        assertEquals("✅", SuggestionReason("code_du_futur", "x").icon)
     }
 }
 
 class SuggestionExplorerUiTest {
-    private val access = ExplorerAccess("a", "event", "l", tab = ExplorerTab.EVENTS)
+    private val access = ExplorerAccess("a", "outing", "l", tab = ExplorerTab.EVENTS)
 
     @Test
     fun zeroAccessHidesTheWholeZone() {

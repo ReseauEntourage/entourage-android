@@ -2,17 +2,23 @@ package social.entourage.android.suggestion
 
 import kotlinx.coroutines.delay
 
-/** Source des suggestions. L'implémentation réelle appellera l'API du moteur (EN-9473). */
+/** Source des suggestions : le moteur ([NextStepSuggestionProvider]) ou des données factices ([MockSuggestionProvider]). */
 interface SuggestionProvider {
     suspend fun fetch(): SuggestionPayload
 
-    /** « Plus tard » confirmé : le moteur ne re-propose pas la suggestion avant 30 jours. */
-    suspend fun dismiss(suggestionId: String)
+    /**
+     * « Plus tard » confirmé : le moteur ne re-propose pas la suggestion avant 30 jours.
+     * Renvoie la suggestion qui la remplace, ou null si elle est inconnue (l'appelant rafraîchit alors).
+     */
+    suspend fun dismiss(suggestion: NextStepSuggestion): NextStepSuggestion?
+
+    /** Geste de l'utilisateur sur une suggestion, transmis au moteur pour la mesure. Silencieux en cas d'erreur. */
+    suspend fun report(interaction: SuggestionInteraction) = Unit
 }
 
 /**
- * Données factices en attendant le moteur. Chaque appel à [fetch] renvoie le type de suggestion
- * suivant, pour pouvoir passer en revue les 6 types (et leurs variants) depuis la home.
+ * Données factices (tests, prévisualisation). Chaque appel à [fetch] renvoie le type de suggestion
+ * suivant, pour pouvoir passer en revue les types (et leurs variants) depuis la home.
  */
 class MockSuggestionProvider(private val latencyMs: Long = 700) : SuggestionProvider {
 
@@ -24,8 +30,9 @@ class MockSuggestionProvider(private val latencyMs: Long = 700) : SuggestionProv
         return SuggestionPayload(hero = hero, explorer = explorer).sanitized()
     }
 
-    override suspend fun dismiss(suggestionId: String) {
+    override suspend fun dismiss(suggestion: NextStepSuggestion): NextStepSuggestion? {
         index++
+        return null
     }
 
     private val heroes = listOf(
@@ -41,9 +48,9 @@ class MockSuggestionProvider(private val latencyMs: Long = 700) : SuggestionProv
             cta = SuggestionCta.PARTICIPATE,
             targetId = 1,
             reasons = listOf(
-                SuggestionReason(ReasonKind.PROXIMITY, "1,2 km"),
-                SuggestionReason(ReasonKind.MOMENT, "ce samedi"),
-                SuggestionReason(ReasonKind.INTERESTS, "les rencontres autour d'un café"),
+                SuggestionReason("near_you", "C'est à 1,2 km de chez vous."),
+                SuggestionReason("upcoming_event", "C'est ce samedi, une occasion de rencontrer du monde."),
+                SuggestionReason("shared_interests", "On y parle de les rencontres autour d'un café, des sujets qui vous plaisent."),
             ),
         ),
         NextStepSuggestion(
@@ -57,8 +64,8 @@ class MockSuggestionProvider(private val latencyMs: Long = 700) : SuggestionProv
             cta = SuggestionCta.ANSWER,
             targetId = 2,
             reasons = listOf(
-                SuggestionReason(ReasonKind.PROXIMITY, "100 m"),
-                SuggestionReason(ReasonKind.HISTORY, "avril"),
+                SuggestionReason("near_you", "C'est à 100 m de chez vous."),
+                SuggestionReason("history", "Vous avez participé à un moment similaire en avril."),
             ),
         ),
         NextStepSuggestion(
@@ -70,8 +77,8 @@ class MockSuggestionProvider(private val latencyMs: Long = 700) : SuggestionProv
             cta = SuggestionCta.READ,
             targetId = 3,
             reasons = listOf(
-                SuggestionReason(ReasonKind.INTERESTS, "comprendre l'isolement"),
-                SuggestionReason(ReasonKind.ACCESSIBILITY),
+                SuggestionReason("shared_interests", "On y parle de comprendre l'isolement, des sujets qui vous plaisent."),
+                SuggestionReason("accessibility", "C'est gratuit et sans rendez-vous."),
             ),
         ),
         NextStepSuggestion(
@@ -86,11 +93,10 @@ class MockSuggestionProvider(private val latencyMs: Long = 700) : SuggestionProv
             cta = SuggestionCta.REGISTER,
             targetId = 4,
             reasons = listOf(
-                SuggestionReason(ReasonKind.MOMENT, "jeudi soir"),
-                SuggestionReason(ReasonKind.ACCESSIBILITY),
-                SuggestionReason(ReasonKind.SOCIAL_PROOF),
+                SuggestionReason("upcoming_event", "C'est jeudi soir, une occasion de rencontrer du monde."),
+                SuggestionReason("accessibility", "C'est gratuit et sans rendez-vous."),
+                SuggestionReason("popular", "Des voisins y participent déjà."),
             ),
-            isolatedAudience = true,
         ),
         NextStepSuggestion(
             id = "mock-group-local",
@@ -101,8 +107,8 @@ class MockSuggestionProvider(private val latencyMs: Long = 700) : SuggestionProv
             cta = SuggestionCta.JOIN,
             targetId = 5,
             reasons = listOf(
-                SuggestionReason(ReasonKind.PROXIMITY, "800 m"),
-                SuggestionReason(ReasonKind.SOCIAL_PROOF),
+                SuggestionReason("near_you", "C'est à 800 m de chez vous."),
+                SuggestionReason("popular", "Des voisins y participent déjà."),
             ),
         ),
         NextStepSuggestion(
@@ -114,8 +120,8 @@ class MockSuggestionProvider(private val latencyMs: Long = 700) : SuggestionProv
             cta = SuggestionCta.JOIN,
             targetId = 6,
             reasons = listOf(
-                SuggestionReason(ReasonKind.INTERESTS, "cuisiner"),
-                SuggestionReason(ReasonKind.HISTORY, "mars"),
+                SuggestionReason("shared_interests", "On y parle de cuisiner, des sujets qui vous plaisent."),
+                SuggestionReason("history", "Vous avez participé à un moment similaire en mars."),
             ),
         ),
         NextStepSuggestion(
@@ -127,8 +133,8 @@ class MockSuggestionProvider(private val latencyMs: Long = 700) : SuggestionProv
             cta = SuggestionCta.SAY_HELLO,
             targetId = 7,
             reasons = listOf(
-                SuggestionReason(ReasonKind.PROXIMITY, "400 m"),
-                SuggestionReason(ReasonKind.INTERESTS, "le jardinage"),
+                SuggestionReason("near_you", "C'est à 400 m de chez vous."),
+                SuggestionReason("shared_interests", "On y parle de le jardinage, des sujets qui vous plaisent."),
             ),
         ),
         NextStepSuggestion(
@@ -141,9 +147,49 @@ class MockSuggestionProvider(private val latencyMs: Long = 700) : SuggestionProv
             ),
             cta = SuggestionCta.SEE_PLACE,
             reasons = listOf(
-                SuggestionReason(ReasonKind.NEED, "où déposer vos affaires"),
-                SuggestionReason(ReasonKind.ACCESSIBILITY),
+                SuggestionReason("answers_your_need", "Vous cherchiez où déposer vos affaires."),
+                SuggestionReason("accessibility", "C'est gratuit et sans rendez-vous."),
             ),
+        ),
+        NextStepSuggestion(
+            id = "mock-smalltalk",
+            typeKey = SuggestionType.SMALL_TALK.key,
+            title = "",
+            body = "Les Bonnes ondes vous mettent en relation avec quelques personnes pour discuter.",
+            cta = SuggestionCta.TRY,
+            reasons = listOf(SuggestionReason("smalltalk", "Les Bonnes ondes vous mettent en relation avec quelques personnes pour discuter.")),
+        ),
+        NextStepSuggestion(
+            id = "mock-content-path",
+            typeKey = SuggestionType.CONTENT_PATH.key,
+            title = "",
+            metas = listOf(
+                SuggestionMeta("📘", "Comprendre l'isolement"),
+                SuggestionMeta("📘", "Agir près de chez soi"),
+                SuggestionMeta("📘", "Aller vers l'autre"),
+            ),
+            cta = SuggestionCta.READ,
+            targetId = 3,
+            items = listOf(SuggestionItem(3, "Comprendre l'isolement")),
+            reasons = listOf(SuggestionReason("content_path", "Trois lectures courtes pour découvrir Entourage.")),
+        ),
+        NextStepSuggestion(
+            id = "mock-post-message",
+            typeKey = SuggestionType.POST_MESSAGE.key,
+            title = "Voisins Ménilmontant",
+            body = "Vous faites partie de ce groupe : un petit message suffit pour faire connaissance.",
+            cta = SuggestionCta.WRITE,
+            targetId = 5,
+            reasons = listOf(SuggestionReason("group_member_message", "Vous faites partie de ce groupe : un petit message suffit pour faire connaissance.")),
+        ),
+        NextStepSuggestion(
+            id = "mock-ambassador",
+            typeKey = SuggestionType.AMBASSADOR.key,
+            title = "",
+            body = "Envie d'animer des rencontres près de chez vous ? Le rôle d'Animateur Entourage est fait pour ça.",
+            cta = SuggestionCta.LEARN_MORE,
+            link = "https://forms.example.com/devenir-animateur-entourage",
+            reasons = listOf(SuggestionReason("become_ambassador", "Envie d'animer des rencontres près de chez vous ? Le rôle d'Animateur Entourage est fait pour ça.")),
         ),
     )
 

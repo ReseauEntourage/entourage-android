@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 /** Porte l'état des suggestions de la home (card « Votre prochain pas » + zone Explorer). */
 class HomeSuggestionViewModel(
-    private val provider: SuggestionProvider = MockSuggestionProvider(),
+    private val provider: SuggestionProvider = NextStepSuggestionProvider(),
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SuggestionUiState())
@@ -57,11 +57,27 @@ class HomeSuggestionViewModel(
         val suggestion = pendingLater ?: return
         pendingLater = null
         viewModelScope.launch {
-            try {
-                provider.dismiss(suggestion.id)
+            // La réponse du moteur contient la suggestion suivante : pas de second appel.
+            val next = try {
+                provider.dismiss(suggestion)
             } catch (_: Exception) {
+                null
             }
-            refresh()
+            if (next != null) {
+                _state.update { SuggestionUiState(loading = false, payload = (it.payload ?: SuggestionPayload()).copy(hero = next)) }
+            } else {
+                refresh()
+            }
         }
+    }
+
+    /** Transmet un geste au moteur, sans attendre et sans jamais échouer. */
+    fun report(kind: String, suggestion: NextStepSuggestion) {
+        viewModelScope.launch { runCatching { provider.report(SuggestionInteraction.of(kind, suggestion)) } }
+    }
+
+    /** Affichage de la zone Explorer : une interaction par piste montrée. */
+    fun reportShown(accesses: List<ExplorerAccess>) {
+        accesses.mapNotNull { it.suggestion }.forEach { report(SuggestionInteraction.DISPLAYED, it) }
     }
 }

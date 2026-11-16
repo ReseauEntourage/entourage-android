@@ -67,7 +67,7 @@ private fun ExplorerTab.targetLabel(): String = stringResource(
 fun SuggestionExplorerZone(
     ui: ExplorerUi,
     onAccess: (ExplorerAccess) -> Unit,
-    onShown: () -> Unit,
+    onShown: (List<ExplorerAccess>) -> Unit,
 ) {
     if (ui is ExplorerUi.Hidden) return
     Column(
@@ -97,7 +97,7 @@ fun SuggestionExplorerZone(
                 )
             }
             is ExplorerUi.Ready -> {
-                LaunchedEffect(ui.accesses.map { it.id }) { onShown() }
+                LaunchedEffect(ui.accesses.map { it.id }) { onShown(ui.accesses) }
                 ui.accesses.forEach { ExplorerRow(it, onClick = { onAccess(it) }) }
             }
             ExplorerUi.Hidden -> Unit
@@ -108,8 +108,9 @@ fun SuggestionExplorerZone(
 @Composable
 private fun ExplorerRow(access: ExplorerAccess, onClick: () -> Unit) {
     val style = access.type?.style() ?: return
+    val label = access.label.ifBlank { access.type?.defaultTitleRes()?.let { stringResource(it) }.orEmpty() }
     val opens = stringResource(R.string.home_suggestion_explorer_opens, access.tab.targetLabel())
-    val readout = listOfNotNull(access.label, access.context, opens).joinToString(". ")
+    val readout = listOfNotNull(label, access.context, opens).joinToString(". ")
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -137,7 +138,7 @@ private fun ExplorerRow(access: ExplorerAccess, onClick: () -> Unit) {
         }
         Column(Modifier.weight(1f)) {
             Text(
-                access.label,
+                label,
                 color = Color(0xFF1A1A1A),
                 fontFamily = NunitoSansSemiBold,
                 fontSize = 14.sp,

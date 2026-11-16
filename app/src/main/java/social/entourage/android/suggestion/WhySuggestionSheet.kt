@@ -47,37 +47,17 @@ private fun SuggestionType?.whyTitle(): String = stringResource(
         SuggestionType.GROUP -> R.string.home_suggestion_why_title_group
         SuggestionType.CONNECTION -> R.string.home_suggestion_why_title_connection
         SuggestionType.PLACE -> R.string.home_suggestion_why_title_place
+        SuggestionType.CONTENT_PATH -> R.string.home_suggestion_why_title_content_path
+        SuggestionType.SMALL_TALK -> R.string.home_suggestion_why_title_smalltalk
+        SuggestionType.POST_MESSAGE -> R.string.home_suggestion_why_title_post_message
+        SuggestionType.AMBASSADOR -> R.string.home_suggestion_why_title_ambassador
         null -> R.string.home_suggestion_why_title_default
     }
 )
 
-private fun ReasonKind.icon(): String = when (this) {
-    ReasonKind.PROXIMITY -> "📍"
-    ReasonKind.INTERESTS -> "✨"
-    ReasonKind.MOMENT -> "🗓️"
-    ReasonKind.HISTORY -> "🔁"
-    ReasonKind.NEED -> "🔎"
-    ReasonKind.ACCESSIBILITY -> "✅"
-    ReasonKind.SOCIAL_PROOF -> "👥"
-}
-
-@Composable
-private fun SuggestionReason.text(): String {
-    val p = param.orEmpty()
-    return when (kind) {
-        ReasonKind.PROXIMITY -> stringResource(R.string.home_suggestion_why_reason_proximity, p)
-        ReasonKind.INTERESTS -> stringResource(R.string.home_suggestion_why_reason_interests, p)
-        ReasonKind.MOMENT -> stringResource(R.string.home_suggestion_why_reason_moment, p)
-        ReasonKind.HISTORY -> stringResource(R.string.home_suggestion_why_reason_history, p)
-        ReasonKind.NEED -> stringResource(R.string.home_suggestion_why_reason_need, p)
-        ReasonKind.ACCESSIBILITY -> stringResource(R.string.home_suggestion_why_reason_accessibility)
-        ReasonKind.SOCIAL_PROOF -> stringResource(R.string.home_suggestion_why_reason_social_proof)
-    }
-}
-
 /**
  * Bottom-sheet « Pourquoi cette suggestion ? » ouverte par le ⓘ d'une card. Les raisons viennent
- * du payload du moteur (2 à 3, une phrase chacune) ; aucun terme interne (segment, score) n'est affiché.
+ * du moteur (une à deux phrases, affichées telles quelles, avec une icône choisie par l'app) ; aucun terme interne (segment, score) n'est affiché.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -121,10 +101,10 @@ fun WhySuggestionSheet(
                                 .background(Color(0xFFFEEAE3)),
                             contentAlignment = Alignment.Center,
                         ) {
-                            Text(reason.kind.icon(), fontSize = 18.sp)
+                            Text(reason.icon, fontSize = 18.sp)
                         }
                         Text(
-                            reason.text(),
+                            reason.text,
                             modifier = Modifier.weight(1f),
                             color = BodyColor,
                             fontFamily = NunitoSansRegular,

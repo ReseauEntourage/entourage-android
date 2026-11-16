@@ -2,6 +2,7 @@ package social.entourage.android.suggestion
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import social.entourage.android.MainActivity
 import social.entourage.android.actions.detail.ActionDetailActivity
 import social.entourage.android.events.details.feed.EventFeedActivity
@@ -9,6 +10,7 @@ import social.entourage.android.groups.details.feed.GroupFeedActivity
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
+import social.entourage.android.small_talks.SmallTalkIntroActivity
 import social.entourage.android.tools.utils.Const
 
 /**
@@ -44,10 +46,23 @@ class SuggestionNavigator(
                     Intent(context, EventFeedActivity::class.java).putExtra(Const.EVENT_ID, it)
                 )
             }
-            SuggestionType.GROUP -> id?.let {
+            SuggestionType.GROUP, SuggestionType.POST_MESSAGE -> id?.let {
                 context.startActivity(
                     Intent(context, GroupFeedActivity::class.java).putExtra(Const.GROUP_ID, it)
                 )
+            }
+            SuggestionType.CONTENT_PATH -> s.items.firstOrNull()?.id?.let {
+                PedagoDetailActivity.setPedagoId(it)
+                context.startActivity(
+                    Intent(context, PedagoDetailActivity::class.java).putExtra(Const.ID, it)
+                )
+            }
+            // Bonnes ondes : le flux existant (introduction puis demande).
+            SuggestionType.SMALL_TALK -> context.startActivity(Intent(context, SmallTalkIntroActivity::class.java))
+            // « Devenir Animateur » : formulaire externe, seulement une adresse https.
+            SuggestionType.AMBASSADOR -> s.link?.let { link ->
+                val uri = Uri.parse(link)
+                if (uri.scheme == "https") context.startActivity(Intent(Intent.ACTION_VIEW, uri))
             }
             SuggestionType.CONNECTION -> id?.let(onSayHello)
             SuggestionType.PLACE -> context.startActivity(
