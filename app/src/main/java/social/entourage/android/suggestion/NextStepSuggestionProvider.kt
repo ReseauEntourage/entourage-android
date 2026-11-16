@@ -22,9 +22,14 @@ data class SuggestionInteraction(
         const val WHY_OPENED = "why_opened"
         const val TAPPED = "tapped"
 
+        /** Types sans cible propre : l'interaction d'une autre piste de ces types omet `target_id`. */
+        private val WITHOUT_TARGET = setOf(
+            SuggestionType.CONTENT_PATH.key, SuggestionType.SMALL_TALK.key, SuggestionType.AMBASSADOR.key,
+        )
+
         fun of(kind: String, s: NextStepSuggestion) =
             if (s.engineId != null) SuggestionInteraction(kind, nextStepId = s.engineId)
-            else SuggestionInteraction(kind, itemKind = s.typeKey, targetId = s.targetId)
+            else SuggestionInteraction(kind, itemKind = s.typeKey, targetId = s.targetId.takeIf { s.typeKey !in WITHOUT_TARGET })
     }
 }
 

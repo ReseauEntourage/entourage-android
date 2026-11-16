@@ -6,6 +6,7 @@ import android.net.Uri
 import social.entourage.android.MainActivity
 import social.entourage.android.actions.detail.ActionDetailActivity
 import social.entourage.android.events.details.feed.EventFeedActivity
+import social.entourage.android.groups.details.feed.CreatePostGroupActivity
 import social.entourage.android.groups.details.feed.GroupFeedActivity
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.pedago.PedagoDetailActivity
@@ -46,12 +47,21 @@ class SuggestionNavigator(
                     Intent(context, EventFeedActivity::class.java).putExtra(Const.EVENT_ID, it)
                 )
             }
-            SuggestionType.GROUP, SuggestionType.POST_MESSAGE -> id?.let {
+            // Poster un message : l'écran de saisie du groupe, comme le bouton « créer un message » du fil.
+            SuggestionType.POST_MESSAGE -> id?.let {
+                context.startActivity(
+                    Intent(context, CreatePostGroupActivity::class.java)
+                        .putExtra(Const.ID, it)
+                        .putExtra(Const.IS_NATIONAL_GROUP, s.nationalGroup)
+                )
+            }
+            SuggestionType.GROUP -> id?.let {
                 context.startActivity(
                     Intent(context, GroupFeedActivity::class.java).putExtra(Const.GROUP_ID, it)
                 )
             }
-            SuggestionType.CONTENT_PATH -> s.items.firstOrNull()?.id?.let {
+            // Mini-parcours : le premier contenu non lu (le premier si tous sont lus).
+            SuggestionType.CONTENT_PATH -> s.firstContentToOpen()?.id?.let {
                 PedagoDetailActivity.setPedagoId(it)
                 context.startActivity(
                     Intent(context, PedagoDetailActivity::class.java).putExtra(Const.ID, it)

@@ -39,6 +39,7 @@ object NextStepMapper {
                 SuggestionType.GROUP -> group(dto, type)
                 SuggestionType.POST_MESSAGE -> group(dto, type)?.copy(
                     body = explanation, cta = SuggestionCta.WRITE, variant = SuggestionVariant.DEFAULT,
+                    nationalGroup = dto.target?.decode<Group>()?.zone == null,
                 )
                 SuggestionType.ENTRAIDE -> action(dto)
                 SuggestionType.PLACE -> place(dto)
@@ -145,13 +146,13 @@ object NextStepMapper {
         val items = dto.targets.orEmpty().mapNotNull { o ->
             val p = runCatching { o.decode<Pedago>() }.getOrNull() ?: return@mapNotNull null
             val title = p.name?.takeIf { it.isNotBlank() } ?: return@mapNotNull null
-            SuggestionItem(p.id, title)
+            SuggestionItem(p.id, title, watched = p.watched == true)
         }
         if (items.isEmpty()) return null
         return NextStepSuggestion(
             id = "", typeKey = SuggestionType.CONTENT_PATH.key, title = "",
             metas = items.map { SuggestionMeta("📘", it.title) }, cta = SuggestionCta.READ,
-            targetId = items.first().id, items = items,
+            targetId = (items.firstOrNull { !it.watched } ?: items.first()).id, items = items,
         )
     }
 

@@ -63,7 +63,7 @@ data class SuggestionReason(val code: String, val text: String) {
 data class SuggestionMeta(val icon: String? = null, val text: String = "", @StringRes val textRes: Int? = null)
 
 /** Un contenu d'un mini-parcours. */
-data class SuggestionItem(val id: Int?, val title: String, val detail: String? = null)
+data class SuggestionItem(val id: Int?, val title: String, val detail: String? = null, val watched: Boolean = false)
 
 data class NextStepSuggestion(
     val id: String,
@@ -91,8 +91,13 @@ data class NextStepSuggestion(
     val link: String? = null,
     /** Contenus d'un mini-parcours. */
     val items: List<SuggestionItem> = emptyList(),
+    /** Poster un message : groupe national (sans zone), comme le teste l'écran de création de message. */
+    val nationalGroup: Boolean = false,
 ) {
     val type: SuggestionType? get() = SuggestionType.fromKey(typeKey)
+
+    /** Contenu ouvert par un mini-parcours : le premier non lu, ou le premier si tous sont lus. */
+    fun firstContentToOpen(): SuggestionItem? = items.firstOrNull { !it.watched } ?: items.firstOrNull()
 
     /** Les phrases du moteur, sans raison vide, bornées à [MAX_REASONS]. */
     fun displayableReasons(): List<SuggestionReason> =

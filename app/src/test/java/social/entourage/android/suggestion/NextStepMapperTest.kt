@@ -93,6 +93,51 @@ class NextStepMapperTest {
     }
 
     @Test
+    fun contentPathOpensTheFirstUnreadContent() {
+        val s = map(
+            envelope("content_path", targets = """[{"id":21,"name":"Lu","watched":true},{"id":22,"name":"Non lu","watched":false},{"id":23,"name":"Autre","watched":false}]"""),
+        )!!
+        assertEquals(22, s.targetId)
+        assertEquals(22, s.firstContentToOpen()!!.id)
+        assertEquals(listOf(21, 22, 23), s.items.map { it.id })
+    }
+
+    @Test
+    fun contentPathOpensTheFirstWhenAllAreRead() {
+        val s = map(
+            envelope("content_path", targets = """[{"id":21,"name":"A","watched":true},{"id":22,"name":"B","watched":true},{"id":23,"name":"C","watched":true}]"""),
+        )!!
+        assertEquals(21, s.targetId)
+        assertEquals(21, s.firstContentToOpen()!!.id)
+    }
+
+    @Test
+    fun otherContentPathSmalltalkAndAmbassadorOmitTargetId() {
+        fun other(kind: String, extra: String) =
+            """{"id":null,"kind":"$kind","mode":"segment","placement":"others","target":null,$extra"reasons":[]}"""
+        val json = """{"next_steps":[
+            ${other("content_path", """"targets":[{"id":21,"name":"A"},{"id":22,"name":"B"}],""")},
+            ${other("smalltalk", "")},
+            ${other("become_ambassador", """"link":"https://forms.example.com/x",""")}
+        ]}"""
+        val accesses = NextStepMapper.toExplorer(AppJson.decode<NextStepsEnvelope>(json).nextSteps)
+        assertEquals(3, accesses.size)
+        accesses.forEach {
+            val interaction = SuggestionInteraction.of(SuggestionInteraction.TAPPED, it.suggestion!!)
+            assertEquals(it.typeKey, interaction.itemKind)
+            assertNull(it.typeKey, interaction.targetId)
+        }
+    }
+
+    @Test
+    fun postMessageKnowsWhetherTheGroupIsNational() {
+        val national = map(envelope("post_message", target = """{"id":5,"name":"Groupe national"}"""))!!
+        assertTrue(national.nationalGroup)
+        val local = map(envelope("post_message", target = """{"id":6,"name":"Voisins","zone":"75"}"""))!!
+        assertEquals(false, local.nationalGroup)
+    }
+
+    @Test
     fun smalltalkAndAmbassadorUseTheEngineSentenceAsText() {
         val reasons = """[{"code":"smalltalk","text":"Les Bonnes ondes vous mettent en relation."}]"""
         val talk = map(envelope("smalltalk", reasons = reasons))!!
