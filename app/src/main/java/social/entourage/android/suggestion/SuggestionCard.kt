@@ -70,6 +70,18 @@ internal fun SuggestionType.defaultTitleRes(): Int? = when (this) {
 }
 
 @Composable
+private fun NextStepSuggestion.badgeText(): String {
+    val t = type ?: return ""
+    // « Poster un message » : le groupe de voisins ou le groupe thématique déjà rejoint.
+    if (t == SuggestionType.POST_MESSAGE) {
+        return "✉️ " + stringResource(
+            if (thematicGroup) R.string.home_suggestion_badge_post_message_group else R.string.home_suggestion_badge_post_message
+        )
+    }
+    return t.badgeText(contentTag)
+}
+
+@Composable
 private fun SuggestionType.badgeText(tag: ContentTag?): String = when (this) {
     SuggestionType.ENTRAIDE -> "🤝 " + stringResource(R.string.home_suggestion_badge_entraide)
     SuggestionType.CONTENT -> when (tag) {
@@ -133,7 +145,7 @@ fun SuggestionCard(
 ) {
     val type = suggestion.type ?: return
     val style = type.style()
-    val badge = type.badgeText(suggestion.contentTag)
+    val badge = suggestion.badgeText()
     val chip = suggestion.chipText()
     val title = suggestion.title.ifBlank { type.defaultTitleRes()?.let { stringResource(it) }.orEmpty() }
     val metaTexts = suggestion.metas.take(3).map { m -> m.textRes?.let { stringResource(it) } ?: m.text }

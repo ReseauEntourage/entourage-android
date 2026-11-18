@@ -2169,7 +2169,7 @@
     <string name="home_suggestion_hero_title">Our suggestion for you</string>
     <string name="home_suggestion_badge_entraide">Mutual aid</string>
     <string name="home_suggestion_badge_event">Event</string>
-    <string name="home_suggestion_badge_group">Group</string>
+    <string name="home_suggestion_badge_group">A group you might like</string>
     <string name="home_suggestion_badge_connection">Connection</string>
     <string name="home_suggestion_badge_place">Solidarity place</string>
     <string name="home_suggestion_badge_understand">Understand</string>
@@ -2199,7 +2199,8 @@
     <string name="home_suggestion_why_title_place">Why this place?</string>
     <string name="home_suggestion_badge_content_path">To get started</string>
     <string name="home_suggestion_badge_smalltalk">Good vibes</string>
-    <string name="home_suggestion_badge_post_message">Your group</string>
+    <string name="home_suggestion_badge_post_message">Chat with your neighbours</string>
+    <string name="home_suggestion_badge_post_message_group">Chat in your group</string>
     <string name="home_suggestion_badge_ambassador">Become a host</string>
     <string name="home_suggestion_cta_smalltalk">Try it</string>
     <string name="home_suggestion_cta_write">Write a message</string>

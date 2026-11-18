@@ -40,6 +40,7 @@ object NextStepMapper {
                 SuggestionType.POST_MESSAGE -> group(dto, type)?.copy(
                     body = explanation, cta = SuggestionCta.WRITE, variant = SuggestionVariant.DEFAULT,
                     nationalGroup = dto.target?.decode<Group>()?.zone == null,
+                    thematicGroup = dto.target?.decode<Group>()?.national == true,
                 )
                 SuggestionType.ENTRAIDE -> action(dto)
                 SuggestionType.PLACE -> place(dto)

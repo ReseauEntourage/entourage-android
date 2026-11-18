@@ -93,6 +93,8 @@ data class NextStepSuggestion(
     val items: List<SuggestionItem> = emptyList(),
     /** Poster un message : groupe national (sans zone), comme le teste l'écran de création de message. */
     val nationalGroup: Boolean = false,
+    /** Poster un message : groupe thématique (national) plutôt que groupe de voisins ; sert au badge. */
+    val thematicGroup: Boolean = false,
 ) {
     val type: SuggestionType? get() = SuggestionType.fromKey(typeKey)
 

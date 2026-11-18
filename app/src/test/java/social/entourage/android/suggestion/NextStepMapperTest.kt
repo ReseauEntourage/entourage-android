@@ -159,6 +159,15 @@ class NextStepMapperTest {
         assertEquals(false, local.nationalGroup)
     }
 
+    /** Badge : groupe de voisins (« Discuter avec vos voisins ») ou groupe thématique (« Discuter dans votre groupe »). */
+    @Test
+    fun postMessageBadgeDependsOnNeighborsOrThematicGroup() {
+        val thematic = map(envelope("post_message", target = """{"id":5,"name":"Cuisine et partage","national":true}"""))!!
+        assertTrue(thematic.thematicGroup)
+        val neighbors = map(envelope("post_message", target = """{"id":522,"name":"Voisins","national":false,"zone":null}"""))!!
+        assertEquals(false, neighbors.thematicGroup)
+    }
+
     @Test
     fun smalltalkAndAmbassadorUseTheEngineSentenceAsText() {
         val reasons = """[{"code":"smalltalk","text":"Les Bonnes ondes vous mettent en relation."}]"""

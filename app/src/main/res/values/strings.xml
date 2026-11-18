@@ -3722,7 +3722,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_suggestion_hero_title">Notre suggestion pour vous</string>
     <string name="home_suggestion_badge_entraide">Entraide</string>
     <string name="home_suggestion_badge_event">Événement</string>
-    <string name="home_suggestion_badge_group">Groupe</string>
+    <string name="home_suggestion_badge_group">Un groupe qui pourrait vous plaire</string>
     <string name="home_suggestion_badge_connection">Connexion</string>
     <string name="home_suggestion_badge_place">Lieu solidaire</string>
     <string name="home_suggestion_badge_understand">Comprendre</string>
@@ -3752,7 +3752,8 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_suggestion_why_title_place">Pourquoi ce lieu ?</string>
     <string name="home_suggestion_badge_content_path">Pour démarrer</string>
     <string name="home_suggestion_badge_smalltalk">Bonnes ondes</string>
-    <string name="home_suggestion_badge_post_message">Votre groupe</string>
+    <string name="home_suggestion_badge_post_message">Discuter avec vos voisins</string>
+    <string name="home_suggestion_badge_post_message_group">Discuter dans votre groupe</string>
     <string name="home_suggestion_badge_ambassador">Devenir Animateur</string>
     <string name="home_suggestion_cta_smalltalk">Essayer</string>
     <string name="home_suggestion_cta_write">Écrire un message</string>
