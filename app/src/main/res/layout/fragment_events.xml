@@ -44,15 +44,17 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ui_layout_filter"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@drawable/bg_partner_logo"
+                android:contentDescription="@string/a11y_filter"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_partner_logo_inset6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="@dimen/entourage_margin_end">
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:id="@+id/ui_bell_filter"
                     android:layout_width="24dp"
                     android:layout_height="22dp"
@@ -65,14 +67,16 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ui_layout_search"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:background="@drawable/bg_partner_logo"
+                android:contentDescription="@string/a11y_search"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_partner_logo_inset6"
                 app:layout_constraintEnd_toStartOf="@+id/ui_layout_filter"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp">
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="2dp">
                 <ImageView
+        android:importantForAccessibility="no"
                     android:id="@+id/ui_bell_search"
                     android:layout_width="24dp"
                     android:layout_height="22dp"
@@ -108,10 +112,10 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/ui_layout_location_bt"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
+                android:layout_height="48dp"
                 android:layout_margin="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:background="@drawable/bg_white_selected_filter"
+                android:background="@drawable/bg_white_selected_filter_inset_h0_v9"
                 android:paddingHorizontal="4dp"
                 android:paddingVertical="6dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -119,6 +123,7 @@
                 android:visibility="gone">
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:id="@+id/imageView26"
                     android:layout_width="20dp"
                     android:layout_height="wrap_content"
@@ -177,7 +182,7 @@
                 app:fabSize="auto"
                 android:textSize="15sp"
                 android:fontFamily="@font/nunitosans_bold"
-                app:backgroundTint="@color/orange"
+                app:backgroundTint="?attr/a11yButtonFill"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:visibility="visible"/>
@@ -190,7 +195,7 @@
                 android:src="@drawable/ic_fab_plus"
                 android:textColor="@color/white"
                 android:padding="10dp"
-                app:backgroundTint="@color/orange"
+                app:backgroundTint="?attr/a11yButtonFill"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:visibility="gone"/>

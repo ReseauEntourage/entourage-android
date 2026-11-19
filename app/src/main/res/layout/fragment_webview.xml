@@ -43,6 +43,7 @@
 
                 <TextView
                     android:id="@+id/webview_title"
+        android:accessibilityHeading="true"
                     style="@style/EntourageTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

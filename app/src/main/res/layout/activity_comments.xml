@@ -54,11 +54,12 @@
 
                 <ImageView
                     android:id="@+id/ui_iv_close_new"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+        android:contentDescription="@string/close"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    android:padding="4dp"
+                    android:padding="13dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/ic_close_black_24dp"
@@ -115,6 +116,7 @@
                     app:layout_constraintStart_toStartOf="parent"/>
                 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:id="@+id/iv_btn_event"
@@ -158,6 +160,7 @@
                 android:layout_marginBottom="20dp">
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center"
@@ -281,6 +284,7 @@
             app:layout_constraintBottom_toTopOf="@+id/post_comment"
             android:visibility="gone">
             <ImageView
+        android:contentDescription="@string/a11y_photo_preview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/iv_photo_preview"
@@ -290,17 +294,18 @@
                 />
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:id="@+id/btn_quit_photo"
+        android:contentDescription="@string/close"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:src="@drawable/icon_cross"
                 app:tint="@color/orange"
-                android:background="@drawable/bg_beige_round_15"
-                android:padding="8dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="20dp"/>
+                android:background="@drawable/bg_beige_round_15_inset9"
+                android:padding="17dp"
+                android:layout_marginTop="31dp"
+                android:layout_marginEnd="11dp"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -353,9 +358,10 @@
 
             <ImageView
                 android:id="@+id/btn_cancel_edit_message"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:padding="2dp"
+        android:contentDescription="@string/cancel"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="14dp"
                 android:src="@drawable/icon_cross"
                 app:tint="@color/orange" />
         </LinearLayout>
@@ -374,9 +380,11 @@
             app:layout_constraintBottom_toTopOf="@+id/layout_option">
 
             <ImageButton
-                android:layout_width="46dp"
-                android:layout_height="46dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:id="@+id/option_button"
+        android:padding="1dp"
+        android:contentDescription="@string/a11y_more_options"
                 android:layout_gravity="start"
                 android:background="@drawable/ic_conversation_more_option"
                 android:visibility="gone"/>
@@ -392,14 +400,15 @@
                 android:padding="13dp"
                 android:layout_marginStart="7dp"
                 android:inputType="textCapSentences|textMultiLine"
-                android:textColorHint="@color/grey_onboarding_item_border"
+                android:textColorHint="?attr/a11yTextGreyLight"
                 android:textColor="@color/black"
                 />
 
             <ImageButton
                 android:id="@+id/comment"
-                android:layout_width="46dp"
-                android:layout_height="46dp"
+                android:contentDescription="@string/a11y_send_comment"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:layout_marginStart="7dp"
                 android:background="@drawable/bg_button_inactive_light_orange"
                 android:gravity="end"
@@ -420,6 +429,7 @@
             android:visibility="gone">
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_thumbnail"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -500,9 +510,10 @@
 
             <ImageView
                 android:id="@+id/btn_close_staff_banner"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="12dp"
+        android:contentDescription="@string/close"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="16dp"
                 android:src="@drawable/icon_cross"
                 app:tint="@color/orange"
                 android:background="?attr/selectableItemBackgroundBorderless"

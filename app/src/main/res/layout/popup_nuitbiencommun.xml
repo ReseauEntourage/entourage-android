@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bg_rounded_dialog">
     <ImageView
+        android:importantForAccessibility="no"
         android:layout_width="match_parent"
         android:layout_height="400dp"
         android:id="@+id/iv_event_confirm"
@@ -17,9 +18,11 @@
         />
 
     <ImageButton
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:id="@+id/close_button"
+        android:padding="11dp"
+        android:contentDescription="@string/close"
         android:src="@drawable/ic_close_whith_round"
         android:background="@color/transparent"
         android:layout_marginTop="15dp"

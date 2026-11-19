@@ -9,6 +9,7 @@
         android:orientation="horizontal">
 
         <ImageView
+        android:importantForAccessibility="no"
             android:id="@+id/error_icon"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -16,6 +17,7 @@
 
         <TextView
             android:id="@+id/error_message"
+        android:accessibilityLiveRegion="polite"
             style="@style/error_msg"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

@@ -1,6 +1,8 @@
 package social.entourage.android.discussions
 
 import android.content.Context
+import social.entourage.android.ui.theme.accessibleButtonFill
+import androidx.compose.ui.semantics.Role
 import android.widget.ImageView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -254,7 +256,7 @@ private fun NotificationBanner(onClick: () -> Unit) {
             .fillMaxWidth()
             .clip(RoundedCornerShape(16.dp))
             .background(Color(0xFFFEE0C8))
-            .clickable { onClick() }
+            .clickable(role = Role.Button) { onClick() }
             .padding(15.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -334,8 +336,8 @@ private fun SmallTalkFeatureCard(onClick: () -> Unit) {
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(24.dp))
-                .background(colorResource(R.color.orange))
-                .clickable { onClick() }
+                .background(accessibleButtonFill(colorResource(R.color.orange)))
+                .clickable(role = Role.Button) { onClick() }
                 .padding(horizontal = 16.dp, vertical = 9.dp)
         ) {
             Text(
@@ -357,7 +359,7 @@ private fun DedicatedContactRow(moderator: HomeModerator, conversation: Conversa
         modifier = Modifier
             .fillMaxWidth()
             .testTag("conversation_item")
-            .clickable { onClick() }
+            .clickable(role = Role.Button) { onClick() }
             .padding(vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -424,7 +426,7 @@ private fun ConversationRow(conversation: Conversation, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .testTag("conversation_item")
-            .clickable { onClick() }
+            .clickable(role = Role.Button) { onClick() }
             .padding(vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

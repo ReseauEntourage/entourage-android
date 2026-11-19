@@ -5,6 +5,7 @@
     android:foreground="?attr/selectableItemBackground">
 
     <ImageView
+        android:importantForAccessibility="no"
         android:id="@+id/image_thumb"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -9,6 +9,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
+        android:importantForAccessibility="no"
             android:id="@+id/icon"
             android:layout_width="50dp"
             android:layout_height="50dp"

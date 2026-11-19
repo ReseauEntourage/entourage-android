@@ -10,6 +10,7 @@
     android:layout_marginTop="@dimen/entourage_little_margin_top">
 
     <ImageView
+        android:importantForAccessibility="no"
         android:layout_width="90dp"
         android:layout_height="match_parent"
         android:id="@+id/iv_pedago_item"
@@ -30,7 +31,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginStart="@dimen/entourage_margin_start_inner_item"
         android:background="@drawable/home_v2_tv_tag_item_pedago_shape"
-        android:textColor="@color/light_orange"
+        android:textColor="?attr/a11yTextLightOrange"
         android:fontFamily="@font/quicksand_bold"
         android:textSize="@dimen/entourage_font_very_small"
         tools:text="comprendre"
@@ -41,6 +42,7 @@
         />
 
     <ImageView
+        android:importantForAccessibility="no"
         android:id="@+id/iv_time_icon"
         android:layout_width="10dp"
         android:layout_height="10dp"

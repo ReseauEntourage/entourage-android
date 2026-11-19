@@ -68,6 +68,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/title_section_header_my_event"
+        android:accessibilityHeading="true"
                         android:text="@string/all_my_event"
                         android:fontFamily="@font/quicksand_bold"
                         android:textSize="15sp"
@@ -103,6 +104,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/title_section_header_event"
+        android:accessibilityHeading="true"
                         android:text="@string/all_event"
                         android:fontFamily="@font/quicksand_bold"
                         android:textSize="15sp"
@@ -170,6 +172,7 @@
                             app:layout_constraintTop_toTopOf="parent">
                             <ImageView
                                 android:id="@+id/image"
+        android:importantForAccessibility="no"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -179,6 +182,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
                             <ImageView
+        android:importantForAccessibility="no"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
@@ -212,6 +216,7 @@
 
                         </LinearLayout>
                         <ImageView
+        android:importantForAccessibility="no"
                             android:id="@+id/arrow"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

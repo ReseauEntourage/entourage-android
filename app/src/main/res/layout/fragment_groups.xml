@@ -62,15 +62,17 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/ui_layout_filter"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_partner_logo"
+                        android:contentDescription="@string/a11y_filter"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/bg_partner_logo_inset6"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="8dp">
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="2dp">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:id="@+id/ui_bell_filter"
                             android:layout_width="24dp"
                             android:layout_height="22dp"
@@ -83,15 +85,17 @@
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/ui_layout_search"
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:background="@drawable/bg_partner_logo"
+                        android:contentDescription="@string/a11y_search"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@drawable/bg_partner_logo_inset6"
                         app:layout_constraintEnd_toStartOf="@+id/ui_layout_filter"
                         app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="8dp">
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="2dp">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:id="@+id/ui_bell_search"
                             android:layout_width="24dp"
                             android:layout_height="22dp"
@@ -258,6 +262,7 @@
 
                         <ImageView
                             android:id="@+id/image"
+        android:importantForAccessibility="no"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -268,6 +273,7 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
@@ -302,6 +308,7 @@
                     </LinearLayout>
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:id="@+id/arrow"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -392,7 +399,7 @@
             android:textColor="@color/white"
             android:textSize="15sp"
             android:visibility="visible"
-            app:backgroundTint="@color/orange"
+            app:backgroundTint="?attr/a11yButtonFill"
             app:fabSize="auto"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

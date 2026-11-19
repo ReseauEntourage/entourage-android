@@ -15,10 +15,11 @@
         android:layout_marginEnd="@dimen/entourage_little_margin_end"
         android:fontFamily="@font/quicksand_bold"
         android:text="@string/home_btn_more_event"
-        android:textColor="@color/light_orange"
+        android:textColor="?attr/a11yTextLightOrange"
         android:textSize="@dimen/entourage_font_small" />
 
     <ImageView
+        android:importantForAccessibility="no"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:src="@drawable/arrow_light_orange" />

@@ -22,6 +22,7 @@
             app:layout_constraintTop_toTopOf="parent">
             <TextView
                 android:id="@+id/tv_small_talk_title"
+        android:accessibilityHeading="true"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"
@@ -34,6 +35,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Guide et charte des bandes solidaires" />
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_small_talk_illu"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -95,6 +97,7 @@
             android:background="@color/white">
             <TextView
                 android:id="@+id/tv_small_talk_ethics_title"
+        android:accessibilityHeading="true"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/small_talk_ethics_title"

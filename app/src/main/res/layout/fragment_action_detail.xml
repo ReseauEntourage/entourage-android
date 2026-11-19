@@ -63,6 +63,7 @@
                             android:backgroundTint="@color/light_orange">
 
                             <ImageView
+        android:importantForAccessibility="no"
                                 android:id="@+id/imageView37"
                                 android:layout_width="20dp"
                                 android:layout_height="wrap_content"
@@ -95,6 +96,7 @@
                             >
 
                             <ImageView
+        android:importantForAccessibility="no"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:id="@+id/iv_translate"
@@ -128,7 +130,7 @@
                                 app:layout_constraintEnd_toEndOf="parent"
                                 android:fontFamily="@font/quicksand_bold"
                                 android:textSize="13sp"
-                                android:textColor="@color/orange"
+                                android:textColor="?attr/a11yTextOrange"
                                 android:layout_marginStart="10dp"
                                 />
 
@@ -144,6 +146,7 @@
                             android:layout_marginTop="16dp">
 
                             <ImageView
+        android:importantForAccessibility="no"
                                 android:id="@+id/ui_image_contrib"
                                 android:layout_width="0dp"
                                 android:layout_height="184dp"
@@ -158,6 +161,7 @@
                                 app:srcCompat="@drawable/bg_rounded_14_orange_light" />
 
                             <ImageView
+        android:importantForAccessibility="no"
                                 android:id="@+id/ui_image_placeholder"
                                 android:layout_width="0dp"
                                 android:layout_height="184dp"
@@ -192,7 +196,7 @@
                                     android:layout_marginEnd="8dp"
                                     android:ellipsize="middle"
                                     android:fontFamily="@font/nunitosans_semibold"
-                                    android:textColor="@color/orange"
+                                    android:textColor="?attr/a11yTextOrange"
                                     android:textSize="13sp"
                                     app:layout_constraintBottom_toBottomOf="parent"
                                     app:layout_constraintEnd_toEndOf="parent"
@@ -202,6 +206,7 @@
                                     tools:text="Location" />
 
                                 <ImageView
+        android:importantForAccessibility="no"
                                     android:id="@+id/ui_iv_cat_contrib"
                                     android:layout_width="20dp"
                                     android:layout_height="wrap_content"
@@ -243,7 +248,7 @@
                                     android:layout_marginEnd="8dp"
                                     android:ellipsize="middle"
                                     android:fontFamily="@font/quicksand_bold"
-                                    android:textColor="@color/orange"
+                                    android:textColor="?attr/a11yTextOrange"
                                     android:textSize="13sp"
                                     android:layout_marginStart="8dp"
                                     app:layout_constraintBottom_toBottomOf="parent"
@@ -253,6 +258,7 @@
                                     tools:text="Location" />
 
                                 <ImageView
+        android:importantForAccessibility="no"
                                     android:id="@+id/ui_iv_cat_demand"
                                     android:layout_width="20dp"
                                     android:layout_height="wrap_content"
@@ -316,6 +322,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
 
                         <com.google.android.gms.maps.MapView xmlns:map="http://schemas.android.com/apk/res-auto"
                             android:id="@+id/ui_mapview"
+                            android:contentDescription="@string/a11y_map"
                             android:layout_width="match_parent"
                             android:layout_height="190dp"
                             android:background="#00000000"
@@ -337,6 +344,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
+        android:importantForAccessibility="no"
                         android:id="@+id/imageView36"
                         android:layout_width="8dp"
                         android:layout_height="8dp"
@@ -403,6 +411,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                         app:layout_constraintTop_toBottomOf="@+id/ui_title_author">
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:id="@+id/ui_user_iv"
                             android:layout_width="44dp"
                             android:layout_height="44dp"
@@ -451,6 +460,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
 
                         <TextView
                             android:id="@+id/title_charte"
+        android:accessibilityHeading="true"
                             style="@style/left_h2_orange"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -463,6 +473,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
 
                         <TextView
                             android:id="@+id/title_signal"
+        android:accessibilityHeading="true"
                             style="@style/left_h2_orange"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -474,6 +485,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                             app:layout_constraintTop_toBottomOf="@+id/title_charte" />
 
                         <ImageView
+        android:importantForAccessibility="no"
                             android:id="@+id/arrow"
                             style="@style/left_courant_bold_black"
                             android:layout_width="wrap_content"
@@ -505,9 +517,9 @@ purus dui, aliquet cursus tellus a, dictum hen." />
             <Button
                 android:id="@+id/ui_bt_delete"
                 android:layout_width="wrap_content"
-                android:layout_height="44dp"
+                android:layout_height="48dp"
                 android:layout_marginEnd="8dp"
-                android:background="@drawable/shape_button_v9_negative"
+                android:background="@drawable/shape_button_v9_negative_inset_h0_v2"
                 android:drawableRight="@drawable/ic_delete"
                 android:drawablePadding="8dp"
                 android:elevation="0dp"
@@ -527,9 +539,9 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                 android:id="@+id/ui_bt_modify"
                 style="@style/left_courant_bold_white"
                 android:layout_width="wrap_content"
-                android:layout_height="44dp"
+                android:layout_height="48dp"
                 android:layout_marginStart="8dp"
-                android:background="@drawable/bg_button_orange_fill"
+                android:background="@drawable/bg_button_orange_fill_inset_h0_v2"
                 android:drawableRight="@drawable/ic_create_post"
                 android:drawablePadding="8dp"
                 android:drawableTint="@color/white"
@@ -550,11 +562,11 @@ purus dui, aliquet cursus tellus a, dictum hen." />
             android:id="@+id/ui_bt_contact"
             style="@style/left_courant_bold_white"
             android:layout_width="wrap_content"
-            android:layout_height="44dp"
+            android:layout_height="48dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/bg_button_orange_fill"
+            android:layout_marginBottom="14dp"
+            android:background="@drawable/bg_button_orange_fill_inset_h0_v2"
             android:drawableRight="@drawable/ic_contact_white"
             android:drawablePadding="8dp"
             android:elevation="0dp"
@@ -584,9 +596,9 @@ purus dui, aliquet cursus tellus a, dictum hen." />
                 android:id="@+id/ui_bt_back_empty"
                 style="@style/left_courant_bold_white"
                 android:layout_width="wrap_content"
-                android:layout_height="44dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/bg_button_orange_fill"
+                android:layout_height="48dp"
+                android:layout_marginTop="22dp"
+                android:background="@drawable/bg_button_orange_fill_inset_h0_v2"
                 android:drawableTint="@color/white"
                 android:elevation="0dp"
                 android:minWidth="120dp"
@@ -609,6 +621,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
 
                 <ImageView
                     android:id="@+id/image"
+        android:importantForAccessibility="no"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

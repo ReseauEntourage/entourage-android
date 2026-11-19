@@ -7,6 +7,7 @@
     android:padding="20dp">
 
     <ImageView
+        android:importantForAccessibility="no"
         android:id="@+id/iv_small_talk_ethic_icon"
         android:layout_width="24dp"
         android:layout_height="24dp"

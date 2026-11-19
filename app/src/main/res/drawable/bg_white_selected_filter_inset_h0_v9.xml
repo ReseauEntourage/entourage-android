@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fond gardé à sa taille visuelle d'origine dans une cible tactile de 48 dp -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/bg_white_selected_filter"
+    android:insetLeft="0dp"
+    android:insetRight="0dp"
+    android:insetTop="9dp"
+    android:insetBottom="9dp" />

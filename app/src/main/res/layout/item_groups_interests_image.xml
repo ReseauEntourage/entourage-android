@@ -2,6 +2,7 @@
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/image"
+        android:importantForAccessibility="no"
     android:layout_width="28dp"
     android:layout_height="28dp"
     android:background="@drawable/bg_rounded_interests"

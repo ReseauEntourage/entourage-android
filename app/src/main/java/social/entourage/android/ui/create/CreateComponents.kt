@@ -1,6 +1,9 @@
 package social.entourage.android.ui.create
 
 import android.widget.ImageView
+import social.entourage.android.ui.theme.accessibleButtonFill
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Canvas
@@ -247,7 +250,8 @@ internal fun CfError(@StringRes message: Int?, modifier: Modifier = Modifier, to
         modifier = modifier
             .fillMaxWidth()
             .padding(top = topMargin)
-            .let { if (tag != null) it.testTag(tag) else it },
+            .let { if (tag != null) it.testTag(tag) else it }
+            .semantics { liveRegion = LiveRegionMode.Polite },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
@@ -597,7 +601,7 @@ internal fun CfFooterButton(
         modifier = modifier
             .height(47.dp)
             .clip(shape)
-            .background(if (primary) orange else CfWhite)
+            .background(if (primary) accessibleButtonFill(orange) else CfWhite)
             .let { if (primary) it else it.border(1.dp, orange, shape) }
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },

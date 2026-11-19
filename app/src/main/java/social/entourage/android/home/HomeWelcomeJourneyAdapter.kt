@@ -1,6 +1,7 @@
 package social.entourage.android.home
 
 import android.content.Context
+import social.entourage.android.accessibility.a11yColor
 import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
@@ -171,18 +172,18 @@ class HomeWelcomeJourneyAdapter(
             v.desc.setTextColor(color(R.color.grey))
             v.badge.visibility = View.VISIBLE
             v.badge.text = "À faire"
-            v.badge.setTextColor(color(R.color.orange))
+            v.badge.setTextColor(context.a11yColor(R.attr.a11yTextOrange, R.color.orange))
             v.badge.setBackgroundResource(R.drawable.bg_badge_todo)
             v.button.visibility = View.VISIBLE
             v.button.isEnabled = true
             v.button.text = todoButtonLabels[i]
             if (isPrimary) {
-                v.button.setBackgroundColor(color(R.color.orange))
+                v.button.setBackgroundColor(context.a11yColor(R.attr.a11yButtonFill, R.color.orange))
                 v.button.setTextColor(color(R.color.white))
                 v.button.strokeWidth = 0
             } else {
                 v.button.setBackgroundColor(color(R.color.white))
-                v.button.setTextColor(color(R.color.orange))
+                v.button.setTextColor(context.a11yColor(R.attr.a11yTextOrange, R.color.orange))
                 v.button.strokeColor = ColorStateList.valueOf(color(R.color.orange))
                 v.button.strokeWidth = (1.5f * context.resources.displayMetrics.density).toInt()
             }

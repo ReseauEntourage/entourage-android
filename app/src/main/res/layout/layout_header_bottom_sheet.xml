@@ -28,8 +28,10 @@
 
         <ImageView
             android:id="@+id/iconBack"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+        android:padding="12dp"
+        android:contentDescription="@string/back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/hbs_divider"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,8 +39,10 @@
 
         <ImageView
             android:id="@+id/hbs_icon_cross"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+        android:padding="8dp"
+        android:contentDescription="@string/close"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="16dp"
@@ -51,6 +55,7 @@
 
         <TextView
             android:id="@+id/hbs_title_name"
+        android:accessibilityHeading="true"
             style="@style/h2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

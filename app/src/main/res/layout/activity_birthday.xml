@@ -74,7 +74,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="32dp"
         android:background="@drawable/shape_button_v9_positive"
-        android:backgroundTint="@color/orange"
+        android:backgroundTint="?attr/a11yButtonFill"
         android:fontFamily="@font/quicksand_bold"
         android:paddingHorizontal="24dp"
         android:paddingVertical="12dp"

@@ -45,7 +45,7 @@
     <Button
         android:id="@+id/buttonWait"
         android:layout_width="0dp"
-        android:layout_height="47dp"
+        android:layout_height="48dp"
         android:layout_margin="16dp"
         android:background="@drawable/shape_button_v9_positive"
         android:fontFamily="@font/quicksand_bold"

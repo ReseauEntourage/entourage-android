@@ -438,6 +438,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
                               HomeState.signablePermission && ActionSheetFragment.isSignable
 
         if (canShowAddButton) {
+            binding.fabAddUnsubscribed.mainFab.contentDescription = getString(R.string.add)
             binding.fabAddUnsubscribed.visibility = android.view.View.VISIBLE
             binding.fabAddUnsubscribed.setOnChangeListener(object : SpeedDialView.OnChangeListener {
                 override fun onMainActionSelected(): Boolean {

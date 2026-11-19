@@ -19,6 +19,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
     <ImageView
+        android:importantForAccessibility="no"
         android:id="@+id/author_image"
         android:layout_width="25dp"
         android:layout_height="25dp"
@@ -40,6 +41,7 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/name"
+        android:accessibilityHeading="true"
                     style="@style/left_h2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -49,7 +51,7 @@
                     tools:text="John Doe" />
 
                 <Button
-                    android:layout_width="40dp"
+                    android:layout_width="48dp"
                     android:layout_height="0dp"
                     android:id="@+id/btn_report_post"
                     app:layout_constraintTop_toTopOf="@+id/name"
@@ -104,7 +106,7 @@
         android:layout_marginTop="20dp"
         android:fontFamily="@font/nunitosans_regular"
         android:textSize="13sp"
-        android:textColor="@color/grey_vote"
+        android:textColor="?attr/a11yTextGreyVote"
         android:text="@string/title_switch_mutiples_choices"
         />
 
@@ -167,6 +169,7 @@
 
         <ImageView
             android:id="@+id/imageViewComments"
+        android:contentDescription="@string/a11y_comments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_comments"
@@ -237,6 +240,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_react_one"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
@@ -247,6 +251,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_react_two"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
@@ -257,6 +262,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_react_three"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
@@ -267,6 +273,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_react_four"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
@@ -277,6 +284,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_react_five"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
@@ -372,6 +380,7 @@
             app:layout_constraintEnd_toStartOf="@+id/btn_i_comment"
             android:layout_marginTop="15dp">
             <ImageView
+        android:importantForAccessibility="no"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:id="@+id/iv_i_like"
@@ -404,6 +413,7 @@
             app:layout_constraintStart_toEndOf="@+id/btn_i_like"
             android:layout_marginTop="15dp">
             <ImageView
+        android:importantForAccessibility="no"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:id="@+id/iv_i_comment"

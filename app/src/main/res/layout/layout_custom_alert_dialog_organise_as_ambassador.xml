@@ -6,6 +6,7 @@
     android:background="@drawable/shape_create_survey"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
+        android:importantForAccessibility="no"
         android:layout_width="53dp"
         android:layout_height="48dp"
         android:id="@+id/iv_popup"
@@ -15,9 +16,11 @@
         android:layout_marginTop="16dp"
         android:src="@drawable/evenement"/>
     <ImageButton
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:id="@+id/btn_cross"
+        android:padding="11dp"
+        android:contentDescription="@string/close"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         app:layout_constraintTop_toTopOf="parent"
@@ -35,7 +38,7 @@
         android:textSize="15dp"
         android:text="@string/popup_ambassador_title"
         android:fontFamily="@font/quicksand_bold"
-        android:textColor="@color/orange"
+        android:textColor="?attr/a11yTextOrange"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_popup"
@@ -63,7 +66,7 @@
         android:id="@+id/button_configure_later"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="0dp"
-        android:layout_height="47dp"
+        android:layout_height="48dp"
         android:layout_weight="1"
         android:background="@drawable/shape_button_v9_negative"
         android:elevation="0dp"
@@ -87,7 +90,7 @@
         android:id="@+id/button_start"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="0dp"
-        android:layout_height="47dp"
+        android:layout_height="48dp"
         android:layout_weight="1"
         android:background="@drawable/shape_button_v9_positive"
         android:elevation="0dp"

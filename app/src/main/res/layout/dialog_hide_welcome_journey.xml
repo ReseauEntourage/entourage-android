@@ -43,7 +43,7 @@
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="14sp"
-        app:backgroundTint="@color/orange"
+        app:backgroundTint="?attr/a11yButtonFill"
         app:cornerRadius="32dp"
         xmlns:app="http://schemas.android.com/apk/res-auto" />
 

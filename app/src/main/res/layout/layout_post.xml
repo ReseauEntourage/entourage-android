@@ -20,6 +20,7 @@
         android:visibility="gone"
         >
         <ImageView
+        android:importantForAccessibility="no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/img_action_in_publi"
@@ -63,6 +64,7 @@
 
             <ImageView
                 android:id="@+id/image"
+        android:importantForAccessibility="no"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 tools:src="@drawable/illu_header_group" />
@@ -79,6 +81,7 @@
                     android:layout_height="wrap_content">
                     <TextView
                         android:id="@+id/name"
+        android:accessibilityHeading="true"
                         style="@style/left_h2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -88,7 +91,7 @@
                         tools:text="John Doe" />
 
                     <Button
-                        android:layout_width="40dp"
+                        android:layout_width="48dp"
                         android:layout_height="0dp"
                         android:id="@+id/btn_report_post"
                         app:layout_constraintTop_toTopOf="@+id/name"
@@ -134,6 +137,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
 
         <ImageView
             android:id="@+id/photo_post"
+        android:contentDescription="@string/a11y_post_photo"
             android:layout_width="match_parent"
             android:layout_height="185dp"
             android:layout_marginTop="16dp"
@@ -159,6 +163,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
 
             <ImageView
                 android:id="@+id/imageViewComments"
+        android:contentDescription="@string/a11y_comments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_comments"
@@ -219,6 +224,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:id="@+id/iv_react_one"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
@@ -229,6 +235,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:id="@+id/iv_react_two"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
@@ -239,6 +246,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:id="@+id/iv_react_three"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
@@ -249,6 +257,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:id="@+id/iv_react_four"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
@@ -259,6 +268,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:id="@+id/iv_react_five"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
@@ -346,6 +356,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                 app:layout_constraintEnd_toStartOf="@+id/btn_i_comment"
                 android:layout_marginTop="15dp">
                 <ImageView
+        android:importantForAccessibility="no"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:id="@+id/iv_i_like"
@@ -378,6 +389,7 @@ Nous sommes prêt pour les beaux jours ! :-)" />
                 app:layout_constraintStart_toEndOf="@+id/btn_i_like"
                 android:layout_marginTop="15dp">
                 <ImageView
+        android:importantForAccessibility="no"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:id="@+id/iv_i_comment"

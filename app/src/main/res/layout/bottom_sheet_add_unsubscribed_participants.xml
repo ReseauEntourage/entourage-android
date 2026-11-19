@@ -8,6 +8,7 @@
     android:padding="20dp">
 
     <ImageView
+        android:importantForAccessibility="no"
         android:layout_width="32dp"
         android:layout_height="4dp"
         android:layout_gravity="center_horizontal"
@@ -15,6 +16,7 @@
         android:background="@drawable/bg_rounded_grey" />
 
     <TextView
+        android:accessibilityHeading="true"
         style="@style/h2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,15 +42,17 @@
 
         <ImageView
             android:id="@+id/btn_minus_isoles"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="@drawable/bg_circle_orange_button"
-            android:padding="8dp"
+        android:contentDescription="@string/a11y_decrease"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_circle_orange_button_inset8"
+            android:padding="16dp"
             android:src="@drawable/ic_minus"
             app:tint="@color/white" />
 
         <TextView
             android:id="@+id/tv_count_isoles"
+        android:accessibilityHeading="true"
             style="@style/h2"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
@@ -58,10 +62,11 @@
 
         <ImageView
             android:id="@+id/btn_plus_isoles"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="@drawable/bg_circle_orange_button"
-            android:padding="8dp"
+        android:contentDescription="@string/a11y_increase"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_circle_orange_button_inset8"
+            android:padding="16dp"
             android:src="@drawable/ic_fab_plus"
             app:tint="@color/white" />
     </LinearLayout>
@@ -85,15 +90,17 @@
 
         <ImageView
             android:id="@+id/btn_minus_femmes_isolees"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="@drawable/bg_circle_orange_button"
-            android:padding="8dp"
+        android:contentDescription="@string/a11y_decrease"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_circle_orange_button_inset8"
+            android:padding="16dp"
             android:src="@drawable/ic_minus"
             app:tint="@color/white" />
 
         <TextView
             android:id="@+id/tv_count_femmes_isolees"
+        android:accessibilityHeading="true"
             style="@style/h2"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
@@ -103,10 +110,11 @@
 
         <ImageView
             android:id="@+id/btn_plus_femmes_isolees"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="@drawable/bg_circle_orange_button"
-            android:padding="8dp"
+        android:contentDescription="@string/a11y_increase"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_circle_orange_button_inset8"
+            android:padding="16dp"
             android:src="@drawable/ic_fab_plus"
             app:tint="@color/white" />
     </LinearLayout>
@@ -129,15 +137,17 @@
 
         <ImageView
             android:id="@+id/btn_minus_riverains"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="@drawable/bg_circle_orange_button"
-            android:padding="8dp"
+        android:contentDescription="@string/a11y_decrease"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_circle_orange_button_inset8"
+            android:padding="16dp"
             android:src="@drawable/ic_minus"
             app:tint="@color/white" />
 
         <TextView
             android:id="@+id/tv_count_riverains"
+        android:accessibilityHeading="true"
             style="@style/h2"
             android:layout_width="60dp"
             android:layout_height="wrap_content"
@@ -147,10 +157,11 @@
 
         <ImageView
             android:id="@+id/btn_plus_riverains"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="@drawable/bg_circle_orange_button"
-            android:padding="8dp"
+        android:contentDescription="@string/a11y_increase"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_circle_orange_button_inset8"
+            android:padding="16dp"
             android:src="@drawable/ic_fab_plus"
             app:tint="@color/white" />
     </LinearLayout>
@@ -159,7 +170,7 @@
         android:id="@+id/btn_validate"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
-        android:layout_height="47dp"
+        android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/shape_button_v9_positive"
         android:fontFamily="@font/quicksand_bold"

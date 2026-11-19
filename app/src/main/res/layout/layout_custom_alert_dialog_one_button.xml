@@ -10,9 +10,11 @@
     android:paddingBottom="18dp">
 
     <ImageButton
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:id="@+id/btn_cross"
+        android:padding="11dp"
+        android:contentDescription="@string/close"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/iconcross"
@@ -22,6 +24,7 @@
 
     <TextView
         android:id="@+id/title"
+        android:accessibilityHeading="true"
         style="@style/h2_orange"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -33,8 +36,9 @@
 
     <ImageView
         android:id="@+id/ui_pop_close"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:contentDescription="@string/close"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:paddingTop="4dp"
         android:paddingBottom="20dp"
         android:src="@drawable/ic_close"
@@ -43,6 +47,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
+        android:importantForAccessibility="no"
         android:id="@+id/iv_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

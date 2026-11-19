@@ -3776,4 +3776,36 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_suggestion_explorer_target_groups">l\'onglet Groupes</string>
     <string name="home_suggestion_explorer_target_content">les contenus pour comprendre et agir</string>
     <string name="home_suggestion_explorer_target_places">les lieux solidaires</string>
+    <!-- Accessibilité (rapport TalkBack) -->
+    <string name="a11y_take_photo">Prendre une photo</string>
+    <string name="a11y_search">Rechercher</string>
+    <string name="a11y_filter">Filtrer</string>
+    <string name="a11y_modify_profile_photo">Modifier la photo de profil</string>
+    <string name="a11y_send_comment">Envoyer le commentaire</string>
+    <string name="a11y_my_profile">Mon profil</string>
+    <string name="a11y_map">Carte</string>
+    <string name="a11y_more_options">Plus d’options</string>
+    <string name="a11y_add_to_calendar">Ajouter à mon agenda</string>
+    <string name="a11y_use_my_location">Utiliser ma position</string>
+    <string name="a11y_download_photo">Télécharger la photo</string>
+    <string name="a11y_decrease">Diminuer</string>
+    <string name="a11y_increase">Augmenter</string>
+    <string name="a11y_edit_logo">Modifier le logo</string>
+    <string name="a11y_contact">Contacter</string>
+    <string name="a11y_delete_image">Supprimer l’image</string>
+    <string name="a11y_comments">Commentaires</string>
+    <string name="a11y_asso_logo">Logo de l’association</string>
+    <string name="a11y_post_photo">Photo de la publication</string>
+    <string name="a11y_fullscreen_photo">Photo en plein écran</string>
+    <string name="a11y_report_message_hint">Décrivez le problème</string>
+    <string name="a11y_add_reaction">Réagir</string>
+    <string name="a11y_open_profile">Voir le profil</string>
+    <string name="a11y_profile_photo">Photo de profil</string>
+    <string name="a11y_photo_preview">Aperçu de la photo</string>
+    <string name="settings_accessibility_title">Accessibilité</string>
+    <string name="accessibility_sheet_title">Accessibilité</string>
+    <string name="accessibility_high_contrast_title">Contraste amélioré</string>
+    <string name="accessibility_high_contrast_description">Des couleurs plus foncées pour rendre les textes et les boutons plus lisibles.</string>
+    <string name="accessibility_state_on">Contraste amélioré activé</string>
+    <string name="accessibility_state_off">Contraste amélioré désactivé</string>
 </resources>

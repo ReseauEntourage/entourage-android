@@ -31,30 +31,35 @@
             android:gravity="center_vertical">
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_badge_icon_0"
                 android:layout_width="52dp"
                 android:layout_height="52dp"
                 android:layout_marginHorizontal="6dp" />
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_badge_icon_1"
                 android:layout_width="52dp"
                 android:layout_height="52dp"
                 android:layout_marginHorizontal="6dp" />
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_badge_icon_2"
                 android:layout_width="52dp"
                 android:layout_height="52dp"
                 android:layout_marginHorizontal="6dp" />
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_badge_icon_3"
                 android:layout_width="52dp"
                 android:layout_height="52dp"
                 android:layout_marginHorizontal="6dp" />
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/iv_badge_icon_4"
                 android:layout_width="52dp"
                 android:layout_height="52dp"

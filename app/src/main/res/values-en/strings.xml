@@ -2223,4 +2223,36 @@
     <string name="home_suggestion_explorer_target_groups">the Groups tab</string>
     <string name="home_suggestion_explorer_target_content">content to understand and act</string>
     <string name="home_suggestion_explorer_target_places">solidarity places</string>
+    <!-- Accessibility (TalkBack report) -->
+    <string name="a11y_take_photo">Take a photo</string>
+    <string name="a11y_search">Search</string>
+    <string name="a11y_filter">Filter</string>
+    <string name="a11y_modify_profile_photo">Change profile photo</string>
+    <string name="a11y_send_comment">Send comment</string>
+    <string name="a11y_my_profile">My profile</string>
+    <string name="a11y_map">Map</string>
+    <string name="a11y_more_options">More options</string>
+    <string name="a11y_add_to_calendar">Add to my calendar</string>
+    <string name="a11y_use_my_location">Use my location</string>
+    <string name="a11y_download_photo">Download photo</string>
+    <string name="a11y_decrease">Decrease</string>
+    <string name="a11y_increase">Increase</string>
+    <string name="a11y_edit_logo">Change logo</string>
+    <string name="a11y_contact">Contact</string>
+    <string name="a11y_delete_image">Delete image</string>
+    <string name="a11y_comments">Comments</string>
+    <string name="a11y_asso_logo">Association logo</string>
+    <string name="a11y_post_photo">Post photo</string>
+    <string name="a11y_fullscreen_photo">Full screen photo</string>
+    <string name="a11y_report_message_hint">Describe the problem</string>
+    <string name="a11y_add_reaction">React</string>
+    <string name="a11y_open_profile">View profile</string>
+    <string name="a11y_profile_photo">Profile photo</string>
+    <string name="a11y_photo_preview">Photo preview</string>
+    <string name="settings_accessibility_title">Accessibility</string>
+    <string name="accessibility_sheet_title">Accessibility</string>
+    <string name="accessibility_high_contrast_title">Enhanced contrast</string>
+    <string name="accessibility_high_contrast_description">Darker colors to make text and buttons easier to read.</string>
+    <string name="accessibility_state_on">Enhanced contrast on</string>
+    <string name="accessibility_state_off">Enhanced contrast off</string>
 </resources>

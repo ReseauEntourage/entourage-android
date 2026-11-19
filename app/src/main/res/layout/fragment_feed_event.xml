@@ -14,6 +14,7 @@
             android:background="@color/beige">
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:id="@+id/event_image"
                 android:layout_width="match_parent"
                 android:layout_height="154dp"
@@ -33,18 +34,20 @@
 
                 <ImageView
                     android:id="@+id/icon_back"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/circle_white_plain"
+        android:contentDescription="@string/back"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/circle_white_plain_inset4"
                     android:elevation="1dp"
                     android:outlineAmbientShadowColor="@color/light_orange_opacity_35"
                     android:outlineSpotShadowColor="@color/light_orange_opacity_35"
-                    android:padding="10dp"
+                    android:padding="14dp"
                     android:src="@drawable/ic_small_back"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:id="@+id/event_image_toolbar"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
@@ -54,6 +57,7 @@
 
                 <TextView
                     android:id="@+id/event_name_toolbar"
+        android:accessibilityHeading="true"
                     style="@style/h2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -65,14 +69,15 @@
 
                 <ImageView
                     android:id="@+id/icon_share"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="8dp"
-                    android:background="@drawable/circle_white_plain"
+                    android:contentDescription="@string/share_post"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="4dp"
+                    android:background="@drawable/circle_white_plain_inset4"
                     android:elevation="1dp"
                     android:outlineAmbientShadowColor="@color/light_orange_opacity_35"
                     android:outlineSpotShadowColor="@color/light_orange_opacity_35"
-                    android:padding="10dp"
+                    android:padding="14dp"
                     android:src="@drawable/ic_share_action"
                     app:layout_constraintEnd_toStartOf="@id/icon_settings"
                     app:layout_constraintTop_toTopOf="parent"
@@ -80,13 +85,14 @@
 
                 <ImageView
                     android:id="@+id/icon_settings"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/circle_white_plain"
+                    android:contentDescription="@string/settings"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/circle_white_plain_inset4"
                     android:elevation="1dp"
                     android:outlineAmbientShadowColor="@color/light_orange_opacity_35"
                     android:outlineSpotShadowColor="@color/light_orange_opacity_35"
-                    android:padding="10dp"
+                    android:padding="14dp"
                     android:src="@drawable/ic_small_settings"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -130,6 +136,7 @@
                             app:layout_constraintStart_toStartOf="parent">
 
                             <ImageView
+        android:importantForAccessibility="no"
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
                                 android:layout_marginRight="10dp"
@@ -204,6 +211,7 @@
 
                             <TextView
                                 android:id="@+id/event_name"
+        android:accessibilityHeading="true"
                                 style="@style/h1_black"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -270,6 +278,7 @@
                                         android:focusable="true" />
 
                                     <TextView
+        android:accessibilityHeading="true"
                                         style="@style/h1_black"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
@@ -338,7 +347,7 @@
                                 android:paddingVertical="4dp"
                                 android:layout_marginStart="20dp"
                                 android:textSize="15sp"
-                                android:textColor="@color/orange"
+                                android:textColor="?attr/a11yTextOrange"
                                 android:fontFamily="@font/nunitosans_regular"
                                 android:visibility="gone"/>
 
@@ -441,6 +450,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
 
                             <com.google.android.gms.maps.MapView
                                 android:id="@+id/mapView"
+                                android:contentDescription="@string/a11y_map"
                                 android:layout_width="match_parent"
                                 android:layout_height="190dp"
                                 android:layout_marginTop="20dp"
@@ -477,7 +487,7 @@ purus dui, aliquet cursus tellus a, dictum hen." />
             android:id="@+id/button_join"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="47dp"
+            android:layout_height="48dp"
             android:layout_margin="30dp"
             android:background="@drawable/shape_button_v9_positive"
             android:elevation="10dp"

@@ -19,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+        android:importantForAccessibility="no"
             android:id="@+id/icon"
             android:layout_width="29dp"
             android:layout_height="29dp"
@@ -30,6 +31,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+        android:importantForAccessibility="no"
             android:id="@+id/ivButton"
             android:layout_width="20dp"
             android:layout_height="20dp"

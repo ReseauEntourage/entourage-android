@@ -1,6 +1,9 @@
 package social.entourage.android.profile.activities_settings
 
 import android.content.ActivityNotFoundException
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.Role
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -200,7 +203,7 @@ fun HelpAboutScreen(
                 Text(
                     text = stringResource(id = R.string.help_about),
                     style = EntourageComposeStyles.h2,
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier.align(Alignment.Center).semantics { heading() }
                 )
             }
             HorizontalDivider(
@@ -235,7 +238,7 @@ fun AboutItem(label: String, onClick: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() }
+            .clickable(role = Role.Button) { onClick() }
             .padding(top = 20.dp)
     ) {
         Text(

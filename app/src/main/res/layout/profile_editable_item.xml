@@ -26,6 +26,7 @@
         android:paddingTop="25dp">
 
         <ImageView
+        android:importantForAccessibility="no"
             android:id="@+id/pei_icon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -49,6 +50,7 @@
 
             <TextView
                 android:id="@+id/pei_title"
+                android:labelFor="@id/pei_content"
                 style="@style/profile_information_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

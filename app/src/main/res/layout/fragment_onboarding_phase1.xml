@@ -61,6 +61,7 @@
 
             <TextView
                 android:id="@+id/error_message_firstname"
+        android:accessibilityLiveRegion="polite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -92,6 +93,7 @@
 
             <TextView
                 android:id="@+id/error_message_lastname"
+        android:accessibilityLiveRegion="polite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -178,6 +180,7 @@
 
             <TextView
                 android:id="@+id/error_message_phone"
+        android:accessibilityLiveRegion="polite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -220,6 +223,7 @@
                 app:useMaterialThemeColors="false"/>
             <TextView
                 android:id="@+id/error_message_email"
+        android:accessibilityLiveRegion="polite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -277,6 +281,7 @@
 
             <TextView
                 android:id="@+id/error_message_company"
+        android:accessibilityLiveRegion="polite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -310,6 +315,7 @@
 
             <TextView
                 android:id="@+id/error_message_event"
+        android:accessibilityLiveRegion="polite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"

@@ -43,6 +43,7 @@
         android:visibility="visible" />
 
     <ImageView
+        android:importantForAccessibility="no"
         android:id="@+id/ivInterestCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

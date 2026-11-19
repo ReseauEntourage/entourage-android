@@ -10,6 +10,7 @@
     <!-- Mes ressources bénévoles -->
     <TextView
         android:id="@+id/tv_resources_title"
+        android:accessibilityHeading="true"
         style="@style/h2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -97,6 +98,7 @@
             android:padding="12dp">
 
             <ImageView
+        android:importantForAccessibility="no"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:background="@drawable/bg_home_tool_icon"
@@ -120,6 +122,7 @@
     <!-- Mon référent -->
     <TextView
         android:id="@+id/tv_referent_title"
+        android:accessibilityHeading="true"
         style="@style/h2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -148,6 +151,7 @@
                 android:layout_height="50dp">
 
                 <ImageView
+        android:importantForAccessibility="no"
                     android:id="@+id/iv_referent_avatar"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
@@ -202,7 +206,7 @@
             android:id="@+id/btn_send_message_referent"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="47dp"
+            android:layout_height="48dp"
             android:layout_marginTop="12dp"
             android:background="@drawable/shape_button_v9_positive"
             android:fontFamily="@font/quicksand_bold"

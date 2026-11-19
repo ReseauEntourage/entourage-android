@@ -10,6 +10,7 @@
 
         <ImageView
             android:id="@+id/image"
+        android:importantForAccessibility="no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
@@ -19,6 +20,7 @@
             app:srcCompat="@drawable/illu_empty_state_event" />
 
         <ImageView
+        android:importantForAccessibility="no"
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,6 +29,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+        android:importantForAccessibility="no"
             android:id="@+id/imageView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,6 +81,7 @@
 
         <TextView
             android:id="@+id/title"
+        android:accessibilityHeading="true"
             style="@style/h1_black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -102,6 +106,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
+        android:importantForAccessibility="no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"

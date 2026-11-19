@@ -24,6 +24,16 @@ val ColorPrimaryDark = Color(0xFF717171)
 val ColorAccent = Color(0xFFFF9739)
 val ColorOrange = Color(0xFFFF9739)
 val ColorLightOrange = Color(0xFFFF9C5D)
+// Orange foncé pour du texte sur fond clair, utilisé seulement en mode "contraste amélioré" (contraste >= 4.5:1)
+val ColorOrangeText = Color(0xFFA8530A)
+
+/** Fond orange sous texte blanc : couleur d'origine, ou marron plus lisible en mode contraste amélioré. */
+fun accessibleButtonFill(original: Color): Color =
+    if (social.entourage.android.accessibility.AccessibilitySettings.highContrast) Color(0xFFB35900) else original
+
+/** Texte orange sur fond clair : couleur d'origine, ou orange foncé en mode contraste amélioré. */
+fun accessibleOrange(original: Color): Color =
+    if (social.entourage.android.accessibility.AccessibilitySettings.highContrast) ColorOrangeText else original
 val ColorBlack = Color(0xFF000000)
 val ColorWhite = Color(0xFFFFFFFF)
 val ColorGrey = Color(0xFF707070)
@@ -68,10 +78,10 @@ object EntourageComposeStyles {
         color = ColorGreyishBrown
     )
 
-    val mapActionMenu = TextStyle(
+    val mapActionMenu: TextStyle get() = TextStyle(
         fontSize = 16.sp, // @dimen/entourage_font_medium
         fontWeight = FontWeight.Bold,
-        color = ColorAccent
+        color = accessibleOrange(ColorAccent)
     )
 
     val plusImageSubtitle = TextStyle(
@@ -97,10 +107,10 @@ object EntourageComposeStyles {
         color = ColorBlack
     )
 
-    val associationName = TextStyle(
+    val associationName: TextStyle get() = TextStyle(
         fontFamily = NunitoSansRegular,
         fontSize = 13.sp, // @dimen/profile_labels
-        color = ColorOrange
+        color = accessibleOrange(ColorOrange)
     )
 
     val profileDescription = TextStyle(
@@ -109,28 +119,28 @@ object EntourageComposeStyles {
         color = ColorBlack
     )
 
-    val profileInformationTitle = TextStyle(
+    val profileInformationTitle: TextStyle get() = TextStyle(
         fontFamily = NunitoSansRegular,
         fontSize = 13.sp, // @dimen/profile_labels
-        color = ColorOrange
+        color = accessibleOrange(ColorOrange)
     )
 
-    val profileInterest = TextStyle(
+    val profileInterest: TextStyle get() = TextStyle(
         fontFamily = NunitoSansBold,
         fontSize = 13.sp, // @dimen/profile_labels
-        color = ColorOrange
+        color = accessibleOrange(ColorOrange)
     )
 
-    val orangeButton = TextStyle(
+    val orangeButton: TextStyle get() = TextStyle(
         fontFamily = NunitoSansBold,
         fontSize = 15.sp, // @dimen/profile_description
-        color = ColorOrange
+        color = accessibleOrange(ColorOrange)
     )
 
-    val profileSubtitles = TextStyle(
+    val profileSubtitles: TextStyle get() = TextStyle(
         fontFamily = NunitoSansLight,
         fontSize = 14.sp, // @dimen/profile_titles
-        color = ColorOrange
+        color = accessibleOrange(ColorOrange)
     )
 
     val profileActivityStatistics = TextStyle(
@@ -198,10 +208,10 @@ object EntourageComposeStyles {
         color = ColorBlack
     )
 
-    val leftH2Orange = TextStyle(
+    val leftH2Orange: TextStyle get() = TextStyle(
         fontFamily = QuicksandBold,
         fontSize = 15.sp, // @dimen/profile_description
-        color = ColorOrange
+        color = accessibleOrange(ColorOrange)
     )
 
     val buttonCreateGroup = TextStyle(
@@ -216,10 +226,10 @@ object EntourageComposeStyles {
         color = ColorWhite
     )
 
-    val h2Orange = TextStyle(
+    val h2Orange: TextStyle get() = TextStyle(
         fontFamily = NunitoSansBold,
         fontSize = 15.sp, // @dimen/profile_description
-        color = ColorOrange
+        color = accessibleOrange(ColorOrange)
     )
 
     val h3Orange = TextStyle(
@@ -234,28 +244,28 @@ object EntourageComposeStyles {
         color = ColorWhite
     )
 
-    val selectedFilterOrange = TextStyle(
+    val selectedFilterOrange: TextStyle get() = TextStyle(
         fontFamily = NunitoSansBold,
         fontSize = 13.sp, // @dimen/profile_labels
-        color = ColorOrange
+        color = accessibleOrange(ColorOrange)
     )
 
-    val unselectedFilter = TextStyle(
+    val unselectedFilter: TextStyle get() = TextStyle(
         fontFamily = NunitoSansBold,
         fontSize = 13.sp, // @dimen/profile_labels
-        color = ColorOrange
+        color = accessibleOrange(ColorOrange)
     )
 
-    val h2SeekBarProgression = TextStyle(
+    val h2SeekBarProgression: TextStyle get() = TextStyle(
         fontFamily = NunitoSansBold,
         fontSize = 13.sp, // @dimen/profile_labels
-        color = ColorOrange
+        color = accessibleOrange(ColorOrange)
     )
 
-    val editImage = TextStyle(
+    val editImage: TextStyle get() = TextStyle(
         fontFamily = QuicksandBold,
         fontSize = 14.sp, // @dimen/profile_titles
-        color = ColorOrange
+        color = accessibleOrange(ColorOrange)
     )
 
     val headerCreateGroup = TextStyle(
@@ -264,10 +274,10 @@ object EntourageComposeStyles {
         color = ColorBlack
     )
 
-    val headerCreateGroupOrange = TextStyle(
+    val headerCreateGroupOrange: TextStyle get() = TextStyle(
         fontFamily = QuicksandBold,
         fontSize = 24.sp, // @dimen/header_title
-        color = ColorLightOrange
+        color = accessibleOrange(ColorLightOrange)
     )
 
     val errorMsg = TextStyle(
@@ -276,10 +286,10 @@ object EntourageComposeStyles {
         color = ColorRed
     )
 
-    val report = TextStyle(
+    val report: TextStyle get() = TextStyle(
         fontFamily = NunitoSansBold,
         fontSize = 15.sp, // @dimen/profile_description
-        color = ColorLightOrange
+        color = accessibleOrange(ColorLightOrange)
     )
 
     val leftLegend = TextStyle(
@@ -300,10 +310,10 @@ object EntourageComposeStyles {
         color = ColorGrey
     )
 
-    val leftCourantLightOrange = TextStyle(
+    val leftCourantLightOrange: TextStyle get() = TextStyle(
         fontFamily = NunitoSansRegular,
         fontSize = 15.sp, // @dimen/profile_description
-        color = ColorLightOrange
+        color = accessibleOrange(ColorLightOrange)
     )
 
     val leftCourantOrange = TextStyle(
@@ -312,10 +322,10 @@ object EntourageComposeStyles {
         color = ColorGrey
     )
 
-    val groupMemberSubtitle = TextStyle(
+    val groupMemberSubtitle: TextStyle get() = TextStyle(
         fontFamily = NunitoSansRegular,
         fontSize = 13.sp, // @dimen/group_member_subtitle
-        color = ColorLightOrange
+        color = accessibleOrange(ColorLightOrange)
     )
 
     val groupMemberSubtitleBlack = TextStyle(
@@ -324,10 +334,10 @@ object EntourageComposeStyles {
         color = ColorBlack
     )
 
-    val leftCourantBoldOrange = TextStyle(
+    val leftCourantBoldOrange: TextStyle get() = TextStyle(
         fontFamily = QuicksandBold,
         fontSize = 15.sp, // @dimen/profile_description
-        color = ColorOrange
+        color = accessibleOrange(ColorOrange)
     )
 
     val leftCourantBlack = TextStyle(
@@ -372,28 +382,28 @@ object EntourageComposeStyles {
         color = ColorBlack
     )
 
-    val leftDateOrange = TextStyle(
+    val leftDateOrange: TextStyle get() = TextStyle(
         fontFamily = NunitoSansExtraLight,
         fontSize = 9.sp, // @dimen/version_number
-        color = ColorOrange
+        color = accessibleOrange(ColorOrange)
     )
 
-    val readItem = TextStyle(
+    val readItem: TextStyle get() = TextStyle(
         fontFamily = NunitoSansRegular,
         fontSize = 13.sp, // @dimen/error_msg
-        color = ColorOrange
+        color = accessibleOrange(ColorOrange)
     )
 
-    val watchedPedagogical = TextStyle(
+    val watchedPedagogical: TextStyle get() = TextStyle(
         fontFamily = NunitoSansRegular,
         fontSize = 13.sp, // @dimen/group_member_subtitle
-        color = ColorOrange
+        color = accessibleOrange(ColorOrange)
     )
 
-    val leftCourantBoldLightOrange = TextStyle(
+    val leftCourantBoldLightOrange: TextStyle get() = TextStyle(
         fontFamily = QuicksandBold,
         fontSize = 15.sp, // @dimen/profile_description
-        color = ColorLightOrange
+        color = accessibleOrange(ColorLightOrange)
     )
 
     val leftCourantBoldWhite = TextStyle(

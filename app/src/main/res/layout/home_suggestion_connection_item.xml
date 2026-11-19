@@ -13,6 +13,7 @@
 
     <!-- Avatar -->
     <ImageView
+        android:importantForAccessibility="no"
         android:id="@+id/iv_suggestion_avatar"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -66,7 +67,7 @@
         android:fontFamily="@font/nunitosans_bold"
         android:textSize="@dimen/entourage_font_small"
         android:text="@string/suggestion_connection_cta"
-        app:backgroundTint="@color/orange"
+        app:backgroundTint="?attr/a11yButtonFill"
         app:cornerRadius="8dp"
         app:layout_constraintEnd_toStartOf="@id/btn_suggestion_dismiss"
         app:layout_constraintStart_toStartOf="parent"
