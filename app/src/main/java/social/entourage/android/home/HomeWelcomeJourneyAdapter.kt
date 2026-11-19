@@ -23,6 +23,10 @@ class HomeWelcomeJourneyAdapter(
     private var states: List<WelcomeJourneyState> = List(WelcomeJourneyStep.entries.size) { WelcomeJourneyState.TODO }
     private var isVisible = true
 
+    /** Prévenu quand le parcours apparaît ou disparaît (il exclut les suggestions de la home). */
+    val isShown: Boolean get() = isVisible
+    var onVisibilityChanged: ((Boolean) -> Unit)? = null
+
     // Met à jour toutes les étapes d'un coup (depuis le summary)
     fun updateStates(newStates: List<WelcomeJourneyState>) {
         states = newStates
@@ -33,6 +37,7 @@ class HomeWelcomeJourneyAdapter(
         if (isVisible != visible) {
             isVisible = visible
             notifyDataSetChanged()
+            onVisibilityChanged?.invoke(visible)
         }
     }
 

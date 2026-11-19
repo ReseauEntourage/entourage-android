@@ -44,6 +44,7 @@ androidx-test-core = "1.7.0"
 androidx-uiautomator = "2.4.0"
 espresso = "3.7.0"
 androidx-arch-core-testing = "2.2.0"
+kotlinx-coroutines-test = "1.11.0"
 junit = "4.13.2"
 mockito-core = "5.24.0"
 mockito-inline = "5.2.0"
@@ -159,6 +160,7 @@ androidx-test-rules = { module = "androidx.test:rules", version.ref = "androidx-
 androidx-test-core-ktx = { module = "androidx.test:core-ktx", version.ref = "androidx-test-core" }
 androidx-uiautomator = { module = "androidx.test.uiautomator:uiautomator", version.ref = "androidx-uiautomator" }
 androidx-arch-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "androidx-arch-core-testing" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines-test" }
 androidx-fragment-testing = { module = "androidx.fragment:fragment-testing", version.ref = "androidx-fragment" }
 androidx-fragment-testing-manifest = { module = "androidx.fragment:fragment-testing-manifest", version.ref = "androidx-fragment" }
 #espresso

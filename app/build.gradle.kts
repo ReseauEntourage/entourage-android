@@ -335,6 +335,7 @@ dependencies {
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.inline)
     testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     implementation(libs.flexbox)
     implementation(libs.navigation.fragment.ktx)

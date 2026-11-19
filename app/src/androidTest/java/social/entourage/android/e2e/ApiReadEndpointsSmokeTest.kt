@@ -54,6 +54,20 @@ class ApiReadEndpointsSmokeTest : EntourageTestAfterLogin() {
         null
     }
 
+    /** Variante pour les requêtes `suspend` (moteur « Votre prochain pas ») : une erreur HTTP n'est pas un échec de modèle. */
+    private fun <T> suspendCall(name: String, block: suspend () -> T): T? = try {
+        kotlinx.coroutines.runBlocking { block() }.also { outcomes += Outcome(name, "HTTP 2xx") }
+    } catch (e: retrofit2.HttpException) {
+        outcomes += Outcome(name, "HTTP ${e.code()}")
+        null
+    } catch (e: IOException) {
+        outcomes += Outcome(name, "réseau: ${e.javaClass.simpleName}")
+        null
+    } catch (e: Throwable) {
+        outcomes += Outcome(name, "ÉCHEC", e)
+        null
+    }
+
     @Test
     fun principauxEndpointsDeLectureSeDecodent() {
         val me = EntourageApplication.get().me()
@@ -73,6 +87,8 @@ class ApiReadEndpointsSmokeTest : EntourageTestAfterLogin() {
         call("entourage_images") { api.eventsRequest.getEventsImages() }
         call("neighborhood_images") { api.groupRequest.getGroupImages() }
         call("suggestions") { api.suggestionRequest.getSuggestions() }
+        suspendCall("next_steps/current") { api.nextStepRequest.current() }
+        suspendCall("next_steps/others") { api.nextStepRequest.others() }
         call("sharing/groups") { api.sharingRequest.retrieveSharing() }
 
         // --- Utilisateur
