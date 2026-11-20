@@ -2,6 +2,7 @@ package social.entourage.android.suggestion
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,8 +19,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -36,9 +37,9 @@ import social.entourage.android.ui.theme.NunitoSansBold
 import social.entourage.android.ui.theme.NunitoSansRegular
 import social.entourage.android.ui.theme.NunitoSansSemiBold
 
-/** Coins et ombre des lignes : ceux des cards d'événements de la home (CardView 16 dp, élévation 2 dp). */
+/** Coins des lignes (16 dp) et épaisseur de leur liseré, le même trait de 1 dp que les cartes des outils solidaires. */
 private val ExplorerRowShape = RoundedCornerShape(16.dp)
-private val ExplorerRowElevation = 2.dp
+private val ExplorerRowBorderWidth = 1.dp
 
 sealed interface ExplorerUi {
     data object Hidden : ExplorerUi
@@ -110,12 +111,11 @@ private fun ExplorerRow(access: ExplorerAccess, onClick: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = 56.dp)
-            // Même ombre douce que les cards d'événements de la home (home_v2_event_item_layout.xml :
-            // CardView, élévation 2 dp, coins 16 dp, fond blanc). `shadow` découpe aussi le contenu
-            // (fond, ondulation du tap) aux coins arrondis ; l'ombre déborde dans les marges de la
-            // zone (16 dp sur les côtés, 12 dp en haut et en bas) sans y être rognée.
-            .shadow(elevation = ExplorerRowElevation, shape = ExplorerRowShape)
+            // Liseré des cartes des outils solidaires de la home (home_v2_action_item_shape : fond blanc,
+            // trait de 1 dp en `beige`), sans ombre. `clip` arrondit aussi le fond et l'ondulation du tap.
+            .clip(ExplorerRowShape)
             .background(Color.White)
+            .border(ExplorerRowBorderWidth, colorResource(R.color.beige), ExplorerRowShape)
             .clickable(role = Role.Button, onClick = onClick)
             .clearAndSetSemantics {
                 contentDescription = readout
