@@ -765,7 +765,8 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
 
     private fun setupPedagoAdapter() {
         pedagoHeaderAdapter = HomeSectionHeaderAdapter()
-        pedagoHeaderAdapter.update(getString(R.string.home_title_discover_contents), null, true)
+        // Masqué tant que handlePedago() n'a pas confirmé qu'il y a des contenus à découvrir.
+        pedagoHeaderAdapter.update(getString(R.string.home_title_discover_contents), null, false)
         homePedagoAdapter = HomePedagoAdapter(object : OnItemClick {
             override fun onItemClick(pedagogicalContent: Pedago) {
                 if (pedagogicalContent.html != null && pedagogicalContent.id != null) {
@@ -1409,6 +1410,8 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
         }
 
         this.homePedagoAdapter.resetData(pedagos)
+        // Le titre n'est affiché que s'il reste au moins un contenu non lu (comme sur iOS).
+        pedagoHeaderAdapter.update(getString(R.string.home_title_discover_contents), null, pedagos.isNotEmpty())
         homePresenter.getSummary()
     }
 
