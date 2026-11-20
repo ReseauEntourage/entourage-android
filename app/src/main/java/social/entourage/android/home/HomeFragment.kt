@@ -63,7 +63,6 @@ import social.entourage.android.profile.MyProfileFullActivity
 import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.suggestion.HomeSuggestionSection
 import social.entourage.android.suggestion.HomeSuggestionViewModel
-import social.entourage.android.suggestion.SuggestionFeature
 import social.entourage.android.tools.updatePaddingTopForEdgeToEdge
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.utils.CustomAlertDialog
@@ -784,17 +783,15 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
     }
 
     private fun setupSuggestionsAdapters() {
-        if (SuggestionFeature.ENABLED) {
-            suggestionSection = HomeSuggestionSection(
-                fragment = this,
-                viewModel = ViewModelProvider(requireActivity())[HomeSuggestionViewModel::class.java],
-                snackbarAnchor = binding.root,
-                onSayHello = { userId -> discussionsPresenter.createOrGetConversation(userId.toString()) },
-            ).also {
-                it.start()
-                it.setSuppressed(welcomeJourneyAdapter.isShown)
-                welcomeJourneyAdapter.onVisibilityChanged = { journeyVisible -> suggestionSection?.setSuppressed(journeyVisible) }
-            }
+        suggestionSection = HomeSuggestionSection(
+            fragment = this,
+            viewModel = ViewModelProvider(requireActivity())[HomeSuggestionViewModel::class.java],
+            snackbarAnchor = binding.root,
+            onSayHello = { userId -> discussionsPresenter.createOrGetConversation(userId.toString()) },
+        ).also {
+            it.start()
+            it.setSuppressed(welcomeJourneyAdapter.isShown)
+            welcomeJourneyAdapter.onVisibilityChanged = { journeyVisible -> suggestionSection?.setSuppressed(journeyVisible) }
         }
         homeSuggestionConnectionAdapter = HomeSuggestionConnectionAdapter(
             onActionClicked = { suggestion ->
@@ -1211,21 +1208,6 @@ class HomeFragment : Fragment(), OnHomeChangeLocationUpdate {
                 suggestionSection?.adapters?.forEach { concatAdapter.addAdapter(it) }
                 // Avec le moteur de suggestion, la home ne garde que le parcours de bienvenue OU les
                 // suggestions, puis la partie basse : plus de sections entraides, événements, groupes.
-                if (suggestionSection == null) {
-                    concatAdapter.addAdapter(initialPedagoHeaderAdapter)
-                    concatAdapter.addAdapter(initialPedagoWrapperAdapter)
-                    concatAdapter.addAdapter(actionHeaderAdapter)
-                    concatAdapter.addAdapter(actionWrapperAdapter)
-                    concatAdapter.addAdapter(actionButtonAdapter)
-                    concatAdapter.addAdapter(eventHeaderAdapter)
-                    concatAdapter.addAdapter(eventWrapperAdapter)
-                    concatAdapter.addAdapter(eventButtonAdapter)
-                    concatAdapter.addAdapter(homeSuggestionConnectionAdapter)
-                    concatAdapter.addAdapter(homeSuggestionNextStepAdapter)
-                    concatAdapter.addAdapter(groupHeaderAdapter)
-                    concatAdapter.addAdapter(groupWrapperAdapter)
-                    concatAdapter.addAdapter(groupButtonAdapter)
-                }
                 concatAdapter.addAdapter(homeToolsAdapter)
                 concatAdapter.addAdapter(pedagoHeaderAdapter)
                 concatAdapter.addAdapter(homePedagoAdapter)

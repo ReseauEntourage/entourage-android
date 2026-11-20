@@ -14,15 +14,6 @@ import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 
 /**
- * Interrupteur de l'affichage des suggestions du moteur (EN-9473) : actif dans tous les builds, production
- * comprise (décision du 20 novembre 2026). Pour couper la card d'un build, passer cette valeur à `false` ;
- * l'interrupteur du back (`NEXT_STEPS_ENABLED`) la coupe sans release mobile.
- */
-object SuggestionFeature {
-    val ENABLED: Boolean get() = true
-}
-
-/**
  * Branche les suggestions (card héros, zone Explorer) sur la home : fournit les adapters à ajouter
  * à la ConcatAdapter et relie l'état du [HomeSuggestionViewModel], la navigation, le snackbar
  * d'annulation et l'instrumentation.
