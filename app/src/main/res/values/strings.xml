@@ -3762,6 +3762,9 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_suggestion_title_content_path">Trois lectures pour bien démarrer</string>
     <string name="home_suggestion_title_ambassador">Animez des rencontres près de chez vous</string>
     <string name="home_suggestion_meta_remote">En visio, depuis chez vous</string>
+    <string name="home_suggestion_meta_distance_m">À %1$d m de vous</string>
+    <string name="home_suggestion_meta_distance_km">À %1$d km de vous</string>
+    <string name="home_suggestion_meta_minutes">%1$d min</string>
     <string name="home_suggestion_why_title_content_path">Pourquoi ces lectures ?</string>
     <string name="home_suggestion_why_title_smalltalk">Pourquoi les Bonnes ondes ?</string>
     <string name="home_suggestion_why_title_post_message">Pourquoi ce message ?</string>
@@ -3770,12 +3773,7 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="home_suggestion_why_close">J\'ai compris</string>
     <!-- Zone « Pour vous aujourd'hui » (EN-9493) -->
     <string name="home_suggestion_explorer_title">D\'autres idées pour vous aujourd\'hui</string>
-    <string name="home_suggestion_explorer_opens">Ouvre %1$s</string>
-    <string name="home_suggestion_explorer_target_entraide">l\'onglet Entraide</string>
-    <string name="home_suggestion_explorer_target_events">l\'onglet Événements</string>
-    <string name="home_suggestion_explorer_target_groups">l\'onglet Groupes</string>
-    <string name="home_suggestion_explorer_target_content">les contenus pour comprendre et agir</string>
-    <string name="home_suggestion_explorer_target_places">les lieux solidaires</string>
+    <string name="home_suggestion_explorer_opens">Ouvre la suggestion</string>
     <!-- Accessibilité (rapport TalkBack) -->
     <string name="a11y_take_photo">Prendre une photo</string>
     <string name="a11y_search">Rechercher</string>

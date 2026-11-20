@@ -9,18 +9,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
-import social.entourage.android.BuildConfig
 import social.entourage.android.R
+import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 
 /**
- * Interrupteur de l'affichage des suggestions du moteur (EN-9473) : builds debug et preprod, qui
- * appellent l'API de préprod où le moteur tourne. Le build release (production) garde la home
- * actuelle tant que le back n'y est pas déployé et que le lien « devenir Animateur » n'est pas réel.
- * L'interrupteur du back (`NEXT_STEPS_ENABLED`) coupe la card sans release mobile.
+ * Interrupteur de l'affichage des suggestions du moteur (EN-9473) : actif dans tous les builds, production
+ * comprise (décision du 20 novembre 2026). Pour couper la card d'un build, passer cette valeur à `false` ;
+ * l'interrupteur du back (`NEXT_STEPS_ENABLED`) la coupe sans release mobile.
  */
 object SuggestionFeature {
-    val ENABLED: Boolean get() = BuildConfig.BUILD_TYPE != "release"
+    val ENABLED: Boolean get() = true
 }
 
 /**
@@ -34,7 +33,13 @@ class HomeSuggestionSection(
     private val snackbarAnchor: View,
     onSayHello: (userId: Int) -> Unit,
 ) {
-    private val navigator = SuggestionNavigator(fragment.requireContext(), onSayHello)
+    private val navigator = SuggestionNavigator(
+        fragment.requireContext(),
+        onSayHello,
+        onOpenPoi = { poi ->
+            ReadPoiFragment.newInstance(poi, "").show(fragment.childFragmentManager, ReadPoiFragment.TAG)
+        },
+    )
     private var needsRefresh = false
     private var started = false
     private var suppressed = false

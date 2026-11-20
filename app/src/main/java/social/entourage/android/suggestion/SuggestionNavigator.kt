@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import social.entourage.android.MainActivity
 import social.entourage.android.actions.detail.ActionDetailActivity
+import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.events.details.feed.EventFeedActivity
 import social.entourage.android.groups.details.feed.CreatePostGroupActivity
 import social.entourage.android.groups.details.feed.GroupFeedActivity
@@ -13,6 +14,7 @@ import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.small_talks.SmallTalkIntroActivity
 import social.entourage.android.tools.utils.Const
+import social.entourage.android.tools.view.WebViewFragment
 
 /**
  * Ouvre l'écran ou le flux existant correspondant à une suggestion (corps de la card ou CTA).
@@ -23,6 +25,8 @@ class SuggestionNavigator(
     private val context: Context,
     /** « Dire bonjour » : crée ou ouvre la conversation avec cet utilisateur. */
     private val onSayHello: (userId: Int) -> Unit,
+    /** Fiche d'un lieu solidaire (feuille du guide) ; sans elle, on ouvre le guide. */
+    private val onOpenPoi: ((Poi) -> Unit)? = null,
 ) {
     fun open(s: NextStepSuggestion) {
         val id = s.targetId
@@ -32,7 +36,7 @@ class SuggestionNavigator(
                     Intent(context, ActionDetailActivity::class.java)
                         .putExtra(Const.ACTION_ID, it)
                         .putExtra(Const.ACTION_TITLE, s.title)
-                        .putExtra(Const.IS_ACTION_DEMAND, true)
+                        .putExtra(Const.IS_ACTION_DEMAND, !s.isContribution)
                         .putExtra(Const.IS_ACTION_MINE, false)
                 )
             }
@@ -69,16 +73,28 @@ class SuggestionNavigator(
             }
             // Bonnes ondes : le flux existant (introduction puis demande).
             SuggestionType.SMALL_TALK -> context.startActivity(Intent(context, SmallTalkIntroActivity::class.java))
-            // « Devenir Animateur » : formulaire externe, seulement une adresse https.
+            // « Devenir Animateur » : formulaire ouvert dans l'app (onglet personnalisé, comme les autres liens),
+            // seulement une adresse https ; le navigateur du téléphone en repli.
             SuggestionType.AMBASSADOR -> s.link?.let { link ->
                 val uri = Uri.parse(link)
-                if (uri.scheme == "https") context.startActivity(Intent(Intent.ACTION_VIEW, uri))
+                if (uri.scheme == "https" && !WebViewFragment.launchURL(context, link)) {
+                    context.startActivity(Intent(Intent.ACTION_VIEW, uri))
+                }
             }
             SuggestionType.CONNECTION -> id?.let(onSayHello)
-            SuggestionType.PLACE -> context.startActivity(
-                Intent(context, GDSMainActivity::class.java)
-                    .putExtra(GDSMainActivity.EXTRA_AIR_CONDITIONED, false)
-            )
+            // Lieu solidaire : sa fiche (comme sur iOS) ; le guide seulement si la fiche n'est pas disponible.
+            SuggestionType.PLACE -> {
+                val poi = s.poi
+                val openPoi = onOpenPoi
+                if (poi != null && openPoi != null) {
+                    openPoi(poi)
+                } else {
+                    context.startActivity(
+                        Intent(context, GDSMainActivity::class.java)
+                            .putExtra(GDSMainActivity.EXTRA_AIR_CONDITIONED, false)
+                    )
+                }
+            }
             null -> Unit
         }
     }

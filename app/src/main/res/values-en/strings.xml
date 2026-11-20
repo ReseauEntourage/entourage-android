@@ -2209,6 +2209,9 @@
     <string name="home_suggestion_title_content_path">Three short reads to get started</string>
     <string name="home_suggestion_title_ambassador">Host gatherings near you</string>
     <string name="home_suggestion_meta_remote">Online, from home</string>
+    <string name="home_suggestion_meta_distance_m">%1$d m from you</string>
+    <string name="home_suggestion_meta_distance_km">%1$d km from you</string>
+    <string name="home_suggestion_meta_minutes">%1$d min</string>
     <string name="home_suggestion_why_title_content_path">Why these reads?</string>
     <string name="home_suggestion_why_title_smalltalk">Why Good vibes?</string>
     <string name="home_suggestion_why_title_post_message">Why this message?</string>
@@ -2217,12 +2220,7 @@
     <string name="home_suggestion_why_close">Got it</string>
     <!-- "For you today" area (EN-9493) -->
     <string name="home_suggestion_explorer_title">More ideas for you today</string>
-    <string name="home_suggestion_explorer_opens">Opens %1$s</string>
-    <string name="home_suggestion_explorer_target_entraide">the Mutual aid tab</string>
-    <string name="home_suggestion_explorer_target_events">the Events tab</string>
-    <string name="home_suggestion_explorer_target_groups">the Groups tab</string>
-    <string name="home_suggestion_explorer_target_content">content to understand and act</string>
-    <string name="home_suggestion_explorer_target_places">solidarity places</string>
+    <string name="home_suggestion_explorer_opens">Opens the suggestion</string>
     <!-- Accessibility (TalkBack report) -->
     <string name="a11y_take_photo">Take a photo</string>
     <string name="a11y_search">Search</string>

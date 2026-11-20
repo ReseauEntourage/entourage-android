@@ -27,6 +27,8 @@ class HomeSuggestionViewModel(
 
     /** Rafraîchit sans vider l'écran : le dernier payload reste affiché (pas de saut de contenu). */
     fun refresh() {
+        // Pendant le message « Annuler », la suggestion retirée ne doit pas revenir.
+        if (pendingLater != null) return
         _state.update { it.copy(loading = true) }
         viewModelScope.launch {
             val payload = try {

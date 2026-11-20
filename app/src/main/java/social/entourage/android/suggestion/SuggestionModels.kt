@@ -1,6 +1,7 @@
 package social.entourage.android.suggestion
 
 import androidx.annotation.StringRes
+import social.entourage.android.api.model.guide.Poi
 
 /**
  * Modèles d'affichage de « Votre prochain pas » (EN-9473). Ils sont alimentés par
@@ -60,10 +61,24 @@ data class SuggestionReason(val code: String, val text: String) {
  * Ligne de méta optionnelle de la card (date, lieu, durée…). [textRes] remplace [text] pour un
  * libellé fixe de l'app.
  */
-data class SuggestionMeta(val icon: String? = null, val text: String = "", @StringRes val textRes: Int? = null)
+data class SuggestionMeta(
+    val icon: String? = null,
+    val text: String = "",
+    @StringRes val textRes: Int? = null,
+    /** Valeur injectée dans [textRes] (distance en m ou en km). */
+    val textArg: Int? = null,
+    /** Durée en minutes, ajoutée après [text] (contenu d'un mini-parcours). */
+    val minutes: Int? = null,
+)
 
 /** Un contenu d'un mini-parcours. */
-data class SuggestionItem(val id: Int?, val title: String, val detail: String? = null, val watched: Boolean = false)
+data class SuggestionItem(
+    val id: Int?,
+    val title: String,
+    val detail: String? = null,
+    val watched: Boolean = false,
+    val minutes: Int? = null,
+)
 
 data class NextStepSuggestion(
     val id: String,
@@ -95,6 +110,10 @@ data class NextStepSuggestion(
     val nationalGroup: Boolean = false,
     /** Poster un message : groupe thématique (national) plutôt que groupe de voisins ; sert au badge. */
     val thematicGroup: Boolean = false,
+    /** Entraide : une proposition d'aide (et non une demande), pour ouvrir le bon détail. */
+    val isContribution: Boolean = false,
+    /** Lieu solidaire : la cible du moteur, pour ouvrir sa fiche. */
+    val poi: Poi? = null,
 ) {
     val type: SuggestionType? get() = SuggestionType.fromKey(typeKey)
 

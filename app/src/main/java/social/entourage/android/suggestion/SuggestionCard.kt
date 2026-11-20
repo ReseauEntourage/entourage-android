@@ -124,6 +124,13 @@ private fun NextStepSuggestion.chipText(): String? = when {
     else -> null
 }
 
+/** Texte d'une ligne de méta : libellé fixe (avec sa valeur éventuelle) ou texte du moteur, puis la durée. */
+@Composable
+private fun SuggestionMeta.displayText(): String {
+    val base = textRes?.let { res -> textArg?.let { stringResource(res, it) } ?: stringResource(res) } ?: text
+    return if (minutes != null) base + " · " + stringResource(R.string.home_suggestion_meta_minutes, minutes) else base
+}
+
 private fun initials(name: String?): String =
     name.orEmpty().split(" ").filter { it.isNotBlank() }.take(2)
         .joinToString("") { it.first().uppercase() }
@@ -148,7 +155,7 @@ fun SuggestionCard(
     val badge = suggestion.badgeText()
     val chip = suggestion.chipText()
     val title = suggestion.title.ifBlank { type.defaultTitleRes()?.let { stringResource(it) }.orEmpty() }
-    val metaTexts = suggestion.metas.take(3).map { m -> m.textRes?.let { stringResource(it) } ?: m.text }
+    val metaTexts = suggestion.metas.take(3).map { m -> m.displayText() }
     val ctaLabel = suggestion.cta.label()
     val laterLabel = stringResource(R.string.home_suggestion_later)
     val whyLabel = stringResource(R.string.home_suggestion_why_button_description)

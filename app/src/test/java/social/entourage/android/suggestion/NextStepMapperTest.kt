@@ -5,6 +5,7 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import social.entourage.android.R
 import social.entourage.android.api.json.AppJson
 import social.entourage.android.api.request.NextStepDto
 import social.entourage.android.api.request.NextStepEnvelope
@@ -233,5 +234,50 @@ class NextStepMapperTest {
     @Test
     fun nullNextStepDuringTheWelcomeJourneyDecodesToNothing() {
         assertNull(AppJson.decode<NextStepEnvelope>("""{"next_step":null}""").nextStep)
+    }
+
+    /** Le moteur propose aussi des propositions d'aide (`help_offered`) : elles s'ouvrent comme telles. */
+    @Test
+    fun contributionIsNotOpenedAsADemand() {
+        val offer = map(envelope("action", target = """{"id":9,"title":"Je propose un manteau","action_type":"contribution"}"""))!!
+        assertTrue(offer.isContribution)
+        val request = map(envelope("action", target = """{"id":10,"title":"Je cherche un manteau","action_type":"solicitation"}"""))!!
+        assertEquals(false, request.isContribution)
+    }
+
+    @Test
+    fun outingAndActionShowTheDistanceRoundedLikeIos() {
+        val outing = map(envelope("outing", target = """{"id":5,"title":"Café","online":false,"distance":0.8,"metadata":{"display_address":"Paris 11e"}}"""))!!
+        assertTrue(outing.metas.any { it.textRes == R.string.home_suggestion_meta_distance_m && it.textArg == 800 })
+        val action = map(envelope("action", target = """{"id":9,"title":"Besoin","distance":2.5}"""))!!
+        assertTrue(action.metas.any { it.textRes == R.string.home_suggestion_meta_distance_km && it.textArg == 3 && it.icon == "📍" })
+        val veryClose = map(envelope("action", target = """{"id":9,"title":"Besoin","distance":0.04}"""))!!
+        assertEquals(100, veryClose.metas.single().textArg)
+    }
+
+    @Test
+    fun remoteOutingHasNoDistance() {
+        val remote = map(envelope("outing", target = """{"id":6,"title":"Papotage","online":true,"distance":5.0}"""))!!
+        assertTrue(remote.metas.none { it.textArg != null })
+    }
+
+    @Test
+    fun ambassadorWithoutAnHttpsLinkIsDropped() {
+        assertNull(map(envelope("become_ambassador")))
+        assertNull(map(envelope("become_ambassador", link = "\"\"")))
+        assertNull(map(envelope("become_ambassador", link = "\"http://forms.example.com/x\"")))
+        assertNotNull(map(envelope("become_ambassador", link = "\"https://forms.example.com/x\"")))
+    }
+
+    @Test
+    fun placeKeepsItsTargetToOpenTheSheet() {
+        val s = map(envelope("poi", target = """{"id":10,"name":"Bagagerie","uuid":"s13977","address":"3 rue X"}"""))!!
+        assertEquals("s13977", s.poi?.uuid)
+    }
+
+    @Test
+    fun contentPathShowsTheDurationOfEachContent() {
+        val s = map(envelope("content_path", targets = """[{"id":21,"name":"A","duration":2},{"id":22,"name":"B"}]"""))!!
+        assertEquals(listOf<Int?>(2, null), s.metas.map { it.minutes })
     }
 }

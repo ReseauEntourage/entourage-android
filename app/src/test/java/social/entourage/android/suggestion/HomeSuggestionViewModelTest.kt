@@ -91,6 +91,17 @@ class HomeSuggestionViewModelTest {
     }
 
     @Test
+    fun refreshDuringTheUndoMessageDoesNotBringTheCardBack() {
+        val provider = FakeProvider(suggestion("second", 2))
+        val vm = HomeSuggestionViewModel(provider)
+        vm.refresh()
+        vm.later(vm.state.value.payload!!.hero!!)
+        vm.refresh()
+        assertNull(vm.state.value.payload?.hero)
+        assertEquals(1, provider.fetches)
+    }
+
+    @Test
     fun reportedInteractionsReachTheProvider() {
         val provider = FakeProvider(null)
         val vm = HomeSuggestionViewModel(provider)

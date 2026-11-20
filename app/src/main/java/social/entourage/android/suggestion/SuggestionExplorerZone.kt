@@ -51,17 +51,6 @@ fun SuggestionUiState.toExplorerUi(): ExplorerUi {
     }
 }
 
-@Composable
-private fun ExplorerTab.targetLabel(): String = stringResource(
-    when (this) {
-        ExplorerTab.ENTRAIDE_DEMANDS -> R.string.home_suggestion_explorer_target_entraide
-        ExplorerTab.EVENTS -> R.string.home_suggestion_explorer_target_events
-        ExplorerTab.GROUPS -> R.string.home_suggestion_explorer_target_groups
-        ExplorerTab.CONTENT -> R.string.home_suggestion_explorer_target_content
-        ExplorerTab.PLACES -> R.string.home_suggestion_explorer_target_places
-    }
-)
-
 /** Zone « Pour vous aujourd'hui » : 2 à 4 accès personnalisés vers les onglets, lignes entièrement cliquables. */
 @Composable
 fun SuggestionExplorerZone(
@@ -109,7 +98,8 @@ fun SuggestionExplorerZone(
 private fun ExplorerRow(access: ExplorerAccess, onClick: () -> Unit) {
     val style = access.type?.style() ?: return
     val label = access.label.ifBlank { access.type?.defaultTitleRes()?.let { stringResource(it) }.orEmpty() }
-    val opens = stringResource(R.string.home_suggestion_explorer_opens, access.tab.targetLabel())
+    // Le tap ouvre la piste elle-même (et non un onglet) : le lecteur d'écran le dit comme sur iOS.
+    val opens = stringResource(R.string.home_suggestion_explorer_opens)
     val readout = listOfNotNull(label, access.context, opens).joinToString(". ")
     Row(
         modifier = Modifier
