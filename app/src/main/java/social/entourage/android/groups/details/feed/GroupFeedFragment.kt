@@ -101,6 +101,9 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
     // Provient d'une notification "nouveau post" : id du post à retrouver et sur lequel scroller
     private var targetPostId: Int = Const.DEFAULT_VALUE
     private var isSearchingTargetPost = false
+    // Le post cible est chargé mais les adapters ne sont pas encore posés (la réponse des posts est
+    // arrivée avant celle du groupe) : initializePosts() relance alors le scroll.
+    private var pendingTargetScroll = false
     private var feedSkeletonShownAt: Long = 0L
     private var surveyPresenter: SurveyPresenter = SurveyPresenter()
     private val activityResultLauncher = registerForActivityResult(
@@ -339,6 +342,12 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
             ::openImageFragment,
             memberList
         ).also { it.initiateList() }
+
+        // Les posts (et leur post cible) étaient arrivés avant le groupe : on peut scroller maintenant.
+        if (pendingTargetScroll) {
+            pendingTargetScroll = false
+            scrollToTargetPost(targetPostId)
+        }
     }
 
     private fun openCommentPage(post: Post, shouldOpenKeyboard: Boolean) {
@@ -424,6 +433,16 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
             return
         }
 
+        // Les adapters des posts ne sont posés qu'à l'arrivée de la réponse du groupe
+        // (updateView -> initializePosts). Si les posts arrivent avant, il n'y a encore rien à
+        // scroller : on attend initializePosts(), qui relance ce scroll. Sans ça, le skeleton
+        // disparaissait sur un fil resté tout en haut.
+        if (recyclerView.adapter == null) {
+            Timber.d("GroupFeedScroll: posts arrived before the group, scroll deferred to initializePosts()")
+            pendingTargetScroll = true
+            return
+        }
+
         val holder = recyclerView.findViewHolderForAdapterPosition(index)
         if (holder != null) {
             revealTargetPost(holder.itemView)
@@ -432,8 +451,12 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
 
         recyclerView.viewTreeObserver.addOnGlobalLayoutListener(object :
             ViewTreeObserver.OnGlobalLayoutListener {
+            private var attempts = 0
+
             override fun onGlobalLayout() {
                 val readyHolder = recyclerView.findViewHolderForAdapterPosition(index)
+                // Un passage de layout peut précéder celui de la liste : on réessaie quelques fois.
+                if (readyHolder == null && isAdded && ++attempts < MAX_TARGET_POST_LAYOUT_ATTEMPTS) return
                 recyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 if (readyHolder == null || !isAdded) {
                     hideFeedSkeleton()
@@ -1232,6 +1255,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         var isFromCreation = false
         private const val ITEM_PER_PAGE = 10
         private const val MAX_TARGET_POST_SEARCH_PAGES = 30
+        private const val MAX_TARGET_POST_LAYOUT_ATTEMPTS = 10
         private const val MIN_SKELETON_DURATION_MS = 1000L
     }
 }
