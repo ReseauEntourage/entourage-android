@@ -125,8 +125,11 @@ class NotificationRedirectScenarioTest : EntourageTestAfterLogin() {
 
         tapPush(
             pushTapIntent(
-                instance = "neighborhoods",
+                instance = "neighborhood",
                 instanceId = target.groupId,
+                // Contrat serveur (EN-9375) pour un nouveau post de groupe : pas de post_id, la cible
+                // est le chat_message_id.
+                targetKey = "chat_message_id",
                 postId = target.post.id!!,
                 tracking = "post_on_create_to_neighborhood"
             )
@@ -163,11 +166,12 @@ class NotificationRedirectScenarioTest : EntourageTestAfterLogin() {
             NotificationActionManager.presentAction(
                 inApp,
                 inApp.supportFragmentManager,
-                "neighborhoods",
+                "neighborhood",
                 target.groupId,
-                target.post.id,
+                // Comme l'API (EN-9375) pour un nouveau post de groupe : post_id null, cible dans chat_message_id.
+                null,
                 stage = null,
-                notifContext = "post_on_create_to_neighborhood",
+                notifContext = "chat_message_created",
                 chatMessageId = target.post.id
             )
         }
@@ -269,7 +273,13 @@ class NotificationRedirectScenarioTest : EntourageTestAfterLogin() {
      * Tap d'une push : intent lancé par le système quand l'app est en arrière-plan. Le JSON de la
      * notification est dans l'extra "content" (PushNotificationManager.KEY_CONTENT).
      */
-    private fun pushTapIntent(instance: String, instanceId: Int, postId: Int, tracking: String): Intent {
+    private fun pushTapIntent(
+        instance: String,
+        instanceId: Int,
+        postId: Int,
+        tracking: String,
+        targetKey: String = "post_id"
+    ): Intent {
         val content = """
             {
               "extra": {
@@ -277,7 +287,7 @@ class NotificationRedirectScenarioTest : EntourageTestAfterLogin() {
                 "joinable_type": "Entourage",
                 "instance": "$instance",
                 "instance_id": $instanceId,
-                "post_id": $postId,
+                "$targetKey": $postId,
                 "tracking": "$tracking"
               },
               "message": "Notification de test E2E"
