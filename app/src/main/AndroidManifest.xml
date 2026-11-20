@@ -19,6 +19,15 @@
         android:required="false" />
     <uses-feature android:name="android.hardware.location.gps"
         android:required="false" />
+    <!-- Portrait-locked activities and a library's ACCESS_WIFI_STATE make the build tools
+         imply these as required, which hides the app from landscape-only / Wi-Fi-less
+         devices (tablets, desktop, XR) in Play Console. Mark them optional. -->
+    <uses-feature
+        android:name="android.hardware.screen.portrait"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.wifi"
+        android:required="false" />
 
     <permission
         android:name="${applicationId}.permission.MAPS_RECEIVE"
