@@ -1,5 +1,8 @@
 package social.entourage.android.suggestion
 
+import android.graphics.drawable.Drawable
+import android.view.View
+import android.widget.ImageView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -8,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
@@ -16,7 +20,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,6 +40,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import social.entourage.android.R
 import social.entourage.android.ui.theme.ColorOrange
 import social.entourage.android.ui.theme.NunitoSansBold
@@ -247,7 +260,7 @@ fun SuggestionCard(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.Top,
         ) {
-            Media(type, style, suggestion.personName)
+            Media(type, style, suggestion.personName, suggestion.avatarUrl)
             Column(Modifier.weight(1f)) {
                 // Champs libres : affichés bruts, avec un nombre de lignes borné pour la police agrandie.
                 if (type == SuggestionType.ENTRAIDE && suggestion.personName != null) {
@@ -315,9 +328,12 @@ fun SuggestionCard(
 }
 
 @Composable
-private fun Media(type: SuggestionType, style: TypeStyle, personName: String?) {
+private fun Media(type: SuggestionType, style: TypeStyle, personName: String?, avatarUrl: String?) {
     val isPerson = type == SuggestionType.ENTRAIDE || type == SuggestionType.CONNECTION
     val letters = initials(personName)
+    val photoUrl = avatarUrl?.takeIf { isPerson && it.isNotBlank() }
+    // Vrai une fois la photo affichée : avant cela, et si le chargement échoue, le repli reste visible.
+    var photoLoaded by remember(photoUrl) { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .size(52.dp)
@@ -325,13 +341,71 @@ private fun Media(type: SuggestionType, style: TypeStyle, personName: String?) {
             .background(style.mediaBackground),
         contentAlignment = Alignment.Center,
     ) {
-        // Repli par type quand l'avatar ou la vignette réels sont absents.
-        if (isPerson && letters.isNotEmpty()) {
-            Text(letters, color = style.accent, fontFamily = NunitoSansBold, fontSize = 16.sp)
-        } else {
-            Text(style.fallbackEmoji, fontSize = 24.sp)
+        // Repli : initiales de la personne (aussi placeholder pendant le chargement), puis emoji du type.
+        if (!photoLoaded) {
+            if (isPerson && letters.isNotEmpty()) {
+                Text(letters, color = style.accent, fontFamily = NunitoSansBold, fontSize = 16.sp)
+            } else {
+                Text(style.fallbackEmoji, fontSize = 24.sp)
+            }
+        }
+        if (photoUrl != null) {
+            AvatarPhoto(photoUrl, onResult = { loaded -> photoLoaded = loaded }, Modifier.fillMaxSize())
         }
     }
+}
+
+/**
+ * Photo de profil ronde chargée avec Glide dans une `ImageView` (le projet n'a ni Coil ni
+ * l'intégration Compose de Glide). Image décorative : le nom de l'auteur est déjà lu par la card,
+ * donc l'`ImageView` est exclue de l'accessibilité et n'a pas de description.
+ *
+ * @param onResult appelé avec `true` quand la photo est affichée, `false` si le chargement échoue.
+ */
+@Composable
+private fun AvatarPhoto(url: String, onResult: (Boolean) -> Unit, modifier: Modifier = Modifier) {
+    AndroidView(
+        modifier = modifier,
+        factory = { context ->
+            ImageView(context).apply {
+                scaleType = ImageView.ScaleType.CENTER_CROP
+                importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+            }
+        },
+        update = { view ->
+            // Un seul chargement par URL : `update` repasse à chaque recomposition de la card.
+            if (view.tag != url) {
+                view.tag = url
+                Glide.with(view.context)
+                    .load(url)
+                    .circleCrop()
+                    .listener(object : RequestListener<Drawable> {
+                        override fun onLoadFailed(
+                            e: GlideException?,
+                            model: Any?,
+                            target: Target<Drawable>?,
+                            isFirstResource: Boolean,
+                        ): Boolean {
+                            onResult(false)
+                            return false
+                        }
+
+                        override fun onResourceReady(
+                            resource: Drawable,
+                            model: Any,
+                            target: Target<Drawable>?,
+                            dataSource: DataSource,
+                            isFirstResource: Boolean,
+                        ): Boolean {
+                            onResult(true)
+                            return false
+                        }
+                    })
+                    .into(view)
+            }
+        },
+        onRelease = { view -> Glide.with(view.context).clear(view) },
+    )
 }
 
 @Composable

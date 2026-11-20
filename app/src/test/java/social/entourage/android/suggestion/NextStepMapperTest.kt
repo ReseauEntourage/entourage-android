@@ -73,6 +73,67 @@ class NextStepMapperTest {
         assertEquals(SuggestionCta.ANSWER, s.cta)
     }
 
+    /** Décision 13 : la card d'une entraide affiche le portrait de l'auteur (`target.author.avatar_url`). */
+    @Test
+    fun actionCarriesTheAuthorAvatarUrl() {
+        val s = map(
+            envelope(
+                "action",
+                target = """{"id":9,"title":"Besoin d'un téléphone","author":{"id":3,"display_name":"Nino D.","avatar_url":"https://cdn.example.com/nino-300.jpg"}}""",
+            ),
+        )!!
+        assertEquals("https://cdn.example.com/nino-300.jpg", s.avatarUrl)
+        assertEquals("Nino D.", s.personName)
+    }
+
+    @Test
+    fun actionWithoutAvatarKeepsTheNameForTheInitials() {
+        // `avatar_url` nul (auteur sans photo ou compte bloqué), absent, ou vide : pas d'URL, le nom reste.
+        listOf("\"avatar_url\":null,", "", "\"avatar_url\":\"\",").forEach { avatar ->
+            val s = map(envelope("action", target = """{"id":9,"title":"Besoin","author":{"id":3,${avatar}"display_name":"Nino D."}}"""))!!
+            assertNull(avatar, s.avatarUrl)
+            assertEquals(avatar, "Nino D.", s.personName)
+        }
+    }
+
+    @Test
+    fun actionWithoutNameNorAvatarFallsBackToTheTypeEmoji() {
+        val withAuthor = map(envelope("action", target = """{"id":9,"title":"Besoin","author":{"id":3,"avatar_url":null}}"""))!!
+        assertNull(withAuthor.avatarUrl)
+        assertNull(withAuthor.personName)
+        val withoutAuthor = map(envelope("action", target = """{"id":9,"title":"Besoin"}"""))!!
+        assertNull(withoutAuthor.avatarUrl)
+        assertNull(withoutAuthor.personName)
+    }
+
+    /** Une proposition d'aide a une image jointe : la card garde la photo de l'auteur, jamais cette image. */
+    @Test
+    fun helpOfferShowsTheAuthorPhotoNotTheAttachedImage() {
+        val s = map(
+            envelope(
+                "action",
+                target = """{"id":10,"title":"Je donne un manteau","action_type":"contribution","image_url":"https://cdn.example.com/manteau.jpg","author":{"id":4,"display_name":"Lou B.","avatar_url":"https://cdn.example.com/lou-300.jpg"}}""",
+            ),
+        )!!
+        assertEquals("https://cdn.example.com/lou-300.jpg", s.avatarUrl)
+        // Une proposition d'aide sans photo d'auteur ne retombe pas sur l'image jointe.
+        val noPhoto = map(
+            envelope(
+                "action",
+                target = """{"id":10,"title":"Je donne un manteau","action_type":"contribution","image_url":"https://cdn.example.com/manteau.jpg","author":{"id":4,"display_name":"Lou B.","avatar_url":null}}""",
+            ),
+        )!!
+        assertNull(noPhoto.avatarUrl)
+    }
+
+    /** Les autres pistes portent la même URL que le prochain pas (la zone Explorer ne l'affiche pas). */
+    @Test
+    fun otherActionKeepsTheAvatarUrlOnItsSuggestion() {
+        val json = """{"next_steps":[{"id":null,"kind":"action","mode":"segment","placement":"others","target":{"id":9,"title":"Besoin","author":{"id":3,"display_name":"Nino D.","avatar_url":"https://cdn.example.com/nino-300.jpg"}},"reasons":[]}]}"""
+        val accesses = NextStepMapper.toExplorer(AppJson.decode<NextStepsEnvelope>(json).nextSteps)
+        assertEquals("https://cdn.example.com/nino-300.jpg", accesses.single().suggestion!!.avatarUrl)
+    }
+
     @Test
     fun poiBecomesAPlace() {
         val s = map(envelope("poi", target = """{"id":10,"name":"Bagagerie du 20e","address":"3 rue X, Paris","hours":"Ouvert jusqu'à 18h"}"""))!!

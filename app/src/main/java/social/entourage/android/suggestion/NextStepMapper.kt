@@ -134,7 +134,10 @@ object NextStepMapper {
         )
         return NextStepSuggestion(
             id = "", typeKey = SuggestionType.ENTRAIDE.key,
-            personName = a.author?.userName, title = a.title.orEmpty(), body = a.description,
+            personName = a.author?.userName,
+            // Le portrait de l'auteur, pas `image_url` (image jointe d'une proposition d'aide) : décision 13.
+            avatarUrl = a.author?.avatarURLAsString?.takeIf { it.isNotBlank() },
+            title = a.title.orEmpty(), body = a.description,
             metas = metas, cta = SuggestionCta.ANSWER, targetId = id,
             isContribution = !a.isDemand(),
         )

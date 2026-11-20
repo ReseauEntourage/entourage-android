@@ -91,6 +91,11 @@ data class NextStepSuggestion(
     val contentTag: ContentTag? = null,
     /** Entraide, connexion : auteur ou personne suggérée. */
     val personName: String? = null,
+    /**
+     * Entraide : photo de profil de l'auteur (`target.author.avatar_url`, miniature 300×300), nulle sans photo.
+     * Jamais l'image jointe à une proposition d'aide (design.md, décision 13).
+     */
+    val avatarUrl: String? = null,
     /** Champ libre saisi par un utilisateur : affiché brut. Vide : l'app affiche le titre par défaut du type. */
     val title: String,
     /** Texte libre d'entraide ou phrase d'explication du moteur : affiché brut. */
