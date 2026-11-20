@@ -76,6 +76,10 @@ class DetailConversationActivity : CommentActivity() {
         var isSmallTalkMode: Boolean = false
         var smallTalkId: String = ""
         var shouldResetToHome: Boolean = false
+
+        // Pages plus anciennes (50 messages chacune) chargées au maximum pour retrouver le
+        // message ciblé par une notification, avant de retomber sur le bas du fil.
+        private const val MAX_TARGET_LOOKUP_PAGES = 5
     }
 
     // Presenters / VM
@@ -110,6 +114,9 @@ class DetailConversationActivity : CommentActivity() {
     private var isLoadingOlder = false
     private var pendingAnchorKey: String? = null
     private var anchorOffsetTop: Int = 0
+
+    // Recherche du message ciblé par une notification (EN-9375) : pages restant à remonter
+    private var targetLookupPagesLeft = MAX_TARGET_LOOKUP_PAGES
 
     private var event: Events? = null
 
@@ -505,6 +512,45 @@ class DetailConversationActivity : CommentActivity() {
         }
         pendingAnchorKey = null
         isLoadingOlder = false
+    }
+
+    // ===== Message ciblé par une notification (EN-9375) =====
+    /**
+     * Appelé après chaque chargement de messages. Quand une notification vise un message précis
+     * (extra [Const.CHAT_MESSAGE_ID]), le scrolle et le met en évidence dès qu'il est dans la
+     * liste ; sinon remonte l'historique page par page (l'API n'accepte que page/per). Sans
+     * message ciblé, ne fait rien.
+     */
+    private fun settleTargetMessage() {
+        if (!hasPendingTargetMessage()) return
+        if (isPendingTargetMessageLoaded()) {
+            scrollAndHighlightIfNeeded()
+            return
+        }
+        // Le presenter met à jour isLastPageComments / isLoadingComments APRÈS avoir émis la
+        // liste, donc après cet appel (exécuté dans l'observer) : on attend la fin de son
+        // callback avant de décider de remonter d'une page.
+        binding.comments.post { lookUpTargetMessageInOlderPage() }
+    }
+
+    private fun lookUpTargetMessageInOlderPage() {
+        if (!hasPendingTargetMessage() || isLoadingOlder) return
+        if (isPendingTargetMessageLoaded()) {
+            scrollAndHighlightIfNeeded()
+            return
+        }
+        val canLoadOlder = !isSmallTalkMode && targetLookupPagesLeft > 0 &&
+            !discussionsPresenter.isLastPageComments && !discussionsPresenter.isLoadingComments
+        if (!canLoadOlder) {
+            // Message introuvable (supprimé, trop ancien, ou plus de pages) : bas du fil.
+            scrollAndHighlightIfNeeded()
+            return
+        }
+        targetLookupPagesLeft--
+        pendingAnchorKey = commentsList.firstOrNull()?.diffKey()
+        anchorOffsetTop = 0
+        isLoadingOlder = true
+        discussionsPresenter.loadMoreComments(id)
     }
 
     // ===== SmallTalk =====
@@ -962,9 +1008,11 @@ class DetailConversationActivity : CommentActivity() {
             val toPrepend = formatted.filter { existingKeys.add(it.diffKey()) }
             if (toPrepend.isEmpty()) {
                 isLoadingOlder = false
+                settleTargetMessage()
                 return
             }
             prependOlderWithAnchor(toPrepend)
+            settleTargetMessage()
             return
         }
 
@@ -990,6 +1038,7 @@ class DetailConversationActivity : CommentActivity() {
         if (toAppend.isEmpty()) {
             binding.progressBar.visibility = View.GONE
             updateView(commentsList.isEmpty())
+            settleTargetMessage()
             return
         }
 
@@ -1001,6 +1050,7 @@ class DetailConversationActivity : CommentActivity() {
             toAppend.removeAt(0)
             if (toAppend.isEmpty()) {
                 binding.progressBar.visibility = View.GONE
+                settleTargetMessage()
                 return
             }
         }
@@ -1009,7 +1059,9 @@ class DetailConversationActivity : CommentActivity() {
         val insertPos = commentsList.size
         commentsList.addAll(toAppend)
         binding.comments.adapter?.notifyItemRangeInserted(insertPos, toAppend.size)
-        if (wasAtBottom) scrollAfterLayout()
+        // Message ciblé par une notification : il prime sur le scroll vers le bas du fil.
+        if (hasPendingTargetMessage()) settleTargetMessage()
+        else if (wasAtBottom) scrollAfterLayout()
 
         binding.progressBar.visibility = View.GONE
         updateView(commentsList.isEmpty())

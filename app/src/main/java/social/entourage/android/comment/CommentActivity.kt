@@ -262,6 +262,15 @@ protected fun scrollAndHighlightIfNeeded() {
         })
 }
 
+/** Vrai tant qu'un message ciblé par une notification n'a pas été consommé par [scrollAndHighlightIfNeeded]. */
+protected fun hasPendingTargetMessage(): Boolean = targetChatMessageId != null
+
+/** Vrai si le message ciblé par une notification est déjà dans la liste chargée. */
+protected fun isPendingTargetMessageLoaded(): Boolean {
+    val targetId = targetChatMessageId ?: return false
+    return commentsList.any { it.id == targetId }
+}
+
 private fun highlightCommentAt(adapterIndex: Int, targetId: Int) {
     val adapter = binding.comments.adapter as? CommentsListAdapter ?: return
     adapter.highlightedMessageId = targetId

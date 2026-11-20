@@ -74,6 +74,7 @@ object NotificationActionManager {
                             putBoolean(Const.IS_MEMBER, true)
                             putBoolean(Const.IS_CONVERSATION, true)
                             putBoolean(Const.HAS_TO_SHOW_MESSAGE, true)
+                            chatMessageId?.let { putInt(Const.CHAT_MESSAGE_ID, it) }
                         }
                     )
                 }
@@ -100,10 +101,10 @@ object NotificationActionManager {
             InstanceType.NEIGHBORHOODS -> showNeighborhood(context,supportFragmentManager,id)
             InstanceType.RESOURCES -> showResource(context,supportFragmentManager,id)
             InstanceType.OUTINGS -> showOuting(context,supportFragmentManager,id)
-            InstanceType.OUTINGS_MESSAGE -> showConversation(context,supportFragmentManager,id)
+            InstanceType.OUTINGS_MESSAGE -> showConversation(context,supportFragmentManager,id,chatMessageId)
             InstanceType.CONTRIBUTIONS -> showContribution(context,supportFragmentManager,id)
             InstanceType.SOLICITATIONS -> showSolicitation(context,supportFragmentManager,id)
-            InstanceType.CONVERSATIONS -> showConversation(context,supportFragmentManager,id)
+            InstanceType.CONVERSATIONS -> showConversation(context,supportFragmentManager,id,chatMessageId)
             InstanceType.SMALLTALK -> showSmallTalk(context,supportFragmentManager,id)
             InstanceType.AlMOSTMATCH -> showAlmostMatch(context,supportFragmentManager,id)
             InstanceType.PARTNERS -> showPartner(context,id)
@@ -183,7 +184,11 @@ object NotificationActionManager {
                 .putExtra(Const.IS_ACTION_DEMAND,true)
         )
     }
-    private fun showConversation(context:Context,supportFragmentManager: FragmentManager, id: Int) {
+    /**
+     * [chatMessageId] : message à mettre en évidence dans la discussion (EN-9375), absent pour
+     * les notifications qui ne visent pas un message précis (invitation, matching, badge…).
+     */
+    private fun showConversation(context:Context,supportFragmentManager: FragmentManager, id: Int, chatMessageId: Int? = null) {
         DetailConversationActivity.isSmallTalkMode = false
         context.startActivity(
             Intent(context, DetailConversationActivity::class.java)
@@ -194,6 +199,7 @@ object NotificationActionManager {
                         putBoolean(Const.IS_CONVERSATION_1TO1, true)
                         putBoolean(Const.IS_MEMBER, true)
                         putBoolean(Const.IS_CONVERSATION, true)
+                        chatMessageId?.let { putInt(Const.CHAT_MESSAGE_ID, it) }
                     }
                 )
         )

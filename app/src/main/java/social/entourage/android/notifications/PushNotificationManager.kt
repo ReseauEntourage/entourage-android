@@ -443,6 +443,7 @@ object PushNotificationManager {
                         putBoolean(Const.IS_MEMBER, true)
                         putBoolean(Const.IS_CONVERSATION, true)
                         putBoolean(Const.HAS_TO_SHOW_MESSAGE, true)
+                        pushNotificationMessage.content?.extra?.chatMessageId?.let { putInt(Const.CHAT_MESSAGE_ID, it) }
                         putString("notification_content", AppJson.encode(pushNotificationMessage.content))
                     }
                 )

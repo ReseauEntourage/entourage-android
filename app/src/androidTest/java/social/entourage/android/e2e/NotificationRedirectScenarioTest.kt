@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.SystemClock
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
@@ -35,6 +36,7 @@ import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.afterLogin.EntourageTestAfterLogin
 import social.entourage.android.api.model.Post
+import social.entourage.android.discussions.DetailConversationActivity
 import social.entourage.android.events.details.feed.EventCommentActivity
 import social.entourage.android.groups.details.feed.GroupFeedActivity
 import social.entourage.android.notifications.InAppNotificationsActivity
@@ -213,6 +215,39 @@ class NotificationRedirectScenarioTest : EntourageTestAfterLogin() {
         screenshot.shoot("push_retour_onglet_evenements")
     }
 
+    // ------------------------------------------------------------------ push : message de conversation
+
+    /**
+     * EN-9375 : la push d'un message de conversation porte son id dans chat_message_id. La
+     * discussion s'ouvre sur ce message — le plus ancien de la 1re page, donc hors écran à
+     * l'ouverture — qui doit se retrouver dans la zone visible de la liste.
+     */
+    @Test
+    fun pushMessageDeConversationOuvreLaDiscussionScrolleeSurLeMessage() {
+        val (conversationId, messageId) = resolveConversationMessageTarget(page = 1, minMessagesOnPage = 20)
+
+        tapConversationPush(conversationId, messageId)
+
+        waitForResumed(DetailConversationActivity::class.java)
+        assertConversationMessageVisible(messageId)
+        screenshot.shoot("push_message_conversation_visible")
+    }
+
+    /**
+     * Message plus ancien que la 1re page (50 messages) : la discussion remonte l'historique page
+     * par page jusqu'à le trouver. Skippé si aucune conversation du compte n'a plus de 50 messages.
+     */
+    @Test
+    fun pushMessageAncienDeConversationRemonteLHistoriqueJusquAuMessage() {
+        val (conversationId, messageId) = resolveConversationMessageTarget(page = 2, minMessagesOnPage = 1)
+
+        tapConversationPush(conversationId, messageId)
+
+        waitForResumed(DetailConversationActivity::class.java)
+        assertConversationMessageVisible(messageId)
+        screenshot.shoot("push_message_ancien_conversation_visible")
+    }
+
     // ------------------------------------------------------------------ helpers : cibles
 
     private class GroupPostTarget(val groupId: Int, val post: Post, val snippet: String)
@@ -248,6 +283,34 @@ class NotificationRedirectScenarioTest : EntourageTestAfterLogin() {
         val snippet = firstLine.take(30).trim()
         val isPlain = snippet.length >= 8 && snippet.all { it.isLetterOrDigit() || it == ' ' || it in ".,'’!?-" }
         return snippet.takeIf { isPlain }
+    }
+
+    /**
+     * Conversation privée du compte et id d'un de ses messages, sur la page [page] (50 par page) :
+     * le plus ancien de la page 1 (hors écran à l'ouverture), ou le plus récent de la page 2 (qui
+     * oblige à remonter d'une page). Skippé si le compte de test n'a pas de conversation assez
+     * fournie.
+     */
+    private fun resolveConversationMessageTarget(page: Int, minMessagesOnPage: Int): Pair<Int, Int> {
+        val api = EntourageApplication.get().apiModule.discussionsRequest
+        fun messageIds(conversationId: Int, onPage: Int): List<Int> =
+            api.getMessagesFor(conversationId, onPage, 50).execute().body()?.posts
+                ?.filter { it.status != "deleted" }
+                ?.mapNotNull { it.id }
+                ?: emptyList()
+
+        val conversations = api.getPrivateConversations(1, 20).execute().body()?.allConversations ?: emptyList()
+        for (conversation in conversations) {
+            val conversationId = conversation.id ?: continue
+            // Viser la page 2 suppose une page 1 pleine : on ne l'interroge que dans ce cas.
+            if (page > 1 && messageIds(conversationId, 1).size < 50) continue
+            val ids = messageIds(conversationId, page)
+            if (ids.size < minMessagesOnPage) continue
+            val messageId = (if (page == 1) ids.minOrNull() else ids.maxOrNull()) ?: continue
+            return conversationId to messageId
+        }
+        assumeTrue("E2E: aucune conversation privée assez fournie pour le compte de test (page $page)", false)
+        error("unreachable")
     }
 
     private fun resolveEventPostTarget(): Pair<Int, Post> {
@@ -306,6 +369,53 @@ class NotificationRedirectScenarioTest : EntourageTestAfterLogin() {
      */
     private fun tapPush(intent: Intent) {
         context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+    }
+
+    /** Push d'un message de conversation : instance "conversation", message visé dans chat_message_id. */
+    private fun tapConversationPush(conversationId: Int, messageId: Int) {
+        tapPush(
+            pushTapIntent(
+                instance = "conversation",
+                instanceId = conversationId,
+                targetKey = "chat_message_id",
+                postId = messageId,
+                tracking = "private_chat_message_on_create"
+            )
+        )
+    }
+
+    /**
+     * Le message ciblé doit être dans la zone visible de la liste. Les bulles sont en Compose :
+     * Espresso ne lit pas leur texte, on compare donc la position du message dans la liste à la
+     * plage affichée par le RecyclerView. Le scroll a lieu après le chargement (et après chaque
+     * page plus ancienne chargée), d'où l'attente.
+     */
+    private fun assertConversationMessageVisible(messageId: Int, timeoutMs: Long = 40_000) {
+        val deadline = System.currentTimeMillis() + timeoutMs
+        var state = "discussion pas chargée"
+        while (System.currentTimeMillis() < deadline) {
+            var visible = false
+            val activity = currentActivity(DetailConversationActivity::class.java)
+            InstrumentationRegistry.getInstrumentation().runOnMainSync {
+                if (activity != null) {
+                    val index = activity.commentsList.indexOfFirst { it.id == messageId }
+                    val layoutManager = activity.binding.comments.layoutManager as? LinearLayoutManager
+                    if (layoutManager == null) {
+                        state = "liste pas prête"
+                    } else if (index < 0) {
+                        state = "message ${messageId} absent des ${activity.commentsList.size} messages chargés"
+                    } else {
+                        val first = layoutManager.findFirstVisibleItemPosition()
+                        val last = layoutManager.findLastVisibleItemPosition()
+                        visible = index in first..last
+                        state = "message à la position $index, positions visibles $first..$last"
+                    }
+                }
+            }
+            if (visible) return
+            SystemClock.sleep(250)
+        }
+        error("Le message ciblé n'est pas dans la zone visible ($state)")
     }
 
     private fun finishAllActivities() {
