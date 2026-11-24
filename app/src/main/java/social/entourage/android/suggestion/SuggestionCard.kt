@@ -84,7 +84,7 @@ internal fun SuggestionType.defaultTitleRes(): Int? = when (this) {
 }
 
 @Composable
-internal fun NextStepSuggestion.badgeText(): String {
+private fun NextStepSuggestion.badgeText(): String {
     val t = type ?: return ""
     // « Poster un message » : le groupe de voisins ou le groupe thématique déjà rejoint.
     if (t == SuggestionType.POST_MESSAGE) {
@@ -96,7 +96,7 @@ internal fun NextStepSuggestion.badgeText(): String {
 }
 
 @Composable
-internal fun SuggestionType.badgeText(tag: ContentTag?): String = when (this) {
+private fun SuggestionType.badgeText(tag: ContentTag?): String = when (this) {
     SuggestionType.ENTRAIDE -> "🤝 " + stringResource(R.string.home_suggestion_badge_entraide)
     SuggestionType.CONTENT -> when (tag) {
         ContentTag.ACT -> "🟢 " + stringResource(R.string.home_suggestion_badge_act)

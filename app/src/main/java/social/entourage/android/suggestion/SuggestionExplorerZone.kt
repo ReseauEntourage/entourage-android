@@ -108,10 +108,7 @@ private fun ExplorerRow(access: ExplorerAccess, onClick: () -> Unit) {
     val label = access.label.ifBlank { access.type?.defaultTitleRes()?.let { stringResource(it) }.orEmpty() }
     // Le tap ouvre la piste elle-même (et non un onglet) : le lecteur d'écran le dit comme sur iOS.
     val opens = stringResource(R.string.home_suggestion_explorer_opens)
-    // Le type de la piste, comme le badge de la card (« 📅 Événement », « 🤝 Entraide »…) : sans lui, on ne voit pas
-    // toujours de quoi il s'agit (une entraide, par exemple).
-    val badge = access.suggestion?.badgeText() ?: access.type?.badgeText(null).orEmpty()
-    val readout = listOfNotNull(badge.takeIf { it.isNotBlank() }, label, access.context, opens).joinToString(". ")
+    val readout = listOfNotNull(label, access.context, opens).joinToString(". ")
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -141,21 +138,6 @@ private fun ExplorerRow(access: ExplorerAccess, onClick: () -> Unit) {
             Text(style.fallbackEmoji, fontSize = 19.sp)
         }
         Column(Modifier.weight(1f)) {
-            if (badge.isNotBlank()) {
-                Text(
-                    text = badge,
-                    modifier = Modifier
-                        .padding(bottom = 4.dp)
-                        .clip(RoundedCornerShape(12.dp))
-                        .background(style.mediaBackground)
-                        .padding(horizontal = 11.dp, vertical = 4.dp),
-                    color = style.accent,
-                    fontFamily = NunitoSansBold,
-                    fontSize = 12.sp,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
-            }
             Text(
                 label,
                 color = Color(0xFF1A1A1A),
