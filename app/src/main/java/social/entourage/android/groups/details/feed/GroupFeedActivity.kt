@@ -17,6 +17,7 @@ class GroupFeedActivity : BaseActivity() {
         val bundle = Bundle().apply {
             putInt(Const.GROUP_ID, id)
             putInt(Const.POST_ID, postId)
+            putBoolean(Const.OPEN_CREATE_POST, intent.getBooleanExtra(Const.OPEN_CREATE_POST, false))
         }
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment

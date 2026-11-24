@@ -21,6 +21,8 @@ object Const {
     const val CHOOSE_PHOTO = "choose_photo"
     const val GROUP_ID = "groupID"
     const val POST_ID = "postID"
+    /** Extra booléen de [GROUP_ID] : le fil du groupe ouvre directement l'écran de création de message. */
+    const val OPEN_CREATE_POST = "openCreatePost"
     const val CHAT_MESSAGE_ID = "chatMessageID"
     const val POST_AUTHOR_ID = "postAuthorID"
     const val GROUP_UI = "groupUI"

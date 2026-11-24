@@ -105,6 +105,9 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
     // arrivée avant celle du groupe) : initializePosts() relance alors le scroll.
     private var pendingTargetScroll = false
     private var feedSkeletonShownAt: Long = 0L
+    // Fil ouvert prêt à écrire (suggestion « Poster un message ») : l'écran de création s'ouvre une seule fois,
+    // dès que le groupe est chargé, y compris après une rotation ou une recréation du fragment.
+    private var hasOpenedCreatePost = false
     private var surveyPresenter: SurveyPresenter = SurveyPresenter()
     private val activityResultLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -145,6 +148,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         groupId = args.groupID
         targetPostId = args.postID
         isSearchingTargetPost = targetPostId != Const.DEFAULT_VALUE
+        hasOpenedCreatePost = savedInstanceState?.getBoolean(STATE_CREATE_POST_OPENED) ?: hasOpenedCreatePost
         // Skeleton pour tout premier chargement du feed, pas seulement le cas notif -> post
         binding.feedSkeletonOverlay.visibility = View.VISIBLE
         feedSkeletonShownAt = System.currentTimeMillis()
@@ -198,6 +202,11 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         }
         binding.createPost.close()
         binding.overlayView.visibility = View.GONE
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean(STATE_CREATE_POST_OPENED, hasOpenedCreatePost)
     }
 
     // ============================
@@ -266,7 +275,15 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
                 group?.address?.displayAddress = ""
             }
             updateView()
+            openCreatePostIfRequested()
         }
+    }
+
+    /** Suggestion « Poster un message » : comme sur iOS, le fil s'ouvre puis l'écran de saisie se présente par-dessus. */
+    private fun openCreatePostIfRequested() {
+        if (!args.openCreatePost || hasOpenedCreatePost) return
+        hasOpenedCreatePost = true
+        openCreatePostScreen()
     }
 
     private fun initializeMembersPhotos() {
@@ -979,8 +996,12 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
     }
 
     private fun createAPost() {
-        isFromCreation = true
         AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_FEED_NEW_POST)
+        openCreatePostScreen()
+    }
+
+    private fun openCreatePostScreen() {
+        isFromCreation = true
         val intent = Intent(context, CreatePostGroupActivity::class.java)
         intent.putExtra(Const.ID, groupId)
         intent.putExtra(Const.IS_NATIONAL_GROUP, group?.zone == null)
@@ -1257,6 +1278,7 @@ class FeedFragment : Fragment(), CallbackReportFragment, ReactionInterface, Surv
         private const val MAX_TARGET_POST_SEARCH_PAGES = 30
         private const val MAX_TARGET_POST_LAYOUT_ATTEMPTS = 10
         private const val MIN_SKELETON_DURATION_MS = 1000L
+        private const val STATE_CREATE_POST_OPENED = "state_create_post_opened"
     }
 }
 

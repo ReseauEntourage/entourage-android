@@ -7,7 +7,6 @@ import social.entourage.android.MainActivity
 import social.entourage.android.actions.detail.ActionDetailActivity
 import social.entourage.android.api.model.guide.Poi
 import social.entourage.android.events.details.feed.EventFeedActivity
-import social.entourage.android.groups.details.feed.CreatePostGroupActivity
 import social.entourage.android.groups.details.feed.GroupFeedActivity
 import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.pedago.PedagoDetailActivity
@@ -51,12 +50,12 @@ class SuggestionNavigator(
                     Intent(context, EventFeedActivity::class.java).putExtra(Const.EVENT_ID, it)
                 )
             }
-            // Poster un message : l'écran de saisie du groupe, comme le bouton « créer un message » du fil.
+            // Poster un message : le fil du groupe, qui présente aussitôt l'écran de saisie (comme sur iOS).
             SuggestionType.POST_MESSAGE -> id?.let {
                 context.startActivity(
-                    Intent(context, CreatePostGroupActivity::class.java)
-                        .putExtra(Const.ID, it)
-                        .putExtra(Const.IS_NATIONAL_GROUP, s.nationalGroup)
+                    Intent(context, GroupFeedActivity::class.java)
+                        .putExtra(Const.GROUP_ID, it)
+                        .putExtra(Const.OPEN_CREATE_POST, true)
                 )
             }
             SuggestionType.GROUP -> id?.let {
