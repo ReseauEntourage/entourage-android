@@ -42,27 +42,28 @@ class HomeSuggestionSection(
         SuggestionHeroZone(
             ui = ui,
             onCta = { s ->
-                AnalyticsEvents.logEvent(AnalyticsEvents.Click_Home_Suggestion_Cta)
+                log(AnalyticsEvents.Click_Home_Suggestion_Cta, s)
                 viewModel.report(SuggestionInteraction.TAPPED, s)
                 open(s)
             },
             onBody = { s ->
-                AnalyticsEvents.logEvent(AnalyticsEvents.Click_Home_Suggestion_Body)
+                log(AnalyticsEvents.Click_Home_Suggestion_Body, s)
                 viewModel.report(SuggestionInteraction.TAPPED, s)
                 open(s)
             },
             onLater = { s ->
-                AnalyticsEvents.logEvent(AnalyticsEvents.Click_Home_Suggestion_Later)
+                log(AnalyticsEvents.Click_Home_Suggestion_Later, s)
                 viewModel.later(s)
             },
             onShown = { s ->
-                AnalyticsEvents.logEvent(AnalyticsEvents.View_Home_Suggestion_Hero)
+                log(AnalyticsEvents.View_Home_Suggestion_Hero, s)
                 viewModel.report(SuggestionInteraction.DISPLAYED, s)
             },
             onWhyOpened = { s ->
-                AnalyticsEvents.logEvent(AnalyticsEvents.Click_Home_Suggestion_Why)
+                log(AnalyticsEvents.Click_Home_Suggestion_Why, s)
                 viewModel.report(SuggestionInteraction.WHY_OPENED, s)
             },
+            onWhyShown = { s -> log(AnalyticsEvents.View_Home_Suggestion_Why, s) },
         )
     }
 
@@ -73,7 +74,7 @@ class HomeSuggestionSection(
         SuggestionExplorerZone(
             ui = ui,
             onAccess = { access ->
-                AnalyticsEvents.logEvent(AnalyticsEvents.Click_Home_Explorer_Access)
+                AnalyticsEvents.logEvent(AnalyticsEvents.Click_Home_Explorer_Access, SuggestionAnalytics.accessParams(access))
                 val piste = access.suggestion
                 if (piste != null) {
                     viewModel.report(SuggestionInteraction.TAPPED, piste)
@@ -83,7 +84,7 @@ class HomeSuggestionSection(
                 }
             },
             onShown = { accesses ->
-                AnalyticsEvents.logEvent(AnalyticsEvents.View_Home_Explorer)
+                AnalyticsEvents.logEvent(AnalyticsEvents.View_Home_Explorer, SuggestionAnalytics.explorerViewParams(accesses))
                 viewModel.reportShown(accesses)
             },
         )
@@ -105,6 +106,10 @@ class HomeSuggestionSection(
         }
     }
 
+    /** Événement Firebase d'une card, avec `type` et `id` comme sur iOS. */
+    private fun log(event: String, s: NextStepSuggestion) =
+        AnalyticsEvents.logEvent(event, SuggestionAnalytics.cardParams(s))
+
     private fun open(s: NextStepSuggestion) {
         // Au retour sur la home, la card est rafraîchie (le moteur remplace une suggestion traitée).
         needsRefresh = true
@@ -120,7 +125,7 @@ class HomeSuggestionSection(
                         explorerAdapter.submit(state.toExplorerUi())
                     }
                 }
-                launch { viewModel.laterEvents.collect { showLaterSnackbar() } }
+                launch { viewModel.laterEvents.collect { showLaterSnackbar(it) } }
             }
         }
     }
@@ -135,9 +140,12 @@ class HomeSuggestionSection(
         }
     }
 
-    private fun showLaterSnackbar() {
+    private fun showLaterSnackbar(suggestion: NextStepSuggestion) {
         Snackbar.make(snackbarAnchor, R.string.home_suggestion_later_snackbar, Snackbar.LENGTH_LONG)
-            .setAction(R.string.home_suggestion_later_undo) { viewModel.undoLater() }
+            .setAction(R.string.home_suggestion_later_undo) {
+                log(AnalyticsEvents.Click_Home_Suggestion_Undo_Later, suggestion)
+                viewModel.undoLater()
+            }
             .addCallback(object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
                 override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
                     if (event != DISMISS_EVENT_ACTION) viewModel.confirmLater()

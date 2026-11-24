@@ -3,6 +3,7 @@ package social.entourage.android.tools.log
 import android.app.ActivityManager
 import android.content.Context
 import android.os.Build
+import android.os.Bundle
 import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -690,6 +691,8 @@ object AnalyticsEvents {
     const val   Click_Home_Suggestion_Body = "click_home_suggestion_body"
     const val   Click_Home_Suggestion_Later = "click_home_suggestion_later"
     const val   Click_Home_Suggestion_Why = "click_home_suggestion_why"
+    const val   Click_Home_Suggestion_Undo_Later = "click_home_suggestion_undo_later"
+    const val   View_Home_Suggestion_Why = "view_home_suggestion_why"
     const val   View_Home_Explorer = "view_home_explorer"
     const val   Click_Home_Explorer_Access = "click_home_explorer_access"
     const val   Action_Home_Article = "Action_Home_Article"
@@ -867,6 +870,23 @@ object AnalyticsEvents {
     fun logEvent(event: String) {
         //Timber.d("***** FireB Log event : ${event} -- fb:${get().firebase}")
         get().firebase.logEvent(event, null)
+    }
+
+    /**
+     * Événement avec paramètres. Les entiers partent en `long` (seuls `long`, `double` et `String`
+     * sont lus par Firebase) ; toute autre valeur part en texte.
+     */
+    fun logEvent(event: String, params: Map<String, Any>) {
+        val bundle = Bundle()
+        params.forEach { (key, value) ->
+            when (value) {
+                is Int -> bundle.putLong(key, value.toLong())
+                is Long -> bundle.putLong(key, value)
+                is Double -> bundle.putDouble(key, value)
+                else -> bundle.putString(key, value.toString())
+            }
+        }
+        get().firebase.logEvent(event, bundle)
     }
     fun logEventWithContext(context: Context, event: String) {
         FirebaseAnalytics.getInstance(context).logEvent(event, null)

@@ -18,6 +18,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -64,7 +65,10 @@ private fun SuggestionType?.whyTitle(): String = stringResource(
 fun WhySuggestionSheet(
     suggestion: NextStepSuggestion,
     onDismiss: () -> Unit,
+    /** Appelé une fois, quand la feuille s'affiche. */
+    onShown: () -> Unit = {},
 ) {
+    LaunchedEffect(Unit) { onShown() }
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     ModalBottomSheet(
         onDismissRequest = onDismiss,

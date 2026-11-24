@@ -50,6 +50,7 @@ fun SuggestionHeroZone(
     onBody: (NextStepSuggestion) -> Unit,
     onShown: (NextStepSuggestion) -> Unit,
     onWhyOpened: (NextStepSuggestion) -> Unit = {},
+    onWhyShown: (NextStepSuggestion) -> Unit = {},
 ) {
     var whyFor by remember { mutableStateOf<NextStepSuggestion?>(null) }
     if (ui is HeroUi.Hidden) return
@@ -94,5 +95,5 @@ fun SuggestionHeroZone(
         }
     }
 
-    whyFor?.let { WhySuggestionSheet(it, onDismiss = { whyFor = null }) }
+    whyFor?.let { WhySuggestionSheet(it, onDismiss = { whyFor = null }, onShown = { onWhyShown(it) }) }
 }
