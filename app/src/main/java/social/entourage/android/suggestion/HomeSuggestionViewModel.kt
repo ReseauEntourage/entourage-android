@@ -10,10 +10,17 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import social.entourage.android.tools.log.AnalyticsEvents
 
-/** Porte l'état des suggestions de la home (card « Votre prochain pas » + zone Explorer). */
+/**
+ * Porte l'état des suggestions de la home (card « Votre prochain pas » + zone Explorer) et la mesure
+ * de leur affichage : un seul « affiché » par card et par affichage de la home (voir [onHomeResumed]).
+ */
 class HomeSuggestionViewModel(
     private val provider: SuggestionProvider = NextStepSuggestionProvider(),
+    /** Événements Firebase (nom, paramètres) ; remplacé par un faux dans les tests JVM. */
+    private val analytics: (event: String, params: Map<String, Any>) -> Unit =
+        { event, params -> AnalyticsEvents.logEvent(event, params) },
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SuggestionUiState())
@@ -24,6 +31,11 @@ class HomeSuggestionViewModel(
     val laterEvents: SharedFlow<NextStepSuggestion> = _laterEvents.asSharedFlow()
 
     private var pendingLater: NextStepSuggestion? = null
+
+    // Ids déjà mesurés depuis le dernier affichage de la home (comme `SuggestionCoordinator` d'iOS).
+    private val loggedHeroIds = mutableSetOf<String>()
+    private val loggedAccessIds = mutableSetOf<String>()
+    private var hasLoggedExplorerView = false
 
     /** Rafraîchit sans vider l'écran : le dernier payload reste affiché (pas de saut de contenu). */
     fun refresh() {
@@ -78,8 +90,37 @@ class HomeSuggestionViewModel(
         viewModelScope.launch { runCatching { provider.report(SuggestionInteraction.of(kind, suggestion)) } }
     }
 
-    /** Affichage de la zone Explorer : une interaction par piste montrée. */
-    fun reportShown(accesses: List<ExplorerAccess>) {
-        accesses.mapNotNull { it.suggestion }.forEach { report(SuggestionInteraction.DISPLAYED, it) }
+    /**
+     * La home s'affiche (ou se réaffiche) : la mesure d'affichage repart, une fois par card. Sans cela, un item
+     * détaché puis rattaché (défilement, vue recréée) renverrait « affiché » à chaque fois.
+     */
+    fun onHomeResumed() {
+        loggedHeroIds.clear()
+        loggedAccessIds.clear()
+        hasLoggedExplorerView = false
+    }
+
+    /**
+     * La card « Votre prochain pas » s'affiche : un seul événement Firebase et un seul `displayed` par id de card
+     * et par affichage de la home. La card restaurée par « Annuler » garde son id : elle n'est pas remesurée.
+     */
+    fun heroDisplayed(suggestion: NextStepSuggestion) {
+        if (!loggedHeroIds.add(suggestion.id)) return
+        analytics(AnalyticsEvents.View_Home_Suggestion_Hero, SuggestionAnalytics.cardParams(suggestion))
+        report(SuggestionInteraction.DISPLAYED, suggestion)
+    }
+
+    /**
+     * La zone Explorer s'affiche : « Explorer vu » une fois par affichage de la home, et un seul `displayed`
+     * par id de piste.
+     */
+    fun explorerDisplayed(accesses: List<ExplorerAccess>) {
+        if (!hasLoggedExplorerView) {
+            hasLoggedExplorerView = true
+            analytics(AnalyticsEvents.View_Home_Explorer, SuggestionAnalytics.explorerViewParams(accesses))
+        }
+        accesses.filter { loggedAccessIds.add(it.id) }
+            .mapNotNull { it.suggestion }
+            .forEach { report(SuggestionInteraction.DISPLAYED, it) }
     }
 }

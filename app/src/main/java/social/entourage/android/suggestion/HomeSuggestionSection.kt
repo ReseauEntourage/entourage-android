@@ -55,10 +55,8 @@ class HomeSuggestionSection(
                 log(AnalyticsEvents.Click_Home_Suggestion_Later, s)
                 viewModel.later(s)
             },
-            onShown = { s ->
-                log(AnalyticsEvents.View_Home_Suggestion_Hero, s)
-                viewModel.report(SuggestionInteraction.DISPLAYED, s)
-            },
+            // Mesure d'affichage dédoublonnée par le ViewModel (un item détaché puis rattaché rejoue cet appel).
+            onShown = { s -> viewModel.heroDisplayed(s) },
             onWhyOpened = { s ->
                 log(AnalyticsEvents.Click_Home_Suggestion_Why, s)
                 viewModel.report(SuggestionInteraction.WHY_OPENED, s)
@@ -83,10 +81,7 @@ class HomeSuggestionSection(
                     navigator.open(access)
                 }
             },
-            onShown = { accesses ->
-                AnalyticsEvents.logEvent(AnalyticsEvents.View_Home_Explorer, SuggestionAnalytics.explorerViewParams(accesses))
-                viewModel.reportShown(accesses)
-            },
+            onShown = { accesses -> viewModel.explorerDisplayed(accesses) },
         )
     }
 
@@ -131,6 +126,8 @@ class HomeSuggestionSection(
     }
 
     fun onResume() {
+        // La home se réaffiche : la mesure d'affichage repart (une fois par card et par affichage).
+        viewModel.onHomeResumed()
         // Une suggestion servie court pour sa durée de validité : pas d'appel tant que la card n'est pas visible.
         if (suppressed) return
         if (!started || needsRefresh) {
