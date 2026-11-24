@@ -51,6 +51,7 @@ import social.entourage.android.ui.theme.ColorOrange
 import social.entourage.android.ui.theme.NunitoSansBold
 import social.entourage.android.ui.theme.NunitoSansRegular
 import social.entourage.android.ui.theme.NunitoSansSemiBold
+import social.entourage.android.ui.theme.QuicksandBold
 
 private val CardBackground = Color(0xFFFEEAE3)
 private val TitleColor = Color(0xFF1A1A1A)
@@ -83,7 +84,7 @@ internal fun SuggestionType.defaultTitleRes(): Int? = when (this) {
 }
 
 @Composable
-private fun NextStepSuggestion.badgeText(): String {
+internal fun NextStepSuggestion.badgeText(): String {
     val t = type ?: return ""
     // « Poster un message » : le groupe de voisins ou le groupe thématique déjà rejoint.
     if (t == SuggestionType.POST_MESSAGE) {
@@ -95,7 +96,7 @@ private fun NextStepSuggestion.badgeText(): String {
 }
 
 @Composable
-private fun SuggestionType.badgeText(tag: ContentTag?): String = when (this) {
+internal fun SuggestionType.badgeText(tag: ContentTag?): String = when (this) {
     SuggestionType.ENTRAIDE -> "🤝 " + stringResource(R.string.home_suggestion_badge_entraide)
     SuggestionType.CONTENT -> when (tag) {
         ContentTag.ACT -> "🟢 " + stringResource(R.string.home_suggestion_badge_act)
@@ -276,7 +277,8 @@ fun SuggestionCard(
                 Text(
                     title,
                     color = TitleColor,
-                    fontFamily = NunitoSansBold,
+                    // Titre : Quicksand Bold (police des titres de l'app), le reste de la card est en Nunito.
+                    fontFamily = QuicksandBold,
                     fontSize = 17.sp,
                     lineHeight = 22.sp,
                     maxLines = 3,

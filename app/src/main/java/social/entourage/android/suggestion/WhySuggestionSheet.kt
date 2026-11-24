@@ -35,6 +35,7 @@ import social.entourage.android.R
 import social.entourage.android.ui.theme.ColorOrange
 import social.entourage.android.ui.theme.NunitoSansBold
 import social.entourage.android.ui.theme.NunitoSansRegular
+import social.entourage.android.ui.theme.QuicksandBold
 
 private val TitleColor = Color(0xFF1A1A1A)
 private val BodyColor = Color(0xFF363636)
@@ -90,7 +91,8 @@ fun WhySuggestionSheet(
                     .semantics { heading() }
                     .padding(bottom = 16.dp),
                 color = TitleColor,
-                fontFamily = NunitoSansBold,
+                // Titre : Quicksand Bold (police des titres de l'app), le reste de la feuille est en Nunito.
+                fontFamily = QuicksandBold,
                 fontSize = 20.sp,
             )
             Column(verticalArrangement = Arrangement.spacedBy(14.dp)) {

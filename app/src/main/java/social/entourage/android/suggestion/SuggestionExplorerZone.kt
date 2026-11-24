@@ -36,6 +36,7 @@ import social.entourage.android.ui.theme.ColorOrange
 import social.entourage.android.ui.theme.NunitoSansBold
 import social.entourage.android.ui.theme.NunitoSansRegular
 import social.entourage.android.ui.theme.NunitoSansSemiBold
+import social.entourage.android.ui.theme.QuicksandBold
 
 /** Coins des lignes (16 dp) et épaisseur de leur liseré, le même trait de 1 dp que les cartes des outils solidaires. */
 private val ExplorerRowShape = RoundedCornerShape(16.dp)
@@ -78,7 +79,8 @@ fun SuggestionExplorerZone(
                 .semantics { heading() }
                 .padding(start = 2.dp),
             color = Color(0xFF1A1A1A),
-            fontFamily = NunitoSansBold,
+            // Titre : Quicksand Bold (police des titres de l'app), le reste de la suggestion est en Nunito.
+            fontFamily = QuicksandBold,
             fontSize = 18.sp,
         )
         when (ui) {
@@ -106,7 +108,10 @@ private fun ExplorerRow(access: ExplorerAccess, onClick: () -> Unit) {
     val label = access.label.ifBlank { access.type?.defaultTitleRes()?.let { stringResource(it) }.orEmpty() }
     // Le tap ouvre la piste elle-même (et non un onglet) : le lecteur d'écran le dit comme sur iOS.
     val opens = stringResource(R.string.home_suggestion_explorer_opens)
-    val readout = listOfNotNull(label, access.context, opens).joinToString(". ")
+    // Le type de la piste, comme le badge de la card (« 📅 Événement », « 🤝 Entraide »…) : sans lui, on ne voit pas
+    // toujours de quoi il s'agit (une entraide, par exemple).
+    val badge = access.suggestion?.badgeText() ?: access.type?.badgeText(null).orEmpty()
+    val readout = listOfNotNull(badge.takeIf { it.isNotBlank() }, label, access.context, opens).joinToString(". ")
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -136,6 +141,21 @@ private fun ExplorerRow(access: ExplorerAccess, onClick: () -> Unit) {
             Text(style.fallbackEmoji, fontSize = 19.sp)
         }
         Column(Modifier.weight(1f)) {
+            if (badge.isNotBlank()) {
+                Text(
+                    text = badge,
+                    modifier = Modifier
+                        .padding(bottom = 4.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(style.mediaBackground)
+                        .padding(horizontal = 11.dp, vertical = 4.dp),
+                    color = style.accent,
+                    fontFamily = NunitoSansBold,
+                    fontSize = 12.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
             Text(
                 label,
                 color = Color(0xFF1A1A1A),

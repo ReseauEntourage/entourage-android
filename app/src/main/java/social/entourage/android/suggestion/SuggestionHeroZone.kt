@@ -24,7 +24,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import social.entourage.android.R
-import social.entourage.android.ui.theme.NunitoSansBold
+import social.entourage.android.ui.theme.QuicksandBold
 
 sealed interface HeroUi {
     data object Hidden : HeroUi
@@ -66,7 +66,8 @@ fun SuggestionHeroZone(
                 .semantics { heading() }
                 .padding(start = 2.dp, bottom = 8.dp),
             color = Color(0xFF1A1A1A),
-            fontFamily = NunitoSansBold,
+            // Titre : Quicksand Bold (police des titres de l'app), le reste de la suggestion est en Nunito.
+            fontFamily = QuicksandBold,
             fontSize = 18.sp,
         )
         when (ui) {
