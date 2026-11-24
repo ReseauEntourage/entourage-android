@@ -20,7 +20,9 @@ import social.entourage.android.api.model.HomeType
 import social.entourage.android.api.model.Post
 import social.entourage.android.api.model.Status
 import social.entourage.android.api.model.Summary
+import social.entourage.android.api.request.EntourageUserResponse
 import social.entourage.android.api.request.GroupWrapper
+import social.entourage.android.api.request.MembersWrapper
 import social.entourage.android.api.request.MetaDataResponse
 import java.util.Date
 import java.util.TimeZone
@@ -336,6 +338,39 @@ class ApiJsonCharacterizationTest {
         val u = ApiJson.decode<EntourageUser>(raw)
         assertEquals(5, u.userId)
         assertEquals("accepted", u.status)
+    }
+
+    @Test
+    fun entourageUser_confirmedAtIsTheIsoTimestampSentByTheApi() {
+        // L'API renvoie un horodatage ISO (ou null), jamais un booléen.
+        val confirmed = ApiJson.decode<EntourageUser>("""{"id": 5, "confirmed_at": "2026-11-24T13:04:41.036Z"}""")
+        assertEquals("2026-11-24T13:04:41.036Z", confirmed.confirmedAt)
+        assertNull(ApiJson.decode<EntourageUser>("""{"id": 5, "confirmed_at": null}""").confirmedAt)
+        assertNull(ApiJson.decode<EntourageUser>("""{"id": 5}""").confirmedAt)
+    }
+
+    @Test
+    fun outingMembers_oneConfirmedMemberDoesNotBreakTheWholeList() {
+        // Régression : avec confirmed_at typé Boolean, un seul membre confirmé faisait échouer le décodage
+        // de toute la liste (le onFailure est muet) : plus de participants affichés, donc plus d'émargement.
+        val members = ApiJson.decode<MembersWrapper>(ApiJson.fixture("outing_members.json")).users
+        assertEquals(listOf(101, 102, 103), members.map { it.userId })
+        assertEquals(listOf(null, null, "2026-11-24T13:04:41.036Z"), members.map { it.confirmedAt })
+        assertEquals("organizer", members[0].groupRole)
+        assertEquals(true, members[0].photoAcceptance)
+        assertEquals("Association exemple", members[0].partner!!.name)
+        assertEquals("Animateur", members[0].partner_role_title)
+        assertNull(members[1].partner)
+    }
+
+    @Test
+    fun participateResponse_forAConfirmedMember_decodes() {
+        // Même modèle dans la réponse de POST outings/:id/users/:user_id/participate.
+        val raw = """{"user": {"id": 103, "group_role": "participant", "confirmed_at": "2026-11-24T13:04:41.036Z", "participate_at": "2026-11-25T17:40:00.000Z"}}"""
+        val user = ApiJson.decode<EntourageUserResponse>(raw).user!!
+        assertEquals(103, user.userId)
+        assertEquals("2026-11-24T13:04:41.036Z", user.confirmedAt)
+        assertEquals("2026-11-25T17:40:00.000Z", user.participateAt)
     }
 
     // ----------------------------------------------------------------- Action

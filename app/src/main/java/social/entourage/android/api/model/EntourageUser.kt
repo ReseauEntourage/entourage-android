@@ -26,8 +26,10 @@ class EntourageUser : TimestampedObject(), Serializable {
     private var requestDate: Date? = null
     var message: String? = null
 
+    // Horodatage ISO renvoyé par l'API, ou null. Ne pas le typer en Boolean : un seul membre confirmé
+    // ferait échouer le décodage de toute la liste des participants (et donc l'émargement).
     @SerialName("confirmed_at")
-    var confirmedAt : Boolean? = null
+    var confirmedAt : String? = null
 
     @SerialName("participate_at")
     var participateAt : String? = null
