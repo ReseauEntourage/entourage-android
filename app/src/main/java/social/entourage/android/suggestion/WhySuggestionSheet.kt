@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.hideFromAccessibility
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -105,7 +106,12 @@ fun WhySuggestionSheet(
                                 .background(Color(0xFFFEEAE3)),
                             contentAlignment = Alignment.Center,
                         ) {
-                            Text(reason.icon, fontSize = 18.sp)
+                            // Décoratif : seule la phrase est lue par le lecteur d'écran, comme sur iOS.
+                            Text(
+                                reason.icon,
+                                modifier = Modifier.semantics { hideFromAccessibility() },
+                                fontSize = 18.sp,
+                            )
                         }
                         Text(
                             reason.text,

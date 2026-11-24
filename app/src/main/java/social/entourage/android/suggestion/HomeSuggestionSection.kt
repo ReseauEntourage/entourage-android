@@ -142,6 +142,8 @@ class HomeSuggestionSection(
 
     private fun showLaterSnackbar(suggestion: NextStepSuggestion) {
         Snackbar.make(snackbarAnchor, R.string.home_suggestion_later_snackbar, Snackbar.LENGTH_LONG)
+            // 5 s pour annuler, comme sur iOS (LENGTH_LONG ne dure qu'environ 2,75 s).
+            .setDuration(LATER_SNACKBAR_DURATION_MS)
             .setAction(R.string.home_suggestion_later_undo) {
                 log(AnalyticsEvents.Click_Home_Suggestion_Undo_Later, suggestion)
                 viewModel.undoLater()
@@ -152,5 +154,9 @@ class HomeSuggestionSection(
                 }
             })
             .show()
+    }
+
+    private companion object {
+        const val LATER_SNACKBAR_DURATION_MS = 5000
     }
 }
