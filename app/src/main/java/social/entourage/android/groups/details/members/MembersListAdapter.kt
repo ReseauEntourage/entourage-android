@@ -70,7 +70,7 @@ class MembersListAdapter(
 
         if ((canCheckIn) && !MembersActivity.isFromReact) {
             b.checkboxConfirmation.visibility = View.VISIBLE
-            // état actuel : participe si participateAt ou confirmedAt est true
+            // état actuel : coché si participateAt est renseigné (confirmedAt n'entre pas en compte)
             val isParticipating = item.participateAt?.isNotEmpty() == true
             b.checkboxConfirmation.setOnCheckedChangeListener(null)
             b.checkboxConfirmation.isChecked = isParticipating
@@ -111,7 +111,7 @@ class MembersListAdapter(
         }
 
         // Suffixe "Participation confirmée" si applicable (on garde la logique existante)
-        if (item.confirmedAt == true) {
+        if (item.confirmedAt?.isNotEmpty() == true) {
             val currentText = b.name.text
             val suffix = " - Participation confirmée"
             val fullText = SpannableString("$currentText$suffix")
