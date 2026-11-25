@@ -286,7 +286,7 @@ private fun SlideFromRight(index: Int, content: @Composable () -> Unit) {
 }
 
 private fun <T> LazyListScope.homeCards(items: List<T>, itemContent: @Composable (T) -> Unit) {
-    items(count = items.size) { index ->
+    items(count = items.size, contentType = { "homeCard" }) { index ->
         SlideFromRight(index) { itemContent(items[index]) }
     }
 }

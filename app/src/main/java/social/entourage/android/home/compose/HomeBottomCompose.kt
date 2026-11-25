@@ -156,33 +156,12 @@ private fun PedagoTagPill(tag: PedagoTag, modifier: Modifier = Modifier) {
 /** Vignette : fond blanc arrondi 15 dp + Glide centerCrop / coins 16 px (comme l'adapter d'origine). */
 @Composable
 private fun PedagoImage(imageUrl: String?, modifier: Modifier) {
-    AndroidView(
+    HomeGlideImage(
+        url = imageUrl,
         modifier = modifier,
-        factory = { context ->
-            ImageView(context).apply {
-                scaleType = ImageView.ScaleType.CENTER_CROP
-                setBackgroundResource(R.drawable.home_v2_pedago_iv_item_shape)
-                importantForAccessibility = android.view.View.IMPORTANT_FOR_ACCESSIBILITY_NO
-            }
-        },
-        update = { view ->
-            val key = imageUrl ?: ""
-            if (view.tag != key) {
-                view.tag = key
-                val glide = Glide.with(view)
-                if (imageUrl != null) {
-                    glide.load(Uri.parse(imageUrl))
-                        .placeholder(R.drawable.ic_event_placeholder)
-                        .transform(CenterCrop(), GranularRoundedCorners(16F, 16F, 16F, 16F))
-                        .error(R.drawable.ic_event_placeholder)
-                        .into(view)
-                } else {
-                    glide.load(R.drawable.ic_placeholder_action)
-                        .transform(CenterCrop(), GranularRoundedCorners(16F, 16F, 16F, 16F))
-                        .into(view)
-                }
-            }
-        },
+        placeholder = if (imageUrl != null) R.drawable.ic_event_placeholder else R.drawable.ic_placeholder_action,
+        backgroundRes = R.drawable.home_v2_pedago_iv_item_shape,
+        options = { it.transform(CenterCrop(), GranularRoundedCorners(16F, 16F, 16F, 16F)) },
     )
 }
 

@@ -40,6 +40,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -163,12 +164,17 @@ private fun HomeHeader(ui: HomeUiState, actions: HomeActions) {
     val statusBarTop = with(density) { WindowInsets.statusBars.getTop(density).toDp() }
     val marginStart = dimensionResource(R.dimen.entourage_marginstart)
     val marginEnd = dimensionResource(R.dimen.entourage_margin_end)
-    val topMargin = with(density) { ui.headerTopMarginPx.toDp() }
     val profileDescription = stringResource(R.string.a11y_my_profile)
     val notifDescription = stringResource(R.string.notifications)
 
     Column(Modifier.fillMaxWidth()) {
-        Spacer(Modifier.height(topMargin))
+        // Marge animée lue dans la phase de layout : l'animation ne recompose pas l'en-tête à chaque image.
+        Spacer(
+            Modifier.layout { measurable, constraints ->
+                val placeable = measurable.measure(constraints.copy(minHeight = 0, maxHeight = 0))
+                layout(placeable.width, ui.headerTopMarginPx.coerceAtLeast(0)) { }
+            }
+        )
         Box(
             Modifier
                 .fillMaxWidth()
@@ -311,7 +317,7 @@ private fun HomeList(
         contentPadding = PaddingValues(top = dimensionResource(R.dimen.entourage_margin_top), bottom = 50.dp),
     ) {
         if (!ui.contentShown) {
-            item(key = "skeleton") { HomeSkeleton() }
+            item(key = "skeleton", contentType = "skeleton") { HomeSkeleton() }
             return@LazyColumn
         }
 
@@ -320,7 +326,7 @@ private fun HomeList(
         // Parcours de bienvenue
         if (ui.journeyVisible) {
             val position = order++
-            item(key = "journey") {
+            item(key = "journey", contentType = "journey") {
                 Box(Modifier.fallDownIn(position, revealing)) {
                     HomeWelcomeJourney(
                         states = ui.journeyStates,
@@ -336,17 +342,17 @@ private fun HomeList(
             // Moteur de suggestions : le parcours de bienvenue OU les suggestions (jamais ensemble)
             if (suggestionSection.heroVisibleInCompose) {
                 val position = order++
-                item(key = "hero") { Box(Modifier.fallDownIn(position, revealing)) { suggestionSection.HeroItem() } }
+                item(key = "hero", contentType = "hero") { Box(Modifier.fallDownIn(position, revealing)) { suggestionSection.HeroItem() } }
             }
             if (suggestionSection.explorerVisibleInCompose) {
                 val position = order++
-                item(key = "explorer") { Box(Modifier.fallDownIn(position, revealing)) { suggestionSection.ExplorerItem() } }
+                item(key = "explorer", contentType = "explorer") { Box(Modifier.fallDownIn(position, revealing)) { suggestionSection.ExplorerItem() } }
             }
         } else {
             // Sensibilisation
             if (ui.initialPedagoVisible) {
                 val headerPosition = order++
-                item(key = "initialPedagoHeader") {
+                item(key = "initialPedagoHeader", contentType = "initialPedagoHeader") {
                     Box(Modifier.fallDownIn(headerPosition, revealing)) {
                         HomeSectionHeader(
                             title = stringResource(R.string.home_title_sensibilisation),
@@ -355,10 +361,10 @@ private fun HomeList(
                     }
                 }
                 val listPosition = order++
-                item(key = "initialPedago") {
+                item(key = "initialPedago", contentType = "initialPedago") {
                     Box(Modifier.fallDownIn(listPosition, revealing)) {
                         HomeHorizontalList {
-                            items(ui.initialPedagos) { HomeInitialPedagoCard(it, actions.onPedagoClick) }
+                            items(ui.initialPedagos, contentType = { "initialPedago" }) { HomeInitialPedagoCard(it, actions.onPedagoClick) }
                         }
                     }
                 }
@@ -367,19 +373,19 @@ private fun HomeList(
             // Entraides / contributions
             if (ui.actionsVisible) {
                 val headerPosition = order++
-                item(key = "actionHeader") {
+                item(key = "actionHeader", contentType = "actionHeader") {
                     Box(Modifier.fallDownIn(headerPosition, revealing)) {
                         HomeSectionHeader(title = ui.actionTitle, subtitle = ui.actionSubtitle)
                     }
                 }
                 val listPosition = order++
-                item(key = "actions") {
+                item(key = "actions", contentType = "actions") {
                     Box(Modifier.fallDownIn(listPosition, revealing)) {
                         HomeHorizontalList { homeActionCards(ui.actions, ui.isContribution) }
                     }
                 }
                 val buttonPosition = order++
-                item(key = "actionButton") {
+                item(key = "actionButton", contentType = "actionButton") {
                     Box(Modifier.fallDownIn(buttonPosition, revealing)) {
                         HomeSectionButton(text = ui.actionButtonText, onClick = ui.onActionButtonClick)
                     }
@@ -389,7 +395,7 @@ private fun HomeList(
             // Événements
             if (ui.eventsVisible) {
                 val headerPosition = order++
-                item(key = "eventHeader") {
+                item(key = "eventHeader", contentType = "eventHeader") {
                     Box(Modifier.fallDownIn(headerPosition, revealing)) {
                         HomeSectionHeader(
                             title = stringResource(R.string.home_title_event),
@@ -398,13 +404,13 @@ private fun HomeList(
                     }
                 }
                 val listPosition = order++
-                item(key = "events") {
+                item(key = "events", contentType = "events") {
                     Box(Modifier.fallDownIn(listPosition, revealing)) {
                         HomeHorizontalList { homeEventCards(ui.events) }
                     }
                 }
                 val buttonPosition = order++
-                item(key = "eventButton") {
+                item(key = "eventButton", contentType = "eventButton") {
                     Box(Modifier.fallDownIn(buttonPosition, revealing)) {
                         HomeSectionButton(text = stringResource(R.string.home_btn_more_event), onClick = actions.onEventsAll)
                     }
@@ -414,7 +420,7 @@ private fun HomeList(
             // Suggestions du back (hors moteur)
             ui.connectionSuggestion?.let { suggestion ->
                 val position = order++
-                item(key = "connection") {
+                item(key = "connection", contentType = "connection") {
                     Box(Modifier.fallDownIn(position, revealing)) {
                         HomeSuggestionConnectionCard(suggestion, actions.onConnectionAction, actions.onConnectionDismiss)
                     }
@@ -422,7 +428,7 @@ private fun HomeList(
             }
             ui.nextStepSuggestion?.let { suggestion ->
                 val position = order++
-                item(key = "nextStep") {
+                item(key = "nextStep", contentType = "nextStep") {
                     Box(Modifier.fallDownIn(position, revealing)) {
                         HomeSuggestionNextStepCard(suggestion, actions.onNextStepAction, actions.onNextStepDismiss)
                     }
@@ -433,7 +439,7 @@ private fun HomeList(
 
         // Outils solidaires
         val toolsPosition = order++
-        item(key = "tools") {
+        item(key = "tools", contentType = "tools") {
             Box(Modifier.fallDownIn(toolsPosition, revealing)) {
                 HomeTools(
                     onMapClick = actions.onToolsMap,
@@ -447,14 +453,14 @@ private fun HomeList(
         // Contenus à découvrir
         if (ui.pedagoTitleVisible) {
             val position = order++
-            item(key = "pedagoHeader") {
+            item(key = "pedagoHeader", contentType = "pedagoHeader") {
                 Box(Modifier.fallDownIn(position, revealing)) {
                     HomeSectionHeader(title = stringResource(R.string.home_title_discover_contents), subtitle = null)
                 }
             }
         }
         val firstPedagoPosition = order
-        items(ui.pedagos.size) { index ->
+        items(ui.pedagos.size, contentType = { "pedago" }) { index ->
             Box(Modifier.fallDownIn(firstPedagoPosition + index, revealing)) {
                 HomePedagoCard(ui.pedagos[index], actions.onPedagoClick)
             }
