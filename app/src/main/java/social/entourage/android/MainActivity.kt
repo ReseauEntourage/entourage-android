@@ -84,6 +84,8 @@ class MainActivity : BaseSecuredActivity() {
     private lateinit var updateActivityResultLauncher: ActivityResultLauncher<IntentSenderRequest>
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Home XML ou Compose (branche homeCompose) : à poser avant la restauration des fragments.
+        supportFragmentManager.fragmentFactory = social.entourage.android.home.HomeFragmentFactory()
         super.onCreate(savedInstanceState)
         updateMainLanguage()
         enableEdgeToEdge()
@@ -665,11 +667,15 @@ class MainActivity : BaseSecuredActivity() {
     }
 
     fun goWelcomeVideo() {
-        val homeFragment = (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as? NavHostFragment)
-            ?.childFragmentManager?.primaryNavigationFragment as? HomeFragment
+        val primary = (supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as? NavHostFragment)
+            ?.childFragmentManager?.primaryNavigationFragment
+        val homeFragment = primary as? HomeFragment
+        val homeComposeFragment = primary as? social.entourage.android.home.HomeComposeFragment
         if (homeFragment?.isResumed == true) {
             // Home déjà affiché : onResume() ne sera pas rappelé, on ouvre la modale directement
             homeFragment.showVideoModal()
+        } else if (homeComposeFragment?.isResumed == true) {
+            homeComposeFragment.showVideoModal()
         } else {
             // Consommé par HomeFragment.onResume()
             setGoWelcomeVideoFromDeepL(true)

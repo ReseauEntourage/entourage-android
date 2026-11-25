@@ -1,6 +1,10 @@
 package social.entourage.android.suggestion
 
 import android.view.View
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -45,10 +49,26 @@ class HomeSuggestionSection(
     private var started = false
     private var suppressed = false
 
+    // Version Compose de la home (LazyColumn) : mêmes états que les adapters, lus directement.
+    private var heroUiState by mutableStateOf<HeroUi>(HeroUi.Loading)
+    private var explorerUiState by mutableStateOf<ExplorerUi>(ExplorerUi.Loading)
+    private var suppressedState by mutableStateOf(false)
+    val heroVisibleInCompose: Boolean get() = !suppressedState && heroUiState !is HeroUi.Hidden
+    val explorerVisibleInCompose: Boolean get() = !suppressedState && explorerUiState !is ExplorerUi.Hidden
+
+    @Composable
+    fun HeroItem() = HeroContent(heroUiState)
+
+    @Composable
+    fun ExplorerItem() = ExplorerContent(explorerUiState)
+
     private val heroAdapter = HomeComposeAdapter<HeroUi>(
         initial = HeroUi.Loading,
         isVisible = { it !is HeroUi.Hidden },
-    ) { ui ->
+    ) { ui -> HeroContent(ui) }
+
+    @Composable
+    private fun HeroContent(ui: HeroUi) {
         SuggestionHeroZone(
             ui = ui,
             onCta = { s ->
@@ -78,7 +98,10 @@ class HomeSuggestionSection(
     private val explorerAdapter = HomeComposeAdapter<ExplorerUi>(
         initial = ExplorerUi.Loading,
         isVisible = { it !is ExplorerUi.Hidden },
-    ) { ui ->
+    ) { ui -> ExplorerContent(ui) }
+
+    @Composable
+    private fun ExplorerContent(ui: ExplorerUi) {
         SuggestionExplorerZone(
             ui = ui,
             onAccess = { access ->
@@ -101,6 +124,7 @@ class HomeSuggestionSection(
     fun setSuppressed(value: Boolean) {
         val wasSuppressed = suppressed
         suppressed = value
+        suppressedState = value
         heroAdapter.setSuppressed(value)
         explorerAdapter.setSuppressed(value)
         // La card devient visible (parcours de bienvenue terminé ou masqué) : le moteur est appelé à ce moment.
@@ -126,6 +150,8 @@ class HomeSuggestionSection(
             fragment.viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     viewModel.state.collect { state ->
+                        heroUiState = state.toHeroUi()
+                        explorerUiState = state.toExplorerUi()
                         heroAdapter.submit(state.toHeroUi())
                         explorerAdapter.submit(state.toExplorerUi())
                     }
