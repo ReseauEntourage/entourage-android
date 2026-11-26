@@ -695,6 +695,13 @@ object AnalyticsEvents {
     const val   View_Home_Suggestion_Why = "view_home_suggestion_why"
     const val   View_Home_Explorer = "view_home_explorer"
     const val   Click_Home_Explorer_Access = "click_home_explorer_access"
+    // « Prochain Pas » (EN-9892) : s'ajoutent aux événements click_/view_home_suggestion_* ci-dessus.
+    const val   Next_Step_Later_Tapped = "next_step_later_tapped"
+    const val   Next_Step_Later_Cancelled = "next_step_later_cancelled"
+    const val   Next_Step_Ignored = "next_step_ignored"
+    const val   Next_Step_Realised = "next_step_realised"
+    const val   Next_Step_Explorer_Tapped = "next_step_explorer_tapped"
+    const val   Next_Step_Null = "next_step_null"
     const val   Action_Home_Article = "Action_Home_Article"
     const val   Action__Home__Pedago = "Action__Home__Pedago"
     const val   Action_Home_CreateEvent = "Action_Home_CreateEvent"

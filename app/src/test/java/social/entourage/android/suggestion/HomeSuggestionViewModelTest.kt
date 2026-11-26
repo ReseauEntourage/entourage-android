@@ -82,7 +82,7 @@ class HomeSuggestionViewModelTest {
     @Test
     fun laterAloneDoesNotCallTheEngineButHidesTheCard() {
         val provider = FakeProvider(suggestion("second", 2))
-        val vm = HomeSuggestionViewModel(provider)
+        val vm = viewModel(provider)
         vm.refresh()
         vm.later(suggestion("first", 1))
         assertNull(vm.state.value.payload?.hero)
@@ -92,7 +92,7 @@ class HomeSuggestionViewModelTest {
     @Test
     fun undoBringsTheCardBackWithoutCallingTheEngine() {
         val provider = FakeProvider(suggestion("second", 2))
-        val vm = HomeSuggestionViewModel(provider)
+        val vm = viewModel(provider)
         vm.refresh()
         val first = vm.state.value.payload!!.hero!!
         vm.later(first)
@@ -105,7 +105,7 @@ class HomeSuggestionViewModelTest {
     @Test
     fun confirmedLaterIgnoresOnceAndShowsTheNextSuggestionWithoutASecondFetch() {
         val provider = FakeProvider(suggestion("second", 2))
-        val vm = HomeSuggestionViewModel(provider)
+        val vm = viewModel(provider)
         vm.refresh()
         vm.later(vm.state.value.payload!!.hero!!)
         vm.confirmLater()
@@ -117,7 +117,7 @@ class HomeSuggestionViewModelTest {
     @Test
     fun confirmedLaterWithoutReplacementRefreshes() {
         val provider = FakeProvider(replacement = null)
-        val vm = HomeSuggestionViewModel(provider)
+        val vm = viewModel(provider)
         vm.refresh()
         vm.later(vm.state.value.payload!!.hero!!)
         vm.confirmLater()
@@ -127,7 +127,7 @@ class HomeSuggestionViewModelTest {
     @Test
     fun refreshDuringTheUndoMessageDoesNotBringTheCardBack() {
         val provider = FakeProvider(suggestion("second", 2))
-        val vm = HomeSuggestionViewModel(provider)
+        val vm = viewModel(provider)
         vm.refresh()
         vm.later(vm.state.value.payload!!.hero!!)
         vm.refresh()
@@ -138,7 +138,7 @@ class HomeSuggestionViewModelTest {
     @Test
     fun reportedInteractionsReachTheProvider() {
         val provider = FakeProvider(null)
-        val vm = HomeSuggestionViewModel(provider)
+        val vm = viewModel(provider)
         vm.report(SuggestionInteraction.WHY_OPENED, suggestion("first", 1))
         assertEquals(listOf(SuggestionInteraction("why_opened", nextStepId = 1)), provider.reported)
     }

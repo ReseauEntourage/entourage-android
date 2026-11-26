@@ -46,6 +46,17 @@ class HomeSuggestionViewModel(
     private val loggedHeroIds = mutableSetOf<String>()
     private val loggedAccessIds = mutableSetOf<String>()
     private var hasLoggedExplorerView = false
+    private val loggedIgnoredIds = mutableSetOf<String>()
+
+    /** Tap sur une ligne de l'Explorer : `position` est son rang (1 à 3) dans la zone affichée. */
+    fun explorerTapped(access: ExplorerAccess) {
+        val payload = _state.value.payload
+        val index = payload?.explorer?.indexOfFirst { it.id == access.id } ?: -1
+        analytics(
+            AnalyticsEvents.Next_Step_Explorer_Tapped,
+            SuggestionAnalytics.explorerTappedParams(payload?.hero, access, if (index >= 0) index + 1 else null),
+        )
+    }
 
     /** Rafraîchit sans vider l'écran : le dernier payload reste affiché (pas de saut de contenu). */
     fun refresh() {
@@ -58,12 +69,29 @@ class HomeSuggestionViewModel(
             } catch (e: Exception) {
                 null
             }
+            logNullIfEmpty(payload)
             // Erreur réseau : on garde le dernier payload connu.
             _state.update { SuggestionUiState(loading = false, payload = (payload ?: it.payload)?.withoutLater()) }
         }
     }
 
+    /**
+     * `next_step_null` : le moteur ne propose rien alors que la fonction est active (le view-model n'est sollicité ni
+     * quand elle est coupée ni pendant le parcours de bienvenue). `error` : appel en échec ; `all_excluded` : le moteur
+     * a resservi une card déjà écartée par « Plus tard » ; sinon `no_candidates` (le back ne distingue pas les deux cas).
+     */
+    private fun logNullIfEmpty(payload: SuggestionPayload?) {
+        val reason = when {
+            payload == null -> SuggestionAnalytics.REASON_ERROR
+            payload.hero == null -> SuggestionAnalytics.REASON_NO_CANDIDATES
+            payload.hero.id in laterIds -> SuggestionAnalytics.REASON_ALL_EXCLUDED
+            else -> return
+        }
+        analytics(AnalyticsEvents.Next_Step_Null, SuggestionAnalytics.nullParams(reason))
+    }
+
     fun later(suggestion: NextStepSuggestion) {
+        analytics(AnalyticsEvents.Next_Step_Later_Tapped, SuggestionAnalytics.nextStepParams(suggestion))
         pendingLater = suggestion
         _state.update { it.copy(payload = it.payload?.copy(hero = null)) }
         _laterEvents.tryEmit(suggestion)
@@ -74,6 +102,7 @@ class HomeSuggestionViewModel(
         val suggestion = pendingLater ?: return
         pendingLater = null
         laterIds -= suggestion.id
+        analytics(AnalyticsEvents.Next_Step_Later_Cancelled, SuggestionAnalytics.nextStepParams(suggestion))
         _state.update { it.copy(payload = (it.payload ?: SuggestionPayload()).copy(hero = suggestion)) }
     }
 
@@ -84,10 +113,15 @@ class HomeSuggestionViewModel(
         laterIds += suggestion.id
         viewModelScope.launch {
             // La réponse du moteur contient la suggestion suivante : pas de second appel.
+            var acknowledged = false
             val next = try {
-                provider.dismiss(suggestion)
+                provider.dismiss(suggestion).also { acknowledged = true }
             } catch (_: Exception) {
                 null
+            }
+            // Loguer après la réponse du moteur seulement, une fois par card (Firebase ne compte pas une erreur réseau).
+            if (acknowledged && suggestion.engineId != null && loggedIgnoredIds.add(suggestion.id)) {
+                analytics(AnalyticsEvents.Next_Step_Ignored, SuggestionAnalytics.nextStepParams(suggestion))
             }
             if (next != null) {
                 _state.update {

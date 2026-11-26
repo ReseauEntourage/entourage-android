@@ -12,6 +12,7 @@ import social.entourage.android.guide.GDSMainActivity
 import social.entourage.android.home.pedago.PedagoDetailActivity
 import social.entourage.android.home.pedago.PedagoListActivity
 import social.entourage.android.small_talks.SmallTalkIntroActivity
+import social.entourage.android.tools.log.AnalyticsEvents
 import social.entourage.android.tools.utils.Const
 import social.entourage.android.tools.view.WebViewFragment
 
@@ -26,8 +27,19 @@ class SuggestionNavigator(
     private val onSayHello: (userId: Int) -> Unit,
     /** Fiche d'un lieu solidaire (feuille du guide) ; sans elle, on ouvre le guide. */
     private val onOpenPoi: ((Poi) -> Unit)? = null,
+    /** Événements Firebase (nom, paramètres). */
+    private val analytics: (event: String, params: Map<String, Any>) -> Unit =
+        { event, params -> AnalyticsEvents.logEvent(event, params) },
 ) {
     fun open(s: NextStepSuggestion) {
+        openScreen(s)
+        // Lieu et « devenir Animateur » : aucune action que le moteur puisse détecter, le tap vaut réalisation.
+        if (SuggestionAnalytics.isRealisedByTap(s)) {
+            analytics(AnalyticsEvents.Next_Step_Realised, SuggestionAnalytics.realisedByTapParams(s))
+        }
+    }
+
+    private fun openScreen(s: NextStepSuggestion) {
         val id = s.targetId
         when (s.type) {
             SuggestionType.ENTRAIDE -> id?.let {

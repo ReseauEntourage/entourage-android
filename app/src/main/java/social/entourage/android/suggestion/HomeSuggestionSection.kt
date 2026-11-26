@@ -106,6 +106,7 @@ class HomeSuggestionSection(
             ui = ui,
             onAccess = { access ->
                 AnalyticsEvents.logEvent(AnalyticsEvents.Click_Home_Explorer_Access, SuggestionAnalytics.accessParams(access))
+                viewModel.explorerTapped(access)
                 val piste = access.suggestion
                 if (piste != null) {
                     viewModel.report(SuggestionInteraction.TAPPED, piste)
