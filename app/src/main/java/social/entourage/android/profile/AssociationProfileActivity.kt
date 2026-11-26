@@ -111,7 +111,7 @@ class AssociationProfileActivity : BaseActivity() {
         partner?.let {
             val label = if (it.isFollowing) getString(R.string.following) else getString(R.string.follow)
             val textColor = ContextCompat.getColor(this, if (it.isFollowing) R.color.orange else R.color.white)
-            val background = ResourcesCompat.getDrawable(resources, if (it.isFollowing) R.drawable.bg_button_orange_stroke else R.drawable.bg_button_orange_fill, null)
+            val background = ResourcesCompat.getDrawable(resources, if (it.isFollowing) R.drawable.bg_button_orange_stroke else R.drawable.bg_button_orange_fill, theme)
             val rightDrawable = ResourcesCompat.getDrawable(resources, if (it.isFollowing) R.drawable.ic_check_orange else R.drawable.ic_plus_white, null)
 
             binding.assoProfileSubscribe.button.text = label

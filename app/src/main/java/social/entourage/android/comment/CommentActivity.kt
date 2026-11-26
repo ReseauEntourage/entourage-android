@@ -946,7 +946,9 @@ private fun handleSendButtonState() {
                 resources,
                 if (s.isEmpty() || s.isBlank()) R.drawable.bg_button_inactive_light_orange
                 else R.drawable.bg_circle_orange_button,
-                null
+                // Le thème est nécessaire : le fond actif utilise ?attr/a11yButtonFill, que « null » ne résout pas
+                // (bouton blanc sur icône blanche).
+                theme
             )
         }
     })
