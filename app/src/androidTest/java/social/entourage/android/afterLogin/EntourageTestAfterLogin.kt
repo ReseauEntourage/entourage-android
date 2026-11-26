@@ -20,8 +20,8 @@ import social.entourage.android.EntourageApplication
 import social.entourage.android.EntourageTestWithAPI
 import social.entourage.android.R
 import social.entourage.android.api.OnboardingAPI
-import social.entourage.android.home.HomeFragment.Companion.PREF_ENHANCED_ONBOARDING_COMPLETED
-import social.entourage.android.home.HomeFragment.Companion.PREF_GATING_ENHANCED_ONBOARDING_SHOWN
+import social.entourage.android.home.HomeComposeFragment.Companion.PREF_ENHANCED_ONBOARDING_COMPLETED
+import social.entourage.android.home.HomeComposeFragment.Companion.PREF_GATING_ENHANCED_ONBOARDING_SHOWN
 import timber.log.Timber
 
 open class EntourageTestAfterLogin : EntourageTestWithAPI() {

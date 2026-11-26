@@ -3,11 +3,25 @@ package social.entourage.android.e2e
 import android.Manifest
 import android.app.Activity
 import android.app.Instrumentation
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assertCountEquals
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.hasScrollToIndexAction
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithContentDescription
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performScrollToIndex
 import androidx.core.content.edit
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.recyclerview.widget.ConcatAdapter
-import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -17,15 +31,10 @@ import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.Intents.intending
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra
-import androidx.test.espresso.matcher.RootMatchers.isPlatformPopup
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast
-import androidx.test.espresso.matcher.ViewMatchers.isEnabled
 import androidx.test.espresso.matcher.ViewMatchers.isSelected
-import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
@@ -35,7 +44,6 @@ import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.Until
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.containsString
-import org.hamcrest.CoreMatchers.not
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -50,16 +58,15 @@ import social.entourage.android.R
 import social.entourage.android.afterLogin.EntourageTestAfterLogin
 import social.entourage.android.api.model.Summary
 import social.entourage.android.events.list.WelcomeEventsListActivity
-import social.entourage.android.home.HomeFragment
-import social.entourage.android.home.HomeWelcomeJourneyAdapter
+import social.entourage.android.home.HomeComposeFragment
 import social.entourage.android.home.NationalGroupsActivity
 import social.entourage.android.home.WelcomeJourneyApi
 import social.entourage.android.home.WelcomeJourneyStep
 
 /**
- * Scénario E2E "connecté" : parcours de bienvenue facultatif de la home (EN-9653).
+ * Scénario E2E "connecté" : parcours de bienvenue facultatif de la home Compose (EN-9653).
  *
- * Le summary est simulé (`HomeFragment.summaryEventsOverride`) et l'appel réseau
+ * Le summary est simulé (`HomeComposeFragment.summaryEventsOverride`) et l'appel réseau
  * POST users/onboarding_step_skipped est intercepté (`WelcomeJourneyApi.skipHandler`) :
  * rien n'est modifié sur le compte de test côté serveur. On vérifie que
  *  - aucune étape n'est verrouillée,
@@ -68,8 +75,8 @@ import social.entourage.android.home.WelcomeJourneyStep
  *  - le menu "Masquer le parcours" demande confirmation puis masque le parcours,
  *  - le tableau de debug (clic sur le logo) se met à jour à chaque clic.
  *
- * La carte du parcours est un seul item du RecyclerView de la home : on la fait défiler avec
- * `scrollBy` sur `rv_home`. À régler sur device si la hauteur de l'écran change.
+ * La carte du parcours est un seul item de la liste Compose de la home : les nœuds sont ciblés par
+ * leur texte / contentDescription et amenés à l'écran avec `performScrollTo`.
  * Seule l'étape 1 a un effet de bord réel : ouvrir la vidéo appelle `resources/welcome`
  * côté serveur (comportement existant, hors périmètre de ce test).
  */
@@ -85,22 +92,24 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
     private val permissionRule: GrantPermissionRule = GrantPermissionRule.grant(
         Manifest.permission.POST_NOTIFICATIONS
     )
-    private val activityRule = ActivityScenarioRule(MainActivity::class.java)
+    private val composeRule = createAndroidComposeRule<MainActivity>()
 
     @get:Rule
     val chain: RuleChain = RuleChain
         .outerRule(permissionRule)
-        .around(activityRule)
+        .around(composeRule)
 
     private val originalSkipHandler = WelcomeJourneyApi.skipHandler
     private val originalHideHandler = WelcomeJourneyApi.hideHandler
     private val skipRequests = mutableListOf<String>()
     private var hideRequests = 0
 
+    private fun string(id: Int) = InstrumentationRegistry.getInstrumentation().targetContext.getString(id)
+
     @Before
     fun setUp() {
         checkUserIsLoggedIn()
-        activityRule.scenario.onActivity { activity ->
+        composeRule.activityRule.scenario.onActivity { activity ->
             super.setUp(activity)
         }
         skipRequests.clear()
@@ -123,7 +132,7 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
     override fun tearDown() {
         WelcomeJourneyApi.skipHandler = originalSkipHandler
         WelcomeJourneyApi.hideHandler = originalHideHandler
-        HomeFragment.summaryEventsOverride = null
+        HomeComposeFragment.summaryEventsOverride = null
         clearHiddenFlag()
         super.tearDown()
     }
@@ -137,15 +146,14 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
 
         // Aucune étape verrouillée : les 4 boutons et liens "Passer" sont actifs dès le premier affichage
         WelcomeJourneyStep.entries.forEach { step ->
-            scrollTo(skipId(step))
-            onView(withId(buttonId(step))).check(matches(allOf(isDisplayed(), isEnabled())))
-            onView(withId(skipId(step))).check(matches(isDisplayed()))
+            val skip = skipNode(step)
+            skip.performScrollTo().assertIsDisplayed()
+            buttonNode(step).assertIsDisplayed().assertIsEnabled()
         }
 
         stubDestinations()
 
-        scrollTo(R.id.btn_step_3)
-        onView(withId(R.id.btn_step_3)).perform(click())
+        buttonNode(WelcomeJourneyStep.WEBINAR).performScrollTo().performClick()
         intended(
             allOf(
                 hasComponent(WelcomeEventsListActivity::class.java.name),
@@ -153,14 +161,12 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
             )
         )
 
-        scrollTo(R.id.btn_step_2)
-        onView(withId(R.id.btn_step_2)).perform(click())
+        buttonNode(WelcomeJourneyStep.NATIONAL_GROUP).performScrollTo().performClick()
         intended(hasComponent(NationalGroupsActivity::class.java.name))
         screenshot.shoot("destinations_verifiees")
 
         // Étape 1 : ouvre la vidéo de bienvenue (bottom sheet)
-        scrollTo(R.id.btn_step_1)
-        onView(withId(R.id.btn_step_1)).perform(click())
+        buttonNode(WelcomeJourneyStep.VIDEO).performScrollTo().performClick()
         assertTrue(
             "La vidéo de bienvenue ne s'est pas ouverte",
             device.wait(Until.hasObject(By.res(packageName(), "webview_video")), 10_000)
@@ -169,8 +175,7 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
         device.pressBack()
 
         // Étape 4 « premier événement » : page événements classique (onglet Événements), sans filtre
-        scrollTo(R.id.btn_step_4)
-        onView(withId(R.id.btn_step_4)).perform(click())
+        buttonNode(WelcomeJourneyStep.PAPOTAGES).performScrollTo().performClick()
         onView(withId(R.id.navigation_events)).check(matches(isSelected()))
     }
 
@@ -179,17 +184,14 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
         showJourney(emptyList())
 
         WelcomeJourneyStep.entries.forEach { step ->
-            scrollTo(skipId(step))
-            onView(withId(skipId(step))).perform(click())
-            onIdle()
+            skipNode(step).performScrollTo().performClick()
+            composeRule.waitForIdle()
 
-            if (step != WelcomeJourneyStep.PAPOTAGES) {
-                // L'étape passe en "Passée" avec le lien "Découvrir cette étape", sans bouton ni "Passer"
-                onView(withId(redoId(step))).check(matches(isDisplayed()))
-                onView(withId(skipId(step))).check(matches(not(isDisplayed())))
-                onView(withId(buttonId(step))).check(matches(not(isDisplayed())))
-                screenshot.shoot("etape_${step.index}_passee")
-            }
+            // L'étape passe en "Passée" avec le lien "Découvrir cette étape", sans bouton ni "Passer"
+            redoNode(step).assertExists()
+            skipNode(step).assertDoesNotExist()
+            buttonNode(step).assertDoesNotExist()
+            screenshot.shoot("etape_${step.index}_passee")
         }
 
         assertEquals(
@@ -197,11 +199,11 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
             listOf("welcome_watched", "neighborhood_national", "webinar_or_first_steps", "papotages"),
             skipRequests
         )
-        // Tout est passé : même encart de félicitations que si tout était réussi
+        // Tout est passé : les 4 étapes sont "Passées", aucune n'est comptée comme faite
         scrollToJourneyTop()
-        onView(withId(R.id.layout_progress_bars)).check(matches(withContentDescription("4 étapes faites sur 4")))
-        onView(withText(containsString("Intégration complète"))).check(matches(isDisplayed()))
-        screenshot.shoot("tout_passe_encart_vert")
+        composeRule.onAllNodesWithText(string(R.string.welcome_journey_badge_skipped)).assertCountEquals(4)
+        composeRule.onNodeWithContentDescription("0 étape faite sur 4").assertExists()
+        screenshot.shoot("tout_passe")
     }
 
     @Test
@@ -215,18 +217,16 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
         screenshot.shoot("une_faite_une_passee")
 
         scrollToJourneyTop()
-        onView(withId(R.id.layout_progress_bars)).check(matches(withContentDescription("1 étape faite sur 4")))
-        onView(withId(R.id.tv_badge_step_1)).check(matches(withText("Terminé")))
-        scrollTo(R.id.tv_badge_step_2)
-        onView(withId(R.id.tv_badge_step_2)).check(matches(withText(R.string.welcome_journey_badge_skipped)))
-        onView(withId(R.id.btn_redo_step_2)).check(matches(isDisplayed()))
+        composeRule.onNodeWithContentDescription("1 étape faite sur 4").assertExists()
+        composeRule.onNode(hasText(STEP_TITLES[0]) and hasText("Terminé")).assertExists()
+        composeRule.onNode(hasText(STEP_TITLES[1]) and hasText(string(R.string.welcome_journey_badge_skipped)))
+            .performScrollTo().assertExists()
+        redoNode(WelcomeJourneyStep.NATIONAL_GROUP).assertIsDisplayed()
         // Les étapes restantes restent actives et passables
-        scrollTo(R.id.btn_skip_step_3)
-        onView(withId(R.id.btn_step_3)).check(matches(allOf(isDisplayed(), isEnabled())))
-        onView(withId(R.id.btn_skip_step_3)).check(matches(isDisplayed()))
-        scrollTo(R.id.btn_skip_step_4)
-        onView(withId(R.id.btn_step_4)).check(matches(allOf(isDisplayed(), isEnabled())))
-        onView(withId(R.id.btn_skip_step_4)).check(matches(isDisplayed()))
+        skipNode(WelcomeJourneyStep.WEBINAR).performScrollTo().assertIsDisplayed()
+        buttonNode(WelcomeJourneyStep.WEBINAR).assertIsDisplayed().assertIsEnabled()
+        skipNode(WelcomeJourneyStep.PAPOTAGES).performScrollTo().assertIsDisplayed()
+        buttonNode(WelcomeJourneyStep.PAPOTAGES).assertIsDisplayed().assertIsEnabled()
     }
 
     @Test
@@ -234,10 +234,9 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
         showJourney(listOf(WelcomeJourneyStep.PAPOTAGES.doneEvent))
         screenshot.shoot("derniere_etape_faite")
 
-        scrollTo(R.id.tv_badge_step_4)
-        onView(withId(R.id.tv_badge_step_4)).check(matches(withText("Terminé")))
-        onView(withId(R.id.btn_step_4)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.btn_skip_step_4)).check(matches(not(isDisplayed())))
+        composeRule.onNode(hasText(STEP_TITLES[3]) and hasText("Terminé")).performScrollTo().assertExists()
+        buttonNode(WelcomeJourneyStep.PAPOTAGES).assertDoesNotExist()
+        skipNode(WelcomeJourneyStep.PAPOTAGES).assertDoesNotExist()
     }
 
     @Test
@@ -250,8 +249,7 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
         )
         stubDestinations()
 
-        scrollTo(R.id.btn_redo_step_3)
-        onView(withId(R.id.btn_redo_step_3)).perform(click())
+        redoNode(WelcomeJourneyStep.WEBINAR).performScrollTo().performClick()
         intended(
             allOf(
                 hasComponent(WelcomeEventsListActivity::class.java.name),
@@ -259,8 +257,7 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
             )
         )
 
-        scrollTo(R.id.btn_redo_step_2)
-        onView(withId(R.id.btn_redo_step_2)).perform(click())
+        redoNode(WelcomeJourneyStep.NATIONAL_GROUP).performScrollTo().performClick()
         intended(hasComponent(NationalGroupsActivity::class.java.name))
     }
 
@@ -268,26 +265,26 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
     fun menuMasquerLeParcoursDemandeConfirmation() {
         showJourney(emptyList())
         scrollToJourneyTop()
+        val options = string(R.string.welcome_journey_options)
 
         // Annuler : le parcours reste affiché
-        onView(withId(R.id.btn_more)).perform(click())
-        onView(withText(R.string.welcome_journey_hide_menu)).inRoot(isPlatformPopup())
-            .check(matches(isDisplayed()))
+        composeRule.onNodeWithContentDescription(options).performClick()
+        composeRule.onNodeWithText(string(R.string.welcome_journey_hide_menu)).assertIsDisplayed()
         screenshot.shoot("menu_options")
-        onView(withText(R.string.welcome_journey_hide_menu)).inRoot(isPlatformPopup()).perform(click())
+        composeRule.onNodeWithText(string(R.string.welcome_journey_hide_menu)).performClick()
 
         onView(withText(R.string.welcome_journey_hide_title)).check(matches(isDisplayed()))
         screenshot.shoot("confirmation_masquer")
         onView(withId(R.id.btn_hide_cancel)).perform(click())
         onView(withText(R.string.welcome_journey_hide_title)).check(doesNotExist())
-        onView(withId(R.id.btn_more)).check(matches(isDisplayed()))
+        composeRule.onNodeWithContentDescription(options).assertIsDisplayed()
 
         // Confirmer : le parcours disparaît
-        onView(withId(R.id.btn_more)).perform(click())
-        onView(withText(R.string.welcome_journey_hide_menu)).inRoot(isPlatformPopup()).perform(click())
+        composeRule.onNodeWithContentDescription(options).performClick()
+        composeRule.onNodeWithText(string(R.string.welcome_journey_hide_menu)).performClick()
         onView(withId(R.id.btn_hide_confirm)).perform(click())
-        onIdle()
-        onView(withId(R.id.btn_more)).check(doesNotExist())
+        composeRule.waitForIdle()
+        composeRule.onAllNodesWithContentDescription(options).assertCountEquals(0)
         assertEquals("Appels à POST users/onboarding_journey_hidden", 1, hideRequests)
         screenshot.shoot("parcours_masque")
     }
@@ -301,9 +298,8 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
         )
         onView(withText(containsString("1 Vidéo"))).check(matches(withText(containsString("TODO"))))
 
-        scrollTo(R.id.btn_skip_step_2)
-        onView(withId(R.id.btn_skip_step_2)).perform(click())
-        onIdle()
+        skipNode(WelcomeJourneyStep.NATIONAL_GROUP).performScrollTo().performClick()
+        composeRule.waitForIdle()
         onView(withText(containsString("Dernière action : Passer étape 2"))).check(matches(isDisplayed()))
         onView(withText(containsString("2 Groupe national"))).check(matches(withText(containsString("SKIPPED"))))
         screenshot.shoot("debug_apres_skip")
@@ -313,8 +309,8 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
     fun parcoursCompletAfficheLEncartDeReussite() {
         showJourney(WelcomeJourneyStep.entries.map { it.doneEvent })
         scrollToJourneyTop()
-        onView(withId(R.id.layout_progress_bars)).check(matches(withContentDescription("4 étapes faites sur 4")))
-        onView(withText(containsString("Intégration complète"))).check(matches(isDisplayed()))
+        composeRule.onNodeWithContentDescription("4 étapes faites sur 4").assertExists()
+        composeRule.onNode(hasText("Intégration complète", substring = true)).assertIsDisplayed()
         screenshot.shoot("parcours_termine")
     }
 
@@ -323,92 +319,41 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
     /** Clic sur le logo (debug) pour forcer l'affichage, puis injection du faux summary. */
     private fun showJourney(events: List<String>) {
         waitForHome()
-        onView(withId(R.id.iv_logo_home)).perform(click())
-        activityRule.scenario.onActivity { activity ->
-            HomeFragment.summaryEventsOverride = events
+        composeRule.onAllNodesWithContentDescription(string(R.string.app_name))[0].performClick()
+        composeRule.activityRule.scenario.onActivity { activity ->
+            HomeComposeFragment.summaryEventsOverride = events
             val home = findHomeFragment(activity.supportFragmentManager)
-                ?: error("HomeFragment introuvable")
+                ?: error("HomeComposeFragment introuvable")
             home.handleWelcomeJourneyState(Summary())
         }
-        onIdle()
-        waitForJourneyAdapter()
-        scrollToJourneyTop()
-        assertTrue(
-            "Le parcours de bienvenue n'est pas affiché",
-            device.wait(Until.hasObject(By.res(packageName(), "tv_step_counter")), 15_000)
-        )
-    }
-
-    /** Le parcours n'est ajouté à la home qu'une fois les 4 premières requêtes terminées (skeleton). */
-    private fun waitForJourneyAdapter() {
-        val deadline = System.currentTimeMillis() + 30_000
-        while (System.currentTimeMillis() < deadline) {
-            var attached = false
-            activityRule.scenario.onActivity { activity ->
-                val rv = findHomeFragment(activity.supportFragmentManager)
-                    ?.view?.findViewById<RecyclerView>(R.id.rv_home)
-                attached = (rv?.adapter as? ConcatAdapter)?.adapters
-                    ?.any { it is HomeWelcomeJourneyAdapter && it.itemCount > 0 } == true
-            }
-            if (attached) return
-            Thread.sleep(250)
+        composeRule.waitForIdle()
+        // Le parcours n'est affiché qu'une fois les 4 premières requêtes terminées (skeleton)
+        composeRule.waitUntil(30_000) {
+            composeRule.onAllNodesWithText(JOURNEY_TITLE).fetchSemanticsNodes().isNotEmpty()
         }
-        error("Le parcours de bienvenue n'a jamais été ajouté à la home")
+        scrollToJourneyTop()
     }
 
     private fun waitForHome() {
-        assertTrue(
-            "La home ne s'est pas chargée",
-            device.wait(Until.hasObject(By.res(packageName(), "iv_logo_home")), 40_000)
-        )
+        composeRule.waitUntil(40_000) {
+            composeRule.onAllNodesWithContentDescription(string(R.string.app_name)).fetchSemanticsNodes().isNotEmpty()
+        }
     }
 
-    private fun findHomeFragment(fm: FragmentManager): HomeFragment? {
+    private fun findHomeFragment(fm: FragmentManager): HomeComposeFragment? {
         for (fragment: Fragment in fm.fragments) {
-            if (fragment is HomeFragment) return fragment
+            if (fragment is HomeComposeFragment) return fragment
             findHomeFragment(fragment.childFragmentManager)?.let { return it }
         }
         return null
     }
 
-    /**
-     * La carte du parcours est un seul item du RecyclerView, plus haut que l'écran : on repart du
-     * haut du parcours puis on descend par pas de 300px jusqu'à ce que la vue soit visible.
-     */
-    private fun scrollTo(viewId: Int) {
-        scrollToJourneyTop()
-        repeat(15) {
-            try {
-                onView(withId(viewId)).check(matches(isDisplayingAtLeast(90)))
-                return
-            } catch (e: Throwable) {
-                scrollHomeBy(300)
-            }
-        }
-        onView(withId(viewId)).check(matches(isDisplayingAtLeast(90)))
-    }
-
-    /** Haut du parcours, avec une marge pour passer sous l'en-tête de la home. */
+    /** Le parcours est le premier item de la liste Compose de la home. */
     private fun scrollToJourneyTop() {
-        activityRule.scenario.onActivity { activity ->
-            val home = findHomeFragment(activity.supportFragmentManager)
-            val rv = home?.view?.findViewById<RecyclerView>(R.id.rv_home)
-            val adapter = rv?.adapter as? ConcatAdapter
-            val offset = adapter?.adapters
-                ?.takeWhile { it !is HomeWelcomeJourneyAdapter }
-                ?.sumOf { it.itemCount } ?: 0
-            rv?.scrollToPosition(offset)
-            rv?.scrollBy(0, -300)
-        }
-        onIdle()
-    }
-
-    private fun scrollHomeBy(dy: Int) {
-        activityRule.scenario.onActivity { activity ->
-            findHomeFragment(activity.supportFragmentManager)
-                ?.view?.findViewById<RecyclerView>(R.id.rv_home)?.scrollBy(0, dy)
-        }
-        onIdle()
+        composeRule.onNode(
+            hasScrollToIndexAction() and SemanticsMatcher.keyIsDefined(SemanticsProperties.VerticalScrollAxisRange)
+        ).performScrollToIndex(0)
+        composeRule.waitForIdle()
     }
 
     private fun stubDestinations() {
@@ -419,31 +364,45 @@ class WelcomeJourneyScenarioTest : EntourageTestAfterLogin() {
 
     private fun packageName() = InstrumentationRegistry.getInstrumentation().targetContext.packageName
 
-    private fun buttonId(step: WelcomeJourneyStep) = when (step) {
-        WelcomeJourneyStep.VIDEO -> R.id.btn_step_1
-        WelcomeJourneyStep.NATIONAL_GROUP -> R.id.btn_step_2
-        WelcomeJourneyStep.WEBINAR -> R.id.btn_step_3
-        WelcomeJourneyStep.PAPOTAGES -> R.id.btn_step_4
-    }
+    // Les libellés de bouton / lien sont uniques par étape (les liens "Passer" et "Découvrir" se répètent :
+    // on retrouve la carte de l'étape par son titre).
+    private fun buttonNode(step: WelcomeJourneyStep) = composeRule.onNodeWithText(
+        when (step) {
+            WelcomeJourneyStep.VIDEO -> string(R.string.welcome_video_cta)
+            WelcomeJourneyStep.NATIONAL_GROUP -> "Voir les groupes"
+            WelcomeJourneyStep.WEBINAR -> "Voir les prochaines dates"
+            WelcomeJourneyStep.PAPOTAGES -> string(R.string.welcome_step4_cta)
+        }
+    )
 
-    private fun skipId(step: WelcomeJourneyStep) = when (step) {
-        WelcomeJourneyStep.VIDEO -> R.id.btn_skip_step_1
-        WelcomeJourneyStep.NATIONAL_GROUP -> R.id.btn_skip_step_2
-        WelcomeJourneyStep.WEBINAR -> R.id.btn_skip_step_3
-        WelcomeJourneyStep.PAPOTAGES -> R.id.btn_skip_step_4
-    }
+    private fun skipNode(step: WelcomeJourneyStep) = linkNode(step, string(R.string.welcome_journey_skip_step))
 
-    private fun redoId(step: WelcomeJourneyStep) = when (step) {
-        WelcomeJourneyStep.VIDEO -> R.id.btn_redo_step_1
-        WelcomeJourneyStep.NATIONAL_GROUP -> R.id.btn_redo_step_2
-        WelcomeJourneyStep.WEBINAR -> R.id.btn_redo_step_3
-        WelcomeJourneyStep.PAPOTAGES -> R.id.btn_redo_step_4
-    }
+    private fun redoNode(step: WelcomeJourneyStep) = linkNode(step, string(R.string.welcome_journey_redo_step))
+
+    /**
+     * Lien "Passer" / "Découvrir" de l'étape : les liens sont dans l'ordre des étapes, et seuls ceux dont
+     * l'état s'y prête sont affichés. On les distingue donc par leur position parmi les cartes.
+     */
+    private fun linkNode(step: WelcomeJourneyStep, label: String) =
+        composeRule.onNode(hasText(label) and hasAncestorCard(step))
+
+    private fun hasAncestorCard(step: WelcomeJourneyStep) =
+        androidx.compose.ui.test.hasAnyAncestor(hasText(STEP_TITLES[step.index - 1]))
 
     private fun clearHiddenFlag() {
         val id = EntourageApplication.get().me()?.id ?: return
         EntourageApplication.get().sharedPreferences.edit(commit = true) {
             remove("PREF_WELCOME_JOURNEY_HIDDEN_$id")
         }
+    }
+
+    private companion object {
+        const val JOURNEY_TITLE = "Votre parcours de bienvenue"
+        val STEP_TITLES = listOf(
+            "1 min pour tout comprendre",
+            "Rejoignez un groupe qui vous ressemble",
+            "Rencontrez l'équipe en visio",
+            "Participez à un premier événement"
+        )
     }
 }
