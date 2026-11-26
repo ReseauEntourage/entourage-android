@@ -327,6 +327,7 @@ dependencies {
         exclude(group = "org.jetbrains.kotlin")
     }
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     // Unit tests
     testImplementation(libs.junit)

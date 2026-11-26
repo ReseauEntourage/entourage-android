@@ -1,5 +1,8 @@
 package social.entourage.android.suggestion
 
+import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.semantics.getOrNull
+import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -105,7 +108,14 @@ class SuggestionZonesComposeTest {
     @Test
     fun pourquoiOuvreLaFeuilleDExplication() {
         val recorder = showHero(HeroUi.Ready(group))
-        compose.onNodeWithContentDescription(string(R.string.home_suggestion_why_button_description)).performClick()
+        // Le bouton « ? » porte son libellé comme étiquette de clic (onClickLabel), pas comme contentDescription.
+        val whyLabel = string(R.string.home_suggestion_why_button_description)
+        compose.onNode(
+            SemanticsMatcher("clic « $whyLabel »") {
+                it.config.getOrNull(SemanticsActions.OnClick)?.label == whyLabel
+            },
+            useUnmergedTree = true,
+        ).performClick()
         compose.onNodeWithText("Ce groupe est dans votre quartier.").assertIsDisplayed()
         assertEquals(listOf("next-step-1"), recorder.whyOpened)
     }
@@ -143,8 +153,8 @@ class SuggestionZonesComposeTest {
         }
 
         compose.onNodeWithText("D'autres occasions de se retrouver").assertIsDisplayed()
-        compose.onNodeWithText("Samedi 14 juin", substring = true).assertIsDisplayed()
-        // Le tap vaut pour toute la ligne (description d'accessibilité fusionnée) : on passe par son texte lu.
+        // La ligne est lue d'un bloc (titre, contexte, « Ouvre la suggestion ») : le texte n'est que dans sa description.
+        compose.onNodeWithContentDescription("Samedi 14 juin", substring = true).assertIsDisplayed()
         compose.onNodeWithContentDescription("Café solidaire du 11e", substring = true).performClick()
         compose.waitForIdle()
         assertEquals(listOf("other-outing-9"), opened)
