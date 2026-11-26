@@ -175,7 +175,7 @@
         <activity
             android:name=".events.create.CreateEventActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustResize" />
         <activity android:name=".profile.editProfile.EditPhotoActivity"
             android:exported="false" />
         <activity
@@ -206,7 +206,7 @@
         <activity
             android:name=".groups.create.CreateGroupActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustResize" />
         <!-- abstract class declared here to make sure child classes work -->
         <activity
             android:name="social.entourage.android.posts.CreatePostActivity"
