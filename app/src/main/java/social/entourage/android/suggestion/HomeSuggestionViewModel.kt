@@ -32,6 +32,16 @@ class HomeSuggestionViewModel(
 
     private var pendingLater: NextStepSuggestion? = null
 
+    /**
+     * Cards écartées par « Plus tard » depuis le lancement de l'app : le moteur peut, selon sa réponse (ignore sans
+     * suivante, erreur réseau, `current` servi avant la prise en compte), renvoyer la même card quelques secondes
+     * après. Elle ne revient pas dans la session ; au prochain lancement, le moteur décide.
+     */
+    private val laterIds = mutableSetOf<String>()
+
+    private fun SuggestionPayload.withoutLater() =
+        if (hero != null && hero.id in laterIds) copy(hero = null) else this
+
     // Ids déjà mesurés depuis le dernier affichage de la home (comme `SuggestionCoordinator` d'iOS).
     private val loggedHeroIds = mutableSetOf<String>()
     private val loggedAccessIds = mutableSetOf<String>()
@@ -49,7 +59,7 @@ class HomeSuggestionViewModel(
                 null
             }
             // Erreur réseau : on garde le dernier payload connu.
-            _state.update { SuggestionUiState(loading = false, payload = payload ?: it.payload) }
+            _state.update { SuggestionUiState(loading = false, payload = (payload ?: it.payload)?.withoutLater()) }
         }
     }
 
@@ -63,6 +73,7 @@ class HomeSuggestionViewModel(
     fun undoLater() {
         val suggestion = pendingLater ?: return
         pendingLater = null
+        laterIds -= suggestion.id
         _state.update { it.copy(payload = (it.payload ?: SuggestionPayload()).copy(hero = suggestion)) }
     }
 
@@ -70,6 +81,7 @@ class HomeSuggestionViewModel(
     fun confirmLater() {
         val suggestion = pendingLater ?: return
         pendingLater = null
+        laterIds += suggestion.id
         viewModelScope.launch {
             // La réponse du moteur contient la suggestion suivante : pas de second appel.
             val next = try {
@@ -78,7 +90,9 @@ class HomeSuggestionViewModel(
                 null
             }
             if (next != null) {
-                _state.update { SuggestionUiState(loading = false, payload = (it.payload ?: SuggestionPayload()).copy(hero = next)) }
+                _state.update {
+                    SuggestionUiState(loading = false, payload = (it.payload ?: SuggestionPayload()).copy(hero = next).withoutLater())
+                }
             } else {
                 refresh()
             }

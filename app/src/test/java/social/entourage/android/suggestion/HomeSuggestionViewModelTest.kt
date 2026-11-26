@@ -67,6 +67,19 @@ class HomeSuggestionViewModelTest {
     @After fun tearDown() = Dispatchers.resetMain()
 
     @Test
+    fun laterThenSnackbarExpiryDoesNotBringTheSameCardBack() {
+        // Le moteur ne propose pas de suivante et `current` resert la même card : elle ne doit pas réapparaître.
+        val provider = FakeProvider(replacement = null)
+        val vm = viewModel(provider)
+        vm.refresh()
+        vm.later(vm.state.value.payload!!.hero!!)
+        vm.confirmLater()
+        assertNull(vm.state.value.payload?.hero)
+        vm.refresh()
+        assertNull(vm.state.value.payload?.hero)
+    }
+
+    @Test
     fun laterAloneDoesNotCallTheEngineButHidesTheCard() {
         val provider = FakeProvider(suggestion("second", 2))
         val vm = HomeSuggestionViewModel(provider)
