@@ -123,11 +123,12 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
     }
 
     private fun setupSearchBar() {
-        // FOCUS ➜ on passe sur la liste search
+        // Le focus seul ne change pas l'affichage : jusqu'à Android 8 inclus, le système donne le focus
+        // à ce champ dès l'ouverture de l'écran, ce qui masquait la liste des membres. Le mode recherche
+        // ne commence qu'avec un texte saisi (afterTextChanged).
         binding.searchBar.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_START)
-                switchToSearchMode()
             }
         }
 
@@ -145,6 +146,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
                     if (it.toString().isBlank()) {
                         clearSearchResults()
                     } else {
+                        switchToSearchMode()
                         searchHandler.postDelayed({
                             if (it.toString().isNotBlank()) {
                                 performRemoteSearch(it.toString())
@@ -299,9 +301,11 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
     private fun updateMainList(newData: MutableList<EntourageUser>) {
         membersList.clear()
         membersList.addAll(newData)
+        binding.recyclerView.adapter?.notifyDataSetChanged()
+        // Pendant une recherche, la liste se met à jour sans repasser devant les résultats.
+        if (isSearching()) return
         binding.progressBar.visibility = View.GONE
         updateEmptyState(membersList.isEmpty())
-        binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 
     private fun handleReactions(resp: CompleteReactionsResponse) {
@@ -321,6 +325,9 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
     private fun handleSearchList(list: MutableList<EntourageUser>?) {
         membersListSearch.clear()
         list?.let { membersListSearch.addAll(it) }
+        binding.searchRecyclerView.adapter?.notifyDataSetChanged()
+        // Résultats arrivés après que le champ a été vidé : on reste sur la liste des membres.
+        if (!isSearching()) return
         binding.progressBar.visibility = View.GONE
         val empty = membersListSearch.isEmpty()
         binding.emptyStateLayout.visibility = if (empty) View.VISIBLE else View.GONE
@@ -353,22 +360,27 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
         binding.progressBar.visibility = View.VISIBLE
     }
 
+    /** Le mode recherche dépend du texte saisi, jamais du seul focus du champ. */
+    private fun isSearching(): Boolean = !binding.searchBar.text.isNullOrBlank()
+
     private fun switchToSearchMode() {
         binding.recyclerView.visibility = View.GONE
+        binding.emptyStateLayout.visibility = View.GONE
         binding.searchRecyclerView.visibility = View.VISIBLE
     }
 
     private fun exitSearchMode() {
         binding.searchRecyclerView.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
         updateEmptyState(membersList.isEmpty())
     }
 
+    /** Champ vidé : on oublie les résultats et on revient à la liste des membres. */
     private fun clearSearchResults() {
         searchHandler.removeCallbacksAndMessages(null)
         membersListSearch.clear()
         binding.searchRecyclerView.adapter?.notifyDataSetChanged()
-        binding.emptyStateLayout.visibility = View.GONE
-        binding.searchRecyclerView.visibility = View.VISIBLE
+        exitSearchMode()
     }
 
     private fun openConversation(conv: Conversation?) {
