@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.textfield.TextInputLayout
 import social.entourage.android.MainActivity
 import social.entourage.android.R
 import social.entourage.android.api.model.CompleteReactionsResponse
@@ -155,7 +154,7 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
-        binding.searchBarLayout.setEndIconOnClickListener {
+        binding.searchClearButton.setOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_DELETE)
             binding.searchBar.text?.clear()
             binding.searchBar.clearFocus()
@@ -166,9 +165,9 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
 
     /** La croix reste visible tant que le champ a le focus ou du texte, pour quitter la recherche. */
     private fun updateClearIcon(hasFocus: Boolean) {
-        binding.searchBarLayout.endIconMode =
-            if (hasFocus || !binding.searchBar.text.isNullOrEmpty()) TextInputLayout.END_ICON_CUSTOM
-            else TextInputLayout.END_ICON_NONE
+        // Croix indépendante du TextInputLayout (cf. fragment_members.xml), comme dans MembersFragment.
+        binding.searchClearButton.visibility =
+            if (hasFocus || !binding.searchBar.text.isNullOrEmpty()) View.VISIBLE else View.GONE
     }
 
     private fun conversationCallback(): OnItemShowListener = object : OnItemShowListener {
