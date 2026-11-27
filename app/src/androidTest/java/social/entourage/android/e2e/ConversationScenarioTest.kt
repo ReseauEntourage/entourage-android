@@ -152,22 +152,6 @@ class ConversationScenarioTest : EntourageTestAfterLogin() {
     }
 
     /**
-     * Position du dernier message de la conversation actuellement affichée, pour cibler
-     * notre propre message (celui qu'on vient d'envoyer/modifier) via l'appui long.
-     */
-    private fun lastMessagePosition(): Int {
-        var position = 0
-        InstrumentationRegistry.getInstrumentation().runOnMainSync {
-            val activity = ActivityLifecycleMonitorRegistry.getInstance()
-                .getActivitiesInStage(Stage.RESUMED)
-                .filterIsInstance<CommentActivity>()
-                .firstOrNull()
-            position = (activity?.commentsList?.size ?: 1) - 1
-        }
-        return position
-    }
-
-    /**
      * La capture d'écran (UiDevice.takeScreenshot) fait parfois perdre brièvement le focus
      * fenêtre sur cet environnement, ce qui fait échouer l'interaction Espresso suivante
      * (RootViewWithoutFocusException) ; on laisse un court instant au focus pour se rétablir.
@@ -206,28 +190,22 @@ class ConversationScenarioTest : EntourageTestAfterLogin() {
         onView(withId(R.id.comment_message)).perform(closeSoftKeyboard())
     }
 
-    /**
-     * Cible le bouton 3-points d'un message "à moi". Depuis 6472a5c29, l'ordre en haut de
-     * l'item (Row(Arrangement.End), tout packé à droite) est : OptionsIcon, puis la bulle,
-     * puis l'avatar (25dp+padding) — le 3-points n'est donc plus collé à l'avatar mais à la
-     * largeur, variable, de la bulle avant lui. Ce bouton n'a pas d'id/testTag : coordonnée
-     * approximative (on vise assez loin de l'avatar pour laisser de la place à une bulle
-     * courte), à recaler sur un vrai appareil (cf. avertissement en tête de fichier) —
-     * remplace l'ancien longClickOnMessageBubble() qui visait la bulle elle-même (obsolète
-     * depuis que l'appui long sur son propre message ne fait plus rien).
-     */
-    private fun tapOptionsIconOnOwnMessage(): ViewAction = GeneralClickAction(
-        Tap.SINGLE,
-        GeneralLocation.translate(GeneralLocation.TOP_RIGHT, -0.30f, 0.15f),
-        Press.FINGER,
-        InputDevice.SOURCE_UNKNOWN,
-        MotionEvent.BUTTON_PRIMARY
-    )
+    private fun openOwnMessageActions(text: String) {
+        // Sur son propre message, il n'y a plus de bouton : seul l'appui long sur la bulle ouvre le
+        // panneau d'actions (MessageActionsOverlay). La bulle est un TextView, ciblé par son texte.
+        val bubble = checkNotNull(device.wait(Until.findObject(By.text(text)), 10_000)) {
+            "Bulle du message \"$text\" introuvable"
+        }
+        bubble.longClick()
+        onIdle()
+    }
 
-    private fun openOwnMessageActions() {
-        onView(allOf(withId(R.id.comments), isDisplayed())).perform(
-            actionOnItemAtPosition<ViewHolder>(lastMessagePosition(), tapOptionsIconOnOwnMessage())
-        )
+    /** Le panneau d'actions est en Compose : Espresso ne le voit pas, UiAutomator le lit par son texte. */
+    private fun chooseMessageAction(labelRes: Int) {
+        val label = InstrumentationRegistry.getInstrumentation().targetContext.getString(labelRes)
+        checkNotNull(device.wait(Until.findObject(By.text(label)), 5_000)) {
+            "Action \"$label\" introuvable dans le panneau du message"
+        }.click()
         onIdle()
     }
 
@@ -289,18 +267,16 @@ class ConversationScenarioTest : EntourageTestAfterLogin() {
         onIdle()
         shoot("message_envoye")
 
-        // 3-points sur notre message -> menu d'actions -> Copier le texte
-        openOwnMessageActions()
+        // Appui long sur notre message -> panneau d'actions -> Copier le texte
+        openOwnMessageActions(message)
         shoot("menu_actions_copier")
-        onView(withText(R.string.message_action_copy)).perform(click())
-        onIdle()
+        chooseMessageAction(R.string.message_action_copy)
         shoot("apres_copier")
 
-        // 3-points -> menu d'actions -> Modifier
-        openOwnMessageActions()
+        // Appui long -> panneau d'actions -> Modifier
+        openOwnMessageActions(message)
         shoot("menu_actions_modifier")
-        onView(withText(R.string.message_action_edit)).perform(click())
-        onIdle()
+        chooseMessageAction(R.string.message_action_edit)
         shoot("mode_edition")
 
         val messageModifie = "$message (modifie)"
@@ -311,11 +287,10 @@ class ConversationScenarioTest : EntourageTestAfterLogin() {
         onIdle()
         shoot("message_modifie_envoye")
 
-        // 3-points -> menu d'actions -> Supprimer mon message
-        openOwnMessageActions()
+        // Appui long -> panneau d'actions -> Supprimer mon message
+        openOwnMessageActions(messageModifie)
         shoot("menu_actions_supprimer")
-        onView(withText(R.string.message_action_delete)).perform(click())
-        onIdle()
+        chooseMessageAction(R.string.message_action_delete)
         shoot("message_supprime")
     }
 }

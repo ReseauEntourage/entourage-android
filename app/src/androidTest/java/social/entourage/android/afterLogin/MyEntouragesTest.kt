@@ -1,7 +1,9 @@
 package social.entourage.android.afterLogin
 
 import android.Manifest
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
@@ -66,13 +68,20 @@ class MyEntouragesTest : EntourageTestAfterLogin() {
             myEntouragesRobot(composeTestRule) {
                 clickModify()
                 clickAcceptCharte()
-                selectCategoryAt(1) // Assuming index 1 in the category list
+                selectCategory(social.entourage.android.api.model.ActionSection.services)
                 clickNext()
                 clickNext()
                 clickNext()
-            } verify {
-                isCategoryDisplayed("Service")
             }
+            // Catégorie « Service » (hors « Temps de partage ») : pas d'étape de partage, les trois « Suivant »
+            // mènent à l'aperçu, en Compose. On y vérifie la catégorie sans publier : l'action réelle du
+            // compte de test n'est pas modifiée.
+            val service = InstrumentationRegistry.getInstrumentation().targetContext
+                .getString(R.string.action_services_name)
+            composeTestRule.waitUntil(10_000) {
+                composeTestRule.onAllNodesWithText(service).fetchSemanticsNodes().isNotEmpty()
+            }
+            composeTestRule.onAllNodesWithText(service)[0].assertIsDisplayed()
             screenshot.shoot("categorie_modifiee")
         }
     }

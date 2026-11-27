@@ -313,7 +313,10 @@ class MainActivity : BaseSecuredActivity() {
             return
         }
 
-        intent.action?.let { action ->
+        // Seul un intent de push est consommé : celui du lanceur (ACTION_MAIN) garde son action, sinon
+        // ActivityScenario ne reconnaît plus l'activité qu'il a lancée et les tests e2e attendent RESUMED
+        // jusqu'au timeout. checkIntentAction() n'agit de toute façon que sur une push (KEY_CONTENT).
+        intent.action?.takeIf { intent.hasExtra(PushNotificationManager.KEY_CONTENT) }?.let { action ->
             // La push doit être consommée une seule fois : onResume() rappelle cette méthode avec le même
             // intent à chaque retour sur MainActivity (ex. back depuis le groupe ouvert), ce qui rouvrait
             // l'écran en boucle.

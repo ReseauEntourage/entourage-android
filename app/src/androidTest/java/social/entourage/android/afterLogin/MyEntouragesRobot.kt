@@ -4,6 +4,8 @@ package social.entourage.android.afterLogin
 import android.os.SystemClock
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.junit4.ComposeTestRule
+import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -64,14 +66,21 @@ class MyEntouragesRobot(private val composeTestRule: ComposeTestRule? = null) {
         }
     }
 
+    // L'assistant de création/modification d'action est en Compose (CreateActionScreen / CreateActionSteps) :
+    // ses éléments se ciblent par testTag via la règle Compose.
     fun clickNext() {
-        clickOn(R.id.next)
+        val rule = checkNotNull(composeTestRule) { "La règle Compose est requise pour l'assistant d'action" }
+        rule.onNodeWithTag("create_action_next").performClick()
+        rule.waitForIdle()
     }
 
-    fun selectCategoryAt(position: Int) {
-        onView(allOf(withId(R.id.recycler_view), isDisplayingAtLeast(90)))
-            .check(matches(hasMinimumChildCount(position + 1)))
-            .perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(position, click()))
+    /** [sectionId] : identifiant de catégorie, ex. [social.entourage.android.api.model.ActionSection.services]. */
+    fun selectCategory(sectionId: String) {
+        val rule = checkNotNull(composeTestRule) { "La règle Compose est requise pour l'assistant d'action" }
+        val tag = "create_action_category_$sectionId"
+        rule.waitUntil(10_000) { rule.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty() }
+        rule.onNodeWithTag(tag).performScrollTo().performClick()
+        rule.waitForIdle()
     }
 
     infix fun verify(func: MyEntouragesVerificationRobot.() -> Unit) =

@@ -28,6 +28,9 @@ import androidx.test.espresso.IdlingPolicies
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.uiautomator.By
+import androidx.test.uiautomator.UiDevice
+import androidx.test.uiautomator.Until
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
 import org.hamcrest.Matchers.allOf
@@ -123,7 +126,9 @@ class GroupCommentScenarioTest : EntourageTestAfterLogin() {
 
     @After
     fun tearDownScenario() {
-        scenario.close()
+        // Un assumeTrue du setUp peut sauter le test avant le lancement : sans ce garde, le teardown
+        // échoue sur la lateinit et transforme le test sauté en échec.
+        if (::scenario.isInitialized) scenario.close()
     }
 
     private fun ensureLoggedIn() {
@@ -152,12 +157,13 @@ class GroupCommentScenarioTest : EntourageTestAfterLogin() {
         return activity
     }
 
-    private fun lastMessagePosition(): Int = (currentActivity()?.commentsList?.size ?: 1) - 1
-
     private fun currentMessageEditTextContent(): String {
+        // currentActivity() passe déjà par runOnMainSync : l'appeler depuis un autre runOnMainSync
+        // lève "This method can not be called from the main application thread".
+        val activity = currentActivity()
         var text = ""
         InstrumentationRegistry.getInstrumentation().runOnMainSync {
-            text = currentActivity()?.binding?.commentMessage?.text?.toString() ?: ""
+            text = activity?.binding?.commentMessage?.text?.toString() ?: ""
         }
         return text
     }
@@ -175,20 +181,26 @@ class GroupCommentScenarioTest : EntourageTestAfterLogin() {
         onView(withId(R.id.comment_message)).perform(closeSoftKeyboard())
     }
 
-    /**
-     * Cible le bouton 3-points d'un message "à moi". Depuis 6472a5c29, l'ordre en haut de
-     * l'item (Row(Arrangement.End), tout packé à droite) est : OptionsIcon, puis la bulle,
-     * puis l'avatar (25dp+padding) — le 3-points n'est donc plus collé à l'avatar mais à la
-     * largeur, variable, de la bulle avant lui. Approximatif : ce bouton n'a pas d'id/testTag,
-     * à recaler sur un vrai appareil (cf. avertissement en tête de fichier).
-     */
-    private fun tapOptionsIconOnOwnMessage(): ViewAction = GeneralClickAction(
-        Tap.SINGLE,
-        GeneralLocation.translate(GeneralLocation.TOP_RIGHT, -0.30f, 0.15f),
-        Press.FINGER,
-        InputDevice.SOURCE_UNKNOWN,
-        MotionEvent.BUTTON_PRIMARY
-    )
+    private val device: UiDevice by lazy { UiDevice.getInstance(InstrumentationRegistry.getInstrumentation()) }
+
+    // cf. ConversationScenarioTest : sur son propre message, plus de bouton 3-points, seul l'appui long
+    // sur la bulle (un TextView, ciblé par son texte) ouvre le panneau d'actions (MessageActionsOverlay).
+    private fun openOwnMessageActions(text: String) {
+        val bubble = checkNotNull(device.wait(Until.findObject(By.text(text)), 10_000)) {
+            "Bulle du commentaire \"$text\" introuvable"
+        }
+        bubble.longClick()
+        onIdle()
+    }
+
+    /** Le panneau d'actions est en Compose : Espresso ne le voit pas, UiAutomator le lit par son texte. */
+    private fun chooseMessageAction(labelRes: Int) {
+        val label = InstrumentationRegistry.getInstrumentation().targetContext.getString(labelRes)
+        checkNotNull(device.wait(Until.findObject(By.text(label)), 5_000)) {
+            "Action \"$label\" introuvable dans le panneau du commentaire"
+        }.click()
+        onIdle()
+    }
 
     /** Appui long sur la bulle d'un message reçu (avatar à gauche, bulle au centre) pour
      * déployer la barre de réactions inline — cf. MessageBubbleItem.handleLongPress. */
@@ -219,13 +231,9 @@ class GroupCommentScenarioTest : EntourageTestAfterLogin() {
         onView(withId(R.id.comment)).check(matches(isEnabled()))
         shoot("bouton_envoi_reactive")
 
-        onView(allOf(withId(R.id.comments), isDisplayed())).perform(
-            actionOnItemAtPosition<ViewHolder>(lastMessagePosition(), tapOptionsIconOnOwnMessage())
-        )
-        onIdle()
+        openOwnMessageActions(message)
         shoot("menu_actions_modifier")
-        onView(withText(R.string.message_action_edit)).perform(click())
-        onIdle()
+        chooseMessageAction(R.string.message_action_edit)
         shoot("mode_edition")
 
         val messageModifie = "$message (modifie)"
@@ -234,13 +242,9 @@ class GroupCommentScenarioTest : EntourageTestAfterLogin() {
         onIdle()
         shoot("commentaire_modifie")
 
-        onView(allOf(withId(R.id.comments), isDisplayed())).perform(
-            actionOnItemAtPosition<ViewHolder>(lastMessagePosition(), tapOptionsIconOnOwnMessage())
-        )
-        onIdle()
+        openOwnMessageActions(messageModifie)
         shoot("menu_actions_supprimer")
-        onView(withText(R.string.message_action_delete)).perform(click())
-        onIdle()
+        chooseMessageAction(R.string.message_action_delete)
         shoot("commentaire_supprime")
     }
 

@@ -125,7 +125,8 @@ class CreateGroupPostScenarioTest : EntourageTestAfterLogin() {
         scenario.onActivity { activity -> setUp(activity) }
         onIdle()
 
-        onView(withText(R.string.edit_post)).check(matches(isDisplayed()))
+        // L'en-tête recopie son titre dans un sous-titre masqué (header_subtitle, GONE) : on ne garde que la vue affichée.
+        onView(allOf(withText(R.string.edit_post), isDisplayed())).check(matches(isDisplayed()))
         onView(withText(R.string.edit)).check(matches(isDisplayed()))
         onView(withText(R.string.create_post)).check(doesNotExist())
         onView(withText(R.string.share_post)).check(doesNotExist())

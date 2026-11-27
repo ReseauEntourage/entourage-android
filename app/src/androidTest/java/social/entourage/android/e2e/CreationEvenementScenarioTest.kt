@@ -15,6 +15,7 @@ import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.PickerActions
+import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withClassName
@@ -148,29 +149,31 @@ class CreationEvenementScenarioTest : EntourageTestAfterLogin() {
         screenshot.shoot("etape2_date_et_heure")
 
         val demain = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, 1) }
+        // Les sélecteurs sont des dialogues système : on vise leur fenêtre (inRoot(isDialog())), sinon
+        // Espresso attend le focus de l'activité pendant que le dialogue s'ouvre et abandonne au bout de 10 s.
         tap("create_event_date")
-        onView(withClassName(`is`(android.widget.DatePicker::class.java.name))).perform(
+        onView(withClassName(`is`(android.widget.DatePicker::class.java.name))).inRoot(isDialog()).perform(
             PickerActions.setDate(
                 demain.get(Calendar.YEAR),
                 demain.get(Calendar.MONTH) + 1,
                 demain.get(Calendar.DAY_OF_MONTH)
             )
         )
-        onView(withId(android.R.id.button1)).perform(click())
+        onView(withId(android.R.id.button1)).inRoot(isDialog()).perform(click())
         screenshot.shoot("etape2_date_choisie")
 
         tap("create_event_start_time")
-        onView(withClassName(`is`(android.widget.TimePicker::class.java.name))).perform(
+        onView(withClassName(`is`(android.widget.TimePicker::class.java.name))).inRoot(isDialog()).perform(
             PickerActions.setTime(10, 0)
         )
-        onView(withId(android.R.id.button1)).perform(click())
+        onView(withId(android.R.id.button1)).inRoot(isDialog()).perform(click())
         screenshot.shoot("etape2_heure_debut_choisie")
 
         tap("create_event_end_time")
-        onView(withClassName(`is`(android.widget.TimePicker::class.java.name))).perform(
+        onView(withClassName(`is`(android.widget.TimePicker::class.java.name))).inRoot(isDialog()).perform(
             PickerActions.setTime(12, 0)
         )
-        onView(withId(android.R.id.button1)).perform(click())
+        onView(withId(android.R.id.button1)).inRoot(isDialog()).perform(click())
         screenshot.shoot("etape2_heure_fin_choisie")
 
         tap("create_event_next")

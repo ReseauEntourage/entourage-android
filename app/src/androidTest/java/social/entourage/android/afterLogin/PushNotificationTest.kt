@@ -24,7 +24,9 @@ class PushNotificationTest : EntourageTestAfterLogin() {
     //TODO find a way to see the notif in the screenshot
     //private val screenshot = E2EScreenshot("push_notification")
     private val isAppStarted = false
-    private val NOTIFICATION_TIMEOUT = 1000L
+    // La notification est postée de façon asynchrone : 1 s ne suffisait pas sur un émulateur chargé
+    // (échecs intermittents de J2/J11). La boucle s'arrête dès qu'elle apparaît.
+    private val NOTIFICATION_TIMEOUT = 10_000L
 
     private val context = InstrumentationRegistry.getInstrumentation().targetContext
 

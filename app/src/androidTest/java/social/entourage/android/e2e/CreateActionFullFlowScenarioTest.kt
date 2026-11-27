@@ -8,6 +8,7 @@ import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
@@ -163,7 +164,12 @@ class CreateActionFullFlowScenarioTest : EntourageTestAfterLogin() {
         device.wait(Until.hasObject(By.res("banner_title")), 5_000)
         screenshot.shoot("charte")
         // EN-9620 : le CTA est en bas du contenu scrollable, plus dans un footer sticky.
-        device.scrollCharterToAccept().click()
+        // La règle Compose pilote l'horloge de Compose : un défilement UiAutomator n'y fait pas apparaître
+        // le bouton. On défile et on clique donc via Compose (le bouton porte le testTag "accept").
+        composeTestRule.waitUntil(10_000) {
+            composeTestRule.onAllNodesWithTag("accept").fetchSemanticsNodes().isNotEmpty()
+        }
+        composeTestRule.onNodeWithTag("accept").performScrollTo().performClick()
         onIdle()
 
         // Categorie "Temps de partage" : c'est elle qui ajoute l'etape de partage (4 etapes au lieu de 3).
@@ -204,14 +210,20 @@ class CreateActionFullFlowScenarioTest : EntourageTestAfterLogin() {
         onIdle()
         screenshot.shoot("creation_soumise")
 
-        // Le titre de succes est un gabarit ("Votre %s a bien ete creee !") : on s'appuie sur le bouton
-        // de fin, propre a l'ecran de succes.
-        onView(withText(R.string.action_create_end_finish_bt)).check(matches(isDisplayed()))
-        screenshot.shoot("succes")
-        onView(withText(R.string.action_create_end_finish_bt)).perform(click())
-
-        checkNoOnboarding()
-        onView(withText(R.string.home_title)).check(matches(isDisplayed()))
+        // Plus d'ecran de succes : apres "Publier", l'app ouvre directement le detail de l'action creee
+        // (titre + boutons Supprimer / Modifier).
+        val deadline = System.currentTimeMillis() + 20_000
+        while (true) {
+            try {
+                onView(allOf(withText(uniqueTitle), isDisplayed())).check(matches(isDisplayed()))
+                break
+            } catch (e: Throwable) {
+                if (System.currentTimeMillis() > deadline) throw e
+                Thread.sleep(500)
+            }
+        }
+        onView(allOf(withId(R.id.ui_bt_modify), isDisplayed())).check(matches(isDisplayed()))
+        screenshot.shoot("detail_action_creee")
         scenario.close()
     }
 

@@ -12,6 +12,12 @@ import androidx.test.espresso.Espresso
 import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
+import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
+import androidx.test.runner.lifecycle.Stage
+import androidx.test.rule.GrantPermissionRule
+import social.entourage.android.events.create.CreateEventActivity
+import social.entourage.android.guide.GDSMainActivity
 import org.junit.After
 import org.junit.Assert
 import org.junit.Rule
@@ -37,6 +43,14 @@ class UniversalLinkTest : EntourageTestAfterLogin() {
 
     @get:Rule
     val composeTestRule = createEmptyComposeRule()
+
+    // La carte (/app/map) demande la localisation : sans ce droit, la fenêtre système de permission
+    // prend le focus et Espresso échoue (RootViewWithoutFocusException).
+    @get:Rule
+    val locationPermission: GrantPermissionRule = GrantPermissionRule.grant(
+        android.Manifest.permission.ACCESS_FINE_LOCATION,
+        android.Manifest.permission.ACCESS_COARSE_LOCATION,
+    )
 
     private val screenshot = E2EScreenshot("universal_links")
 
@@ -176,8 +190,11 @@ class UniversalLinkTest : EntourageTestAfterLogin() {
         description = "HTTPS App link - Outings New",
         uriString = "https://$domain/app/outings/new",
         expectedView = DeepLinksManager.DeepLinksView.EVENTS,
-        targetViewIdName = "create_event_layout"
-    ))
+        // Le parcours de création d'événement est en Compose : create_event_layout n'existe plus, et son
+        // conteneur de navigation partage son id avec un conteneur imbriqué (vue ambiguë). On vérifie donc
+        // que CreateEventActivity est au premier plan.
+        targetViewIdName = null
+    )) { assertResumedActivity(CreateEventActivity::class.java) }
 
     @Test
     fun httpsAppLinkContributions() = runDeeplinkTestCase(DeeplinkTestCase(
@@ -200,8 +217,28 @@ class UniversalLinkTest : EntourageTestAfterLogin() {
         description = "HTTPS App link - Map",
         uriString = "https://$domain/app/map",
         expectedView = DeepLinksManager.DeepLinksView.GUIDE_MAP,
-        targetViewIdName = "ui_container"
-    ))
+        // La carte ouvre une seconde fenêtre (rendu Maps) qui prend le focus : Espresso n'y trouve pas
+        // ui_container. On vérifie que GDSMainActivity est au premier plan.
+        targetViewIdName = null
+    )) { assertResumedActivity(GDSMainActivity::class.java) }
+
+    /** Attend (jusqu'à 20 s, émulateur lent) que [activityClass] soit l'activité au premier plan. */
+    private fun assertResumedActivity(activityClass: Class<out android.app.Activity>) {
+        val deadline = SystemClock.elapsedRealtime() + 20_000
+        while (true) {
+            var resumed = false
+            InstrumentationRegistry.getInstrumentation().runOnMainSync {
+                resumed = ActivityLifecycleMonitorRegistry.getInstance()
+                    .getActivitiesInStage(Stage.RESUMED)
+                    .any { activityClass.isInstance(it) }
+            }
+            if (resumed) return
+            if (SystemClock.elapsedRealtime() > deadline) {
+                Assert.fail("${activityClass.simpleName} n'est pas au premier plan")
+            }
+            SystemClock.sleep(200)
+        }
+    }
 
     @Test
     fun httpsAppLinkBadges() = runDeeplinkTestCase(DeeplinkTestCase(
