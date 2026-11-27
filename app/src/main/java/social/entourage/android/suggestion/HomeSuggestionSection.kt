@@ -18,13 +18,13 @@ import social.entourage.android.guide.poi.ReadPoiFragment
 import social.entourage.android.tools.log.AnalyticsEvents
 
 /**
- * Interrupteur de l'affichage des suggestions du moteur (EN-9473). ÉTEINT pour livrer la version en cours
- * sans la fonction : la home garde ses sections d'origine (entraides, événements, groupes) et le moteur n'est
- * jamais appelé. Pour la remettre : passer cette valeur à `true`, rien d'autre à toucher (c'est l'état d'avant
- * l'interrupteur). L'interrupteur du back (`NEXT_STEPS_ENABLED`) la coupe, lui, sans release mobile.
+ * Interrupteur de l'affichage des suggestions du moteur (EN-9473). ALLUMÉ : la home affiche les suggestions
+ * et appelle le moteur. Pour la couper (livrer sans la fonction) : passer cette valeur à `false`, rien d'autre
+ * à toucher, la home retrouve ses sections d'origine (entraides, événements, groupes) et le moteur n'est
+ * jamais appelé. L'interrupteur du back (`NEXT_STEPS_ENABLED`) la coupe, lui, sans release mobile.
  */
 object SuggestionFeature {
-    val ENABLED: Boolean get() = false
+    val ENABLED: Boolean get() = true
 }
 
 /**
