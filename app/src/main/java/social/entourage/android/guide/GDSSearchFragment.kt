@@ -70,6 +70,8 @@ class GDSSearchFragment : BaseDialogFragment(), PoiListFragment {
 
         binding.uiBtSearchClose.setOnClickListener {
             binding.uiEtSearch.setText("")
+            binding.uiEtSearch.clearFocus()
+            binding.uiEtSearch.hideKeyboard()
             arrayPois.clear()
             rvAdapter?.notifyDataSetChanged()
         }

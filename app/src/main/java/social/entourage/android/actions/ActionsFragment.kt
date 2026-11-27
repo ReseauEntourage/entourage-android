@@ -266,7 +266,10 @@ class ActionsFragment : Fragment() {
                 val clearIcon = binding.searchEditText.compoundDrawables[2]
                 val backIcon = binding.searchEditText.compoundDrawables[0]
                 if (clearIcon != null && event.rawX >= (binding.searchEditText.right - clearIcon.bounds.width())) {
+                    // Croix : vide le champ, retire le focus et remet la liste initiale.
                     binding.searchEditText.text.clear()
+                    binding.searchEditText.clearFocus()
+                    isSearching = false
                     return@setOnTouchListener true
                 } else if (backIcon != null && event.rawX <= (binding.searchEditText.left + backIcon.bounds.width())) {
                     binding.searchEditText.text.clear()
@@ -282,7 +285,7 @@ class ActionsFragment : Fragment() {
         val backDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_left_black)
 
         val color = ContextCompat.getColor(requireContext(), android.R.color.black)
-        tintDrawable(clearDrawable, color)
+        // La croix garde son orange d'origine ; seule la flèche retour est teintée.
         tintDrawable(backDrawable, color)
         binding.searchEditText.setOnFocusChangeListener { v, hasFocus ->
             if (hasFocus) {
