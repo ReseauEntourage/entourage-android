@@ -136,26 +136,25 @@ class MembersConversationFragment : BaseDialogFragment() {
         binding.searchBar.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 Utils.hideKeyboard(requireActivity())
-                updateVisibilityForSearch()
-                conversationId?.let {
-                    discussionsPresenter.getMembersSearch(binding.searchBar.text.toString())
-                }
                 true
             } else false
         }
 
-        binding.searchBar.setOnFocusChangeListener { _, _ ->
-            binding.recyclerView.visibility = View.GONE
-            binding.searchRecyclerView.visibility = View.VISIBLE
+        // Au focus, on garde la liste initiale : elle n'est remplacée qu'à la saisie.
+        binding.searchBar.setOnFocusChangeListener { _, hasFocus ->
+            updateClearIcon(hasFocus)
         }
+
+        binding.searchBarLayout.setEndIconOnClickListener { clearSearch() }
 
         binding.searchBar.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                binding.searchBarLayout.endIconMode =
-                    if (s.isNullOrEmpty()) TextInputLayout.END_ICON_NONE
-                    else TextInputLayout.END_ICON_CUSTOM
-                binding.searchBarLayout.setEndIconOnClickListener {
-                    clearSearch()
+                updateClearIcon(binding.searchBar.hasFocus())
+                if (s.isNullOrEmpty()) {
+                    restoreFullList()
+                } else {
+                    updateVisibilityForSearch()
+                    conversationId?.let { discussionsPresenter.getMembersSearch(s.toString()) }
                 }
             }
 
@@ -206,9 +205,11 @@ class MembersConversationFragment : BaseDialogFragment() {
     }
 
     private fun handleSearchResults(results: MutableList<GroupMember>?) {
+        binding.progressBar.visibility = View.GONE
+        // Recherche vidée pendant que la requête était en vol : réponse obsolète, on l'ignore.
+        if (binding.searchBar.text.isNullOrEmpty()) return
         searchMembersList.clear()
         results?.let { searchMembersList.addAll(it) }
-        binding.progressBar.visibility = View.GONE
         updateViewSearch(searchMembersList.isEmpty())
         searchAdapter.notifyDataSetChanged()
     }
@@ -255,11 +256,24 @@ class MembersConversationFragment : BaseDialogFragment() {
         binding.progressBar.visibility = View.VISIBLE
     }
 
-    private fun clearSearch() {
-        binding.searchBar.text?.clear()
+    private fun updateClearIcon(hasFocus: Boolean) {
+        binding.searchBarLayout.endIconMode =
+            if (hasFocus || !binding.searchBar.text.isNullOrEmpty()) TextInputLayout.END_ICON_CUSTOM
+            else TextInputLayout.END_ICON_NONE
+    }
+
+    private fun restoreFullList() {
+        binding.progressBar.visibility = View.GONE
         binding.searchRecyclerView.visibility = View.GONE
         binding.emptyStateLayout.visibility = View.GONE
         updateView(membersList.isEmpty())
+    }
+
+    /** Croix : vide le champ (ce qui restaure la liste complète), quitte le focus et ferme le clavier. */
+    private fun clearSearch() {
+        binding.searchBar.text?.clear()
+        binding.searchBar.clearFocus()
+        restoreFullList()
         Utils.hideKeyboard(requireActivity())
     }
 

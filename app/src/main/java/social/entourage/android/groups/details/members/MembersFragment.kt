@@ -297,9 +297,11 @@ open class MembersFragment : Fragment() {
         binding.searchBar.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_START)
-                binding.recyclerView.visibility = View.GONE
-                binding.searchRecyclerView.visibility = View.VISIBLE
+                // On garde la liste initiale affichée : elle n'est remplacée qu'à la saisie.
             }
+            // La croix reste visible tant que le champ a le focus ou du texte, pour quitter la recherche.
+            binding.searchClearButton.visibility =
+                if (hasFocus || !binding.searchBar.text.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
     }
 
@@ -309,7 +311,8 @@ open class MembersFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
                 val hasText = !s.isNullOrEmpty()
-                binding.searchClearButton.visibility = if (hasText) View.VISIBLE else View.GONE
+                binding.searchClearButton.visibility =
+                    if (hasText || binding.searchBar.hasFocus()) View.VISIBLE else View.GONE
                 if (hasText) {
                     performSearch(s.toString())
                 } else {

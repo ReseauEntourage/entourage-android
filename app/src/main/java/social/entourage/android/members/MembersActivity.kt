@@ -123,22 +123,18 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
     }
 
     private fun setupSearchBar() {
-        // FOCUS ➜ on passe sur la liste search
+        // FOCUS ➜ on garde la liste initiale affichée : elle n'est remplacée qu'à la saisie.
         binding.searchBar.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_START)
-                switchToSearchMode()
             }
+            updateClearIcon(hasFocus)
         }
 
         // Gestion croix / texte et déclenchement de la recherche à chaque changement de texte
         binding.searchBar.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                binding.searchBarLayout.endIconMode = if (s.isNullOrEmpty()) {
-                    TextInputLayout.END_ICON_NONE
-                } else {
-                    TextInputLayout.END_ICON_CUSTOM
-                }
+                updateClearIcon(binding.searchBar.hasFocus())
 
                 s?.let {
                     searchHandler.removeCallbacksAndMessages(null)
@@ -162,8 +158,17 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
         binding.searchBarLayout.setEndIconOnClickListener {
             AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_DELETE)
             binding.searchBar.text?.clear()
+            binding.searchBar.clearFocus()
             exitSearchMode()
+            Utils.hideKeyboard(this)
         }
+    }
+
+    /** La croix reste visible tant que le champ a le focus ou du texte, pour quitter la recherche. */
+    private fun updateClearIcon(hasFocus: Boolean) {
+        binding.searchBarLayout.endIconMode =
+            if (hasFocus || !binding.searchBar.text.isNullOrEmpty()) TextInputLayout.END_ICON_CUSTOM
+            else TextInputLayout.END_ICON_NONE
     }
 
     private fun conversationCallback(): OnItemShowListener = object : OnItemShowListener {
@@ -319,6 +324,11 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
     }
 
     private fun handleSearchList(list: MutableList<EntourageUser>?) {
+        // Recherche vidée pendant que la requête était en vol : réponse obsolète, on l'ignore.
+        if (binding.searchBar.text.isNullOrBlank()) {
+            binding.progressBar.visibility = View.GONE
+            return
+        }
         membersListSearch.clear()
         list?.let { membersListSearch.addAll(it) }
         binding.progressBar.visibility = View.GONE
@@ -353,22 +363,19 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
         binding.progressBar.visibility = View.VISIBLE
     }
 
-    private fun switchToSearchMode() {
-        binding.recyclerView.visibility = View.GONE
-        binding.searchRecyclerView.visibility = View.VISIBLE
-    }
-
     private fun exitSearchMode() {
+        binding.progressBar.visibility = View.GONE
         binding.searchRecyclerView.visibility = View.GONE
+        binding.emptyStateLayout.visibility = View.GONE
         updateEmptyState(membersList.isEmpty())
     }
 
+    /** Champ vidé : on remet la liste complète. */
     private fun clearSearchResults() {
         searchHandler.removeCallbacksAndMessages(null)
         membersListSearch.clear()
         binding.searchRecyclerView.adapter?.notifyDataSetChanged()
-        binding.emptyStateLayout.visibility = View.GONE
-        binding.searchRecyclerView.visibility = View.VISIBLE
+        exitSearchMode()
     }
 
     private fun openConversation(conv: Conversation?) {

@@ -157,6 +157,8 @@ class DiscoverEventsListFragment : Fragment() {
         if (searchMod) {
             isSearching = true
             hideMainViews()
+            // Dès l'entrée en recherche, on garde la liste initiale visible (sans attendre la saisie).
+            if (binding.searchEditText.text.isNullOrEmpty()) showInitialSearchList()
         }else {
             isSearching = false
             showMainViews()
@@ -252,7 +254,20 @@ class DiscoverEventsListFragment : Fragment() {
         }
     }
 
+    /** Affiche la liste initiale (événements) dans la zone de recherche, sans requête. */
+    private fun showInitialSearchList() {
+        adapterSearch.resetData(eventsAdapter.events.toMutableList())
+        binding.rvSearch.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
+    }
+
     private fun handleResponseSearchEvents(allEvents: MutableList<Events>?) {
+        // Recherche vidée pendant que la requête était en vol : réponse obsolète, on l'ignore.
+        if (binding.searchEditText.text.isNullOrEmpty()) {
+            isLoading = false
+            binding.progressBar.visibility = View.GONE
+            return
+        }
         if (isLoadMoreSearchResults) {
             adapterSearch.addData(allEvents ?: mutableListOf())
         } else {
@@ -483,6 +498,8 @@ class DiscoverEventsListFragment : Fragment() {
                 hideMainViews()
                 binding.rvSearch.visibility = View.VISIBLE
                 binding.searchEditText.setCompoundDrawablesWithIntrinsicBounds(backDrawable, null, clearDrawable, null)
+                // La liste initiale reste affichée tant qu'on n'a pas commencé à taper.
+                if (binding.searchEditText.text.isNullOrEmpty()) showInitialSearchList()
             } else {
                 hideKeyboard(v)  // Masquer le clavier et retirer le focus lorsque le focus est perdu
                 val query = binding.searchEditText.text.toString()
@@ -526,7 +543,9 @@ class DiscoverEventsListFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 val query = s.toString()
                 if (query.isEmpty()) {
-
+                    // Champ vidé : on stoppe la pagination de recherche et on remet la liste initiale.
+                    currentSearchQuery = null
+                    showInitialSearchList()
                 } else {
                     performSearch(query)
                 }

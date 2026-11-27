@@ -83,9 +83,23 @@ class DiscoverGroupsListFragment : Fragment() , UpdateGroupInter {
 
     }
 
-    private fun handleResponseGetGroupsSearch(allGroupsSearch: MutableList<Group>?) {
-        groupsListSearch.clear()
+    private fun updateClearIcon(hasFocus: Boolean) {
+        binding.searchBarLayout.endIconMode =
+            if (hasFocus || !binding.searchBar.text.isNullOrEmpty()) END_ICON_CUSTOM else END_ICON_NONE
+    }
+
+    private fun restoreFullList() {
         binding.progressBar.visibility = View.GONE
+        binding.searchRecyclerView.visibility = View.GONE
+        binding.emptyStateLayout.visibility = View.GONE
+        updateView(groupsList.isEmpty())
+    }
+
+    private fun handleResponseGetGroupsSearch(allGroupsSearch: MutableList<Group>?) {
+        binding.progressBar.visibility = View.GONE
+        // Recherche vidée pendant que la requête était en vol : réponse obsolète, on l'ignore.
+        if (binding.searchBar.text.isNullOrEmpty()) return
+        groupsListSearch.clear()
         allGroupsSearch?.let { groupsListSearch.addAll(it) }
         allGroupsSearch?.isEmpty()?.let {
             updateViewSearch(it) }
@@ -209,12 +223,10 @@ class DiscoverGroupsListFragment : Fragment() , UpdateGroupInter {
             }
 
             override fun afterTextChanged(s: Editable?) {
+                updateClearIcon(binding.searchBar.hasFocus())
                 if (s.isNullOrEmpty()) {
-                    binding.searchBarLayout.endIconMode = END_ICON_NONE
-
-                } else {
-                    binding.searchBarLayout.endIconMode = END_ICON_CUSTOM
-                    handleCross()
+                    // Champ vidé à la main : on remet la liste complète.
+                    restoreFullList()
                 }
             }
 
@@ -222,12 +234,14 @@ class DiscoverGroupsListFragment : Fragment() , UpdateGroupInter {
     }
 
     private fun handleSearchOnFocus() {
-        binding.searchBar.setOnFocusChangeListener { _, _ ->
-            binding.recyclerView.visibility = View.GONE
-            binding.searchRecyclerView.visibility = View.VISIBLE
-            AnalyticsEvents.logEvent(
-                AnalyticsEvents.ACTION_GROUP_SEARCH_START
-            )
+        // Au focus, on garde la liste initiale : elle n'est remplacée qu'à la recherche.
+        binding.searchBar.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                AnalyticsEvents.logEvent(
+                    AnalyticsEvents.ACTION_GROUP_SEARCH_START
+                )
+            }
+            updateClearIcon(hasFocus)
         }
     }
 
@@ -246,9 +260,8 @@ class DiscoverGroupsListFragment : Fragment() , UpdateGroupInter {
     private fun handleCross() {
         binding.searchBarLayout.setEndIconOnClickListener {
             binding.searchBar.text?.clear()
-            binding.searchRecyclerView.visibility = View.GONE
-            binding.emptyStateLayout.visibility = View.GONE
-            updateView(groupsList.isEmpty())
+            binding.searchBar.clearFocus()
+            restoreFullList()
             Utils.hideKeyboard(requireActivity())
             AnalyticsEvents.logEvent(
                 AnalyticsEvents.ACTION_GROUP_SEARCH_DELETE

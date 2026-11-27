@@ -253,6 +253,8 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
                 hideMainViews()
                 binding.rvSearch.visibility = View.VISIBLE
                 binding.searchEditText.setCompoundDrawablesWithIntrinsicBounds(backDrawable, null, clearDrawable, null)
+                // La liste initiale reste affichée tant qu'on n'a pas commencé à taper.
+                if (binding.searchEditText.text.isNullOrEmpty()) showInitialSearchList()
             } else {
                 hideKeyboard(v)  // Masquer le clavier lorsque le focus est perdu
                 val query = binding.searchEditText.text.toString()
@@ -293,7 +295,8 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
             override fun afterTextChanged(s: Editable?) {
                 val query = s.toString()
                 if (query.isEmpty()) {
-                    // Reset or clear search results
+                    // Champ vidé : on remet la liste initiale.
+                    showInitialSearchList()
                 } else {
                     performSearch(query)
                 }
@@ -348,6 +351,8 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
         binding.createGroup.visibility = View.GONE
         binding.uiLayoutFilter.visibility = View.GONE
         binding.uiLayoutSearch.visibility = View.GONE
+        // Dès l'entrée en recherche, on garde la liste initiale visible (sans attendre la saisie).
+        if (binding.searchEditText.text.isNullOrEmpty()) showInitialSearchList()
         (requireActivity() as MainActivity).hideBottomBar()
 
         // On modifie la marge top de la NestedScrollView
@@ -469,8 +474,26 @@ class GroupsFragment : Fragment(), UpdateGroupInter {
         }
     }
 
+    /** Affiche la liste initiale (tous les groupes) dans la zone de recherche, sans requête. */
+    private fun showInitialSearchList() {
+        searchResultsList.clear()
+        searchResultsList.addAll(groupsList)
+        adapterGroupSearch.updateGroupsList(searchResultsList)
+        adapterGroupSearch.notifyDataSetChanged()
+        binding.rvSearch.visibility = View.VISIBLE
+        binding.progressBar.visibility = View.GONE
+    }
+
     private fun updateSearchResults(searchResults: MutableList<Group>?) {
+        // Recherche vidée pendant que la requête était en vol : réponse obsolète, on la rejette.
+        if (binding.searchEditText.text.isNullOrEmpty()) {
+            binding.progressBar.visibility = View.GONE
+            return
+        }
         if (searchResults == null || searchResults.isEmpty()) {
+            searchResultsList.clear()
+            adapterGroupSearch.updateGroupsList(searchResultsList)
+            adapterGroupSearch.notifyDataSetChanged()
             binding.progressBar.visibility = View.GONE
             return
         }

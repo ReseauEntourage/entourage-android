@@ -24,7 +24,7 @@ import social.entourage.android.tools.log.AnalyticsEvents
  * l'interrupteur). L'interrupteur du back (`NEXT_STEPS_ENABLED`) la coupe, lui, sans release mobile.
  */
 object SuggestionFeature {
-    val ENABLED: Boolean get() = true
+    val ENABLED: Boolean get() = false
 }
 
 /**
