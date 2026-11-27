@@ -125,9 +125,11 @@ open class MembersFragment : Fragment() {
     private fun handleResponseGetMembers(allMembers: MutableList<EntourageUser>?) {
         membersList.clear()
         allMembers?.let { membersList.addAll(it) }
+        binding.recyclerView.adapter?.notifyDataSetChanged()
+        // Pendant une recherche, la liste se met à jour sans repasser devant les résultats.
+        if (!binding.searchBar.text.isNullOrEmpty()) return
         binding.progressBar.visibility = View.GONE
         allMembers?.isEmpty()?.let { updateView(it) }
-        binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 
     private fun handleResponseGetMembersReact(reactionsResponse: CompleteReactionsResponse) {
@@ -294,11 +296,12 @@ open class MembersFragment : Fragment() {
     }
 
     private fun handleSearchOnFocus() {
+        // Le focus seul ne change pas l'affichage (cf. MembersActivity) : jusqu'à Android 8 inclus, le
+        // système peut donner le focus à ce champ sans action de l'utilisateur, ce qui masquait la liste.
+        // La recherche ne commence qu'avec un texte saisi (handleCrossButton / performSearch).
         binding.searchBar.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 AnalyticsEvents.logEvent(AnalyticsEvents.ACTION_GROUP_MEMBER_SEARCH_START)
-                binding.recyclerView.visibility = View.GONE
-                binding.searchRecyclerView.visibility = View.VISIBLE
             }
         }
     }
