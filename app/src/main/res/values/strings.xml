@@ -3806,4 +3806,6 @@ Ils liront ce message dès qu’ils rejoindront le groupe.</string>
     <string name="accessibility_high_contrast_description">Des couleurs plus foncées pour rendre les textes et les boutons plus lisibles.</string>
     <string name="accessibility_state_on">Contraste amélioré activé</string>
     <string name="accessibility_state_off">Contraste amélioré désactivé</string>
+    <!-- Liste des participants d’un événement -->
+    <string name="event_participants_empty_state_title">Aucun participant à afficher pour le moment.</string>
 </resources>

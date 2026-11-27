@@ -332,7 +332,11 @@ class MembersActivity : BaseActivity() , AcceptPhotoDialogFragment.Listener {
     private fun updateEmptyState(isEmpty: Boolean) {
         binding.emptyStateLayout.visibility = if (isEmpty) View.VISIBLE else View.GONE
         binding.recyclerView.visibility = if (isEmpty) View.GONE else View.VISIBLE
-        binding.title.setText(R.string.group_list_empty_state_title)
+        // Participants d'un événement : le texte des groupes (« autres groupes autour de vous ») n'a pas de sens ici.
+        binding.title.setText(
+            if (type == MembersType.EVENT && !isFromReact) R.string.event_participants_empty_state_title
+            else R.string.group_list_empty_state_title
+        )
     }
 
     private fun performRemoteSearch(query: String) {
