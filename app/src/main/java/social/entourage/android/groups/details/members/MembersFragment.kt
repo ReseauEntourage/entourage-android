@@ -256,7 +256,11 @@ open class MembersFragment : Fragment() {
     private fun updateView(isListEmpty: Boolean) {
         if (isListEmpty) {
             binding.emptyStateLayout.visibility = View.VISIBLE
-            binding.title.text = getString(R.string.group_list_empty_state_title)
+            // Participants d'un événement : le texte des groupes (« autres groupes autour de vous ») n'a pas de sens ici.
+            binding.title.text = getString(
+                if (type == MembersType.EVENT && !isFromReact) R.string.event_participants_empty_state_title
+                else R.string.group_list_empty_state_title
+            )
         } else {
             binding.recyclerView.visibility = View.VISIBLE
         }

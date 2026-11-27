@@ -2253,4 +2253,6 @@
     <string name="accessibility_high_contrast_description">Darker colors to make text and buttons easier to read.</string>
     <string name="accessibility_state_on">Enhanced contrast on</string>
     <string name="accessibility_state_off">Enhanced contrast off</string>
+    <!-- Event participants list -->
+    <string name="event_participants_empty_state_title">No participants to show for now.</string>
 </resources>
